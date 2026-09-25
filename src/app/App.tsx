@@ -547,6 +547,11 @@ export function App() {
         {active.draftContent && (
           <div className="draft-banner">试用课程草稿：题目尚待教师审校，请家长陪伴使用。</div>
         )}
+        {active.tasks.length < 6 && (
+          <p className="session-size-note" role="status">
+            本课目前准备了 {active.tasks.length} 道可用练习，本轮先完成这些。
+          </p>
+        )}
         <section className="question-card">
           <div className="mascot" aria-hidden="true">
             🦊

@@ -702,6 +702,15 @@ footer {
   border-radius: 12px;
   font-size: 12px;
 }
+.session-size-note {
+  margin: 12px auto -12px;
+  padding: 9px 12px;
+  max-width: 740px;
+  border-radius: 12px;
+  background: #f4f7ee;
+  color: #52634c;
+  font-size: 13px;
+}
 .question-card {
   position: relative;
   overflow: hidden;
