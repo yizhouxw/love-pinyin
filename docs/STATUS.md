@@ -12,7 +12,9 @@
 - LAN 启动要求调用者显式提供 HTTPS 证书。网页不请求麦克风；音频播放题过滤为不可用，评分 API 只返回不可用且不读取录音请求体。
 - 当前服务端可出的题只覆盖无需标准音频的视觉选择题。对需要 `listen-choice` 覆盖的知识点，掌握度会保持未完成，不因音频缺失降低门槛。
 
-本次仅执行了 ESLint、TypeScript 类型检查、Vite production build、Prettier 检查、Ruff lint/format 和 Python 编译检查；**没有运行或新增测试**。尚未做家庭真机 HTTPS/离线运行验收。实现切片尚未标记 SPEC 全部验收完成。代码已提交为 `eaab2ab`，未推送。
+本地 UI 手动验收（临时 SQLite 数据目录，完成后已在 UI 删除记录）：首次家长配对、视觉题作答/提示、作答后刷新恢复、家长切课、导出、记录删除、另一浏览器来源的次设备配对、权限边界、次设备撤销，以及次设备刷新后看到新课序和家长删除后的 0 条记录均已走通。首次配对的 `ORIGIN_REJECTED` 已通过 Vite 代理显式传递原始 Host 修复；家长导出曾遇到 `CSRF_HEADER_MISSING`，现只读 GET 用配对家长身份校验、写操作仍验证 CSRF。触摸视口以 390×844 响应式模拟检查并从该视口用 Enter 键完成一题；没有实际 iPad/iPhone 触屏硬件证据。
+
+本次静态检查通过 ESLint、TypeScript、Vite production build、Prettier、Ruff lint/format 和 Python 编译。**没有新增或运行自动化测试。**尚未做家庭真机 HTTPS/断网验收。PoC 基准工具尚无真实样本、预测或授权证据。实现切片尚未标记 SPEC 全部验收完成。第一切片提交为 `bdee922`，本轮修复与 PoC 工具待提交，均未推送。
 
 ## 已确定并落地
 

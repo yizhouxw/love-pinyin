@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://love-pinyin.invalid/schemas/assessment-manifest-v1.json",
+  "title": "Private pronunciation assessment research manifest",
+  "description": "Metadata only. Store WAV files in an access-controlled local directory as <sampleId>.wav; never commit recordings or this private manifest.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "datasetId", "contentVersion", "items"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "datasetId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{3,64}$" },
+    "contentVersion": { "type": "string", "pattern": "^[A-Za-z0-9_.-]{1,80}$" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sampleId",
+          "speakerGroupId",
+          "cohort",
+          "targetId",
+          "targetClass",
+          "deviceClass",
+          "environmentClass",
+          "challengeClass",
+          "split",
+          "annotatorLabels",
+          "adjudicatedLabel",
+          "consentRef",
+          "sha256"
+        ],
+        "properties": {
+          "sampleId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,64}$" },
+          "speakerGroupId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,64}$" },
+          "cohort": { "enum": ["target-age-child", "adult-development"] },
+          "targetId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,80}$" },
+          "targetClass": {
+            "enum": [
+              "initial",
+              "final",
+              "whole-syllable",
+              "tone",
+              "syllable",
+              "orthographic-letter"
+            ]
+          },
+          "deviceClass": {
+            "enum": [
+              "mac-built-in",
+              "wired-headset",
+              "bluetooth-headset",
+              "tablet",
+              "phone",
+              "other"
+            ]
+          },
+          "environmentClass": { "enum": ["quiet", "ordinary", "noisy"] },
+          "challengeClass": { "enum": ["speech", "silence", "noise", "speaker-replay"] },
+          "split": { "enum": ["development", "calibration", "test"] },
+          "annotatorLabels": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": { "enum": ["correct", "incorrect", "uncertain"] }
+          },
+          "adjudicatedLabel": { "enum": ["correct", "incorrect", "uncertain"] },
+          "consentRef": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{8,80}$",
+            "description": "Opaque reference to locally held consent evidence; never a name, contact detail or document path."
+          },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": { "challengeClass": { "enum": ["silence", "noise", "speaker-replay"] } }
+            },
+            "then": {
+              "properties": {
+                "targetId": { "const": "challenge" },
+                "targetClass": { "const": "syllable" }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

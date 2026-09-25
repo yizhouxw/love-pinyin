@@ -9,7 +9,7 @@
 1. [交付状态与待关闭风险](docs/STATUS.md)：已完成、已验证和仍待验证的边界。
 2. [产品方案](docs/product/PRD.md) / [交互设计](docs/product/UX.md)。
 3. [课程依据](docs/research/curriculum.md) / [学习路径](docs/content/learning-path.md) / [结构化学习库](content/curriculum.json)。
-4. [技术架构](docs/architecture.md) / [技术研究](docs/research/technology.md) / [音频与评分研究](docs/research/audio-and-assets.md)。
+4. [技术架构](docs/architecture.md) / [技术研究](docs/research/technology.md) / [音频与评分研究](docs/research/audio-and-assets.md) / [PoC状态](docs/research/assessment-poc-status.md)。
 5. [实施顺序与模型交接](docs/implementation-plan.md) / [SPEC 索引](docs/specs/README.md)。
 6. [开发流程](docs/engineering/workflow.md) / [测试标准](docs/engineering/testing.md) / [Mac 部署](docs/engineering/local-deployment.md)。
 

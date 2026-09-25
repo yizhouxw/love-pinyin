@@ -1,6 +1,6 @@
 # SPEC-000：家庭 Mac 本地发音评分 PoC
 
-状态：计划中，正式评分接入与发布的阻塞门禁。覆盖 R-017、R-021。它是六个实施切片之前的研究验证，不表示评分技术已经可用。
+状态：继续研究；评分接入与发布仍被阻塞。基准清单 schema 和聚合器已实现，研究记录见[PoC状态](../research/assessment-poc-status.md)。没有授权语音与标注数据，尚无引擎/指标/许可结论。覆盖 R-017、R-021。它是六个实施切片之前的研究验证，不表示评分技术已经可用。
 
 ## 目标与边界
 
@@ -65,7 +65,7 @@
 
 ## 命令、人工交付与低成本模型提示
 
-现有可运行基线：`npm run verify`、`npm run verify:server`；通过意味着工程质量，不代表 PoC 通过。实施本切片时新增并记录基准入口，例如 `uv run --locked python -m research.assessment.benchmark --manifest <本地清单> --config <冻结配置>`，输出 JSON 汇总且非零退出表示门槛未通过。该示例是待实现入口，当前不能作为已运行命令。
+现有可运行基线：`npm run verify`、`npm run verify:server`；通过意味着工程质量，不代表 PoC 通过。基准汇总入口为 `uv run --locked python -m research.assessment.benchmark --manifest <本地清单> --predictions <盲测预测> --audio-dir <本地音频目录> --output <聚合报告>`。它校验课程版本、说话人隔离、WAV 限制和摘要哈希；若测量指标过关但分数校准证据缺失，仍以非零状态退出且决策为 continue-research。当前没有合法数据，尚不能运行该实验。
 
 低成本模型可完成：候选适配器、数据校验、基准脚本、指标/置信区间计算、取消/清理测试、网络调用检测和结果报告。必须由具备授权的人完成：儿童样本合法取得、发音真值审校、实际设备录音、模型商业/再分发许可确认。公开代码可以 MIT；第三方资产不能因仓库 MIT 自动变成可自由再分发。
 
