@@ -456,3 +456,97 @@ test('已撤销或过期的会话回到配对页面', async ({ page }) => {
   await expect(page.getByLabel('家长配对码')).toBeVisible();
   await expect(page.getByRole('heading', { name: /拼音小岛/ })).toBeVisible();
 });
+
+test('旧课程版本的当前课提示家长重选并保留学习路线', async ({ page }) => {
+  let selectedLessonId = 'retired-lesson-v0';
+  let revision = 7;
+  await page.context().route('**/api/v1/**', async (route) => {
+    const path = new URL(route.request().url()).pathname.replace('/api/v1', '');
+    if (path === '/bootstrap') {
+      await route.fulfill({
+        json: {
+          paired: true,
+          device: { label: '测试设备', isParent: true },
+          profile: { id: 'profile-old-curriculum', selectedLessonId, revision },
+          attemptCount: 1,
+        },
+      });
+    } else if (path === '/curriculum') {
+      await route.fulfill({
+        json: {
+          inventory: { initials: ['b'] },
+          lessons: [
+            {
+              id: 'lesson-01',
+              order: 1,
+              title: '认识拼音',
+              objectives: ['认识拼音符号'],
+              knowledgeIds: [],
+              exerciseIds: ['exercise-01'],
+              suggestedSessionMinutes: 5,
+            },
+            {
+              id: 'lesson-02',
+              order: 2,
+              title: '新的当前课',
+              objectives: ['继续学习'],
+              knowledgeIds: [],
+              exerciseIds: ['exercise-02'],
+              suggestedSessionMinutes: 5,
+            },
+          ],
+          knowledgeItems: [],
+          exercises: [
+            { id: 'exercise-01', type: 'symbol-choice', prompt: '找一找', options: [] },
+            { id: 'exercise-02', type: 'symbol-choice', prompt: '继续找一找', options: [] },
+          ],
+        },
+      });
+    } else if (path === '/profiles/progress') {
+      await route.fulfill({
+        json: {
+          revision,
+          selectedLessonId,
+          completedSessions: 1,
+          settings: { soundEnabled: true, reducedMotion: false },
+          mastery: [],
+          attempts: [{ id: 'retained-attempt' }],
+        },
+      });
+    } else if (path === '/sessions/current') {
+      await route.fulfill({ json: null });
+    } else if (path === '/devices' && route.request().method() === 'GET') {
+      await route.fulfill({ json: { devices: [] } });
+    } else if (path === '/household/current-lesson' && route.request().method() === 'PUT') {
+      selectedLessonId = route.request().postDataJSON().lessonId;
+      revision += 1;
+      await route.fulfill({
+        json: {
+          selectedLessonId,
+          revision,
+          settings: { soundEnabled: true, reducedMotion: false },
+        },
+      });
+    } else {
+      await route.fulfill({ status: 404, json: { detail: { code: 'NOT_FOUND' } } });
+    }
+  });
+
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: '请选择当前课' })).toBeVisible();
+  await expect(
+    page.getByText(
+      '保存的当前课不在此课程版本中。已有学习记录会保留，请家长重新选择学校正在学习的课程。',
+    ),
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: '请家长先选择当前课 →' })).toBeDisabled();
+
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await page.getByRole('combobox').selectOption('lesson-02');
+  await page.locator('.inline-control button').click();
+  await expect(page.getByRole('combobox')).toHaveValue('lesson-02');
+  await expect(page.getByText('1 次练习记录')).toBeVisible();
+  await page.getByRole('button', { name: '返回学习' }).click();
+  await expect(page.getByRole('heading', { name: '第 2 课 · 新的当前课' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '开始今天的练习 →' })).toBeEnabled();
+});

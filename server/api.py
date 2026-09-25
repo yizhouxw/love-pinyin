@@ -461,6 +461,13 @@ def _require(condition: bool, code: str) -> None:
         raise HTTPException(422, detail={"code": code})
 
 
+def _current_lesson_order(lessons: dict[str, dict], selected_lesson_id: str) -> int:
+    current_lesson = lessons.get(selected_lesson_id)
+    if current_lesson is None:
+        raise HTTPException(409, detail={"code": "CURRENT_LESSON_REQUIRES_SELECTION"})
+    return current_lesson["order"]
+
+
 def _unique_json_object(pairs: list[tuple[str, object]]) -> dict:
     result = {}
     for key, value in pairs:
@@ -1126,7 +1133,7 @@ def start_review_session(knowledge_id: str, device: dict = Depends(mutable)) -> 
     knowledge = map_by_id("knowledgeItems")
     if knowledge_id not in knowledge:
         raise HTTPException(404, detail={"code": "KNOWLEDGE_NOT_FOUND"})
-    current_order = lessons[device["selected_lesson_id"]]["order"]
+    current_order = _current_lesson_order(lessons, device["selected_lesson_id"])
     exercise_map = map_by_id("exercises")
     eligible = [
         exercise_map[exercise_id]
@@ -1224,7 +1231,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
     requested_id = body.lessonId or device["selected_lesson_id"]
     if requested_id not in lessons:
         raise HTTPException(404, detail={"code": "LESSON_NOT_FOUND"})
-    current_order = lessons[device["selected_lesson_id"]]["order"]
+    current_order = _current_lesson_order(lessons, device["selected_lesson_id"])
     lesson = lessons[requested_id]
     if lesson["order"] > current_order:
         raise HTTPException(403, detail={"code": "LESSON_NOT_UNLOCKED"})

@@ -21,6 +21,7 @@
 | GET `/devices`                    | 家长配对会话               | 仅设备 ID、标签、加入时间和当前设备标记；不返回任何令牌                                  |
 | DELETE `/devices/{deviceId}`      | 家长 + CSRF                | 撤销同一家庭的次设备；不能撤销当前家长设备                                               |
 | GET `/curriculum`                 | 配对                       | 课程内容明确为草稿；题目不含答案/提示，答案只在作答或请求提示后返回                      |
+| PUT `/household/current-lesson`   | 家长 + expectedRevision    | 更改当前课程；revision 冲突 409；未知/过期选课不默默回退到第一课                         |
 | PUT `/household/settings`         | 家长 + CSRF                | 更新音频及减少动态效果设置；减少动态效果会随家庭备份保存                                 |
 | POST `/sessions`                  | 配对 + CSRF                | 冻结当前内容的最多6题会话；休息待处理时返回 `REST_REQUIRED`                              |
 | POST `/sessions/{id}/finish`      | 配对 + CSRF                | 结束会话；仅全部题目已答/跳过的会话计为完整一轮                                          |
@@ -41,6 +42,8 @@
 | DELETE `/profiles/reset`          | 家长+确认词                | 原子清学习数据/家长设置、撤销全部设备并清未使用配对码；清当前家长Cookie后要求重新配对    |
 
 配对、认证和数据持久化由 SPEC-001 实现。局域网部署仍需配置 HTTPS 与设备信任；开发服务器默认只用于本机开发。
+
+若 `selected_lesson_id` 在当前课程包中不存在，`GET /profiles/progress` 保留并返回原 ID，客户端将其显示为待重新选择；`POST /sessions` 与 `POST /reviews/{knowledgeId}/sessions` 返回 409 `CURRENT_LESSON_REQUIRES_SELECTION`，不隐式回退首课、不创建会话。家长通过当前课更新端点选择有效课程后继续学习，历史会话与作答不变。
 
 ## 评分请求
 

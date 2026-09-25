@@ -267,10 +267,15 @@ export function App() {
       ? await Promise.all([api('/profiles/progress'), api('/sessions/current')])
       : [stats, current];
     const nextStats = latestStats as Progress;
-    setCurriculum(course as Curriculum);
+    const nextCourse = course as Curriculum;
+    setCurriculum(nextCourse);
     setProgress(nextStats);
     setSession(latestCurrent as Session | null);
-    setLessonChoice(nextStats.selectedLessonId);
+    setLessonChoice(
+      nextCourse.lessons.some((lesson) => lesson.id === nextStats.selectedLessonId)
+        ? (nextStats.selectedLessonId ?? '')
+        : '',
+    );
   }, []);
 
   useEffect(() => {
@@ -293,10 +298,15 @@ export function App() {
           : [stats, current];
         if (cancelled) return;
         const nextStats = latestStats as Progress;
-        setCurriculum(course as Curriculum);
+        const nextCourse = course as Curriculum;
+        setCurriculum(nextCourse);
         setProgress(nextStats);
         setSession(latestCurrent as Session | null);
-        setLessonChoice(nextStats.selectedLessonId);
+        setLessonChoice(
+          nextCourse.lessons.some((lesson) => lesson.id === nextStats.selectedLessonId)
+            ? (nextStats.selectedLessonId ?? '')
+            : '',
+        );
       })
       .catch((reason: Error) => {
         if (!cancelled) {
@@ -311,7 +321,9 @@ export function App() {
   }, []);
   const lessons = useMemo(() => curriculum?.lessons ?? [], [curriculum]);
   const lessonById = useMemo(() => new Map(lessons.map((item) => [item.id, item])), [lessons]);
-  const currentLesson = progress ? lessonById.get(progress.selectedLessonId) : undefined;
+  const currentLesson = progress?.selectedLessonId
+    ? lessonById.get(progress.selectedLessonId)
+    : undefined;
   const canPracticeCurrent = Boolean(
     currentLesson?.exerciseIds.some((exerciseId) =>
       curriculum?.exercises.some(
@@ -810,7 +822,9 @@ export function App() {
                   <div>
                     <span className="eyebrow">当前学习</span>
                     <h2>
-                      第 {currentLesson?.order ?? 1} 课 · {currentLesson?.title}
+                      {currentLesson
+                        ? `第 ${currentLesson.order} 课 · ${currentLesson.title}`
+                        : '请选择当前课'}
                     </h2>
                   </div>
                   <div className="streak">
@@ -821,33 +835,47 @@ export function App() {
                     </span>
                   </div>
                 </div>
-                <p>{currentLesson?.objectives?.[0]}</p>
+                <p>
+                  {currentLesson?.objectives?.[0] ??
+                    '保存的当前课不在此课程版本中。已有学习记录会保留，请家长重新选择学校正在学习的课程。'}
+                </p>
                 <div className="journey-bottom">
                   <div className="lesson-progress">
                     <span
                       style={{
-                        width: `${Math.max(6, Math.round(((currentLesson?.order ?? 1) / lessons.length) * 100))}%`,
+                        width: currentLesson
+                          ? `${Math.max(6, Math.round((currentLesson.order / lessons.length) * 100))}%`
+                          : '0%',
                       }}
                     />
                   </div>
                   <span>
-                    课程 {currentLesson?.order ?? 1} / {lessons.length}
+                    {currentLesson
+                      ? `课程 ${currentLesson.order} / ${lessons.length}`
+                      : `共 ${lessons.length} 课 · 当前课待选择`}
                   </span>
                 </div>
                 <button
                   className="start-button"
-                  disabled={busy || !canPracticeCurrent}
+                  disabled={busy || !currentLesson || !canPracticeCurrent}
                   onClick={() =>
                     void act(async () => {
                       await beginLesson(progress.selectedLessonId);
                     })
                   }
                 >
-                  {canPracticeCurrent ? '开始今天的练习' : '课程资料准备中'} <span>→</span>
+                  {!currentLesson
+                    ? '请家长先选择当前课'
+                    : canPracticeCurrent
+                      ? '开始今天的练习'
+                      : '课程资料准备中'}{' '}
+                  <span>→</span>
                 </button>
-                {!canPracticeCurrent && (
+                {!currentLesson ? (
+                  <p className="session-note">学习路线仍可浏览，选择当前课后即可继续练习。</p>
+                ) : !canPracticeCurrent ? (
                   <p className="session-note">当前课尚无可用视觉练习，不会创建空会话。</p>
-                )}
+                ) : null}
                 <p className="session-note">
                   建议陪伴练习约 {currentLesson?.suggestedSessionMinutes ?? 5} 分钟 · 可随时休息
                 </p>
@@ -862,7 +890,7 @@ export function App() {
                 </div>
                 <div className="lesson-grid">
                   {lessons.map((lesson: Json) => {
-                    const future = lesson.order > (currentLesson?.order ?? 1);
+                    const future = !currentLesson || lesson.order > currentLesson.order;
                     const lessonMastery = (lesson.knowledgeIds as string[])
                       .map((id) => masteryById.get(id))
                       .filter((item) => item !== undefined);
@@ -996,7 +1024,11 @@ function LessonDetail({
                 {state?.reviewDue && (
                   <>
                     <p className="review-due-badge">到期复习 · {state.reviewDueDate}</p>
-                    <button className="quiet" disabled={busy} onClick={() => onReview(item.id)}>
+                    <button
+                      className="quiet"
+                      disabled={busy || !withinCurrentRange}
+                      onClick={() => onReview(item.id)}
+                    >
                       开始两题复习
                     </button>
                   </>
@@ -1056,6 +1088,10 @@ function ParentPanel({
   const [revokeDeviceId, setRevokeDeviceId] = useState('');
   const [deviceError, setDeviceError] = useState('');
   const isParent = Boolean(boot.device?.isParent);
+  const savedLessonExists = curriculum.lessons.some(
+    (lesson: Lesson) => lesson.id === progress.selectedLessonId,
+  );
+  const selectedLessonChoice = lessonChoice || (savedLessonExists ? progress.selectedLessonId : '');
   const reloadDevices = useCallback(async () => {
     const result = await api('/devices');
     setDevices(result.devices as Json[]);
@@ -1101,13 +1137,18 @@ function ParentPanel({
       <div className="parent-setting">
         <div>
           <strong>当前课程</strong>
-          <p>孩子只可学习当前课及之前内容。</p>
+          <p>
+            {savedLessonExists
+              ? '孩子只可学习当前课及之前内容。'
+              : '已保存的课程不在此版本中；原有进度会保留，请重新选择学校当前课。'}
+          </p>
         </div>
         <div className="inline-control">
           <select
-            value={lessonChoice || progress.selectedLessonId}
+            value={selectedLessonChoice}
             onChange={(event) => setLessonChoice(event.target.value)}
           >
+            <option value="">请选择当前课程</option>
             {curriculum.lessons.map((lesson: Json) => (
               <option key={lesson.id} value={lesson.id}>
                 {lesson.order}. {lesson.title}
@@ -1116,13 +1157,13 @@ function ParentPanel({
           </select>
           <button
             className="quiet"
-            disabled={!boot.device?.isParent}
+            disabled={!isParent || !selectedLessonChoice}
             onClick={() =>
               void act(async () => {
                 await api('/household/current-lesson', {
                   method: 'PUT',
                   body: JSON.stringify({
-                    lessonId: lessonChoice || progress.selectedLessonId,
+                    lessonId: selectedLessonChoice,
                     expectedRevision: progress.revision,
                   }),
                 });
