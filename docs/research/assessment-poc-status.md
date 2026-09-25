@@ -19,7 +19,7 @@
 
 关键边界：论文训练使用 Common Voice 13 普通话（67.2 小时、288 位说话人），AISHELL-1 作原生普通话评估（170 小时、400 位），另用 LATIC 学习者语料评估（4 小时、4 位俄语/韩语/法语/阿拉伯语 L1 学习者）。LATIC 只有四位非目标年龄学习者，明显达不到本项目至少 30 位 held-out 大陆一年级儿童的门槛；其结果也不能证明单字母、声韵母和 79 个课程朗读目标的效果。论文披露模型的声调 FAR 在不同表征下约为 8.11%–9.66%，高于本项目错误放行率 5% 的初始门槛口径；两者具体分母/任务定义不同，不能直接等同，但足以说明不得把论文整体收益当成项目门槛已满足。
 
-论文给出[研究代码库](https://github.com/Evanchan1923/MDD_SpeechAttribute)，但检查时根目录仅见数据转换和模型训练目录、`pyproject.toml` 格式设置与 README；README 称评测仍是 work-in-progress、仓库正准备开源，文件清单未显示 LICENSE。未验证训练数据、检查点或依赖资产可商用/再分发，也未核验 Apple Silicon 离线推理、权重摘要、延迟、内存、断 WAN 或置信度校准。本文建议下一步先静态审查代码/训练配置与所有资产许可，再决定是否在隔离研究环境做成人流程冒烟；不下载第三方语料、不接 API、不形成孩子可见评分。
+论文给出[研究代码库](https://github.com/Evanchan1923/MDD_SpeechAttribute)，其[README](https://raw.githubusercontent.com/Evanchan1923/MDD_SpeechAttribute/main/mandarin_p2a_model/README.md)称评测仍是 work-in-progress，并只提供训练/研究评测命令，没有固定推理服务或已发布的评测模型包；根目录网页文件清单未显示 LICENSE。源码静态复核还发现，仓库[默认 Mandarin 配置](https://raw.githubusercontent.com/Evanchan1923/MDD_SpeechAttribute/main/mandarin_p2a_model/mandarin_setting.yaml)指定 `facebook/wav2vec2-large-robust`，而论文方法写的是 XLSR-53。该 Hugging Face 模型卡标记为 English、Apache-2.0；所以这份默认配置与论文报告的骨干不一致，不能据默认文件复现论文结果。仓库[requirements](https://raw.githubusercontent.com/Evanchan1923/MDD_SpeechAttribute/main/mandarin_p2a_model/requirements.txt)未完整锁定版本；默认配置还启用预处理数据保存与复用，会持久化研究音频衍生数据。虽然配置允许 CPU 模式，仍未验证 Apple Silicon 实际推理、作者训练检查点、其许可与摘要、依赖许可链、延迟/内存、断 WAN 或置信度校准。结论收紧为**条件性研究候选，暂不进入复现**：需先澄清 XLSR-53 与默认英文 checkpoint 的差异，并核实论文模型/训练数据/依赖的使用和再分发权利；再设计不会未经授权保留儿童音频的本地流程。本轮仅查看公开文本，没有克隆成功、安装依赖、下载语料或权重，也未接 API 或生成孩子可见评分。
 
 ## 儿童语音数据源核验（2026-09-26）
 
