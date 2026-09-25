@@ -17,7 +17,7 @@
 
 2026-09-26 本地 UI 手动验收（临时 SQLite 数据目录，完成后已在 UI 删除记录）：首次家长配对、视觉题作答/提示、作答后刷新恢复、家长切课、导出、记录删除、另一浏览器来源的次设备配对、权限边界、次设备撤销，以及次设备刷新后看到新课序和家长删除后的 0 条记录均已走通。首次配对的 `ORIGIN_REJECTED` 已通过 Vite 代理显式传递原始 Host 修复；家长导出曾遇到 `CSRF_HEADER_MISSING`，现只读 GET 用配对家长身份校验、写操作仍验证 CSRF。触摸视口以 390×844 响应式模拟检查并从该视口用 Enter 键完成一题；没有实际 iPad/iPhone 触屏硬件证据。
 
-本轮通过 `npm run verify`、`npm run verify:server`、`npm run test:e2e:local`：前端内容/单测/构建通过，5 个隔离临时 SQLite API 测试通过，5 个 Chromium/WebKit 桌面/平板/手机模拟项目通过。新增 E2E 用 API mock 验证首次配对、开始会话、跳过、小结、掌握/复习状态及家长撤销次设备；真实 SQLite 跳过/恢复、导出与设备权限另由 API 用例验证。尚未做家庭真机 HTTPS/断网验收。PoC 基准工具尚无真实样本、预测或授权证据。实现切片尚未标记 SPEC 全部验收完成。实现提交 `bdee922`、`9ca07c6`、`4c6e521`、`180f7a4`、`02d0cf0`、`9dbd21c` 仅在本地，未推送；当前设备管理切片待提交。
+本轮通过 `npm run verify`、`npm run verify:server`、`npm run test:e2e:local`：前端内容/单测/构建通过，5 个隔离临时 SQLite API 测试通过，5 个 Chromium/WebKit 桌面/平板/手机模拟项目、10 个 E2E 场景通过。E2E 用 API mock 验证首次配对、开始会话、跳过、小结、掌握/复习状态、设备撤销及过期会话回配对页；真实 SQLite 跳过/恢复、导出与设备权限另由 API 用例验证。尚未做家庭真机 HTTPS/断网验收。PoC 基准工具尚无真实样本、预测或授权证据。实现切片尚未标记 SPEC 全部验收完成。提交 `bdee922`、`9ca07c6`、`4c6e521`、`180f7a4`、`02d0cf0`、`9dbd21c`、`cc1f692` 均仅在本地，未推送。
 
 ## 已确定并落地
 
