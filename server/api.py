@@ -10,7 +10,7 @@ from collections import defaultdict, deque
 from datetime import UTC, date, datetime, timedelta
 from urllib.parse import urlparse
 
-from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Request, Response
+from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
 from server.content import load_curriculum, map_by_id
@@ -1904,6 +1904,10 @@ def progress(device: dict = Depends(paired)) -> dict:
                ORDER BY occurred_at DESC,id DESC LIMIT 1000""",
             (device["household_id"],),
         ).fetchall()
+        attempt_count = db.execute(
+            "SELECT COUNT(*) FROM attempts WHERE household_id=?",
+            (device["household_id"],),
+        ).fetchone()[0]
         plans = db.execute(
             "SELECT knowledge_id,stage,due_date FROM review_plans WHERE household_id=?",
             (device["household_id"],),
@@ -1938,6 +1942,7 @@ def progress(device: dict = Depends(paired)) -> dict:
         "selectedLessonId": device["selected_lesson_id"],
         "masteryRuleVersion": "mastery-v1",
         "completedSessions": completed_sessions,
+        "attemptCount": attempt_count,
         "clockSkewDetected": bool(device["clock_skew_detected"]),
         "pendingClockAttempts": pending_clock_count,
         "settings": {
@@ -1947,6 +1952,67 @@ def progress(device: dict = Depends(paired)) -> dict:
         "mastery": list(mastery.values()),
         "reviewRecommendations": recommendations,
         "attempts": [dict(row) for row in attempts],
+    }
+
+
+@router.get("/profiles/knowledge/{knowledge_id}/attempts")
+def knowledge_attempt_history(
+    knowledge_id: str,
+    cursor: str | None = None,
+    limit: int = Query(default=8, ge=1, le=50),
+    device: dict = Depends(paired),
+) -> dict:
+    if knowledge_id not in map_by_id("knowledgeItems"):
+        raise HTTPException(404, detail={"code": "KNOWLEDGE_NOT_FOUND"})
+    with connect() as db:
+        cursor_row = None
+        if cursor is not None:
+            cursor_row = db.execute(
+                """SELECT id,knowledge_id,occurred_at FROM attempts
+                   WHERE id=? AND household_id=?""",
+                (cursor, device["household_id"]),
+            ).fetchone()
+            if cursor_row is None or cursor_row["knowledge_id"] != knowledge_id:
+                raise HTTPException(404, detail={"code": "ATTEMPT_CURSOR_NOT_FOUND"})
+        if cursor_row is None:
+            rows = db.execute(
+                """SELECT id,mode,first_try_correct,hint_used,due_credit,clock_pending,occurred_at
+                   FROM attempts WHERE household_id=? AND knowledge_id=?
+                   ORDER BY occurred_at DESC,id DESC LIMIT ?""",
+                (device["household_id"], knowledge_id, limit + 1),
+            ).fetchall()
+        else:
+            rows = db.execute(
+                """SELECT id,mode,first_try_correct,hint_used,due_credit,clock_pending,occurred_at
+                   FROM attempts WHERE household_id=? AND knowledge_id=?
+                     AND (occurred_at,id) < (?,?)
+                   ORDER BY occurred_at DESC,id DESC LIMIT ?""",
+                (
+                    device["household_id"],
+                    knowledge_id,
+                    cursor_row["occurred_at"],
+                    cursor_row["id"],
+                    limit + 1,
+                ),
+            ).fetchall()
+    has_more = len(rows) > limit
+    visible = rows[:limit]
+    return {
+        "knowledgeId": knowledge_id,
+        "items": [
+            {
+                "id": row["id"],
+                "mode": row["mode"],
+                "firstTryCorrect": bool(row["first_try_correct"]),
+                "hintUsed": bool(row["hint_used"]),
+                "dueCredit": bool(row["due_credit"]),
+                "clockPending": bool(row["clock_pending"]),
+                "occurredAt": row["occurred_at"],
+            }
+            for row in visible
+        ],
+        "nextCursor": visible[-1]["id"] if has_more and visible else None,
+        "hasMore": has_more,
     }
 
 

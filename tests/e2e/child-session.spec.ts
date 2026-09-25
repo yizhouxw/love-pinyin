@@ -156,6 +156,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
         json: {
           revision: profileRevision,
           selectedLessonId: 'lesson-01',
+          attemptCount: 5,
           settings: { soundEnabled: true, reducedMotion },
           mastery: [
             {
@@ -234,6 +235,65 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
           revision: profileRevision,
           selectedLessonId: 'lesson-01',
           settings: { soundEnabled: true, reducedMotion },
+        },
+      });
+    } else if (path === '/profiles/knowledge/k-e2e/attempts') {
+      const cursor = new URL(route.request().url()).searchParams.get('cursor');
+      await route.fulfill({
+        json: {
+          knowledgeId: 'k-e2e',
+          items: cursor
+            ? [
+                {
+                  id: 'attempt-parent-5',
+                  mode: 'tone-choice',
+                  firstTryCorrect: true,
+                  hintUsed: false,
+                  dueCredit: true,
+                  clockPending: false,
+                  occurredAt: '2026-09-24T01:05:00+00:00',
+                },
+              ]
+            : [
+                {
+                  id: 'attempt-parent-1',
+                  mode: 'symbol-choice',
+                  firstTryCorrect: true,
+                  hintUsed: false,
+                  dueCredit: true,
+                  clockPending: false,
+                  occurredAt: '2026-09-26T01:05:00+00:00',
+                },
+                {
+                  id: 'attempt-parent-2',
+                  mode: 'tone-choice',
+                  firstTryCorrect: false,
+                  hintUsed: true,
+                  dueCredit: true,
+                  clockPending: false,
+                  occurredAt: '2026-09-25T23:05:00+00:00',
+                },
+                {
+                  id: 'attempt-parent-3',
+                  mode: 'blend-choice',
+                  firstTryCorrect: false,
+                  hintUsed: false,
+                  dueCredit: false,
+                  clockPending: false,
+                  occurredAt: '2026-09-25T22:05:00+00:00',
+                },
+                {
+                  id: 'attempt-parent-4',
+                  mode: 'symbol-choice',
+                  firstTryCorrect: false,
+                  hintUsed: false,
+                  dueCredit: false,
+                  clockPending: true,
+                  occurredAt: '2026-09-25T21:05:00+00:00',
+                },
+              ],
+          nextCursor: cursor ? null : 'older-attempt',
+          hasMore: !cursor,
         },
       });
     } else if (path === '/profiles/export') {
@@ -477,6 +537,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(firstLessonProgress).toContainText('待复习 · 2026-09-26');
   const attemptHistory = firstLessonProgress.locator('.knowledge-attempt-history');
   await attemptHistory.locator('summary').click();
+  await expect(attemptHistory).toContainText('查看练习记录（已加载 4 条）');
   const recentEvents = attemptHistory.locator('ol li');
   await expect(recentEvents).toHaveCount(4);
   await expect(recentEvents.nth(0)).toContainText('字形');
@@ -486,6 +547,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(recentEvents.nth(2)).toContainText('拼读');
   await expect(recentEvents.nth(2)).toContainText('日内重复练习，不计入掌握样本');
   await expect(recentEvents.nth(3)).toContainText('待校时，不计入掌握度');
+  await attemptHistory.getByRole('button', { name: '显示更早记录' }).click();
+  await expect(recentEvents).toHaveCount(5);
   const futureLessonProgress = page.locator('.parent-lesson-progress').nth(1);
   await futureLessonProgress.locator(':scope > summary').click();
   await expect(futureLessonProgress).toContainText('暂无有效练习记录 · 需要练习：字形');
@@ -601,6 +664,7 @@ test('旧课程版本的当前课提示家长重选并保留学习路线', async
           revision,
           selectedLessonId,
           completedSessions: 1,
+          attemptCount: 1,
           settings: { soundEnabled: true, reducedMotion: false },
           mastery: [],
           attempts: [{ id: 'retained-attempt' }],

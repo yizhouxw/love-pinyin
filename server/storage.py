@@ -102,6 +102,8 @@ def migrate() -> None:
             );
             CREATE INDEX IF NOT EXISTS attempts_household_date
                 ON attempts(household_id,business_date,occurred_at);
+            CREATE INDEX IF NOT EXISTS attempts_household_knowledge_time
+                ON attempts(household_id,knowledge_id,occurred_at DESC,id DESC);
             CREATE TABLE IF NOT EXISTS request_receipts (
                 request_id TEXT PRIMARY KEY,
                 household_id TEXT NOT NULL REFERENCES household(id) ON DELETE CASCADE,
