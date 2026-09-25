@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+async function enterParentArea(page: import('@playwright/test').Page) {
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await page.getByRole('button', { name: '我是家长，继续' }).click();
+}
+
 test('配对后可选择合法拼读候选、跳过并查看练习小结', async ({ page, isMobile }) => {
   let paired = false;
   let reset = false;
@@ -454,6 +459,14 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.locator('.lesson-tile').first()).toContainText('已掌握');
   await expect(page.getByText('到期复习 · 1 项')).toBeVisible();
   await page.getByRole('button', { name: '家长管理' }).click();
+  const adultDialog = page.getByRole('dialog', { name: '这里是家庭管理区' });
+  await expect(adultDialog).toContainText('请把设备交给家长再继续');
+  await page.getByRole('button', { name: '返回孩子学习' }).click();
+  await expect(adultDialog).not.toBeVisible();
+  await page.getByRole('button', { name: '家长管理' }).click();
+  const adultConfirm = page.getByRole('button', { name: '我是家长，继续' });
+  if (isMobile) await adultConfirm.tap();
+  else await adultConfirm.press('Enter');
   await expect(page.getByRole('heading', { name: '按知识点查看进度' })).toBeVisible();
   const firstLessonProgress = page.locator('.parent-lesson-progress').first();
   await firstLessonProgress.locator(':scope > summary').click();
@@ -516,7 +529,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await page.getByRole('button', { name: '休息好了，继续学习' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
   await expect(page.getByRole('img', { name: '拼音花园已长出 2 片叶子' })).toBeVisible();
-  await page.getByRole('button', { name: '家长管理' }).click();
+  await enterParentArea(page);
   const resetButton = page.getByRole('button', { name: '重置家庭档案' });
   await expect(resetButton).toBeDisabled();
   await page.getByLabel('确认重置家庭档案文字').fill('重置家庭档案');
@@ -621,7 +634,7 @@ test('旧课程版本的当前课提示家长重选并保留学习路线', async
   ).toBeVisible();
   await expect(page.getByRole('button', { name: '请家长先选择当前课 →' })).toBeDisabled();
 
-  await page.getByRole('button', { name: '家长管理' }).click();
+  await enterParentArea(page);
   await page.getByRole('combobox').selectOption('lesson-02');
   await page.locator('.inline-control button').click();
   await expect(page.getByRole('combobox')).toHaveValue('lesson-02');
@@ -855,7 +868,7 @@ test('家长校时后可明确保留待校时练习为不计分记录', async ({
   });
 
   await page.goto('/');
-  await page.getByRole('button', { name: '家长管理' }).click();
+  await enterParentArea(page);
   await expect(
     page.getByText('系统时间已恢复。请决定如何处理待校时练习；保留的记录始终不计入掌握度。'),
   ).toBeVisible();

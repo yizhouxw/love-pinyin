@@ -221,6 +221,37 @@ main {
   min-height: 44px;
   font-weight: 700;
 }
+.adult-confirm-dialog {
+  width: min(92vw, 460px);
+  padding: clamp(22px, 5vw, 34px);
+  border: 1px solid #e7e6dc;
+  border-radius: 24px;
+  color: var(--ink);
+  background: #fffefa;
+  box-shadow: 0 24px 80px #243b2c40;
+}
+.adult-confirm-dialog::backdrop {
+  background: #23362c80;
+  backdrop-filter: blur(3px);
+}
+.adult-confirm-dialog h2 {
+  margin: 8px 0;
+  font-size: 24px;
+}
+.adult-confirm-dialog p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+.adult-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+.adult-confirm-actions button {
+  min-height: 48px;
+}
 .welcome {
   display: flex;
   align-items: center;
