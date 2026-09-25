@@ -15,7 +15,7 @@ from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Request, 
 from pydantic import BaseModel, ConfigDict, Field
 
 from server.content import load_curriculum, map_by_id
-from server.domain import Event, calculate_mastery
+from server.domain import Event, calculate_mastery, next_review
 from server.storage import connect, now_iso, public_profile, transaction
 
 router = APIRouter(prefix="/api/v1")
@@ -390,7 +390,9 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
             (device["household_id"],),
         ).fetchall()
         sessions = db.execute(
-            """SELECT id,content_version AS contentVersion,started_at AS startedAt,status,tasks_json
+            """SELECT id,content_version AS contentVersion,started_at AS startedAt,
+                      status,tasks_json,
+                      review_knowledge_id AS reviewKnowledgeId
                FROM sessions WHERE household_id=? ORDER BY started_at,id""",
             (device["household_id"],),
         ).fetchall()
@@ -418,14 +420,17 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
             (device["household_id"],),
         ).fetchall()
     return {
-        "schemaVersion": 3,
+        "schemaVersion": 4,
         "contentVersion": household["content_version"],
         "masteryRuleVersion": 1,
         "exportedAt": now_iso(),
         "profile": public_profile(household),
         "attempts": [dict(row) for row in attempts],
         "sessions": [
-            {key: row[key] for key in ("id", "contentVersion", "startedAt", "status")}
+            {
+                key: row[key]
+                for key in ("id", "contentVersion", "startedAt", "status", "reviewKnowledgeId")
+            }
             for row in sessions
         ],
         "skippedInstances": [dict(row) for row in skipped],
@@ -478,7 +483,13 @@ def _parse_datetime(value: object, code: str) -> datetime:
 def _validate_backup(value: object) -> dict:
     _require(isinstance(value, dict), "BACKUP_INVALID")
     migrated_from = value.get("schemaVersion")
-    backup = _migrate_v2_backup(value) if migrated_from == 2 else value
+    backup = (
+        _migrate_v2_backup(value)
+        if migrated_from == 2
+        else _migrate_v3_backup(value)
+        if migrated_from == 3
+        else value
+    )
     required = {
         "schemaVersion",
         "contentVersion",
@@ -494,7 +505,7 @@ def _validate_backup(value: object) -> dict:
         "note",
     }
     _require(set(backup) == required, "BACKUP_FIELDS_INVALID")
-    _require(backup["schemaVersion"] == 3, "BACKUP_VERSION_UNSUPPORTED")
+    _require(backup["schemaVersion"] == 4, "BACKUP_VERSION_UNSUPPORTED")
     curriculum = load_curriculum()
     _require(
         backup["contentVersion"] == curriculum["contentVersion"], "CONTENT_VERSION_UNSUPPORTED"
@@ -547,7 +558,8 @@ def _validate_backup(value: object) -> dict:
     sessions = {}
     for row in backup["sessions"]:
         _require(
-            isinstance(row, dict) and set(row) == {"id", "contentVersion", "startedAt", "status"},
+            isinstance(row, dict)
+            and set(row) == {"id", "contentVersion", "startedAt", "status", "reviewKnowledgeId"},
             "BACKUP_SESSION_INVALID",
         )
         _require(
@@ -560,6 +572,11 @@ def _validate_backup(value: object) -> dict:
             "BACKUP_SESSION_INVALID",
         )
         _parse_datetime(row["startedAt"], "BACKUP_TIME_INVALID")
+        _require(
+            row["reviewKnowledgeId"] is None
+            or row["reviewKnowledgeId"] in map_by_id("knowledgeItems"),
+            "BACKUP_REFERENCE_INVALID",
+        )
         sessions[row["id"]] = row
 
     exercises = map_by_id("exercises")
@@ -825,6 +842,14 @@ def _migrate_v2_backup(value: dict) -> dict:
         {**item, "position": positions.get(item.get("id"), -1)}
         for item in value["exerciseInstances"]
     ]
+    return _migrate_v3_backup(migrated)
+
+
+def _migrate_v3_backup(value: dict) -> dict:
+    _require(isinstance(value.get("sessions"), list), "BACKUP_INVALID")
+    migrated = dict(value)
+    migrated["schemaVersion"] = 4
+    migrated["sessions"] = [{**session, "reviewKnowledgeId": None} for session in value["sessions"]]
     return migrated
 
 
@@ -859,7 +884,9 @@ async def import_preview(request: Request, device: dict = Depends(parent)) -> di
     return {
         "previewToken": token,
         "sha256": digest,
-        "migratedFromSchemaVersion": 2 if payload.get("schemaVersion") == 2 else None,
+        "migratedFromSchemaVersion": payload.get("schemaVersion")
+        if payload.get("schemaVersion") in {2, 3}
+        else None,
         "expiresInSeconds": IMPORT_PREVIEW_TTL,
         "revision": revision,
         "counts": {
@@ -904,7 +931,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
         ]
         db.execute(
             """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
-               tasks_json,status) VALUES(?,?,?,?,?,?,?)""",
+               tasks_json,status,review_knowledge_id) VALUES(?,?,?,?,?,?,?,?)""",
             (
                 session["id"],
                 household_id,
@@ -913,6 +940,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
                 session["startedAt"],
                 json.dumps(tasks, ensure_ascii=False),
                 session["status"],
+                session["reviewKnowledgeId"],
             ),
         )
     for item in backup["exerciseInstances"]:
@@ -1089,6 +1117,104 @@ class StartSession(BaseModel):
     lessonId: str | None = None
 
 
+@router.post("/reviews/{knowledge_id}/sessions")
+def start_review_session(knowledge_id: str, device: dict = Depends(mutable)) -> dict:
+    if device["rounds_since_break"] >= 2:
+        raise HTTPException(409, detail={"code": "REST_REQUIRED"})
+    content = load_curriculum()
+    lessons = map_by_id("lessons")
+    knowledge = map_by_id("knowledgeItems")
+    if knowledge_id not in knowledge:
+        raise HTTPException(404, detail={"code": "KNOWLEDGE_NOT_FOUND"})
+    current_order = lessons[device["selected_lesson_id"]]["order"]
+    exercise_map = map_by_id("exercises")
+    eligible = [
+        exercise_map[exercise_id]
+        for lesson in content["lessons"]
+        if lesson["order"] <= current_order
+        for exercise_id in lesson["exerciseIds"]
+        if exercise_map[exercise_id]["primaryKnowledgeId"] == knowledge_id
+        and exercise_map[exercise_id]["type"] in {"symbol-choice", "tone-choice", "blend-choice"}
+    ]
+    eligible = list({item["id"]: item for item in eligible}.values())
+    if len(eligible) < 2:
+        raise HTTPException(409, detail={"code": "REVIEW_CONTENT_INSUFFICIENT"})
+    day = datetime.now(UTC).astimezone(SHANGHAI).date().isoformat()
+    session_id, now = secrets.token_urlsafe(18), now_iso()
+    with transaction() as db:
+        household = db.execute(
+            "SELECT rounds_since_break FROM household WHERE id=?", (device["household_id"],)
+        ).fetchone()
+        if household["rounds_since_break"] >= 2:
+            raise HTTPException(409, detail={"code": "REST_REQUIRED"})
+        plan = db.execute(
+            "SELECT stage,due_date FROM review_plans WHERE household_id=? AND knowledge_id=?",
+            (device["household_id"], knowledge_id),
+        ).fetchone()
+        if not plan:
+            raise HTTPException(409, detail={"code": "REVIEW_NOT_SCHEDULED"})
+        if plan["due_date"] > day:
+            raise HTTPException(409, detail={"code": "REVIEW_NOT_DUE", "dueDate": plan["due_date"]})
+        credited = {
+            row[0]
+            for row in db.execute(
+                """SELECT exercise_id FROM attempts WHERE household_id=? AND knowledge_id=?
+                   AND business_date=? AND due_credit=1""",
+                (device["household_id"], knowledge_id, day),
+            )
+        }
+        available = [q for q in eligible if q["id"] not in credited]
+        if len(available) < 2:
+            raise HTTPException(409, detail={"code": "REVIEW_TODAY_EXHAUSTED"})
+        tasks = []
+        for q in available[:2]:
+            instance_id = secrets.token_urlsafe(18)
+            lesson_id = next(
+                lesson["id"] for lesson in content["lessons"] if q["id"] in lesson["exerciseIds"]
+            )
+            db.execute(
+                """INSERT INTO exercise_instances(id,household_id,exercise_id,lesson_id,
+                   content_version,created_at,session_id) VALUES(?,?,?,?,?,?,?)""",
+                (
+                    instance_id,
+                    device["household_id"],
+                    q["id"],
+                    lesson_id,
+                    content["contentVersion"],
+                    now,
+                    session_id,
+                ),
+            )
+            tasks.append({"instanceId": instance_id, "exercise": _public_exercise(q)})
+        db.execute(
+            """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
+               tasks_json,review_knowledge_id) VALUES(?,?,?,?,?,?,?)""",
+            (
+                session_id,
+                device["household_id"],
+                device["id"],
+                content["contentVersion"],
+                now,
+                json.dumps(tasks, ensure_ascii=False),
+                knowledge_id,
+            ),
+        )
+        revision = db.execute(
+            "UPDATE household SET revision=revision+1 WHERE id=? RETURNING revision",
+            (device["household_id"],),
+        ).fetchone()["revision"]
+    return {
+        "id": session_id,
+        "reviewKnowledgeId": knowledge_id,
+        "contentVersion": content["contentVersion"],
+        "startedAt": now,
+        "tasks": tasks,
+        "draftContent": content["reviewStatus"] != "approved",
+        "audioAvailable": False,
+        "revision": revision,
+    }
+
+
 @router.post("/sessions")
 def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
     if device["rounds_since_break"] >= 2:
@@ -1238,7 +1364,7 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
 def finish_session(session_id: str, device: dict = Depends(mutable)) -> dict:
     with transaction() as db:
         session = db.execute(
-            "SELECT id,status FROM sessions WHERE id=? AND household_id=?",
+            "SELECT id,status,review_knowledge_id FROM sessions WHERE id=? AND household_id=?",
             (session_id, device["household_id"]),
         ).fetchone()
         if not session:
@@ -1263,6 +1389,48 @@ def finish_session(session_id: str, device: dict = Depends(mutable)) -> dict:
             (session_id, device["household_id"]),
         )
         if cursor.rowcount:
+            if session["review_knowledge_id"]:
+                review_id = session["review_knowledge_id"]
+                rows = db.execute(
+                    """SELECT a.first_try_correct,a.due_credit,a.business_date,i.exercise_id
+                       FROM exercise_instances i JOIN attempts a ON a.instance_id=i.id
+                       WHERE i.session_id=? ORDER BY i.id""",
+                    (session_id,),
+                ).fetchall()
+                skipped_count = db.execute(
+                    """SELECT COUNT(*) FROM skipped_instances s
+                       JOIN exercise_instances i ON i.id=s.instance_id WHERE i.session_id=?""",
+                    (session_id,),
+                ).fetchone()[0]
+                if (
+                    len(rows) == 2
+                    and not skipped_count
+                    and len({r["exercise_id"] for r in rows}) == 2
+                ):
+                    completed_day = datetime.now(UTC).astimezone(SHANGHAI).date()
+                    passed = all(r["first_try_correct"] and r["due_credit"] for r in rows)
+                    mastery = _mastery(db, device["household_id"]).get(review_id, {})
+                    passed = passed and mastery.get("status") == "mastered"
+                    plan = db.execute(
+                        """SELECT stage,updated_at FROM review_plans
+                           WHERE household_id=? AND knowledge_id=?""",
+                        (device["household_id"], review_id),
+                    ).fetchone()
+                    if plan:
+                        last_update = datetime.fromisoformat(plan["updated_at"])
+                        if last_update.astimezone(SHANGHAI).date() < completed_day:
+                            stage, due = next_review(plan["stage"], completed_day, passed)
+                            db.execute(
+                                """UPDATE review_plans SET stage=?,due_date=?,updated_at=?
+                                   WHERE household_id=? AND knowledge_id=?""",
+                                (
+                                    stage,
+                                    due.isoformat(),
+                                    now_iso(),
+                                    device["household_id"],
+                                    review_id,
+                                ),
+                            )
             if complete:
                 db.execute(
                     """UPDATE household SET rounds_since_break=MIN(2,rounds_since_break+1),

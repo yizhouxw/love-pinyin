@@ -38,7 +38,7 @@ def confirm(client, result, revision=None, sha256=None):
 
 def test_export_is_valid_for_a_bound_parent_preview(paired_client):
     backup = paired_client.get("/api/v1/profiles/export").json()
-    assert backup["schemaVersion"] == 3
+    assert backup["schemaVersion"] == 4
     assert backup["masteryRuleVersion"] == 1
 
     response = preview(paired_client, backup)
@@ -78,6 +78,16 @@ def test_preview_explicitly_migrates_schema_v2_backups(paired_client):
     response = preview(paired_client, backup)
     assert response.status_code == 200
     assert response.json()["migratedFromSchemaVersion"] == 2
+
+
+def test_preview_migrates_schema_v3_review_session_marker(paired_client):
+    backup = paired_client.get("/api/v1/profiles/export").json()
+    backup["schemaVersion"] = 3
+    for session in backup["sessions"]:
+        session.pop("reviewKnowledgeId")
+    response = preview(paired_client, backup)
+    assert response.status_code == 200
+    assert response.json()["migratedFromSchemaVersion"] == 3
 
 
 def test_preview_rejects_oversized_payload_before_parsing(paired_client):

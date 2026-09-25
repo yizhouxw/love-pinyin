@@ -41,7 +41,8 @@ type Task = { instanceId: string; exercise: Exercise };
 type PendingAnswer = { requestId: string; answerOptionId: string };
 type Session = {
   id: string;
-  lessonId: string;
+  lessonId?: string;
+  reviewKnowledgeId?: string | null;
   tasks: Task[];
   results: Record<string, unknown>;
   draftContent: boolean;
@@ -273,6 +274,16 @@ export function App() {
     setHint(null);
   }
 
+  async function beginReview(knowledgeId: string) {
+    const started = (await api(`/reviews/${encodeURIComponent(knowledgeId)}/sessions`, {
+      method: 'POST',
+      body: JSON.stringify({}),
+    })) as Session;
+    setSession(started);
+    setAnswer(null);
+    setHint(null);
+  }
+
   if (!boot) return <main className="loading">正在连接本机学习服务…</main>;
   if (!boot.paired)
     return (
@@ -392,7 +403,11 @@ export function App() {
   const task = active && taskIndex >= 0 ? active.tasks[taskIndex] : null;
   const question = task?.exercise;
   const title =
-    (active ? lessonById.get(active.lessonId)?.title : undefined) ?? currentLesson?.title;
+    (active?.reviewKnowledgeId
+      ? '两题复习'
+      : active
+        ? lessonById.get(active.lessonId ?? '')?.title
+        : undefined) ?? currentLesson?.title;
 
   if (active && question)
     return (
@@ -650,6 +665,7 @@ export function App() {
                 curriculum?.knowledgeItems.filter((item) => item.lessonId === lessonViewId) ?? []
               }
               masteryById={masteryById}
+              busy={busy}
               withinCurrentRange={Boolean(
                 lessonById.get(lessonViewId) &&
                 currentLesson &&
@@ -670,6 +686,12 @@ export function App() {
                   ),
               )}
               onBack={() => setLessonViewId(null)}
+              onReview={(knowledgeId: string) =>
+                void act(async () => {
+                  await beginReview(knowledgeId);
+                  setLessonViewId(null);
+                })
+              }
               onStart={() =>
                 void act(async () => {
                   await beginLesson(lessonViewId);
@@ -809,17 +831,21 @@ function LessonDetail({
   lesson,
   knowledge,
   masteryById,
+  busy,
   withinCurrentRange,
   canPractice,
   onBack,
+  onReview,
   onStart,
 }: {
   lesson?: Lesson;
   knowledge: Knowledge[];
   masteryById: Map<string, Progress['mastery'][number]>;
+  busy: boolean;
   withinCurrentRange: boolean;
   canPractice: boolean;
   onBack: () => void;
+  onReview: (knowledgeId: string) => void;
   onStart: () => void;
 }) {
   if (!lesson)
@@ -864,7 +890,12 @@ function LessonDetail({
                 </div>
                 <h3>{item.symbol}</h3>
                 {state?.reviewDue && (
-                  <p className="review-due-badge">到期复习 · {state.reviewDueDate}</p>
+                  <>
+                    <p className="review-due-badge">到期复习 · {state.reviewDueDate}</p>
+                    <button className="quiet" disabled={busy} onClick={() => onReview(item.id)}>
+                      开始两题复习
+                    </button>
+                  </>
                 )}
                 <button
                   className="audio-unavailable"

@@ -128,6 +128,9 @@ def migrate() -> None:
             INSERT OR IGNORE INTO schema_migrations(version,applied_at) VALUES(1,CURRENT_TIMESTAMP);
             INSERT OR IGNORE INTO schema_migrations(version,applied_at) VALUES(2,CURRENT_TIMESTAMP);
         """)
+        session_columns = {row["name"] for row in db.execute("PRAGMA table_info(sessions)")}
+        if "review_knowledge_id" not in session_columns:
+            db.execute("ALTER TABLE sessions ADD COLUMN review_knowledge_id TEXT")
         columns = {row["name"] for row in db.execute("PRAGMA table_info(household)")}
         if "reduced_motion" not in columns:
             db.execute("ALTER TABLE household ADD COLUMN reduced_motion INTEGER NOT NULL DEFAULT 0")
@@ -138,6 +141,10 @@ def migrate() -> None:
         db.execute(
             """INSERT OR IGNORE INTO schema_migrations(version,applied_at)
                VALUES(3,CURRENT_TIMESTAMP)"""
+        )
+        db.execute(
+            """INSERT OR IGNORE INTO schema_migrations(version,applied_at)
+               VALUES(4,CURRENT_TIMESTAMP)"""
         )
 
 

@@ -29,4 +29,7 @@ def test_migration_adds_motion_and_rest_fields_to_an_existing_household(monkeypa
     assert {"reduced_motion", "rounds_since_break"} <= columns
     assert household["reduced_motion"] == 0
     assert household["rounds_since_break"] == 0
-    assert version == 3
+    assert version == 4
+    with storage.connect() as db:
+        columns = {row["name"] for row in db.execute("PRAGMA table_info(sessions)")}
+    assert "review_knowledge_id" in columns
