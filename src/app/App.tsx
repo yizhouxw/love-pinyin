@@ -62,6 +62,9 @@ type Progress = {
     reviewDueDate: string | null;
     sampleSize: number;
     correctCount: number;
+    accuracy: number | null;
+    coveredModes: string[];
+    requiredModes: string[];
   }[];
   attempts: unknown[];
   reviewRecommendations?: {
@@ -165,6 +168,12 @@ const categoryLabels: Record<string, string> = {
   'whole-syllable': '整体认读音节',
   'orthographic-letter': '拼写字母',
   rule: '拼写规则',
+};
+const exerciseModeLabels: Record<string, string> = {
+  'listen-choice': '听辨',
+  'symbol-choice': '字形',
+  'tone-choice': '声调',
+  'blend-choice': '拼读',
 };
 
 async function api(path: string, options: RequestInit = {}): Promise<Json> {
@@ -1228,6 +1237,17 @@ function ParentPanel({
                       : state?.status === 'practicing'
                         ? '练习中'
                         : '未开始';
+                  const requiredModes = (state?.requiredModes ?? [])
+                    .map((mode: string) => exerciseModeLabels[mode])
+                    .filter(Boolean);
+                  const coveredModes = (state?.coveredModes ?? [])
+                    .filter((mode: string) => state?.requiredModes?.includes(mode))
+                    .map((mode: string) => exerciseModeLabels[mode])
+                    .filter(Boolean);
+                  const displayedAccuracy =
+                    state?.sampleSize && state.accuracy !== null
+                      ? Math.round(state.accuracy * 100)
+                      : null;
                   return (
                     <li key={item.id}>
                       <div className="parent-knowledge-title">
@@ -1241,9 +1261,15 @@ function ParentPanel({
                       </div>
                       <small>
                         {state && state.sampleSize > 0
-                          ? `独立首次答对 ${state.correctCount} / ${state.sampleSize} 题`
-                          : '暂无有效练习记录'}
+                          ? `最近 ${state.sampleSize} 道有效练习：独立首次答对 ${state.correctCount} 题${displayedAccuracy === null ? '' : `（${displayedAccuracy}%）`}`
+                          : `暂无有效练习记录${requiredModes.length ? ` · 需要练习：${requiredModes.join('、')}` : ''}`}
                       </small>
+                      {state && state.sampleSize > 0 && (
+                        <small>
+                          独立答对覆盖：{coveredModes.length ? coveredModes.join('、') : '暂无'}；
+                          本知识点要求：{requiredModes.length ? requiredModes.join('、') : '未配置'}
+                        </small>
+                      )}
                     </li>
                   );
                 })}

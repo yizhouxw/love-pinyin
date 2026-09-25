@@ -160,6 +160,20 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
               reviewDueDate: '2026-09-26',
               sampleSize: 5,
               correctCount: 4,
+              accuracy: 0.8,
+              coveredModes: ['symbol-choice', 'tone-choice'],
+              requiredModes: ['symbol-choice', 'tone-choice'],
+            },
+            {
+              knowledgeId: 'k-future',
+              status: 'not-started',
+              reviewDue: false,
+              reviewDueDate: null,
+              sampleSize: 0,
+              correctCount: 0,
+              accuracy: null,
+              coveredModes: [],
+              requiredModes: ['symbol-choice'],
             },
           ],
           attempts: [],
@@ -404,11 +418,12 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await firstLessonProgress.locator('summary').click();
   await expect(firstLessonProgress).toContainText('ü');
   await expect(firstLessonProgress).toContainText('已掌握');
-  await expect(firstLessonProgress).toContainText('独立首次答对 4 / 5 题');
+  await expect(firstLessonProgress).toContainText('最近 5 道有效练习：独立首次答对 4 题（80%）');
+  await expect(firstLessonProgress).toContainText('独立答对覆盖：字形、声调');
   await expect(firstLessonProgress).toContainText('待复习 · 2026-09-26');
   const futureLessonProgress = page.locator('.parent-lesson-progress').nth(1);
   await futureLessonProgress.locator('summary').click();
-  await expect(futureLessonProgress).toContainText('暂无有效练习记录');
+  await expect(futureLessonProgress).toContainText('暂无有效练习记录 · 需要练习：字形');
   await expect(page.getByText('已连接设备')).toBeVisible();
   const reduceMotion = page.getByRole('checkbox');
   await reduceMotion.check();
