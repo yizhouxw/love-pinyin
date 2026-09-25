@@ -12,28 +12,28 @@
 
 ## 端点清单
 
-| 方法/路径                            | 输入                    | 返回与约束                                                          |
-| ------------------------------------ | ----------------------- | ------------------------------------------------------------------- |
-| GET `/health`                        | 无                      | 200 服务状态；不暴露主机标识                                        |
-| GET `/capabilities`                  | 无                      | 音频/评分可用性、引擎版本、支持目标；当前 available=false           |
-| POST `/pair`                         | 短期 code               | Cookie + CSRF token；5次失败/分钟冷却；code 使用一次失效            |
-| DELETE `/session`                    | Cookie + CSRF           | 204 清本设备配对，不删除家庭数据                                    |
-| GET `/devices`                       | 家长配对会话            | 仅设备 ID、标签、加入时间和当前设备标记；不返回任何令牌             |
-| DELETE `/devices/{deviceId}`         | 家长 + CSRF             | 撤销同一家庭的次设备；不能撤销当前家长设备                          |
-| GET `/curriculum`                    | 配对                    | 已审校版本内容及 ETag；开发模式明确草稿                             |
-| GET `/audio/{id}`                    | 配对 + 登记 id          | 正确 MIME / Range / 哈希；缺失404；禁止目录穿越                     |
-| GET `/profiles`                      | 配对                    | 本地昵称/随机头像ID，不要求真名                                     |
-| GET `/profiles/{id}/progress`        | 配对                    | `ProgressSnapshot` 与 revision                                      |
-| POST `/profiles/{id}/attempts`       | 事件 + expectedRevision | 幂等插入；服务器生成时间；冲突409后重取，按attempt.id安全重试       |
-| POST `/instances/{id}/skip`          | 配对会话 + CSRF         | 当前会话内幂等标记跳过；不创建作答/掌握事件，刷新可恢复             |
-| POST `/assessments`                  | 见下文                  | 本地评分结果；当前固定503未就绪，且不读取请求音频                   |
-| GET `/assessments/{requestId}`       | 同一配对会话            | pending或已完成摘要；不重算；缓存过期返回410，目标不属于会话返回404 |
-| GET `/attempts/{requestId}`          | 同一配对会话            | 已提交事件或404；客户端用原ID重试保证幂等                           |
-| DELETE `/assessments/{requestId}`    | 配对                    | 取消；中止任务并清内存；晚到结果丢弃                                |
-| GET `/profiles/{id}/export`          | 家长权限                | 限定schema JSON，不含声音或会话凭据                                 |
-| POST `/profiles/{id}/import-preview` | 家长 + JSON≤1MiB        | 验证schema、内容版本、去重、知识引用；不写DB                        |
-| POST `/profiles/{id}/import`         | 预览token+revision      | 单事务替换，过期或冲突409                                           |
-| DELETE `/profiles/{id}/progress`     | 家长+确认token          | 原子清数据，不撤销其他设备；行为区别于注销整个家庭                  |
+| 方法/路径                         | 输入                    | 返回与约束                                                                                      |
+| --------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------------- |
+| GET `/health`                     | 无                      | 200 服务状态；不暴露主机标识                                                                    |
+| GET `/capabilities`               | 无                      | 音频/评分可用性、引擎版本、支持目标；当前 available=false                                       |
+| POST `/pair`                      | 短期 code               | Cookie + CSRF token；5次失败/分钟冷却；code 使用一次失效                                        |
+| DELETE `/session`                 | Cookie + CSRF           | 204 清本设备配对，不删除家庭数据                                                                |
+| GET `/devices`                    | 家长配对会话            | 仅设备 ID、标签、加入时间和当前设备标记；不返回任何令牌                                         |
+| DELETE `/devices/{deviceId}`      | 家长 + CSRF             | 撤销同一家庭的次设备；不能撤销当前家长设备                                                      |
+| GET `/curriculum`                 | 配对                    | 已审校版本内容及 ETag；开发模式明确草稿                                                         |
+| GET `/audio/{id}`                 | 配对 + 登记 id          | 正确 MIME / Range / 哈希；缺失404；禁止目录穿越                                                 |
+| GET `/profiles`                   | 配对                    | 本地昵称/随机头像ID，不要求真名                                                                 |
+| GET `/profiles/{id}/progress`     | 配对                    | `ProgressSnapshot` 与 revision                                                                  |
+| POST `/profiles/{id}/attempts`    | 事件 + expectedRevision | 幂等插入；服务器生成时间；冲突409后重取，按attempt.id安全重试                                   |
+| POST `/instances/{id}/skip`       | 配对会话 + CSRF         | 当前会话内幂等标记跳过；不创建作答/掌握事件，刷新可恢复                                         |
+| POST `/assessments`               | 见下文                  | 本地评分结果；当前固定503未就绪，且不读取请求音频                                               |
+| GET `/assessments/{requestId}`    | 同一配对会话            | pending或已完成摘要；不重算；缓存过期返回410，目标不属于会话返回404                             |
+| GET `/attempts/{requestId}`       | 同一配对会话            | 已提交事件或404；客户端用原ID重试保证幂等                                                       |
+| DELETE `/assessments/{requestId}` | 配对                    | 取消；中止任务并清内存；晚到结果丢弃                                                            |
+| GET `/profiles/{id}/export`       | 家长权限                | 限定schema JSON，不含声音或会话凭据                                                             |
+| POST `/profiles/import-preview`   | 家长 + JSON≤1MiB        | 已实现 schema v2 上传校验与5分钟预览token；严格字段/引用/时区/重复校验，不写DB；最多缓存8个预览 |
+| POST `/profiles/{id}/import`      | 预览token+revision      | 单事务替换，过期或冲突409                                                                       |
+| DELETE `/profiles/{id}/progress`  | 家长+确认token          | 原子清数据，不撤销其他设备；行为区别于注销整个家庭                                              |
 
 配对、认证和数据持久化尚待 SPEC-001，实现前基线仅允许开发者本机访问。
 

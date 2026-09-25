@@ -25,6 +25,12 @@ CSRF_COOKIE = "lp_csrf"
 SHANGHAI = ZoneInfo("Asia/Shanghai")
 _failures: dict[str, deque[float]] = defaultdict(deque)
 _failures_lock = threading.Lock()
+_import_previews: dict[str, tuple[str, int, float, dict]] = {}
+_import_previews_lock = threading.Lock()
+IMPORT_MAX_BYTES = 1_048_576
+IMPORT_MAX_ATTEMPTS = 50_000
+IMPORT_PREVIEW_TTL = 300
+IMPORT_MAX_ACTIVE_PREVIEWS = 8
 
 
 def _hash(raw: str) -> str:
@@ -360,7 +366,8 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
             "SELECT * FROM household WHERE id=?", (device["household_id"],)
         ).fetchone()
         attempts = db.execute(
-            """SELECT id,exercise_id,knowledge_id,mode,first_try_correct,hint_used,due_credit,
+            """SELECT id,instance_id,exercise_id,knowledge_id,mode,first_try_correct,
+               hint_used,due_credit,
                occurred_at,business_date,answer_json FROM attempts WHERE household_id=?
                ORDER BY occurred_at,id""",
             (device["household_id"],),
@@ -381,15 +388,393 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
                WHERE s.household_id=? ORDER BY s.skipped_at,s.instance_id""",
             (device["household_id"],),
         ).fetchall()
+        instances = db.execute(
+            """SELECT id,exercise_id,lesson_id,content_version,created_at,session_id,
+               hint_used,answered_at FROM exercise_instances WHERE household_id=?
+               ORDER BY created_at,id""",
+            (device["household_id"],),
+        ).fetchall()
+        assessments = db.execute(
+            """SELECT target_id,status,summary_json,engine_version,created_at
+               FROM assessment_summaries WHERE household_id=? ORDER BY created_at,request_id""",
+            (device["household_id"],),
+        ).fetchall()
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
+        "contentVersion": household["content_version"],
+        "masteryRuleVersion": 1,
         "exportedAt": now_iso(),
         "profile": public_profile(household),
         "attempts": [dict(row) for row in attempts],
         "sessions": [dict(row) for row in sessions],
         "skippedInstances": [dict(row) for row in skipped],
         "reviewPlans": [dict(row) for row in reviews],
+        "exerciseInstances": [dict(row) for row in instances],
+        "assessmentSummaries": [
+            {
+                "targetId": row["target_id"],
+                "status": row["status"],
+                "summary": {
+                    key: value
+                    for key, value in json.loads(row["summary_json"]).items()
+                    if key in {"score", "confidence", "dimensions", "reason", "calibrationVersion"}
+                },
+                "engineVersion": row["engine_version"],
+                "createdAt": row["created_at"],
+            }
+            for row in assessments
+        ],
         "note": "不包含会话凭据、设备信息或录音。",
+    }
+
+
+def _require(condition: bool, code: str) -> None:
+    if not condition:
+        raise HTTPException(422, detail={"code": code})
+
+
+def _unique_json_object(pairs: list[tuple[str, object]]) -> dict:
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate JSON property")
+        result[key] = value
+    return result
+
+
+def _parse_datetime(value: object, code: str) -> datetime:
+    _require(isinstance(value, str), code)
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        raise HTTPException(422, detail={"code": code}) from None
+    _require(parsed.tzinfo is not None, code)
+    return parsed
+
+
+def _validate_backup(value: object) -> dict:
+    _require(isinstance(value, dict), "BACKUP_INVALID")
+    backup = value
+    required = {
+        "schemaVersion",
+        "contentVersion",
+        "masteryRuleVersion",
+        "exportedAt",
+        "profile",
+        "attempts",
+        "sessions",
+        "skippedInstances",
+        "reviewPlans",
+        "exerciseInstances",
+        "assessmentSummaries",
+        "note",
+    }
+    _require(set(backup) == required, "BACKUP_FIELDS_INVALID")
+    _require(backup["schemaVersion"] == 2, "BACKUP_VERSION_UNSUPPORTED")
+    curriculum = load_curriculum()
+    _require(
+        backup["contentVersion"] == curriculum["contentVersion"], "CONTENT_VERSION_UNSUPPORTED"
+    )
+    _require(backup["masteryRuleVersion"] == 1, "MASTERY_RULE_VERSION_UNSUPPORTED")
+    _parse_datetime(backup["exportedAt"], "BACKUP_TIME_INVALID")
+    _require(isinstance(backup["note"], str) and len(backup["note"]) <= 160, "BACKUP_INVALID")
+
+    profile = backup["profile"]
+    _require(
+        isinstance(profile, dict)
+        and set(profile)
+        == {
+            "id",
+            "selectedLessonId",
+            "contentVersion",
+            "revision",
+            "settings",
+        },
+        "BACKUP_PROFILE_INVALID",
+    )
+    _require(profile["contentVersion"] == backup["contentVersion"], "BACKUP_PROFILE_INVALID")
+    _require(profile["selectedLessonId"] in map_by_id("lessons"), "BACKUP_REFERENCE_INVALID")
+    _require(
+        type(profile["revision"]) is int and profile["revision"] >= 0, "BACKUP_PROFILE_INVALID"
+    )
+    settings_value = profile["settings"]
+    _require(
+        isinstance(settings_value, dict)
+        and set(settings_value) == {"soundEnabled", "reducedMotion"},
+        "BACKUP_PROFILE_INVALID",
+    )
+    _require(all(type(item) is bool for item in settings_value.values()), "BACKUP_PROFILE_INVALID")
+
+    arrays = (
+        "attempts",
+        "sessions",
+        "skippedInstances",
+        "reviewPlans",
+        "exerciseInstances",
+        "assessmentSummaries",
+    )
+    _require(all(isinstance(backup[key], list) for key in arrays), "BACKUP_INVALID")
+    _require(len(backup["attempts"]) <= IMPORT_MAX_ATTEMPTS, "BACKUP_TOO_MANY_ATTEMPTS")
+    sessions = {}
+    for row in backup["sessions"]:
+        _require(
+            isinstance(row, dict) and set(row) == {"id", "contentVersion", "startedAt", "status"},
+            "BACKUP_SESSION_INVALID",
+        )
+        _require(
+            isinstance(row["id"], str) and 8 <= len(row["id"]) <= 100 and row["id"] not in sessions,
+            "BACKUP_DUPLICATE_ID",
+        )
+        _require(
+            row["contentVersion"] == backup["contentVersion"]
+            and row["status"] in {"active", "finished"},
+            "BACKUP_SESSION_INVALID",
+        )
+        _parse_datetime(row["startedAt"], "BACKUP_TIME_INVALID")
+        sessions[row["id"]] = row
+
+    exercises = map_by_id("exercises")
+    lessons = map_by_id("lessons")
+    instances = {}
+    instance_fields = {
+        "id",
+        "exercise_id",
+        "lesson_id",
+        "content_version",
+        "created_at",
+        "session_id",
+        "hint_used",
+        "answered_at",
+    }
+    for row in backup["exerciseInstances"]:
+        _require(isinstance(row, dict) and set(row) == instance_fields, "BACKUP_INSTANCE_INVALID")
+        _require(
+            isinstance(row["id"], str)
+            and 8 <= len(row["id"]) <= 100
+            and row["id"] not in instances,
+            "BACKUP_DUPLICATE_ID",
+        )
+        _require(
+            row["exercise_id"] in exercises and row["lesson_id"] in lessons,
+            "BACKUP_REFERENCE_INVALID",
+        )
+        _require(
+            row["exercise_id"] in lessons[row["lesson_id"]]["exerciseIds"],
+            "BACKUP_REFERENCE_INVALID",
+        )
+        _require(
+            row["content_version"] == backup["contentVersion"] and row["session_id"] in sessions,
+            "BACKUP_REFERENCE_INVALID",
+        )
+        _require(
+            type(row["hint_used"]) is int and row["hint_used"] in (0, 1), "BACKUP_INSTANCE_INVALID"
+        )
+        _parse_datetime(row["created_at"], "BACKUP_TIME_INVALID")
+        if row["answered_at"] is not None:
+            _parse_datetime(row["answered_at"], "BACKUP_TIME_INVALID")
+        instances[row["id"]] = row
+
+    attempt_fields = {
+        "id",
+        "instance_id",
+        "exercise_id",
+        "knowledge_id",
+        "mode",
+        "first_try_correct",
+        "hint_used",
+        "due_credit",
+        "occurred_at",
+        "business_date",
+        "answer_json",
+    }
+    attempt_ids = set()
+    attempted_instances = set()
+    _require(isinstance(backup["attempts"], list), "BACKUP_INVALID")
+    for row in backup["attempts"]:
+        _require(isinstance(row, dict) and set(row) == attempt_fields, "BACKUP_ATTEMPT_INVALID")
+        _require(
+            isinstance(row["id"], str)
+            and 8 <= len(row["id"]) <= 100
+            and row["id"] not in attempt_ids,
+            "BACKUP_DUPLICATE_ID",
+        )
+        attempt_ids.add(row["id"])
+        exercise = exercises.get(row["exercise_id"])
+        _require(
+            bool(exercise)
+            and row["knowledge_id"] == exercise["primaryKnowledgeId"]
+            and row["mode"] == exercise["type"],
+            "BACKUP_REFERENCE_INVALID",
+        )
+        _require(
+            type(row["first_try_correct"]) is int and row["first_try_correct"] in (0, 1),
+            "BACKUP_ATTEMPT_INVALID",
+        )
+        _require(
+            type(row["hint_used"]) is int and row["hint_used"] in (0, 1), "BACKUP_ATTEMPT_INVALID"
+        )
+        _require(
+            type(row["due_credit"]) is int and row["due_credit"] in (0, 1), "BACKUP_ATTEMPT_INVALID"
+        )
+        _require(isinstance(row["business_date"], str), "BACKUP_ATTEMPT_INVALID")
+        try:
+            date.fromisoformat(row["business_date"])
+        except ValueError:
+            raise HTTPException(422, detail={"code": "BACKUP_TIME_INVALID"}) from None
+        _parse_datetime(row["occurred_at"], "BACKUP_TIME_INVALID")
+        _require(
+            isinstance(row["answer_json"], str) and len(row["answer_json"]) <= 4096,
+            "BACKUP_ATTEMPT_INVALID",
+        )
+        try:
+            answer = json.loads(row["answer_json"], object_pairs_hook=_unique_json_object)
+        except (json.JSONDecodeError, ValueError, RecursionError):
+            raise HTTPException(422, detail={"code": "BACKUP_ATTEMPT_INVALID"}) from None
+        _require(isinstance(answer, dict) and set(answer) == {"optionId"}, "BACKUP_ATTEMPT_INVALID")
+        instance = instances.get(row["instance_id"])
+        _require(
+            bool(instance)
+            and instance["exercise_id"] == row["exercise_id"]
+            and instance["answered_at"] is not None,
+            "BACKUP_REFERENCE_INVALID",
+        )
+        _require(row["instance_id"] not in attempted_instances, "BACKUP_DUPLICATE_ID")
+        attempted_instances.add(row["instance_id"])
+        _require(row["hint_used"] == instance["hint_used"], "BACKUP_ATTEMPT_INVALID")
+        answer_option_id = answer["optionId"]
+        correct = answer_option_id == exercise.get("answer", {}).get("optionId")
+        _require(
+            any(option["id"] == answer_option_id for option in exercise.get("options", [])),
+            "BACKUP_ATTEMPT_INVALID",
+        )
+        _require(
+            row["first_try_correct"] == int(correct and not row["hint_used"]),
+            "BACKUP_ATTEMPT_INVALID",
+        )
+        local_day = (
+            _parse_datetime(row["occurred_at"], "BACKUP_TIME_INVALID").astimezone(SHANGHAI).date()
+        )
+        _require(row["business_date"] == local_day.isoformat(), "BACKUP_TIME_INVALID")
+
+    skipped_ids = set()
+    for row in backup["skippedInstances"]:
+        _require(
+            isinstance(row, dict) and set(row) == {"instanceId", "sessionId", "skippedAt"},
+            "BACKUP_SKIP_INVALID",
+        )
+        _require(
+            row["instanceId"] in instances
+            and row["sessionId"] == instances[row["instanceId"]]["session_id"],
+            "BACKUP_REFERENCE_INVALID",
+        )
+        _require(
+            row["instanceId"] not in skipped_ids
+            and instances[row["instanceId"]]["answered_at"] is None,
+            "BACKUP_DUPLICATE_ID",
+        )
+        skipped_ids.add(row["instanceId"])
+        _parse_datetime(row["skippedAt"], "BACKUP_TIME_INVALID")
+
+    knowledge = map_by_id("knowledgeItems")
+    review_ids = set()
+    for row in backup["reviewPlans"]:
+        _require(
+            isinstance(row, dict)
+            and set(row) == {"knowledge_id", "stage", "due_date", "updated_at"},
+            "BACKUP_REVIEW_INVALID",
+        )
+        _require(
+            row["knowledge_id"] in knowledge and row["knowledge_id"] not in review_ids,
+            "BACKUP_DUPLICATE_ID",
+        )
+        review_ids.add(row["knowledge_id"])
+        _require(type(row["stage"]) is int and 0 <= row["stage"] <= 3, "BACKUP_REVIEW_INVALID")
+        try:
+            date.fromisoformat(row["due_date"])
+        except (TypeError, ValueError):
+            raise HTTPException(422, detail={"code": "BACKUP_TIME_INVALID"}) from None
+        _parse_datetime(row["updated_at"], "BACKUP_TIME_INVALID")
+
+    targets = map_by_id("readingTargets")
+    for row in backup["assessmentSummaries"]:
+        _require(
+            isinstance(row, dict)
+            and set(row) == {"targetId", "status", "summary", "engineVersion", "createdAt"},
+            "BACKUP_ASSESSMENT_INVALID",
+        )
+        _require(
+            isinstance(row["targetId"], str) and row["targetId"] in targets,
+            "BACKUP_ASSESSMENT_INVALID",
+        )
+        _require(
+            row["status"] in {"scored", "uncertain", "unsupported", "unavailable"},
+            "BACKUP_ASSESSMENT_INVALID",
+        )
+        if row["status"] == "scored":
+            _require(
+                type(row["summary"].get("score")) in {int, float}
+                and 0 <= row["summary"]["score"] <= 100
+                and type(row["summary"].get("confidence")) in {int, float}
+                and 0 <= row["summary"]["confidence"] <= 1,
+                "BACKUP_ASSESSMENT_INVALID",
+            )
+        else:
+            _require("score" not in row["summary"], "BACKUP_ASSESSMENT_INVALID")
+        _require(
+            isinstance(row["summary"], dict)
+            and set(row["summary"])
+            <= {"score", "confidence", "dimensions", "reason", "calibrationVersion"},
+            "BACKUP_ASSESSMENT_INVALID",
+        )
+        _require(
+            isinstance(row["engineVersion"], str) and len(row["engineVersion"]) <= 100,
+            "BACKUP_ASSESSMENT_INVALID",
+        )
+        _parse_datetime(row["createdAt"], "BACKUP_TIME_INVALID")
+    return backup
+
+
+@router.post("/profiles/import-preview")
+async def import_preview(request: Request, device: dict = Depends(parent)) -> dict:
+    raw_buffer = bytearray()
+    async for chunk in request.stream():
+        if len(raw_buffer) + len(chunk) > IMPORT_MAX_BYTES:
+            raise HTTPException(413, detail={"code": "BACKUP_TOO_LARGE"})
+        raw_buffer.extend(chunk)
+    raw = bytes(raw_buffer)
+    try:
+        payload = json.loads(raw, object_pairs_hook=_unique_json_object)
+    except (json.JSONDecodeError, UnicodeDecodeError, ValueError, RecursionError):
+        raise HTTPException(422, detail={"code": "BACKUP_INVALID"}) from None
+    backup = _validate_backup(payload)
+    digest = hashlib.sha256(raw).hexdigest()
+    with connect() as db:
+        revision = db.execute(
+            "SELECT revision FROM household WHERE id=?", (device["household_id"],)
+        ).fetchone()["revision"]
+    token = secrets.token_urlsafe(32)
+    expires = time.time() + IMPORT_PREVIEW_TTL
+    with _import_previews_lock:
+        now = time.time()
+        for old_token, (_, _, expiry, _) in list(_import_previews.items()):
+            if expiry <= now:
+                del _import_previews[old_token]
+        if len(_import_previews) >= IMPORT_MAX_ACTIVE_PREVIEWS:
+            raise HTTPException(429, detail={"code": "IMPORT_PREVIEW_LIMIT"})
+        _import_previews[token] = (digest, revision, expires, backup)
+    return {
+        "previewToken": token,
+        "expiresInSeconds": IMPORT_PREVIEW_TTL,
+        "revision": revision,
+        "counts": {
+            "sessions": len(backup["sessions"]),
+            "exerciseInstances": len(backup["exerciseInstances"]),
+            "attempts": len(backup["attempts"]),
+            "skippedInstances": len(backup["skippedInstances"]),
+            "reviewPlans": len(backup["reviewPlans"]),
+            "assessmentSummaries": len(backup["assessmentSummaries"]),
+        },
+        "willReplaceEntireHousehold": True,
     }
 
 
