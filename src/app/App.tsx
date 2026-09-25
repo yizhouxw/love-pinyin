@@ -324,10 +324,24 @@ export function App() {
           <div className="mascot" aria-hidden="true">
             🦊
           </div>
-          <p className="eyebrow">{question.type === 'tone-choice' ? '声调观察站' : '拼音发现站'}</p>
+          <p className="eyebrow">
+            {question.type === 'tone-choice'
+              ? '声调观察站'
+              : question.type === 'blend-choice'
+                ? '拼读组合站'
+                : '字形发现站'}
+          </p>
           <h1>{question.prompt}</h1>
-          <p className="adult-hint">这道题暂时没有标准音频，可请家长读题，不会录音或评分。</p>
-          <div className="options" role="group" aria-label="选择答案">
+          <p className="adult-hint">
+            {question.type === 'blend-choice'
+              ? '请选择一个完整的拼读候选。标准示范音暂未准备，不拼接或播放未审校的字母音。'
+              : '这道题暂时没有标准音频，可请家长读题，不会录音或评分。'}
+          </p>
+          <div
+            className={`options ${question.type === 'blend-choice' ? 'blend-options' : ''}`}
+            role="group"
+            aria-label={question.type === 'blend-choice' ? '完整拼读候选' : '选择答案'}
+          >
             {question.options.map((option: Json, index: number) => (
               <button
                 key={option.id}

@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
 
-test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({ page, isMobile }) => {
+test('配对后可选择合法拼读候选、跳过并查看练习小结', async ({ page, isMobile }) => {
   let paired = false;
   let active = false;
+  let answered = false;
   let skipped = false;
   let devices = [
     { id: 'device-e2e', label: '测试设备', createdAt: '2026-09-26T00:00:00Z', current: true },
@@ -10,18 +11,29 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
   ];
   const exercise = {
     id: 'exercise-e2e',
-    type: 'symbol-choice',
-    prompt: '哪一个是声母？',
+    type: 'blend-choice',
+    prompt: 'b 和 ā 连起来是哪一个音节？',
     options: [
-      { id: 'a', label: 'b' },
-      { id: 'b', label: 'a' },
+      { id: 'a', label: 'bā' },
+      { id: 'b', label: 'pā' },
+      { id: 'c', label: 'mā' },
     ],
+    answer: { optionId: 'a' },
+  };
+  const skipExercise = {
+    id: 'skip-exercise-e2e',
+    type: 'symbol-choice',
+    prompt: '再找一张拼音卡片',
+    options: exercise.options,
     answer: { optionId: 'a' },
   };
   const session = {
     id: 'session-e2e',
     lessonId: 'lesson-01',
-    tasks: [{ instanceId: 'instance-e2e', exercise }],
+    tasks: [
+      { instanceId: 'instance-e2e', exercise },
+      { instanceId: 'instance-skip-e2e', exercise: skipExercise },
+    ],
     results: {},
     draftContent: true,
   };
@@ -55,7 +67,7 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
               title: '认识拼音',
               objectives: ['认识声母和韵母'],
               knowledgeIds: ['k-e2e'],
-              exerciseIds: [exercise.id],
+              exerciseIds: [exercise.id, skipExercise.id],
               suggestedSessionMinutes: 5,
             },
             {
@@ -88,6 +100,7 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
           ],
           exercises: [
             exercise,
+            skipExercise,
             {
               id: 'future-listen-only',
               type: 'listen-choice',
@@ -126,18 +139,47 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
         json: active
           ? {
               ...session,
-              results: skipped
-                ? { 'instance-e2e': { instanceId: 'instance-e2e', skipped: true } }
-                : {},
+              results: {
+                ...(answered
+                  ? {
+                      'instance-e2e': {
+                        instanceId: 'instance-e2e',
+                        correct: true,
+                        firstTryCorrect: true,
+                        hintUsed: false,
+                      },
+                    }
+                  : {}),
+                ...(skipped
+                  ? {
+                      'instance-skip-e2e': {
+                        instanceId: 'instance-skip-e2e',
+                        skipped: true,
+                      },
+                    }
+                  : {}),
+              },
             }
           : null,
       });
     } else if (path === '/sessions' && route.request().method() === 'POST') {
       active = true;
       await route.fulfill({ json: session });
-    } else if (path === '/instances/instance-e2e/skip') {
+    } else if (path === '/instances/instance-e2e/answer') {
+      answered = true;
+      await route.fulfill({
+        json: {
+          attemptId: 'attempt-e2e',
+          correct: true,
+          firstTryCorrect: true,
+          hintUsed: false,
+          mastery: { status: 'practicing' },
+          revision: 1,
+        },
+      });
+    } else if (path === '/instances/instance-skip-e2e/skip') {
       skipped = true;
-      await route.fulfill({ json: { instanceId: 'instance-e2e', skipped: true } });
+      await route.fulfill({ json: { instanceId: 'instance-skip-e2e', skipped: true } });
     } else if (path === '/sessions/session-e2e/finish') {
       active = false;
       await route.fulfill({ status: 204, body: '' });
@@ -171,12 +213,21 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
   );
   expect(noOverflow).toBe(true);
   await page.getByRole('button', { name: '开始今天的练习' }).click();
-  await expect(page.getByRole('heading', { name: '哪一个是声母？' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'b 和 ā 连起来是哪一个音节？' })).toBeVisible();
+  await expect(page.getByText('拼读组合站')).toBeVisible();
+  await expect(page.getByLabel('完整拼读候选')).toBeVisible();
+  const correctCandidate = page.getByRole('button', { name: /bā/ });
+  if (isMobile) await correctCandidate.tap();
+  else await correctCandidate.press('Enter');
+  await expect(page.getByText('答对啦！')).toBeVisible();
+  await page.getByRole('button', { name: '继续 →' }).click();
+  await expect(page.getByRole('heading', { name: '再找一张拼音卡片' })).toBeVisible();
   const skip = page.getByRole('button', { name: '先跳过这题' });
   if (isMobile) await skip.tap();
   else await skip.press('Enter');
 
   await expect(page.getByRole('heading', { name: '今天的探索完成啦！' })).toBeVisible();
+  await expect(page.getByLabel('本次练习小结')).toContainText('独立答对：1 题');
   await expect(page.getByLabel('本次练习小结')).toContainText('跳过：1 题');
   await page.getByRole('button', { name: '回到小岛' }).click();
   await expect(page.getByRole('heading', { name: '你好，小小拼音家' })).toBeVisible();

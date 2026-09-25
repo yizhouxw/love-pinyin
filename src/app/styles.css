@@ -604,6 +604,11 @@ footer {
   border-color: #e2a08b;
   background: #fff2ed;
 }
+.blend-options .option {
+  min-height: 96px;
+  font-size: clamp(24px, 4vw, 34px);
+  letter-spacing: 0.02em;
+}
 .feedback {
   display: grid;
   gap: 4px;
