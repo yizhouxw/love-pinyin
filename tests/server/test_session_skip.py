@@ -41,7 +41,9 @@ def test_skipped_task_requires_active_owned_session(paired_client):
     client = paired_client
     started = mutable_post(client, "/api/v1/sessions", json={}).json()
     task = started["tasks"][0]
-    assert mutable_post(client, f"/api/v1/sessions/{started['id']}/finish").status_code == 204
+    finished = mutable_post(client, f"/api/v1/sessions/{started['id']}/finish")
+    assert finished.status_code == 200
+    assert finished.json()["completedRound"] is False
 
     response = mutable_post(client, f"/api/v1/instances/{task['instanceId']}/skip")
     assert response.status_code == 409

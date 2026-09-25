@@ -7,7 +7,11 @@ type Bootstrap = {
   paired: boolean;
   isLocalHost?: boolean;
   device?: { label: string; isParent: boolean };
-  profile?: Record<string, unknown>;
+  profile?: {
+    roundsSinceBreak?: number;
+    settings?: { reducedMotion?: boolean; soundEnabled?: boolean };
+    [key: string]: unknown;
+  };
 };
 type Option = { id: string; label: string };
 type Lesson = {
@@ -44,6 +48,7 @@ type Session = {
 type Progress = {
   revision: number;
   selectedLessonId: string;
+  settings: { reducedMotion: boolean; soundEnabled: boolean };
   mastery: {
     knowledgeId: string;
     status: string;
@@ -113,6 +118,12 @@ export function App() {
   const [parentOpen, setParentOpen] = useState(false);
   const [lessonChoice, setLessonChoice] = useState('');
   const [lessonViewId, setLessonViewId] = useState<string | null>(null);
+
+  useEffect(() => {
+    document.documentElement.dataset.reducedMotion = String(
+      Boolean(progress?.settings?.reducedMotion),
+    );
+  }, [progress?.settings?.reducedMotion]);
 
   const refresh = useCallback(async () => {
     const state = (await api('/bootstrap')) as Bootstrap;
@@ -272,6 +283,44 @@ export function App() {
           <p className="privacy-note">
             🔒 录音不会发送到互联网。当前自动评分尚未通过离线验证，跟读暂未开启。
           </p>
+        </section>
+        <Notice error={error} />
+      </main>
+    );
+
+  if ((boot.profile?.roundsSinceBreak ?? 0) >= 2)
+    return (
+      <main className="rest-page">
+        <section className="rest-card">
+          <div className="mascot" aria-hidden="true">
+            🌿
+          </div>
+          <p className="eyebrow">小小拼音家补充能量</p>
+          <h1>连续完成两轮啦！</h1>
+          <p>站起来活动一下、喝口水。你可以结束今天的练习，也可以休息后再继续。</p>
+          <button
+            autoFocus
+            onClick={() =>
+              void act(async () => {
+                await api('/rest/complete', { method: 'POST' });
+                await refresh();
+              })
+            }
+          >
+            结束今天的练习
+          </button>
+          <button
+            className="quiet"
+            disabled={busy}
+            onClick={() =>
+              void act(async () => {
+                await api('/rest/complete', { method: 'POST' });
+                await refresh();
+              })
+            }
+          >
+            休息好了，继续学习
+          </button>
         </section>
         <Notice error={error} />
       </main>
@@ -894,6 +943,29 @@ function ParentPanel({
       </div>
       <div className="parent-setting">
         <div>
+          <strong>减少动态效果</strong>
+          <p>开启后，练习界面停用非必要动画与过渡效果。</p>
+        </div>
+        <ReducedMotionControl
+          key={String(Boolean(progress.settings?.reducedMotion))}
+          checked={Boolean(progress.settings?.reducedMotion)}
+          disabled={!isParent}
+          onChange={(next) =>
+            void act(async () => {
+              await api('/household/settings', {
+                method: 'PUT',
+                body: JSON.stringify({
+                  soundEnabled: Boolean(progress.settings?.soundEnabled),
+                  reducedMotion: next,
+                }),
+              });
+              await refresh();
+            })
+          }
+        />
+      </div>
+      <div className="parent-setting">
+        <div>
           <strong>连接另一台家庭设备</strong>
           <p>生成一次性配对码，在家庭网络内的浏览器输入。</p>
         </div>
@@ -1009,6 +1081,9 @@ function ParentPanel({
         {importPreview && (
           <div className="import-preview" aria-label="备份导入预览">
             <strong>{importFileName} · 已通过格式检查</strong>
+            {importPreview.migratedFromSchemaVersion && (
+              <p>这份 schema v2 备份已迁移；原备份没有休息进度，新轮次计数将从 0 开始。</p>
+            )}
             <p>
               将整体替换为 {importPreview.counts.attempts} 条练习、
               {importPreview.counts.sessions} 个会话、
@@ -1096,6 +1171,33 @@ function ParentPanel({
       </button>
       {!boot.device?.isParent && <p className="adult-hint">此设备尚未取得家长管理权限。</p>}
     </section>
+  );
+}
+
+function ReducedMotionControl({
+  checked,
+  disabled,
+  onChange,
+}: {
+  checked: boolean;
+  disabled: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  const [value, setValue] = useState(checked);
+  return (
+    <label className="setting-toggle">
+      <input
+        type="checkbox"
+        checked={value}
+        disabled={disabled}
+        onChange={(event) => {
+          const next = event.currentTarget.checked;
+          setValue(next);
+          onChange(next);
+        }}
+      />
+      开启
+    </label>
   );
 }
 

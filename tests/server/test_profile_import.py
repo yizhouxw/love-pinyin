@@ -38,7 +38,7 @@ def confirm(client, result, revision=None, sha256=None):
 
 def test_export_is_valid_for_a_bound_parent_preview(paired_client):
     backup = paired_client.get("/api/v1/profiles/export").json()
-    assert backup["schemaVersion"] == 2
+    assert backup["schemaVersion"] == 3
     assert backup["masteryRuleVersion"] == 1
 
     response = preview(paired_client, backup)
@@ -66,6 +66,18 @@ def test_preview_rejects_unknown_versions_without_mutating_profile(paired_client
     assert response.status_code == 422
     assert response.json()["detail"]["code"] == "BACKUP_VERSION_UNSUPPORTED"
     assert paired_client.get("/api/v1/bootstrap").json() == before
+
+
+def test_preview_explicitly_migrates_schema_v2_backups(paired_client):
+    backup = paired_client.get("/api/v1/profiles/export").json()
+    backup["schemaVersion"] = 2
+    backup["profile"].pop("roundsSinceBreak")
+    for instance in backup["exerciseInstances"]:
+        instance.pop("position")
+
+    response = preview(paired_client, backup)
+    assert response.status_code == 200
+    assert response.json()["migratedFromSchemaVersion"] == 2
 
 
 def test_preview_rejects_oversized_payload_before_parsing(paired_client):
@@ -220,3 +232,54 @@ def test_failed_restore_rolls_back_existing_data(paired_client, monkeypatch):
     assert after["exerciseInstances"] == before["exerciseInstances"]
     assert after["sessions"] == before["sessions"]
     assert after["profile"]["revision"] == before["profile"]["revision"]
+
+
+def test_import_restores_motion_preference_and_rest_round_count(paired_client):
+    client = paired_client
+    headers = {"X-LP-CSRF": client.cookies.get("lp_csrf")}
+    assert (
+        client.put(
+            "/api/v1/household/settings",
+            json={"soundEnabled": True, "reducedMotion": True},
+            headers=headers,
+        ).status_code
+        == 200
+    )
+    session = client.post("/api/v1/sessions", json={}, headers=headers).json()
+    for task in session["tasks"]:
+        assert (
+            client.post(f"/api/v1/instances/{task['instanceId']}/skip", headers=headers).status_code
+            == 200
+        )
+    assert (
+        client.post(f"/api/v1/sessions/{session['id']}/finish", headers=headers).json()[
+            "breakRequired"
+        ]
+        is False
+    )
+
+    backup = client.get("/api/v1/profiles/export").json()
+    assert backup["profile"]["roundsSinceBreak"] == 1
+    assert backup["profile"]["settings"]["reducedMotion"] is True
+    assert (
+        client.request(
+            "DELETE",
+            "/api/v1/profiles/data",
+            json={"confirmation": "删除我的学习记录"},
+            headers=headers,
+        ).status_code
+        == 200
+    )
+    assert (
+        client.put(
+            "/api/v1/household/settings",
+            json={"soundEnabled": True, "reducedMotion": False},
+            headers=headers,
+        ).status_code
+        == 200
+    )
+
+    preview_result = preview(client, backup).json()
+    assert confirm(client, preview_result).status_code == 200
+    assert client.get("/api/v1/bootstrap").json()["profile"]["roundsSinceBreak"] == 1
+    assert client.get("/api/v1/profiles/progress").json()["settings"]["reducedMotion"] is True

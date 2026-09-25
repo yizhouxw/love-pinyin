@@ -7,6 +7,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   let skipped = false;
   let profileRevision = 0;
   let imported = false;
+  let roundsSinceBreak = 0;
+  let reducedMotion = false;
   let devices = [
     { id: 'device-e2e', label: '测试设备', createdAt: '2026-09-26T00:00:00Z', current: true },
     { id: 'tablet-e2e', label: '平板', createdAt: '2026-09-26T00:00:00Z', current: false },
@@ -52,7 +54,12 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
           ? {
               paired: true,
               device: { label: '测试设备', isParent: true },
-              profile: { id: 'profile-e2e', selectedLessonId: 'lesson-01', revision: 0 },
+              profile: {
+                id: 'profile-e2e',
+                selectedLessonId: 'lesson-01',
+                revision: profileRevision,
+                roundsSinceBreak,
+              },
               attemptCount: 0,
             }
           : { paired: false, isLocalHost: true, contentVersion: 'test-v1' },
@@ -115,6 +122,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
         json: {
           revision: profileRevision,
           selectedLessonId: 'lesson-01',
+          settings: { soundEnabled: true, reducedMotion },
           mastery: [
             {
               knowledgeId: 'k-e2e',
@@ -128,8 +136,18 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
           attempts: [],
         },
       });
+    } else if (path === '/household/settings') {
+      reducedMotion = JSON.parse(route.request().postData() ?? '{}').reducedMotion;
+      profileRevision += 1;
+      await route.fulfill({
+        json: {
+          revision: profileRevision,
+          selectedLessonId: 'lesson-01',
+          settings: { soundEnabled: true, reducedMotion },
+        },
+      });
     } else if (path === '/profiles/export') {
-      await route.fulfill({ json: { schemaVersion: 2 } });
+      await route.fulfill({ json: { schemaVersion: 3 } });
     } else if (path === '/profiles/import-preview') {
       await route.fulfill({
         json: {
@@ -186,6 +204,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
       });
     } else if (path === '/sessions' && route.request().method() === 'POST') {
       active = true;
+      answered = false;
+      skipped = false;
       await route.fulfill({ json: session });
     } else if (path === '/instances/instance-e2e/answer') {
       answered = true;
@@ -205,7 +225,11 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
       await route.fulfill({ json: { instanceId: 'instance-skip-e2e', skipped: true } });
     } else if (path === '/sessions/session-e2e/finish') {
       active = false;
+      if (answered && skipped) roundsSinceBreak = Math.min(2, roundsSinceBreak + 1);
       await route.fulfill({ status: 204, body: '' });
+    } else if (path === '/rest/complete') {
+      roundsSinceBreak = 0;
+      await route.fulfill({ json: { breakRequired: false, breakCompleted: true } });
     } else {
       await route.fulfill({ status: 404, json: { detail: { code: 'NOT_FOUND' } } });
     }
@@ -258,10 +282,21 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByText('到期复习 · 1 项')).toBeVisible();
   await page.getByRole('button', { name: '家长管理' }).click();
   await expect(page.getByText('已连接设备')).toBeVisible();
+  const reduceMotion = page.getByRole('checkbox');
+  await reduceMotion.check();
+  await expect
+    .poll(() => page.evaluate(() => document.documentElement.dataset.reducedMotion))
+    .toBe('true');
+  expect(
+    await page
+      .locator('.device-list li')
+      .first()
+      .evaluate((node) => getComputedStyle(node).transitionProperty),
+  ).toBe('none');
   await page.getByLabel('导入家庭备份文件').setInputFiles({
     name: 'family-backup.json',
     mimeType: 'application/json',
-    buffer: Buffer.from('{"schemaVersion":2}'),
+    buffer: Buffer.from('{"schemaVersion":3}'),
   });
   const preview = page.getByLabel('备份导入预览');
   await expect(preview).toContainText('将整体替换为 5 条练习');
@@ -274,6 +309,17 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await page.getByRole('button', { name: '撤销设备' }).click();
   await page.getByRole('button', { name: '确认撤销' }).click();
   await expect(page.getByText('平板', { exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: '返回学习' }).click();
+  await page.getByRole('button', { name: '开始今天的练习' }).click();
+  await page.getByRole('button', { name: /bā/ }).click();
+  await page.getByRole('button', { name: '继续 →' }).click();
+  await page.getByRole('button', { name: '先跳过这题' }).click();
+  await expect(page.getByRole('heading', { name: '今天的探索完成啦！' })).toBeVisible();
+  await page.getByRole('button', { name: '回到小岛' }).click();
+  await expect(page.getByRole('heading', { name: '连续完成两轮啦！' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '结束今天的练习' })).toBeFocused();
+  await page.getByRole('button', { name: '休息好了，继续学习' }).click();
+  await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
 });
 
 test('已撤销或过期的会话回到配对页面', async ({ page }) => {

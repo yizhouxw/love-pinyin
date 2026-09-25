@@ -59,7 +59,8 @@ def _get_device(raw: str | None) -> dict:
         raise HTTPException(401, detail={"code": "PAIRING_REQUIRED"})
     with connect() as db:
         row = db.execute(
-            """SELECT d.*,h.revision,h.content_version,h.selected_lesson_id,h.sound_enabled
+            """SELECT d.*,h.revision,h.content_version,h.selected_lesson_id,h.sound_enabled,
+                      h.reduced_motion,h.rounds_since_break
                FROM devices d JOIN household h ON h.id=d.household_id
                WHERE d.token_hash=? AND d.revoked_at IS NULL""",
             (_hash(raw),),
@@ -352,14 +353,20 @@ def select_lesson(body: LessonChoice, device: dict = Depends(parent)) -> dict:
 class Settings(BaseModel):
     model_config = ConfigDict(extra="forbid")
     soundEnabled: bool
+    reducedMotion: bool | None = None
 
 
 @router.put("/household/settings")
 def settings(body: Settings, device: dict = Depends(parent)) -> dict:
     with transaction() as db:
         db.execute(
-            "UPDATE household SET sound_enabled=?,revision=revision+1 WHERE id=?",
-            (int(body.soundEnabled), device["household_id"]),
+            """UPDATE household SET sound_enabled=?,
+               reduced_motion=COALESCE(?,reduced_motion),revision=revision+1 WHERE id=?""",
+            (
+                int(body.soundEnabled),
+                int(body.reducedMotion) if body.reducedMotion is not None else None,
+                device["household_id"],
+            ),
         )
         row = db.execute("SELECT * FROM household WHERE id=?", (device["household_id"],)).fetchone()
     return public_profile(row)
@@ -411,7 +418,7 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
             (device["household_id"],),
         ).fetchall()
     return {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "contentVersion": household["content_version"],
         "masteryRuleVersion": 1,
         "exportedAt": now_iso(),
@@ -470,7 +477,8 @@ def _parse_datetime(value: object, code: str) -> datetime:
 
 def _validate_backup(value: object) -> dict:
     _require(isinstance(value, dict), "BACKUP_INVALID")
-    backup = value
+    migrated_from = value.get("schemaVersion")
+    backup = _migrate_v2_backup(value) if migrated_from == 2 else value
     required = {
         "schemaVersion",
         "contentVersion",
@@ -486,7 +494,7 @@ def _validate_backup(value: object) -> dict:
         "note",
     }
     _require(set(backup) == required, "BACKUP_FIELDS_INVALID")
-    _require(backup["schemaVersion"] == 2, "BACKUP_VERSION_UNSUPPORTED")
+    _require(backup["schemaVersion"] == 3, "BACKUP_VERSION_UNSUPPORTED")
     curriculum = load_curriculum()
     _require(
         backup["contentVersion"] == curriculum["contentVersion"], "CONTENT_VERSION_UNSUPPORTED"
@@ -504,6 +512,7 @@ def _validate_backup(value: object) -> dict:
             "selectedLessonId",
             "contentVersion",
             "revision",
+            "roundsSinceBreak",
             "settings",
         },
         "BACKUP_PROFILE_INVALID",
@@ -513,6 +522,10 @@ def _validate_backup(value: object) -> dict:
     _require(
         type(profile["revision"]) is int and profile["revision"] >= 0, "BACKUP_PROFILE_INVALID"
     )
+    _require(
+        type(profile["roundsSinceBreak"]) is int and 0 <= profile["roundsSinceBreak"] <= 2,
+        "BACKUP_PROFILE_INVALID",
+    )
     settings_value = profile["settings"]
     _require(
         isinstance(settings_value, dict)
@@ -520,7 +533,6 @@ def _validate_backup(value: object) -> dict:
         "BACKUP_PROFILE_INVALID",
     )
     _require(all(type(item) is bool for item in settings_value.values()), "BACKUP_PROFILE_INVALID")
-    _require(not settings_value["reducedMotion"], "BACKUP_SETTING_UNSUPPORTED")
 
     arrays = (
         "attempts",
@@ -761,6 +773,61 @@ def _validate_backup(value: object) -> dict:
     return backup
 
 
+def _migrate_v2_backup(value: dict) -> dict:
+    expected = {
+        "schemaVersion",
+        "contentVersion",
+        "masteryRuleVersion",
+        "exportedAt",
+        "profile",
+        "attempts",
+        "sessions",
+        "skippedInstances",
+        "reviewPlans",
+        "exerciseInstances",
+        "assessmentSummaries",
+        "note",
+    }
+    _require(set(value) == expected, "BACKUP_FIELDS_INVALID")
+    _require(isinstance(value.get("profile"), dict), "BACKUP_PROFILE_INVALID")
+    profile = value["profile"]
+    _require(
+        set(profile) == {"id", "selectedLessonId", "contentVersion", "revision", "settings"},
+        "BACKUP_PROFILE_INVALID",
+    )
+    _require(
+        isinstance(profile["settings"], dict)
+        and set(profile["settings"]) == {"soundEnabled", "reducedMotion"}
+        and profile["settings"]["reducedMotion"] is False,
+        "BACKUP_PROFILE_INVALID",
+    )
+    _require(isinstance(value.get("sessions"), list), "BACKUP_INVALID")
+    _require(isinstance(value.get("exerciseInstances"), list), "BACKUP_INVALID")
+    grouped: dict[str, list[dict]] = defaultdict(list)
+    for item in value["exerciseInstances"]:
+        _require(isinstance(item, dict) and "position" not in item, "BACKUP_INSTANCE_INVALID")
+        _require(isinstance(item.get("session_id"), str), "BACKUP_INSTANCE_INVALID")
+        grouped[item["session_id"]].append(item)
+    positions = {}
+    for items in grouped.values():
+        for index, item in enumerate(
+            sorted(items, key=lambda row: (row.get("created_at", ""), row.get("id", "")))
+        ):
+            positions[item["id"]] = index
+    migrated = dict(value)
+    migrated["schemaVersion"] = 3
+    migrated["profile"] = {
+        **profile,
+        "roundsSinceBreak": 0,
+        "settings": {**profile["settings"], "reducedMotion": False},
+    }
+    migrated["exerciseInstances"] = [
+        {**item, "position": positions.get(item.get("id"), -1)}
+        for item in value["exerciseInstances"]
+    ]
+    return migrated
+
+
 @router.post("/profiles/import-preview")
 async def import_preview(request: Request, device: dict = Depends(parent)) -> dict:
     raw_buffer = bytearray()
@@ -792,6 +859,7 @@ async def import_preview(request: Request, device: dict = Depends(parent)) -> di
     return {
         "previewToken": token,
         "sha256": digest,
+        "migratedFromSchemaVersion": 2 if payload.get("schemaVersion") == 2 else None,
         "expiresInSeconds": IMPORT_PREVIEW_TTL,
         "revision": revision,
         "counts": {
@@ -943,11 +1011,13 @@ def import_profile(body: ImportConfirm, device: dict = Depends(parent)) -> dict:
             raise HTTPException(409, detail={"code": "REVISION_CONFLICT"})
         _restore_backup(db, household_id, device["id"], backup)
         row = db.execute(
-            """UPDATE household SET selected_lesson_id=?,sound_enabled=?,revision=revision+1
-               WHERE id=? RETURNING *""",
+            """UPDATE household SET selected_lesson_id=?,sound_enabled=?,reduced_motion=?,
+               rounds_since_break=?,revision=revision+1 WHERE id=? RETURNING *""",
             (
                 backup["profile"]["selectedLessonId"],
                 int(backup["profile"]["settings"]["soundEnabled"]),
+                int(backup["profile"]["settings"]["reducedMotion"]),
+                backup["profile"]["roundsSinceBreak"],
                 household_id,
             ),
         ).fetchone()
@@ -973,7 +1043,8 @@ def delete_profile_data(body: DeleteData, device: dict = Depends(parent)) -> dic
         db.execute("DELETE FROM sessions WHERE household_id=?", (household_id,))
         db.execute("DELETE FROM review_plans WHERE household_id=?", (household_id,))
         db.execute(
-            "UPDATE household SET selected_lesson_id='lesson-01',revision=revision+1 WHERE id=?",
+            """UPDATE household SET selected_lesson_id='lesson-01',rounds_since_break=0,
+               revision=revision+1 WHERE id=?""",
             (household_id,),
         )
         row = db.execute("SELECT * FROM household WHERE id=?", (household_id,)).fetchone()
@@ -987,6 +1058,8 @@ class StartSession(BaseModel):
 
 @router.post("/sessions")
 def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
+    if device["rounds_since_break"] >= 2:
+        raise HTTPException(409, detail={"code": "REST_REQUIRED"})
     content = load_curriculum()
     lessons = map_by_id("lessons")
     requested_id = body.lessonId or device["selected_lesson_id"]
@@ -1013,6 +1086,15 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
     now = now_iso()
     tasks = []
     with transaction() as db:
+        # Recheck under the same write lock as session creation. A second
+        # device may have completed round two after this request's auth
+        # dependency loaded its household snapshot.
+        household = db.execute(
+            "SELECT rounds_since_break FROM household WHERE id=?",
+            (device["household_id"],),
+        ).fetchone()
+        if household["rounds_since_break"] >= 2:
+            raise HTTPException(409, detail={"code": "REST_REQUIRED"})
         for q in question_set:
             instance_id = secrets.token_urlsafe(18)
             db.execute(
@@ -1119,27 +1201,67 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
     return {**dict(row), "tasks": json.loads(row["tasks_json"]), "results": results}
 
 
-@router.post("/sessions/{session_id}/finish", status_code=204)
-def finish_session(session_id: str, device: dict = Depends(mutable)) -> Response:
+@router.post("/sessions/{session_id}/finish")
+def finish_session(session_id: str, device: dict = Depends(mutable)) -> dict:
     with transaction() as db:
+        session = db.execute(
+            "SELECT id,status FROM sessions WHERE id=? AND household_id=?",
+            (session_id, device["household_id"]),
+        ).fetchone()
+        if not session:
+            raise HTTPException(404, detail={"code": "SESSION_NOT_FOUND"})
+        total = db.execute(
+            "SELECT COUNT(*) FROM exercise_instances WHERE session_id=?", (session_id,)
+        ).fetchone()[0]
+        complete = (
+            total > 0
+            and db.execute(
+                """SELECT COUNT(*) FROM exercise_instances i
+               LEFT JOIN attempts a ON a.instance_id=i.id
+               LEFT JOIN skipped_instances s ON s.instance_id=i.id
+               WHERE i.session_id=? AND (a.id IS NOT NULL OR s.instance_id IS NOT NULL)""",
+                (session_id,),
+            ).fetchone()[0]
+            == total
+        )
         cursor = db.execute(
             "UPDATE sessions SET status='finished' WHERE id=? AND household_id=? "
             "AND status='active'",
             (session_id, device["household_id"]),
         )
         if cursor.rowcount:
+            if complete:
+                db.execute(
+                    """UPDATE household SET rounds_since_break=MIN(2,rounds_since_break+1),
+                       revision=revision+1 WHERE id=?""",
+                    (device["household_id"],),
+                )
+            else:
+                db.execute(
+                    "UPDATE household SET revision=revision+1 WHERE id=?",
+                    (device["household_id"],),
+                )
+        rounds = db.execute(
+            "SELECT rounds_since_break FROM household WHERE id=?",
+            (device["household_id"],),
+        ).fetchone()["rounds_since_break"]
+    return {"finished": True, "completedRound": complete, "breakRequired": rounds >= 2}
+
+
+@router.post("/rest/complete")
+def complete_rest(device: dict = Depends(mutable)) -> dict:
+    with transaction() as db:
+        household = db.execute(
+            "SELECT rounds_since_break FROM household WHERE id=?",
+            (device["household_id"],),
+        ).fetchone()
+        completed = household["rounds_since_break"] >= 2
+        if completed:
             db.execute(
-                "UPDATE household SET revision=revision+1 WHERE id=?",
+                "UPDATE household SET rounds_since_break=0,revision=revision+1 WHERE id=?",
                 (device["household_id"],),
             )
-        if cursor.rowcount == 0:
-            row = db.execute(
-                "SELECT id FROM sessions WHERE id=? AND household_id=?",
-                (session_id, device["household_id"]),
-            ).fetchone()
-            if not row:
-                raise HTTPException(404, detail={"code": "SESSION_NOT_FOUND"})
-    return Response(status_code=204)
+    return {"breakRequired": False, "breakCompleted": completed}
 
 
 @router.post("/instances/{instance_id}/hint")
@@ -1390,12 +1512,16 @@ def progress(device: dict = Depends(paired)) -> dict:
         value["reviewDue"] = bool(due and date.fromisoformat(due) <= today)
         value["reviewStage"] = plan["stage"] if plan else None
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "contentVersion": device["content_version"],
         "profileId": device["household_id"],
         "revision": device["revision"],
         "selectedLessonId": device["selected_lesson_id"],
         "masteryRuleVersion": "mastery-v1",
+        "settings": {
+            "soundEnabled": bool(device["sound_enabled"]),
+            "reducedMotion": bool(device["reduced_motion"]),
+        },
         "mastery": list(mastery.values()),
         "attempts": [dict(row) for row in attempts],
     }

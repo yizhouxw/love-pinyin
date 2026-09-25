@@ -1,6 +1,6 @@
 # SPEC-005：掌握度、复习与家长数据
 
-状态：部分实现（验收未完成）。需求：R-002、R-003、R-007–012、R-018。已有掌握度函数、上海业务日去重、次日复习计划、家长导出和练习数据删除；家长可查看并撤销次设备。schema v2 导出白名单、安全导入预览及服务端确认/原子替换已实现；家长页上传/二次确认 UI 和进度算法完整验收仍未完成。
+状态：部分实现（验收未完成）。需求：R-002、R-003、R-007–012、R-018。已有掌握度函数、上海业务日去重、次日复习计划、家长导出和练习数据删除；家长可查看并撤销次设备。schema v3 导出白名单、安全导入预览及服务端确认/原子替换已实现；家长页有上传/二次确认 UI；减少动态效果偏好及两轮休息计数存入 household 并随备份迁移；旧 schema v2 备份可显式迁移。进度算法完整验收仍未完成。
 
 ## 文件和契约
 
@@ -60,9 +60,9 @@
 
 ## 验证与交付
 
-2026-09-26 切片：导出现在带 schema/content/mastery-rule 版本、已完成实例和严格筛选的评分摘要。`POST /api/v1/profiles/import-preview` 流式限制 1 MiB 输入、最多 50,000 次作答，拒绝重复 JSON 属性、未知版本、未知引用、重复 ID、无时区时间和互相矛盾的作答结果；成功只返回短时 opaque token、摘要计数和 SHA-256，不改数据库。`POST /api/v1/profiles/import` 检查家长身份、token、文件摘要、过期时间和 household revision 后，单事务替换会话/实例/作答/跳过/复习/评分摘要并增加 revision；进程内最多缓存 8 个预览、5 分钟过期。会话题目顺序用位置字段保留，恢复后可识别已完成事件；确认写入中途故障的回滚已有回归覆盖。家长页现可选 JSON、查看数据计数、输入“替换家庭学习档案”确认并调用 API；家庭记录在预览后变化会由 revision 冲突阻止覆盖。
+2026-09-26 切片：导出现在带 schema/content/mastery-rule 版本、已完成实例和严格筛选的评分摘要。当前 schema v3 另含减少动态效果设置和两轮休息计数；schema v2 有显式迁移，缺少的休息计数从 0 开始并以旧导出排序恢复题目顺序。`POST /api/v1/profiles/import-preview` 流式限制 1 MiB 输入、最多 50,000 次作答，拒绝重复 JSON 属性、未知版本、未知引用、重复 ID、无时区时间和互相矛盾的作答结果；成功只返回短时 opaque token、摘要计数和 SHA-256，不改数据库。`POST /api/v1/profiles/import` 检查家长身份、token、文件摘要、过期时间和 household revision 后，单事务替换会话/实例/作答/跳过/复习/评分摘要并增加 revision；进程内最多缓存 8 个预览、5 分钟过期。会话题目顺序用位置字段保留，恢复后可识别已完成事件；确认写入中途故障的回滚已有回归覆盖。家长页现可选 JSON、查看数据计数、输入“替换家庭学习档案”确认并调用 API；家庭记录在预览后变化会由 revision 冲突阻止覆盖。
 
-此增量 `npm run verify:all` 通过：14 个隔离 SQLite 服务端用例、10 个 Chromium/WebKit 桌面/平板/手机模拟 E2E 以及前端格式/lint/typecheck/content/unit/build 均通过。Firefox 在本机仍未验证（原因见 STATUS）；E2E 的父母导入 UI 使用 API mock，真实 API 数据/事务由服务端隔离 SQLite 测试验证。
+此增量 `npm run verify:all` 通过：21 个隔离 SQLite 服务端用例、10 个 Chromium/WebKit 桌面/平板/手机模拟 E2E 以及前端格式/lint/typecheck/content/unit/build 均通过。Firefox 在本机仍未验证（原因见 STATUS）；E2E 的父母导入 UI 使用 API mock，真实 API 数据/事务由服务端隔离 SQLite 测试验证。
 
 执行 `npm run verify`、`npm run verify:server`、`npm run test:e2e`，用固定时钟和真实事务验证算法、并发、导入回滚与授权。预期全 0；算法边界不依赖真实系统日期。对 PRD 示例做可执行 fixture，但也测试反例与随机输入不变量。
 
