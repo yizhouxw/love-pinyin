@@ -20,14 +20,12 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
       { id: 'b', label: 'pā' },
       { id: 'c', label: 'mā' },
     ],
-    answer: { optionId: 'a' },
   };
   const skipExercise = {
     id: 'skip-exercise-e2e',
     type: 'symbol-choice',
     prompt: '再找一张拼音卡片',
     options: exercise.options,
-    answer: { optionId: 'a' },
   };
   const session = {
     id: 'session-e2e',
@@ -108,7 +106,6 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
               type: 'listen-choice',
               prompt: '待标准音准备后练习',
               options: exercise.options,
-              answer: exercise.answer,
             },
           ],
         },
@@ -196,6 +193,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
         json: {
           attemptId: 'attempt-e2e',
           correct: true,
+          correctOptionId: 'a',
           firstTryCorrect: true,
           hintUsed: false,
           mastery: { status: 'practicing' },

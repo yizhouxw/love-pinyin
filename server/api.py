@@ -109,6 +109,10 @@ def _require_parent(device: dict) -> dict:
     return device
 
 
+def _public_exercise(question: dict) -> dict:
+    return {key: value for key, value in question.items() if key not in {"answer", "hint"}}
+
+
 def _create_pairing_code() -> dict:
     code = "".join(secrets.choice("23456789ABCDEFGHJKLMNPQRSTUVWXYZ") for _ in range(8))
     with transaction() as db:
@@ -300,7 +304,7 @@ def bootstrap(request: Request, lp_session: str | None = Cookie(default=None)) -
 @router.get("/curriculum")
 def curriculum(device: dict = Depends(paired)) -> dict:
     data = load_curriculum()
-    return {
+    result = {
         key: data[key]
         for key in (
             "id",
@@ -315,6 +319,8 @@ def curriculum(device: dict = Depends(paired)) -> dict:
             "reviewStatus",
         )
     }
+    result["exercises"] = [_public_exercise(item) for item in data["exercises"]]
+    return result
 
 
 class LessonChoice(BaseModel):
@@ -824,7 +830,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
         tasks = [
             {
                 "instanceId": item["id"],
-                "exercise": exercises[item["exercise_id"]],
+                "exercise": _public_exercise(exercises[item["exercise_id"]]),
             }
             for item in sorted(instance_groups[session["id"]], key=lambda row: row["position"])
         ]
@@ -1023,7 +1029,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                     session_id,
                 ),
             )
-            tasks.append({"instanceId": instance_id, "exercise": q})
+            tasks.append({"instanceId": instance_id, "exercise": _public_exercise(q)})
         db.execute(
             """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,tasks_json)
                VALUES(?,?,?,?,?,?)""",
@@ -1333,6 +1339,7 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
             "requestId": body.requestId,
             "instanceId": instance_id,
             "answerOptionId": body.answerOptionId,
+            "correctOptionId": question["answer"].get("optionId"),
             "correct": body.answerOptionId == question["answer"].get("optionId"),
             "firstTryCorrect": bool(first_correct),
             "hintUsed": bool(instance["hint_used"]),

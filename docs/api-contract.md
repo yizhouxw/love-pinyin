@@ -20,7 +20,7 @@
 | DELETE `/session`                 | Cookie + CSRF              | 204 清本设备配对，不删除家庭数据                                                                |
 | GET `/devices`                    | 家长配对会话               | 仅设备 ID、标签、加入时间和当前设备标记；不返回任何令牌                                         |
 | DELETE `/devices/{deviceId}`      | 家长 + CSRF                | 撤销同一家庭的次设备；不能撤销当前家长设备                                                      |
-| GET `/curriculum`                 | 配对                       | 已审校版本内容及 ETag；开发模式明确草稿                                                         |
+| GET `/curriculum`                 | 配对                       | 课程内容明确为草稿；题目不含答案/提示，答案只在作答或请求提示后返回                             |
 | GET `/audio/{id}`                 | 配对 + 登记 id             | 正确 MIME / Range / 哈希；缺失404；禁止目录穿越                                                 |
 | GET `/profiles`                   | 配对                       | 本地昵称/随机头像ID，不要求真名                                                                 |
 | GET `/profiles/{id}/progress`     | 配对                       | `ProgressSnapshot` 与 revision                                                                  |

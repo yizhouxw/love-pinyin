@@ -24,7 +24,6 @@ type Exercise = {
   type: string;
   prompt: string;
   options: Option[];
-  answer: { optionId: string };
 };
 type Knowledge = {
   id: string;
@@ -355,10 +354,9 @@ export function App() {
                         requestId: idempotencyKey(),
                         answerOptionId: option.id,
                       }),
-                    })) as Omit<Answer, 'correctOptionId' | 'selectedOptionId'>;
+                    })) as Omit<Answer, 'selectedOptionId'>;
                     setAnswer({
                       ...result,
-                      correctOptionId: question.answer.optionId,
                       selectedOptionId: option.id,
                     });
                     await refreshProgressOnly();
