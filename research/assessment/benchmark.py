@@ -23,7 +23,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-VERSION = "poc-evaluator-0.2.0"
+VERSION = "poc-evaluator-0.3.0"
 BOOTSTRAP_REPLICATES = 2000
 BOOTSTRAP_SEED = 20260926
 CONTENT_PATH = Path(__file__).resolve().parents[2] / "content" / "curriculum.json"
@@ -83,8 +83,8 @@ def cohen_kappa(pairs: list[tuple[str, str]]) -> dict[str, float | int | None]:
 
 def _check_manifest(manifest: Any, allowed_target_ids: set[str]) -> list[dict[str, Any]]:
     _require(
-        isinstance(manifest, dict) and manifest.get("schemaVersion") == 1,
-        "manifest schemaVersion must be 1",
+        isinstance(manifest, dict) and manifest.get("schemaVersion") == 2,
+        "manifest schemaVersion must be 2",
     )
     _require(
         set(manifest) == {"schemaVersion", "datasetId", "contentVersion", "items"},
@@ -108,8 +108,9 @@ def _check_manifest(manifest: Any, allowed_target_ids: set[str]) -> list[dict[st
         "environmentClass",
         "challengeClass",
         "split",
-        "annotatorLabels",
+        "annotations",
         "adjudicatedLabel",
+        "adjudicatorRef",
         "consentRef",
         "sha256",
     }
@@ -143,18 +144,43 @@ def _check_manifest(manifest: Any, allowed_target_ids: set[str]) -> list[dict[st
         _require(
             item.get("adjudicatedLabel") in LABELS, f"invalid adjudicatedLabel for {sample_id}"
         )
-        labels = item.get("annotatorLabels")
+        annotations = item.get("annotations")
         _require(
-            isinstance(labels, list)
-            and len(labels) == 2
-            and all(label in LABELS for label in labels),
-            f"two valid independent labels required for {sample_id}",
+            isinstance(annotations, list)
+            and len(annotations) == 2
+            and all(
+                isinstance(annotation, dict)
+                and set(annotation) == {"reviewerRef", "label"}
+                and isinstance(annotation["reviewerRef"], str)
+                and ID_PATTERN.fullmatch(annotation["reviewerRef"]) is not None
+                and annotation["label"] in LABELS
+                for annotation in annotations
+            ),
+            f"two valid independent annotations required for {sample_id}",
+        )
+        reviewer_refs = [annotation["reviewerRef"] for annotation in annotations]
+        _require(
+            reviewer_refs[0] != reviewer_refs[1],
+            f"two distinct reviewers required for {sample_id}",
         )
         _require(
             isinstance(item.get("consentRef"), str)
             and ID_PATTERN.fullmatch(item["consentRef"]) is not None,
             f"opaque consentRef required for {sample_id}",
         )
+        adjudicator = item["adjudicatorRef"]
+        if annotations[0]["label"] == annotations[1]["label"]:
+            _require(
+                item["adjudicatedLabel"] == annotations[0]["label"] and adjudicator is None,
+                f"consensus labels must be retained without third-party adjudication: {sample_id}",
+            )
+        else:
+            _require(
+                isinstance(adjudicator, str)
+                and ID_PATTERN.fullmatch(adjudicator) is not None
+                and adjudicator not in reviewer_refs,
+                f"disagreement requires a distinct opaque third adjudicator: {sample_id}",
+            )
         _require(
             re.fullmatch(r"[a-f0-9]{64}", str(item.get("sha256", ""))) is not None,
             f"valid SHA-256 required for {sample_id}",
@@ -467,7 +493,9 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
         "atLeast30HeldOutTargetAgeSpeakers": len(target_children) >= 30,
         "atLeast600AdjudicatedSamples": len(items) >= 600,
     }
-    labels = [(item["annotatorLabels"][0], item["annotatorLabels"][1]) for item in test_items]
+    labels = [
+        tuple(annotation["label"] for annotation in item["annotations"]) for item in test_items
+    ]
     return {
         "reportVersion": VERSION,
         "createdAt": datetime.now(UTC).isoformat(timespec="seconds"),

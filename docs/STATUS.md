@@ -44,7 +44,7 @@
 | npm ci / uv锁定安装     | 在本机成功；官方registry URL和hash入锁文件                                        | 不保证未来离线首次安装，无外部模型已备齐承诺             |
 | 前端格式/lint/类型/构建 | 通过                                                                              | 开发基线页，不是业务功能                                 |
 | 内容结构和回归          | 通过；3个测试                                                                     | 不能替代教学审校                                         |
-| 服务端lint/格式/API测试 | 通过；56个API/领域/PoC清单测试                                                    | 评分仍未就绪；评分接口拒绝而不读取录音                   |
+| 服务端lint/格式/API测试 | 通过；58个API/领域/PoC清单测试                                                    | 评分仍未就绪；评分接口拒绝而不读取录音                   |
 | 同源B/S实际启动         | 通过：同一Mac进程返回网页、health和capabilities                                   | 仅本机loopback；未配置真机HTTPS信任                      |
 | Chromium/WebKit         | 通过；5个桌面/手机/平板模拟项目、10个E2E案例含320px/200%文字和点击目标检查        | 不是iPad/iPhone真机证据                                  |
 | Firefox                 | 本机macOS27的Playwright启动兼容问题，单列为未验证                                 | 完整项目保留在Linux CI；尚未创建远程仓库，未有远程CI结果 |

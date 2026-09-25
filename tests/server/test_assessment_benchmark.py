@@ -28,8 +28,12 @@ def _item(**overrides):
         "environmentClass": "quiet",
         "challengeClass": "speech",
         "split": "development",
-        "annotatorLabels": ["correct", "correct"],
+        "annotations": [
+            {"reviewerRef": "reviewer_01", "label": "correct"},
+            {"reviewerRef": "reviewer_02", "label": "correct"},
+        ],
         "adjudicatedLabel": "correct",
+        "adjudicatorRef": None,
         "consentRef": "consent_01",
         "sha256": "0" * 64,
     }
@@ -38,7 +42,7 @@ def _item(**overrides):
 
 def _manifest(item):
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "datasetId": "test-data",
         "contentVersion": "curriculum-v1",
         "items": [item],
@@ -47,7 +51,10 @@ def _manifest(item):
 
 def test_manifest_requires_challenge_audio_to_use_challenge_target():
     row = _item(challengeClass="noise", adjudicatedLabel="uncertain")
-    row["annotatorLabels"] = ["uncertain", "uncertain"]
+    row["annotations"] = [
+        {"reviewerRef": "reviewer_01", "label": "uncertain"},
+        {"reviewerRef": "reviewer_02", "label": "uncertain"},
+    ]
     with pytest.raises(ManifestError, match="challenge target"):
         _check_manifest(_manifest(row), {"rt-a"})
 
@@ -62,10 +69,43 @@ def test_manifest_accepts_well_formed_challenge_metadata():
         targetId="challenge",
         targetClass="syllable",
         challengeClass="speaker-replay",
-        annotatorLabels=["uncertain", "uncertain"],
+        annotations=[
+            {"reviewerRef": "reviewer_01", "label": "uncertain"},
+            {"reviewerRef": "reviewer_02", "label": "uncertain"},
+        ],
         adjudicatedLabel="uncertain",
     )
     assert _check_manifest(_manifest(row), {"rt-a"}) == [row]
+
+
+def test_disagreement_requires_a_distinct_third_adjudicator():
+    row = _item(
+        annotations=[
+            {"reviewerRef": "reviewer_01", "label": "correct"},
+            {"reviewerRef": "reviewer_02", "label": "incorrect"},
+        ],
+        adjudicatedLabel="uncertain",
+    )
+    with pytest.raises(ManifestError, match="distinct opaque third adjudicator"):
+        _check_manifest(_manifest(row), {"rt-a"})
+
+    row["adjudicatorRef"] = "reviewer_03"
+    assert _check_manifest(_manifest(row), {"rt-a"}) == [row]
+
+
+def test_consensus_cannot_be_overruled_and_reviewers_must_be_distinct():
+    row = _item(adjudicatedLabel="incorrect")
+    with pytest.raises(ManifestError, match="consensus labels must be retained"):
+        _check_manifest(_manifest(row), {"rt-a"})
+
+    row = _item(
+        annotations=[
+            {"reviewerRef": "reviewer_01", "label": "correct"},
+            {"reviewerRef": "reviewer_01", "label": "correct"},
+        ]
+    )
+    with pytest.raises(ManifestError, match="two distinct reviewers"):
+        _check_manifest(_manifest(row), {"rt-a"})
 
 
 def test_cluster_interval_reflects_repeated_samples_from_the_same_speakers():
@@ -78,7 +118,10 @@ def test_cluster_interval_reflects_repeated_samples_from_the_same_speakers():
                 sampleId=sample_id,
                 speakerGroupId=speaker,
                 adjudicatedLabel=label,
-                annotatorLabels=[label, label],
+                annotations=[
+                    {"reviewerRef": "reviewer_01", "label": label},
+                    {"reviewerRef": "reviewer_02", "label": label},
+                ],
             )
             items.append(row)
             predictions[sample_id] = {"status": "pass"}
@@ -123,14 +166,17 @@ def test_evaluator_emits_cluster_intervals_without_sample_identifiers(tmp_path):
             targetClass=target["targetType"],
             split="test",
             adjudicatedLabel=label,
-            annotatorLabels=[label, label],
+            annotations=[
+                {"reviewerRef": "reviewer_01", "label": label},
+                {"reviewerRef": "reviewer_02", "label": label},
+            ],
             sha256=hashlib.sha256(audio_path.read_bytes()).hexdigest(),
         )
         items.append(row)
         prediction_rows.append({"sampleId": sample_id, "status": "pass"})
     content_version = load_curriculum()["contentVersion"]
     manifest = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "datasetId": "fixture-set",
         "contentVersion": content_version,
         "items": items,
@@ -147,7 +193,7 @@ def test_evaluator_emits_cluster_intervals_without_sample_identifiers(tmp_path):
 
     report = evaluate(manifest, predictions, audio_dir)
 
-    assert report["reportVersion"] == "poc-evaluator-0.2.0"
+    assert report["reportVersion"] == "poc-evaluator-0.3.0"
     assert report["testMetrics"]["clearSampleAccuracy"]["speakerClusterCi95"]["ci95"] == [
         0.0,
         1.0,
@@ -182,7 +228,10 @@ def test_adult_test_performance_cannot_mask_child_test_errors(tmp_path):
                 targetClass=target["targetType"],
                 split="test",
                 adjudicatedLabel=label,
-                annotatorLabels=[label, label],
+                annotations=[
+                    {"reviewerRef": "reviewer_01", "label": label},
+                    {"reviewerRef": "reviewer_02", "label": label},
+                ],
                 sha256=hashlib.sha256(audio_path.read_bytes()).hexdigest(),
             )
         )
@@ -190,7 +239,7 @@ def test_adult_test_performance_cannot_mask_child_test_errors(tmp_path):
     content_version = load_curriculum()["contentVersion"]
     report = evaluate(
         {
-            "schemaVersion": 1,
+            "schemaVersion": 2,
             "datasetId": "child-mask-fixture",
             "contentVersion": content_version,
             "items": items,

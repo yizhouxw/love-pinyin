@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://love-pinyin.invalid/schemas/assessment-manifest-v1.json",
+  "$id": "https://love-pinyin.invalid/schemas/assessment-manifest-v2.json",
   "title": "Private pronunciation assessment research manifest",
   "description": "Metadata only. Store WAV files in an access-controlled local directory as <sampleId>.wav; never commit recordings or this private manifest.",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "datasetId", "contentVersion", "items"],
   "properties": {
-    "schemaVersion": { "const": 1 },
+    "schemaVersion": { "const": 2 },
     "datasetId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{3,64}$" },
     "contentVersion": { "type": "string", "pattern": "^[A-Za-z0-9_.-]{1,80}$" },
     "items": {
@@ -25,8 +25,9 @@
           "environmentClass",
           "challengeClass",
           "split",
-          "annotatorLabels",
+          "annotations",
           "adjudicatedLabel",
+          "adjudicatorRef",
           "consentRef",
           "sha256"
         ],
@@ -58,16 +59,28 @@
           "environmentClass": { "enum": ["quiet", "ordinary", "noisy"] },
           "challengeClass": { "enum": ["speech", "silence", "noise", "speaker-replay"] },
           "split": { "enum": ["development", "calibration", "test"] },
-          "annotatorLabels": {
+          "annotations": {
             "type": "array",
             "minItems": 2,
             "maxItems": 2,
-            "items": { "enum": ["correct", "incorrect", "uncertain"] }
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["reviewerRef", "label"],
+              "properties": {
+                "reviewerRef": { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,64}$" },
+                "label": { "enum": ["correct", "incorrect", "uncertain"] }
+              }
+            }
           },
           "adjudicatedLabel": { "enum": ["correct", "incorrect", "uncertain"] },
+          "adjudicatorRef": {
+            "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,64}$" }],
+            "description": "Required only when the two labels disagree; opaque local reviewer reference."
+          },
           "consentRef": {
             "type": "string",
-            "pattern": "^[A-Za-z0-9_-]{8,80}$",
+            "pattern": "^[A-Za-z0-9_-]{8,64}$",
             "description": "Opaque reference to locally held consent evidence; never a name, contact detail or document path."
           },
           "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
