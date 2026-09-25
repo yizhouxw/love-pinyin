@@ -15,6 +15,7 @@ type Lesson = {
   order: number;
   title: string;
   objectives: string[];
+  knowledgeIds: string[];
   exerciseIds: string[];
   suggestedSessionMinutes?: number;
 };
@@ -36,7 +37,14 @@ type Session = {
 type Progress = {
   revision: number;
   selectedLessonId: string;
-  mastery: { status: string }[];
+  mastery: {
+    knowledgeId: string;
+    status: string;
+    reviewDue: boolean;
+    reviewDueDate: string | null;
+    sampleSize: number;
+    correctCount: number;
+  }[];
   attempts: unknown[];
 };
 type Curriculum = { lessons: Lesson[] };
@@ -137,6 +145,7 @@ export function App() {
   const currentLesson = progress ? lessonById.get(progress.selectedLessonId) : undefined;
   const mastery = progress?.mastery ?? [];
   const mastered = mastery.filter((item) => item.status === 'mastered').length;
+  const masteryById = new Map(mastery.map((item) => [item.knowledgeId, item]));
 
   async function act(work: () => Promise<void>) {
     setBusy(true);
@@ -526,6 +535,22 @@ export function App() {
                 <div className="lesson-grid">
                   {lessons.map((lesson: Json) => {
                     const locked = lesson.order > (currentLesson?.order ?? 1);
+                    const lessonMastery = (lesson.knowledgeIds as string[])
+                      .map((id) => masteryById.get(id))
+                      .filter((item) => item !== undefined);
+                    const dueCount = lessonMastery.filter((item) => item.reviewDue).length;
+                    const masteredCount = lessonMastery.filter(
+                      (item) => item.status === 'mastered',
+                    ).length;
+                    const practiced = lessonMastery.some(
+                      (item) => item.sampleSize > 0 || item.status !== 'not-started',
+                    );
+                    const progressLabel =
+                      lessonMastery.length > 0 && masteredCount === lessonMastery.length
+                        ? '已掌握'
+                        : practiced
+                          ? '练习中'
+                          : '未开始';
                     return (
                       <button
                         key={lesson.id}
@@ -541,12 +566,13 @@ export function App() {
                         </span>
                         <strong>{lesson.title}</strong>
                         <small>
-                          {lesson.order === currentLesson?.order
-                            ? '正在学习'
-                            : locked
-                              ? '之后解锁'
-                              : '已开放复习'}
+                          {locked
+                            ? '之后解锁'
+                            : `${lesson.order === currentLesson?.order ? '正在学习 · ' : ''}${progressLabel}`}
                         </small>
+                        {dueCount > 0 && (
+                          <span className="review-due-badge">到期复习 · {dueCount} 项</span>
+                        )}
                       </button>
                     );
                   })}

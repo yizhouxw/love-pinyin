@@ -50,6 +50,7 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
               order: 1,
               title: '认识拼音',
               objectives: ['认识声母和韵母'],
+              knowledgeIds: ['k-e2e'],
               exerciseIds: [exercise.id],
               suggestedSessionMinutes: 5,
             },
@@ -61,7 +62,16 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
         json: {
           revision: 0,
           selectedLessonId: 'lesson-01',
-          mastery: [],
+          mastery: [
+            {
+              knowledgeId: 'k-e2e',
+              status: 'mastered',
+              reviewDue: true,
+              reviewDueDate: '2026-09-26',
+              sampleSize: 5,
+              correctCount: 4,
+            },
+          ],
           attempts: [],
         },
       });
@@ -111,4 +121,6 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
   await expect(page.getByLabel('本次练习小结')).toContainText('跳过：1 题');
   await page.getByRole('button', { name: '回到小岛' }).click();
   await expect(page.getByRole('heading', { name: '你好，小小拼音家' })).toBeVisible();
+  await expect(page.locator('.lesson-tile')).toContainText('已掌握');
+  await expect(page.getByText('到期复习 · 1 项')).toBeVisible();
 });
