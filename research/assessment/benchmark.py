@@ -179,6 +179,15 @@ def _check_manifest(manifest: Any, allowed_target_ids: set[str]) -> list[dict[st
                 item["adjudicatedLabel"] == "uncertain",
                 f"challenge sample must be adjudicated uncertain: {sample_id}",
             )
+            _require(
+                item["targetId"] == "challenge" and item["targetClass"] == "syllable",
+                f"challenge sample must use the challenge target and syllable class: {sample_id}",
+            )
+        else:
+            _require(
+                item["targetId"] != "challenge",
+                f"speech sample cannot use the challenge target: {sample_id}",
+            )
     _require(
         all(len(splits) == 1 for splits in speaker_splits.values()),
         "speakerGroupId leakage across development/calibration/test splits",
