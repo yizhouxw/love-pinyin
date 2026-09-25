@@ -1,43 +1,48 @@
-"""Infrastructure baseline only. Assessment stays unavailable until SPEC-000 passes."""
+"""Single-process B/S application for the private Mac Studio server."""
 
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-app = FastAPI(
-    title="Love Pinyin Local API",
-    version="0.1.0",
-    docs_url=None,
-    redoc_url=None,
-)
+from server.api import local_router, router
+from server.content import load_curriculum
+from server.storage import ensure_household, migrate
 
 
-@app.get("/api/v1/health")
-def health() -> dict[str, str]:
-    return {"status": "ok", "stage": "planning-baseline", "version": "0.1.0"}
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    migrate()
+    ensure_household(load_curriculum()["contentVersion"])
+    yield
 
 
-@app.get("/api/v1/capabilities")
-def capabilities() -> dict:
-    return {
-        "assessment": {"available": False, "reason": "pending-local-poc"},
-        "audio": {"available": False, "reason": "pending-recording-and-review"},
-        "externalAudioTransfer": False,
-    }
+app = FastAPI(title="Love Pinyin local API", version="0.1.0", lifespan=lifespan)
 
 
-@app.post("/api/v1/assessments")
-def assessment_unavailable() -> JSONResponse:
-    # Deliberately do not parse/store audio or manufacture a score in this phase.
-    return JSONResponse(
-        status_code=503,
-        content={"error": {"code": "ASSESSMENT_NOT_READY", "retryable": False}},
-        headers={"Cache-Control": "no-store"},
-    )
+@app.middleware("http")
+async def security_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["Permissions-Policy"] = "microphone=(self), camera=(), geolocation=()"
+    if request.url.path.startswith("/api/"):
+        response.headers["Cache-Control"] = "no-store"
+    return response
 
 
-dist = Path(__file__).resolve().parents[1] / "dist"
-if dist.is_dir():
-    app.mount("/", StaticFiles(directory=dist, html=True), name="web")
+app.include_router(local_router)
+app.include_router(router)
+
+DIST = Path(__file__).resolve().parents[1] / "dist"
+if DIST.exists():
+    app.mount("/assets", StaticFiles(directory=DIST / "assets"), name="assets")
+
+    @app.get("/{path:path}", include_in_schema=False)
+    def web_app(path: str):
+        candidate = DIST / path
+        if path and candidate.is_file() and DIST in candidate.resolve().parents:
+            return FileResponse(candidate)
+        return FileResponse(DIST / "index.html")

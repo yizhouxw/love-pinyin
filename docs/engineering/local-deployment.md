@@ -1,6 +1,6 @@
 # Mac Studio 本地部署与开发
 
-当前开发只监听127.0.0.1，没有开放公网、安装系统根证书或配置launchd。以下局域网部署在SPEC-001认证完成后执行；不要把未鉴权基线直接暴露成家庭正式服务。
+当前应用提供家长配对、同源会话认证、CSRF/来源校验和 SQLite 持久化。局域网命令要求显式指定 HTTPS 证书；这仍是开发/家庭试用部署，不代表通过儿童产品发布门禁。本仓库不会开放公网、安装系统根证书或配置 launchd。
 
 ## 开发与统一B/S预览
 
@@ -24,11 +24,13 @@ mkcert -cert-file certs/lan.pem -key-file certs/lan-key.pem mac-studio.local 192
 
 用 `mkcert -CAROOT` 找到 `rootCA.pem`，仅将公有根证书导入自家iPad/iPhone，并在系统证书信任设置明确启用。**绝不分发 `rootCA-key.pem` 或 `lan-key.pem`**。Android/Windows等客户端也需信任相同根；若不信任，不以点击忽略浏览器警告作为验收通过。
 
-认证和发布门禁完成后启动：
+按上文生成受信任证书后，设置证书文件路径并启动：
 
 ```sh
 npm run build
-uv run --locked uvicorn server.main:app --host 0.0.0.0 --port 8443 --ssl-certfile certs/lan.pem --ssl-keyfile certs/lan-key.pem --no-access-log
+export LOVE_PINYIN_TLS_CERT="$PWD/certs/lan.pem"
+export LOVE_PINYIN_TLS_KEY="$PWD/certs/lan-key.pem"
+npm run serve:lan
 ```
 
 浏览器访问 `https://mac-studio.local:8443`。初次网络权限、防火墙弹窗由维护者批准；只开放家庭LAN，不配置路由器端口转发。静态资源自托管，不依赖字体CDN或Swagger CDN。若未来加反向代理，必须关闭音频上传请求的磁盘缓冲和body日志。
