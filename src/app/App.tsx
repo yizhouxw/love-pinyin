@@ -528,6 +528,7 @@ export function App() {
               progress={progress}
               lessonChoice={lessonChoice}
               setLessonChoice={setLessonChoice}
+              busy={busy}
               refresh={refresh}
               act={act}
             />
@@ -792,12 +793,17 @@ function ParentPanel({
   progress,
   lessonChoice,
   setLessonChoice,
+  busy,
   refresh,
   act,
 }: Json) {
   const [confirm, setConfirm] = useState('');
   const [exportJson, setExportJson] = useState('');
   const [exportRevision, setExportRevision] = useState<number | null>(null);
+  const [importPreview, setImportPreview] = useState<Json | null>(null);
+  const [importFileName, setImportFileName] = useState('');
+  const [importConfirmation, setImportConfirmation] = useState('');
+  const [importComplete, setImportComplete] = useState(false);
   const [newDeviceCode, setNewDeviceCode] = useState('');
   const [devices, setDevices] = useState<Json[]>([]);
   const [revokeDeviceId, setRevokeDeviceId] = useState('');
@@ -970,6 +976,84 @@ function ParentPanel({
           value={exportJson}
         />
       )}
+      <div className="parent-setting import-setting">
+        <div>
+          <strong>从家庭备份恢复</strong>
+          <p>备份只发送到此 Mac Studio 的家庭网络服务，不会发送给第三方。</p>
+        </div>
+        <label className="file-control">
+          选择 JSON 备份
+          <input
+            aria-label="导入家庭备份文件"
+            type="file"
+            accept="application/json,.json"
+            disabled={!isParent}
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              event.currentTarget.value = '';
+              setImportPreview(null);
+              setImportConfirmation('');
+              setImportComplete(false);
+              if (!file) return;
+              void act(async () => {
+                if (file.size > 1_048_576) throw new Error('BACKUP_TOO_LARGE');
+                const contents = await file.text();
+                const result = await api('/profiles/import-preview', {
+                  method: 'POST',
+                  body: contents,
+                });
+                setImportFileName(file.name);
+                setImportPreview(result);
+              });
+            }}
+          />
+        </label>
+        {importPreview && (
+          <div className="import-preview" aria-label="备份导入预览">
+            <strong>{importFileName} · 已通过格式检查</strong>
+            <p>
+              将整体替换为 {importPreview.counts.attempts} 条练习、
+              {importPreview.counts.sessions} 个会话、
+              {importPreview.counts.skippedInstances} 道跳过题和
+              {importPreview.counts.reviewPlans} 项复习计划。
+            </p>
+            <p>此操作会替换本家庭全部学习记录；已经下载的旧备份无法远程删除。</p>
+            <label className="import-confirm-label">
+              输入“替换家庭学习档案”确认
+              <input
+                aria-label="确认替换家庭学习档案文字"
+                value={importConfirmation}
+                onChange={(event) => setImportConfirmation(event.target.value)}
+              />
+            </label>
+            <button
+              className="danger-button"
+              disabled={!isParent || importConfirmation !== '替换家庭学习档案' || busy}
+              onClick={() =>
+                void act(async () => {
+                  await api('/profiles/import', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                      previewToken: importPreview.previewToken,
+                      sha256: importPreview.sha256,
+                      expectedRevision: importPreview.revision,
+                    }),
+                  });
+                  setImportPreview(null);
+                  setImportConfirmation('');
+                  setImportComplete(true);
+                  setExportJson('');
+                  setExportRevision(null);
+                  await refresh();
+                })
+              }
+            >
+              确认替换家庭数据
+            </button>
+          </div>
+        )}
+        {importComplete && <p role="status">家庭数据已恢复。</p>}
+      </div>
       <div className="parent-setting danger-setting">
         <div>
           <strong>删除所有学习记录</strong>

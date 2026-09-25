@@ -5,6 +5,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   let active = false;
   let answered = false;
   let skipped = false;
+  let profileRevision = 0;
+  let imported = false;
   let devices = [
     { id: 'device-e2e', label: '测试设备', createdAt: '2026-09-26T00:00:00Z', current: true },
     { id: 'tablet-e2e', label: '平板', createdAt: '2026-09-26T00:00:00Z', current: false },
@@ -114,7 +116,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
     } else if (path === '/profiles/progress') {
       await route.fulfill({
         json: {
-          revision: 0,
+          revision: profileRevision,
           selectedLessonId: 'lesson-01',
           mastery: [
             {
@@ -129,6 +131,29 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
           attempts: [],
         },
       });
+    } else if (path === '/profiles/export') {
+      await route.fulfill({ json: { schemaVersion: 2 } });
+    } else if (path === '/profiles/import-preview') {
+      await route.fulfill({
+        json: {
+          previewToken: 'preview-token-e2e-long-enough',
+          sha256: 'a'.repeat(64),
+          revision: profileRevision,
+          counts: {
+            sessions: 2,
+            exerciseInstances: 12,
+            attempts: 5,
+            skippedInstances: 1,
+            reviewPlans: 1,
+            assessmentSummaries: 0,
+          },
+          willReplaceEntireHousehold: true,
+        },
+      });
+    } else if (path === '/profiles/import') {
+      imported = true;
+      profileRevision += 1;
+      await route.fulfill({ json: { imported: true, profile: { revision: profileRevision } } });
     } else if (path === '/devices' && route.request().method() === 'GET') {
       await route.fulfill({ json: { devices } });
     } else if (path === '/devices/tablet-e2e' && route.request().method() === 'DELETE') {
@@ -235,6 +260,18 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByText('到期复习 · 1 项')).toBeVisible();
   await page.getByRole('button', { name: '家长管理' }).click();
   await expect(page.getByText('已连接设备')).toBeVisible();
+  await page.getByLabel('导入家庭备份文件').setInputFiles({
+    name: 'family-backup.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from('{"schemaVersion":2}'),
+  });
+  const preview = page.getByLabel('备份导入预览');
+  await expect(preview).toContainText('将整体替换为 5 条练习');
+  await expect(page.getByRole('button', { name: '确认替换家庭数据' })).toBeDisabled();
+  await page.getByLabel('确认替换家庭学习档案文字').fill('替换家庭学习档案');
+  await page.getByRole('button', { name: '确认替换家庭数据' }).click();
+  await expect(page.getByRole('status')).toHaveText('家庭数据已恢复。');
+  expect(imported).toBe(true);
   await expect(page.getByText('平板', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: '撤销设备' }).click();
   await page.getByRole('button', { name: '确认撤销' }).click();
