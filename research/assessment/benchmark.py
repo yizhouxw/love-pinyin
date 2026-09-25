@@ -525,6 +525,9 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
         "targetAgeChildTestMetrics": child_rates,
         "annotationAgreement": cohen_kappa(labels),
         "byTargetClass": _grouped(test_items, predicted, "targetClass"),
+        # Target IDs map to curriculum items, not people. Per-target reporting
+        # prevents a weak syllable/tone target from disappearing in class means.
+        "byTargetId": _grouped(test_items, predicted, "targetId"),
         "byDeviceClass": _grouped(test_items, predicted, "deviceClass"),
         "byEnvironmentClass": _grouped(test_items, predicted, "environmentClass"),
         "byCohort": _grouped(test_items, predicted, "cohort"),

@@ -199,6 +199,7 @@ def test_evaluator_emits_cluster_intervals_without_sample_identifiers(tmp_path):
         1.0,
     ]
     assert report["dataset"]["testTargetAgeSpeakers"] == 2
+    assert report["byTargetId"][target_id]["clearSampleAccuracy"]["denominator"] == 2
     serialized = str(report)
     assert "fixture_0000" not in serialized
     assert "speaker_0000" not in serialized
