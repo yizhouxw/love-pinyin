@@ -550,3 +550,149 @@ test('旧课程版本的当前课提示家长重选并保留学习路线', async
   await expect(page.getByRole('heading', { name: '第 2 课 · 新的当前课' })).toBeVisible();
   await expect(page.getByRole('button', { name: '开始今天的练习 →' })).toBeEnabled();
 });
+
+test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) => {
+  let active: Record<string, unknown> | null = null;
+  const results: Record<string, Record<string, unknown>> = {};
+  const answers: string[] = [];
+  let finished = false;
+  const first = {
+    id: 'review-exercise-1',
+    type: 'tone-choice',
+    prompt: 'ā 是第几声？',
+    options: [
+      { id: 'first-tone', label: 'ā' },
+      { id: 'second-tone', label: 'á' },
+    ],
+  };
+  const second = {
+    id: 'review-exercise-2',
+    type: 'symbol-choice',
+    prompt: '找出带一声的拼音',
+    options: [
+      { id: 'first-tone', label: 'mā' },
+      { id: 'second-tone', label: 'má' },
+    ],
+  };
+  const reviewSession = {
+    id: 'review-session-e2e',
+    reviewKnowledgeId: 'k-review',
+    tasks: [
+      { instanceId: 'review-instance-1', exercise: first },
+      { instanceId: 'review-instance-2', exercise: second },
+    ],
+    results,
+    draftContent: true,
+  };
+
+  await page.route('**/api/v1/**', async (route) => {
+    const path = new URL(route.request().url()).pathname.replace('/api/v1', '');
+    if (path === '/bootstrap') {
+      await route.fulfill({
+        json: {
+          paired: true,
+          device: { label: '孩子平板', isParent: false },
+          profile: {
+            id: 'review-profile',
+            selectedLessonId: 'lesson-01',
+            revision: 4,
+            roundsSinceBreak: 0,
+          },
+        },
+      });
+    } else if (path === '/curriculum') {
+      await route.fulfill({
+        json: {
+          inventory: { initials: ['m'] },
+          lessons: [
+            {
+              id: 'lesson-01',
+              order: 1,
+              title: '认识拼音',
+              objectives: ['认识拼音和声调'],
+              knowledgeIds: ['k-review'],
+              exerciseIds: [first.id, second.id],
+              suggestedSessionMinutes: 5,
+            },
+          ],
+          knowledgeItems: [
+            {
+              id: 'k-review',
+              lessonId: 'lesson-01',
+              category: 'tone',
+              symbol: 'ā',
+              teachingNote: '观察声调符号。',
+              reviewStatus: 'needs-teacher-review',
+            },
+          ],
+          exercises: [first, second],
+        },
+      });
+    } else if (path === '/profiles/progress') {
+      await route.fulfill({
+        json: {
+          revision: 4,
+          selectedLessonId: 'lesson-01',
+          settings: { soundEnabled: true, reducedMotion: false },
+          mastery: [
+            {
+              knowledgeId: 'k-review',
+              status: 'mastered',
+              reviewDue: true,
+              reviewDueDate: '2026-09-26',
+              sampleSize: 5,
+              correctCount: 5,
+            },
+          ],
+          attempts: [],
+          completedSessions: 0,
+        },
+      });
+    } else if (path === '/sessions/current') {
+      await route.fulfill({ json: active ? { ...reviewSession, results } : null });
+    } else if (path === '/reviews/k-review/sessions' && route.request().method() === 'POST') {
+      active = reviewSession;
+      await route.fulfill({ json: reviewSession });
+    } else if (/^\/instances\/review-instance-[12]\/answer$/.test(path)) {
+      const instanceId = path.includes('review-instance-1')
+        ? 'review-instance-1'
+        : 'review-instance-2';
+      const answer = route.request().postDataJSON();
+      answers.push(answer.answerOptionId);
+      results[instanceId] = {
+        instanceId,
+        answerOptionId: answer.answerOptionId,
+        correctOptionId: 'first-tone',
+        correct: answer.answerOptionId === 'first-tone',
+        firstTryCorrect: answer.answerOptionId === 'first-tone',
+        hintUsed: false,
+        mastery: { status: 'mastered' },
+      };
+      await route.fulfill({ json: results[instanceId] });
+    } else if (path === '/sessions/review-session-e2e/finish') {
+      finished = true;
+      active = null;
+      await route.fulfill({ json: { finished: true, completedRound: true } });
+    } else {
+      await route.fulfill({ status: 404, json: { detail: { code: 'NOT_FOUND' } } });
+    }
+  });
+
+  await page.goto('/');
+  await page.locator('.lesson-tile').first().click();
+  await expect(page.getByRole('heading', { name: 'ā' })).toBeVisible();
+  await page.getByRole('button', { name: '开始两题复习' }).click();
+  await expect(page.getByText('拼音小岛 · 两题复习')).toBeVisible();
+  await expect(page.getByRole('heading', { name: first.prompt })).toBeVisible();
+  await page.locator('.options button').first().click();
+  await page.getByRole('button', { name: '继续 →' }).click();
+  await expect(page.getByRole('heading', { name: second.prompt })).toBeVisible();
+  await page.locator('.options button').first().click();
+  await page.getByRole('button', { name: '继续 →' }).click();
+  await expect(page.getByRole('heading', { name: '今天的探索完成啦！' })).toBeVisible();
+  await expect(page.getByLabel('本次练习小结')).toContainText('独立答对：2 题');
+  await page.getByRole('button', { name: '回到小岛' }).click();
+  await expect(page.getByRole('heading', { name: '你好，小小拼音家' })).toBeVisible();
+  expect(answers).toEqual(['first-tone', 'first-tone']);
+  expect(finished).toBe(true);
+});
