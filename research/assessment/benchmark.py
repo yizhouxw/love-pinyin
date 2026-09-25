@@ -13,15 +13,19 @@ import json
 import math
 import os
 import platform
+import random
 import re
 import sys
+import tempfile
 import wave
 from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-VERSION = "poc-evaluator-0.1.0"
+VERSION = "poc-evaluator-0.2.0"
+BOOTSTRAP_REPLICATES = 2000
+BOOTSTRAP_SEED = 20260926
 CONTENT_PATH = Path(__file__).resolve().parents[2] / "content" / "curriculum.json"
 ID_PATTERN = re.compile(r"^[A-Za-z0-9_-]{8,64}$")
 LABELS = {"correct", "incorrect", "uncertain"}
@@ -275,40 +279,124 @@ def _check_predictions(
     return result
 
 
-def _rates(items: list[dict[str, Any]], predictions: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def _metric_counts(
+    items: list[dict[str, Any]], predictions: dict[str, dict[str, Any]]
+) -> dict[str, tuple[int, int]]:
     clear = [item for item in items if item["adjudicatedLabel"] in {"correct", "incorrect"}]
     correct = [item for item in clear if item["adjudicatedLabel"] == "correct"]
     incorrect = [item for item in clear if item["adjudicatedLabel"] == "incorrect"]
     decisions = {item["sampleId"]: predictions[item["sampleId"]]["status"] for item in items}
-    accurate = sum(
-        (decisions[item["sampleId"]] == "pass") == (item["adjudicatedLabel"] == "correct")
-        for item in clear
-        if decisions[item["sampleId"]] != "uncertain"
-    )
-    # Uncertain predictions remain in the accuracy denominator: they are not silently dropped.
-    return {
-        "clearSampleAccuracy": wilson(accurate, len(clear)),
-        "falsePassOnIncorrect": wilson(
-            sum(decisions[item["sampleId"]] == "pass" for item in incorrect), len(incorrect)
+    # Uncertain predictions remain in the accuracy denominator as incorrect.
+    counts = {
+        "clearSampleAccuracy": (
+            sum(
+                decisions[item["sampleId"]] != "uncertain"
+                and (decisions[item["sampleId"]] == "pass")
+                == (item["adjudicatedLabel"] == "correct")
+                for item in clear
+            ),
+            len(clear),
         ),
-        "falseRetryOnCorrect": wilson(
-            sum(decisions[item["sampleId"]] == "retry" for item in correct), len(correct)
+        "falsePassOnIncorrect": (
+            sum(decisions[item["sampleId"]] == "pass" for item in incorrect),
+            len(incorrect),
         ),
-        "uncertainOnClearSpeech": wilson(
-            sum(decisions[item["sampleId"]] == "uncertain" for item in clear), len(clear)
+        "falseRetryOnCorrect": (
+            sum(decisions[item["sampleId"]] == "retry" for item in correct),
+            len(correct),
         ),
-        "challengeRejection": {
-            challenge: wilson(
-                sum(
-                    decisions[item["sampleId"]] == "uncertain"
-                    for item in items
-                    if item["challengeClass"] == challenge
-                ),
-                sum(item["challengeClass"] == challenge for item in items),
-            )
-            for challenge in ("silence", "noise", "speaker-replay")
-        },
+        "uncertainOnClearSpeech": (
+            sum(decisions[item["sampleId"]] == "uncertain" for item in clear),
+            len(clear),
+        ),
     }
+    for challenge in ("silence", "noise", "speaker-replay"):
+        rows = [item for item in items if item["challengeClass"] == challenge]
+        counts[f"challengeRejection:{challenge}"] = (
+            sum(decisions[item["sampleId"]] == "uncertain" for item in rows),
+            len(rows),
+        )
+    return counts
+
+
+def _percentile(sorted_values: list[float], probability: float) -> float:
+    position = (len(sorted_values) - 1) * probability
+    lower = math.floor(position)
+    upper = math.ceil(position)
+    if lower == upper:
+        return sorted_values[lower]
+    fraction = position - lower
+    return sorted_values[lower] * (1 - fraction) + sorted_values[upper] * fraction
+
+
+def _speaker_cluster_interval(
+    items: list[dict[str, Any]],
+    predictions: dict[str, dict[str, Any]],
+    metric: str,
+    *,
+    replicates: int = BOOTSTRAP_REPLICATES,
+    seed: int = BOOTSTRAP_SEED,
+) -> dict[str, Any]:
+    groups = _group_speakers(items)
+    eligible = []
+    for _, group in sorted(groups.items()):
+        counts = _metric_counts(group, predictions)[metric]
+        if counts[1] > 0:
+            eligible.append(counts)
+    if len(eligible) < 2:
+        return {
+            "method": "speaker-cluster percentile bootstrap",
+            "ci95": None,
+            "speakerClusters": len(eligible),
+            "replicates": 0,
+            "reason": "at least two eligible speaker clusters are required",
+        }
+    rng = random.Random(seed)
+    estimates = []
+    for _ in range(replicates):
+        selected = [rng.randrange(len(eligible)) for _ in eligible]
+        numerator = sum(eligible[index][0] for index in selected)
+        denominator = sum(eligible[index][1] for index in selected)
+        if denominator:
+            estimates.append(numerator / denominator)
+    estimates.sort()
+    if len(estimates) < replicates * 0.95:
+        return {
+            "method": "speaker-cluster percentile bootstrap",
+            "ci95": None,
+            "speakerClusters": len(eligible),
+            "replicates": len(estimates),
+            "reason": "too many resamples had an empty metric denominator",
+        }
+    return {
+        "method": "speaker-cluster percentile bootstrap",
+        "ci95": [
+            _percentile(estimates, 0.025),
+            _percentile(estimates, 0.975),
+        ],
+        "speakerClusters": len(eligible),
+        "replicates": len(estimates),
+    }
+
+
+def _rates(items: list[dict[str, Any]], predictions: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    counts = _metric_counts(items, predictions)
+    metrics = {}
+    for name, (numerator, denominator) in counts.items():
+        sample_interval = wilson(numerator, denominator)
+        metrics[name] = {
+            "numerator": numerator,
+            "denominator": denominator,
+            "rate": sample_interval["rate"],
+            "sampleWilsonCi95": sample_interval["ci95"],
+            "speakerClusterCi95": _speaker_cluster_interval(items, predictions, name),
+        }
+    challenge = {
+        name.partition(":")[2]: metrics.pop(name)
+        for name in list(metrics)
+        if name.startswith("challengeRejection:")
+    }
+    return {**metrics, "challengeRejection": challenge}
 
 
 def _grouped(
@@ -352,16 +440,18 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
         item["speakerGroupId"] for item in test_items if item["cohort"] == "target-age-child"
     }
     rates = _rates(test_items, predicted)
+    child_test_items = [item for item in test_items if item["cohort"] == "target-age-child"]
+    child_rates = _rates(child_test_items, predicted)
     overall_children = {
         item["speakerGroupId"] for item in items if item["cohort"] == "target-age-child"
     }
     classifier_rates = [
-        rates["clearSampleAccuracy"]["rate"],
-        rates["falsePassOnIncorrect"]["rate"],
-        rates["falseRetryOnCorrect"]["rate"],
-        rates["uncertainOnClearSpeech"]["rate"],
-        rates["challengeRejection"]["silence"]["rate"],
-        rates["challengeRejection"]["noise"]["rate"],
+        child_rates["clearSampleAccuracy"]["rate"],
+        child_rates["falsePassOnIncorrect"]["rate"],
+        child_rates["falseRetryOnCorrect"]["rate"],
+        child_rates["uncertainOnClearSpeech"]["rate"],
+        child_rates["challengeRejection"]["silence"]["rate"],
+        child_rates["challengeRejection"]["noise"]["rate"],
     ]
     gates = {
         "clearSampleAccuracyAtLeast90Percent": classifier_rates[0] is not None
@@ -374,7 +464,7 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
         and classifier_rates[4] >= 0.95,
         "noiseRejectionAtLeast95Percent": classifier_rates[5] is not None
         and classifier_rates[5] >= 0.95,
-        "atLeast30TargetAgeSpeakers": len(overall_children) >= 30,
+        "atLeast30HeldOutTargetAgeSpeakers": len(target_children) >= 30,
         "atLeast600AdjudicatedSamples": len(items) >= 600,
     }
     labels = [(item["annotatorLabels"][0], item["annotatorLabels"][1]) for item in test_items]
@@ -395,7 +485,16 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
             "engineId": predictions["engineId"],
             "engineVersion": predictions["engineVersion"],
         },
+        "confidenceIntervals": {
+            "primary": "speaker-cluster percentile bootstrap, 95%, 2000 resamples",
+            "seed": BOOTSTRAP_SEED,
+            "sampleWilsonCi95": (
+                "descriptive row-level interval only; repeated samples per speaker are correlated"
+            ),
+            "insufficientClusters": "cluster interval is null when fewer than 2 eligible speakers",
+        },
         "testMetrics": rates,
+        "targetAgeChildTestMetrics": child_rates,
         "annotationAgreement": cohen_kappa(labels),
         "byTargetClass": _grouped(test_items, predicted, "targetClass"),
         "byDeviceClass": _grouped(test_items, predicted, "deviceClass"),
@@ -416,7 +515,7 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
             "falseRetryOnCorrect": "<=0.10",
             "uncertainOnClearSpeech": "<=0.20",
             "silenceAndNoiseRejection": ">=0.95",
-            "totalTargetAgeSpeakers": ">=30",
+            "heldOutTestTargetAgeSpeakers": ">=30",
             "totalAdjudicatedSamples": ">=600",
         },
         "scoreCalibration": "not-measured: this tool evaluates categorical judgments only",
@@ -438,6 +537,23 @@ def _group_speakers(items: list[dict[str, Any]]) -> dict[str, list[dict[str, Any
     return groups
 
 
+def _write_private_report(output_path: Path, report: dict[str, Any]) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary_name = tempfile.mkstemp(prefix=".assessment-report-", dir=output_path.parent)
+    temporary_path = Path(temporary_name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as stream:
+            json.dump(report, stream, ensure_ascii=False, indent=2)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary_path, output_path)
+        os.chmod(output_path, 0o600)
+    except Exception:
+        temporary_path.unlink(missing_ok=True)
+        raise
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -455,9 +571,26 @@ def main() -> int:
     args = parser.parse_args()
     try:
         manifest = _read_json(args.manifest)
-        report = evaluate(manifest, _read_json(args.predictions), args.audio_dir)
-        manifest_bytes = args.manifest.read_bytes()
-        prediction_bytes = args.predictions.read_bytes()
+        predictions = _read_json(args.predictions)
+        audio_root = args.audio_dir.resolve(strict=True)
+        output_path = args.output.resolve()
+        manifest_path = args.manifest.resolve(strict=True)
+        predictions_path = args.predictions.resolve(strict=True)
+        _require(
+            output_path not in {manifest_path, predictions_path}
+            and not output_path.is_relative_to(audio_root),
+            "output path must not replace a research input or be inside "
+            "the private audio directory",
+        )
+        if args.output.exists():
+            _require(
+                not os.path.samefile(args.output, manifest_path)
+                and not os.path.samefile(args.output, predictions_path),
+                "output path must not replace a research input",
+            )
+        report = evaluate(manifest, predictions, audio_root)
+        manifest_bytes = manifest_path.read_bytes()
+        prediction_bytes = predictions_path.read_bytes()
         report["inputDigests"] = {
             "manifestSha256": hashlib.sha256(manifest_bytes).hexdigest(),
             "predictionsSha256": hashlib.sha256(prediction_bytes).hexdigest(),
@@ -478,10 +611,7 @@ def main() -> int:
                 ).encode()
             ).hexdigest(),
         }
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(
-            json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-        )
+        _write_private_report(args.output, report)
     except (ManifestError, OSError) as exc:
         print(f"PoC evaluation unavailable: {exc}", file=sys.stderr)
         return 2
