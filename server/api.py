@@ -59,8 +59,8 @@ def _get_device(raw: str | None) -> dict:
         raise HTTPException(401, detail={"code": "PAIRING_REQUIRED"})
     with connect() as db:
         row = db.execute(
-            """SELECT d.*,h.revision,h.content_version,h.selected_lesson_id,h.sound_enabled,
-                      h.reduced_motion,h.rounds_since_break
+            """SELECT d.*,h.id AS profile_id,h.revision,h.content_version,
+                      h.selected_lesson_id,h.sound_enabled,h.reduced_motion,h.rounds_since_break
                FROM devices d JOIN household h ON h.id=d.household_id
                WHERE d.token_hash=? AND d.revoked_at IS NULL""",
             (_hash(raw),),
@@ -1031,17 +1031,23 @@ class DeleteData(BaseModel):
     confirmation: str = Field(min_length=1, max_length=40)
 
 
+def _delete_learning_rows(db, household_id: str) -> None:
+    db.execute("DELETE FROM request_receipts WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM assessment_summaries WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM attempts WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM skipped_instances WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM exercise_instances WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM sessions WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM review_plans WHERE household_id=?", (household_id,))
+
+
 @router.delete("/profiles/data")
 def delete_profile_data(body: DeleteData, device: dict = Depends(parent)) -> dict:
     if body.confirmation != "删除我的学习记录":
         raise HTTPException(422, detail={"code": "CONFIRMATION_REQUIRED"})
     with transaction() as db:
         household_id = device["household_id"]
-        db.execute("DELETE FROM request_receipts WHERE household_id=?", (household_id,))
-        db.execute("DELETE FROM attempts WHERE household_id=?", (household_id,))
-        db.execute("DELETE FROM exercise_instances WHERE household_id=?", (household_id,))
-        db.execute("DELETE FROM sessions WHERE household_id=?", (household_id,))
-        db.execute("DELETE FROM review_plans WHERE household_id=?", (household_id,))
+        _delete_learning_rows(db, household_id)
         db.execute(
             """UPDATE household SET selected_lesson_id='lesson-01',rounds_since_break=0,
                revision=revision+1 WHERE id=?""",
@@ -1049,6 +1055,33 @@ def delete_profile_data(body: DeleteData, device: dict = Depends(parent)) -> dic
         )
         row = db.execute("SELECT * FROM household WHERE id=?", (household_id,)).fetchone()
     return {"deleted": True, "profile": public_profile(row)}
+
+
+@router.delete("/profiles/reset")
+def reset_profile(body: DeleteData, response: Response, device: dict = Depends(parent)) -> dict:
+    if body.confirmation != "重置家庭档案":
+        raise HTTPException(422, detail={"code": "CONFIRMATION_REQUIRED"})
+    household_id = device["household_id"]
+    reset_at = now_iso()
+    with transaction() as db:
+        _delete_learning_rows(db, household_id)
+        db.execute("DELETE FROM pairing_codes")
+        db.execute(
+            "UPDATE devices SET revoked_at=? WHERE household_id=? AND revoked_at IS NULL",
+            (reset_at, household_id),
+        )
+        db.execute(
+            """UPDATE household SET selected_lesson_id='lesson-01',sound_enabled=1,
+               reduced_motion=0,rounds_since_break=0,revision=revision+1 WHERE id=?""",
+            (household_id,),
+        )
+    with _import_previews_lock:
+        for token, preview in list(_import_previews.items()):
+            if preview[0] == household_id:
+                _import_previews.pop(token, None)
+    response.delete_cookie(COOKIE, path="/")
+    response.delete_cookie(CSRF_COOKIE, path="/")
+    return {"reset": True, "pairingRequired": True}
 
 
 class StartSession(BaseModel):

@@ -909,6 +909,7 @@ function ParentPanel({
   act,
 }: Json) {
   const [confirm, setConfirm] = useState('');
+  const [resetConfirm, setResetConfirm] = useState('');
   const [exportJson, setExportJson] = useState('');
   const [exportRevision, setExportRevision] = useState<number | null>(null);
   const [importPreview, setImportPreview] = useState<Json | null>(null);
@@ -1220,6 +1221,37 @@ function ParentPanel({
           }}
         >
           删除记录
+        </button>
+      </div>
+      <div className="parent-setting danger-setting">
+        <div>
+          <strong>重置家庭档案</strong>
+          <p>
+            将删除全家的学习记录和家长设置，并撤销所有浏览器配对、清除未使用的配对码。完成后需在 Mac
+            本机重新配对。课程与应用不会卸载；已下载的备份无法远程删除。
+          </p>
+        </div>
+        <input
+          aria-label="确认重置家庭档案文字"
+          value={resetConfirm}
+          onChange={(event) => setResetConfirm(event.target.value)}
+          placeholder="输入重置家庭档案"
+        />
+        <button
+          className="danger-button"
+          disabled={!isParent || resetConfirm !== '重置家庭档案' || busy}
+          onClick={() => {
+            if (resetConfirm === '重置家庭档案')
+              void act(async () => {
+                await api('/profiles/reset', {
+                  method: 'DELETE',
+                  body: JSON.stringify({ confirmation: resetConfirm }),
+                });
+                window.location.reload();
+              });
+          }}
+        >
+          重置家庭档案
         </button>
       </div>
       <button

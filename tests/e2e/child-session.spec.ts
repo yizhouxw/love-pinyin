@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('配对后可选择合法拼读候选、跳过并查看练习小结', async ({ page, isMobile }) => {
   let paired = false;
+  let reset = false;
   let active = false;
   let answered = false;
   const answerRequests: { requestId: string; answerOptionId: string }[] = [];
@@ -51,19 +52,20 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
       await route.fulfill({ json: { paired: true, isParent: true, deviceId: 'device-e2e' } });
     } else if (path === '/bootstrap') {
       await route.fulfill({
-        json: paired
-          ? {
-              paired: true,
-              device: { label: '测试设备', isParent: true },
-              profile: {
-                id: 'profile-e2e',
-                selectedLessonId: 'lesson-01',
-                revision: profileRevision,
-                roundsSinceBreak,
-              },
-              attemptCount: 0,
-            }
-          : { paired: false, isLocalHost: true, contentVersion: 'test-v1' },
+        json:
+          paired && !reset
+            ? {
+                paired: true,
+                device: { label: '测试设备', isParent: true },
+                profile: {
+                  id: 'profile-e2e',
+                  selectedLessonId: 'lesson-01',
+                  revision: profileRevision,
+                  roundsSinceBreak,
+                },
+                attemptCount: 0,
+              }
+            : { paired: false, isLocalHost: true, contentVersion: 'test-v1' },
       });
     } else if (path === '/curriculum') {
       await route.fulfill({
@@ -170,6 +172,10 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
       imported = true;
       profileRevision += 1;
       await route.fulfill({ json: { imported: true, profile: { revision: profileRevision } } });
+    } else if (path === '/profiles/reset' && route.request().method() === 'DELETE') {
+      reset = true;
+      paired = false;
+      await route.fulfill({ json: { reset: true, pairingRequired: true } });
     } else if (path === '/devices' && route.request().method() === 'GET') {
       await route.fulfill({ json: { devices } });
     } else if (path === '/devices/tablet-e2e' && route.request().method() === 'DELETE') {
@@ -368,6 +374,13 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByRole('button', { name: '结束今天的练习' })).toBeFocused();
   await page.getByRole('button', { name: '休息好了，继续学习' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
+  await page.getByRole('button', { name: '家长管理' }).click();
+  const resetButton = page.getByRole('button', { name: '重置家庭档案' });
+  await expect(resetButton).toBeDisabled();
+  await page.getByLabel('确认重置家庭档案文字').fill('重置家庭档案');
+  await resetButton.click();
+  await expect(page.getByLabel('家长配对码')).toBeVisible();
+  expect(reset).toBe(true);
 });
 
 test('已撤销或过期的会话回到配对页面', async ({ page }) => {

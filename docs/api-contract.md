@@ -37,7 +37,8 @@
 | GET `/profiles/export`            | 家长权限                   | 限定schema JSON，不含声音或会话凭据                                                      |
 | POST `/profiles/import-preview`   | 家长 + JSON≤1MiB           | 已实现 schema v3 上传校验与5分钟预览token；显式迁移v2、严格校验且不写DB；最多缓存8个预览 |
 | POST `/profiles/import`           | 家长 + token/hash/revision | 已实现整档案单事务替换；revision过期/变化/跨家庭或hash不匹配均拒绝；家长UI已接入         |
-| DELETE `/profiles/data`           | 家长+确认词                | 原子清学习数据与休息计数，不撤销其他设备；行为区别于注销整个家庭                         |
+| DELETE `/profiles/data`           | 家长+确认词                | 原子清练习/会话/复习/评分摘要与休息计数，保留家长设置和所有配对设备                      |
+| DELETE `/profiles/reset`          | 家长+确认词                | 原子清学习数据/家长设置、撤销全部设备并清未使用配对码；清当前家长Cookie后要求重新配对    |
 
 配对、认证和数据持久化由 SPEC-001 实现。局域网部署仍需配置 HTTPS 与设备信任；开发服务器默认只用于本机开发。
 

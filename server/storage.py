@@ -163,7 +163,7 @@ def ensure_household(content_version: str) -> sqlite3.Row:
 
 def public_profile(row: sqlite3.Row) -> dict:
     return {
-        "id": row["id"],
+        "id": row["profile_id"] if "profile_id" in row.keys() else row["id"],
         "selectedLessonId": row["selected_lesson_id"],
         "contentVersion": row["content_version"],
         "revision": row["revision"],
