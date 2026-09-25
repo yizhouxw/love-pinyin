@@ -269,6 +269,46 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByRole('heading', { name: 'b 和 ā 连起来是哪一个音节？' })).toBeVisible();
   await expect(page.getByText('拼读组合站')).toBeVisible();
   await expect(page.getByLabel('完整拼读候选')).toBeVisible();
+  const originalViewport = page.viewportSize();
+  await page.setViewportSize({ width: 320, height: 844 });
+  const smallScreen = await page.evaluate(() => ({
+    contentWidth: document.documentElement.scrollWidth,
+    viewportWidth: document.documentElement.clientWidth,
+    targetSizes: Array.from(document.querySelectorAll('.blend-options button')).map((button) => {
+      const bounds = button.getBoundingClientRect();
+      return { width: Math.round(bounds.width), height: Math.round(bounds.height) };
+    }),
+  }));
+  expect(smallScreen.contentWidth).toBeLessThanOrEqual(smallScreen.viewportWidth);
+  expect(smallScreen.targetSizes.length).toBeGreaterThan(0);
+  expect(smallScreen.targetSizes.every(({ width, height }) => width >= 48 && height >= 48)).toBe(
+    true,
+  );
+  await page.evaluate(() => {
+    const elements = Array.from(
+      document.querySelectorAll('h1, h2, p, button, small, label, strong, li, span'),
+    );
+    const originalSizes = elements.map((element) => getComputedStyle(element).fontSize);
+    elements.forEach((element, index) => {
+      const originalSize = originalSizes[index] ?? getComputedStyle(element).fontSize;
+      element.setAttribute('data-test-font-size', originalSize);
+      (element as HTMLElement).style.fontSize = `${parseFloat(originalSize) * 2}px`;
+    });
+  });
+  const zoomedScreen = await page.evaluate(() => ({
+    contentWidth: document.documentElement.scrollWidth,
+    viewportWidth: document.documentElement.clientWidth,
+  }));
+  expect(zoomedScreen.contentWidth).toBeLessThanOrEqual(zoomedScreen.viewportWidth);
+  await expect(page.getByRole('heading', { name: 'b 和 ā 连起来是哪一个音节？' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /bā/ })).toBeVisible();
+  await page.evaluate(() => {
+    document.querySelectorAll('[data-test-font-size]').forEach((element) => {
+      element.removeAttribute('data-test-font-size');
+      (element as HTMLElement).style.fontSize = '';
+    });
+  });
+  if (originalViewport) await page.setViewportSize(originalViewport);
   const correctCandidate = page.getByRole('button', { name: /bā/ });
   if (isMobile) await correctCandidate.tap();
   else await correctCandidate.press('Enter');
