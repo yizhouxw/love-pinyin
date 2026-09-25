@@ -38,6 +38,7 @@ type Knowledge = {
   reviewStatus: string;
 };
 type Task = { instanceId: string; exercise: Exercise };
+type PendingAnswer = { requestId: string; answerOptionId: string };
 type Session = {
   id: string;
   lessonId: string;
@@ -103,6 +104,55 @@ async function api(path: string, options: RequestInit = {}): Promise<Json> {
 }
 
 const idempotencyKey = () => crypto.randomUUID();
+const pendingAnswerKey = (instanceId: string) => `lp.pending-answer.${instanceId}`;
+
+function readPendingAnswer(instanceId: string): PendingAnswer | null {
+  try {
+    const raw = sessionStorage.getItem(pendingAnswerKey(instanceId));
+    if (!raw) return null;
+    const value = JSON.parse(raw) as Partial<PendingAnswer>;
+    return typeof value.requestId === 'string' && typeof value.answerOptionId === 'string'
+      ? { requestId: value.requestId, answerOptionId: value.answerOptionId }
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function savePendingAnswer(instanceId: string, answer: PendingAnswer) {
+  try {
+    sessionStorage.setItem(pendingAnswerKey(instanceId), JSON.stringify(answer));
+  } catch {
+    // Server-side session recovery still prevents scoring the same instance twice.
+  }
+}
+
+function clearPendingAnswer(instanceId: string) {
+  try {
+    sessionStorage.removeItem(pendingAnswerKey(instanceId));
+  } catch {
+    // Storage may be disabled by the browser; the server remains authoritative.
+  }
+}
+
+async function replayPendingAnswer(session: Session | null): Promise<boolean> {
+  if (!session) return false;
+  for (const task of session.tasks) {
+    const pending = readPendingAnswer(task.instanceId);
+    if (!pending) continue;
+    if (session.results?.[task.instanceId]) {
+      clearPendingAnswer(task.instanceId);
+      continue;
+    }
+    await api(`/instances/${task.instanceId}/answer`, {
+      method: 'POST',
+      body: JSON.stringify(pending),
+    });
+    clearPendingAnswer(task.instanceId);
+    return true;
+  }
+  return false;
+}
 
 export function App() {
   const [boot, setBoot] = useState<Bootstrap | null>(null);
@@ -134,10 +184,14 @@ export function App() {
       api('/profiles/progress'),
       api('/sessions/current'),
     ]);
-    const nextStats = stats as Progress;
+    const didReplay = await replayPendingAnswer(current as Session | null).catch(() => false);
+    const [latestStats, latestCurrent] = didReplay
+      ? await Promise.all([api('/profiles/progress'), api('/sessions/current')])
+      : [stats, current];
+    const nextStats = latestStats as Progress;
     setCurriculum(course as Curriculum);
     setProgress(nextStats);
-    setSession(current as Session | null);
+    setSession(latestCurrent as Session | null);
     setLessonChoice(nextStats.selectedLessonId);
   }, []);
 
@@ -155,10 +209,15 @@ export function App() {
           api('/sessions/current'),
         ]);
         if (cancelled) return;
-        const nextStats = stats as Progress;
+        const didReplay = await replayPendingAnswer(current as Session | null).catch(() => false);
+        const [latestStats, latestCurrent] = didReplay
+          ? await Promise.all([api('/profiles/progress'), api('/sessions/current')])
+          : [stats, current];
+        if (cancelled) return;
+        const nextStats = latestStats as Progress;
         setCurriculum(course as Curriculum);
         setProgress(nextStats);
-        setSession(current as Session | null);
+        setSession(latestCurrent as Session | null);
         setLessonChoice(nextStats.selectedLessonId);
       })
       .catch((reason: Error) => {
@@ -397,16 +456,21 @@ export function App() {
                 disabled={Boolean(answer) || busy}
                 onClick={() =>
                   void act(async () => {
+                    let pending = readPendingAnswer(task.instanceId);
+                    if (pending && pending.answerOptionId !== option.id)
+                      throw new Error('上一题提交结果待确认，请再点一次原来的答案以安全重试。');
+                    if (!pending) {
+                      pending = { requestId: idempotencyKey(), answerOptionId: option.id };
+                      savePendingAnswer(task.instanceId, pending);
+                    }
                     const result = (await api(`/instances/${task.instanceId}/answer`, {
                       method: 'POST',
-                      body: JSON.stringify({
-                        requestId: idempotencyKey(),
-                        answerOptionId: option.id,
-                      }),
+                      body: JSON.stringify(pending),
                     })) as Omit<Answer, 'selectedOptionId'>;
+                    clearPendingAnswer(task.instanceId);
                     setAnswer({
                       ...result,
-                      selectedOptionId: option.id,
+                      selectedOptionId: pending.answerOptionId,
                     });
                     await refreshProgressOnly();
                   })

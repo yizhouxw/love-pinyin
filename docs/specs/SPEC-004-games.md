@@ -38,7 +38,7 @@
 
 ## 验证与交付
 
-2026-09-26 新增切片：household schema v3 在旧库迁移增加 `reduced_motion` 与 `rounds_since_break`。完整完成的会话才推进轮次；2 轮后 `/sessions` 返回 `REST_REQUIRED`，`/rest/complete` 清零继续。休息页无倒计时，默认焦点结束按钮。家长偏好持久化于 SQLite、备份恢复，并同步到 document root CSS；E2E 验证 checkbox/transition 状态和两轮阻止/恢复。该切片 `npm run verify:all` 通过，21 个服务端用例和10个桌面/平板/手机模拟 E2E。真实 iOS/iPadOS 与 Mac HTTPS 局域网仍未测。
+2026-09-26 增量：household schema v3 在旧库迁移增加 `reduced_motion` 与 `rounds_since_break`。完整完成的会话才推进轮次；2 轮后 `/sessions` 返回 `REST_REQUIRED`，`/rest/complete` 清零继续。休息页无倒计时，默认焦点结束按钮。家长偏好持久化于 SQLite、备份恢复，并同步到 document root CSS；E2E 验证 checkbox/transition 状态和两轮阻止/恢复。作答网络中断后，同一浏览器会保留短期幂等键，刷新后重放同一答案并从服务端会话恢复。服务端回归验证重放返回相同结果且 revision 只增加一次。`npm run verify:all` 通过，24 个服务端用例和10个桌面/平板/手机模拟 E2E。真实 iOS/iPadOS 与 Mac HTTPS 局域网仍未测。
 
 跳过与小结切片通过服务端事务/API 回归；完整 SPEC 仍要求 `npm run verify`、`npm run verify:server`、`npm run test:e2e` 全通过，并覆盖会话恢复、键盘/点选等价、重复提交、跳过、资源异常。用合法题 fixture 验证规则边界，不为每个随机排序写快照。
 

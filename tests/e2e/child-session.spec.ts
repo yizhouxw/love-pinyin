@@ -4,6 +4,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   let paired = false;
   let active = false;
   let answered = false;
+  const answerRequests: { requestId: string; answerOptionId: string }[] = [];
   let skipped = false;
   let profileRevision = 0;
   let imported = false;
@@ -40,7 +41,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
     draftContent: true,
   };
 
-  await page.route('**/api/v1/**', async (route) => {
+  await page.context().route('**/api/v1/**', async (route) => {
     const url = new URL(route.request().url());
     const path = url.pathname.replace('/api/v1', '');
     if (path === '/local/pairing-code') {
@@ -208,6 +209,11 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
       skipped = false;
       await route.fulfill({ json: session });
     } else if (path === '/instances/instance-e2e/answer') {
+      answerRequests.push(route.request().postDataJSON());
+      if (answerRequests.length === 1) {
+        await route.abort();
+        return;
+      }
       answered = true;
       await route.fulfill({
         json: {
@@ -266,8 +272,10 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   const correctCandidate = page.getByRole('button', { name: /bā/ });
   if (isMobile) await correctCandidate.tap();
   else await correctCandidate.press('Enter');
-  await expect(page.getByText('答对啦！')).toBeVisible();
-  await page.getByRole('button', { name: '继续 →' }).click();
+  await expect(page.getByRole('alert')).toBeVisible();
+  await page.reload();
+  await expect.poll(() => answerRequests.length).toBe(2);
+  expect(answerRequests[1]).toEqual(answerRequests[0]);
   await expect(page.getByRole('heading', { name: '再找一张拼音卡片' })).toBeVisible();
   const skip = page.getByRole('button', { name: '先跳过这题' });
   if (isMobile) await skip.tap();
