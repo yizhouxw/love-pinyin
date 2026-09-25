@@ -1,0 +1,608 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://love-pinyin.local/schemas/curriculum.schema.json",
+  "title": "Love Pinyin curriculum schema",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "language",
+    "reviewStatus",
+    "license",
+    "edition",
+    "sourceIds",
+    "inventory",
+    "knowledgeItems",
+    "lessons",
+    "exercises",
+    "readingTargets",
+    "audioRequirements",
+    "contentVersion"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "const": "zh-CN"
+    },
+    "reviewStatus": {
+      "enum": ["needs-teacher-review", "approved"]
+    },
+    "license": {
+      "const": "MIT"
+    },
+    "edition": {
+      "type": "object"
+    },
+    "sourceIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "inventory": {
+      "type": "object",
+      "required": ["initials", "orthographicLetters", "finals", "wholeSyllables", "toneValues"],
+      "properties": {
+        "initials": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "orthographicLetters": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "finals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "wholeSyllables": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "toneValues": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4
+          },
+          "uniqueItems": true,
+          "minItems": 5,
+          "maxItems": 5
+        }
+      },
+      "additionalProperties": false
+    },
+    "knowledgeItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "reviewStatus",
+          "sourceIds",
+          "category",
+          "symbol",
+          "lessonId",
+          "teachingNote",
+          "confusableIds",
+          "requiredModes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reviewStatus": {
+            "enum": ["needs-teacher-review", "approved"]
+          },
+          "sourceIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "category": {
+            "enum": [
+              "initial",
+              "final",
+              "whole-syllable",
+              "tone",
+              "orthographic-letter",
+              "rule",
+              "alphabet"
+            ]
+          },
+          "symbol": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lessonId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "teachingNote": {
+            "type": "string",
+            "minLength": 1
+          },
+          "confusableIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "requiredModes": {
+            "type": "array",
+            "items": {
+              "enum": ["listen-choice", "symbol-choice", "tone-choice", "blend-choice"]
+            },
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "lessons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "reviewStatus",
+          "sourceIds",
+          "order",
+          "title",
+          "textbookUnit",
+          "textbookPage",
+          "prerequisiteLessonIds",
+          "knowledgeIds",
+          "objectives",
+          "exerciseIds",
+          "readingTargetIds",
+          "suggestedSessionMinutes",
+          "schedulingAuthority"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reviewStatus": {
+            "enum": ["needs-teacher-review", "approved"]
+          },
+          "sourceIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "textbookUnit": {
+            "type": "integer"
+          },
+          "textbookPage": {
+            "type": "integer"
+          },
+          "prerequisiteLessonIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "knowledgeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "objectives": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "exerciseIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "readingTargetIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "suggestedSessionMinutes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          },
+          "schedulingAuthority": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "exercises": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "lessonId",
+          "type",
+          "prompt",
+          "primaryKnowledgeId",
+          "knowledgeIds",
+          "options",
+          "answer",
+          "reviewStatus",
+          "sourceIds",
+          "license",
+          "promptAudioRef"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reviewStatus": {
+            "enum": ["needs-teacher-review", "approved"]
+          },
+          "sourceIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "lessonId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "enum": ["listen-choice", "symbol-choice", "tone-choice", "blend-choice", "read-aloud"]
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "primaryKnowledgeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "knowledgeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "label"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "audioRef": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "answer": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": ["optionId"],
+                "properties": {
+                  "optionId": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "required": ["readingTargetId"],
+                "properties": {
+                  "readingTargetId": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          },
+          "license": {
+            "const": "MIT"
+          },
+          "audioRef": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assessmentRequirement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "promptAudioRef": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "readingTargets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "lessonId",
+          "targetType",
+          "text",
+          "pinyin",
+          "syllables",
+          "knowledgeIds",
+          "assessmentCapability",
+          "reviewStatus",
+          "sourceIds",
+          "license",
+          "primaryKnowledgeId",
+          "pronunciationForm",
+          "audioRef"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reviewStatus": {
+            "enum": ["needs-teacher-review", "approved"]
+          },
+          "sourceIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "lessonId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "targetType": {
+            "enum": ["syllable", "isolated-final", "isolated-initial"]
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pinyin": {
+            "type": "string",
+            "minLength": 1
+          },
+          "syllables": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["base", "tone", "marked"],
+              "properties": {
+                "base": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "tone": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "marked": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "phoneme": {
+            "type": "object",
+            "required": ["symbol", "tone", "marked"],
+            "properties": {
+              "symbol": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tone": {
+                "type": ["integer", "null"],
+                "minimum": 0,
+                "maximum": 4
+              },
+              "marked": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "knowledgeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "assessmentCapability": {
+            "enum": ["pending-local-poc", "validated"]
+          },
+          "license": {
+            "const": "MIT"
+          },
+          "primaryKnowledgeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pronunciationForm": {
+            "type": "string",
+            "minLength": 1
+          },
+          "audioRef": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "audioRequirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "transcript",
+          "kind",
+          "knowledgeIds",
+          "status",
+          "reviewStatus",
+          "source",
+          "license",
+          "file"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "transcript": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "knowledgeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "status": {
+            "enum": ["not-recorded", "recorded", "approved"]
+          },
+          "reviewStatus": {
+            "enum": ["needs-teacher-review", "approved"]
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "license": {
+            "type": "string",
+            "minLength": 1
+          },
+          "file": {
+            "type": ["string", "null"]
+          },
+          "sha256": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rightsEvidence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reviewEvidence": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "contentVersion": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true
+}

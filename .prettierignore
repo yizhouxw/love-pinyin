@@ -1,0 +1,10 @@
+node_modules
+dist
+package-lock.json
+playwright-report
+test-results
+docs/engineering/dependency-inventory.json
+.venv
+uv.lock
+.pytest_cache
+.ruff_cache

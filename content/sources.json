@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0.0",
+  "researchedAt": "2026-09-25",
+  "scope": "大陆统编人教一年级上册拼音；来源仅作事实依据，不授予教材素材再分发许可",
+  "sources": [
+    {
+      "id": "src-curriculum-2022",
+      "title": "教育部关于印发义务教育课程方案和课程标准（2022年版）的通知",
+      "publisher": "教育部",
+      "publishedAt": "2022-04-21",
+      "url": "https://www.moe.gov.cn/srcsite/A26/s8001/202204/t20220420_619921.html",
+      "type": "official-policy",
+      "accessedAt": "2026-09-25",
+      "supports": ["2022年秋季开始执行；是2024教材修订的基线。"],
+      "verification": "网页搜索索引核验；直属附件原文需复核",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-curriculum-2025-interview",
+      "title": "教育部教材局局长田立新访谈",
+      "publisher": "人民教育出版社转载《人民教育》",
+      "publishedAt": "2026-03-30",
+      "url": "https://www.pep.com.cn/rjdt/mtbd/202603/t20260330_2005956.shtml",
+      "type": "official-interview",
+      "accessedAt": "2026-09-25",
+      "supports": ["明确2025年10月印发义务教育和普通高中课程方案、课程标准日常修订版。"],
+      "verification": "网页索引核验；仅用于版本存在性，不推断具体拼音条款",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-curriculum-2025-hep",
+      "title": "义务教育语文课程标准日常修订版（2022年版2025年修订）解读",
+      "publisher": "高等教育出版社",
+      "publishedAt": "2026-06-11",
+      "url": "https://xuanshu.hep.com.cn/front/book/findBookDetails?bookId=697a4250e119ac972922bcc9",
+      "type": "official-publisher",
+      "accessedAt": "2026-09-25",
+      "supports": ["书名、出版日、ISBN 978-7-04-066811-7；课程教材研究所组织、课标修订组编写。"],
+      "verification": "出版信息已核验；未取得解读全文或2025课标完整官方原文",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-curriculum-2026-wuhu",
+      "title": "关于组织参加2026年安徽省小学语文写字教学交流研讨暨语文教师书写技能提升活动的通知",
+      "publisher": "芜湖市教育局",
+      "publishedAt": "2026-09-07",
+      "url": "https://jyj.wuhu.gov.cn/xwzx/tzgg/8954711.html",
+      "type": "official-local-education",
+      "accessedAt": "2026-09-25",
+      "supports": ["2026年9月仍以2022年版2025年日常修订课标作为各学段识字写字活动依据。"],
+      "verification": "官方网页核验；不用于推定全国逐周进度",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-textbook-rollout",
+      "title": "历时两年修订！义务教育统编教材“焕新”在哪？",
+      "publisher": "教育部转载新华社",
+      "publishedAt": "2024-08-27",
+      "url": "https://www.moe.gov.cn/jyb_xwfb/s5147/202408/t20240828_1147579.html",
+      "type": "official-announcement",
+      "accessedAt": "2026-09-25",
+      "supports": [
+        "2024秋一年级启用；教材三年分步替换；2026完成全学段替换。",
+        "拼音教学时间相较原版增加1至2周。"
+      ],
+      "verification": "官方全文核验；增加1至2周不是全国统一周历",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-pep-2024-g1a",
+      "title": "义务教育教科书 语文 一年级上册（2024修订）",
+      "publisher": "教育部组织编写／人民教育出版社；国家中小学智慧教育平台分发",
+      "publishedAt": "2024",
+      "url": "https://r2-ndr.ykt.cbern.com.cn/edu_product/esp/assets/1c73b348-e8b6-47d6-84b0-6dbacbe28268.pkg/%E4%B9%89%E5%8A%A1%E6%95%99%E8%82%B2%E6%95%99%E7%A7%91%E4%B9%A6%20%E8%AF%AD%E6%96%87%20%E4%B8%80%E5%B9%B4%E7%BA%A7%20%E4%B8%8A%E5%86%8C_1725097498841.pdf",
+      "type": "official-textbook",
+      "accessedAt": "2026-09-25",
+      "supports": [
+        "目录PDF页4-5核验3个拼音单元14课；第2课i u ü、第9课y w。",
+        "书内第57页总表：21声母，y w 括号列出；24项韵母教学表、16整体认读音节。"
+      ],
+      "verification": "下载到仓库外临时目录后抽取文字并渲染目录/第57页视觉核验；PDF/插图/课文不入仓库",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-pep-revision-study",
+      "title": "统编小学语文教科书一年级上册拼音单元修订研究",
+      "publisher": "人民教育出版社《小学语文》2025年第11期；刘瑞莲等",
+      "publishedAt": "2025-12-02",
+      "url": "https://www.pep.com.cn/bks/xxyw/jzjd/202512/W020251202580887481487.pdf",
+      "type": "publisher-research",
+      "accessedAt": "2026-09-25",
+      "supports": ["支持y w拆课、21声母的调整；作为教材事实的交叉验证。"],
+      "verification": "已读PDF；属于研究文章，不把作者建议视为国家课程标准；不采信未独立核验的混淆率统计",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-pep-old-g1a",
+      "title": "语文 一年级上册／义务教育教科书（旧产品页）",
+      "publisher": "人民教育出版社",
+      "publishedAt": "2016-08-23",
+      "url": "https://www.pep.com.cn/products/jc/jks/201608/t20160823_1369629.shtml",
+      "type": "historical-reference",
+      "accessedAt": "2026-09-25",
+      "supports": ["旧版仍可检索，显示2单元13课；不得误作2026版目录。"],
+      "verification": "网页核验；明确弃用作为当前路径",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-pinyin-scheme",
+      "title": "汉语拼音方案",
+      "publisher": "教育部资料库",
+      "publishedAt": "1958",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/ziliao/A19/195802/t19580201_186000.html",
+      "type": "national-language-scheme",
+      "accessedAt": "2026-09-25",
+      "supports": ["字母、声母、韵母及y w、ü省点、省写、声调与隔音基本规范。"],
+      "verification": "教育部资料入口已核验；1958年批准日期以方案正文为准，勿把页面日期误作批准日",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-pinyin-orthography-2012",
+      "title": "GB/T 16159—2012 汉语拼音正词法基本规则",
+      "publisher": "教育部公开标准PDF",
+      "publishedAt": "2012-06-29",
+      "url": "https://www.moe.gov.cn/ewebeditor/uploadfile/2015/01/13/20150113091717604.pdf",
+      "type": "national-standard",
+      "accessedAt": "2026-09-25",
+      "supports": ["第6.5条标调、i去点、iu/ui、轻声、教学场景可按一/不变调标写；词单位拼写。"],
+      "verification": "官方PDF条款已核验；现行状态另见 src-pinyin-orthography-status，不复制原文入开源库。",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-curriculum-index",
+      "title": "义务教育课程方案及各学科课程标准索引",
+      "publisher": "教育部",
+      "publishedAt": "rolling",
+      "url": "https://www.moe.gov.cn/jyb_xxgk/xxgk/neirong/fenlei/kcjc/kcjc_js/jcjs_kcbz/",
+      "type": "official-index",
+      "accessedAt": "2026-09-25",
+      "supports": ["检索范围记录；此索引未展示2025修订不能证明修订不存在。"],
+      "verification": "2026-09-25检索；负面检索证据有局限",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-pinyin-orthography-status",
+      "title": "GB/T 16159-2012 汉语拼音正词法基本规则：标准状态",
+      "publisher": "全国标准信息公共服务平台",
+      "publishedAt": "2012-06-29",
+      "url": "https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D7E196D3A7E05397BE0A0AB82A",
+      "type": "official-standard-status",
+      "accessedAt": "2026-09-25",
+      "supports": ["状态现行；2025-09-05复审结论继续有效。"],
+      "verification": "2026-09-25核验官方平台检索全文。",
+      "redistribution": "link-only-no-content-license-granted"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "verify-2025-pinyin-clauses",
+      "priority": "release-gate",
+      "question": "取得2022年版2025年日常修订课标官方全文或合法纸本，对照第一学段拼音、书写、评价条款；不能声称2025版与2022版逐字相同。",
+      "owner": "content-reviewer"
+    },
+    {
+      "id": "verify-2026-textbook-impression",
+      "priority": "before-classroom-pilot",
+      "question": "用目标学校2026实际印次核对14课、页码和拼音总表；当前已核验的是2024修订平台PDF。",
+      "owner": "content-reviewer"
+    },
+    {
+      "id": "teacher-review-seed-bank",
+      "priority": "release-gate",
+      "question": "小学语文教师逐题核查答案、口型提示、语音规范、适龄性与用字；普通话教师复审音频。",
+      "owner": "content-reviewer"
+    }
+  ]
+}

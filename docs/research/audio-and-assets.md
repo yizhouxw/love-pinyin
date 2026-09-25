@@ -1,0 +1,109 @@
+# 拼音听读、离线评分与资产调研
+
+调研日期：2026-09-25。本文区分“官方文档支持”“可获取”“本机验证”“教学验证”；前两项不代表后两项已经通过。
+
+## 结论与实施顺序
+
+首版采用 **浏览器 + 自家 Mac Studio 服务端**：标准示范音是审核后的持权真人静态音频；儿童录音只经局域网 HTTPS 发到该 Mac，在本地评测后丢弃，禁止发送第三方。自动发音评分是首版必需能力。Mac 本地 Python 声学原型先行，产品页面只能使用通过儿童校准的评分器，不能以音量、录音完成、ASR 文字命中或随机数字冒充发音评分。
+
+当前未取得任何生产用标准音、儿童评测语料或可证明适用本课程的成品离线评分模型。技术路径已经收敛，但“儿童拼音评分可用”仍是发布门禁。下一阶段首先执行评分 PoC，再实现依赖评分的学习闭环。真人音制作可以并行，采购说明见 [音频制作规范](../content/audio-production.md)。
+
+## 1. 示范音路线比较
+
+| 方案                | 核实到的能力与权利                                                         | 本项目决定                                                                   |
+| ------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 自录/委托真人       | 可以按声母教学呼读、本音、韵母、带调音节分别制作；质量和许可由项目逐条收集 | 首选。必须先获声音使用与再分发授权，并双人审音                               |
+| 系统 Web Speech TTS | 浏览器可枚举当前设备声音，但语言包、音色和实现取决于设备                   | 不能作为教学标准音，也不作为离线保证；不在首版依赖链                         |
+| CosyVoice 3         | 官方代码 Apache-2.0；指定官方模型卡标 Apache-2.0，支持中文拼音发音控制     | 仅未来内容生产试验；模型条款不等于录音参考音色授权，逐条人工审听仍必需       |
+| F5-TTS              | 代码 MIT；官方基础权重为 CC-BY-NC-4.0                                      | 不纳入计划开源、可商业使用的默认发行物                                       |
+| 当前 Piper          | 维护仓库代码 GPL-3.0，模型另有各自条款                                     | 不作为 MIT 首版运行依赖；不能沿用旧 Piper MIT 印象                           |
+| 云 TTS              | 阿里 SSML 支持以带调拼音控制汉字读音，但输入仍按汉字对应                   | 不选。当前不使用第三方云处理录音；即便只做离线制音也须另审输出分发权与准确性 |
+
+核实来源：[MDN speechSynthesis](https://developer.mozilla.org/en-US/docs/Web/API/Window/speechSynthesis)、[CosyVoice 代码](https://github.com/QwenAudio/CosyVoice)、[指定 CosyVoice3 模型卡](https://huggingface.co/FunAudioLLM/Fun-CosyVoice3-0.5B-2512)、[F5 代码许可](https://github.com/SWivid/F5-TTS/blob/main/LICENSE)、[F5 权重许可](https://huggingface.co/SWivid/F5-TTS)、[Piper 当前仓库](https://github.com/OHF-Voice/piper1-gpl)、[阿里 SSML](https://help.aliyun.com/zh/isi/developer-reference/ssml-overview)。均访问于 2026-09-25。
+
+**发音类别不能混用。** `b` 的教学呼读、本音与音节 `bō` 必须是不同资产；把汉字“波”交给中文 TTS，不能据此获得 `b` 本音。自然词语的变调、轻声与单独读出的本调也不能互相覆盖。音频 manifest 必须声明目标类别、声调和语境，程序不得用临近字音自动补缺。
+
+## 2. 完全本地评分：已知能力与缺口
+
+此处“离线”指断开互联网仍可使用局域网 Mac API。Mac 断电或客户端离开局域网时，服务器评分不可用；客户端可保留当前页面与明确错误提示；首版不承诺断开 Mac 后仍可完成学习、保存或评分。
+
+| 候选                      | 核实范围                                                        | 主要缺口                                                                       | 决策                                                              |
+| ------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Python DSP：MFCC/DTW + F0 | librosa 提供特征、动态时间规整和 pYIN 基频估计；代码 ISC        | 距离不等于教学正确率；需要持权多说话人模板、错误样本、儿童校准                 | **先实施的透明研究基线**；未校准只输出诊断/未就绪，不输出产品分数 |
+| MFA 普通话强制对齐        | MFA 代码 MIT；`mandarin_mfa` 模型卡 CC-BY-4.0；提供音素时间对齐 | “把预期文字强制对齐”不能证明读对；没有现成儿童评分/置信度校准                  | 作为离线标注辅助候选，不能直接把对齐似然映射为成绩                |
+| SenseVoiceSmall           | 本地中文 ASR；代码 MIT；官方权重为 `other` 的 FunASR 模型协议   | 输出汉字，不是独立声韵母评分模型；模型许可不是 MIT/Apache                      | 可选错误读词筛查研究，不进入评分正确率公式或默认发行包            |
+| sherpa-onnx               | 代码 Apache-2.0；原生与 WASM ASR 运行路线可获得                 | 运行时许可不覆盖每个模型；ASR 不提供本项目所需拼音评价标准                     | 备选模型运行层，当前不引入大模型依赖                              |
+| 驰声 C 离线 SDK           | 官方列 Mac/Windows/Linux；需 AppKey/SecretKey、授权文件和激活   | 未确认 Apple Silicon arm64 包、Mac 服务端/API 并发许可、运行外连策略、许可报价 | 商用备选预审；未采购、未下载、未实测，不能写“即装即用”            |
+| 腾讯离线 SDK              | 官方列中文拼音评测、首次联网激活后离线运行                      | 文档平台为 Android/iOS，不能直接满足本期 Mac B/S；基础版还有下线迁移提示       | 当前排除；未来原生阶段另审                                        |
+
+来源：[librosa pYIN](https://librosa.org/doc/0.11.0/generated/librosa.pyin.html)、[DTW](https://librosa.org/doc/0.11.0/generated/librosa.sequence.dtw.html)、[librosa 许可](https://github.com/librosa/librosa/blob/main/LICENSE.md)、[MFA 模型](https://huggingface.co/MontrealCorpusTools/mandarin_mfa)、[MFA 对齐流程](https://montreal-forced-aligner.readthedocs.io/en/v3.3.3/user_guide/workflows/alignment.html)、[SenseVoice 许可声明](https://github.com/QwenAudio/SenseVoice#license)、[官方权重条款](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE)、[sherpa WASM](https://k2-fsa.github.io/sherpa/onnx/wasm/build.html)、[驰声 C 离线文档](https://www.chivox.com/en/docs/offline/sdkDoc/C-offline-sdk)、[腾讯离线介绍](https://cloud.tencent.cn/document/product/884/61498)。访问于 2026-09-25。librosa API 链接是 0.11 文档，后续实现应以锁定版本的 API 为准。
+
+### 为什么不能直接给出“正确率”
+
+F0 只反映有声段的基频变化，不能区分 `b/p` 的送气，也不能判断 `n/l`、`z/zh` 的全部声学区别；清辅音不能强行套用声调分。MFCC/DTW 同时受说话人、麦克风、距离和语速影响；一个成人模板不能代表儿童正确发音分布。第三声的语境变体、轻声以及拼读过程还需要各自的判定目标。
+
+这是本项目的工程风险判断。已有儿童 GOP 研究也报告：儿童发音变异使传统发音检测更困难，不能把成人结果直接用于儿童；该研究本身也不构成本项目中文一年级验证。[原始研究：An Analysis of Goodness of Pronunciation for Child Speech](https://www.isca-archive.org/interspeech_2023/cao23_interspeech.html)（访问 2026-09-25）。
+
+### 本地 PoC 的明确推进决定
+
+1. 第一候选用 CPU 上的 NumPy/SciPy/librosa，加原创多模板比较与可解释的分项结果。先覆盖限定集合，验证声母、韵母、四声、完整音节四种任务，保留“不确定/无有效语音”结果。
+2. 先用成人授权样音排查采样、噪声、断句和API问题，再由获得监护人许可的儿童样本评价；成人试验通过不等于儿童上线通过。
+3. 在验证集上确定分数映射和阈值，在按说话人完全隔离的测试集上冻结验收；不能同一人/同一段音频变速后跨训练和测试集。
+4. 若 DSP 在核心混淆音上不达标，转向持权中文音素后验模型 + 对齐/校准的专门研发，或取得可在 Mac 服务端使用的离线 SDK；不能偷偷改云服务或取消评分验收。
+5. 首次 PoC 时间盒建议 5 个工作日，结束必须交付基准报告、缺口清单与继续/换路线判断。它是风险发现周期，不是承诺 5 天训练出合格模型。
+
+测试集必须覆盖 `b/p、d/t、g/k、n/l、z/zh、c/ch、s/sh、u/ü、an/ang、en/eng、in/ing`、四声错读、无声、环境人声、示范音回灌、过短录音、噪声和截断。不能只验证“正确样音能得高分”。分项反馈若无稳定错误定位证据，只提示重听/重录，不向孩子编造舌位纠错。
+
+### 商用 Mac SDK 的采购预审问题
+
+发送询价前准备同一套 PoC 音频、设备规格（Mac Studio M2 Ultra / arm64 / 64 GB）和需求表；本阶段只准备要求，不联系供应商、不购买。要求供应商书面确认：
+
+- 提供 arm64 macOS 库，或明确 x86_64 + Rosetta 支持、性能和未来维护期；当前公开文档只写 Mac。
+- 可部署为局域网服务端，由多浏览器调用；每设备/每服务器/并发/年费计量方式与试用期限。
+- 可在运行中断互联网，除明示激活外无鉴权心跳、日志、录音上传和遥测；支持离线激活与到期行为。
+- 儿童独立声母采用“本音”还是教学呼读；是否覆盖全部课程韵母、整体认读、ü、轻声及声调；提供逐项输入映射和原始样例。
+- 引擎升级可固定版本，输出含错误/拒判原因；获取实际儿童测试许可；SDK、密钥和权重不提交 MIT 仓库。
+
+驰声的公开中文内核 `cn.word.score` 列出儿童资源和 `refText: b` 示例，可据此发起能力核实；但**云/通用内核文档不能证明该内核已包含在所购 Mac 离线包**。[内核参考](https://www.chivox.com/en/docs/coreCn/Chinese/cn.word.score)（访问 2026-09-25）。
+
+## 3. 已排除的云评分与浏览器捷径
+
+- 讯飞流式评测 `read_syllable` 对应单个汉字，能返回声韵和调型字段；不能仅凭名称推断能评独立声母。[官方 API](https://www.xfyun.cn/doc/Ise/IseAPI.html)。
+- 腾讯新版有独立拼音模式，但要将音频发第三方，违背当前边界；旧基础版停止迭代，不能选旧教程作为新项目依赖。[新版拼音模式](https://cloud.tencent.com/document/product/1774/107402)、[基础版状态](https://cloud.tencent.com/product/oeb)。
+- Azure 中文发音评价存在，但英文专属音节/音素功能不能推导为中文支持，且属于云服务。[官方评测能力](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/how-to-pronunciation-assessment)。
+- 浏览器 `SpeechRecognition` 默认行为和本地语言包支持不一致；它是语音识别，不是儿童拼音评分。本期禁止调用此 API。[MDN Web Speech](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)。
+
+以上访问日期均为 2026-09-25，仅保留路线比较，不安排接入或费用。
+
+## 4. 字体、插图与素材
+
+拼音正文建议后续评估 SIL **Andika**：面向初学阅读者，单层 `a/g` 和组合附加符有明确字体功能；官方提供 WOFF2，许可 OFL-1.1。它不是“教育部认证拼音字体”，四线格位置、`ɑ/a` 的显示策略、带调 `ü` 和教材字形要由课程审核者单独确认。数据统一保存标准拉丁 `a/g` 与 NFC 归一化拼音，不为了看起来像教材把数据库字符替换为 IPA `ɑ/ɡ`。[字体主页](https://software.sil.org/andika/)、[字体特性](https://software.sil.org/andika/features/)、[官方下载](https://software.sil.org/andika/download/)、[OFL 原文](https://github.com/silnrsi/font-andika/blob/master/OFL.txt)（2026-09-25）。
+
+系统中文字体用于界面；不把系统字体文件拷入仓库。正式引入 Andika 时固定包版本、保存原版权与 OFL，不删除保留字体名要求；若做子集/修改，先检查许可条件并按要求更名。字体需要测试 `ā á ǎ à ō ó ǒ ò ē é ě è ī í ǐ ì ū ú ǔ ù ǖ ǘ ǚ ǜ ü ê`，检查低端屏幕和缩放下声调不被裁切。
+
+首版插图、徽章和音效优先原创 SVG/CSS/原创短音效；每件资产登记作者与许可。教材扫描、出版社配套音频、百科图片、搜索图片和网上“免费拼音包”都不因可下载而获再分发权。MIT 是项目原创代码协议，不会覆盖第三方字体、模型或录音。未知许可素材保持 `blocked`，不得混入构建。
+
+## 5. 获取证据与当前状态
+
+2026-09-25 使用 Python 标准库对下列小型官方资源进行 HTTP 获取并计算 SHA-256；没有下载或试听模型权重、没有调用付费服务。哈希用于复核本次读到的文本，分支 URL 可变，正式引入还须固定 commit/release。
+
+| 资源                                                                                                | HTTP | SHA-256                                                            |
+| --------------------------------------------------------------------------------------------------- | ---- | ------------------------------------------------------------------ |
+| [Andika OFL](https://raw.githubusercontent.com/silnrsi/font-andika/master/OFL.txt)                  | 200  | `ad7ddeb95bb5a7254938ab85336d8f8dc989ca95f2487f94e376fa60f33eae78` |
+| [F5 代码许可](https://raw.githubusercontent.com/SWivid/F5-TTS/main/LICENSE)                         | 200  | `c70811d1402134de900e811d3eaa349eb60f4d38a8f635b27b1e378c630facd2` |
+| [F5 权重卡](https://huggingface.co/SWivid/F5-TTS/raw/main/README.md)                                | 200  | `cf3354feaf4020527b3642b12a5a382de13d0af6bc99e8d37bee84425c1ca224` |
+| [CosyVoice3 权重卡](https://huggingface.co/FunAudioLLM/Fun-CosyVoice3-0.5B-2512/raw/main/README.md) | 200  | `d4ec0fe1342b60a424ce1cd8971c670d26be38068a96148bcb6a1b8a334c3088` |
+| [SenseVoiceSmall 权重卡](https://huggingface.co/FunAudioLLM/SenseVoiceSmall/raw/main/README.md)     | 200  | `6add90487ea3d685b6604ad0932b565fc5cf7e9daaf8aebc674de49da4560958` |
+| [MFA 普通话权重卡](https://huggingface.co/MontrealCorpusTools/mandarin_mfa/raw/main/README.md)      | 200  | `c81bfac107e2f9174a617d2a25e8a0c419b140424142c7b1b4469e7b2f3dd288` |
+
+另查询 npm 元数据获得 Meyda、Pitchy、ONNX Runtime Web 的 MIT 标记，以及 PyPI 上 librosa、ONNX Runtime、sherpa-onnx 等包元数据；这只证明索引可达和候选包存在。随后项目已实装并锁定 `assessment-poc` 组的 librosa/NumPy/SciPy，在本机合成220 Hz信号通过基本YIN运行验证（约220.24 Hz），仍未验证人声评分。实际已安装版本、锁文件和验证结果统一见 [依赖记录](../engineering/dependencies.md)，其余调研候选不等同实装依赖。GitHub releases API 本次返回 403 限流；字体官方下载页可打开，但字体包未安装验收。
+
+| 项目                    | 现状                             | 放行条件                                       |
+| ----------------------- | -------------------------------- | ---------------------------------------------- |
+| 浏览器播放/采音技术路线 | 官方能力可核实，产品适配尚待实现 | 真实 iPad/iPhone/Android/桌面实测              |
+| 真人教学音              | 尚未取得                         | 授权、文件、校验和、双人内容审核齐全           |
+| 儿童评分标准集          | 尚未取得                         | 监护人许可、匿名编号、两位教师标注、隔离测试集 |
+| 本地自动评分引擎        | 已确定 PoC 路径，尚无教学验收    | 基准、性能、拒判与隐私门禁通过                 |
+| Andika                  | 许可与官方入口可获得，尚未入库   | 固定文件/许可、字形审核与跨端验收              |
+| 商用 Mac 离线 SDK       | 可询证备选，不可承诺可用         | 架构/服务端授权/离线行为/试用通过              |
+| 云 TTS/评分             | 明确不采用                       | 只有用户未来改动约束才重新决策                 |

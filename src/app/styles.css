@@ -1,0 +1,83 @@
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  color: #193e35;
+  background: #f5f7f1;
+  font-synthesis: none;
+  line-height: 1.65;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 64px 24px;
+}
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+h1 {
+  font-size: clamp(36px, 7vw, 64px);
+  line-height: 1.15;
+  margin: 24px 0;
+}
+.intro {
+  font-size: 20px;
+}
+section {
+  margin-top: 40px;
+  padding: clamp(20px, 4vw, 36px);
+  border: 1px solid #bacdc2;
+  border-radius: 24px;
+  background: white;
+}
+h2 {
+  font-size: 24px;
+}
+.pinyin {
+  font-size: clamp(22px, 4vw, 32px);
+  overflow-wrap: anywhere;
+  line-height: 2;
+}
+button {
+  min-height: 52px;
+  max-width: 100%;
+  padding: 12px 24px;
+  background: #23584a;
+  color: white;
+  border: 0;
+  border-radius: 12px;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+button:focus-visible {
+  outline: 3px solid #a34315;
+  outline-offset: 5px;
+}
+.note {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 480px) {
+  main {
+    padding: 32px 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

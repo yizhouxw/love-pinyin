@@ -1,0 +1,38 @@
+[project]
+name = "love-pinyin-server"
+version = "0.1.0"
+description = "Local Mac Studio API baseline for Love Pinyin"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = [
+    "fastapi==0.141.1",
+    "uvicorn==0.53.0",
+]
+
+[dependency-groups]
+assessment-poc = [
+    "librosa==1.0.0",
+    "numpy==2.5.3",
+    "scipy==1.18.1",
+]
+dev = [
+    "httpx==0.28.1",
+    "pytest==9.1.1",
+    "ruff==0.16.8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/server"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+default = true

@@ -1,0 +1,59 @@
+{
+  "name": "love-pinyin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "小学一年级汉语拼音学习应用：产品方案与开发基线",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=24.18.1 <25",
+    "npm": ">=11.16.0 <12"
+  },
+  "packageManager": "npm@11.16.0",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "dev:lan": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate:content": "node scripts/validate-content.mjs",
+    "validate:release": "node scripts/validate-content.mjs --release",
+    "licenses": "node scripts/dependency-inventory.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "verify": "npm run format:check && npm run lint && npm run typecheck && npm run validate:content && npm test && npm run build",
+    "dev:api": "uv run --locked uvicorn server.main:app --host 127.0.0.1 --port 8000 --reload",
+    "serve:local": "uv run --locked uvicorn server.main:app --host 127.0.0.1 --port 8000 --no-access-log",
+    "test:server": "uv run --locked pytest",
+    "verify:server": "uv run --locked ruff check . && uv run --locked ruff format --check . && uv run --locked pytest",
+    "verify:all": "npm run verify && npm run verify:server && npm run test:e2e:local",
+    "audio:doctor": "uv run --locked --group assessment-poc python scripts/check_audio_runtime.py",
+    "licenses:python": "uv run --locked --group assessment-poc python scripts/python-licenses.py",
+    "test:e2e:local": "node scripts/e2e-local.mjs"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.13.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "ajv": "8.20.0",
+    "eslint": "10.11.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.12.0",
+    "prettier": "3.9.9",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.70.1",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  }
+}

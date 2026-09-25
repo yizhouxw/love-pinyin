@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "status": "pending-local-poc",
+  "architecture": "mac-studio-local-api",
+  "externalAudioTransfer": false,
+  "engines": [],
+  "releaseEvidence": null,
+  "note": "尚未认定任何引擎适用于儿童拼音评分；DSP依赖实装不代表模型已通过验收。"
+}
