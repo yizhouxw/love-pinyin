@@ -25,7 +25,7 @@ CSRF_COOKIE = "lp_csrf"
 SHANGHAI = ZoneInfo("Asia/Shanghai")
 _failures: dict[str, deque[float]] = defaultdict(deque)
 _failures_lock = threading.Lock()
-_import_previews: dict[str, tuple[str, int, float, dict]] = {}
+_import_previews: dict[str, tuple[str, str, int, float, dict]] = {}
 _import_previews_lock = threading.Lock()
 IMPORT_MAX_BYTES = 1_048_576
 IMPORT_MAX_ATTEMPTS = 50_000
@@ -377,10 +377,15 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
             (device["household_id"],),
         ).fetchall()
         sessions = db.execute(
-            """SELECT id,content_version AS contentVersion,started_at AS startedAt,status
+            """SELECT id,content_version AS contentVersion,started_at AS startedAt,status,tasks_json
                FROM sessions WHERE household_id=? ORDER BY started_at,id""",
             (device["household_id"],),
         ).fetchall()
+        task_positions = {
+            task["instanceId"]: index
+            for session in sessions
+            for index, task in enumerate(json.loads(session["tasks_json"]))
+        }
         skipped = db.execute(
             """SELECT s.instance_id AS instanceId,i.session_id AS sessionId,
                s.skipped_at AS skippedAt FROM skipped_instances s
@@ -406,10 +411,15 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
         "exportedAt": now_iso(),
         "profile": public_profile(household),
         "attempts": [dict(row) for row in attempts],
-        "sessions": [dict(row) for row in sessions],
+        "sessions": [
+            {key: row[key] for key in ("id", "contentVersion", "startedAt", "status")}
+            for row in sessions
+        ],
         "skippedInstances": [dict(row) for row in skipped],
         "reviewPlans": [dict(row) for row in reviews],
-        "exerciseInstances": [dict(row) for row in instances],
+        "exerciseInstances": [
+            {**dict(row), "position": task_positions.get(row["id"], -1)} for row in instances
+        ],
         "assessmentSummaries": [
             {
                 "targetId": row["target_id"],
@@ -504,6 +514,7 @@ def _validate_backup(value: object) -> dict:
         "BACKUP_PROFILE_INVALID",
     )
     _require(all(type(item) is bool for item in settings_value.values()), "BACKUP_PROFILE_INVALID")
+    _require(not settings_value["reducedMotion"], "BACKUP_SETTING_UNSUPPORTED")
 
     arrays = (
         "attempts",
@@ -536,6 +547,7 @@ def _validate_backup(value: object) -> dict:
     exercises = map_by_id("exercises")
     lessons = map_by_id("lessons")
     instances = {}
+    positions_by_session: dict[str, set[int]] = defaultdict(set)
     instance_fields = {
         "id",
         "exercise_id",
@@ -545,6 +557,7 @@ def _validate_backup(value: object) -> dict:
         "session_id",
         "hint_used",
         "answered_at",
+        "position",
     }
     for row in backup["exerciseInstances"]:
         _require(isinstance(row, dict) and set(row) == instance_fields, "BACKUP_INSTANCE_INVALID")
@@ -566,6 +579,12 @@ def _validate_backup(value: object) -> dict:
             row["content_version"] == backup["contentVersion"] and row["session_id"] in sessions,
             "BACKUP_REFERENCE_INVALID",
         )
+        _require(type(row["position"]) is int and row["position"] >= 0, "BACKUP_INSTANCE_INVALID")
+        _require(
+            row["position"] not in positions_by_session[row["session_id"]],
+            "BACKUP_DUPLICATE_ID",
+        )
+        positions_by_session[row["session_id"]].add(row["position"])
         _require(
             type(row["hint_used"]) is int and row["hint_used"] in (0, 1), "BACKUP_INSTANCE_INVALID"
         )
@@ -573,6 +592,8 @@ def _validate_backup(value: object) -> dict:
         if row["answered_at"] is not None:
             _parse_datetime(row["answered_at"], "BACKUP_TIME_INVALID")
         instances[row["id"]] = row
+    for positions in positions_by_session.values():
+        _require(positions == set(range(len(positions))), "BACKUP_INSTANCE_INVALID")
 
     attempt_fields = {
         "id",
@@ -756,14 +777,15 @@ async def import_preview(request: Request, device: dict = Depends(parent)) -> di
     expires = time.time() + IMPORT_PREVIEW_TTL
     with _import_previews_lock:
         now = time.time()
-        for old_token, (_, _, expiry, _) in list(_import_previews.items()):
+        for old_token, (_, _, _, expiry, _) in list(_import_previews.items()):
             if expiry <= now:
                 del _import_previews[old_token]
         if len(_import_previews) >= IMPORT_MAX_ACTIVE_PREVIEWS:
             raise HTTPException(429, detail={"code": "IMPORT_PREVIEW_LIMIT"})
-        _import_previews[token] = (digest, revision, expires, backup)
+        _import_previews[token] = (device["household_id"], digest, revision, expires, backup)
     return {
         "previewToken": token,
+        "sha256": digest,
         "expiresInSeconds": IMPORT_PREVIEW_TTL,
         "revision": revision,
         "counts": {
@@ -776,6 +798,156 @@ async def import_preview(request: Request, device: dict = Depends(parent)) -> di
         },
         "willReplaceEntireHousehold": True,
     }
+
+
+class ImportConfirm(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    previewToken: str = Field(min_length=32, max_length=100)
+    sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    expectedRevision: int = Field(ge=0)
+
+
+def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None:
+    db.execute("DELETE FROM request_receipts WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM attempts WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM skipped_instances WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM exercise_instances WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM sessions WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM review_plans WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM assessment_summaries WHERE household_id=?", (household_id,))
+
+    exercises = map_by_id("exercises")
+    instance_groups: dict[str, list[dict]] = defaultdict(list)
+    for instance in backup["exerciseInstances"]:
+        instance_groups[instance["session_id"]].append(instance)
+    for session in backup["sessions"]:
+        tasks = [
+            {
+                "instanceId": item["id"],
+                "exercise": exercises[item["exercise_id"]],
+            }
+            for item in sorted(instance_groups[session["id"]], key=lambda row: row["position"])
+        ]
+        db.execute(
+            """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
+               tasks_json,status) VALUES(?,?,?,?,?,?,?)""",
+            (
+                session["id"],
+                household_id,
+                device_id,
+                session["contentVersion"],
+                session["startedAt"],
+                json.dumps(tasks, ensure_ascii=False),
+                session["status"],
+            ),
+        )
+    for item in backup["exerciseInstances"]:
+        db.execute(
+            """INSERT INTO exercise_instances(id,household_id,exercise_id,lesson_id,
+               content_version,created_at,session_id,hint_used,answered_at)
+               VALUES(?,?,?,?,?,?,?,?,?)""",
+            (
+                item["id"],
+                household_id,
+                item["exercise_id"],
+                item["lesson_id"],
+                item["content_version"],
+                item["created_at"],
+                item["session_id"],
+                item["hint_used"],
+                item["answered_at"],
+            ),
+        )
+    for item in backup["attempts"]:
+        db.execute(
+            """INSERT INTO attempts(id,household_id,device_id,instance_id,exercise_id,
+               knowledge_id,mode,first_try_correct,hint_used,due_credit,occurred_at,
+               business_date,answer_json) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (
+                item["id"],
+                household_id,
+                device_id,
+                item["instance_id"],
+                item["exercise_id"],
+                item["knowledge_id"],
+                item["mode"],
+                item["first_try_correct"],
+                item["hint_used"],
+                item["due_credit"],
+                item["occurred_at"],
+                item["business_date"],
+                item["answer_json"],
+            ),
+        )
+    for item in backup["skippedInstances"]:
+        db.execute(
+            "INSERT INTO skipped_instances(instance_id,household_id,skipped_at) VALUES(?,?,?)",
+            (item["instanceId"], household_id, item["skippedAt"]),
+        )
+    for item in backup["reviewPlans"]:
+        db.execute(
+            """INSERT INTO review_plans(household_id,knowledge_id,stage,due_date,updated_at)
+               VALUES(?,?,?,?,?)""",
+            (
+                household_id,
+                item["knowledge_id"],
+                item["stage"],
+                item["due_date"],
+                item["updated_at"],
+            ),
+        )
+    for item in backup["assessmentSummaries"]:
+        db.execute(
+            """INSERT INTO assessment_summaries(request_id,household_id,target_id,status,
+               summary_json,engine_version,created_at) VALUES(?,?,?,?,?,?,?)""",
+            (
+                secrets.token_urlsafe(18),
+                household_id,
+                item["targetId"],
+                item["status"],
+                json.dumps(item["summary"], ensure_ascii=False),
+                item["engineVersion"],
+                item["createdAt"],
+            ),
+        )
+
+
+@router.post("/profiles/import")
+def import_profile(body: ImportConfirm, device: dict = Depends(parent)) -> dict:
+    with _import_previews_lock:
+        preview = _import_previews.get(body.previewToken)
+    if not preview:
+        raise HTTPException(410, detail={"code": "IMPORT_PREVIEW_EXPIRED"})
+    household_id, digest, preview_revision, expires, backup = preview
+    if expires <= time.time():
+        with _import_previews_lock:
+            _import_previews.pop(body.previewToken, None)
+        raise HTTPException(410, detail={"code": "IMPORT_PREVIEW_EXPIRED"})
+    if household_id != device["household_id"] or digest != body.sha256:
+        raise HTTPException(409, detail={"code": "IMPORT_PREVIEW_MISMATCH"})
+    if preview_revision != body.expectedRevision:
+        raise HTTPException(409, detail={"code": "REVISION_CONFLICT"})
+    with transaction() as db:
+        household = db.execute(
+            "SELECT revision FROM household WHERE id=?", (household_id,)
+        ).fetchone()
+        if not household or household["revision"] != body.expectedRevision:
+            with _import_previews_lock:
+                _import_previews.pop(body.previewToken, None)
+            raise HTTPException(409, detail={"code": "REVISION_CONFLICT"})
+        _restore_backup(db, household_id, device["id"], backup)
+        row = db.execute(
+            """UPDATE household SET selected_lesson_id=?,sound_enabled=?,revision=revision+1
+               WHERE id=? RETURNING *""",
+            (
+                backup["profile"]["selectedLessonId"],
+                int(backup["profile"]["settings"]["soundEnabled"]),
+                household_id,
+            ),
+        ).fetchone()
+    with _import_previews_lock:
+        _import_previews.pop(body.previewToken, None)
+    return {"imported": True, "profile": public_profile(row)}
 
 
 class DeleteData(BaseModel):
@@ -864,6 +1036,10 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                 json.dumps(tasks, ensure_ascii=False),
             ),
         )
+        revision = db.execute(
+            "UPDATE household SET revision=revision+1 WHERE id=? RETURNING revision",
+            (device["household_id"],),
+        ).fetchone()["revision"]
     return {
         "id": session_id,
         "lessonId": lesson["id"],
@@ -872,6 +1048,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         "tasks": tasks,
         "draftContent": content["reviewStatus"] != "approved",
         "audioAvailable": False,
+        "revision": revision,
     }
 
 
@@ -886,7 +1063,8 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
         if not row:
             return None
         attempts = db.execute(
-            """SELECT i.id AS instance_id,a.id AS attempt_id FROM exercise_instances i
+            """SELECT i.id AS instance_id,a.id AS attempt_id,a.exercise_id,a.answer_json,
+                      a.first_try_correct,a.hint_used FROM exercise_instances i
                LEFT JOIN attempts a ON a.instance_id=i.id WHERE i.session_id=?""",
             (row["id"],),
         ).fetchall()
@@ -900,6 +1078,7 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
             "SELECT result_json FROM request_receipts WHERE household_id=?",
             (device["household_id"],),
         ).fetchall()
+        mastery = _mastery(db, device["household_id"])
     result_by_attempt = {
         json.loads(item["result_json"]).get("attemptId"): json.loads(item["result_json"])
         for item in receipts
@@ -909,6 +1088,22 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
         for item in attempts
         if item["attempt_id"] in result_by_attempt
     }
+    exercises = map_by_id("exercises")
+    for item in attempts:
+        if item["attempt_id"] and item["instance_id"] not in results:
+            exercise = exercises[item["exercise_id"]]
+            answer_option_id = json.loads(item["answer_json"])["optionId"]
+            results[item["instance_id"]] = {
+                "attemptId": item["attempt_id"],
+                "instanceId": item["instance_id"],
+                "requestId": f"restored-{item['attempt_id']}",
+                "answerOptionId": answer_option_id,
+                "correct": answer_option_id == exercise.get("answer", {}).get("optionId"),
+                "firstTryCorrect": bool(item["first_try_correct"]),
+                "hintUsed": bool(item["hint_used"]),
+                "mastery": mastery.get(exercise["primaryKnowledgeId"], {}),
+                "restored": True,
+            }
     for item in skipped:
         results[item["instance_id"]] = {
             "instanceId": item["instance_id"],
@@ -926,6 +1121,11 @@ def finish_session(session_id: str, device: dict = Depends(mutable)) -> Response
             "AND status='active'",
             (session_id, device["household_id"]),
         )
+        if cursor.rowcount:
+            db.execute(
+                "UPDATE household SET revision=revision+1 WHERE id=?",
+                (device["household_id"],),
+            )
         if cursor.rowcount == 0:
             row = db.execute(
                 "SELECT id FROM sessions WHERE id=? AND household_id=?",
@@ -952,7 +1152,13 @@ def mark_hint(instance_id: str, device: dict = Depends(mutable)) -> dict:
         ).fetchone()
         if skipped:
             raise HTTPException(409, detail={"code": "INSTANCE_ALREADY_SKIPPED"})
+        changed = not row["hint_used"]
         db.execute("UPDATE exercise_instances SET hint_used=1 WHERE id=?", (instance_id,))
+        if changed:
+            db.execute(
+                "UPDATE household SET revision=revision+1 WHERE id=?",
+                (device["household_id"],),
+            )
     q = map_by_id("exercises")[row["exercise_id"]]
     return {
         "hintUsed": True,
@@ -979,11 +1185,16 @@ def skip_instance(instance_id: str, device: dict = Depends(mutable)) -> dict:
         if not session or session["status"] != "active":
             raise HTTPException(409, detail={"code": "SESSION_NOT_ACTIVE"})
         skipped_at = now_iso()
-        db.execute(
+        inserted = db.execute(
             """INSERT OR IGNORE INTO skipped_instances
                (instance_id,household_id,skipped_at) VALUES(?,?,?)""",
             (instance_id, device["household_id"], skipped_at),
-        )
+        ).rowcount
+        if inserted:
+            db.execute(
+                "UPDATE household SET revision=revision+1 WHERE id=?",
+                (device["household_id"],),
+            )
         skipped_at = db.execute(
             "SELECT skipped_at FROM skipped_instances WHERE instance_id=?", (instance_id,)
         ).fetchone()["skipped_at"]
