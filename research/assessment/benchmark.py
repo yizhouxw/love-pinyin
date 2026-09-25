@@ -23,7 +23,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-VERSION = "poc-evaluator-0.3.0"
+VERSION = "poc-evaluator-0.4.0"
 BOOTSTRAP_REPLICATES = 2000
 BOOTSTRAP_SEED = 20260926
 CONTENT_PATH = Path(__file__).resolve().parents[2] / "content" / "curriculum.json"
@@ -31,7 +31,7 @@ ID_PATTERN = re.compile(r"^[A-Za-z0-9_-]{8,64}$")
 LABELS = {"correct", "incorrect", "uncertain"}
 PREDICTIONS = {"pass", "retry", "uncertain"}
 CLASSES = {"initial", "final", "whole-syllable", "tone", "syllable", "orthographic-letter"}
-CHALLENGES = {"speech", "silence", "noise", "speaker-replay"}
+CHALLENGES = {"speech", "silence", "too-short", "noise", "speaker-replay", "near-neighbor"}
 SPLITS = {"development", "calibration", "test"}
 MAX_WAV_BYTES = 512 * 1024
 MAX_FRAMES = 16000 * 10
@@ -204,7 +204,7 @@ def _check_manifest(manifest: Any, allowed_target_ids: set[str]) -> list[dict[st
             f"targetId is not in the project curriculum: {sample_id}",
         )
         speaker_splits[speaker_id].add(item["split"])
-        if item["challengeClass"] in {"silence", "noise", "speaker-replay"}:
+        if item["challengeClass"] in {"silence", "too-short", "noise", "speaker-replay"}:
             _require(
                 item["adjudicatedLabel"] == "uncertain",
                 f"challenge sample must be adjudicated uncertain: {sample_id}",
@@ -218,6 +218,11 @@ def _check_manifest(manifest: Any, allowed_target_ids: set[str]) -> list[dict[st
                 item["targetId"] != "challenge",
                 f"speech sample cannot use the challenge target: {sample_id}",
             )
+            if item["challengeClass"] == "near-neighbor":
+                _require(
+                    item["adjudicatedLabel"] == "incorrect",
+                    f"near-neighbor sample must be adjudicated incorrect: {sample_id}",
+                )
     _require(
         all(len(splits) == 1 for splits in speaker_splits.values()),
         "speakerGroupId leakage across development/calibration/test splits",
@@ -336,7 +341,7 @@ def _metric_counts(
             len(clear),
         ),
     }
-    for challenge in ("silence", "noise", "speaker-replay"):
+    for challenge in ("silence", "too-short", "noise", "speaker-replay"):
         rows = [item for item in items if item["challengeClass"] == challenge]
         counts[f"challengeRejection:{challenge}"] = (
             sum(decisions[item["sampleId"]] == "uncertain" for item in rows),
@@ -528,6 +533,7 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
         # Target IDs map to curriculum items, not people. Per-target reporting
         # prevents a weak syllable/tone target from disappearing in class means.
         "byTargetId": _grouped(test_items, predicted, "targetId"),
+        "byChallengeClass": _grouped(test_items, predicted, "challengeClass"),
         "byDeviceClass": _grouped(test_items, predicted, "deviceClass"),
         "byEnvironmentClass": _grouped(test_items, predicted, "environmentClass"),
         "byCohort": _grouped(test_items, predicted, "cohort"),

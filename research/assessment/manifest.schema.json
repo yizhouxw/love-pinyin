@@ -57,7 +57,9 @@
             ]
           },
           "environmentClass": { "enum": ["quiet", "ordinary", "noisy"] },
-          "challengeClass": { "enum": ["speech", "silence", "noise", "speaker-replay"] },
+          "challengeClass": {
+            "enum": ["speech", "silence", "too-short", "noise", "speaker-replay", "near-neighbor"]
+          },
           "split": { "enum": ["development", "calibration", "test"] },
           "annotations": {
             "type": "array",
@@ -88,7 +90,9 @@
         "allOf": [
           {
             "if": {
-              "properties": { "challengeClass": { "enum": ["silence", "noise", "speaker-replay"] } }
+              "properties": {
+                "challengeClass": { "enum": ["silence", "too-short", "noise", "speaker-replay"] }
+              }
             },
             "then": {
               "properties": {
@@ -96,6 +100,10 @@
                 "targetClass": { "const": "syllable" }
               }
             }
+          },
+          {
+            "if": { "properties": { "challengeClass": { "const": "near-neighbor" } } },
+            "then": { "properties": { "adjudicatedLabel": { "const": "incorrect" } } }
           }
         ]
       }

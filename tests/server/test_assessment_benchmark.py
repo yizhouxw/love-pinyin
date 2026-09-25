@@ -78,6 +78,46 @@ def test_manifest_accepts_well_formed_challenge_metadata():
     assert _check_manifest(_manifest(row), {"rt-a"}) == [row]
 
 
+def test_too_short_recording_is_an_uncertain_challenge_and_near_neighbor_is_incorrect():
+    uncertain_annotations = [
+        {"reviewerRef": "reviewer_01", "label": "uncertain"},
+        {"reviewerRef": "reviewer_02", "label": "uncertain"},
+    ]
+    too_short = _item(
+        targetId="challenge",
+        targetClass="syllable",
+        challengeClass="too-short",
+        annotations=uncertain_annotations,
+        adjudicatedLabel="uncertain",
+    )
+    assert _check_manifest(_manifest(too_short), {"rt-a"}) == [too_short]
+
+    near_neighbor = _item(
+        challengeClass="near-neighbor",
+        adjudicatedLabel="incorrect",
+        annotations=[
+            {"reviewerRef": "reviewer_01", "label": "incorrect"},
+            {"reviewerRef": "reviewer_02", "label": "incorrect"},
+        ],
+    )
+    assert _check_manifest(_manifest(near_neighbor), {"rt-a"}) == [near_neighbor]
+
+    near_neighbor["annotations"] = [
+        {"reviewerRef": "reviewer_01", "label": "correct"},
+        {"reviewerRef": "reviewer_02", "label": "incorrect"},
+    ]
+    near_neighbor["adjudicatorRef"] = "reviewer_03"
+    near_neighbor["adjudicatedLabel"] = "uncertain"
+    with pytest.raises(ManifestError, match="near-neighbor sample must be adjudicated incorrect"):
+        _check_manifest(_manifest(near_neighbor), {"rt-a"})
+
+    too_short_rates = _rates([too_short], {too_short["sampleId"]: {"status": "uncertain"}})
+    assert too_short_rates["challengeRejection"]["too-short"]["rate"] == 1
+    near_neighbor["adjudicatedLabel"] = "incorrect"
+    neighbor_rates = _rates([near_neighbor], {near_neighbor["sampleId"]: {"status": "pass"}})
+    assert neighbor_rates["falsePassOnIncorrect"]["rate"] == 1
+
+
 def test_disagreement_requires_a_distinct_third_adjudicator():
     row = _item(
         annotations=[
@@ -193,7 +233,7 @@ def test_evaluator_emits_cluster_intervals_without_sample_identifiers(tmp_path):
 
     report = evaluate(manifest, predictions, audio_dir)
 
-    assert report["reportVersion"] == "poc-evaluator-0.3.0"
+    assert report["reportVersion"] == "poc-evaluator-0.4.0"
     assert report["testMetrics"]["clearSampleAccuracy"]["speakerClusterCi95"]["ci95"] == [
         0.0,
         1.0,
