@@ -555,6 +555,7 @@ function ParentPanel({
 }: Json) {
   const [confirm, setConfirm] = useState('');
   const [exportJson, setExportJson] = useState('');
+  const [exportRevision, setExportRevision] = useState<number | null>(null);
   const [newDeviceCode, setNewDeviceCode] = useState('');
   return (
     <section className="parent-panel">
@@ -573,6 +574,7 @@ function ParentPanel({
             void act(async () => {
               const data = await api('/profiles/export');
               setExportJson(JSON.stringify(data, null, 2));
+              setExportRevision(progress.revision);
             })
           }
         >
@@ -648,7 +650,7 @@ function ParentPanel({
           )}
         </div>
       </div>
-      {exportJson && (
+      {exportJson && exportRevision === progress.revision && (
         <textarea
           className="export-box"
           aria-label="导出的 JSON 数据"
@@ -671,15 +673,15 @@ function ParentPanel({
           className="danger-button"
           disabled={!boot.device?.isParent || confirm !== '删除我的学习记录'}
           onClick={() => {
-            if (
-              confirm === '删除我的学习记录' &&
-              window.confirm('确定永久删除这台 Mac 上的学习记录吗？')
-            )
+            if (confirm === '删除我的学习记录')
               void act(async () => {
                 await api('/profiles/data', {
                   method: 'DELETE',
                   body: JSON.stringify({ confirmation: confirm }),
                 });
+                setExportJson('');
+                setExportRevision(null);
+                setConfirm('');
                 await refresh();
               });
           }}
