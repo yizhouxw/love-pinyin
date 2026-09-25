@@ -52,6 +52,8 @@ type Progress = {
   revision: number;
   selectedLessonId: string;
   completedSessions: number;
+  clockSkewDetected?: boolean;
+  pendingClockAttempts?: number;
   settings: { reducedMotion: boolean; soundEnabled: boolean };
   mastery: {
     knowledgeId: string;
@@ -74,6 +76,7 @@ type Answer = {
   correctOptionId: string;
   selectedOptionId: string;
   mastery: { status: string };
+  clockPending?: boolean;
 };
 type Hint = { explanation: string; answer: { optionId: string } };
 
@@ -593,9 +596,11 @@ export function App() {
             <div className={`feedback ${answer.correct ? 'good' : 'try-again'}`} role="status">
               <strong>{answer.correct ? '答对啦！' : '没关系，再看看正确答案。'}</strong>
               <span>
-                {answer.mastery.status === 'mastered'
-                  ? '这个知识点已掌握 ✨'
-                  : '完成后继续下一关吧。'}
+                {answer.clockPending
+                  ? '此练习已保存为待校时记录，不计入掌握度。'
+                  : answer.mastery.status === 'mastered'
+                    ? '这个知识点已掌握 ✨'
+                    : '完成后继续下一关吧。'}
               </span>
             </div>
           )}
@@ -740,6 +745,12 @@ export function App() {
               🌱
             </div>
           </section>
+          {!parentOpen && progress.clockSkewDetected && (
+            <div className="error-notice" role="alert">
+              Mac Studio
+              时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度；请家长检查服务器时间。
+            </div>
+          )}
           {!parentOpen && (
             <section className="garden-card" aria-labelledby="garden-title">
               <div className="garden-copy">
@@ -1087,6 +1098,7 @@ function ParentPanel({
   const [devices, setDevices] = useState<Json[]>([]);
   const [revokeDeviceId, setRevokeDeviceId] = useState('');
   const [deviceError, setDeviceError] = useState('');
+  const [clockResolutionConfirm, setClockResolutionConfirm] = useState('');
   const isParent = Boolean(boot.device?.isParent);
   const savedLessonExists = curriculum.lessons.some(
     (lesson: Lesson) => lesson.id === progress.selectedLessonId,
@@ -1182,6 +1194,69 @@ function ParentPanel({
         </div>
         <span className="status-pill">暂未开启</span>
       </div>
+      {(progress.clockSkewDetected || (progress.pendingClockAttempts ?? 0) > 0) && (
+        <div className="parent-setting clock-pending-setting">
+          <div>
+            <strong>服务器时间与待校时练习</strong>
+            <p>
+              {progress.clockSkewDetected
+                ? 'Mac Studio 时间比先前记录回退超过 5 分钟。请先校准系统时间；期间的新练习不会计入掌握度。'
+                : '系统时间已恢复。请决定如何处理待校时练习；保留的记录始终不计入掌握度。'}
+            </p>
+            <p>待处理练习：{progress.pendingClockAttempts ?? 0} 条</p>
+          </div>
+          {(progress.pendingClockAttempts ?? 0) > 0 && !progress.clockSkewDetected && (
+            <div className="clock-pending-actions">
+              <label>
+                输入处理方式确认
+                <input
+                  aria-label="确认处理待校时练习"
+                  value={clockResolutionConfirm}
+                  onChange={(event) => setClockResolutionConfirm(event.target.value)}
+                />
+              </label>
+              <button
+                className="quiet"
+                disabled={!isParent || clockResolutionConfirm !== '保留为不计分练习' || busy}
+                onClick={() =>
+                  void act(async () => {
+                    await api('/profiles/clock-pending/resolve', {
+                      method: 'POST',
+                      body: JSON.stringify({
+                        resolution: 'keep-unscored',
+                        confirmation: clockResolutionConfirm,
+                      }),
+                    });
+                    setClockResolutionConfirm('');
+                    await refresh();
+                  })
+                }
+              >
+                保留为不计分练习
+              </button>
+              <button
+                className="danger-button"
+                disabled={!isParent || clockResolutionConfirm !== '删除待校时练习' || busy}
+                onClick={() =>
+                  void act(async () => {
+                    await api('/profiles/clock-pending/resolve', {
+                      method: 'POST',
+                      body: JSON.stringify({
+                        resolution: 'discard',
+                        confirmation: clockResolutionConfirm,
+                      }),
+                    });
+                    setClockResolutionConfirm('');
+                    await refresh();
+                  })
+                }
+              >
+                删除待校时练习
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       <div className="parent-setting">
         <div>
           <strong>减少动态效果</strong>
@@ -1323,13 +1398,17 @@ function ParentPanel({
           <div className="import-preview" aria-label="备份导入预览">
             <strong>{importFileName} · 已通过格式检查</strong>
             {importPreview.migratedFromSchemaVersion && (
-              <p>这份 schema v2 备份已迁移；原备份没有休息进度，新轮次计数将从 0 开始。</p>
+              <p>
+                这份 schema v{importPreview.migratedFromSchemaVersion}{' '}
+                备份已显式迁移；旧备份没有待校时标记，历史练习按普通记录导入。
+              </p>
             )}
             <p>
               将整体替换为 {importPreview.counts.attempts} 条练习、
               {importPreview.counts.sessions} 个会话、
               {importPreview.counts.skippedInstances} 道跳过题和
-              {importPreview.counts.reviewPlans} 项复习计划。
+              {importPreview.counts.reviewPlans} 项复习计划；其中待校时练习{' '}
+              {importPreview.counts.clockPendingAttempts ?? 0} 条。
             </p>
             <p>此操作会替换本家庭全部学习记录；已经下载的旧备份无法远程删除。</p>
             <label className="import-confirm-label">

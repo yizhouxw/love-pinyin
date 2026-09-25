@@ -895,6 +895,24 @@ footer {
   color: var(--muted);
   font-size: 13px;
 }
+.clock-pending-setting {
+  align-items: flex-start;
+}
+.clock-pending-actions {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.clock-pending-actions label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.clock-pending-actions input {
+  width: min(260px, 100%);
+}
 .device-management {
   padding: 20px 0;
   border-top: 1px solid var(--line);

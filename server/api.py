@@ -58,7 +58,8 @@ def _get_device(raw: str | None) -> dict:
     with connect() as db:
         row = db.execute(
             """SELECT d.*,h.id AS profile_id,h.revision,h.content_version,
-                      h.selected_lesson_id,h.sound_enabled,h.reduced_motion,h.rounds_since_break
+                      h.selected_lesson_id,h.sound_enabled,h.reduced_motion,h.rounds_since_break,
+                      h.last_observed_at,h.clock_skew_detected
                FROM devices d JOIN household h ON h.id=d.household_id
                WHERE d.token_hash=? AND d.revoked_at IS NULL""",
             (_hash(raw),),
@@ -73,6 +74,35 @@ def _get_device(raw: str | None) -> dict:
 
 def paired(lp_session: str | None = Cookie(default=None)) -> dict:
     return _get_device(lp_session)
+
+
+def _observe_clock(device: dict) -> bool:
+    now = datetime.now(UTC)
+    with transaction() as db:
+        household = db.execute(
+            "SELECT last_observed_at,clock_skew_detected FROM household WHERE id=?",
+            (device["household_id"],),
+        ).fetchone()
+        last = (
+            datetime.fromisoformat(household["last_observed_at"])
+            if household["last_observed_at"]
+            else None
+        )
+        skewed = last is not None and now < last - timedelta(minutes=5)
+        previously_skewed = bool(household["clock_skew_detected"])
+        if not skewed and (last is None or now > last):
+            db.execute(
+                "UPDATE household SET last_observed_at=? WHERE id=?",
+                (now.isoformat(timespec="milliseconds"), device["household_id"]),
+            )
+        if skewed != previously_skewed:
+            db.execute(
+                "UPDATE household SET clock_skew_detected=?,revision=revision+1 WHERE id=?",
+                (int(skewed), device["household_id"]),
+            )
+            device["revision"] += 1
+    device["clock_skew_detected"] = int(skewed)
+    return skewed
 
 
 def mutable(
@@ -91,6 +121,7 @@ def mutable(
         raise HTTPException(403, detail={"code": "CSRF_TOKEN_MISMATCH"})
     if not secrets.compare_digest(_hash(lp_csrf), device["csrf_hash"]):
         raise HTTPException(403, detail={"code": "CSRF_DEVICE_MISMATCH"})
+    _observe_clock(device)
     return device
 
 
@@ -378,7 +409,7 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
         ).fetchone()
         attempts = db.execute(
             """SELECT id,instance_id,exercise_id,knowledge_id,mode,first_try_correct,
-               hint_used,due_credit,
+               hint_used,due_credit,clock_pending,
                occurred_at,business_date,answer_json FROM attempts WHERE household_id=?
                ORDER BY occurred_at,id""",
             (device["household_id"],),
@@ -418,7 +449,7 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
             (device["household_id"],),
         ).fetchall()
     return {
-        "schemaVersion": 4,
+        "schemaVersion": 5,
         "contentVersion": household["content_version"],
         "masteryRuleVersion": 1,
         "exportedAt": now_iso(),
@@ -493,6 +524,8 @@ def _validate_backup(value: object) -> dict:
         if migrated_from == 2
         else _migrate_v3_backup(value)
         if migrated_from == 3
+        else _migrate_v4_backup(value)
+        if migrated_from == 4
         else value
     )
     required = {
@@ -510,7 +543,7 @@ def _validate_backup(value: object) -> dict:
         "note",
     }
     _require(set(backup) == required, "BACKUP_FIELDS_INVALID")
-    _require(backup["schemaVersion"] == 4, "BACKUP_VERSION_UNSUPPORTED")
+    _require(backup["schemaVersion"] == 5, "BACKUP_VERSION_UNSUPPORTED")
     curriculum = load_curriculum()
     _require(
         backup["contentVersion"] == curriculum["contentVersion"], "CONTENT_VERSION_UNSUPPORTED"
@@ -644,6 +677,7 @@ def _validate_backup(value: object) -> dict:
         "first_try_correct",
         "hint_used",
         "due_credit",
+        "clock_pending",
         "occurred_at",
         "business_date",
         "answer_json",
@@ -677,6 +711,11 @@ def _validate_backup(value: object) -> dict:
         _require(
             type(row["due_credit"]) is int and row["due_credit"] in (0, 1), "BACKUP_ATTEMPT_INVALID"
         )
+        _require(
+            type(row["clock_pending"]) is int and row["clock_pending"] in (0, 1),
+            "BACKUP_ATTEMPT_INVALID",
+        )
+        _require(not row["clock_pending"] or not row["due_credit"], "BACKUP_ATTEMPT_INVALID")
         _require(isinstance(row["business_date"], str), "BACKUP_ATTEMPT_INVALID")
         try:
             date.fromisoformat(row["business_date"])
@@ -853,6 +892,34 @@ def _migrate_v3_backup(value: dict) -> dict:
     migrated = dict(value)
     migrated["schemaVersion"] = 4
     migrated["sessions"] = [{**session, "reviewKnowledgeId": None} for session in value["sessions"]]
+    return _migrate_v4_backup(migrated)
+
+
+def _migrate_v4_backup(value: dict) -> dict:
+    _require(isinstance(value.get("attempts"), list), "BACKUP_INVALID")
+    legacy_attempt_fields = {
+        "id",
+        "instance_id",
+        "exercise_id",
+        "knowledge_id",
+        "mode",
+        "first_try_correct",
+        "hint_used",
+        "due_credit",
+        "occurred_at",
+        "business_date",
+        "answer_json",
+    }
+    _require(
+        all(
+            isinstance(attempt, dict) and set(attempt) == legacy_attempt_fields
+            for attempt in value["attempts"]
+        ),
+        "BACKUP_ATTEMPT_INVALID",
+    )
+    migrated = dict(value)
+    migrated["schemaVersion"] = 5
+    migrated["attempts"] = [{**attempt, "clock_pending": 0} for attempt in value["attempts"]]
     return migrated
 
 
@@ -888,7 +955,7 @@ async def import_preview(request: Request, device: dict = Depends(parent)) -> di
         "previewToken": token,
         "sha256": digest,
         "migratedFromSchemaVersion": payload.get("schemaVersion")
-        if payload.get("schemaVersion") in {2, 3}
+        if payload.get("schemaVersion") in {2, 3, 4}
         else None,
         "expiresInSeconds": IMPORT_PREVIEW_TTL,
         "revision": revision,
@@ -896,6 +963,7 @@ async def import_preview(request: Request, device: dict = Depends(parent)) -> di
             "sessions": len(backup["sessions"]),
             "exerciseInstances": len(backup["exerciseInstances"]),
             "attempts": len(backup["attempts"]),
+            "clockPendingAttempts": sum(item["clock_pending"] for item in backup["attempts"]),
             "skippedInstances": len(backup["skippedInstances"]),
             "reviewPlans": len(backup["reviewPlans"]),
             "assessmentSummaries": len(backup["assessmentSummaries"]),
@@ -967,7 +1035,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
         db.execute(
             """INSERT INTO attempts(id,household_id,device_id,instance_id,exercise_id,
                knowledge_id,mode,first_try_correct,hint_used,due_credit,occurred_at,
-               business_date,answer_json) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+               business_date,answer_json,clock_pending) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (
                 item["id"],
                 household_id,
@@ -982,6 +1050,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
                 item["occurred_at"],
                 item["business_date"],
                 item["answer_json"],
+                item["clock_pending"],
             ),
         )
     for item in backup["skippedInstances"]:
@@ -1062,6 +1131,12 @@ class DeleteData(BaseModel):
     confirmation: str = Field(min_length=1, max_length=40)
 
 
+class ClockPendingResolution(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    resolution: str = Field(pattern=r"^(discard|keep-unscored)$")
+    confirmation: str = Field(min_length=1, max_length=40)
+
+
 def _delete_learning_rows(db, household_id: str) -> None:
     db.execute("DELETE FROM request_receipts WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM assessment_summaries WHERE household_id=?", (household_id,))
@@ -1086,6 +1161,52 @@ def delete_profile_data(body: DeleteData, device: dict = Depends(parent)) -> dic
         )
         row = db.execute("SELECT * FROM household WHERE id=?", (household_id,)).fetchone()
     return {"deleted": True, "profile": public_profile(row)}
+
+
+@router.post("/profiles/clock-pending/resolve")
+def resolve_clock_pending(body: ClockPendingResolution, device: dict = Depends(parent)) -> dict:
+    if device["clock_skew_detected"]:
+        raise HTTPException(409, detail={"code": "CLOCK_NOT_RESTORED"})
+    expected = "删除待校时练习" if body.resolution == "discard" else "保留为不计分练习"
+    if body.confirmation != expected:
+        raise HTTPException(422, detail={"code": "CONFIRMATION_REQUIRED"})
+    household_id = device["household_id"]
+    with transaction() as db:
+        pending = db.execute(
+            "SELECT id,instance_id FROM attempts WHERE household_id=? AND clock_pending=1",
+            (household_id,),
+        ).fetchall()
+        if body.resolution == "keep-unscored":
+            db.execute(
+                """UPDATE attempts SET clock_pending=0,due_credit=0
+                   WHERE household_id=? AND clock_pending=1""",
+                (household_id,),
+            )
+        elif pending:
+            pending_ids = {row["id"] for row in pending}
+            receipt_ids = []
+            for row in db.execute(
+                "SELECT request_id,result_json FROM request_receipts WHERE household_id=?",
+                (household_id,),
+            ):
+                try:
+                    result = json.loads(row["result_json"])
+                except (json.JSONDecodeError, TypeError):
+                    continue
+                if result.get("attemptId") in pending_ids:
+                    receipt_ids.append(row["request_id"])
+            db.executemany(
+                "DELETE FROM request_receipts WHERE request_id=?", [(i,) for i in receipt_ids]
+            )
+            instance_ids = [row["instance_id"] for row in pending]
+            db.executemany(
+                """UPDATE exercise_instances SET answered_at=NULL
+                   WHERE id=? AND session_id IN (SELECT id FROM sessions WHERE status='active')""",
+                [(instance_id,) for instance_id in instance_ids],
+            )
+            db.executemany("DELETE FROM attempts WHERE id=?", [(row["id"],) for row in pending])
+        db.execute("UPDATE household SET revision=revision+1 WHERE id=?", (household_id,))
+    return {"resolved": len(pending), "resolution": body.resolution}
 
 
 @router.delete("/profiles/reset")
@@ -1314,7 +1435,7 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
             return None
         attempts = db.execute(
             """SELECT i.id AS instance_id,a.id AS attempt_id,a.exercise_id,a.answer_json,
-                      a.first_try_correct,a.hint_used FROM exercise_instances i
+                      a.first_try_correct,a.hint_used,a.clock_pending FROM exercise_instances i
                LEFT JOIN attempts a ON a.instance_id=i.id WHERE i.session_id=?""",
             (row["id"],),
         ).fetchall()
@@ -1351,6 +1472,7 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
                 "correct": answer_option_id == exercise.get("answer", {}).get("optionId"),
                 "firstTryCorrect": bool(item["first_try_correct"]),
                 "hintUsed": bool(item["hint_used"]),
+                "clockPending": bool(item["clock_pending"]),
                 "mastery": mastery.get(exercise["primaryKnowledgeId"], {}),
                 "restored": True,
             }
@@ -1613,7 +1735,8 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
                AND business_date=? AND due_credit=1 LIMIT 1""",
             (device["household_id"], question["primaryKnowledgeId"], question["id"], day),
         ).fetchone()
-        credit = int(prior is None)
+        clock_pending = bool(device["clock_skew_detected"])
+        credit = int(prior is None and not clock_pending)
         first_correct = int(
             body.answerOptionId == question["answer"].get("optionId") and not instance["hint_used"]
         )
@@ -1625,8 +1748,8 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
         db.execute(
             """INSERT INTO attempts(
                id,household_id,device_id,instance_id,exercise_id,knowledge_id,mode,
-               first_try_correct,hint_used,due_credit,occurred_at,business_date,answer_json)
-               VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+               first_try_correct,hint_used,due_credit,occurred_at,business_date,answer_json,
+               clock_pending) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (
                 attempt_id,
                 device["household_id"],
@@ -1641,6 +1764,7 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
                 now.isoformat(timespec="milliseconds"),
                 day,
                 json.dumps({"optionId": body.answerOptionId}),
+                int(clock_pending),
             ),
         )
         state = _mastery(db, device["household_id"])[question["primaryKnowledgeId"]]
@@ -1670,6 +1794,7 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
             "firstTryCorrect": bool(first_correct),
             "hintUsed": bool(instance["hint_used"]),
             "creditedForMastery": bool(credit),
+            "clockPending": clock_pending,
             "mastery": state,
             "revision": revision,
         }
@@ -1695,6 +1820,7 @@ def read_attempt(request_id: str, device: dict = Depends(paired)) -> dict:
 
 @router.get("/profiles/progress")
 def progress(device: dict = Depends(paired)) -> dict:
+    _observe_clock(device)
     with connect() as db:
         mastery = _mastery(db, device["household_id"])
         completed_sessions = db.execute(
@@ -1714,6 +1840,7 @@ def progress(device: dict = Depends(paired)) -> dict:
         ).fetchone()[0]
         attempts = db.execute(
             """SELECT id,exercise_id,knowledge_id,mode,first_try_correct,hint_used,due_credit,
+               clock_pending,
                occurred_at,business_date FROM attempts WHERE household_id=?
                ORDER BY occurred_at DESC,id DESC LIMIT 1000""",
             (device["household_id"],),
@@ -1722,6 +1849,10 @@ def progress(device: dict = Depends(paired)) -> dict:
             "SELECT knowledge_id,stage,due_date FROM review_plans WHERE household_id=?",
             (device["household_id"],),
         ).fetchall()
+        pending_clock_count = db.execute(
+            "SELECT COUNT(*) FROM attempts WHERE household_id=? AND clock_pending=1",
+            (device["household_id"],),
+        ).fetchone()[0]
     by_knowledge = {row["knowledge_id"]: row for row in plans}
     today = business_date(datetime.now(UTC))
     for key, value in mastery.items():
@@ -1738,6 +1869,8 @@ def progress(device: dict = Depends(paired)) -> dict:
         "selectedLessonId": device["selected_lesson_id"],
         "masteryRuleVersion": "mastery-v1",
         "completedSessions": completed_sessions,
+        "clockSkewDetected": bool(device["clock_skew_detected"]),
+        "pendingClockAttempts": pending_clock_count,
         "settings": {
             "soundEnabled": bool(device["sound_enabled"]),
             "reducedMotion": bool(device["reduced_motion"]),

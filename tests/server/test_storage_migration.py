@@ -28,13 +28,21 @@ def test_migration_adds_motion_and_rest_fields_to_an_existing_household(monkeypa
         columns = {row["name"] for row in db.execute("PRAGMA table_info(household)")}
         household = db.execute("SELECT * FROM household WHERE id='family'").fetchone()
         version = db.execute("SELECT MAX(version) FROM schema_migrations").fetchone()[0]
-    assert {"reduced_motion", "rounds_since_break"} <= columns
+    assert {
+        "reduced_motion",
+        "rounds_since_break",
+        "last_observed_at",
+        "clock_skew_detected",
+    } <= columns
     assert household["reduced_motion"] == 0
     assert household["rounds_since_break"] == 0
-    assert version == 4
+    assert version == 5
     with storage.connect() as db:
         columns = {row["name"] for row in db.execute("PRAGMA table_info(sessions)")}
     assert "review_knowledge_id" in columns
+    with storage.connect() as db:
+        columns = {row["name"] for row in db.execute("PRAGMA table_info(attempts)")}
+    assert "clock_pending" in columns
 
 
 def test_failed_migration_rolls_back_schema_columns_and_version(monkeypatch, tmp_path):

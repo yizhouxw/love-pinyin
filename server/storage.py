@@ -68,6 +68,8 @@ def migrate() -> None:
                 sound_enabled INTEGER NOT NULL DEFAULT 1,
                 reduced_motion INTEGER NOT NULL DEFAULT 0,
                 rounds_since_break INTEGER NOT NULL DEFAULT 0,
+                last_observed_at TEXT,
+                clock_skew_detected INTEGER NOT NULL DEFAULT 0,
                 created_at TEXT NOT NULL
             );
             CREATE TABLE IF NOT EXISTS pairing_codes (
@@ -144,6 +146,18 @@ def migrate() -> None:
                 db.execute(
                     "ALTER TABLE household ADD COLUMN rounds_since_break INTEGER NOT NULL DEFAULT 0"
                 )
+            if "last_observed_at" not in columns:
+                db.execute("ALTER TABLE household ADD COLUMN last_observed_at TEXT")
+            if "clock_skew_detected" not in columns:
+                db.execute(
+                    """ALTER TABLE household ADD COLUMN clock_skew_detected
+                       INTEGER NOT NULL DEFAULT 0"""
+                )
+            attempt_columns = {row["name"] for row in db.execute("PRAGMA table_info(attempts)")}
+            if "clock_pending" not in attempt_columns:
+                db.execute(
+                    "ALTER TABLE attempts ADD COLUMN clock_pending INTEGER NOT NULL DEFAULT 0"
+                )
             db.execute(
                 """INSERT OR IGNORE INTO schema_migrations(version,applied_at)
                    VALUES(3,CURRENT_TIMESTAMP)"""
@@ -151,6 +165,10 @@ def migrate() -> None:
             db.execute(
                 """INSERT OR IGNORE INTO schema_migrations(version,applied_at)
                    VALUES(4,CURRENT_TIMESTAMP)"""
+            )
+            db.execute(
+                """INSERT OR IGNORE INTO schema_migrations(version,applied_at)
+                   VALUES(5,CURRENT_TIMESTAMP)"""
             )
             db.execute("COMMIT")
         except Exception:

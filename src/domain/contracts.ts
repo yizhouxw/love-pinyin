@@ -16,6 +16,8 @@ export interface Attempt {
   receivedAt: string;
   contentVersion: string;
   assessmentId?: string;
+  /** True while awaiting a parent decision after the Mac clock moved backwards. */
+  clockPending?: boolean;
 }
 
 export interface ProgressSnapshot {
@@ -26,6 +28,8 @@ export interface ProgressSnapshot {
   selectedLessonId: LessonId;
   /** Server-derived count of fully completed sessions; drives the non-competitive garden. */
   completedSessions: number;
+  clockSkewDetected: boolean;
+  pendingClockAttempts: number;
   attempts: Attempt[];
   settings: { soundEnabled: boolean; reducedMotion: boolean; sessionMinutes: number };
 }

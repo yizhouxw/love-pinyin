@@ -696,3 +696,83 @@ test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) 
   expect(answers).toEqual(['first-tone', 'first-tone']);
   expect(finished).toBe(true);
 });
+
+test('家长校时后可明确保留待校时练习为不计分记录', async ({ page }) => {
+  let pendingClockAttempts = 1;
+  let resolvedBody: Record<string, unknown> | null = null;
+  await page.route('**/api/v1/**', async (route) => {
+    const path = new URL(route.request().url()).pathname.replace('/api/v1', '');
+    if (path === '/bootstrap') {
+      await route.fulfill({
+        json: {
+          paired: true,
+          device: { label: '家长设备', isParent: true },
+          profile: {
+            id: 'clock-profile',
+            selectedLessonId: 'lesson-01',
+            revision: 8,
+            roundsSinceBreak: 0,
+          },
+        },
+      });
+    } else if (path === '/curriculum') {
+      await route.fulfill({
+        json: {
+          inventory: { initials: [] },
+          lessons: [
+            {
+              id: 'lesson-01',
+              order: 1,
+              title: '认识拼音',
+              objectives: ['认识拼音'],
+              knowledgeIds: [],
+              exerciseIds: [],
+              suggestedSessionMinutes: 5,
+            },
+          ],
+          knowledgeItems: [],
+          exercises: [],
+        },
+      });
+    } else if (path === '/profiles/progress') {
+      await route.fulfill({
+        json: {
+          revision: 8,
+          selectedLessonId: 'lesson-01',
+          completedSessions: 0,
+          clockSkewDetected: false,
+          pendingClockAttempts,
+          settings: { soundEnabled: true, reducedMotion: false },
+          mastery: [],
+          attempts: [],
+        },
+      });
+    } else if (path === '/sessions/current') {
+      await route.fulfill({ json: null });
+    } else if (path === '/devices') {
+      await route.fulfill({ json: { devices: [] } });
+    } else if (path === '/profiles/clock-pending/resolve') {
+      resolvedBody = route.request().postDataJSON();
+      pendingClockAttempts = 0;
+      await route.fulfill({ json: { resolved: 1, resolution: 'keep-unscored' } });
+    } else {
+      await route.fulfill({ status: 404, json: { detail: { code: 'NOT_FOUND' } } });
+    }
+  });
+
+  await page.goto('/');
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await expect(
+    page.getByText('系统时间已恢复。请决定如何处理待校时练习；保留的记录始终不计入掌握度。'),
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: '保留为不计分练习' })).toBeDisabled();
+  await page.getByLabel('确认处理待校时练习').fill('保留为不计分练习');
+  await page.getByRole('button', { name: '保留为不计分练习' }).click();
+  await expect(
+    page.getByText('系统时间已恢复。请决定如何处理待校时练习；保留的记录始终不计入掌握度。'),
+  ).toHaveCount(0);
+  expect(resolvedBody).toEqual({
+    resolution: 'keep-unscored',
+    confirmation: '保留为不计分练习',
+  });
+});

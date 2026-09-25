@@ -38,7 +38,7 @@ def confirm(client, result, revision=None, sha256=None):
 
 def test_export_is_valid_for_a_bound_parent_preview(paired_client):
     backup = paired_client.get("/api/v1/profiles/export").json()
-    assert backup["schemaVersion"] == 4
+    assert backup["schemaVersion"] == 5
     assert backup["masteryRuleVersion"] == 1
 
     response = preview(paired_client, backup)
@@ -50,6 +50,7 @@ def test_export_is_valid_for_a_bound_parent_preview(paired_client):
         "sessions": 0,
         "exerciseInstances": 0,
         "attempts": 0,
+        "clockPendingAttempts": 0,
         "skippedInstances": 0,
         "reviewPlans": 0,
         "assessmentSummaries": 0,
@@ -88,6 +89,36 @@ def test_preview_migrates_schema_v3_review_session_marker(paired_client):
     response = preview(paired_client, backup)
     assert response.status_code == 200
     assert response.json()["migratedFromSchemaVersion"] == 3
+
+
+def test_preview_migrates_schema_v4_clock_pending_field(paired_client):
+    session = paired_client.post(
+        "/api/v1/sessions",
+        json={"lessonId": "lesson-01"},
+        headers={"X-LP-CSRF": paired_client.cookies.get("lp_csrf")},
+    ).json()
+    task = session["tasks"][0]
+    question = map_by_id("exercises")[task["exercise"]["id"]]
+    answered = paired_client.post(
+        f"/api/v1/instances/{task['instanceId']}/answer",
+        json={
+            "requestId": "legacy-v4-attempt",
+            "answerOptionId": question["answer"]["optionId"],
+        },
+        headers={"X-LP-CSRF": paired_client.cookies.get("lp_csrf")},
+    )
+    assert answered.status_code == 200
+    backup = paired_client.get("/api/v1/profiles/export").json()
+    assert len(backup["attempts"]) == 1
+    backup["schemaVersion"] = 4
+    backup["attempts"][0].pop("clock_pending")
+    response = preview(paired_client, backup)
+    assert response.status_code == 200
+    assert response.json()["migratedFromSchemaVersion"] == 4
+    assert response.json()["counts"]["clockPendingAttempts"] == 0
+    assert confirm(paired_client, response.json()).status_code == 200
+    restored = paired_client.get("/api/v1/profiles/export").json()
+    assert restored["attempts"][0]["clock_pending"] == 0
 
 
 def test_preview_rejects_oversized_payload_before_parsing(paired_client):
