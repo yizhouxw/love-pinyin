@@ -39,7 +39,7 @@
 
 运行 `npm run verify`、`npm run verify:server`，添加 SQLite 临时数据库的事务/并发/迁移和认证测试；`npm run test:e2e` 至少验证配对及刷新恢复。测试不需要真实评分资产。预期全部退出 0，负例精确验证错误和数据未改变。
 
-2026-09-26 软件验证增量：`tests/server/test_concurrent_attempts.py` 以两个独立配对客户端同时提交不同练习，验证两事件均持久化且 household revision 不丢增量。该用例通过。其余 Given/When/Then 及真实设备边界尚未全部覆盖，SPEC 不验收。
+2026-09-26 软件验证增量：`tests/server/test_concurrent_attempts.py` 以两个独立配对客户端同时提交不同练习，验证两事件均持久化且 household revision 不丢增量。`storage.migrate()` 现在把建表、增列与版本登记置于单一 `BEGIN EXCLUSIVE` 事务；故障注入于版本 4 登记失败后验证旧表/列/数据/版本均保留，没有留下新表或半迁移列。相关软件回归通过。其余 Given/When/Then 及真实设备边界尚未全部覆盖，SPEC 不验收。
 
 交付：领域/接口类型、迁移、数据仓库和会话 API、相关测试、SPEC 验收勾选和独立 git commit。禁止范围：模型集成、具体游戏、云账号、评分假数据进入正常页面。
 
