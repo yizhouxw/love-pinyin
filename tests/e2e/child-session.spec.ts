@@ -176,7 +176,48 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
               requiredModes: ['symbol-choice'],
             },
           ],
-          attempts: [],
+          attempts: [
+            {
+              id: 'attempt-parent-1',
+              knowledge_id: 'k-e2e',
+              mode: 'symbol-choice',
+              first_try_correct: true,
+              hint_used: false,
+              occurred_at: '2026-09-26T01:05:00+00:00',
+              due_credit: 1,
+              clock_pending: 0,
+            },
+            {
+              id: 'attempt-parent-2',
+              knowledge_id: 'k-e2e',
+              mode: 'tone-choice',
+              first_try_correct: false,
+              hint_used: true,
+              occurred_at: '2026-09-25T23:05:00+00:00',
+              due_credit: 1,
+              clock_pending: 0,
+            },
+            {
+              id: 'attempt-parent-3',
+              knowledge_id: 'k-e2e',
+              mode: 'blend-choice',
+              first_try_correct: false,
+              hint_used: false,
+              occurred_at: '2026-09-25T22:05:00+00:00',
+              due_credit: 0,
+              clock_pending: 0,
+            },
+            {
+              id: 'attempt-parent-4',
+              knowledge_id: 'k-e2e',
+              mode: 'symbol-choice',
+              first_try_correct: false,
+              hint_used: false,
+              occurred_at: '2026-09-25T21:05:00+00:00',
+              due_credit: 0,
+              clock_pending: 1,
+            },
+          ],
           completedSessions,
         },
       });
@@ -415,14 +456,25 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await page.getByRole('button', { name: '家长管理' }).click();
   await expect(page.getByRole('heading', { name: '按知识点查看进度' })).toBeVisible();
   const firstLessonProgress = page.locator('.parent-lesson-progress').first();
-  await firstLessonProgress.locator('summary').click();
+  await firstLessonProgress.locator(':scope > summary').click();
   await expect(firstLessonProgress).toContainText('ü');
   await expect(firstLessonProgress).toContainText('已掌握');
   await expect(firstLessonProgress).toContainText('最近 5 道有效练习：独立首次答对 4 题（80%）');
   await expect(firstLessonProgress).toContainText('独立答对覆盖：字形、声调');
   await expect(firstLessonProgress).toContainText('待复习 · 2026-09-26');
+  const attemptHistory = firstLessonProgress.locator('.knowledge-attempt-history');
+  await attemptHistory.locator('summary').click();
+  const recentEvents = attemptHistory.locator('ol li');
+  await expect(recentEvents).toHaveCount(4);
+  await expect(recentEvents.nth(0)).toContainText('字形');
+  await expect(recentEvents.nth(0)).toContainText('独立首次答对');
+  await expect(recentEvents.nth(1)).toContainText('声调');
+  await expect(recentEvents.nth(1)).toContainText('使用过提示，未独立首次答对');
+  await expect(recentEvents.nth(2)).toContainText('拼读');
+  await expect(recentEvents.nth(2)).toContainText('日内重复练习，不计入掌握样本');
+  await expect(recentEvents.nth(3)).toContainText('待校时，不计入掌握度');
   const futureLessonProgress = page.locator('.parent-lesson-progress').nth(1);
-  await futureLessonProgress.locator('summary').click();
+  await futureLessonProgress.locator(':scope > summary').click();
   await expect(futureLessonProgress).toContainText('暂无有效练习记录 · 需要练习：字形');
   await expect(page.getByText('已连接设备')).toBeVisible();
   const reduceMotion = page.getByRole('checkbox');

@@ -986,6 +986,35 @@ footer {
   color: var(--muted);
   font-size: 12px;
 }
+.knowledge-attempt-history {
+  margin-top: 5px;
+  font-size: 12px;
+}
+.knowledge-attempt-history summary {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  color: #52634c;
+  cursor: pointer;
+  font-weight: 700;
+}
+.knowledge-attempt-history ol {
+  display: grid;
+  gap: 5px;
+  margin: 4px 0 0;
+  padding-left: 20px;
+}
+.knowledge-attempt-history li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding: 4px 0;
+  background: transparent;
+}
+.knowledge-attempt-history time {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
 .parent-setting {
   display: flex;
   align-items: center;

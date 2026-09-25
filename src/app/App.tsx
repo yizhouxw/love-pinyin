@@ -66,7 +66,7 @@ type Progress = {
     coveredModes: string[];
     requiredModes: string[];
   }[];
-  attempts: unknown[];
+  attempts: AttemptRecord[];
   reviewRecommendations?: {
     knowledgeId: string;
     symbol: string;
@@ -75,6 +75,16 @@ type Progress = {
     dueDate: string;
     overdueDays: number;
   }[];
+};
+type AttemptRecord = {
+  id: string;
+  knowledge_id: string;
+  mode: string;
+  first_try_correct: boolean;
+  hint_used: boolean;
+  occurred_at: string;
+  due_credit: boolean | number;
+  clock_pending: boolean | number;
 };
 type Curriculum = {
   lessons: Lesson[];
@@ -175,6 +185,27 @@ const exerciseModeLabels: Record<string, string> = {
   'tone-choice': '声调',
   'blend-choice': '拼读',
 };
+
+function attemptOutcome(attempt: AttemptRecord) {
+  if (attempt.clock_pending) return '待校时，不计入掌握度';
+  if (!attempt.due_credit) return '日内重复练习，不计入掌握样本';
+  if (attempt.first_try_correct) return '独立首次答对';
+  if (attempt.hint_used) return '使用过提示，未独立首次答对';
+  return '首次未独立答对';
+}
+
+function formatAttemptTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.valueOf())) return '时间未知';
+  return new Intl.DateTimeFormat('zh-CN', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
+}
 
 async function api(path: string, options: RequestInit = {}): Promise<Json> {
   const headers = new Headers(options.headers);
@@ -1248,6 +1279,9 @@ function ParentPanel({
                     state?.sampleSize && state.accuracy !== null
                       ? Math.round(state.accuracy * 100)
                       : null;
+                  const recentAttempts = progress.attempts
+                    .filter((attempt: AttemptRecord) => attempt.knowledge_id === item.id)
+                    .slice(0, 8);
                   return (
                     <li key={item.id}>
                       <div className="parent-knowledge-title">
@@ -1269,6 +1303,22 @@ function ParentPanel({
                           独立答对覆盖：{coveredModes.length ? coveredModes.join('、') : '暂无'}；
                           本知识点要求：{requiredModes.length ? requiredModes.join('、') : '未配置'}
                         </small>
+                      )}
+                      {recentAttempts.length > 0 && (
+                        <details className="knowledge-attempt-history">
+                          <summary>查看最近 {recentAttempts.length} 条练习记录</summary>
+                          <ol>
+                            {recentAttempts.map((attempt: AttemptRecord) => (
+                              <li key={attempt.id}>
+                                <time dateTime={attempt.occurred_at}>
+                                  {formatAttemptTime(attempt.occurred_at)}
+                                </time>
+                                <span>{exerciseModeLabels[attempt.mode] ?? '其他练习'}</span>
+                                <span>{attemptOutcome(attempt)}</span>
+                              </li>
+                            ))}
+                          </ol>
+                        </details>
                       )}
                     </li>
                   );
