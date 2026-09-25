@@ -377,6 +377,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   const correctCandidate = page.getByRole('button', { name: /bā/ });
   if (isMobile) await correctCandidate.tap();
   else await correctCandidate.press('Enter');
+  await expect(page.getByRole('alert')).toContainText('本次操作结果未确认');
+  await expect(page.getByRole('alert')).toContainText('会沿用原请求号，不会重复计分');
   await expect(page.getByRole('alert')).toBeVisible();
   await page.reload();
   await expect.poll(() => answerRequests.length).toBe(2);

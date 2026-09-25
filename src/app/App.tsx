@@ -178,11 +178,16 @@ async function api(path: string, options: RequestInit = {}): Promise<Json> {
     .join('=');
   if (csrf && options.method && options.method !== 'GET')
     headers.set('X-LP-CSRF', decodeURIComponent(csrf));
-  const response = await fetch(`/api/v1${path}`, {
-    ...options,
-    headers,
-    credentials: 'same-origin',
-  });
+  let response: Response;
+  try {
+    response = await fetch(`/api/v1${path}`, {
+      ...options,
+      headers,
+      credentials: 'same-origin',
+    });
+  } catch {
+    throw new Error('MAC_UNREACHABLE');
+  }
   if (response.status === 204) return {};
   const body: Json = await response.json().catch(() => ({}));
   if (!response.ok) {
@@ -1649,9 +1654,13 @@ function ReducedMotionControl({
 }
 
 function Notice({ error }: { error: string }) {
+  const message =
+    error === 'MAC_UNREACHABLE'
+      ? '暂时无法连接家庭 Mac Studio，本次操作结果未确认。检查 Mac 和家庭局域网后，再点一次刚才的操作；答题会沿用原请求号，不会重复计分。'
+      : `操作未完成：${error}。请检查本机服务连接后重试。`;
   return error ? (
     <p className="error-notice" role="alert">
-      操作未完成：{error}。请检查本机服务连接后重试。
+      {message}
     </p>
   ) : null;
 }
