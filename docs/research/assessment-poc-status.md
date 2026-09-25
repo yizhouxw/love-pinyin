@@ -44,6 +44,8 @@
 
 之后的报告增加 held-out 目标年龄儿童的 study coverage 检查：分别报告清楚正确、声母/韵母错误、声调错误、静音、过短、噪声、扬声器回放与近邻易混的计数；任一项缺失即 coverage gate 失败并列出缺项。测试覆盖空缺与完整逻辑夹具，夹具不计入研究数据。
 
+评测器 v0.5.0 还要求单独提供本地授权登记 schema。每个 manifest `consentRef` 必须唯一对应同一数据集及相同 cohort 的已批准 `retained-poc-audio-evaluation` 记录，记录须未过期并含受控本地证据的 SHA-256；授权引用和证据位置不写入汇总，只有匿名登记摘要。手工检查原同意/许可仍是必要条件，布尔批准字段本身不创造授权。
+
 性能自测：在本机用 600 条/30 位虚构分组只测聚合函数，未读音频/真实样本；预聚合每位说话人的混淆计数后，`_rates` 约 0.042 秒（第一次简单实现约 2.36 秒）。该数据只验证统计代码的研究样本量计算开销，不是模型推理性能或 SPEC 的 3 秒评分预算证据。
 
 ## 当前候选与证据边界
@@ -61,7 +63,7 @@
 
 新增 [manifest schema](../../research/assessment/manifest.schema.json) 和 [盲测汇总器](../../research/assessment/benchmark.py)。私有数据准备要求：
 
-- 音频放到访问受限的本地目录中，以 `<sampleId>.wav` 命名。清单禁止路径、姓名、出生日期和转写；样本 ID/说话人组 ID 均为不含身份的随机代号，`consentRef` 指向 Mac 本机另行保管的授权证据。
+- 音频放到访问受限的本地目录中，以 `<sampleId>.wav` 命名。清单禁止路径、姓名、出生日期和转写；样本 ID/说话人组 ID 均为不含身份的随机代号，`consentRef` 指向 Mac 本机另行保管的授权证据及授权登记。授权登记 schema 见 [authorization-register.schema.json](../../research/assessment/authorization-register.schema.json)，仅记录匿名引用、队列、已批准的留存 PoC 评估用途、到期日和本地证据 SHA-256，不含同意书、姓名或联系方式。
 - WAV 必须为单声道、16 kHz、PCM16，最长 10 秒、512 KiB；程序校验 SHA-256、路径边界、格式和文件名，不复制音频。原始音频和授权凭证不进 Git、导出报告或应用数据库。
 - 开发集、校准集和测试集按 `speakerGroupId` 完全隔离；schema v2 要求两位不同的匿名审校人引用及独立标签；意见不合必须有不同于两人的第三裁决引用，意见一致时不得覆写共识。预测文件只能含测试集的 `pass/retry/uncertain`，不能附带原始音频、转写或个人数据。
 - 输出只包含按目标类型、设备、环境、年龄队列聚合的说话人聚类 95% 置信区间、样本级描述 Wilson 区间、双标一致性及匿名说话人准确率分布。基准工具只汇总候选引擎给出的盲测类别，不训练、调阈值或生成预测。
@@ -73,11 +75,12 @@
 uv run --locked python -m research.assessment.benchmark \
   --manifest /secure/poc/manifest.json \
   --predictions /secure/poc/test-predictions.json \
+  --authorizations /secure/poc/authorization-register.json \
   --audio-dir /secure/poc/audio \
   --output /secure/poc/aggregate-report.json
 ```
 
-当前仓库没有这份清单、录音、预测文件或授权记录。命令必须在有相应授权的本地数据后运行，不能用合成信号替代。实验通过条件仍依 [SPEC-000](../specs/SPEC-000-offline-assessment-poc.md)：目标覆盖、错误读法/声调、回灌、静音噪声拒判、分群 95% CI、真机性能、断 WAN 无外连、分数校准和许可逐项达标。
+当前仓库没有这份清单、录音、预测文件或授权记录。评测命令必须显式提供与数据集一致的本地授权登记；工具逐条匹配队列、用途、批准状态和有效期，记录文件摘要但不输出任何 `consentRef`。这只是机器可检验的记录完整性，不能替代人工检查原始同意证据与数据使用许可。命令必须在有相应授权的本地数据后运行，不能用合成信号替代。实验通过条件仍依 [SPEC-000](../specs/SPEC-000-offline-assessment-poc.md)：目标覆盖、错误读法/声调、回灌、静音噪声拒判、分群 95% CI、真机性能、断 WAN 无外连、分数校准和许可逐项达标。
 
 ## 继续/停止决策
 

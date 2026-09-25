@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://love-pinyin.invalid/schemas/assessment-authorization-register-v1.json",
+  "title": "Private PoC audio authorization register",
+  "description": "Metadata only. Keep consent evidence and this register in access-controlled local storage; never commit either file.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "datasetId", "records"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "datasetId": { "type": "string", "pattern": "^[A-Za-z0-9_-]{3,64}$" },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["consentRef", "cohort", "purpose", "approved", "expiresAt", "evidenceSha256"],
+        "properties": {
+          "consentRef": { "type": "string", "pattern": "^[A-Za-z0-9_-]{8,64}$" },
+          "cohort": { "enum": ["target-age-child", "adult-development"] },
+          "purpose": { "const": "retained-poc-audio-evaluation" },
+          "approved": { "const": true },
+          "expiresAt": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+          },
+          "evidenceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    }
+  }
+}

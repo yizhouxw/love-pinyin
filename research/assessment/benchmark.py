@@ -23,7 +23,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-VERSION = "poc-evaluator-0.4.0"
+VERSION = "poc-evaluator-0.5.0"
 BOOTSTRAP_REPLICATES = 2000
 BOOTSTRAP_SEED = 20260926
 CONTENT_PATH = Path(__file__).resolve().parents[2] / "content" / "curriculum.json"
@@ -228,6 +228,90 @@ def _check_manifest(manifest: Any, allowed_target_ids: set[str]) -> list[dict[st
         "speakerGroupId leakage across development/calibration/test splits",
     )
     return items
+
+
+def _check_authorizations(
+    authorizations: Any,
+    manifest: dict[str, Any],
+    items: list[dict[str, Any]],
+    *,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    _require(
+        isinstance(authorizations, dict)
+        and type(authorizations.get("schemaVersion")) is int
+        and authorizations["schemaVersion"] == 1
+        and set(authorizations) == {"schemaVersion", "datasetId", "records"},
+        "authorization register must use schemaVersion 1 and supported fields only",
+    )
+    _require(
+        authorizations.get("datasetId") == manifest["datasetId"],
+        "authorization register belongs to a different dataset",
+    )
+    records = authorizations.get("records")
+    _require(isinstance(records, list) and records, "authorization records must be non-empty")
+    by_ref: dict[str, dict[str, Any]] = {}
+    required_fields = {
+        "consentRef",
+        "cohort",
+        "purpose",
+        "approved",
+        "expiresAt",
+        "evidenceSha256",
+    }
+    current_time = now or datetime.now(UTC)
+    for record in records:
+        _require(
+            isinstance(record, dict) and set(record) == required_fields,
+            "authorization record is missing required fields or has unsupported fields",
+        )
+        consent_ref = record.get("consentRef")
+        _require(
+            isinstance(consent_ref, str)
+            and ID_PATTERN.fullmatch(consent_ref) is not None
+            and consent_ref not in by_ref,
+            "authorization consentRef must be unique and opaque",
+        )
+        _require(
+            record.get("cohort") in {"target-age-child", "adult-development"},
+            f"invalid authorization cohort for {consent_ref}",
+        )
+        _require(
+            record.get("purpose") == "retained-poc-audio-evaluation",
+            f"authorization purpose does not permit retained PoC audio evaluation: {consent_ref}",
+        )
+        _require(record.get("approved") is True, f"authorization is not approved: {consent_ref}")
+        expiry = record.get("expiresAt")
+        try:
+            expiry_at = datetime.fromisoformat(expiry.replace("Z", "+00:00"))
+        except (AttributeError, TypeError, ValueError) as exc:
+            raise ManifestError(
+                f"valid timezone-aware authorization expiry required: {consent_ref}"
+            ) from exc
+        _require(
+            expiry_at.tzinfo is not None and expiry_at.utcoffset() is not None,
+            f"authorization expiry must include a timezone: {consent_ref}",
+        )
+        _require(expiry_at > current_time, f"authorization has expired: {consent_ref}")
+        _require(
+            isinstance(record.get("evidenceSha256"), str)
+            and re.fullmatch(r"[a-f0-9]{64}", record["evidenceSha256"]) is not None,
+            f"authorization evidence SHA-256 required: {consent_ref}",
+        )
+        by_ref[consent_ref] = record
+
+    manifest_refs = {item["consentRef"] for item in items}
+    _require(
+        set(by_ref) == manifest_refs,
+        "authorization register must have exactly one matching record for each manifest consentRef",
+    )
+    for item in items:
+        record = by_ref[item["consentRef"]]
+        _require(
+            record["cohort"] == item["cohort"],
+            f"authorization cohort does not match sample: {item['sampleId']}",
+        )
+    return by_ref
 
 
 def _verify_audio(audio_dir: Path, items: list[dict[str, Any]]) -> None:
@@ -468,7 +552,9 @@ def _study_coverage(items: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]:
+def evaluate(
+    manifest: Any, predictions: Any, audio_dir: Path, authorizations: Any
+) -> dict[str, Any]:
     _require(isinstance(manifest, dict), "manifest root must be an object")
     _require(isinstance(predictions, dict), "predictions root must be an object")
     try:
@@ -481,6 +567,7 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
     )
     allowed_target_ids = {item["id"] for item in content["readingTargets"]}
     items = _check_manifest(manifest, allowed_target_ids)
+    authorization_records = _check_authorizations(authorizations, manifest, items)
     _require(
         predictions.get("datasetId") == manifest["datasetId"],
         "predictions belong to a different dataset",
@@ -555,6 +642,10 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
             "testSamples": len(test_items),
             "testTargetAgeSpeakers": len(target_children),
             "speakerHoldoutValid": True,
+            "matchedConsentRecords": len(authorization_records),
+            "authorizationRegisterSha256": hashlib.sha256(
+                json.dumps(authorizations, sort_keys=True, separators=(",", ":")).encode()
+            ).hexdigest(),
         },
         "engine": {
             "engineId": predictions["engineId"],
@@ -637,6 +728,12 @@ def main() -> int:
         "--predictions", type=Path, required=True, help="blinded test predictions JSON"
     )
     parser.add_argument(
+        "--authorizations",
+        type=Path,
+        required=True,
+        help="private authorization register; never commit it",
+    )
+    parser.add_argument(
         "--audio-dir", type=Path, required=True, help="private directory with <sampleId>.wav files"
     )
     parser.add_argument(
@@ -646,12 +743,14 @@ def main() -> int:
     try:
         manifest = _read_json(args.manifest)
         predictions = _read_json(args.predictions)
+        authorizations = _read_json(args.authorizations)
         audio_root = args.audio_dir.resolve(strict=True)
         output_path = args.output.resolve()
         manifest_path = args.manifest.resolve(strict=True)
         predictions_path = args.predictions.resolve(strict=True)
+        authorizations_path = args.authorizations.resolve(strict=True)
         _require(
-            output_path not in {manifest_path, predictions_path}
+            output_path not in {manifest_path, predictions_path, authorizations_path}
             and not output_path.is_relative_to(audio_root),
             "output path must not replace a research input or be inside "
             "the private audio directory",
@@ -662,12 +761,17 @@ def main() -> int:
                 and not os.path.samefile(args.output, predictions_path),
                 "output path must not replace a research input",
             )
-        report = evaluate(manifest, predictions, audio_root)
+            _require(
+                not os.path.samefile(args.output, authorizations_path),
+                "output path must not replace the authorization register",
+            )
+        report = evaluate(manifest, predictions, audio_root, authorizations)
         manifest_bytes = manifest_path.read_bytes()
         prediction_bytes = predictions_path.read_bytes()
         report["inputDigests"] = {
             "manifestSha256": hashlib.sha256(manifest_bytes).hexdigest(),
             "predictionsSha256": hashlib.sha256(prediction_bytes).hexdigest(),
+            "authorizationRegisterSha256": report["dataset"]["authorizationRegisterSha256"],
             "wavSetSha256": hashlib.sha256(
                 "\n".join(
                     sorted(

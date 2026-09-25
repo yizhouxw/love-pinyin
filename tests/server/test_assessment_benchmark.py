@@ -4,11 +4,13 @@ import hashlib
 import stat
 import struct
 import wave
+from datetime import UTC, datetime
 
 import pytest
 
 from research.assessment.benchmark import (
     ManifestError,
+    _check_authorizations,
     _check_manifest,
     _rates,
     _study_coverage,
@@ -50,6 +52,25 @@ def _manifest(item):
     }
 
 
+def _authorization_register(items, dataset_id="test-data"):
+    cohorts_by_ref = {item["consentRef"]: item["cohort"] for item in items}
+    return {
+        "schemaVersion": 1,
+        "datasetId": dataset_id,
+        "records": [
+            {
+                "consentRef": consent_ref,
+                "cohort": cohort,
+                "purpose": "retained-poc-audio-evaluation",
+                "approved": True,
+                "expiresAt": "2099-01-01T00:00:00Z",
+                "evidenceSha256": "a" * 64,
+            }
+            for consent_ref, cohort in cohorts_by_ref.items()
+        ],
+    }
+
+
 def test_manifest_requires_challenge_audio_to_use_challenge_target():
     row = _item(challengeClass="noise", adjudicatedLabel="uncertain")
     row["annotations"] = [
@@ -58,6 +79,48 @@ def test_manifest_requires_challenge_audio_to_use_challenge_target():
     ]
     with pytest.raises(ManifestError, match="challenge target"):
         _check_manifest(_manifest(row), {"rt-a"})
+
+
+def test_authorization_register_must_match_scope_cohort_and_expiry():
+    row = _item(cohort="target-age-child")
+    manifest = _manifest(row)
+    authorizations = _authorization_register([row])
+    now = datetime(2026, 9, 26, tzinfo=UTC)
+
+    assert _check_authorizations(authorizations, manifest, [row], now=now)["consent_01"]
+
+    invalid = {**authorizations, "schemaVersion": True}
+    with pytest.raises(ManifestError, match="schemaVersion 1"):
+        _check_authorizations(invalid, manifest, [row], now=now)
+
+    invalid = {**authorizations, "records": [{**authorizations["records"][0], "approved": False}]}
+    with pytest.raises(ManifestError, match="not approved"):
+        _check_authorizations(invalid, manifest, [row], now=now)
+
+    invalid = {
+        **authorizations,
+        "records": [{**authorizations["records"][0], "purpose": "commercial-product-training"}],
+    }
+    with pytest.raises(ManifestError, match="does not permit retained PoC audio evaluation"):
+        _check_authorizations(invalid, manifest, [row], now=now)
+
+    invalid = {**authorizations, "datasetId": "other-dataset"}
+    with pytest.raises(ManifestError, match="different dataset"):
+        _check_authorizations(invalid, manifest, [row], now=now)
+
+    invalid = {
+        **authorizations,
+        "records": [{**authorizations["records"][0], "cohort": "adult-development"}],
+    }
+    with pytest.raises(ManifestError, match="cohort does not match"):
+        _check_authorizations(invalid, manifest, [row], now=now)
+
+    invalid = {
+        **authorizations,
+        "records": [{**authorizations["records"][0], "expiresAt": "2020-01-01T00:00:00Z"}],
+    }
+    with pytest.raises(ManifestError, match="has expired"):
+        _check_authorizations(invalid, manifest, [row], now=now)
 
 
 def test_manifest_rejects_challenge_target_for_clear_speech():
@@ -277,9 +340,11 @@ def test_evaluator_emits_cluster_intervals_without_sample_identifiers(tmp_path):
         "items": prediction_rows,
     }
 
-    report = evaluate(manifest, predictions, audio_dir)
+    report = evaluate(
+        manifest, predictions, audio_dir, _authorization_register(items, "fixture-set")
+    )
 
-    assert report["reportVersion"] == "poc-evaluator-0.4.0"
+    assert report["reportVersion"] == "poc-evaluator-0.5.0"
     assert report["testMetrics"]["clearSampleAccuracy"]["speakerClusterCi95"]["ci95"] == [
         0.0,
         1.0,
@@ -292,6 +357,7 @@ def test_evaluator_emits_cluster_intervals_without_sample_identifiers(tmp_path):
     serialized = str(report)
     assert "fixture_0000" not in serialized
     assert "speaker_0000" not in serialized
+    assert "consent_01" not in serialized
 
 
 def test_adult_test_performance_cannot_mask_child_test_errors(tmp_path):
@@ -314,6 +380,7 @@ def test_adult_test_performance_cannot_mask_child_test_errors(tmp_path):
                 sampleId=sample_id,
                 speakerGroupId=f"speaker_{index:04}",
                 cohort=cohort,
+                consentRef=f"consent_{index:04}",
                 targetId=target["id"],
                 targetClass=target["targetType"],
                 split="test",
@@ -344,6 +411,7 @@ def test_adult_test_performance_cannot_mask_child_test_errors(tmp_path):
             "items": prediction_rows,
         },
         audio_dir,
+        _authorization_register(items, "child-mask-fixture"),
     )
 
     assert report["testMetrics"]["clearSampleAccuracy"]["rate"] >= 0.90
