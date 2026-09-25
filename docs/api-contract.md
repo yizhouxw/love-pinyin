@@ -27,7 +27,7 @@
 | POST `/rest/complete`             | 配对 + CSRF                | 清除连续轮次计数并允许继续练习                                                           |
 | GET `/audio/{id}`                 | 配对 + 登记 id             | 正确 MIME / Range / 哈希；缺失404；禁止目录穿越                                          |
 | GET `/profiles`                   | 配对                       | 本地昵称/随机头像ID，不要求真名                                                          |
-| GET `/profiles/progress`          | 配对                       | mastery snapshot、设置及家庭 revision                                                    |
+| GET `/profiles/progress`          | 配对                       | mastery snapshot、设置、家庭 revision 与服务端派生的完整会话数（花园叶片）               |
 | POST `/profiles/{id}/attempts`    | 事件 + expectedRevision    | 幂等插入；服务器生成时间；冲突409后重取，按attempt.id安全重试                            |
 | POST `/instances/{id}/skip`       | 配对会话 + CSRF            | 当前会话内幂等标记跳过；不创建作答/掌握事件，刷新可恢复                                  |
 | POST `/assessments`               | 见下文                     | 本地评分结果；当前固定503未就绪，且不读取请求音频                                        |

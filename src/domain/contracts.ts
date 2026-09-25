@@ -24,6 +24,8 @@ export interface ProgressSnapshot {
   profileId: string;
   revision: number;
   selectedLessonId: LessonId;
+  /** Server-derived count of fully completed sessions; drives the non-competitive garden. */
+  completedSessions: number;
   attempts: Attempt[];
   settings: { soundEnabled: boolean; reducedMotion: boolean; sessionMinutes: number };
 }

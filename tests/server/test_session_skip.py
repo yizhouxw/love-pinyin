@@ -49,3 +49,37 @@ def test_skipped_task_requires_active_owned_session(paired_client):
     assert response.status_code == 409
     assert response.json()["detail"]["code"] == "SESSION_NOT_ACTIVE"
     assert client.get("/api/v1/profiles/progress").json()["attempts"] == []
+
+
+def test_garden_counts_only_fully_completed_sessions(paired_client):
+    client = paired_client
+    started = mutable_post(client, "/api/v1/sessions", json={}).json()
+
+    # Finishing early does not earn a leaf, even though the session is closed.
+    early = mutable_post(client, f"/api/v1/sessions/{started['id']}/finish")
+    assert early.json()["completedRound"] is False
+    assert client.get("/api/v1/profiles/progress").json()["completedSessions"] == 0
+
+    # The same closed session cannot be completed retroactively.
+    for task in started["tasks"]:
+        skipped = mutable_post(client, f"/api/v1/instances/{task['instanceId']}/skip")
+        assert skipped.status_code == 409
+
+    complete = mutable_post(client, "/api/v1/sessions", json={}).json()
+    for task in complete["tasks"]:
+        skipped = mutable_post(client, f"/api/v1/instances/{task['instanceId']}/skip")
+        assert skipped.status_code == 200
+    finished = mutable_post(client, f"/api/v1/sessions/{complete['id']}/finish")
+    assert finished.json()["completedRound"] is True
+    assert client.get("/api/v1/profiles/progress").json()["completedSessions"] == 1
+
+    # Completion is derived from retained sessions, so deleting learning data
+    # also removes the garden growth.
+    deleted = client.request(
+        "DELETE",
+        "/api/v1/profiles/data",
+        json={"confirmation": "删除我的学习记录"},
+        headers={"X-LP-CSRF": client.cookies.get("lp_csrf")},
+    )
+    assert deleted.status_code == 200
+    assert client.get("/api/v1/profiles/progress").json()["completedSessions"] == 0

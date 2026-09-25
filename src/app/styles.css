@@ -238,6 +238,93 @@ main {
   color: var(--muted);
   font-size: 14px;
 }
+.garden-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 0 22px;
+  padding: 22px clamp(20px, 4vw, 34px);
+  border: 1px solid #e8ebdf;
+  border-radius: 24px;
+  background: linear-gradient(115deg, #fffefa 35%, #edf5e7);
+  box-shadow: 0 14px 40px #3953310b;
+}
+.garden-copy h2 {
+  margin: 5px 0 6px;
+  font-size: clamp(18px, 3vw, 23px);
+}
+.garden-copy p {
+  max-width: 54ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.garden-pot {
+  position: relative;
+  display: grid;
+  flex: 0 0 145px;
+  justify-items: center;
+  align-content: end;
+  min-height: 128px;
+  padding-top: 4px;
+  text-align: center;
+}
+.garden-pot strong {
+  margin-top: 6px;
+  color: #59725d;
+  font-size: 12px;
+}
+.garden-stem {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 20px);
+  grid-auto-rows: 20px;
+  justify-content: center;
+  align-content: end;
+  min-height: 76px;
+  padding-bottom: 6px;
+}
+.garden-stem::before {
+  position: absolute;
+  bottom: 0;
+  left: calc(50% - 2px);
+  width: 4px;
+  height: 62px;
+  border-radius: 5px;
+  background: #779d62;
+  content: '';
+}
+.garden-leaf {
+  z-index: 1;
+  width: 17px;
+  height: 11px;
+  border-radius: 100% 0 100% 0;
+  background: #83b86b;
+}
+.garden-leaf:nth-child(4n + 1),
+.garden-leaf:nth-child(4n + 2) {
+  transform: rotate(-18deg);
+}
+.garden-leaf:nth-child(4n + 3),
+.garden-leaf:nth-child(4n) {
+  transform: rotate(18deg) scaleX(-1);
+}
+.garden-soil {
+  width: 90px;
+  height: 11px;
+  border-radius: 50%;
+  background: #8b6547;
+}
+.garden-planter {
+  width: 72px;
+  height: 32px;
+  border: 3px solid #d39161;
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+  background: #f3c191;
+  clip-path: polygon(0 0, 100% 0, 84% 100%, 16% 100%);
+}
 .welcome-art {
   font-size: 74px;
   filter: drop-shadow(0 10px 8px #5f825326);
@@ -827,6 +914,10 @@ footer {
   margin-top: 15px;
 }
 @media (max-width: 760px) {
+  .garden-card {
+    gap: 12px;
+    padding: 18px;
+  }
   .lesson-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -927,6 +1018,16 @@ footer {
   .danger-setting input {
     max-width: none;
     width: 100%;
+  }
+  .garden-card {
+    align-items: flex-start;
+  }
+  .garden-pot {
+    flex-basis: 96px;
+    min-height: 116px;
+  }
+  .garden-copy p {
+    font-size: 12px;
   }
   .inline-control {
     width: 100%;

@@ -1694,6 +1694,21 @@ def read_attempt(request_id: str, device: dict = Depends(paired)) -> dict:
 def progress(device: dict = Depends(paired)) -> dict:
     with connect() as db:
         mastery = _mastery(db, device["household_id"])
+        completed_sessions = db.execute(
+            """SELECT COUNT(*)
+               FROM sessions s
+               WHERE s.household_id=? AND s.status='finished'
+                 AND EXISTS (
+                   SELECT 1 FROM exercise_instances i WHERE i.session_id=s.id
+                 )
+                 AND NOT EXISTS (
+                   SELECT 1 FROM exercise_instances i
+                   LEFT JOIN attempts a ON a.instance_id=i.id
+                   LEFT JOIN skipped_instances sk ON sk.instance_id=i.id
+                   WHERE i.session_id=s.id AND a.id IS NULL AND sk.instance_id IS NULL
+                 )""",
+            (device["household_id"],),
+        ).fetchone()[0]
         attempts = db.execute(
             """SELECT id,exercise_id,knowledge_id,mode,first_try_correct,hint_used,due_credit,
                occurred_at,business_date FROM attempts WHERE household_id=?
@@ -1719,6 +1734,7 @@ def progress(device: dict = Depends(paired)) -> dict:
         "revision": device["revision"],
         "selectedLessonId": device["selected_lesson_id"],
         "masteryRuleVersion": "mastery-v1",
+        "completedSessions": completed_sessions,
         "settings": {
             "soundEnabled": bool(device["sound_enabled"]),
             "reducedMotion": bool(device["reduced_motion"]),

@@ -50,6 +50,7 @@ type Session = {
 type Progress = {
   revision: number;
   selectedLessonId: string;
+  completedSessions: number;
   settings: { reducedMotion: boolean; soundEnabled: boolean };
   mastery: {
     knowledgeId: string;
@@ -647,6 +648,29 @@ export function App() {
               🌱
             </div>
           </section>
+          {!parentOpen && (
+            <section className="garden-card" aria-labelledby="garden-title">
+              <div className="garden-copy">
+                <span className="eyebrow">拼音花园</span>
+                <h2 id="garden-title">每完成一轮，花园多一片叶子</h2>
+                <p>这里记录认真参与的每一轮。答错、休息或提前结束都不会失去已经长出的叶子。</p>
+              </div>
+              <div
+                className="garden-pot"
+                role="img"
+                aria-label={`拼音花园已长出 ${progress.completedSessions} 片叶子`}
+              >
+                <div className="garden-stem" aria-hidden="true">
+                  {Array.from({ length: Math.min(progress.completedSessions, 8) }, (_, index) => (
+                    <span className="garden-leaf" key={index} />
+                  ))}
+                </div>
+                <div className="garden-soil" aria-hidden="true" />
+                <div className="garden-planter" aria-hidden="true" />
+                <strong>{progress.completedSessions} 片叶子</strong>
+              </div>
+            </section>
+          )}
           {parentOpen ? (
             <ParentPanel
               boot={boot}

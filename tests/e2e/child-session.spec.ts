@@ -10,6 +10,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   let profileRevision = 0;
   let imported = false;
   let roundsSinceBreak = 0;
+  let completedSessions = 0;
   let reducedMotion = false;
   let devices = [
     { id: 'device-e2e', label: '测试设备', createdAt: '2026-09-26T00:00:00Z', current: true },
@@ -137,6 +138,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
             },
           ],
           attempts: [],
+          completedSessions,
         },
       });
     } else if (path === '/household/settings') {
@@ -237,7 +239,10 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
       await route.fulfill({ json: { instanceId: 'instance-skip-e2e', skipped: true } });
     } else if (path === '/sessions/session-e2e/finish') {
       active = false;
-      if (answered && skipped) roundsSinceBreak = Math.min(2, roundsSinceBreak + 1);
+      if (answered && skipped) {
+        roundsSinceBreak = Math.min(2, roundsSinceBreak + 1);
+        completedSessions += 1;
+      }
       await route.fulfill({ status: 204, body: '' });
     } else if (path === '/rest/complete') {
       roundsSinceBreak = 0;
@@ -253,6 +258,31 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await page.getByLabel('家长配对码').fill('23456789');
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
+  const originalHomeViewport = page.viewportSize();
+  await page.setViewportSize({ width: 320, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  await page.getByRole('img', { name: '拼音花园已长出 0 片叶子' }).evaluate((garden) => {
+    const text = garden.parentElement?.querySelectorAll('h2, p, strong');
+    text?.forEach((element) => {
+      const node = element as HTMLElement;
+      node.dataset.originalFontSize = getComputedStyle(node).fontSize;
+      node.style.fontSize = `${parseFloat(getComputedStyle(node).fontSize) * 2}px`;
+    });
+  });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  await page.getByRole('img', { name: '拼音花园已长出 0 片叶子' }).evaluate((garden) => {
+    garden.parentElement
+      ?.querySelectorAll<HTMLElement>('[data-original-font-size]')
+      .forEach((node) => {
+        node.style.fontSize = node.dataset.originalFontSize ?? '';
+        delete node.dataset.originalFontSize;
+      });
+  });
+  if (originalHomeViewport) await page.setViewportSize(originalHomeViewport);
   const currentLessonTile = page.locator('.lesson-tile').first();
   if (isMobile) await currentLessonTile.tap();
   else await currentLessonTile.press('Enter');
@@ -332,6 +362,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByLabel('本次练习小结')).toContainText('跳过：1 题');
   await page.getByRole('button', { name: '回到小岛' }).click();
   await expect(page.getByRole('heading', { name: '你好，小小拼音家' })).toBeVisible();
+  await expect(page.getByRole('img', { name: '拼音花园已长出 1 片叶子' })).toBeVisible();
+  await expect(page.getByText('1 片叶子')).toBeVisible();
   await expect(page.locator('.lesson-tile').first()).toContainText('已掌握');
   await expect(page.getByText('到期复习 · 1 项')).toBeVisible();
   await page.getByRole('button', { name: '家长管理' }).click();
@@ -374,6 +406,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByRole('button', { name: '结束今天的练习' })).toBeFocused();
   await page.getByRole('button', { name: '休息好了，继续学习' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
+  await expect(page.getByRole('img', { name: '拼音花园已长出 2 片叶子' })).toBeVisible();
   await page.getByRole('button', { name: '家长管理' }).click();
   const resetButton = page.getByRole('button', { name: '重置家庭档案' });
   await expect(resetButton).toBeDisabled();
