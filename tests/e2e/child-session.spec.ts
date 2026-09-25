@@ -71,6 +71,31 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
     } else if (path === '/curriculum') {
       await route.fulfill({
         json: {
+          inventory: {
+            initials: [
+              'b',
+              'p',
+              'm',
+              'f',
+              'd',
+              't',
+              'n',
+              'l',
+              'g',
+              'k',
+              'h',
+              'j',
+              'q',
+              'x',
+              'zh',
+              'ch',
+              'sh',
+              'r',
+              'z',
+              'c',
+              's',
+            ],
+          },
           lessons: [
             {
               id: 'lesson-01',
@@ -305,6 +330,10 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByRole('heading', { name: 'b 和 ā 连起来是哪一个音节？' })).toBeVisible();
   await expect(page.getByText('拼读组合站')).toBeVisible();
   await expect(page.getByLabel('完整拼读候选')).toBeVisible();
+  const baOption = page.getByRole('button', { name: 'A 拼读候选 bā' });
+  await expect(baOption.locator('.blend-piece')).toHaveCount(2);
+  await expect(baOption.locator('.blend-piece').first()).toContainText('拼音开头');
+  await expect(baOption.locator('.blend-piece').last()).toContainText('韵母');
   const originalViewport = page.viewportSize();
   await page.setViewportSize({ width: 320, height: 844 });
   const smallScreen = await page.evaluate(() => ({

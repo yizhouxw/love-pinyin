@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { pinyinTone, splitPinyinCandidate } from '../domain/pinyin-presentation';
 import './styles.css';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- API JSON mirrors the versioned content schema. */
@@ -62,7 +63,12 @@ type Progress = {
   }[];
   attempts: unknown[];
 };
-type Curriculum = { lessons: Lesson[]; knowledgeItems: Knowledge[]; exercises: Exercise[] };
+type Curriculum = {
+  lessons: Lesson[];
+  knowledgeItems: Knowledge[];
+  exercises: Exercise[];
+  inventory?: { initials: string[] };
+};
 type Answer = {
   correct: boolean;
   correctOptionId: string;
@@ -70,6 +76,76 @@ type Answer = {
   mastery: { status: string };
 };
 type Hint = { explanation: string; answer: { optionId: string } };
+
+function GameOptionContent({
+  type,
+  label,
+  initials,
+}: {
+  type: string;
+  label: string;
+  initials: string[];
+}) {
+  if (type === 'blend-choice') {
+    const parts = splitPinyinCandidate(label, initials);
+    return (
+      <span className="blend-choice-content">
+        {parts ? (
+          <span className="blend-pieces" aria-hidden="true">
+            <span className="blend-piece">
+              <small>拼音开头</small>
+              <strong>{parts.onset}</strong>
+            </span>
+            <span className="blend-join">＋</span>
+            <span className="blend-piece">
+              <small>韵母</small>
+              <strong>{parts.rime}</strong>
+            </span>
+          </span>
+        ) : (
+          <span className="blend-whole" aria-hidden="true">
+            {label}
+          </span>
+        )}
+        <span className="screen-reader-only">拼读候选 {label}</span>
+      </span>
+    );
+  }
+  if (type === 'tone-choice') {
+    const tone = pinyinTone(label);
+    const paths: Record<number, string> = {
+      1: 'M5 12 L35 12',
+      2: 'M5 27 L35 10',
+      3: 'M5 13 Q20 33 35 13',
+      4: 'M5 10 L35 28',
+    };
+    return (
+      <span className="tone-choice-content">
+        {tone && (
+          <svg aria-hidden="true" viewBox="0 0 40 38" className="tone-contour">
+            <path d={paths[tone]} />
+          </svg>
+        )}
+        <span className="tone-choice-label">{label}</span>
+      </span>
+    );
+  }
+  if (
+    type === 'symbol-choice' &&
+    [...label].length <= 3 &&
+    /^[a-züāáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜ]+$/u.test(label)
+  ) {
+    return (
+      <span className="symbol-card-content">
+        <span className="four-line-card" aria-hidden="true">
+          {label}
+        </span>
+        <span className="screen-reader-only">拼音字形 {label}</span>
+      </span>
+    );
+  }
+  return <span className="plain-option-label">{label}</span>;
+}
 
 const categoryLabels: Record<string, string> = {
   initial: '声母',
@@ -468,7 +544,7 @@ export function App() {
             {question.options.map((option: Json, index: number) => (
               <button
                 key={option.id}
-                className={`option ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
+                className={`option game-option ${question.type} ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
                 disabled={Boolean(answer) || busy}
                 onClick={() =>
                   void act(async () => {
@@ -493,7 +569,11 @@ export function App() {
                 }
               >
                 <span className="option-index">{String.fromCharCode(65 + index)}</span>
-                {option.label}
+                <GameOptionContent
+                  type={question.type}
+                  label={option.label}
+                  initials={curriculum?.inventory?.initials ?? []}
+                />
               </button>
             ))}
           </div>

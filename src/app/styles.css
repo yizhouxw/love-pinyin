@@ -720,6 +720,97 @@ footer {
   font-size: 10px;
   color: #9ba99a;
 }
+.game-option {
+  display: grid;
+  place-items: center;
+}
+.symbol-card-content {
+  display: block;
+  width: 100%;
+}
+.four-line-card {
+  display: grid;
+  place-items: center;
+  min-height: 56px;
+  border-top: 1px solid #cbd7cf;
+  border-bottom: 1px solid #cbd7cf;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 17px,
+    #dce7df 18px,
+    transparent 19px
+  );
+  color: #345542;
+  font-size: 38px;
+  line-height: 1.35;
+}
+.tone-choice-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+.tone-contour {
+  width: 38px;
+  height: 38px;
+  overflow: visible;
+}
+.tone-contour path {
+  fill: none;
+  stroke: #548461;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3.5px;
+}
+.tone-choice-label {
+  font-size: 24px;
+}
+.blend-choice-content {
+  display: block;
+  width: 100%;
+}
+.blend-pieces {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.blend-piece {
+  display: grid;
+  justify-items: center;
+  min-width: 52px;
+  padding: 5px 8px 7px;
+  border: 1px solid #dce8d9;
+  border-radius: 12px;
+  background: #f5faef;
+}
+.blend-piece small {
+  color: #768b79;
+  font-size: 10px;
+  font-weight: 600;
+}
+.blend-piece strong,
+.blend-whole {
+  color: #345542;
+  font-size: clamp(21px, 4vw, 27px);
+  line-height: 1.2;
+}
+.blend-join {
+  color: #a0b39a;
+  font-size: 19px;
+}
+.screen-reader-only {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
 .option.correct {
   border-color: #81ba73;
   background: #f0fae9;
