@@ -2,9 +2,26 @@ from datetime import UTC, date, datetime, timedelta
 
 import pytest
 
-from server.domain import Event, calculate_mastery, next_review
+from server.domain import Event, business_date, calculate_mastery, next_review
 
 BASE = datetime(2026, 9, 1, tzinfo=UTC)
+
+
+@pytest.mark.parametrize(
+    ("instant", "expected"),
+    [
+        (datetime(2026, 9, 26, 15, 59, 59, tzinfo=UTC), date(2026, 9, 26)),
+        (datetime(2026, 9, 26, 16, 0, tzinfo=UTC), date(2026, 9, 27)),
+        (datetime(2026, 9, 27, 0, 0, tzinfo=UTC), date(2026, 9, 27)),
+    ],
+)
+def test_business_date_uses_shanghai_midnight_boundary(instant, expected):
+    assert business_date(instant) == expected
+
+
+def test_business_date_rejects_naive_timestamp():
+    with pytest.raises(ValueError, match="timezone-aware"):
+        business_date(datetime(2026, 9, 26))
 
 
 def event(

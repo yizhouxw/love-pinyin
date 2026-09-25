@@ -3,9 +3,18 @@
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from typing import Literal
+from zoneinfo import ZoneInfo
 
 OBJECTIVE_MODES = frozenset({"listen-choice", "symbol-choice", "tone-choice", "blend-choice"})
 MASTERY_RULE_VERSION = "mastery-v1"
+BUSINESS_TIMEZONE = ZoneInfo("Asia/Shanghai")
+
+
+def business_date(instant: datetime) -> date:
+    """Return the Shanghai calendar date for an aware timestamp."""
+    if instant.tzinfo is None or instant.utcoffset() is None:
+        raise ValueError("business_date requires a timezone-aware datetime")
+    return instant.astimezone(BUSINESS_TIMEZONE).date()
 
 
 @dataclass(frozen=True)

@@ -9,20 +9,18 @@ import time
 from collections import defaultdict, deque
 from datetime import UTC, date, datetime, timedelta
 from urllib.parse import urlparse
-from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
 from server.content import load_curriculum, map_by_id
-from server.domain import Event, calculate_mastery, next_review
+from server.domain import Event, business_date, calculate_mastery, next_review
 from server.storage import connect, now_iso, public_profile, transaction
 
 router = APIRouter(prefix="/api/v1")
 local_router = APIRouter(prefix="/api/v1/local")
 COOKIE = "lp_session"
 CSRF_COOKIE = "lp_csrf"
-SHANGHAI = ZoneInfo("Asia/Shanghai")
 _failures: dict[str, deque[float]] = defaultdict(deque)
 _failures_lock = threading.Lock()
 _import_previews: dict[str, tuple[str, str, int, float, dict]] = {}
@@ -714,9 +712,7 @@ def _validate_backup(value: object) -> dict:
             row["first_try_correct"] == int(correct and not row["hint_used"]),
             "BACKUP_ATTEMPT_INVALID",
         )
-        local_day = (
-            _parse_datetime(row["occurred_at"], "BACKUP_TIME_INVALID").astimezone(SHANGHAI).date()
-        )
+        local_day = business_date(_parse_datetime(row["occurred_at"], "BACKUP_TIME_INVALID"))
         _require(row["business_date"] == local_day.isoformat(), "BACKUP_TIME_INVALID")
 
     skipped_ids = set()
@@ -1146,7 +1142,7 @@ def start_review_session(knowledge_id: str, device: dict = Depends(mutable)) -> 
     eligible = list({item["id"]: item for item in eligible}.values())
     if len(eligible) < 2:
         raise HTTPException(409, detail={"code": "REVIEW_CONTENT_INSUFFICIENT"})
-    day = datetime.now(UTC).astimezone(SHANGHAI).date().isoformat()
+    day = business_date(datetime.now(UTC)).isoformat()
     session_id, now = secrets.token_urlsafe(18), now_iso()
     with transaction() as db:
         household = db.execute(
@@ -1414,7 +1410,7 @@ def finish_session(session_id: str, device: dict = Depends(mutable)) -> dict:
                     and not skipped_count
                     and len({r["exercise_id"] for r in rows}) == 2
                 ):
-                    completed_day = datetime.now(UTC).astimezone(SHANGHAI).date()
+                    completed_day = business_date(datetime.now(UTC))
                     passed = all(r["first_try_correct"] and r["due_credit"] for r in rows)
                     mastery = _mastery(db, device["household_id"]).get(review_id, {})
                     passed = passed and mastery.get("status") == "mastered"
@@ -1425,7 +1421,7 @@ def finish_session(session_id: str, device: dict = Depends(mutable)) -> dict:
                     ).fetchone()
                     if plan:
                         last_update = datetime.fromisoformat(plan["updated_at"])
-                        if last_update.astimezone(SHANGHAI).date() < completed_day:
+                        if business_date(last_update) < completed_day:
                             stage, due = next_review(plan["stage"], completed_day, passed)
                             db.execute(
                                 """UPDATE review_plans SET stage=?,due_date=?,updated_at=?
@@ -1611,7 +1607,7 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
         if body.answerOptionId not in option_ids:
             raise HTTPException(422, detail={"code": "OPTION_NOT_VALID"})
         now = datetime.now(UTC)
-        day = now.astimezone(SHANGHAI).date().isoformat()
+        day = business_date(now).isoformat()
         prior = db.execute(
             """SELECT 1 FROM attempts WHERE household_id=? AND knowledge_id=? AND exercise_id=?
                AND business_date=? AND due_credit=1 LIMIT 1""",
@@ -1727,7 +1723,7 @@ def progress(device: dict = Depends(paired)) -> dict:
             (device["household_id"],),
         ).fetchall()
     by_knowledge = {row["knowledge_id"]: row for row in plans}
-    today = datetime.now(UTC).astimezone(SHANGHAI).date()
+    today = business_date(datetime.now(UTC))
     for key, value in mastery.items():
         plan = by_knowledge.get(key)
         due = plan["due_date"] if plan else None
