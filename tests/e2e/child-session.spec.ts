@@ -501,7 +501,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByRole('alert')).toContainText('本次操作结果未确认');
   await expect(page.getByRole('alert')).toContainText('会沿用原请求号，不会重复计分');
   await expect(page.getByRole('alert')).toBeVisible();
-  await page.reload();
+  await page.getByRole('button', { name: '重新连接并恢复' }).click();
   await expect.poll(() => answerRequests.length).toBe(2);
   expect(answerRequests[1]).toEqual(answerRequests[0]);
   await expect(page.getByRole('heading', { name: '再找一张拼音卡片' })).toBeVisible();
@@ -599,6 +599,25 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await resetButton.click();
   await expect(page.getByLabel('家长配对码')).toBeVisible();
   expect(reset).toBe(true);
+});
+
+test('首次连接家庭 Mac 失败后可在加载页原地重试', async ({ page }) => {
+  let bootstrapRequests = 0;
+  await page.route('**/api/v1/bootstrap', async (route) => {
+    bootstrapRequests += 1;
+    if (bootstrapRequests === 1) {
+      await route.abort('failed');
+      return;
+    }
+    await route.fulfill({ json: { paired: false, isLocalHost: true, contentVersion: 'test-v1' } });
+  });
+
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: '暂时连不上家庭 Mac Studio' })).toBeVisible();
+  await expect(page.getByRole('alert')).toContainText('暂时无法连接家庭 Mac Studio');
+  await page.getByRole('button', { name: '重新连接并恢复' }).click();
+  await expect(page.getByText('在 Mac 上生成家长配对码')).toBeVisible();
+  expect(bootstrapRequests).toBe(2);
 });
 
 test('已撤销或过期的会话回到配对页面', async ({ page }) => {

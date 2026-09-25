@@ -436,7 +436,20 @@ export function App() {
     setHint(null);
   }
 
-  if (!boot) return <main className="loading">正在连接本机学习服务…</main>;
+  if (!boot)
+    return (
+      <main className="loading">
+        {error ? (
+          <>
+            <h1>暂时连不上家庭 Mac Studio</h1>
+            <p>检查 Mac 和家庭局域网后，可以在这里重新连接。</p>
+            <Notice error={error} onReconnect={() => void act(refresh)} />
+          </>
+        ) : (
+          '正在连接本机学习服务…'
+        )}
+      </main>
+    );
   if (!boot.paired)
     return (
       <main className="pair-page">
@@ -506,7 +519,7 @@ export function App() {
             🔒 录音不会发送到互联网。当前自动评分尚未通过离线验证，跟读暂未开启。
           </p>
         </section>
-        <Notice error={error} />
+        <Notice error={error} onReconnect={() => void act(refresh)} />
       </main>
     );
 
@@ -544,7 +557,7 @@ export function App() {
             休息好了，继续学习
           </button>
         </section>
-        <Notice error={error} />
+        <Notice error={error} onReconnect={() => void act(refresh)} />
       </main>
     );
 
@@ -720,7 +733,7 @@ export function App() {
             </button>
           )}
         </section>
-        <Notice error={error} />
+        <Notice error={error} onReconnect={() => void act(refresh)} />
       </main>
     );
   if (active && taskIndex < 0)
@@ -1081,7 +1094,7 @@ export function App() {
           </footer>
         </>
       )}
-      <Notice error={error} />
+      <Notice error={error} onReconnect={() => void act(refresh)} />
     </main>
   );
 }
@@ -1884,14 +1897,19 @@ function AdultConfirmDialog({
   );
 }
 
-function Notice({ error }: { error: string }) {
+function Notice({ error, onReconnect }: { error: string; onReconnect: () => void }) {
   const message =
     error === 'MAC_UNREACHABLE'
       ? '暂时无法连接家庭 Mac Studio，本次操作结果未确认。检查 Mac 和家庭局域网后，再点一次刚才的操作；答题会沿用原请求号，不会重复计分。'
       : `操作未完成：${error}。请检查本机服务连接后重试。`;
   return error ? (
-    <p className="error-notice" role="alert">
-      {message}
-    </p>
+    <div className="error-notice" role="alert">
+      <p>{message}</p>
+      {error === 'MAC_UNREACHABLE' && (
+        <button className="quiet" onClick={onReconnect}>
+          重新连接并恢复
+        </button>
+      )}
+    </div>
   ) : null;
 }

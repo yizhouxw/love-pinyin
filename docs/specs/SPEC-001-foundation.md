@@ -41,7 +41,7 @@
 
 2026-09-26 软件验证增量：`tests/server/test_concurrent_attempts.py` 以两个独立配对客户端同时提交不同练习，验证两事件均持久化且 household revision 不丢增量。`storage.migrate()` 现在把建表、增列与版本登记置于单一 `BEGIN EXCLUSIVE` 事务；故障注入于版本 4 登记失败后验证旧表/列/数据/版本均保留，没有留下新表或半迁移列。相关软件回归通过。其余 Given/When/Then 及真实设备边界尚未全部覆盖，SPEC 不验收。
 
-2026-09-26 局域网失败反馈增量：同源 API 的 Fetch 网络异常统一映射为 `MAC_UNREACHABLE`，儿童界面说明本次操作结果未确认、检查家庭 Mac/LAN，并告知答题重试会沿用原请求号。E2E 在答题请求被浏览器中断后检查提示，再刷新并重放同一请求，服务端 mock 只接受一次有效作答且请求 ID/答案相同；`npm run verify` 和 5 项目 `npm run test:e2e:local` 通过。这不能替代真实 Wi-Fi 断连/恢复测试，SPEC 保持未验收。
+2026-09-26 局域网失败反馈增量：同源 API 的 Fetch 网络异常统一映射为 `MAC_UNREACHABLE`，儿童界面说明本次操作结果未确认、检查家庭 Mac/LAN，并告知答题重试会沿用原请求号。页面内“重新连接并恢复”会重新读取服务器会话并重放待确认答案；首次启动连接失败时也显示原地重试入口。E2E 分别模拟中断答题请求和首次 bootstrap 失败，验证请求 ID/答案相同且无需刷新；`npm run verify` 与 5 个 Chromium/WebKit 桌面/平板/手机项目的 30 个 E2E 用例通过。本地 Firefox 因已记录的 macOS/Playwright 启动问题未运行，完整 6 项目命令仍用于 Linux CI。这不能替代真实 Wi-Fi 断连/恢复测试，SPEC 保持未验收。
 
 2026-09-26 成人确认步骤增量：打开家长管理先显示原生模态确认框，列明记录/备份/配对/删除范围；确认后才切换到家长管理区，取消或 Escape 均留在孩子区。文案明确此步骤只是防误触，写操作仍经服务端家长权限检查。E2E 覆盖取消返回、桌面键盘 Enter 和手机触摸确认，5 个 Chromium/WebKit 项目及前端 verify 通过；这不是身份认证，也不替代真实家庭可用性测试。
 
