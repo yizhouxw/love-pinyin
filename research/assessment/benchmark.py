@@ -439,6 +439,35 @@ def _grouped(
     return {key: _rates(group, predictions) for key, group in sorted(groups.items())}
 
 
+def _study_coverage(items: list[dict[str, Any]]) -> dict[str, Any]:
+    """Check that held-out target-age children cover each required study condition."""
+    conditions = {
+        "clear-correct": lambda item: item["adjudicatedLabel"] == "correct",
+        "phoneme-error": lambda item: (
+            item["targetClass"] in {"initial", "final"} and item["adjudicatedLabel"] == "incorrect"
+        ),
+        "tone-error": lambda item: (
+            item["targetClass"] == "tone" and item["adjudicatedLabel"] == "incorrect"
+        ),
+        "silence": lambda item: item["challengeClass"] == "silence",
+        "too-short": lambda item: item["challengeClass"] == "too-short",
+        "noise": lambda item: item["challengeClass"] == "noise",
+        "speaker-replay": lambda item: item["challengeClass"] == "speaker-replay",
+        "near-neighbor": lambda item: item["challengeClass"] == "near-neighbor",
+    }
+    counts = {
+        name: sum(predicate(item) for item in items) for name, predicate in conditions.items()
+    }
+    missing = [name for name, count in counts.items() if count == 0]
+    return {
+        "requiredConditions": {
+            name: {"sampleCount": count, "present": count > 0} for name, count in counts.items()
+        },
+        "missingConditions": missing,
+        "complete": not missing,
+    }
+
+
 def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]:
     _require(isinstance(manifest, dict), "manifest root must be an object")
     _require(isinstance(predictions, dict), "predictions root must be an object")
@@ -473,6 +502,7 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
     rates = _rates(test_items, predicted)
     child_test_items = [item for item in test_items if item["cohort"] == "target-age-child"]
     child_rates = _rates(child_test_items, predicted)
+    study_coverage = _study_coverage(child_test_items)
     overall_children = {
         item["speakerGroupId"] for item in items if item["cohort"] == "target-age-child"
     }
@@ -497,10 +527,22 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
         and classifier_rates[5] >= 0.95,
         "atLeast30HeldOutTargetAgeSpeakers": len(target_children) >= 30,
         "atLeast600AdjudicatedSamples": len(items) >= 600,
+        "requiredTargetAgeTestConditionsPresent": study_coverage["complete"],
     }
     labels = [
         tuple(annotation["label"] for annotation in item["annotations"]) for item in test_items
     ]
+    acceptance_blockers = [
+        "The evaluator does not establish calibrated 0-100 score meaning or score stability.",
+        "SPEC-000 also requires a locked study plan and qualified educator approval of thresholds.",
+        "A metrics pass is not product acceptance; review subgroup confidence "
+        "intervals and errors.",
+    ]
+    if study_coverage["missingConditions"]:
+        acceptance_blockers.append(
+            "Held-out target-age child test data is missing required study conditions: "
+            + ", ".join(study_coverage["missingConditions"])
+        )
     return {
         "reportVersion": VERSION,
         "createdAt": datetime.now(UTC).isoformat(timespec="seconds"),
@@ -528,6 +570,7 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
         },
         "testMetrics": rates,
         "targetAgeChildTestMetrics": child_rates,
+        "targetAgeChildStudyCoverage": study_coverage,
         "annotationAgreement": cohen_kappa(labels),
         "byTargetClass": _grouped(test_items, predicted, "targetClass"),
         # Target IDs map to curriculum items, not people. Per-target reporting
@@ -557,13 +600,7 @@ def evaluate(manifest: Any, predictions: Any, audio_dir: Path) -> dict[str, Any]
         },
         "scoreCalibration": "not-measured: this tool evaluates categorical judgments only",
         "decision": "continue-research",
-        "acceptanceBlockers": [
-            "The evaluator does not establish calibrated 0-100 score meaning or score stability.",
-            "SPEC-000 also requires a locked study plan and qualified educator approval "
-            "of thresholds.",
-            "A metrics pass is not product acceptance; review subgroup confidence "
-            "intervals and errors.",
-        ],
+        "acceptanceBlockers": acceptance_blockers,
     }
 
 

@@ -11,6 +11,7 @@ from research.assessment.benchmark import (
     ManifestError,
     _check_manifest,
     _rates,
+    _study_coverage,
     _write_private_report,
     evaluate,
 )
@@ -116,6 +117,51 @@ def test_too_short_recording_is_an_uncertain_challenge_and_near_neighbor_is_inco
     near_neighbor["adjudicatedLabel"] = "incorrect"
     neighbor_rates = _rates([near_neighbor], {near_neighbor["sampleId"]: {"status": "pass"}})
     assert neighbor_rates["falsePassOnIncorrect"]["rate"] == 1
+
+
+def test_required_study_coverage_is_explicit_and_uses_child_test_conditions():
+    rows = [
+        _item(cohort="target-age-child", adjudicatedLabel="correct"),
+        _item(
+            sampleId="sample_initial",
+            targetClass="initial",
+            cohort="target-age-child",
+            adjudicatedLabel="incorrect",
+        ),
+        _item(
+            sampleId="sample_tone",
+            targetClass="tone",
+            cohort="target-age-child",
+            adjudicatedLabel="incorrect",
+        ),
+    ]
+    for index, challenge in enumerate(("silence", "too-short", "noise", "speaker-replay")):
+        rows.append(
+            _item(
+                sampleId=f"sample_challenge_{index}",
+                targetId="challenge",
+                targetClass="syllable",
+                cohort="target-age-child",
+                challengeClass=challenge,
+                adjudicatedLabel="uncertain",
+            )
+        )
+    rows.append(
+        _item(
+            sampleId="sample_neighbor",
+            cohort="target-age-child",
+            challengeClass="near-neighbor",
+            adjudicatedLabel="incorrect",
+        )
+    )
+
+    coverage = _study_coverage(rows)
+
+    assert coverage["complete"]
+    assert coverage["missingConditions"] == []
+    assert coverage["requiredConditions"]["phoneme-error"]["sampleCount"] == 2
+    assert coverage["requiredConditions"]["tone-error"]["sampleCount"] == 1
+    assert "sample_neighbor" not in str(coverage)
 
 
 def test_disagreement_requires_a_distinct_third_adjudicator():
@@ -240,6 +286,9 @@ def test_evaluator_emits_cluster_intervals_without_sample_identifiers(tmp_path):
     ]
     assert report["dataset"]["testTargetAgeSpeakers"] == 2
     assert report["byTargetId"][target_id]["clearSampleAccuracy"]["denominator"] == 2
+    assert report["targetAgeChildStudyCoverage"]["complete"] is False
+    assert "phoneme-error" in report["targetAgeChildStudyCoverage"]["missingConditions"]
+    assert report["classifierMetricGates"]["requiredTargetAgeTestConditionsPresent"] is False
     serialized = str(report)
     assert "fixture_0000" not in serialized
     assert "speaker_0000" not in serialized
