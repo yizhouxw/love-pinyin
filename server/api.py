@@ -41,6 +41,9 @@ def _is_local(request: Request) -> bool:
 def _check_origin(request: Request) -> None:
     origin = request.headers.get("origin")
     host = request.headers.get("host", "").lower()
+    forwarded_host = request.headers.get("x-lp-forwarded-host")
+    if forwarded_host and _is_local(request):
+        host = forwarded_host.lower()
     if origin and urlparse(origin).netloc.lower() != host:
         raise HTTPException(403, detail={"code": "ORIGIN_REJECTED"})
 
@@ -75,17 +78,26 @@ def mutable(
 ) -> dict:
     _check_origin(request)
     device = _get_device(lp_session)
-    if (
-        not lp_csrf
-        or not x_lp_csrf
-        or not secrets.compare_digest(lp_csrf, x_lp_csrf)
-        or not secrets.compare_digest(_hash(lp_csrf), device["csrf_hash"])
-    ):
-        raise HTTPException(403, detail={"code": "CSRF_REJECTED"})
+    if not lp_csrf:
+        raise HTTPException(403, detail={"code": "CSRF_COOKIE_MISSING"})
+    if not x_lp_csrf:
+        raise HTTPException(403, detail={"code": "CSRF_HEADER_MISSING"})
+    if not secrets.compare_digest(lp_csrf, x_lp_csrf):
+        raise HTTPException(403, detail={"code": "CSRF_TOKEN_MISMATCH"})
+    if not secrets.compare_digest(_hash(lp_csrf), device["csrf_hash"]):
+        raise HTTPException(403, detail={"code": "CSRF_DEVICE_MISMATCH"})
     return device
 
 
 def parent(device: dict = Depends(mutable)) -> dict:
+    return _require_parent(device)
+
+
+def parent_read(device: dict = Depends(paired)) -> dict:
+    return _require_parent(device)
+
+
+def _require_parent(device: dict) -> dict:
     if not device["is_parent"]:
         raise HTTPException(403, detail={"code": "PARENT_AUTH_REQUIRED"})
     return device
@@ -302,7 +314,7 @@ def settings(body: Settings, device: dict = Depends(parent)) -> dict:
 
 
 @router.get("/profiles/export")
-def export_profile(device: dict = Depends(parent)) -> dict:
+def export_profile(device: dict = Depends(parent_read)) -> dict:
     with connect() as db:
         household = db.execute(
             "SELECT * FROM household WHERE id=?", (device["household_id"],)
@@ -489,7 +501,7 @@ def mark_hint(instance_id: str, device: dict = Depends(mutable)) -> dict:
     return {
         "hintUsed": True,
         "answer": q["answer"],
-        "explanation": q.get("hint") or "听一听，再看看卡片上的拼音。",
+        "explanation": q.get("hint") or "先看清问题，再观察卡片上的拼音。",
     }
 
 
