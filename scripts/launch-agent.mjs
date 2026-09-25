@@ -102,14 +102,28 @@ function findExecutable(name, searchPath = process.env.PATH ?? '') {
   throw new Error(`Could not find ${name} on PATH. Install it before enabling the Mac service.`);
 }
 
-function runLaunchctl(args, { allowMissing = false } = {}) {
+function runLaunchctl(args) {
   const result = spawnSync('/bin/launchctl', args, { encoding: 'utf8' });
   if (result.error) throw result.error;
   if (result.status === 0) return result.stdout.trim();
   const message = `${result.stderr}${result.stdout}`;
-  if (allowMissing && /Could not find service|service not found|No such process/iu.test(message))
-    return '';
   throw new Error(message.trim() || `launchctl ${args.join(' ')} exited ${result.status}`);
+}
+
+export function launchctlServiceIsLoaded(result) {
+  if (result.error) throw result.error;
+  if (result.status === 0) return true;
+  const message = `${result.stderr ?? ''}${result.stdout ?? ''}`;
+  if (/Could not find service|service not found|service could not be found/iu.test(message))
+    return false;
+  throw new Error(message.trim() || `launchctl print exited ${result.status}`);
+}
+
+function isServiceLoaded(domain) {
+  const result = spawnSync('/bin/launchctl', ['print', `${domain}/${label}`], {
+    encoding: 'utf8',
+  });
+  return launchctlServiceIsLoaded(result);
 }
 
 function assertMac() {
@@ -159,9 +173,9 @@ function install() {
   writeFileSync(temporaryPath, content, { mode: 0o600, flag: 'wx' });
   try {
     chmodSync(temporaryPath, 0o600);
-    renameSync(temporaryPath, plistPath);
     const domain = `gui/${process.getuid()}`;
-    runLaunchctl(['bootout', domain, plistPath], { allowMissing: true });
+    if (isServiceLoaded(domain)) runLaunchctl(['bootout', domain, plistPath]);
+    renameSync(temporaryPath, plistPath);
     runLaunchctl(['bootstrap', domain, plistPath]);
   } catch (error) {
     rmSync(temporaryPath, { force: true });
@@ -181,7 +195,8 @@ function status() {
 
 function uninstall() {
   assertMac();
-  runLaunchctl(['bootout', `gui/${process.getuid()}`, plistPath], { allowMissing: true });
+  const domain = `gui/${process.getuid()}`;
+  if (isServiceLoaded(domain)) runLaunchctl(['bootout', domain, plistPath]);
   rmSync(plistPath, { force: true });
   process.stdout.write(`Stopped and removed ${label}. Logs and family data were kept.\n`);
 }

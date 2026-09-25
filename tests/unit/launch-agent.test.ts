@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildLaunchAgentPlist } from '../../scripts/launch-agent.mjs';
+import { buildLaunchAgentPlist, launchctlServiceIsLoaded } from '../../scripts/launch-agent.mjs';
 
 function fixture(workingDirectory = '/Users/family/love-pinyin') {
   return buildLaunchAgentPlist({
@@ -37,5 +37,23 @@ describe('Mac LaunchAgent 配置', () => {
     const plist = fixture('/Users/A & B/love<pinyin>');
     expect(plist).toContain('<string>/Users/A &amp; B/love&lt;pinyin&gt;</string>');
     expect(plist).not.toContain('<string>/Users/A & B/love<pinyin></string>');
+  });
+
+  it('区分 LaunchAgent 未加载与 launchctl 的真实错误', () => {
+    expect(launchctlServiceIsLoaded({ status: 0, stdout: 'service = com.lovepinyin.server' })).toBe(
+      true,
+    );
+    expect(
+      launchctlServiceIsLoaded({
+        status: 113,
+        stderr: 'Could not find service "com.lovepinyin.server" in domain for uid: 501',
+      }),
+    ).toBe(false);
+    expect(() =>
+      launchctlServiceIsLoaded({ status: 1, stderr: 'Operation not permitted' }),
+    ).toThrow('Operation not permitted');
+    expect(() =>
+      launchctlServiceIsLoaded({ status: null, error: new Error('spawn failed') }),
+    ).toThrow('spawn failed');
   });
 });

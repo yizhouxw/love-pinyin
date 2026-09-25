@@ -9,3 +9,10 @@ export function buildLaunchAgentPlist(options: {
 }): string;
 
 export function main(command?: string): void;
+
+export function launchctlServiceIsLoaded(result: {
+  status: number | null;
+  stdout?: string | null;
+  stderr?: string | null;
+  error?: Error;
+}): boolean;
