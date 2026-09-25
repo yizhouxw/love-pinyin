@@ -210,6 +210,46 @@ def unpair(request: Request, device: dict = Depends(mutable)) -> Response:
     return response
 
 
+@router.get("/devices")
+def list_devices(device: dict = Depends(parent_read)) -> dict:
+    with connect() as db:
+        rows = db.execute(
+            """SELECT id,label,created_at FROM devices
+               WHERE household_id=? AND revoked_at IS NULL ORDER BY created_at,id""",
+            (device["household_id"],),
+        ).fetchall()
+    return {
+        "devices": [
+            {
+                "id": row["id"],
+                "label": row["label"],
+                "createdAt": row["created_at"],
+                "current": row["id"] == device["id"],
+            }
+            for row in rows
+        ]
+    }
+
+
+@router.delete("/devices/{device_id}")
+def revoke_device(device_id: str, device: dict = Depends(parent)) -> dict:
+    if device_id == device["id"]:
+        raise HTTPException(409, detail={"code": "CANNOT_REVOKE_CURRENT_DEVICE"})
+    with transaction() as db:
+        cursor = db.execute(
+            """UPDATE devices SET revoked_at=? WHERE id=? AND household_id=?
+               AND revoked_at IS NULL""",
+            (now_iso(), device_id, device["household_id"]),
+        )
+        if cursor.rowcount == 0:
+            raise HTTPException(404, detail={"code": "DEVICE_NOT_FOUND"})
+        revision = db.execute(
+            "UPDATE household SET revision=revision+1 WHERE id=? RETURNING revision",
+            (device["household_id"],),
+        ).fetchone()["revision"]
+    return {"revoked": True, "revision": revision}
+
+
 @router.get("/health")
 def health() -> dict:
     data = load_curriculum()

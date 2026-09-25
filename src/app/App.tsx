@@ -134,7 +134,11 @@ export function App() {
         setLessonChoice(nextStats.selectedLessonId);
       })
       .catch((reason: Error) => {
-        if (!cancelled) setError(reason.message);
+        if (!cancelled) {
+          if (reason.message === 'SESSION_EXPIRED' || reason.message === 'PAIRING_REQUIRED')
+            setBoot({ paired: false, isLocalHost: false });
+          else setError(reason.message);
+        }
       });
     return () => {
       cancelled = true;
@@ -153,7 +157,11 @@ export function App() {
     try {
       await work();
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : '操作失败，请重试。');
+      const message = reason instanceof Error ? reason.message : '操作失败，请重试。';
+      if (message === 'SESSION_EXPIRED' || message === 'PAIRING_REQUIRED') {
+        setSession(null);
+        setBoot({ paired: false, isLocalHost: false });
+      } else setError(message);
     } finally {
       setBusy(false);
     }
@@ -620,6 +628,28 @@ function ParentPanel({
   const [exportJson, setExportJson] = useState('');
   const [exportRevision, setExportRevision] = useState<number | null>(null);
   const [newDeviceCode, setNewDeviceCode] = useState('');
+  const [devices, setDevices] = useState<Json[]>([]);
+  const [revokeDeviceId, setRevokeDeviceId] = useState('');
+  const [deviceError, setDeviceError] = useState('');
+  const isParent = Boolean(boot.device?.isParent);
+  const reloadDevices = useCallback(async () => {
+    const result = await api('/devices');
+    setDevices(result.devices as Json[]);
+  }, []);
+  useEffect(() => {
+    if (!isParent) return;
+    let cancelled = false;
+    void api('/devices')
+      .then((result) => {
+        if (!cancelled) setDevices(result.devices as Json[]);
+      })
+      .catch((reason: Error) => {
+        if (!cancelled) setDeviceError(reason.message);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isParent]);
   return (
     <section className="parent-panel">
       <h2>学习与隐私设置</h2>
@@ -713,6 +743,54 @@ function ParentPanel({
           )}
         </div>
       </div>
+      {isParent && (
+        <div className="device-management">
+          <div>
+            <strong>已连接设备</strong>
+            <p>撤销后，该设备下次连接时需要重新配对；学习记录会保留。</p>
+          </div>
+          <ul className="device-list">
+            {devices.map((device) => (
+              <li key={device.id}>
+                <div>
+                  <strong>{device.label}</strong>
+                  <small>
+                    {device.current ? '本机家长设备' : '家庭设备'} ·{' '}
+                    {new Date(device.createdAt).toLocaleDateString('zh-CN')}
+                  </small>
+                </div>
+                {!device.current &&
+                  (revokeDeviceId === device.id ? (
+                    <div className="device-actions">
+                      <button
+                        className="danger-button"
+                        onClick={() =>
+                          void act(async () => {
+                            await api(`/devices/${device.id}`, { method: 'DELETE' });
+                            setRevokeDeviceId('');
+                            await reloadDevices();
+                            await refresh();
+                          })
+                        }
+                      >
+                        确认撤销
+                      </button>
+                      <button className="quiet" onClick={() => setRevokeDeviceId('')}>
+                        取消
+                      </button>
+                    </div>
+                  ) : (
+                    <button className="quiet" onClick={() => setRevokeDeviceId(device.id)}>
+                      撤销设备
+                    </button>
+                  ))}
+              </li>
+            ))}
+          </ul>
+          {devices.length === 0 && <p>目前没有已配对设备。</p>}
+          {deviceError && <p className="error-notice">设备列表加载失败：{deviceError}</p>}
+        </div>
+      )}
       {exportJson && exportRevision === progress.revision && (
         <textarea
           className="export-box"

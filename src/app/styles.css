@@ -594,6 +594,45 @@ footer {
   color: var(--muted);
   font-size: 13px;
 }
+.device-management {
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+}
+.device-management > div:first-child p {
+  margin: 5px 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.device-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.device-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f8f9f5;
+  border-radius: 14px;
+}
+.device-list li > div:first-child {
+  display: grid;
+  gap: 4px;
+}
+.device-list small {
+  color: var(--muted);
+  font-size: 11px;
+}
+.device-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 .inline-control {
   display: flex;
   gap: 8px;
