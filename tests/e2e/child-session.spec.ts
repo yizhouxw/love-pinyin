@@ -396,6 +396,16 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.locator('.lesson-tile').first()).toContainText('已掌握');
   await expect(page.getByText('到期复习 · 1 项')).toBeVisible();
   await page.getByRole('button', { name: '家长管理' }).click();
+  await expect(page.getByRole('heading', { name: '按知识点查看进度' })).toBeVisible();
+  const firstLessonProgress = page.locator('.parent-lesson-progress').first();
+  await firstLessonProgress.locator('summary').click();
+  await expect(firstLessonProgress).toContainText('ü');
+  await expect(firstLessonProgress).toContainText('已掌握');
+  await expect(firstLessonProgress).toContainText('独立首次答对 4 / 5 题');
+  await expect(firstLessonProgress).toContainText('待复习 · 2026-09-26');
+  const futureLessonProgress = page.locator('.parent-lesson-progress').nth(1);
+  await futureLessonProgress.locator('summary').click();
+  await expect(futureLessonProgress).toContainText('暂无有效练习记录');
   await expect(page.getByText('已连接设备')).toBeVisible();
   const reduceMotion = page.getByRole('checkbox');
   await reduceMotion.check();

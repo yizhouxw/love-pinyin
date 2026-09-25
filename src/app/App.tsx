@@ -1191,6 +1191,57 @@ function ParentPanel({
           导出家庭数据
         </button>
       </div>
+      <section className="parent-progress" aria-labelledby="parent-progress-title">
+        <h3 id="parent-progress-title">按知识点查看进度</h3>
+        <p className="parent-progress-note">
+          状态由 Mac
+          根据最近练习记录计算；“独立答对”只统计首次作答且未用提示的客观题，不是考试成绩。
+        </p>
+        {curriculum.lessons.map((lesson: Lesson) => {
+          const items = curriculum.knowledgeItems.filter(
+            (item: Knowledge) => item.lessonId === lesson.id,
+          );
+          if (items.length === 0) return null;
+          return (
+            <details className="parent-lesson-progress" key={lesson.id}>
+              <summary>
+                {lesson.order}. {lesson.title}
+              </summary>
+              <ul>
+                {items.map((item: Knowledge) => {
+                  const state = progress.mastery.find(
+                    (entry: Progress['mastery'][number]) => entry.knowledgeId === item.id,
+                  );
+                  const statusLabel =
+                    state?.status === 'mastered'
+                      ? '已掌握'
+                      : state?.status === 'practicing'
+                        ? '练习中'
+                        : '未开始';
+                  return (
+                    <li key={item.id}>
+                      <div className="parent-knowledge-title">
+                        <strong>{item.symbol}</strong>
+                        <span>{statusLabel}</span>
+                        {state?.reviewDue && (
+                          <span className="parent-due-label">
+                            待复习{state.reviewDueDate ? ` · ${state.reviewDueDate}` : ''}
+                          </span>
+                        )}
+                      </div>
+                      <small>
+                        {state && state.sampleSize > 0
+                          ? `独立首次答对 ${state.correctCount} / ${state.sampleSize} 题`
+                          : '暂无有效练习记录'}
+                      </small>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          );
+        })}
+      </section>
       <div className="parent-setting">
         <div>
           <strong>当前课程</strong>

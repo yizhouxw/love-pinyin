@@ -919,6 +919,64 @@ footer {
 .parent-panel h2 {
   margin: 0 0 8px;
 }
+.parent-progress {
+  padding: 16px 0 22px;
+  border-top: 1px solid var(--line);
+}
+.parent-progress h3 {
+  margin: 0;
+  font-size: 17px;
+}
+.parent-progress-note {
+  color: var(--muted);
+  font-size: 13px;
+}
+.parent-lesson-progress {
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+.parent-lesson-progress summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 700;
+}
+.parent-lesson-progress ul {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.parent-lesson-progress li {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fffaf0;
+}
+.parent-knowledge-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+.parent-knowledge-title > strong {
+  font-size: 19px;
+}
+.parent-knowledge-title > span {
+  color: var(--muted);
+  font-size: 13px;
+}
+.parent-knowledge-title .parent-due-label {
+  color: #805528;
+  font-weight: 700;
+}
+.parent-lesson-progress li small {
+  color: var(--muted);
+  font-size: 12px;
+}
 .parent-setting {
   display: flex;
   align-items: center;
