@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
+from server.audio_assets import audio_response
 from server.content import load_curriculum, map_by_id
 from server.domain import Event, business_date, calculate_mastery, next_review
 from server.storage import connect, now_iso, public_profile, transaction
@@ -351,6 +352,15 @@ def curriculum(device: dict = Depends(paired)) -> dict:
     }
     result["exercises"] = [_public_exercise(item) for item in data["exercises"]]
     return result
+
+
+@router.get("/audio/{asset_id}")
+def get_audio_asset(
+    asset_id: str,
+    range_header: str | None = Header(default=None, alias="Range"),
+    device: dict = Depends(paired),
+) -> Response:
+    return audio_response(asset_id, load_curriculum()["audioRequirements"], range_header)
 
 
 class LessonChoice(BaseModel):
