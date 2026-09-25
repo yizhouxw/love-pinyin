@@ -1,6 +1,6 @@
 # 拼音听读、离线评分与资产调研
 
-调研日期：2026-09-25。本文区分“官方文档支持”“可获取”“本机验证”“教学验证”；前两项不代表后两项已经通过。
+调研日期：2026-09-26。本文区分“官方文档支持”“可获取”“本机验证”“教学验证”；前两项不代表后两项已经通过。
 
 ## 结论与实施顺序
 
@@ -27,16 +27,17 @@
 
 此处“离线”指断开互联网仍可使用局域网 Mac API。Mac 断电或客户端离开局域网时，服务器评分不可用；客户端可保留当前页面与明确错误提示；首版不承诺断开 Mac 后仍可完成学习、保存或评分。
 
-| 候选                      | 核实范围                                                        | 主要缺口                                                                       | 决策                                                              |
-| ------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| Python DSP：MFCC/DTW + F0 | librosa 提供特征、动态时间规整和 pYIN 基频估计；代码 ISC        | 距离不等于教学正确率；需要持权多说话人模板、错误样本、儿童校准                 | **先实施的透明研究基线**；未校准只输出诊断/未就绪，不输出产品分数 |
-| MFA 普通话强制对齐        | MFA 代码 MIT；`mandarin_mfa` 模型卡 CC-BY-4.0；提供音素时间对齐 | “把预期文字强制对齐”不能证明读对；没有现成儿童评分/置信度校准                  | 作为离线标注辅助候选，不能直接把对齐似然映射为成绩                |
-| SenseVoiceSmall           | 本地中文 ASR；代码 MIT；官方权重为 `other` 的 FunASR 模型协议   | 输出汉字，不是独立声韵母评分模型；模型许可不是 MIT/Apache                      | 可选错误读词筛查研究，不进入评分正确率公式或默认发行包            |
-| sherpa-onnx               | 代码 Apache-2.0；原生与 WASM ASR 运行路线可获得                 | 运行时许可不覆盖每个模型；ASR 不提供本项目所需拼音评价标准                     | 备选模型运行层，当前不引入大模型依赖                              |
-| 驰声 C 离线 SDK           | 官方列 Mac/Windows/Linux；需 AppKey/SecretKey、授权文件和激活   | 未确认 Apple Silicon arm64 包、Mac 服务端/API 并发许可、运行外连策略、许可报价 | 商用备选预审；未采购、未下载、未实测，不能写“即装即用”            |
-| 腾讯离线 SDK              | 官方列中文拼音评测、首次联网激活后离线运行                      | 文档平台为 Android/iOS，不能直接满足本期 Mac B/S；基础版还有下线迁移提示       | 当前排除；未来原生阶段另审                                        |
+| 候选                      | 核实范围                                                                                                                         | 主要缺口                                                                                                                                   | 决策                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| Python DSP：MFCC/DTW + F0 | librosa 提供特征、动态时间规整和 pYIN 基频估计；代码 ISC                                                                         | 距离不等于教学正确率；需要持权多说话人模板、错误样本、儿童校准                                                                             | **先实施的透明研究基线**；未校准只输出诊断/未就绪，不输出产品分数      |
+| MFA 普通话强制对齐        | MFA 代码 MIT；`mandarin_mfa` 模型卡 CC-BY-4.0；提供音素时间对齐                                                                  | “把预期文字强制对齐”不能证明读对；没有现成儿童评分/置信度校准                                                                              | 作为离线标注辅助候选，不能直接把对齐似然映射为成绩                     |
+| SenseVoiceSmall           | 本地中文 ASR；代码 MIT；官方权重为 `other` 的 FunASR 模型协议                                                                    | 输出汉字，不是独立声韵母评分模型；模型许可不是 MIT/Apache                                                                                  | 可选错误读词筛查研究，不进入评分正确率公式或默认发行包                 |
+| sherpa-onnx               | 代码 Apache-2.0；原生与 WASM ASR 运行路线可获得                                                                                  | 运行时许可不覆盖每个模型；ASR 不提供本项目所需拼音评价标准                                                                                 | 备选模型运行层，当前不引入大模型依赖                                   |
+| 驰声 C/C++ 离线 SDK       | 官方 C/C++ 离线文档列 Mac、离线 native 资源及首次联网获取 provision；中文通用 `cn.word.score` 单独列拼音/声韵/调型能力及儿童资源 | 离线内核文档只列英文核心；没有证据证明中文拼音内核随 Mac C 离线包提供；C 文档未列 macOS dylib，且 M2 Ultra arm64 包、授权、留存/外联仍未知 | **Mac 候选，待书面核实中文内核和 arm64**；未采购、下载、实测，不能接入 |
+| SpeechSuper 离线 SDK      | 官方产品矩阵标示 Mandarin 单字/短文评分、tone score、无网运行；平台列 iOS/Android/Flutter/Windows                                | 未列 macOS；离线包授权按设备/年，不适配当前 Mac 服务端部署                                                                                 | 本期排除；将来原生客户端可另评                                         |
+| 腾讯智聆离线 SDK          | 官方列拼音多种评测模式、无网运行（首次联网激活后）                                                                               | 官方支持矩阵为 Android/iOS 终端，不支持本期 Mac B/S 服务器宿主                                                                             | 本期排除；未来原生客户端可另审                                         |
 
-来源：[librosa pYIN](https://librosa.org/doc/0.11.0/generated/librosa.pyin.html)、[DTW](https://librosa.org/doc/0.11.0/generated/librosa.sequence.dtw.html)、[librosa 许可](https://github.com/librosa/librosa/blob/main/LICENSE.md)、[MFA 模型](https://huggingface.co/MontrealCorpusTools/mandarin_mfa)、[MFA 对齐流程](https://montreal-forced-aligner.readthedocs.io/en/v3.3.3/user_guide/workflows/alignment.html)、[SenseVoice 许可声明](https://github.com/QwenAudio/SenseVoice#license)、[官方权重条款](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE)、[sherpa WASM](https://k2-fsa.github.io/sherpa/onnx/wasm/build.html)、[驰声 C 离线文档](https://www.chivox.com/en/docs/offline/sdkDoc/C-offline-sdk)、[腾讯离线介绍](https://cloud.tencent.cn/document/product/884/61498)。访问于 2026-09-25。librosa API 链接是 0.11 文档，后续实现应以锁定版本的 API 为准。
+来源：[librosa pYIN](https://librosa.org/doc/0.11.0/generated/librosa.pyin.html)、[DTW](https://librosa.org/doc/0.11.0/generated/librosa.sequence.dtw.html)、[librosa 许可](https://github.com/librosa/librosa/blob/main/LICENSE.md)、[MFA 模型](https://huggingface.co/MontrealCorpusTools/mandarin_mfa)、[MFA 对齐流程](https://montreal-forced-aligner.readthedocs.io/en/v3.3.3/user_guide/workflows/alignment.html)、[SenseVoice 许可声明](https://github.com/QwenAudio/SenseVoice#license)、[官方权重条款](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE)、[sherpa WASM](https://k2-fsa.github.io/sherpa/onnx/wasm/build.html)、[驰声 C/C++ 离线文档](https://www.chivox.com/en/docs/offline/sdkDoc/C-offline-sdk)、[驰声离线内核目录](https://www.chivox.com/en/docs/offline/coreEn)、[驰声通用中文拼音内核](https://www.chivox.com/docs/coreCn/Chinese/cn.word.score)、[驰声 Unity 离线平台矩阵](https://www.chivox.com/docs/offline/sdkDoc/Unity-offline-sdk)、[腾讯离线介绍](https://cloud.tencent.com/document/product/884/61498)、[腾讯离线授权与平台](https://cloud.tencent.com/document/product/884/61500)、[SpeechSuper 离线产品矩阵](https://www.speechsuper.com/dashboard/)、[SpeechSuper SDK 文档](https://docs.speechsuper.com/)。官方页面复核于 2026-09-26。librosa API 链接是 0.11 文档，后续实现应以锁定版本的 API 为准。
 
 ### 为什么不能直接给出“正确率”
 
@@ -58,13 +59,15 @@ F0 只反映有声段的基频变化，不能区分 `b/p` 的送气，也不能�
 
 发送询价前准备同一套 PoC 音频、设备规格（Mac Studio M2 Ultra / arm64 / 64 GB）和需求表；本阶段只准备要求，不联系供应商、不购买。要求供应商书面确认：
 
-- 提供 arm64 macOS 库，或明确 x86_64 + Rosetta 支持、性能和未来维护期；当前公开文档只写 Mac。
+- 提供实际 C/C++ macOS 库文件名、最低 macOS 版本、arm64/x86_64 架构与 ABI；若只支持 x86_64，书面说明 Rosetta 支持、性能和维护期。Unity 页的 x86_64 声明不能替代 C/C++ 包的证据。
 - 可部署为局域网服务端，由多浏览器调用；每设备/每服务器/并发/年费计量方式与试用期限。
-- 可在运行中断互联网，除明示激活外无鉴权心跳、日志、录音上传和遥测；支持离线激活与到期行为。
+- 离线 Mac 包是否包含 `cn.word.score` 与儿童资源 `chn.wrd.G4.A2`，并给出独立声母、韵母、声调、ü 和整音节输入映射及原始样例；通用中文内核页不能证明离线包已含该资源。
+- 首次 provision/激活具体连接的域名和传输字段；激活后能否长期断网，是否存在鉴权心跳、诊断遥测、录音上传或外部留存；若请求参数 `attachAudioUrl=0` 可关闭音频外传/保存，需明确书面确认其对 C 离线包的行为。
+- 商业评测、生产嵌入与家庭局域网多浏览器并发服务的授权范围、计费口径、试用期限；密钥、引擎和资源文件的保密及再分发限制、离线授权过期行为和支持周期。
 - 儿童独立声母采用“本音”还是教学呼读；是否覆盖全部课程韵母、整体认读、ü、轻声及声调；提供逐项输入映射和原始样例。
-- 引擎升级可固定版本，输出含错误/拒判原因；获取实际儿童测试许可；SDK、密钥和权重不提交 MIT 仓库。
+- 引擎升级可固定版本，输出含错误/拒判原因；获取实际儿童测试许可。SDK、密钥和权重不提交 MIT 仓库。
 
-驰声的公开中文内核 `cn.word.score` 列出儿童资源和 `refText: b` 示例，可据此发起能力核实；但**云/通用内核文档不能证明该内核已包含在所购 Mac 离线包**。[内核参考](https://www.chivox.com/en/docs/coreCn/Chinese/cn.word.score)（访问 2026-09-25）。
+驰声的通用中文 `cn.word.score` 说明可评单个拼音、整体音节、声母/韵母与声调，并列出儿童资源及独立 `b`/`a3` 输入示例。[中文内核文档](https://www.chivox.com/docs/coreCn/Chinese/cn.word.score) 但其[离线内核目录](https://www.chivox.com/en/docs/offline/coreEn)当前只列 `en.*` 核心，不能由产品 SDK 文档或在线/通用中文内核推断离线包已包含拼音内核。C 离线页虽声明 Mac 支持，公开列出的库只有 `aiengine.dll` 与 `libaiengine.so`，未列 macOS `.dylib`；同厂商 Unity 离线页所列 Mac 架构是 x86_64，也不构成 C 离线包的 arm64 支持证据。本期硬件是 M2 Ultra/arm64，因此这一候选仍需书面确认具体 C/C++ 离线包、`cn.word.score` 儿童资源、macOS arm64 ABI、局域网多端授权和首次激活后的隐私/断网行为；以上只是基于官方文档的采购预审，不是运行测试或产品性能结论。
 
 ## 3. 已排除的云评分与浏览器捷径
 
