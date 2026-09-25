@@ -118,7 +118,13 @@ def migrate() -> None:
                 target_id TEXT NOT NULL, status TEXT NOT NULL, summary_json TEXT NOT NULL,
                 engine_version TEXT NOT NULL, created_at TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS skipped_instances (
+                instance_id TEXT PRIMARY KEY REFERENCES exercise_instances(id) ON DELETE CASCADE,
+                household_id TEXT NOT NULL REFERENCES household(id) ON DELETE CASCADE,
+                skipped_at TEXT NOT NULL
+            );
             INSERT OR IGNORE INTO schema_migrations(version,applied_at) VALUES(1,CURRENT_TIMESTAMP);
+            INSERT OR IGNORE INTO schema_migrations(version,applied_at) VALUES(2,CURRENT_TIMESTAMP);
         """)
 
 

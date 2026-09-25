@@ -313,19 +313,34 @@ export function App() {
             </div>
           )}
           {!answer && (
-            <button
-              className="quiet hint-button"
-              disabled={busy}
-              onClick={() =>
-                void act(async () =>
-                  setHint(
-                    (await api(`/instances/${task.instanceId}/hint`, { method: 'POST' })) as Hint,
-                  ),
-                )
-              }
-            >
-              给我一点提示
-            </button>
+            <div className="exercise-actions">
+              <button
+                className="quiet hint-button"
+                disabled={busy}
+                onClick={() =>
+                  void act(async () =>
+                    setHint(
+                      (await api(`/instances/${task.instanceId}/hint`, { method: 'POST' })) as Hint,
+                    ),
+                  )
+                }
+              >
+                给我一点提示
+              </button>
+              <button
+                className="quiet skip-button"
+                disabled={busy}
+                onClick={() =>
+                  void act(async () => {
+                    await api(`/instances/${task.instanceId}/skip`, { method: 'POST' });
+                    setHint(null);
+                    setSession((await api('/sessions/current')) as Session);
+                  })
+                }
+              >
+                先跳过这题
+              </button>
+            </div>
           )}
           {hint && !answer && (
             <p className="hint-box">
@@ -340,13 +355,7 @@ export function App() {
                 void act(async () => {
                   setAnswer(null);
                   setHint(null);
-                  if (taskIndex === active.tasks.length - 1) {
-                    await api(`/sessions/${active.id}/finish`, { method: 'POST' });
-                    setSession(null);
-                    await refresh();
-                  } else {
-                    setSession((await api('/sessions/current')) as Session);
-                  }
+                  setSession((await api('/sessions/current')) as Session);
                 })
               }
             >
@@ -364,6 +373,34 @@ export function App() {
           <div className="mascot">🎉</div>
           <h1>今天的探索完成啦！</h1>
           <p>你认真完成了这一小段练习，休息一下也很好。</p>
+          <ul className="session-summary" aria-label="本次练习小结">
+            <li>
+              独立答对：
+              {
+                Object.values(active.results as Record<string, Json>).filter(
+                  (item) => item.firstTryCorrect,
+                ).length
+              }{' '}
+              题
+            </li>
+            <li>
+              提示后答对：
+              {
+                Object.values(active.results as Record<string, Json>).filter(
+                  (item) => item.correct && !item.firstTryCorrect && !item.skipped,
+                ).length
+              }{' '}
+              题
+            </li>
+            <li>
+              跳过：
+              {
+                Object.values(active.results as Record<string, Json>).filter((item) => item.skipped)
+                  .length
+              }{' '}
+              题
+            </li>
+          </ul>
           <button
             onClick={() =>
               void act(async () => {

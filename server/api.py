@@ -329,11 +329,25 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
             "SELECT knowledge_id,stage,due_date,updated_at FROM review_plans WHERE household_id=?",
             (device["household_id"],),
         ).fetchall()
+        sessions = db.execute(
+            """SELECT id,content_version AS contentVersion,started_at AS startedAt,status
+               FROM sessions WHERE household_id=? ORDER BY started_at,id""",
+            (device["household_id"],),
+        ).fetchall()
+        skipped = db.execute(
+            """SELECT s.instance_id AS instanceId,i.session_id AS sessionId,
+               s.skipped_at AS skippedAt FROM skipped_instances s
+               JOIN exercise_instances i ON i.id=s.instance_id
+               WHERE s.household_id=? ORDER BY s.skipped_at,s.instance_id""",
+            (device["household_id"],),
+        ).fetchall()
     return {
         "schemaVersion": 1,
         "exportedAt": now_iso(),
         "profile": public_profile(household),
         "attempts": [dict(row) for row in attempts],
+        "sessions": [dict(row) for row in sessions],
+        "skippedInstances": [dict(row) for row in skipped],
         "reviewPlans": [dict(row) for row in reviews],
         "note": "不包含会话凭据、设备信息或录音。",
     }
@@ -451,6 +465,12 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
                LEFT JOIN attempts a ON a.instance_id=i.id WHERE i.session_id=?""",
             (row["id"],),
         ).fetchall()
+        skipped = db.execute(
+            """SELECT s.instance_id,s.skipped_at FROM skipped_instances s
+               JOIN exercise_instances i ON i.id=s.instance_id
+               WHERE s.household_id=? AND i.session_id=?""",
+            (device["household_id"], row["id"]),
+        ).fetchall()
         receipts = db.execute(
             "SELECT result_json FROM request_receipts WHERE household_id=?",
             (device["household_id"],),
@@ -464,6 +484,12 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
         for item in attempts
         if item["attempt_id"] in result_by_attempt
     }
+    for item in skipped:
+        results[item["instance_id"]] = {
+            "instanceId": item["instance_id"],
+            "skipped": True,
+            "skippedAt": item["skipped_at"],
+        }
     return {**dict(row), "tasks": json.loads(row["tasks_json"]), "results": results}
 
 
@@ -496,6 +522,11 @@ def mark_hint(instance_id: str, device: dict = Depends(mutable)) -> dict:
             raise HTTPException(404, detail={"code": "INSTANCE_NOT_FOUND"})
         if row["answered_at"]:
             raise HTTPException(409, detail={"code": "INSTANCE_ALREADY_ANSWERED"})
+        skipped = db.execute(
+            "SELECT 1 FROM skipped_instances WHERE instance_id=?", (instance_id,)
+        ).fetchone()
+        if skipped:
+            raise HTTPException(409, detail={"code": "INSTANCE_ALREADY_SKIPPED"})
         db.execute("UPDATE exercise_instances SET hint_used=1 WHERE id=?", (instance_id,))
     q = map_by_id("exercises")[row["exercise_id"]]
     return {
@@ -503,6 +534,35 @@ def mark_hint(instance_id: str, device: dict = Depends(mutable)) -> dict:
         "answer": q["answer"],
         "explanation": q.get("hint") or "先看清问题，再观察卡片上的拼音。",
     }
+
+
+@router.post("/instances/{instance_id}/skip")
+def skip_instance(instance_id: str, device: dict = Depends(mutable)) -> dict:
+    with transaction() as db:
+        instance = db.execute(
+            "SELECT * FROM exercise_instances WHERE id=? AND household_id=?",
+            (instance_id, device["household_id"]),
+        ).fetchone()
+        if not instance:
+            raise HTTPException(404, detail={"code": "INSTANCE_NOT_FOUND"})
+        if instance["answered_at"]:
+            raise HTTPException(409, detail={"code": "INSTANCE_ALREADY_ANSWERED"})
+        session = db.execute(
+            "SELECT status FROM sessions WHERE id=? AND household_id=?",
+            (instance["session_id"], device["household_id"]),
+        ).fetchone()
+        if not session or session["status"] != "active":
+            raise HTTPException(409, detail={"code": "SESSION_NOT_ACTIVE"})
+        skipped_at = now_iso()
+        db.execute(
+            """INSERT OR IGNORE INTO skipped_instances
+               (instance_id,household_id,skipped_at) VALUES(?,?,?)""",
+            (instance_id, device["household_id"], skipped_at),
+        )
+        skipped_at = db.execute(
+            "SELECT skipped_at FROM skipped_instances WHERE instance_id=?", (instance_id,)
+        ).fetchone()["skipped_at"]
+    return {"instanceId": instance_id, "skipped": True, "skippedAt": skipped_at}
 
 
 class SubmitAnswer(BaseModel):
@@ -568,6 +628,10 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
             raise HTTPException(404, detail={"code": "INSTANCE_NOT_FOUND"})
         if instance["answered_at"]:
             raise HTTPException(409, detail={"code": "INSTANCE_ALREADY_ANSWERED"})
+        if db.execute(
+            "SELECT 1 FROM skipped_instances WHERE instance_id=?", (instance_id,)
+        ).fetchone():
+            raise HTTPException(409, detail={"code": "INSTANCE_ALREADY_SKIPPED"})
         question = map_by_id("exercises").get(instance["exercise_id"])
         if not question or question["type"] == "read-aloud":
             raise HTTPException(409, detail={"code": "EXERCISE_NOT_READY"})

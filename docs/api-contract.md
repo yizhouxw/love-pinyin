@@ -23,6 +23,7 @@
 | GET `/profiles`                      | 配对                    | 本地昵称/随机头像ID，不要求真名                                     |
 | GET `/profiles/{id}/progress`        | 配对                    | `ProgressSnapshot` 与 revision                                      |
 | POST `/profiles/{id}/attempts`       | 事件 + expectedRevision | 幂等插入；服务器生成时间；冲突409后重取，按attempt.id安全重试       |
+| POST `/instances/{id}/skip`          | 配对会话 + CSRF         | 当前会话内幂等标记跳过；不创建作答/掌握事件，刷新可恢复             |
 | POST `/assessments`                  | 见下文                  | 本地评分结果；当前固定503未就绪，且不读取请求音频                   |
 | GET `/assessments/{requestId}`       | 同一配对会话            | pending或已完成摘要；不重算；缓存过期返回410，目标不属于会话返回404 |
 | GET `/attempts/{requestId}`          | 同一配对会话            | 已提交事件或404；客户端用原ID重试保证幂等                           |

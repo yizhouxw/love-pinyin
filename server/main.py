@@ -19,7 +19,13 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(title="Love Pinyin local API", version="0.1.0", lifespan=lifespan)
+app = FastAPI(
+    title="Love Pinyin local API",
+    version="0.1.0",
+    lifespan=lifespan,
+    docs_url=None,
+    redoc_url=None,
+)
 
 
 @app.middleware("http")
