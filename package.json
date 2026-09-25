@@ -28,7 +28,7 @@
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run validate:content && npm test && npm run build",
     "dev:api": "uv run --locked uvicorn server.main:app --host 127.0.0.1 --port 8000 --reload",
     "serve:local": "uv run --locked uvicorn server.main:app --host 127.0.0.1 --port 8000 --no-access-log",
-    "serve:lan": "uv run --locked uvicorn server.main:app --host 0.0.0.0 --port 8443 --ssl-certfile \"${LOVE_PINYIN_TLS_CERT:?Set LOVE_PINYIN_TLS_CERT}\" --ssl-keyfile \"${LOVE_PINYIN_TLS_KEY:?Set LOVE_PINYIN_TLS_KEY}\" --no-access-log",
+    "serve:lan": "node scripts/serve-lan.mjs",
     "backup:local": "uv run --locked python -m server.backup",
     "test:server": "uv run --locked pytest",
     "verify:server": "uv run --locked ruff check . && uv run --locked ruff format --check . && uv run --locked pytest",

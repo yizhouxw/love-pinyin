@@ -28,12 +28,13 @@ mkcert -cert-file certs/lan.pem -key-file certs/lan-key.pem mac-studio.local 192
 
 ```sh
 npm run build
+export LOVE_PINYIN_BIND_IP=192.168.1.20 # 与证书 SAN、Mac 当前 LAN IPv4 相同
 export LOVE_PINYIN_TLS_CERT="$PWD/certs/lan.pem"
 export LOVE_PINYIN_TLS_KEY="$PWD/certs/lan-key.pem"
 npm run serve:lan
 ```
 
-浏览器访问 `https://mac-studio.local:8443`。初次网络权限、防火墙弹窗由维护者批准；只开放家庭LAN，不配置路由器端口转发。静态资源自托管，不依赖字体CDN或Swagger CDN。若未来加反向代理，必须关闭音频上传请求的磁盘缓冲和body日志。
+`LOVE_PINYIN_BIND_IP` 必须是此刻分配给 Mac 的非 loopback IPv4 地址；启动器会核对本机网络接口，只把 Uvicorn 绑定到该地址，不用 `0.0.0.0` 监听所有接口。IP 变更时启动会明确失败，更新证书和地址后再启动。可用 `LOVE_PINYIN_PORT` 改端口（默认 8443）。浏览器仍可访问证书 SAN 中的 `https://mac-studio.local:8443`。初次网络权限、防火墙弹窗由维护者批准；只开放家庭LAN，不配置路由器端口转发。静态资源自托管，不依赖字体CDN或Swagger CDN。若未来加反向代理，必须关闭音频上传请求的磁盘缓冲和body日志。
 
 ## 运行、备份与升级
 
