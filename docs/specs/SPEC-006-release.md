@@ -45,6 +45,8 @@ Mac Studio 提供同源 HTTPS 静态网页与 `/api/v1/` 服务；浏览器必�
 
 2026-09-26 运维增量：新增 `npm run backup:local`，用 SQLite online backup API 生成已提交 WAL 一致快照，校验完整性和 migration table，原子落盘并设置私有目录/文件权限、保留最近 7 份；缺少源数据库时失败且不创建空备份。对应单测覆盖完整性、权限、保留和缺库。部署文档补充升级前备份、人工恢复和卸载步骤。尚未定时调度、真机 LAN/断 WAN 测试或灾备演练；SPEC 不验收，评分/内容门禁也未通过。
 
+2026-09-26 用户服务启动增量：新增 opt-in `lan-service:install/status/uninstall` macOS LaunchAgent 命令。安装时复用 LAN IPv4/HTTPS 必需配置校验、确认构建和证书文件存在，把 Node/工作目录/uv PATH 写入用户级 plist，设置登录启动、失败后节流重试、禁止自动下载 Python，并把标准输出/错误保存在私有日志目录；卸载只移除该用户服务配置，不删除家庭数据。纯配置测试覆盖路径与 XML 转义、TLS/LAN 环境、节流和禁止 Python 下载；本机 `plutil -lint` 解析生成的 plist 成功。未执行安装/加载，未验证真实登录自启、重启和受信任设备访问，不能据此称部署验收完成。
+
 2026-09-26 运维安全增量：`npm run serve:lan` 改由 `scripts/serve-lan.mjs` 启动；需要显式的本机 LAN IPv4 和 HTTPS 证书/私钥，只监听该接口而非全部网卡。启动前检查地址当前已分配给本机、文件可读、端口范围有效；无效配置在启动 API 前失败。SIGINT/SIGTERM 会传给 Uvicorn 子进程。测试覆盖 loopback、`0.0.0.0`、别机地址、主机名、缺失 TLS 私钥和非法端口。另在 Mac Studio 用临时自签证书、临时数据库和 `192.168.1.2:18443` 实际启动：静态页和 `/api/v1/health` 均 HTTP 200，`lsof` 确认只监听该地址，之后正常 SIGINT 关闭并清除临时数据。仍需维护者提供受信任证书并在其他家庭设备、真实 LAN/防火墙上验收。
 
 运行 `npm run verify:all`；它包括前端完整验证、后端 Ruff/pytest 和三浏览器 E2E。再按部署文档以正式构建启动，人工完成真实设备及断互联网验收。命令通过只能证明对应自动化范围，不替代未执行的人工作业。
