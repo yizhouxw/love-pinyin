@@ -382,6 +382,87 @@ main {
   font-size: 10px;
   font-weight: 700;
 }
+.lesson-detail {
+  padding: clamp(18px, 4vw, 34px);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+.lesson-back {
+  margin-bottom: 18px;
+}
+.lesson-detail > h2 {
+  margin: 4px 0 10px;
+  font-size: clamp(26px, 4vw, 36px);
+}
+.lesson-objectives {
+  padding-left: 22px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.knowledge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.knowledge-card {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fffefa;
+}
+.knowledge-card-meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.knowledge-card h3 {
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+  font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.35;
+  font-weight: 700;
+}
+.audio-unavailable {
+  width: 100%;
+  min-height: 48px;
+  color: var(--muted);
+  background: #f2f2ed;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.knowledge-card details {
+  margin-top: 12px;
+  font-size: 12px;
+}
+.knowledge-card summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  color: #58745d;
+  cursor: pointer;
+}
+.knowledge-card details p {
+  color: var(--muted);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.lesson-detail-actions {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+.lesson-detail-actions small {
+  color: var(--muted);
+  text-align: center;
+}
 .feature-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -683,6 +764,9 @@ footer {
   .lesson-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+  .knowledge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .feature-row {
     grid-template-columns: 1fr;
   }
@@ -750,6 +834,9 @@ footer {
   .lesson-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
+  }
+  .knowledge-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
   .lesson-tile {
     min-height: 92px;

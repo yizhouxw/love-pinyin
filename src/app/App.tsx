@@ -26,6 +26,14 @@ type Exercise = {
   options: Option[];
   answer: { optionId: string };
 };
+type Knowledge = {
+  id: string;
+  lessonId: string;
+  category: string;
+  symbol: string;
+  teachingNote: string;
+  reviewStatus: string;
+};
 type Task = { instanceId: string; exercise: Exercise };
 type Session = {
   id: string;
@@ -47,7 +55,7 @@ type Progress = {
   }[];
   attempts: unknown[];
 };
-type Curriculum = { lessons: Lesson[] };
+type Curriculum = { lessons: Lesson[]; knowledgeItems: Knowledge[]; exercises: Exercise[] };
 type Answer = {
   correct: boolean;
   correctOptionId: string;
@@ -55,6 +63,15 @@ type Answer = {
   mastery: { status: string };
 };
 type Hint = { explanation: string; answer: { optionId: string } };
+
+const categoryLabels: Record<string, string> = {
+  initial: '声母',
+  final: '韵母',
+  tone: '声调',
+  'whole-syllable': '整体认读音节',
+  'orthographic-letter': '拼写字母',
+  rule: '拼写规则',
+};
 
 async function api(path: string, options: RequestInit = {}): Promise<Json> {
   const headers = new Headers(options.headers);
@@ -96,6 +113,7 @@ export function App() {
   const [answer, setAnswer] = useState<Answer | null>(null);
   const [parentOpen, setParentOpen] = useState(false);
   const [lessonChoice, setLessonChoice] = useState('');
+  const [lessonViewId, setLessonViewId] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     const state = (await api('/bootstrap')) as Bootstrap;
@@ -147,6 +165,15 @@ export function App() {
   const lessons = useMemo(() => curriculum?.lessons ?? [], [curriculum]);
   const lessonById = useMemo(() => new Map(lessons.map((item) => [item.id, item])), [lessons]);
   const currentLesson = progress ? lessonById.get(progress.selectedLessonId) : undefined;
+  const canPracticeCurrent = Boolean(
+    currentLesson?.exerciseIds.some((exerciseId) =>
+      curriculum?.exercises.some(
+        (exercise) =>
+          exercise.id === exerciseId &&
+          ['symbol-choice', 'tone-choice', 'blend-choice'].includes(exercise.type),
+      ),
+    ),
+  );
   const mastery = progress?.mastery ?? [];
   const mastered = mastery.filter((item) => item.status === 'mastered').length;
   const masteryById = new Map(mastery.map((item) => [item.knowledgeId, item]));
@@ -165,6 +192,16 @@ export function App() {
     } finally {
       setBusy(false);
     }
+  }
+
+  async function beginLesson(lessonId: string) {
+    const started = (await api('/sessions', {
+      method: 'POST',
+      body: JSON.stringify({ lessonId }),
+    })) as Session;
+    setSession(started);
+    setAnswer(null);
+    setHint(null);
   }
 
   if (!boot) return <main className="loading">正在连接本机学习服务…</main>;
@@ -480,6 +517,40 @@ export function App() {
               refresh={refresh}
               act={act}
             />
+          ) : lessonViewId ? (
+            <LessonDetail
+              lesson={lessonById.get(lessonViewId)}
+              knowledge={
+                curriculum?.knowledgeItems.filter((item) => item.lessonId === lessonViewId) ?? []
+              }
+              masteryById={masteryById}
+              withinCurrentRange={Boolean(
+                lessonById.get(lessonViewId) &&
+                currentLesson &&
+                lessonById.get(lessonViewId)!.order <= currentLesson.order,
+              )}
+              canPractice={Boolean(
+                lessonById.get(lessonViewId) &&
+                currentLesson &&
+                lessonById.get(lessonViewId)!.order <= currentLesson.order &&
+                lessonById
+                  .get(lessonViewId)
+                  ?.exerciseIds.some((exerciseId) =>
+                    curriculum?.exercises.some(
+                      (exercise) =>
+                        exercise.id === exerciseId &&
+                        ['symbol-choice', 'tone-choice', 'blend-choice'].includes(exercise.type),
+                    ),
+                  ),
+              )}
+              onBack={() => setLessonViewId(null)}
+              onStart={() =>
+                void act(async () => {
+                  await beginLesson(lessonViewId);
+                  setLessonViewId(null);
+                })
+              }
+            />
           ) : (
             <>
               <section className="journey-card">
@@ -513,21 +584,18 @@ export function App() {
                 </div>
                 <button
                   className="start-button"
-                  disabled={busy || !currentLesson?.exerciseIds?.length}
+                  disabled={busy || !canPracticeCurrent}
                   onClick={() =>
                     void act(async () => {
-                      const started = (await api('/sessions', {
-                        method: 'POST',
-                        body: JSON.stringify({}),
-                      })) as Session;
-                      setSession(started);
-                      setAnswer(null);
-                      setHint(null);
+                      await beginLesson(progress.selectedLessonId);
                     })
                   }
                 >
-                  开始今天的练习 <span>→</span>
+                  {canPracticeCurrent ? '开始今天的练习' : '课程资料准备中'} <span>→</span>
                 </button>
+                {!canPracticeCurrent && (
+                  <p className="session-note">当前课尚无可用视觉练习，不会创建空会话。</p>
+                )}
                 <p className="session-note">
                   建议陪伴练习约 {currentLesson?.suggestedSessionMinutes ?? 5} 分钟 · 可随时休息
                 </p>
@@ -542,7 +610,7 @@ export function App() {
                 </div>
                 <div className="lesson-grid">
                   {lessons.map((lesson: Json) => {
-                    const locked = lesson.order > (currentLesson?.order ?? 1);
+                    const future = lesson.order > (currentLesson?.order ?? 1);
                     const lessonMastery = (lesson.knowledgeIds as string[])
                       .map((id) => masteryById.get(id))
                       .filter((item) => item !== undefined);
@@ -562,20 +630,16 @@ export function App() {
                     return (
                       <button
                         key={lesson.id}
-                        className={`lesson-tile ${lesson.id === currentLesson?.id ? 'selected' : ''} ${locked ? 'locked' : ''}`}
-                        disabled={locked}
+                        className={`lesson-tile ${lesson.id === currentLesson?.id ? 'selected' : ''} ${future ? 'locked' : ''}`}
                         onClick={() => {
-                          setParentOpen(true);
-                          setLessonChoice(lesson.id);
+                          setLessonViewId(lesson.id);
                         }}
                       >
-                        <span className="tile-number">
-                          {locked ? '🔒' : String(lesson.order).padStart(2, '0')}
-                        </span>
+                        <span className="tile-number">{String(lesson.order).padStart(2, '0')}</span>
                         <strong>{lesson.title}</strong>
                         <small>
-                          {locked
-                            ? '之后解锁'
+                          {future
+                            ? '后续课程 · 可预览'
                             : `${lesson.order === currentLesson?.order ? '正在学习 · ' : ''}${progressLabel}`}
                         </small>
                         {dueCount > 0 && (
@@ -612,6 +676,99 @@ export function App() {
       )}
       <Notice error={error} />
     </main>
+  );
+}
+
+function LessonDetail({
+  lesson,
+  knowledge,
+  masteryById,
+  withinCurrentRange,
+  canPractice,
+  onBack,
+  onStart,
+}: {
+  lesson?: Lesson;
+  knowledge: Knowledge[];
+  masteryById: Map<string, Progress['mastery'][number]>;
+  withinCurrentRange: boolean;
+  canPractice: boolean;
+  onBack: () => void;
+  onStart: () => void;
+}) {
+  if (!lesson)
+    return (
+      <section className="lesson-detail" role="status">
+        <h2>请选择一课</h2>
+        <button className="quiet" onClick={onBack}>
+          返回学习路线
+        </button>
+      </section>
+    );
+  return (
+    <section className="lesson-detail">
+      <button className="quiet lesson-back" onClick={onBack}>
+        ← 返回学习路线
+      </button>
+      <p className="eyebrow">第 {lesson.order} 课 · 课程知识卡</p>
+      <h2>{lesson.title}</h2>
+      <ul className="lesson-objectives">
+        {lesson.objectives.map((objective) => (
+          <li key={objective}>{objective}</li>
+        ))}
+      </ul>
+      <p className="draft-banner">
+        课程草稿，内容待教师审校。标准示范音尚未准备，不使用系统合成音替代。
+      </p>
+      {knowledge.length > 0 ? (
+        <div className="knowledge-grid">
+          {knowledge.map((item) => {
+            const state = masteryById.get(item.id);
+            const statusLabel =
+              state?.status === 'mastered'
+                ? '已掌握'
+                : state?.status === 'practicing'
+                  ? '练习中'
+                  : '未开始';
+            return (
+              <article className="knowledge-card" key={item.id}>
+                <div className="knowledge-card-meta">
+                  <span>{categoryLabels[item.category] ?? '拼音知识'}</span>
+                  <span>{statusLabel}</span>
+                </div>
+                <h3>{item.symbol}</h3>
+                {state?.reviewDue && (
+                  <p className="review-due-badge">到期复习 · {state.reviewDueDate}</p>
+                )}
+                <button
+                  className="audio-unavailable"
+                  disabled
+                  aria-label={`${item.symbol} 标准音待准备`}
+                >
+                  ♫ 标准音待准备
+                </button>
+                <details>
+                  <summary>家长教学提示</summary>
+                  <p>{item.teachingNote}</p>
+                </details>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <p role="status">这课的知识资料还未准备好。</p>
+      )}
+      <div className="lesson-detail-actions">
+        <button className="start-button" disabled={!canPractice} onClick={onStart}>
+          {canPractice ? '开始本课视觉练习 →' : '练习资料尚未准备好'}
+        </button>
+        {!withinCurrentRange ? (
+          <small>这是一课预览。请家长先把当前学习课调整到这里，再开始练习。</small>
+        ) : (
+          !canPractice && <small>没有可用的视觉练习题，暂不生成练习会话。</small>
+        )}
+      </div>
+    </section>
   );
 }
 

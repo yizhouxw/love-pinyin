@@ -58,6 +58,43 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
               exerciseIds: [exercise.id],
               suggestedSessionMinutes: 5,
             },
+            {
+              id: 'lesson-02',
+              order: 2,
+              title: 'i u ü',
+              objectives: ['预览后续韵母'],
+              knowledgeIds: ['k-future'],
+              exerciseIds: ['future-listen-only'],
+              suggestedSessionMinutes: 5,
+            },
+          ],
+          knowledgeItems: [
+            {
+              id: 'k-e2e',
+              lessonId: 'lesson-01',
+              category: 'final',
+              symbol: 'ü',
+              teachingNote: '看清 ü 上的两点。',
+              reviewStatus: 'needs-teacher-review',
+            },
+            {
+              id: 'k-future',
+              lessonId: 'lesson-02',
+              category: 'whole-syllable',
+              symbol: 'zhi',
+              teachingNote: '该知识点来自后续课程。',
+              reviewStatus: 'needs-teacher-review',
+            },
+          ],
+          exercises: [
+            exercise,
+            {
+              id: 'future-listen-only',
+              type: 'listen-choice',
+              prompt: '待标准音准备后练习',
+              options: exercise.options,
+              answer: exercise.answer,
+            },
           ],
         },
       });
@@ -115,6 +152,19 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
   await page.getByLabel('家长配对码').fill('23456789');
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
+  const currentLessonTile = page.locator('.lesson-tile').first();
+  if (isMobile) await currentLessonTile.tap();
+  else await currentLessonTile.press('Enter');
+  await expect(page.getByText('第 1 课 · 课程知识卡')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'ü' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'ü 标准音待准备' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: '开始本课视觉练习' })).toBeEnabled();
+  await page.getByRole('button', { name: '← 返回学习路线' }).click();
+  await page.locator('.lesson-tile').nth(1).click();
+  await expect(page.getByText('第 2 课 · 课程知识卡')).toBeVisible();
+  await expect(page.getByRole('button', { name: '练习资料尚未准备好' })).toBeDisabled();
+  await expect(page.getByText(/请家长先把当前学习课调整到这里/)).toBeVisible();
+  await page.getByRole('button', { name: '← 返回学习路线' }).click();
 
   const noOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -130,7 +180,7 @@ test('配对后可用键盘或触摸跳过题目并查看练习小结', async ({
   await expect(page.getByLabel('本次练习小结')).toContainText('跳过：1 题');
   await page.getByRole('button', { name: '回到小岛' }).click();
   await expect(page.getByRole('heading', { name: '你好，小小拼音家' })).toBeVisible();
-  await expect(page.locator('.lesson-tile')).toContainText('已掌握');
+  await expect(page.locator('.lesson-tile').first()).toContainText('已掌握');
   await expect(page.getByText('到期复习 · 1 项')).toBeVisible();
   await page.getByRole('button', { name: '家长管理' }).click();
   await expect(page.getByText('已连接设备')).toBeVisible();
