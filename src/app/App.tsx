@@ -64,6 +64,14 @@ type Progress = {
     correctCount: number;
   }[];
   attempts: unknown[];
+  reviewRecommendations?: {
+    knowledgeId: string;
+    symbol: string;
+    lessonId: string;
+    lessonTitle: string;
+    dueDate: string;
+    overdueDays: number;
+  }[];
 };
 type Curriculum = {
   lessons: Lesson[];
@@ -891,6 +899,43 @@ export function App() {
                   建议陪伴练习约 {currentLesson?.suggestedSessionMinutes ?? 5} 分钟 · 可随时休息
                 </p>
               </section>
+              {(progress.reviewRecommendations ?? []).length > 0 && (
+                <section className="map-card review-recommendations" aria-label="今日推荐复习">
+                  <div className="section-heading">
+                    <div>
+                      <span className="eyebrow">逾期优先 · 每次两题</span>
+                      <h2>今日推荐复习</h2>
+                    </div>
+                    <span className="map-count">最多 3 项</span>
+                  </div>
+                  <div className="recommendation-list">
+                    {progress.reviewRecommendations!.map((recommendation) => (
+                      <article className="recommendation-item" key={recommendation.knowledgeId}>
+                        <div>
+                          <strong>{recommendation.symbol}</strong>
+                          <span>{recommendation.lessonTitle}</span>
+                          <small>
+                            {recommendation.overdueDays > 0
+                              ? `已逾期 ${recommendation.overdueDays} 天`
+                              : '今天到期'}
+                          </small>
+                        </div>
+                        <button
+                          className="review-start-button"
+                          disabled={busy}
+                          onClick={() =>
+                            void act(async () => {
+                              await beginReview(recommendation.knowledgeId);
+                            })
+                          }
+                        >
+                          开始复习 →
+                        </button>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )}
               <section className="map-card">
                 <div className="section-heading">
                   <div>

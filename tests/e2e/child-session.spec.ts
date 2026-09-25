@@ -646,11 +646,22 @@ test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) 
           ],
           attempts: [],
           completedSessions: 0,
+          reviewRecommendations: [
+            {
+              knowledgeId: 'k-review',
+              symbol: 'ā',
+              lessonId: 'lesson-01',
+              lessonTitle: '认识拼音',
+              dueDate: '2026-09-26',
+              overdueDays: 0,
+            },
+          ],
         },
       });
     } else if (path === '/sessions/current') {
       await route.fulfill({ json: active ? { ...reviewSession, results } : null });
     } else if (path === '/reviews/k-review/sessions' && route.request().method() === 'POST') {
+      for (const key of Object.keys(results)) delete results[key];
       active = reviewSession;
       await route.fulfill({ json: reviewSession });
     } else if (/^\/instances\/review-instance-[12]\/answer$/.test(path)) {
@@ -693,6 +704,9 @@ test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) 
   await expect(page.getByLabel('本次练习小结')).toContainText('独立答对：2 题');
   await page.getByRole('button', { name: '回到小岛' }).click();
   await expect(page.getByRole('heading', { name: '你好，小小拼音家' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '今日推荐复习' })).toBeVisible();
+  await page.getByRole('button', { name: '开始复习 →' }).click();
+  await expect(page.getByText('拼音小岛 · 两题复习')).toBeVisible();
   expect(answers).toEqual(['first-tone', 'first-tone']);
   expect(finished).toBe(true);
 });

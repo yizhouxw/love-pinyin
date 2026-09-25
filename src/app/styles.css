@@ -506,6 +506,46 @@ main {
   font-size: 10px;
   font-weight: 700;
 }
+.recommendation-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+.recommendation-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid #eee2c9;
+  border-radius: 16px;
+  background: #fffaf0;
+}
+.recommendation-item > div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 3px 10px;
+}
+.recommendation-item strong {
+  grid-row: span 2;
+  font-size: 22px;
+}
+.recommendation-item span,
+.recommendation-item small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.review-start-button {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: #e9ad59;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
 .lesson-detail {
   padding: clamp(18px, 4vw, 34px);
   background: var(--card);

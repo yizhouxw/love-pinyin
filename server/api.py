@@ -497,6 +497,64 @@ def _current_lesson_order(lessons: dict[str, dict], selected_lesson_id: str) -> 
     return current_lesson["order"]
 
 
+def _review_recommendations(
+    curriculum: dict,
+    selected_lesson_id: str,
+    plans: list,
+    credited_today: set[tuple[str, str]],
+    today: date,
+) -> list[dict]:
+    """Return at most three due knowledge points that can start a two-question review."""
+    lessons = {lesson["id"]: lesson for lesson in curriculum["lessons"]}
+    current = lessons.get(selected_lesson_id)
+    if current is None:
+        return []
+    knowledge = {item["id"]: item for item in curriculum["knowledgeItems"]}
+    exercises = {item["id"]: item for item in curriculum["exercises"]}
+    due_plans = {
+        row["knowledge_id"]: row
+        for row in plans
+        if row["due_date"] and date.fromisoformat(row["due_date"]) <= today
+    }
+    candidates = []
+    for knowledge_id, plan in due_plans.items():
+        item = knowledge.get(knowledge_id)
+        lesson = lessons.get(item["lessonId"]) if item else None
+        if lesson is None or lesson["order"] > current["order"]:
+            continue
+        eligible = {
+            exercise_id
+            for lesson_id, candidate_lesson in lessons.items()
+            if candidate_lesson["order"] <= current["order"]
+            for exercise_id in candidate_lesson["exerciseIds"]
+            if exercise_id in exercises
+            and exercises[exercise_id]["primaryKnowledgeId"] == knowledge_id
+            and exercises[exercise_id]["type"] in {"symbol-choice", "tone-choice", "blend-choice"}
+            and (knowledge_id, exercise_id) not in credited_today
+        }
+        if len(eligible) < 2:
+            continue
+        due_date = date.fromisoformat(plan["due_date"])
+        candidates.append(
+            {
+                "knowledgeId": knowledge_id,
+                "symbol": item["symbol"],
+                "lessonId": lesson["id"],
+                "lessonTitle": lesson["title"],
+                "dueDate": plan["due_date"],
+                "overdueDays": (today - due_date).days,
+                "lessonOrder": lesson["order"],
+            }
+        )
+    candidates.sort(
+        key=lambda item: (-item["overdueDays"], item["lessonOrder"], item["knowledgeId"])
+    )
+    return [
+        {key: value for key, value in item.items() if key != "lessonOrder"}
+        for item in candidates[:3]
+    ]
+
+
 def _unique_json_object(pairs: list[tuple[str, object]]) -> dict:
     result = {}
     for key, value in pairs:
@@ -1821,6 +1879,7 @@ def read_attempt(request_id: str, device: dict = Depends(paired)) -> dict:
 @router.get("/profiles/progress")
 def progress(device: dict = Depends(paired)) -> dict:
     _observe_clock(device)
+    today = business_date(datetime.now(UTC))
     with connect() as db:
         mastery = _mastery(db, device["household_id"])
         completed_sessions = db.execute(
@@ -1849,18 +1908,28 @@ def progress(device: dict = Depends(paired)) -> dict:
             "SELECT knowledge_id,stage,due_date FROM review_plans WHERE household_id=?",
             (device["household_id"],),
         ).fetchall()
+        credited_today = {
+            (row["knowledge_id"], row["exercise_id"])
+            for row in db.execute(
+                """SELECT DISTINCT knowledge_id,exercise_id FROM attempts
+                   WHERE household_id=? AND business_date=? AND due_credit=1""",
+                (device["household_id"], today.isoformat()),
+            ).fetchall()
+        }
         pending_clock_count = db.execute(
             "SELECT COUNT(*) FROM attempts WHERE household_id=? AND clock_pending=1",
             (device["household_id"],),
         ).fetchone()[0]
     by_knowledge = {row["knowledge_id"]: row for row in plans}
-    today = business_date(datetime.now(UTC))
     for key, value in mastery.items():
         plan = by_knowledge.get(key)
         due = plan["due_date"] if plan else None
         value["reviewDueDate"] = due
         value["reviewDue"] = bool(due and date.fromisoformat(due) <= today)
         value["reviewStage"] = plan["stage"] if plan else None
+    recommendations = _review_recommendations(
+        load_curriculum(), device["selected_lesson_id"], plans, credited_today, today
+    )
     return {
         "schemaVersion": 2,
         "contentVersion": device["content_version"],
@@ -1876,6 +1945,7 @@ def progress(device: dict = Depends(paired)) -> dict:
             "reducedMotion": bool(device["reduced_motion"]),
         },
         "mastery": list(mastery.values()),
+        "reviewRecommendations": recommendations,
         "attempts": [dict(row) for row in attempts],
     }
 
