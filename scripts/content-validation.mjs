@@ -157,7 +157,27 @@ export function validateCurriculum(data, schema, { sourceIds = [], release = fal
     if (r.targetType === 'isolated-initial')
       assert(r.phoneme?.tone === null, `${r.id}: initial has no tone`);
   }
-  for (const a of data.audioRequirements) checkRefs(a.knowledgeIds, knowledge, a.id);
+  for (const a of data.audioRequirements) {
+    checkRefs(a.knowledgeIds, knowledge, a.id);
+    if (a.file) {
+      assert(
+        /^audio\/[A-Za-z0-9._/-]+$/.test(a.file) &&
+          !a.file.split('/').includes('..') &&
+          !a.file.includes('\\'),
+        `${a.id}: audio file must be a relative public/audio path`,
+      );
+      assert(/^[a-f0-9]{64}$/i.test(a.sha256 ?? ''), `${a.id}: invalid audio SHA-256`);
+    }
+    if (a.status === 'approved' || a.reviewStatus === 'approved') {
+      assert(
+        a.status === 'approved' && a.reviewStatus === 'approved',
+        `${a.id}: audio status and review status must both be approved`,
+      );
+      assert(!!a.file, `${a.id}: approved audio file missing`);
+      assert(!!a.rightsEvidence, `${a.id}: approved audio rights evidence missing`);
+      assert(!!a.reviewEvidence, `${a.id}: approved audio review evidence missing`);
+    }
+  }
   function checkUnicode(value) {
     if (typeof value === 'string')
       assert(value === value.normalize('NFC'), `non-NFC string: ${value}`);

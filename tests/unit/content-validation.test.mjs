@@ -30,4 +30,27 @@ describe('课程内容的保护门禁', () => {
     expect(errors).toContain('unknown audio');
     expect(errors).toContain('required mode blend-choice uncovered');
   });
+  it('拒绝未齐全证据或越出 public/audio 的已批准录音', () => {
+    const bad = structuredClone(data);
+    Object.assign(bad.audioRequirements[0], {
+      status: 'approved',
+      reviewStatus: 'approved',
+      file: '../private/voice.wav',
+      sha256: 'not-a-digest',
+    });
+    const errors = validate(bad).join('\n');
+    expect(errors).toContain('relative public/audio path');
+    expect(errors).toContain('invalid audio SHA-256');
+    expect(errors).toContain('rights evidence missing');
+    expect(errors).toContain('review evidence missing');
+  });
+  it('接受路径与摘要格式正确、但仍保留权利与审音证据的录音草稿', () => {
+    const draft = structuredClone(data);
+    Object.assign(draft.audioRequirements[0], {
+      status: 'recorded',
+      file: 'audio/final-a.wav',
+      sha256: 'a'.repeat(64),
+    });
+    expect(validate(draft)).toEqual([]);
+  });
 });
