@@ -638,6 +638,23 @@ main {
   border: 1px solid var(--line);
   border-radius: 12px;
 }
+.audio-play-button {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #b8cbbd;
+  border-radius: 12px;
+  color: #315f47;
+  background: #edf5ee;
+  font-weight: 700;
+}
+.audio-play-button[aria-pressed='true'] {
+  color: #fff;
+  background: #386c52;
+}
+.audio-error {
+  color: #9a4836;
+  font-size: 13px;
+}
 .knowledge-card details {
   margin-top: 12px;
   font-size: 12px;

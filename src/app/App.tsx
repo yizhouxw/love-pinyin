@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { pinyinTone, splitPinyinCandidate } from '../domain/pinyin-presentation';
+import { audioPlayer } from '../platform/audio/browser-audio-player';
 import './styles.css';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- API JSON mirrors the versioned content schema. */
@@ -96,7 +97,18 @@ type Curriculum = {
   lessons: Lesson[];
   knowledgeItems: Knowledge[];
   exercises: Exercise[];
+  audioRequirements: AudioRequirement[];
   inventory?: { initials: string[] };
+};
+type AudioRequirement = {
+  id: string;
+  knowledgeIds: string[];
+  status: string;
+  reviewStatus: string;
+  file: string | null;
+  sha256?: string;
+  rightsEvidence?: string;
+  reviewEvidence?: string;
 };
 type Answer = {
   correct: boolean;
@@ -879,10 +891,12 @@ export function App() {
             />
           ) : lessonViewId ? (
             <LessonDetail
+              key={lessonViewId}
               lesson={lessonById.get(lessonViewId)}
               knowledge={
                 curriculum?.knowledgeItems.filter((item) => item.lessonId === lessonViewId) ?? []
               }
+              audioRequirements={curriculum?.audioRequirements ?? []}
               masteryById={masteryById}
               busy={busy}
               withinCurrentRange={Boolean(
@@ -1102,6 +1116,7 @@ export function App() {
 function LessonDetail({
   lesson,
   knowledge,
+  audioRequirements,
   masteryById,
   busy,
   withinCurrentRange,
@@ -1112,6 +1127,7 @@ function LessonDetail({
 }: {
   lesson?: Lesson;
   knowledge: Knowledge[];
+  audioRequirements: AudioRequirement[];
   masteryById: Map<string, Progress['mastery'][number]>;
   busy: boolean;
   withinCurrentRange: boolean;
@@ -1120,6 +1136,31 @@ function LessonDetail({
   onReview: (knowledgeId: string) => void;
   onStart: () => void;
 }) {
+  const [playingAudioId, setPlayingAudioId] = useState<string | null>(null);
+  const [audioFailureId, setAudioFailureId] = useState<string | null>(null);
+  const playback = useRef<{ audioId: string; controller: AbortController } | null>(null);
+  const releasePlayback = useCallback(() => {
+    const active = playback.current;
+    playback.current = null;
+    active?.controller.abort();
+    audioPlayer.stop();
+  }, []);
+  const stopPlayback = useCallback(() => {
+    releasePlayback();
+    setPlayingAudioId(null);
+  }, [releasePlayback]);
+
+  useEffect(() => {
+    const stopWhenHidden = () => {
+      if (document.hidden) stopPlayback();
+    };
+    document.addEventListener('visibilitychange', stopWhenHidden);
+    return () => {
+      document.removeEventListener('visibilitychange', stopWhenHidden);
+      releasePlayback();
+    };
+  }, [releasePlayback, stopPlayback]);
+
   if (!lesson)
     return (
       <section className="lesson-detail" role="status">
@@ -1142,12 +1183,19 @@ function LessonDetail({
         ))}
       </ul>
       <p className="draft-banner">
-        课程草稿，内容待教师审校。标准示范音尚未准备，不使用系统合成音替代。
+        课程资料草稿，教学内容待教师审校。只播放有登记且审校通过的标准音，不使用系统合成音替代。
       </p>
       {knowledge.length > 0 ? (
         <div className="knowledge-grid">
           {knowledge.map((item) => {
             const state = masteryById.get(item.id);
+            const audio = audioRequirements.find(
+              (asset) =>
+                asset.knowledgeIds.includes(item.id) &&
+                asset.status === 'approved' &&
+                asset.reviewStatus === 'approved' &&
+                Boolean(asset.file && asset.sha256 && asset.rightsEvidence && asset.reviewEvidence),
+            );
             const statusLabel =
               state?.status === 'mastered'
                 ? '已掌握'
@@ -1173,13 +1221,51 @@ function LessonDetail({
                     </button>
                   </>
                 )}
-                <button
-                  className="audio-unavailable"
-                  disabled
-                  aria-label={`${item.symbol} 标准音待准备`}
-                >
-                  ♫ 标准音待准备
-                </button>
+                {audio ? (
+                  <button
+                    className="audio-play-button"
+                    aria-label={`${item.symbol} ${playingAudioId === audio.id ? '停止播放' : '播放标准音'}`}
+                    aria-pressed={playingAudioId === audio.id}
+                    onClick={() => {
+                      if (playingAudioId === audio.id) {
+                        stopPlayback();
+                        return;
+                      }
+                      stopPlayback();
+                      setAudioFailureId(null);
+                      const controller = new AbortController();
+                      playback.current = { audioId: audio.id, controller };
+                      setPlayingAudioId(audio.id);
+                      void audioPlayer
+                        .play(audio.id, controller.signal)
+                        .catch((reason: unknown) => {
+                          if (reason instanceof Error && reason.name !== 'AbortError')
+                            setAudioFailureId(audio.id);
+                        })
+                        .finally(() => {
+                          if (playback.current?.controller === controller) {
+                            playback.current = null;
+                            setPlayingAudioId(null);
+                          }
+                        });
+                    }}
+                  >
+                    {playingAudioId === audio.id ? '■ 停止标准音' : '♫ 播放标准音'}
+                  </button>
+                ) : (
+                  <button
+                    className="audio-unavailable"
+                    disabled
+                    aria-label={`${item.symbol} 标准音待准备`}
+                  >
+                    ♫ 标准音待准备
+                  </button>
+                )}
+                {audioFailureId === audio?.id && (
+                  <p className="audio-error" role="alert">
+                    标准音暂时无法播放，请检查家庭 Mac 上的音频资源。
+                  </p>
+                )}
                 <details>
                   <summary>家长教学提示</summary>
                   <p>{item.teachingNote}</p>

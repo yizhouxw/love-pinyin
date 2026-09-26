@@ -48,6 +48,33 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
     draftContent: true,
   };
 
+  await page.addInitScript(() => {
+    const instances: { src: string; paused: boolean }[] = [];
+    Object.defineProperty(window, '__lpAudioInstances', { value: instances });
+    class MockAudio extends EventTarget {
+      src: string;
+      paused = true;
+      preload = '';
+      constructor(source: string) {
+        super();
+        this.src = source;
+        instances.push(this);
+      }
+      play() {
+        this.paused = false;
+        return Promise.resolve();
+      }
+      pause() {
+        this.paused = true;
+      }
+      removeAttribute(name: string) {
+        if (name === 'src') this.src = '';
+      }
+      load() {}
+    }
+    Object.defineProperty(window, 'Audio', { value: MockAudio });
+  });
+
   await page.context().route('**/api/v1/**', async (route) => {
     const url = new URL(route.request().url());
     const path = url.pathname.replace('/api/v1', '');
@@ -139,6 +166,18 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
               reviewStatus: 'needs-teacher-review',
             },
           ],
+          audioRequirements: [
+            {
+              id: 'audio-e2e',
+              knowledgeIds: ['k-future'],
+              status: 'approved',
+              reviewStatus: 'approved',
+              file: '/audio/e2e.wav',
+              sha256: 'a'.repeat(64),
+              rightsEvidence: 'test-rights-reference',
+              reviewEvidence: 'test-review-reference',
+            },
+          ],
           exercises: [
             exercise,
             skipExercise,
@@ -151,6 +190,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
           ],
         },
       });
+    } else if (path === '/audio/audio-e2e') {
+      await route.fulfill({ status: 200, body: 'mock-audio', contentType: 'audio/wav' });
     } else if (path === '/profiles/progress') {
       await route.fulfill({
         json: {
@@ -438,6 +479,24 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await page.getByRole('button', { name: '← 返回学习路线' }).click();
   await page.locator('.lesson-tile').nth(1).click();
   await expect(page.getByText('第 2 课 · 课程知识卡')).toBeVisible();
+  const playStandardAudio = page.getByRole('button', { name: 'zhi 播放标准音' });
+  await expect(playStandardAudio).toBeEnabled();
+  if (isMobile) await playStandardAudio.tap();
+  else await playStandardAudio.press('Enter');
+  const stopStandardAudio = page.getByRole('button', { name: 'zhi 停止播放' });
+  await expect(stopStandardAudio).toHaveAttribute('aria-pressed', 'true');
+  expect(
+    await page.evaluate(
+      () =>
+        (window as unknown as { __lpAudioInstances: { src: string }[] }).__lpAudioInstances[0]?.src,
+    ),
+  ).toBe('/api/v1/audio/audio-e2e');
+  if (isMobile) await stopStandardAudio.tap();
+  else await stopStandardAudio.press('Enter');
+  await expect(page.getByRole('button', { name: 'zhi 播放标准音' })).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  );
   await expect(page.getByRole('button', { name: '练习资料尚未准备好' })).toBeDisabled();
   await expect(page.getByText(/请家长先把当前学习课调整到这里/)).toBeVisible();
   await page.getByRole('button', { name: '← 返回学习路线' }).click();
