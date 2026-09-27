@@ -8,6 +8,8 @@
 
 2026-09-26 用户本机素材盘点：`/Users/chad/Documents/1汉语拼音音频/` 含 13 个 MP3（44.1 kHz、256 kbps、立体声，每课约 2.7–5.9 分钟），没有来源/许可说明；文件序列把 `i/u/ü/y/w` 放在同一课，与本项目 2024 版将 `y/w` 列为第 9 课不一致。未拷贝、试听、转换、提交或开放播放。需先补齐再分发与私有 LAN 托管授权、逐条教师审音及课程映射，才可进入内容包；细节见[资产调研](../research/audio-and-assets.md#2026-09-26-用户本机文件盘点)。
 
+2026-09-27 本机粗切增量：用户要求基于本地文件提取拼音候选；已用系统 `afconvert` 与 Python 标准库按静音切出 427 个 WAV，写入用户 Documents 暂存目录和带时间码/哈希的 CSV。输出不是已识别的拼音单音，未试听或做教学审音；427 项中 107 项超过 8 秒需进一步拆分。没有复制到仓库、登记课程 ID 或对客户端开放；详见[本机候选导出](../research/audio-and-assets.md#2026-09-27-本机分句候选导出)。
+
 ## 文件与接口
 
 允许 `src/features/audio/`、`src/features/assessment/`、`src/features/exercises/` 的听辨/声调部分、`src/services/` 的音频/API adapter、`server/assessment/` 与对应路由/测试。禁止把第三方云 SDK、评分密钥或未授权标准音放进浏览器包。
