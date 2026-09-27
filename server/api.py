@@ -1,4 +1,4 @@
-"""Same-origin home API. Voice assessment remains unavailable until SPEC-000 passes."""
+"""Same-origin home API. The first release does not expose voice recording or assessment."""
 
 import hashlib
 import ipaddress
@@ -300,10 +300,8 @@ def health() -> dict:
 @router.get("/capabilities")
 def capabilities() -> dict:
     return {
-        "assessment": {"available": False, "reason": "pending-local-poc"},
         "audio": {"available": False, "reason": "assets-not-recorded"},
         "contentReview": "draft",
-        "externalAudioTransfer": False,
     }
 
 
@@ -2024,27 +2022,3 @@ def knowledge_attempt_history(
         "nextCursor": visible[-1]["id"] if has_more and visible else None,
         "hasMore": has_more,
     }
-
-
-@router.post("/assessments", status_code=503)
-def assessment_unavailable(response: Response, device: dict = Depends(mutable)) -> dict:
-    response.headers["Cache-Control"] = "no-store"
-    return {
-        "error": {
-            "code": "ASSESSMENT_NOT_READY",
-            "status": "unavailable",
-            "externalAudioTransfer": False,
-        }
-    }
-
-
-@router.get("/assessments/{request_id}")
-def assessment_status(request_id: str, device: dict = Depends(paired)) -> dict:
-    with connect() as db:
-        row = db.execute(
-            "SELECT summary_json FROM assessment_summaries WHERE request_id=? AND household_id=?",
-            (request_id, device["household_id"]),
-        ).fetchone()
-    if not row:
-        raise HTTPException(404, detail={"code": "ASSESSMENT_NOT_FOUND"})
-    return json.loads(row["summary_json"])

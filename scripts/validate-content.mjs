@@ -13,15 +13,7 @@ const errors = validateCurriculum(data, schema, {
   sourceIds: sourceRows.map((s) => s.id),
   release,
 });
-const assessment = await readJson('content/assessment-manifest.json');
-if (assessment.externalAudioTransfer !== false) errors.push('external audio transfer is forbidden');
 if (release) {
-  if (
-    assessment.status !== 'validated' ||
-    !assessment.engines.length ||
-    !assessment.releaseEvidence
-  )
-    errors.push('release: assessment engine evidence missing');
   const root = resolve('public/audio') + sep;
   for (const asset of data.audioRequirements.filter((a) => a.file)) {
     const path = resolve('public', asset.file.replace(/^\//, ''));
@@ -47,5 +39,5 @@ if (errors.length) {
     `内容${release ? '发布' : '结构'}验证通过：${data.lessons.length}课 / ${data.knowledgeItems.length}知识项 / ${data.exercises.length}题 / ${data.readingTargets.length}朗读目标。`,
   );
   if (!release)
-    console.log('草稿可供开发；教师审校、音频制作、题库扩展与本地评分效果尚未通过发布门禁。');
+    console.log('草稿可供开发；教师审校、音频制作与题库扩展尚未通过发布门禁。首版不含发音评测。');
 }

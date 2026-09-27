@@ -14,6 +14,12 @@ describe('课程内容的保护门禁', () => {
     expect(validate(data)).toEqual([]);
     expect(validate(data, true)).toContain('release: teacher review incomplete');
   });
+  it('发音评测不是首版发布门禁', () => {
+    const errors = validate(data, true).join('\n');
+    expect(errors).not.toContain('assessment engine evidence');
+    expect(errors).not.toContain('pronunciation capability');
+    expect(errors).not.toContain('assessment coverage');
+  });
   it('拒绝坏答案与课程依赖环', () => {
     const bad = structuredClone(data);
     bad.exercises[0].answer.optionId = 'missing';

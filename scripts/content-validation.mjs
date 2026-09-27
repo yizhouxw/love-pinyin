@@ -191,16 +191,11 @@ export function validateCurriculum(data, schema, { sourceIds = [], release = fal
       ...data.knowledgeItems,
       ...data.lessons,
       ...data.exercises,
-      ...data.readingTargets,
       ...data.audioRequirements,
     ];
     assert(
       rows.every((r) => r.reviewStatus === 'approved'),
       'release: teacher review incomplete',
-    );
-    assert(
-      data.readingTargets.every((r) => r.assessmentCapability === 'validated'),
-      'release: local pronunciation capability unvalidated',
     );
     assert(
       data.audioRequirements.every(
@@ -221,18 +216,6 @@ export function validateCurriculum(data, schema, { sourceIds = [], release = fal
       ),
       'release: seed bank needs at least 5 distinct objective primary exercises per knowledge item',
     );
-    for (const category of ['initial', 'final', 'whole-syllable']) {
-      assert(
-        data.knowledgeItems
-          .filter((k) => k.category === category)
-          .every((k) =>
-            data.readingTargets.some(
-              (r) => r.primaryKnowledgeId === k.id && r.assessmentCapability === 'validated',
-            ),
-          ),
-        `release: assessment coverage incomplete for ${category}`,
-      );
-    }
     assert(
       [1, 2, 3, 4].every((tone) =>
         data.exercises.some(

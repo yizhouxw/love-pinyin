@@ -1,8 +1,8 @@
 # 爱拼音 · Love Pinyin
 
-面向小学一年级的汉语拼音学习应用。当前提供课程研究、产品与技术方案，以及可在本机试用的 B/S 学习流程；正式儿童产品仍需教师审校、标准音授权、离线发音评分验证和真实设备验收。
+面向小学一年级的汉语拼音学习应用。当前提供课程研究、产品与技术方案，以及可在本机试用的 B/S 学习流程；首版暂不包含发音评测，正式儿童产品仍需教师审校、标准音授权和真实设备验收。
 
-确定的产品方向：大陆统编人教版；电脑/iPad/手机浏览器；键鼠和触摸；短时游戏练习；首版包含自动发音评分。采用 **B/S + 自有 Mac Studio**：录音只经局域网发送到自己的 Mac，评分后丢弃，不调用第三方云。未来可封装 Android/iOS，本期不做原生工程。
+确定的产品方向：大陆统编人教版；电脑/iPad/手机浏览器；键鼠和触摸；短时游戏练习；首版不录音、不做发音评测。采用 **B/S + 自有 Mac Studio** 提供课程、资源与家庭进度服务。未来可封装 Android/iOS，本期不做原生工程。
 
 ## 从哪里开始
 
@@ -63,7 +63,7 @@ npm run backup:local
 npm run audio:doctor
 ```
 
-这是合成信号的运行验证，不代表拼音评分通过教学测试。自动评分功能当前明确返回未就绪，不产生伪分数。
+这是开发声学工具检查，不属于首版产品功能，也不代表拼音发音评测通过教学测试。
 
 本机素材转写研究工具（需联网时显式下载一次模型；推理过程本地运行）：
 
@@ -87,12 +87,12 @@ uv run --locked --group audio-asr python -m scripts.transcribe_audio_candidates 
 | `npm run verify:server`    | Python lint/format/API测试                     |
 | `npm run test:e2e`         | Chromium/Firefox/WebKit与移动/平板模拟         |
 | `npm run verify:all`       | 前后端+本机浏览器检查（Firefox例外见下）       |
-| `npm run validate:release` | 内容/音频/评分发布门禁；当前应失败             |
+| `npm run validate:release` | 内容/音频授权与审校发布门禁；当前应失败        |
 | `npm run licenses`         | 从npm锁文件更新依赖许可证清单                  |
 
 本机 macOS 27 的 Firefox 自动化启动存在与上游已知问题一致的限制。`test:e2e:local` / `verify:all` 会明确说明并只跑5个 Chromium/WebKit 项目；完整6项目保留在 `test:e2e` 与 Linux CI。尚无远程 CI 运行结果，见[测试说明](docs/engineering/testing.md)。
 
-本地自动评分当前明确返回不可用，界面不会采集录音，也不会产生伪分数。标准音频、评分效度和教师审校是尚未完成的真实工作，不能由低成本模型编造素材或分数绕过。应用实现范围和已知限制见[状态记录](docs/STATUS.md)。
+首版不包含麦克风录音或发音评测；练习通过标准音播放和客观选择完成。标准音授权、审音与教师内容审校仍未完成。旧评分研究资料仅作历史记录，不构成当前实现门禁。应用范围见[状态记录](docs/STATUS.md)。
 
 ## 开源
 

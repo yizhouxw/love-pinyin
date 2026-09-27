@@ -1,13 +1,13 @@
-def test_health_and_unready_assessment_are_truthful(paired_client):
+def test_health_and_deferred_assessment_are_not_exposed(paired_client):
     assert paired_client.get("/api/v1/health").json()["status"] == "ok"
     capability = paired_client.get("/api/v1/capabilities").json()
-    assert capability["assessment"]["available"] is False
-    assert capability["externalAudioTransfer"] is False
-    csrf = paired_client.cookies.get("lp_csrf")
-    response = paired_client.post("/api/v1/assessments", headers={"X-LP-CSRF": csrf})
-    assert response.status_code == 503
-    assert "score" not in response.json()
-    assert response.headers["cache-control"] == "no-store"
+    assert "assessment" not in capability
+    assert "/api/v1/assessments" not in paired_client.get("/openapi.json").json()["paths"]
+    assert (
+        paired_client.get("/api/v1/health")
+        .headers["permissions-policy"]
+        .startswith("microphone=()")
+    )
 
 
 def test_api_docs_do_not_load_external_cdn_scripts(test_client):
