@@ -286,6 +286,9 @@ assessment-poc = [
     { name = "numpy" },
     { name = "scipy" },
 ]
+audio-asr = [
+    { name = "pywhispercpp" },
+]
 dev = [
     { name = "httpx" },
     { name = "pytest" },
@@ -304,6 +307,7 @@ assessment-poc = [
     { name = "numpy", specifier = "==2.5.3" },
     { name = "scipy", specifier = "==1.18.1" },
 ]
+audio-asr = [{ name = "pywhispercpp", specifier = "==1.5.1" }]
 dev = [
     { name = "httpx", specifier = "==0.28.1" },
     { name = "pytest", specifier = "==9.1.1" },
@@ -494,6 +498,27 @@ wheels = [
 ]
 
 [[package]]
+name = "pywhispercpp"
+version = "1.5.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "platformdirs" },
+    { name = "requests" },
+    { name = "tqdm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9f/35/610787a277e177e6b7983277a35a2969c0876b46c0d889bc6a0c4b4ac4a7/pywhispercpp-1.5.1.tar.gz", hash = "sha256:5df897e5dd9d9f16804fc937bd85b9f5880a0b29a55f8843585e0e03d76195e5", size = 9756087, upload-time = "2026-08-22T01:41:54.549Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b3/c1/09d261e4c71944ee51fb6001cc1f5c5667ebf1f4a46cc79b96397bf72b3b/pywhispercpp-1.5.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:d929d69b9c9b960114eee2d7ee4a5ec4a3553bcace173c155d951f94f5c835c8", size = 4180193, upload-time = "2026-08-22T01:40:30.506Z" },
+    { url = "https://files.pythonhosted.org/packages/de/90/c3d8f6f76c9ce6b71aa4aca6d6baf063c1f75189b5788546707fa4e5dee5/pywhispercpp-1.5.1-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:2f28d7543173082c9d953314ce752588d87a1a2f59a7da440422530480cb4b6a", size = 4179842, upload-time = "2026-08-22T01:40:32.085Z" },
+    { url = "https://files.pythonhosted.org/packages/fe/e2/0509ccac8e2c89489a1b800aa0e45a79ff3a3c86cb7c0a335c81bbebc89b/pywhispercpp-1.5.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:973eafb3c27f4bc67f5e13f92491f91cee4ae0dd2d50c1b19c610f34c9ded9d8", size = 4675850, upload-time = "2026-08-22T01:40:34.063Z" },
+    { url = "https://files.pythonhosted.org/packages/e3/53/530d410708f2131bbd224033f74a3f2c28e3811c8aca30c99b052451d102/pywhispercpp-1.5.1-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:91cad302580d17e397fadcd20f93521e6ab7bb066f0317a210060303aee28154", size = 4961103, upload-time = "2026-08-22T01:40:35.907Z" },
+    { url = "https://files.pythonhosted.org/packages/ac/ec/458ac8f9dd43efdd8b16f0d58c71d13407bc0c7863dfa3382347d1b9db50/pywhispercpp-1.5.1-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:9a7a116af88bfc064e29ac74648ca1082b7fc110d97e106f429fa6976ea0cec7", size = 5454043, upload-time = "2026-08-22T01:40:37.778Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/4b/dc62c30216e9257e7ebffa8161bf026aa6705ad8388ae4fa545ac5a971f7/pywhispercpp-1.5.1-cp312-cp312-win32.whl", hash = "sha256:397dd60fd70f98bdc50c0bcd8a8d4a38d2918cad8714666f448a56a4abf03564", size = 1209356, upload-time = "2026-08-22T01:40:39.454Z" },
+    { url = "https://files.pythonhosted.org/packages/5c/cf/fd94fe40ad555906528fcc93b571674cab79a40251d20694aaa8b4a17ecb/pywhispercpp-1.5.1-cp312-cp312-win_amd64.whl", hash = "sha256:73a7233a462926ef86aa8d943e1071c2a087a21f78feff16c629385385ab475a", size = 1376077, upload-time = "2026-08-22T01:40:40.864Z" },
+]
+
+[[package]]
 name = "requests"
 version = "2.34.2"
 source = { registry = "https://pypi.org/simple" }
@@ -632,6 +657,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/00/dc/6c58154c1c65f758ea979e7139cb76993a9cfc662d14e9be3c4a667cfb77/threadpoolctl-3.7.0.tar.gz", hash = "sha256:61348cfb77d53b9242e0017029244b559b810c142ced65b4e21eeca1843959a7", size = 31961, upload-time = "2026-09-15T15:46:20.263Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/43/3f/f88a53f60a472b46f4023f56d204dd7de33d34c5d2acbfa0d70a674e639e/threadpoolctl-3.7.0-py3-none-any.whl", hash = "sha256:cd8b60b5641b45c67bbf73c64c843235fc2d8a480c87389f52f5dbee893b86be", size = 26362, upload-time = "2026-09-15T15:46:19.168Z" },
+]
+
+[[package]]
+name = "tqdm"
+version = "4.70.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0d/ea/b2a5bd54b28a324dae8211928b2d730b6547500342c7e6c6dea08bd0a485/tqdm-4.70.1.tar.gz", hash = "sha256:cefd0eca11b2a37a3aee776544d4f4ae913f02688135b5556b8788dfa474afc4", size = 171846, upload-time = "2026-09-11T07:25:16.601Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a7/03/921a3d3c75785aca9ebfbfcabfbc3a1be12e2ab5265deb026d55a5a3f83e/tqdm-4.70.1-py3-none-any.whl", hash = "sha256:c293e525e6fef9c20e8728fd4612df02a0aa31bb5fe91ecd93e123b1b7bffa73", size = 80199, upload-time = "2026-09-11T07:25:14.599Z" },
 ]
 
 [[package]]

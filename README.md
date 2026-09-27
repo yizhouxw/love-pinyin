@@ -65,6 +65,20 @@ npm run audio:doctor
 
 这是合成信号的运行验证，不代表拼音评分通过教学测试。自动评分功能当前明确返回未就绪，不产生伪分数。
 
+本机素材转写研究工具（需联网时显式下载一次模型；推理过程本地运行）：
+
+```sh
+uv sync --locked --group audio-asr
+uv run --locked --group audio-asr python -m scripts.fetch_asr_model
+uv run --locked --group audio-asr python -m scripts.transcribe_audio_candidates \
+  --index '/Users/chad/Documents/1汉语拼音音频/提取候选_20260927/candidate-index.csv' \
+  --model models/whisper-small/ggml-small.bin \
+  --output '/Users/chad/Documents/1汉语拼音音频/提取候选_20260927/asr-transcripts.csv' \
+  --limit 12
+```
+
+移除 `--limit 12` 可处理全部候选。输出只是待人工听审的 ASR 转写草稿，不能作为课程答案、标准音或儿童发音分。模型与完整离线约束见 [ADR 0003](docs/adr/0003-local-asr-transcription.md)。
+
 ## 验证命令
 
 | 命令                       | 内容                                           |

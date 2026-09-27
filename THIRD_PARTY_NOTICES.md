@@ -6,6 +6,7 @@
 
 - npm依赖声明见[自动依赖清单](docs/engineering/dependency-inventory.json)，按上游许可保留版权与notice。
 - Python依赖、各轮子来源及校验哈希见`uv.lock`；主要许可和原生依赖注意事项见[依赖记录](docs/engineering/dependencies.md)。
+- 本地转写研究额外依赖组 `audio-asr` 锁定 `pywhispercpp==1.5.1`（MIT）；Whisper multilingual small 权重为独立 MIT 资产，固定 revision/SHA 与用途限制见 [ADR 0003](docs/adr/0003-local-asr-transcription.md)。权重只在显式安装后存在于 Git 忽略目录，不随本仓库发布。
 - 系统字体由操作系统提供，未打包字体文件；教学单层a/g和声调字形需审校后选用明确许可的素材或原创SVG。
 - 167项计划音频（89项标准音、78项指令音）目前为`not-recorded`。必须取得表演者书面许可、版权与再分发权，核验后再入库；计划使用MIT不是已取得授权。
 - 本地评分引擎/模型登记在`content/assessment-manifest.json`，当前为空且未通过。后续任何模型必须记录来源commit、文件SHA256、权重许可、适用目标和验证证据。

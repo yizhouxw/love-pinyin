@@ -10,6 +10,8 @@
 
 2026-09-27 本机粗切增量：用户要求基于本地文件提取拼音候选；已用系统 `afconvert` 与 Python 标准库按静音切出 427 个 WAV，写入用户 Documents 暂存目录和带时间码/哈希的 CSV。输出不是已识别的拼音单音，未试听或做教学审音；427 项中 107 项超过 8 秒需进一步拆分。没有复制到仓库、登记课程 ID 或对客户端开放；详见[本机候选导出](../research/audio-and-assets.md#2026-09-27-本机分句候选导出)。
 
+2026-09-27 本机 ASR 研究切片：添加固定版本 `pywhispercpp==1.5.1` 和 Whisper multilingual small 本地批转写草稿工具，模型单独显式下载并校验 SHA-256，音频运行时不离开本机。结果只供人工听审和切分参考；中英/拼音逐音素识别准确度未经测量，ASR 不是发音评分器，不回填课程答案，也未接入儿童页面/API。详见 [ADR 0003](../adr/0003-local-asr-transcription.md)。
+
 ## 文件与接口
 
 允许 `src/features/audio/`、`src/features/assessment/`、`src/features/exercises/` 的听辨/声调部分、`src/services/` 的音频/API adapter、`server/assessment/` 与对应路由/测试。禁止把第三方云 SDK、评分密钥或未授权标准音放进浏览器包。
