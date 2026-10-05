@@ -120,6 +120,8 @@ type Answer = {
   selectedOptionId: string;
   mastery: { status: string };
   clockPending?: boolean;
+  explanation?: string;
+  explanationAudioId?: string;
 };
 type Hint = { explanation: string; answer: { optionId: string } };
 type Narration = {
@@ -471,7 +473,9 @@ export function App() {
         : active && !question
           ? 'ui-summary'
           : question && answer
-            ? `ui-${answer.correct || corrected ? 'correct' : 'incorrect'}`
+            ? answer.correct || corrected
+              ? 'ui-correct'
+              : (answer.explanationAudioId ?? 'ui-incorrect')
             : question && hint
               ? `hint-${question.id}`
               : question
@@ -541,7 +545,7 @@ export function App() {
     await act(async () => {
       if (answer) {
         if (optionId === answer.correctOptionId) setCorrectedInstance(task.instanceId);
-        else playVoice('ui-incorrect');
+        else playVoice(answer.explanationAudioId ?? 'ui-incorrect');
         setBlendDraft(null);
         return;
       }
@@ -891,6 +895,12 @@ export function App() {
                 voice={voice}
                 label="听结果"
               />
+              {answer.explanation && answer.explanationAudioId && (
+                <div className="answer-explanation">
+                  <p>{answer.explanation}</p>
+                  <VoiceButton id={answer.explanationAudioId} voice={voice} label="听讲解" />
+                </div>
+              )}
             </div>
           )}
           {!answer && (

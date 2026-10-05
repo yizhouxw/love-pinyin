@@ -1974,6 +1974,10 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
             "mastery": state,
             "revision": revision,
         }
+        explanation_id = f"hint-{question['id']}"
+        explanation = narration_scripts().get(explanation_id)
+        if explanation:
+            result.update(explanation=explanation, explanationAudioId=explanation_id)
         db.execute(
             """INSERT INTO request_receipts(request_id,household_id,status,result_json,created_at)
                VALUES(?,?,?,?,?)""",

@@ -172,13 +172,15 @@ test('VOICE-05: unknown resource status cannot unlock silent answers; exit stops
   expect(answerRequests).toEqual([]);
 });
 
-test('CORRECTION-01: correcting a first mistake gives feedback without another saved answer', async ({
+test('FEEDBACK-01: spoken correction retries without another answer or hint credit', async ({
   page,
   appUrl,
 }) => {
   const answerRequests: string[] = [];
+  const hintRequests: string[] = [];
   page.on('request', (request) => {
     if (request.url().includes('/answer')) answerRequests.push(request.url());
+    if (request.url().endsWith('/hint')) hintRequests.push(request.url());
   });
   await page.goto(appUrl);
   await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
@@ -190,11 +192,22 @@ test('CORRECTION-01: correcting a first mistake gives feedback without another s
   await expect(page.getByRole('heading', { name: '哪张卡片是第一声？' })).toBeVisible();
   const choices = page.locator('.game-option');
   await expect(choices.first()).toBeEnabled({ timeout: 15_000 });
+  await page.route('**/api/v1/voice/hint-*', (route) => route.abort('failed'));
   await choices.nth(1).click();
   await expect(page.locator('.feedback')).toContainText('再选一次');
+  await expect(page.locator('.answer-explanation')).toContainText('第一声的声调记号是平平的一横');
+  await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
+  await page.unroute('**/api/v1/voice/hint-*');
+  await page.getByRole('button', { name: '↻ 重试声音' }).click();
+  await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '停止听讲解', exact: true }).click();
+  await page.getByRole('button', { name: '听讲解', exact: true }).press('Enter');
+  await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
+  await expect(choices.first()).toBeEnabled();
   await choices.first().press('Enter');
   await expect(page.locator('.feedback')).toContainText('找到正确答案啦');
   expect(answerRequests).toHaveLength(1);
+  expect(hintRequests).toEqual([]);
   await page.getByRole('button', { name: '退出练习' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
@@ -210,6 +223,7 @@ test('CORRECTION-01: correcting a first mistake gives feedback without another s
   expect(JSON.parse(await backup.inputValue())).toEqual(saved);
   expect(saved.attempts).toHaveLength(1);
   expect(saved.attempts[0].first_try_correct).toBe(0);
+  expect(saved.attempts[0].hint_used).toBe(0);
 });
 
 test('BANK-01: the former two-question nasal lesson completes six spoken tasks', async ({
@@ -254,6 +268,11 @@ test('BANK-01: the former two-question nasal lesson completes six spoken tasks',
     if (question.type === 'blend-choice')
       await page.getByRole('button', { name: '确认拼读', exact: true }).click();
     await expect(page.getByText('答对啦！', { exact: true })).toBeVisible();
+    if (index === 0) {
+      await page.getByRole('button', { name: '听讲解', exact: true }).click();
+      await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
+      await page.getByRole('button', { name: '停止听讲解', exact: true }).click();
+    }
     await page.getByRole('button', { name: '继续 →', exact: true }).click();
   }
   await expect(page.getByRole('heading', { name: '今天的探索完成啦！' })).toBeVisible();
@@ -264,6 +283,8 @@ test('BANK-01: the former two-question nasal lesson completes six spoken tasks',
     if (!response.ok) throw new Error('family export unavailable');
     return response.json();
   });
+  expect(backup.attempts[0].hint_used).toBe(0);
+  expect(backup.attempts[0].first_try_correct).toBe(1);
   expect(
     backup.attempts.map((attempt: { exercise_id: string }) => attempt.exercise_id).sort(),
   ).toEqual(questions.map((q) => q.id).sort());

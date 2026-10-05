@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
+import narration from '../../content/narration.json' with { type: 'json' };
 
 test('BLEND-01: real spoken preview, undo, reload, failed confirmation and single-credit correction', async ({
   page,
@@ -66,6 +67,13 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   await page.unroute(answerPattern);
   await confirm.press('Enter');
   await expect(page.locator('.feedback')).toContainText('没关系');
+  await expect(page.locator('.answer-explanation')).toHaveText(
+    new RegExp(narration.exercises[question.id as keyof typeof narration.exercises].hint),
+  );
+  await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
+  await expect
+    .poll(() => voices.some((url) => url.endsWith(`/voice/hint-${question.id}`)))
+    .toBe(true);
   expect(submitted).toHaveLength(2);
   expect(submitted[1]).toEqual(submitted[0]);
   // Feedback can render before the progress refresh releases the busy state.
