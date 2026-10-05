@@ -7,7 +7,6 @@
     "schemaVersion",
     "id",
     "language",
-    "reviewStatus",
     "license",
     "edition",
     "sourceIds",
@@ -21,7 +20,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": "1.0.0"
+      "const": "2.0.0"
     },
     "id": {
       "type": "string",
@@ -29,9 +28,6 @@
     },
     "language": {
       "const": "zh-CN"
-    },
-    "reviewStatus": {
-      "enum": ["needs-teacher-review", "approved"]
     },
     "license": {
       "const": "MIT"
@@ -107,7 +103,6 @@
         "type": "object",
         "required": [
           "id",
-          "reviewStatus",
           "sourceIds",
           "category",
           "symbol",
@@ -120,9 +115,6 @@
           "id": {
             "type": "string",
             "minLength": 1
-          },
-          "reviewStatus": {
-            "enum": ["needs-teacher-review", "approved"]
           },
           "sourceIds": {
             "type": "array",
@@ -181,7 +173,6 @@
         "type": "object",
         "required": [
           "id",
-          "reviewStatus",
           "sourceIds",
           "order",
           "title",
@@ -199,9 +190,6 @@
           "id": {
             "type": "string",
             "minLength": 1
-          },
-          "reviewStatus": {
-            "enum": ["needs-teacher-review", "approved"]
           },
           "sourceIds": {
             "type": "array",
@@ -292,7 +280,6 @@
           "knowledgeIds",
           "options",
           "answer",
-          "reviewStatus",
           "sourceIds",
           "license",
           "promptAudioRef"
@@ -301,9 +288,6 @@
           "id": {
             "type": "string",
             "minLength": 1
-          },
-          "reviewStatus": {
-            "enum": ["needs-teacher-review", "approved"]
           },
           "sourceIds": {
             "type": "array",
@@ -417,7 +401,6 @@
           "syllables",
           "knowledgeIds",
           "assessmentCapability",
-          "reviewStatus",
           "sourceIds",
           "license",
           "primaryKnowledgeId",
@@ -428,9 +411,6 @@
           "id": {
             "type": "string",
             "minLength": 1
-          },
-          "reviewStatus": {
-            "enum": ["needs-teacher-review", "approved"]
           },
           "sourceIds": {
             "type": "array",
@@ -533,17 +513,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "id",
-          "transcript",
-          "kind",
-          "knowledgeIds",
-          "status",
-          "reviewStatus",
-          "source",
-          "license",
-          "file"
-        ],
+        "required": ["id", "transcript", "kind", "knowledgeIds"],
         "properties": {
           "id": {
             "type": "string",
@@ -564,35 +534,6 @@
               "minLength": 1
             },
             "uniqueItems": true
-          },
-          "status": {
-            "enum": ["not-recorded", "recorded", "approved"]
-          },
-          "reviewStatus": {
-            "enum": ["needs-teacher-review", "approved"]
-          },
-          "source": {
-            "type": "string",
-            "minLength": 1
-          },
-          "license": {
-            "type": "string",
-            "minLength": 1
-          },
-          "file": {
-            "type": ["string", "null"]
-          },
-          "sha256": {
-            "type": "string",
-            "minLength": 1
-          },
-          "rightsEvidence": {
-            "type": "string",
-            "minLength": 1
-          },
-          "reviewEvidence": {
-            "type": "string",
-            "minLength": 1
           }
         },
         "additionalProperties": false

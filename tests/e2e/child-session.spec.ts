@@ -176,7 +176,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
               category: 'final',
               symbol: 'ü',
               teachingNote: '看清 ü 上的两点。',
-              reviewStatus: 'needs-teacher-review',
+              available: false,
             },
             {
               id: 'k-future',
@@ -184,7 +184,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
               category: 'whole-syllable',
               symbol: 'zhi',
               teachingNote: '该知识点来自后续课程。',
-              reviewStatus: 'needs-teacher-review',
+              available: false,
             },
           ],
           audioRequirements: [
@@ -192,7 +192,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
               id: 'audio-e2e',
               knowledgeIds: ['k-future'],
               status: 'approved',
-              reviewStatus: 'approved',
+              available: true,
               file: '/audio/e2e.wav',
               sha256: 'a'.repeat(64),
               rightsEvidence: 'test-rights-reference',
@@ -500,12 +500,12 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   else await currentLessonTile.press('Enter');
   await expect(page.getByText('第 1 课 · 课程知识卡')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'ü' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'ü 播放示范音' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'ü 播放标准音' })).toHaveCount(0);
   await expect(page.getByRole('button', { name: '开始本课练习' })).toBeEnabled();
   await page.getByRole('button', { name: '← 返回学习路线' }).click();
   await page.locator('.lesson-tile').nth(1).click();
   await expect(page.getByText('第 2 课 · 课程知识卡')).toBeVisible();
-  const playStandardAudio = page.getByRole('button', { name: 'zhi 播放示范音' });
+  const playStandardAudio = page.getByRole('button', { name: 'zhi 播放标准音' });
   await expect(playStandardAudio).toBeEnabled();
   if (isMobile) await playStandardAudio.tap();
   else await playStandardAudio.press('Enter');
@@ -519,7 +519,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   ).toBe('/api/v1/audio/audio-e2e');
   if (isMobile) await stopStandardAudio.tap();
   else await stopStandardAudio.press('Enter');
-  await expect(page.getByRole('button', { name: 'zhi 播放示范音' })).toHaveAttribute(
+  await expect(page.getByRole('button', { name: 'zhi 播放标准音' })).toHaveAttribute(
     'aria-pressed',
     'false',
   );
@@ -906,7 +906,7 @@ test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) 
               category: 'tone',
               symbol: 'ā',
               teachingNote: '观察声调符号。',
-              reviewStatus: 'needs-teacher-review',
+              available: false,
             },
           ],
           exercises: [first, second],

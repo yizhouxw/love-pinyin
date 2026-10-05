@@ -6,9 +6,9 @@ from copy import deepcopy
 import pytest
 
 from scripts import prepare_pinyin_source
-from server import api, audio_assets, source_audio
+from server import api, source_audio
 from server.content import load_curriculum
-from server.private_standard_audio import target_signature
+from server.source_audio import target_signature
 
 
 def test_pinned_mapping_covers_existing_targets_and_preserves_teaching_boundaries():
@@ -19,7 +19,7 @@ def test_pinned_mapping_covers_existing_targets_and_preserves_teaching_boundarie
     rows = {a["id"]: a for a in source["assets"]}
     assert rows.keys() == targets.keys()
     assert len(rows) == 89
-    assert source["teachingReview"] == "pending"
+    assert "teachingReview" not in source
     assert source["licenseStatus"] == "unknown"
     for key, target in targets.items():
         assert rows[key]["targetSignature"] == target_signature(target)
@@ -65,13 +65,14 @@ def test_selected_source_requires_pairing_then_allows_range_and_real_question(
     data = test_client.get("/api/v1/curriculum").json()
     asset = next(a for a in data["audioRequirements"] if a["id"] == target["id"])
     assert asset["available"] is True
-    assert asset["reviewStatus"] == target["reviewStatus"] != "approved"
-    assert asset["householdSource"]["teachingReview"] == "pending"
+    assert "reviewStatus" not in asset
+    assert asset["standardSource"]["title"] == "cmguo/PinYinSound"
+    assert "teachingReview" not in asset["standardSource"]
     session = test_client.post(
         "/api/v1/sessions", json={}, headers={"X-LP-CSRF": test_client.cookies.get("lp_csrf")}
     ).json()
     assert any(task["exercise"].get("audioRef") == row["id"] for task in session["tasks"])
-    assert session["draftContent"] is True
+    assert "draftContent" not in session
     assert source["repository"] not in response.headers
 
 
@@ -122,25 +123,18 @@ def test_failed_preparation_preserves_previous_installation(selected_source, mon
     assert state_path.read_bytes() == previous
 
 
-def test_public_approved_audio_has_priority_over_selected_source(
-    selected_source, paired_client, monkeypatch, tmp_path
+def test_legacy_approval_cannot_enable_uninstalled_source(
+    selected_source, paired_client, monkeypatch
 ):
     _, _, target, _, _ = selected_source
-    root = tmp_path / "public"
-    root.mkdir()
-    payload = b"synthetic-public-asset"
-    (root / "sample.wav").write_bytes(payload)
-    approved = {
+    legacy = {
         **target,
         "file": "/audio/sample.wav",
         "status": "approved",
         "reviewStatus": "approved",
-        "rightsEvidence": "test",
-        "reviewEvidence": "test",
-        "sha256": hashlib.sha256(payload).hexdigest(),
+        "rightsEvidence": "old",
+        "reviewEvidence": "old",
     }
-    monkeypatch.setattr(audio_assets, "PUBLIC_AUDIO_DIR", root)
-    monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [approved]})
-    response = paired_client.get(f"/api/v1/audio/{target['id']}")
-    assert response.content == payload
-    assert api._household_audio_source(approved) is None
+    monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [legacy]})
+    (source_audio.SOURCE_DIR / "installation.json").write_text('{"enabled":false}')
+    assert paired_client.get(f"/api/v1/audio/{target['id']}").status_code == 404

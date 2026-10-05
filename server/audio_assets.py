@@ -1,4 +1,4 @@
-"""Serve only approved, integrity-checked audio assets from the content package."""
+"""Integrity-checked local audio streaming and byte ranges."""
 
 import hashlib
 import hmac
@@ -10,55 +10,11 @@ from typing import BinaryIO
 from fastapi import HTTPException
 from fastapi.responses import Response, StreamingResponse
 
-PUBLIC_AUDIO_DIR = Path(__file__).resolve().parents[1] / "public" / "audio"
 _RANGE = re.compile(r"^bytes=(\d*)-(\d*)$")
-_MIME_TYPES = {
-    ".m4a": "audio/mp4",
-    ".mp3": "audio/mpeg",
-    ".mp4": "audio/mp4",
-    ".ogg": "audio/ogg",
-    ".opus": "audio/ogg",
-    ".wav": "audio/wav",
-}
 
 
 def _not_found() -> HTTPException:
     return HTTPException(404, detail={"code": "AUDIO_NOT_FOUND"})
-
-
-def _registered_path(asset: dict) -> tuple[Path, str, str]:
-    if (
-        asset.get("status") != "approved"
-        or asset.get("reviewStatus") != "approved"
-        or not asset.get("rightsEvidence")
-        or not asset.get("reviewEvidence")
-    ):
-        raise _not_found()
-
-    relative = asset.get("file")
-    if not isinstance(relative, str) or "\\" in relative:
-        raise _not_found()
-    normalized = relative.lstrip("/")
-    components = Path(normalized).parts
-    if (
-        not components
-        or components[0] != "audio"
-        or any(part in {"", ".", ".."} for part in components)
-    ):
-        raise _not_found()
-    mime_type = _MIME_TYPES.get(Path(normalized).suffix.lower())
-    digest = asset.get("sha256")
-    if not mime_type or not isinstance(digest, str) or not re.fullmatch(r"[a-f0-9]{64}", digest):
-        raise _not_found()
-
-    root = PUBLIC_AUDIO_DIR.resolve()
-    try:
-        path = (root / Path(*components[1:])).resolve(strict=True)
-        if root not in path.parents or not path.is_file():
-            raise _not_found()
-    except (OSError, RuntimeError):
-        raise _not_found() from None
-    return path, mime_type, digest
 
 
 def _verified_file(path: Path, expected_digest: str) -> tuple[BinaryIO, int]:
@@ -119,14 +75,6 @@ def _chunks(audio: BinaryIO, length: int) -> Iterator[bytes]:
             yield chunk
     finally:
         audio.close()
-
-
-def audio_response(asset_id: str, requirements: list[dict], range_header: str | None) -> Response:
-    matches = [asset for asset in requirements if asset.get("id") == asset_id]
-    if len(matches) != 1:
-        raise _not_found()
-    path, mime_type, digest = _registered_path(matches[0])
-    return file_audio_response(path, mime_type, digest, range_header)
 
 
 def file_audio_response(

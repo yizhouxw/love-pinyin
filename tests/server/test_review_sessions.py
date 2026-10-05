@@ -40,7 +40,7 @@ def test_review_session_has_two_distinct_questions_and_skip_keeps_plan_due(paire
     session = response.json()
     assert session["reviewKnowledgeId"] == "k-tone-4"
     resumed = paired_client.get("/api/v1/sessions/current").json()
-    for key in ("id", "contentVersion", "startedAt", "reviewKnowledgeId", "draftContent", "tasks"):
+    for key in ("id", "contentVersion", "startedAt", "reviewKnowledgeId", "tasks"):
         assert resumed[key] == session[key]
     assert resumed["lessonId"] is None
     assert not {"tasks_json", "household_id", "device_id", "review_knowledge_id"} & resumed.keys()

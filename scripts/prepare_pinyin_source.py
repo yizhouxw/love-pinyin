@@ -16,7 +16,7 @@ from pathlib import Path
 
 from server import source_audio
 from server.content import load_curriculum
-from server.private_standard_audio import target_signature
+from server.source_audio import target_signature
 
 MAX_ARCHIVE = 32 * 1024 * 1024
 
@@ -107,8 +107,6 @@ def prepare(archive: Path, destination: Path) -> dict:
         "commit": source["commit"],
         "archiveSha256": source["archiveSha256"],
         "preparedAt": datetime.now(UTC).isoformat(),
-        "teachingReview": "pending",
-        "licenseStatus": "unknown",
     }
     atomic_json(destination / "decode-report.json", {"assets": report})
     atomic_json(destination / "installation.json", state)

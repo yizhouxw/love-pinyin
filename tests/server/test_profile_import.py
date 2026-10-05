@@ -324,3 +324,40 @@ def test_import_restores_motion_preference_and_rest_round_count(paired_client):
     assert confirm(client, preview_result).status_code == 200
     assert client.get("/api/v1/bootstrap").json()["profile"]["roundsSinceBreak"] == 1
     assert client.get("/api/v1/profiles/progress").json()["settings"]["reducedMotion"] is True
+
+
+def test_legacy_review_fields_do_not_block_restore_or_change_frozen_session(paired_client):
+    from server.storage import transaction
+
+    client = paired_client
+    headers = {"X-LP-CSRF": client.cookies.get("lp_csrf")}
+    created = client.post("/api/v1/sessions", json={}, headers=headers).json()
+    with transaction() as db:
+        row = db.execute("SELECT tasks_json FROM sessions WHERE id=?", (created["id"],)).fetchone()
+        tasks = json.loads(row["tasks_json"])
+        for task in tasks:
+            task["exercise"]["reviewStatus"] = "needs-teacher-review"
+        db.execute(
+            "UPDATE sessions SET tasks_json=? WHERE id=?", (json.dumps(tasks), created["id"])
+        )
+    before = client.get("/api/v1/sessions/current").json()
+    assert before["tasks"] == created["tasks"]
+    assert "draftContent" not in before
+    backup = client.get("/api/v1/profiles/export").json()
+    result = preview(client, backup)
+    assert result.status_code == 200
+    assert confirm(client, result.json()).status_code == 200
+    resumed = client.get("/api/v1/sessions/current").json()
+    assert resumed["contentVersion"] == created["contentVersion"]
+    assert resumed["tasks"] == created["tasks"]
+    task = resumed["tasks"][0]
+    question = map_by_id("exercises")[task["exercise"]["id"]]
+    answered = client.post(
+        f"/api/v1/instances/{task['instanceId']}/answer",
+        json={
+            "requestId": "restored-without-review-gate",
+            "answerOptionId": question["answer"]["optionId"],
+        },
+        headers=headers,
+    )
+    assert answered.status_code == 200 and answered.json()["correct"] is True

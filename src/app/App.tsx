@@ -40,7 +40,6 @@ type Knowledge = {
   category: string;
   symbol: string;
   teachingNote: string;
-  reviewStatus: string;
 };
 type Task = { instanceId: string; exercise: Exercise };
 type PendingAnswer = { requestId: string; answerOptionId: string };
@@ -50,7 +49,6 @@ type Session = {
   reviewKnowledgeId?: string | null;
   tasks: Task[];
   results: Record<string, unknown>;
-  draftContent: boolean;
 };
 type Progress = {
   revision: number;
@@ -107,13 +105,7 @@ type AudioRequirement = {
   id: string;
   available?: boolean;
   knowledgeIds: string[];
-  status: string;
-  reviewStatus: string;
-  file: string | null;
-  sha256?: string;
-  rightsEvidence?: string;
-  reviewEvidence?: string;
-  householdSource?: { title: string; teachingReview: string; exampleTone: number | null } | null;
+  standardSource?: { title: string; exampleTone: number | null } | null;
 };
 type Answer = {
   correct: boolean;
@@ -738,9 +730,6 @@ export function App() {
             ))}
           </span>
         </nav>
-        {active.draftContent && (
-          <div className="draft-banner">试用课程草稿：题目尚待教师审校，请家长陪伴使用。</div>
-        )}
         {!active.reviewKnowledgeId && active.tasks.length < 6 && (
           <p className="session-size-note" role="status">
             本课目前准备了 {active.tasks.length} 道可用练习，本轮先完成这些。
@@ -1333,9 +1322,7 @@ export function App() {
               </section>
             </>
           )}
-          <footer>
-            课程次序按统编人教版一年级上册草案整理，正式学习请以学校教学进度为准。内容仍待教师审校。
-          </footer>
+          <footer>课程次序按统编人教版一年级上册整理，家长可根据学校教学进度选课。</footer>
         </>
       )}
       <Notice error={error} onReconnect={() => void act(refresh)} />
@@ -1478,14 +1465,7 @@ function LessonDetail({
           {knowledge.map((item) => {
             const state = masteryById.get(item.id);
             const audio = audioRequirements.find(
-              (asset) =>
-                asset.knowledgeIds.includes(item.id) &&
-                (asset.available ??
-                  (asset.status === 'approved' &&
-                    asset.reviewStatus === 'approved' &&
-                    Boolean(
-                      asset.file && asset.sha256 && asset.rightsEvidence && asset.reviewEvidence,
-                    ))),
+              (asset) => asset.knowledgeIds.includes(item.id) && asset.available === true,
             );
             const statusLabel =
               state?.status === 'mastered'
@@ -1515,7 +1495,7 @@ function LessonDetail({
                 {audio ? (
                   <button
                     className="audio-play-button"
-                    aria-label={`${item.symbol} ${playingAudioId === audio.id ? '停止播放' : '播放示范音'}`}
+                    aria-label={`${item.symbol} ${playingAudioId === audio.id ? '停止播放' : '播放标准音'}`}
                     aria-pressed={playingAudioId === audio.id}
                     onClick={() => {
                       if (playingAudioId === audio.id) {
@@ -1541,22 +1521,22 @@ function LessonDetail({
                         });
                     }}
                   >
-                    {playingAudioId === audio.id ? '■ 停止示范音' : '♫ 播放示范音'}
+                    {playingAudioId === audio.id ? '■ 停止标准音' : '♫ 播放标准音'}
                   </button>
                 ) : null}
                 {audioFailureId === audio?.id && (
                   <p className="audio-error" role="alert">
-                    示范音暂时无法播放，请检查家庭 Mac 上的音频资源。
+                    标准音暂时无法播放，请检查家庭 Mac 上的音频资源。
                   </p>
                 )}
                 <details>
                   <summary>家长教学提示</summary>
                   <p>{item.teachingNote}</p>
-                  {audio?.householdSource && (
+                  {audio?.standardSource && (
                     <p>
-                      家庭选用 {audio.householdSource.title}，教学审音待完成。
-                      {audio.householdSource.exampleTone &&
-                        `这段示范带第${audio.householdSource.exampleTone}声。`}
+                      标准音来源：{audio.standardSource.title}。
+                      {audio.standardSource.exampleTone &&
+                        `这段标准音带第${audio.standardSource.exampleTone}声。`}
                     </p>
                   )}
                 </details>
@@ -1729,10 +1709,10 @@ function ParentPanel({
           Mac，不随开源代码发布。
         </p>
         <p>
-          拼音示范：
+          拼音标准音：
           {audioRequirements.filter((asset) => asset.available).length} 项可播放。
-          {audioRequirements.some((asset) => asset.householdSource) &&
-            '家庭选用 cmguo/PinYinSound，已导入本机；教学审音待完成，公开分发授权未确认。'}
+          {audioRequirements.some((asset) => asset.standardSource) &&
+            '标准音来源：cmguo/PinYinSound，已安装到家庭 Mac。'}
         </p>
         {(!learningAudio ||
           Object.values(learningAudio.narration ?? {}).some((ready) => !ready)) && (
@@ -1741,12 +1721,6 @@ function ParentPanel({
             再点重新检查；音频未就绪时不适合孩子独立使用。
           </p>
         )}
-        <details>
-          <summary>标准音与内容审校</summary>
-          <p>
-            逐目标标准音仍需逐条教学与授权审校。家庭整课录音和中文指令不是已审核的孤立拼音标准音，内容仍需家长陪伴核对。
-          </p>
-        </details>
         <button className="quiet" disabled={busy} onClick={() => void act(refresh)}>
           重新检查音频
         </button>

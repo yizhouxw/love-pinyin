@@ -6,7 +6,7 @@ from copy import deepcopy
 import pytest
 
 from scripts import prepare_learning_audio
-from server import api, audio_assets, learning_audio
+from server import api, learning_audio
 
 
 def write_json(path, value):
@@ -184,28 +184,16 @@ def test_preparer_refuses_latin_or_pinyin_before_synthesizing(private_audio, mon
         prepare_learning_audio.prepare()
 
 
-def test_real_approved_standard_asset_enables_listening_session_without_private_substitution(
-    paired_client, monkeypatch, tmp_path
+def test_trusted_source_enables_listening_without_review(
+    paired_client, monkeypatch, install_standard
 ):
     content = deepcopy(api.load_curriculum())
     first_question = next(item for item in content["exercises"] if item["id"] == "q-01-01")
-    standard_root = tmp_path / "standard-audio"
-    standard_root.mkdir()
-    standard_file = standard_root / "tone.wav"
-    standard_file.write_bytes(b"RIFF-test-standard-audio")
     asset = next(
         item for item in content["audioRequirements"] if item["id"] == first_question["audioRef"]
     )
-    asset.update(
-        file="/audio/tone.wav",
-        status="approved",
-        reviewStatus="approved",
-        rightsEvidence="synthetic-test-only",
-        reviewEvidence="adapter-test-not-a-pronunciation-validation",
-        sha256=hashlib.sha256(standard_file.read_bytes()).hexdigest(),
-    )
+    standard_file = install_standard(asset)
     monkeypatch.setattr(api, "load_curriculum", lambda: content)
-    monkeypatch.setattr(audio_assets, "PUBLIC_AUDIO_DIR", standard_root)
     response = paired_client.post(
         "/api/v1/sessions", json={}, headers={"X-LP-CSRF": paired_client.cookies.get("lp_csrf")}
     )

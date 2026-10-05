@@ -29,3 +29,43 @@ def paired_client(test_client):
     assert response.status_code == 200
     assert response.json()["isParent"] is True
     return test_client
+
+
+@pytest.fixture
+def install_standard(monkeypatch):
+    """Synthetic registration fixture, never pronunciation-quality evidence."""
+    import hashlib
+    import json
+    from copy import deepcopy
+
+    def install(target, payload=b"synthetic-standard-audio-for-integrity-tests"):
+        source = deepcopy(source_audio.catalog())
+        digest = hashlib.sha256(payload).hexdigest()
+        source["assets"] = [
+            {
+                "id": target["id"],
+                "targetSignature": source_audio.target_signature(target),
+                "filename": "sample.mp3",
+                "sha256": digest,
+                "bytes": len(payload),
+                "exampleTone": None,
+            }
+        ]
+        root = source_audio.SOURCE_DIR
+        (root / "clips").mkdir(parents=True, exist_ok=True)
+        path = root / "clips" / f"{digest}.mp3"
+        path.write_bytes(payload)
+        (root / "installation.json").write_text(
+            json.dumps(
+                {
+                    "version": 1,
+                    "enabled": True,
+                    "commit": source["commit"],
+                    "archiveSha256": source["archiveSha256"],
+                }
+            )
+        )
+        monkeypatch.setattr(source_audio, "catalog", lambda: source)
+        return path
+
+    return install

@@ -1,6 +1,6 @@
 # 技术架构：自有 Mac Studio 上的 B/S
 
-状态：开发基线已搭建；业务实现待 SPEC。最终约束确认于 2026-09-25。
+状态：家庭B/S服务、语音学习及进度已实现；当前标准音机制见ADR-0008。
 
 ## 选型与边界
 
@@ -13,7 +13,7 @@ flowchart LR
   Browser[电脑 / iPad / 手机浏览器] -->|局域网 HTTPS 同源 API| API[Mac Studio FastAPI]
   API --> Web[React 静态资源 / 课程 / 标准音频]
   API --> DB[(本地 SQLite 学习记录)]
-  API --> Assets[已审核课程音频资源]
+  API --> Assets[PinYinSound标准音与中文指令]
 ```
 
 首版不请求麦克风，不处理儿童录音。数据库保存必要的客观练习事件，不生成发音评测摘要。ASR 仅是维护者本机素材整理工具，不在应用运行时加载。
@@ -27,7 +27,7 @@ flowchart LR
 | `src/features/`（待建） | 课程、游戏、家长功能       | 每个 SPEC 独立边界                      |
 | `src/platform/`（待建） | 音频播放、API client       | 后续可替换为原生适配                    |
 | `server/`               | API、配对、存储            | 默认只监听 loopback；显式配置 HTTPS LAN |
-| `content/` + `schemas/` | 结构化课程/原创题/资产状态 | CI 验证引用、依赖图、审校与授权         |
+| `content/` + `schemas/` | 结构化课程/原创题/资产状态 | CI 验证引用、依赖图、目标映射和完整性   |
 | `private/`（不入 Git）  | SQLite、备份、授权文件     | 不由静态服务器挂载                      |
 | `models/`（不入 Git）   | 本机维护工具使用的研究模型 | 固定哈希、来源、许可；不由应用启动加载  |
 
@@ -55,5 +55,5 @@ SQLite 保存 profiles / settings / attempts / schema_migrations。开启 foreig
 
 ## 未关闭的技术门禁
 
-1. 标准示范录音尚待制作和授权；MIT 代码不等于教材音频可自由使用。
-2. 2025 日常修订课标的拼音具体条款原文核验、教师审校与真机 HTTPS 播放均属正式发布前证据，见交付状态表。
+1. 标准音固定采用cmguo/PinYinSound，软件不设置审音或审批；外部文件不随MIT源码分发。
+2. 2025 日常修订课标的拼音具体条款原文核验与真机 HTTPS 播放均属正式发布前证据，见交付状态表。

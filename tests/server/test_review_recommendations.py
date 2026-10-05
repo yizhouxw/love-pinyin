@@ -1,7 +1,6 @@
-import hashlib
 from datetime import UTC, date, datetime, timedelta
 
-from server import api, audio_assets, storage
+from server import api, storage
 from server.api import _review_recommendations
 from server.domain import business_date
 
@@ -110,7 +109,7 @@ def test_progress_api_returns_server_prioritized_recommendations(paired_client):
 
 
 def test_listening_review_recommendation_tracks_actual_standard_audio_once_per_request(
-    monkeypatch, tmp_path
+    monkeypatch, install_standard
 ):
     curriculum = _curriculum()
     for question in curriculum["exercises"]:
@@ -118,22 +117,9 @@ def test_listening_review_recommendation_tracks_actual_standard_audio_once_per_r
             question.update(type="listen-choice", audioRef="audio-reviewed")
         elif question["id"] == "c2":
             question["type"] = "read-aloud"
-    standard_root = tmp_path / "audio"
-    standard_root.mkdir()
-    standard_file = standard_root / "sample.wav"
-    standard_file.write_bytes(b"RIFF-synthetic-adapter-test")
-    curriculum["audioRequirements"] = [
-        {
-            "id": "audio-reviewed",
-            "file": "/audio/sample.wav",
-            "sha256": hashlib.sha256(standard_file.read_bytes()).hexdigest(),
-            "status": "approved",
-            "reviewStatus": "approved",
-            "rightsEvidence": "synthetic-test-only",
-            "reviewEvidence": "adapter-test-not-pronunciation-validation",
-        }
-    ]
-    monkeypatch.setattr(audio_assets, "PUBLIC_AUDIO_DIR", standard_root)
+    target = {"id": "audio-reviewed", "kind": "final", "transcript": "a", "knowledgeIds": []}
+    curriculum["audioRequirements"] = [target]
+    standard_file = install_standard(target)
     checks = []
     original = api._available_standard_audio
 

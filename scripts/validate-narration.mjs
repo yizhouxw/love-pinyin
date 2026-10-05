@@ -123,7 +123,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     process.exitCode = 1;
   } else {
     console.log(
-      `朗读脚本结构通过：${Object.keys(narration.exercises).length}道客观题 / ${Object.keys(narration.ui).length}条界面引导。此检查不等同语音试听或教师审校。`,
+      `朗读脚本结构通过：${Object.keys(narration.exercises).length}道客观题 / ${Object.keys(narration.ui).length}条界面引导。实际声音另由音频检查与浏览器测试验证。`,
     );
   }
 }

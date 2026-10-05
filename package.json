@@ -43,7 +43,6 @@
     "prepare:voice": "uv run --locked python -m scripts.prepare_learning_audio",
     "start": "npm run build && npm run prepare:voice && npm run serve:local",
     "test:e2e:product": "npm run build && playwright test --config playwright.product.config.ts",
-    "audio:review": "uv run --locked python -m scripts.audio_review",
     "prepare:pinyin": "uv run --locked python -m scripts.prepare_pinyin_source"
   },
   "dependencies": {

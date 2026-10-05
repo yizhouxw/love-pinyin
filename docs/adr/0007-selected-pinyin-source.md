@@ -1,3 +1,5 @@
+> 已由[ADR-0008](0008-trusted-standard-audio.md)替代。本文仅为历史决策，不再用于当前产品。
+
 # ADR 0007：选定的家庭拼音示范音源
 
 日期：2026-10-05；状态：采纳。用户在侧边会话明确指定使用[cmguo/PinYinSound](https://github.com/cmguo/PinYinSound)，由该会话转告当前实现。

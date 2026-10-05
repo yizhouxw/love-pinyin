@@ -13,8 +13,7 @@ from urllib.parse import urlparse
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
-from server import private_standard_audio, source_audio
-from server.audio_assets import _registered_path, _verified_file, audio_response
+from server import source_audio
 from server.content import load_curriculum, map_by_id
 from server.domain import (
     Event,
@@ -150,26 +149,21 @@ def _require_parent(device: dict) -> dict:
 
 
 def _public_exercise(question: dict) -> dict:
-    return {key: value for key, value in question.items() if key not in {"answer", "hint"}}
+    return {
+        key: value
+        for key, value in question.items()
+        if key not in {"answer", "hint", "reviewStatus"}
+    }
 
 
 def _available_standard_audio(content: dict) -> set[str]:
-    available = set()
     assets = content.get("audioRequirements", [])
-    for asset in assets:
-        # Duplicate IDs are also rejected by the serving endpoint.
-        if sum(item.get("id") == asset.get("id") for item in assets) != 1:
-            continue
-        try:
-            path, _, digest = _registered_path(asset)
-            handle, size = _verified_file(path, digest)
-            handle.close()
-            if size:
-                available.add(asset["id"])
-        except HTTPException:
-            if private_standard_audio.available(asset) or source_audio.available(asset):
-                available.add(asset["id"])
-    return available
+    return {
+        asset["id"]
+        for asset in assets
+        if sum(item.get("id") == asset.get("id") for item in assets) == 1
+        and source_audio.available(asset)
+    }
 
 
 def _objective_available(question: dict, audio_ids: set[str]) -> bool:
@@ -179,20 +173,6 @@ def _objective_available(question: dict, audio_ids: set[str]) -> bool:
     if audio_id or question["type"] == "listen-choice":
         return audio_id in audio_ids
     return True
-
-
-def _household_audio_source(asset: dict) -> dict | None:
-    try:
-        path, _, digest = _registered_path(asset)
-        handle, size = _verified_file(path, digest)
-        handle.close()
-        if size:
-            return None
-    except HTTPException:
-        pass
-    if private_standard_audio.available(asset) or not source_audio.available(asset):
-        return None
-    return source_audio.metadata(asset)
 
 
 def _create_pairing_code() -> dict:
@@ -366,7 +346,6 @@ def capabilities() -> dict:
                 item["available"] for item in learning["lessons"].values()
             ),
         },
-        "contentReview": "approved" if content.get("reviewStatus") == "approved" else "draft",
     }
 
 
@@ -410,7 +389,6 @@ def curriculum(device: dict = Depends(paired)) -> dict:
             "exercises",
             "readingTargets",
             "audioRequirements",
-            "reviewStatus",
         )
     }
     result["exercises"] = [_public_exercise(item) for item in data["exercises"]]
@@ -419,7 +397,7 @@ def curriculum(device: dict = Depends(paired)) -> dict:
         {
             **asset,
             "available": asset["id"] in audio_ids,
-            "householdSource": _household_audio_source(asset),
+            "standardSource": source_audio.metadata(asset) if asset["id"] in audio_ids else None,
         }
         for asset in data["audioRequirements"]
     ]
@@ -432,19 +410,10 @@ def get_audio_asset(
     range_header: str | None = Header(default=None, alias="Range"),
     device: dict = Depends(paired),
 ) -> Response:
-    requirements = load_curriculum()["audioRequirements"]
-    try:
-        return audio_response(asset_id, requirements, range_header)
-    except HTTPException as error:
-        matches = [asset for asset in requirements if asset["id"] == asset_id]
-        if error.status_code != 404 or len(matches) != 1:
-            raise
-        try:
-            return private_standard_audio.audio_response(matches[0], range_header)
-        except HTTPException as private_error:
-            if private_error.status_code != 404:
-                raise
-            return source_audio.audio_response(matches[0], range_header)
+    matches = [a for a in load_curriculum()["audioRequirements"] if a["id"] == asset_id]
+    if len(matches) != 1:
+        raise HTTPException(404, detail={"code": "AUDIO_NOT_FOUND"})
+    return source_audio.audio_response(matches[0], range_header)
 
 
 @router.get("/learning-audio")
@@ -1501,7 +1470,6 @@ def start_review_session(knowledge_id: str, device: dict = Depends(mutable)) -> 
         "contentVersion": content["contentVersion"],
         "startedAt": now,
         "tasks": tasks,
-        "draftContent": content["reviewStatus"] != "approved",
         "audioAvailable": any(task["exercise"].get("audioRef") in audio_ids for task in tasks),
         "revision": revision,
     }
@@ -1598,7 +1566,6 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         "contentVersion": content["contentVersion"],
         "startedAt": now,
         "tasks": tasks,
-        "draftContent": content["reviewStatus"] != "approved",
         "audioAvailable": any(task["exercise"].get("audioRef") in audio_ids for task in tasks),
         "revision": revision,
     }
@@ -1663,7 +1630,10 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
             "skipped": True,
             "skippedAt": item["skipped_at"],
         }
-    tasks = json.loads(row["tasks_json"])
+    tasks = [
+        {**task, "exercise": _public_exercise(task["exercise"])}
+        for task in json.loads(row["tasks_json"])
+    ]
     content = load_curriculum()
     audio_ids = _available_standard_audio(content)
     return {
@@ -1677,10 +1647,6 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
         else None,
         "tasks": tasks,
         "results": results,
-        # Never infer approval of an older frozen pack from a newer pack's status.
-        "draftContent": row["content_version"] != content["contentVersion"]
-        or content["reviewStatus"] != "approved"
-        or any(task["exercise"].get("reviewStatus") != "approved" for task in tasks),
         "audioAvailable": any(task["exercise"].get("audioRef") in audio_ids for task in tasks),
     }
 

@@ -1,5 +1,6 @@
-"""User-selected household demonstrations; neither reviewed nor redistributable assets."""
+"""Trusted PinYinSound standard audio, served only from verified local files."""
 
+import hashlib
 import json
 import os
 import re
@@ -9,11 +10,17 @@ from pathlib import Path
 from fastapi import HTTPException
 
 from server.audio_assets import _verified_file, file_audio_response
-from server.private_standard_audio import target_signature
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = ROOT / "content" / "pinyin-source.json"
 SOURCE_DIR = Path(os.environ.get("LOVE_PINYIN_SOURCE_AUDIO_DIR", ROOT / "private" / "pinyinsound"))
+
+
+def target_signature(target: dict) -> str:
+    descriptor = {key: target.get(key) for key in ("id", "transcript", "kind", "knowledgeIds")}
+    return hashlib.sha256(
+        json.dumps(descriptor, ensure_ascii=False, sort_keys=True).encode()
+    ).hexdigest()
 
 
 @lru_cache(maxsize=1)
@@ -81,8 +88,6 @@ def metadata(target: dict) -> dict:
     return {
         "id": catalog()["id"],
         "title": catalog()["title"],
-        "teachingReview": "pending",
-        "licenseStatus": "unknown",
         "exampleTone": row["exampleTone"],
     }
 

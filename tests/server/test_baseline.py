@@ -2,7 +2,7 @@ def test_health_and_deferred_assessment_are_not_exposed(paired_client):
     assert paired_client.get("/api/v1/health").json()["status"] == "ok"
     capability = paired_client.get("/api/v1/capabilities").json()
     assert "assessment" not in capability
-    assert capability["contentReview"] == "draft"
+    assert "contentReview" not in capability
     assert "/api/v1/assessments" not in paired_client.get("/openapi.json").json()["paths"]
     assert (
         paired_client.get("/api/v1/health")

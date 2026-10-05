@@ -52,7 +52,7 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   await expect(page.getByLabel('当前拼读预览')).toHaveCount(0);
   await expect(page.locator('.play-nav')).toContainText('两题复习');
   await expect(page.locator('.session-size-note')).toHaveCount(0);
-  await expect(page.locator('.draft-banner')).toBeVisible();
+  await expect(page.locator('.draft-banner')).toHaveCount(0);
   expect(submitted).toEqual([]);
   await page.getByRole('button', { name: '听题目', exact: true }).click();
   await expect(options.first()).toBeEnabled({ timeout: 20000 });

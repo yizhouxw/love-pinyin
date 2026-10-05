@@ -2,26 +2,20 @@ import hashlib
 
 import pytest
 
-from server import api, audio_assets
+from server import api
 
 
 @pytest.fixture
-def registered_audio(monkeypatch, tmp_path, paired_client):
-    audio_root = tmp_path / "public" / "audio"
-    audio_root.mkdir(parents=True)
-    payload = b"RIFF-sample-content-for-range-tests"
-    asset_file = audio_root / "sample.wav"
-    asset_file.write_bytes(payload)
+def registered_audio(monkeypatch, paired_client, install_standard):
+    payload = b"synthetic-sample-content-for-range-tests"
     asset = {
         "id": "audio-test-sample",
-        "file": "/audio/sample.wav",
-        "status": "approved",
-        "reviewStatus": "approved",
-        "rightsEvidence": "rights-evidence-id",
-        "reviewEvidence": "review-evidence-id",
+        "transcript": "a",
+        "kind": "final",
+        "knowledgeIds": [],
         "sha256": hashlib.sha256(payload).hexdigest(),
     }
-    monkeypatch.setattr(audio_assets, "PUBLIC_AUDIO_DIR", audio_root)
+    asset_file = install_standard(asset, payload)
     monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [asset]})
     return paired_client, asset, asset_file, payload
 
@@ -31,7 +25,7 @@ def test_audio_asset_is_authenticated_integrity_checked_and_not_cached(registere
     response = client.get(f"/api/v1/audio/{asset['id']}")
     assert response.status_code == 200
     assert response.content == payload
-    assert response.headers["content-type"] == "audio/wav"
+    assert response.headers["content-type"] == "audio/mpeg"
     assert response.headers["accept-ranges"] == "bytes"
     assert response.headers["etag"] == f'"sha256-{asset["sha256"]}"'
     assert response.headers["cache-control"] == "no-store"
@@ -63,7 +57,7 @@ def test_invalid_ranges_return_416_without_audio_body(registered_audio, range_he
     assert response.headers["content-range"] == f"bytes */{len(payload)}"
 
 
-def test_audio_route_does_not_serve_unknown_unreviewed_unlicensed_or_changed_assets(
+def test_audio_route_ignores_old_review_fields_but_rejects_unknown_and_corrupt_assets(
     registered_audio, monkeypatch
 ):
     client, asset, asset_file, _ = registered_audio
@@ -72,39 +66,31 @@ def test_audio_route_does_not_serve_unknown_unreviewed_unlicensed_or_changed_ass
 
     changed = {**asset, "reviewStatus": "needs-teacher-review"}
     monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [changed]})
-    assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 404
+    assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 200
 
     unlicensed = {**asset, "rightsEvidence": ""}
     monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [unlicensed]})
-    assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 404
+    assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 200
 
     monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [asset]})
     asset_file.write_bytes(b"changed after manifest approval")
     assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 404
 
 
-def test_audio_route_never_turns_manifest_paths_into_arbitrary_files(
-    registered_audio, monkeypatch, tmp_path
-):
-    client, asset, _, _ = registered_audio
-    outside = tmp_path / "secret.wav"
+def test_legacy_paths_cannot_override_pinned_source(registered_audio, monkeypatch, tmp_path):
+    client, asset, path, payload = registered_audio
+    outside = tmp_path / "secret.mp3"
     outside.write_bytes(b"private")
     malicious = {
         **asset,
-        "file": "audio/../secret.wav",
-        "sha256": hashlib.sha256(b"private").hexdigest(),
+        "file": "audio/../secret.mp3",
+        "status": "approved",
+        "reviewStatus": "approved",
     }
     monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [malicious]})
-    assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 404
-
-    link_path = audio_assets.PUBLIC_AUDIO_DIR / "outside.wav"
-    link_path.symlink_to(outside)
-    linked = {
-        **asset,
-        "file": "/audio/outside.wav",
-        "sha256": hashlib.sha256(b"private").hexdigest(),
-    }
-    monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [linked]})
+    assert client.get(f"/api/v1/audio/{asset['id']}").content == payload
+    path.unlink()
+    path.symlink_to(outside)
     assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 404
 
 

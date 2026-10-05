@@ -58,12 +58,14 @@
 
 ## 语音优先家庭资源（2026-10-05，ADR-0005）
 
-配对后 `GET /api/v1/learning-audio` 返回 `{ narration: Record<audioId, boolean>, lessons: Record<lessonId, {audioId,title,available,sourceType}> }`；可用性必须来自登记文件及摘要验证。`GET /api/v1/voice/{audioId}` 只读取固定私有根目录清单ID并支持Range，不接受文本合成、路径、外部URL。ID来自content/narration.json与lesson-recordings.json；内容文件与准备脚本记录不一致则不可用，不能播放旧题干。与 `/audio/{id}` 标准音审核路径分离；不产生任何作答记录。
+配对后 `GET /api/v1/learning-audio` 返回 `{ narration: Record<audioId, boolean>, lessons: Record<lessonId, {audioId,title,available,sourceType}> }`；可用性必须来自登记文件及摘要验证。`GET /api/v1/voice/{audioId}` 只读取固定私有根目录清单ID并支持Range，不接受文本合成、路径、外部URL。ID来自content/narration.json与lesson-recordings.json；内容文件与准备脚本记录不一致则不可用，不能播放旧题干。与 `/audio/{id}` 标准音路径分离；不产生任何作答记录。
 
-## 私有标准音（ADR-0006）
+## 标准音（TRUST-01，ADR-0008）
 
-`GET /curriculum` 的audioRequirements各项新增布尔`available`，由实际文件/摘要/审音记录计算，公开status/reviewStatus保持原值。`GET /audio/{id}`先选合格公开资源，再选当前目标签名匹配的家庭私有标准音；配对与Range规则不变。练习准入使用同一结果，撤下影响新会话和后续音频请求。
+GET /curriculum返回audioRequirements的available和可用时的standardSource（id/title/exampleTone）。唯一标准音源为cmguo/PinYinSound；可用性由安装、启用、目标映射与实际文件摘要决定，不返回status、reviewStatus或teachingReview。
 
-制作服务仅127.0.0.1:8019，与儿童API分离。GET `/api/catalog`（来源、候选、目标、草稿）；GET `/api/source/{id}`（固定目录内登记PCM）；POST `/api/preview`（sourceId,start,end）；POST `/api/draft`（另带targetId,expectedRevision）；POST `/api/activate`（targetId,sha256,revision,teachingReviewer,qualityReviewer及三项显式确认）；POST `/api/deactivate`（targetId,sha256）。写请求须持页面令牌；拒绝异源/非本机请求。草稿revision绑定源、边界、目标与摘要，旧版本返回409。工具不自动认证审音者资格。
+GET /audio/{id}仅播放该来源的固定本地文件，须配对，支持Range；未知、重复ID、缺失/损坏、目标变化或停用返回404，非法Range为416。没有公共已审资源优先级或私有裁切回退。
 
-HINT-VOICE-01：提示接口返回的explanation来自content/narration.json对应题目的hint脚本；语音ID为`hint-{exerciseId}`。请求提示保留hint_used和revision原有语义，同题重复请求不再次推进revision。提示音通过原`/voice/{id}`接口提供，脚本改动使旧音频不可用。播放或重播不创建作答。
+旧审音台的catalog/preview/draft/activate/deactivate服务已删除；capabilities不再返回contentReview，会话不返回draftContent。旧冻结题单的审核字段被忽略，内容版本/任务/作答与旧备份继续兼容，不回写approved。
+
+内容包格式现为schemaVersion 2.0.0（移除审核元数据），内容版本2026.10.05.6；家庭备份仍为schema v5，已有记录无须用户迁移或清空。

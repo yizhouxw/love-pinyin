@@ -749,14 +749,7 @@ footer {
   background: #e6a452;
   box-shadow: 0 0 0 4px #fff0d8;
 }
-.draft-banner {
-  margin: 19px auto 0;
-  background: #fff3dc;
-  color: #8c6436;
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 12px;
-}
+
 .session-size-note {
   margin: 12px auto -12px;
   padding: 9px 12px;

@@ -51,10 +51,10 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
     expect(result.peak, result.id).toBeGreaterThan(0.01);
   }
   await page.getByRole('button', { name: '听本课录音' }).click();
-  await page.getByRole('button', { name: 'a 播放示范音', exact: true }).click();
+  await page.getByRole('button', { name: 'a 播放标准音', exact: true }).click();
   await expect(page.getByRole('button', { name: 'a 停止播放', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'a 停止播放', exact: true }).click();
-  await page.getByRole('button', { name: 'a 播放示范音', exact: true }).press('Enter');
+  await page.getByRole('button', { name: 'a 播放标准音', exact: true }).press('Enter');
   await expect(page.getByRole('button', { name: 'a 停止播放', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '返回学习路线' }).click();
   expect(answers).toEqual([]);
@@ -102,7 +102,8 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
   await expect(page.getByLabel('学习音频准备状态')).toContainText('89 项可播放');
-  await expect(page.getByLabel('学习音频准备状态')).toContainText('教学审音待完成');
+  await expect(page.getByLabel('学习音频准备状态')).toContainText('标准音来源：cmguo/PinYinSound');
+  await expect(page.getByText(/教师审校|待审音|审核者|课程草稿/)).toHaveCount(0);
   const exported = await page.request.get(`${appUrl}/api/v1/profiles/export`);
   const backup = await exported.json();
   expect(answers).toHaveLength(6);
