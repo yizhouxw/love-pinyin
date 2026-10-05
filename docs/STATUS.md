@@ -92,8 +92,10 @@ Safari27.0真实界面已验证配对、课程录音/标准音、手动停止重
 
 实际操作发现听辨204题中116题把正确答案放在第一项，当前界面保持内容顺序；此偏差待按SPEC-004独立修正。该发现不是添加审核流程，修复需保持选项ID、首次成绩及刷新/历史会话语义。本轮只改文档，无新依赖、家庭数据或产品服务变化。
 
-## 选项位置修复 OPTION-ORDER-01（验证中）
+## 选项位置修复 OPTION-ORDER-01（桌面切片已完成）
 
 新题实例现在按固定实例ID排列选项，创建后冻结；刷新、家庭备份恢复、访客重建都保持顺序，旧实例保留原布局。按原optionId判分与朗读，不把位置当答案；算法与兼容约定见[ADR-0013](adr/0013-frozen-option-order.md)。没有更改内容版本、依赖或数据库schema。
 
-verify:all通过63前端/工具、287后端、30视口及18真实服务GUI；新增实际语音GUI验证家庭与访客刷新顺序、听选项A的声音对应、错误后纠正仅计首次。2轮声音补测通过。44项完整声音专项仍在运行，8000端口服务尚未切换新后端，因此此状态仍为验证中；日志private/option-order01-verify.log、option-order01-protocol.log、option-order01-soak-smoke.log与option-order01-product.log。
+verify:all通过63前端/工具、287后端、30视口及18真实服务GUI；新增实际语音GUI验证家庭与访客刷新顺序、听选项A的声音对应、错误后纠正仅计首次。2轮声音补测通过。44项完整声音专项最终全部通过（37.1分钟、exit 0），validate:release通过；日志private/option-order01-verify.log、option-order01-protocol.log、option-order01-soak-smoke.log与option-order01-product.log。
+
+已先备份SQLite，再正常重启8000端口产品服务。真实访客API验证6个v1题实例、恢复顺序、标准音Range播放响应；家庭数据库前后逻辑摘要一致，健康版本保持2026.10.05.15/sqlite。部署证据private/option-order01-deployment.json，截图归档private/option-order01-product-evidence/。该切片关闭前述首项位置偏差，未新增审核流程；真实移动设备、家庭LAN及其他交付缺口仍保留。
