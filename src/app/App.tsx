@@ -113,6 +113,7 @@ type AudioRequirement = {
   sha256?: string;
   rightsEvidence?: string;
   reviewEvidence?: string;
+  householdSource?: { title: string; teachingReview: string; exampleTone: number | null } | null;
 };
 type Answer = {
   correct: boolean;
@@ -1514,7 +1515,7 @@ function LessonDetail({
                 {audio ? (
                   <button
                     className="audio-play-button"
-                    aria-label={`${item.symbol} ${playingAudioId === audio.id ? '停止播放' : '播放标准音'}`}
+                    aria-label={`${item.symbol} ${playingAudioId === audio.id ? '停止播放' : '播放示范音'}`}
                     aria-pressed={playingAudioId === audio.id}
                     onClick={() => {
                       if (playingAudioId === audio.id) {
@@ -1540,17 +1541,24 @@ function LessonDetail({
                         });
                     }}
                   >
-                    {playingAudioId === audio.id ? '■ 停止标准音' : '♫ 播放标准音'}
+                    {playingAudioId === audio.id ? '■ 停止示范音' : '♫ 播放示范音'}
                   </button>
                 ) : null}
                 {audioFailureId === audio?.id && (
                   <p className="audio-error" role="alert">
-                    标准音暂时无法播放，请检查家庭 Mac 上的音频资源。
+                    示范音暂时无法播放，请检查家庭 Mac 上的音频资源。
                   </p>
                 )}
                 <details>
                   <summary>家长教学提示</summary>
                   <p>{item.teachingNote}</p>
+                  {audio?.householdSource && (
+                    <p>
+                      家庭选用 {audio.householdSource.title}，教学审音待完成。
+                      {audio.householdSource.exampleTone &&
+                        `这段示范带第${audio.householdSource.exampleTone}声。`}
+                    </p>
+                  )}
                 </details>
               </article>
             );
@@ -1599,6 +1607,7 @@ function ParentPanel({
   const [clockResolutionConfirm, setClockResolutionConfirm] = useState('');
   const [attemptHistory, setAttemptHistory] = useState<Record<string, AttemptHistoryPage>>({});
   const isParent = Boolean(boot.device?.isParent);
+  const audioRequirements = (curriculum?.audioRequirements ?? []) as AudioRequirement[];
   const savedLessonExists = curriculum.lessons.some(
     (lesson: Lesson) => lesson.id === progress.selectedLessonId,
   );
@@ -1716,8 +1725,14 @@ function ParentPanel({
           / {curriculum.lessons.length} 课可播放。
         </p>
         <p>
-          中文引导由本机系统声音生成，只读中文操作提示；拼音示范使用真人录音。个人音频留在家庭
+          中文引导由本机系统声音生成，只读中文操作提示；拼音示范使用独立音频文件。个人音频留在家庭
           Mac，不随开源代码发布。
+        </p>
+        <p>
+          拼音示范：
+          {audioRequirements.filter((asset) => asset.available).length} 项可播放。
+          {audioRequirements.some((asset) => asset.householdSource) &&
+            '家庭选用 cmguo/PinYinSound，已导入本机；教学审音待完成，公开分发授权未确认。'}
         </p>
         {(!learningAudio ||
           Object.values(learningAudio.narration ?? {}).some((ready) => !ready)) && (

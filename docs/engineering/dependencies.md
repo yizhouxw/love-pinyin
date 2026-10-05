@@ -40,3 +40,7 @@ npm全部传递依赖的许可证声明见[自动清单](dependency-inventory.js
 ## 本机私有音频制作依赖
 
 REVIEW-01–05未增加npm/uv包：服务使用既有锁定FastAPI/Uvicorn，裁切使用Python3.12标准库`wave`（PCM帧，不做合成拼音）。Mac源音解码调用操作系统自带`/usr/bin/afconvert`，官方来源是本机Apple系统安装，不复制或分发二进制，适用系统软件许可。该系统组件随macOS升级，不能通过npm/uv锁版；部署检查必须保留实际系统版本与13份MP3转换结果。开发机macOS27实装成功，其他系统不能声称已支持。运行时学习API不需要afconvert或ASR模型。
+
+## 2026-10-05 家庭选定音频资源
+
+[cmguo/PinYinSound](https://github.com/cmguo/PinYinSound/tree/62453b2a5ca6873eac1f4293b6e9794715d0fc8a)固定提交62453b2a5ca6873eac1f4293b6e9794715d0fc8a；归档SHA-256为c5d37feabd651ab3a1ccf7ac73d3a6e782c04caf4e61eb8778e7c7a7cacc5c18。原归档1420个MP3、22885289字节，未附LICENSE或来源说明，许可状态unknown，不作为MIT资产。已实际下载固定版本，89个映射经Mac afconvert解码/时长/非静音检查，77个去重MP3落在private/pinyinsound；各文件摘要见content/pinyin-source.json。不新增npm/uv软件依赖。此结果仅证明资源获取和技术链路，教学审校pending。

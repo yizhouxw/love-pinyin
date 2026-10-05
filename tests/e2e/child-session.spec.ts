@@ -500,12 +500,12 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   else await currentLessonTile.press('Enter');
   await expect(page.getByText('第 1 课 · 课程知识卡')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'ü' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'ü 播放标准音' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'ü 播放示范音' })).toHaveCount(0);
   await expect(page.getByRole('button', { name: '开始本课练习' })).toBeEnabled();
   await page.getByRole('button', { name: '← 返回学习路线' }).click();
   await page.locator('.lesson-tile').nth(1).click();
   await expect(page.getByText('第 2 课 · 课程知识卡')).toBeVisible();
-  const playStandardAudio = page.getByRole('button', { name: 'zhi 播放标准音' });
+  const playStandardAudio = page.getByRole('button', { name: 'zhi 播放示范音' });
   await expect(playStandardAudio).toBeEnabled();
   if (isMobile) await playStandardAudio.tap();
   else await playStandardAudio.press('Enter');
@@ -519,7 +519,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   ).toBe('/api/v1/audio/audio-e2e');
   if (isMobile) await stopStandardAudio.tap();
   else await stopStandardAudio.press('Enter');
-  await expect(page.getByRole('button', { name: 'zhi 播放标准音' })).toHaveAttribute(
+  await expect(page.getByRole('button', { name: 'zhi 播放示范音' })).toHaveAttribute(
     'aria-pressed',
     'false',
   );

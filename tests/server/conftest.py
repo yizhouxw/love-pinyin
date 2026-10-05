@@ -1,8 +1,13 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from server import storage
+from server import source_audio, storage
 from server.main import app
+
+
+@pytest.fixture(autouse=True)
+def isolate_selected_audio(monkeypatch, tmp_path):
+    monkeypatch.setattr(source_audio, "SOURCE_DIR", tmp_path / "selected-audio")
 
 
 @pytest.fixture

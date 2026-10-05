@@ -10,7 +10,9 @@ export const test = base.extend<{
   appUrl: string;
   dataDirectory: string;
   seedReview: (knowledgeId: string) => Promise<void>;
+  selectedPinyinSource: boolean;
 }>({
+  selectedPinyinSource: [false, { option: true }],
   // eslint-disable-next-line no-empty-pattern
   dataDirectory: async ({}, use) => {
     const directory = await mkdtemp(join(tmpdir(), 'love-pinyin-live-'));
@@ -47,12 +49,18 @@ with storage.transaction() as db:
       );
     });
   },
-  appUrl: async ({ dataDirectory: directory }, use) => {
+  appUrl: async ({ dataDirectory: directory, selectedPinyinSource }, use) => {
     const child = spawn(
       'uv',
       ['run', '--locked', 'uvicorn', 'server.main:app', '--host', '127.0.0.1', '--port', '0'],
       {
-        env: { ...process.env, LOVE_PINYIN_DATA_DIR: directory },
+        env: {
+          ...process.env,
+          LOVE_PINYIN_DATA_DIR: directory,
+          LOVE_PINYIN_SOURCE_AUDIO_DIR: selectedPinyinSource
+            ? join(process.cwd(), 'private/pinyinsound')
+            : join(directory, 'source-audio'),
+        },
         stdio: ['ignore', 'pipe', 'pipe'],
       },
     );

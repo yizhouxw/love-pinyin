@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
-from server import private_standard_audio
+from server import private_standard_audio, source_audio
 from server.audio_assets import _registered_path, _verified_file, audio_response
 from server.content import load_curriculum, map_by_id
 from server.domain import (
@@ -167,7 +167,7 @@ def _available_standard_audio(content: dict) -> set[str]:
             if size:
                 available.add(asset["id"])
         except HTTPException:
-            if private_standard_audio.available(asset):
+            if private_standard_audio.available(asset) or source_audio.available(asset):
                 available.add(asset["id"])
     return available
 
@@ -179,6 +179,20 @@ def _objective_available(question: dict, audio_ids: set[str]) -> bool:
     if audio_id or question["type"] == "listen-choice":
         return audio_id in audio_ids
     return True
+
+
+def _household_audio_source(asset: dict) -> dict | None:
+    try:
+        path, _, digest = _registered_path(asset)
+        handle, size = _verified_file(path, digest)
+        handle.close()
+        if size:
+            return None
+    except HTTPException:
+        pass
+    if private_standard_audio.available(asset) or not source_audio.available(asset):
+        return None
+    return source_audio.metadata(asset)
 
 
 def _create_pairing_code() -> dict:
@@ -402,7 +416,12 @@ def curriculum(device: dict = Depends(paired)) -> dict:
     result["exercises"] = [_public_exercise(item) for item in data["exercises"]]
     audio_ids = _available_standard_audio(data)
     result["audioRequirements"] = [
-        {**asset, "available": asset["id"] in audio_ids} for asset in data["audioRequirements"]
+        {
+            **asset,
+            "available": asset["id"] in audio_ids,
+            "householdSource": _household_audio_source(asset),
+        }
+        for asset in data["audioRequirements"]
     ]
     return result
 
@@ -420,7 +439,12 @@ def get_audio_asset(
         matches = [asset for asset in requirements if asset["id"] == asset_id]
         if error.status_code != 404 or len(matches) != 1:
             raise
-        return private_standard_audio.audio_response(matches[0], range_header)
+        try:
+            return private_standard_audio.audio_response(matches[0], range_header)
+        except HTTPException as private_error:
+            if private_error.status_code != 404:
+                raise
+            return source_audio.audio_response(matches[0], range_header)
 
 
 @router.get("/learning-audio")
