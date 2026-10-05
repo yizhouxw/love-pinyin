@@ -1423,6 +1423,198 @@
       "exampleTone": null,
       "sha256": "58b31fd5d9004f0cbf034a1fa502bf95b0d57b611c158f79d64fd2443b1e63a1",
       "bytes": 16532
+    },
+    {
+      "id": "audio-syllable-zi3",
+      "targetSignature": "2e6cfe686d93aca3e01d9d9ec1dfc3382fb52bf9321e4ab100361fe9ae4f7ff5",
+      "filename": "zi3.mp3",
+      "exampleTone": null,
+      "sha256": "a9fcc737b4508c10969bb4594029f936c361629f7aa6e50ee367f1d55d4f38ab",
+      "bytes": 9326
+    },
+    {
+      "id": "audio-syllable-ci2",
+      "targetSignature": "972f073786d879ecfe456bf93e567a6d9b9755d55d87e60c15f4298bc37c4f26",
+      "filename": "ci2.mp3",
+      "exampleTone": null,
+      "sha256": "9277982e8b14a1a5eaf2401519f3652cf6c9f634ea53ca6d361b423f4f7d1eaf",
+      "bytes": 9326
+    },
+    {
+      "id": "audio-syllable-ci4",
+      "targetSignature": "90d5e3dd25a870290813ea9a8491043f52292ff340d6dcd11f90bb39b818e72b",
+      "filename": "ci4.mp3",
+      "exampleTone": null,
+      "sha256": "6b7adf284a7a0413d470942eb87691c15a891d698d08ffa08936a073e30445bf",
+      "bytes": 6766
+    },
+    {
+      "id": "audio-syllable-si1",
+      "targetSignature": "6666eec3dc2ec53ab9f31e6f75d63b44481376ae93988a2163c37e8ba0ac775a",
+      "filename": "si1.mp3",
+      "exampleTone": null,
+      "sha256": "ce01b88f7d083214c269a0909d048fdb483c7d3f19c76a62b7fe73baddee5fba",
+      "bytes": 7314
+    },
+    {
+      "id": "audio-syllable-zhi1",
+      "targetSignature": "061bc722698874b118633349fd9c7caea6da1adc5865bb41325af0e296a9c71f",
+      "filename": "zhi1.mp3",
+      "exampleTone": null,
+      "sha256": "9b9de365fd1bcd564ad82f7338685b23bc76442a60c3279a23903e71ee9b720b",
+      "bytes": 7314
+    },
+    {
+      "id": "audio-syllable-zhi3",
+      "targetSignature": "676070ae7a9b144cac68afd45b3c29eee14fa8bc1f66df81f2f269b909c578d3",
+      "filename": "zhi3.mp3",
+      "exampleTone": null,
+      "sha256": "528a6593cdd78065082b38f5015ce220b3d0e3f9bc8654be7eee28659b0e9071",
+      "bytes": 9143
+    },
+    {
+      "id": "audio-syllable-chi2",
+      "targetSignature": "65e0ceae8231fa31f29f912e890608ab0b6f5e6f6fb39db79a99917e531537a6",
+      "filename": "chi2.mp3",
+      "exampleTone": null,
+      "sha256": "91d39c285ed8850c4f680bc2d62f7dec3666439c18f50fb0ed5dafcd845bbbfb",
+      "bytes": 8960
+    },
+    {
+      "id": "audio-syllable-shi2",
+      "targetSignature": "0f3addedc34795a241132d8061e4c1cfdd54f22015d5033ed56aff019be8a849",
+      "filename": "shi2.mp3",
+      "exampleTone": null,
+      "sha256": "920b661827c1e2bd2e24400c9e8573432c61effd22e44c61a6669693b49f820c",
+      "bytes": 8229
+    },
+    {
+      "id": "audio-syllable-shi4",
+      "targetSignature": "b343c95bd2b646b5bc430947ad603f44e64faeeae699dfedb3c6ddee61d6474d",
+      "filename": "shi4.mp3",
+      "exampleTone": null,
+      "sha256": "182e0cc8a497bffbc041010a9494506cbb0e593299087909ff2d930617ed2e66",
+      "bytes": 7131
+    },
+    {
+      "id": "audio-syllable-yi2",
+      "targetSignature": "83c1393c7d3f5e352a05c100b798d543f9f81f8efaf3e4eaee38bf406ac547af",
+      "filename": "yi2.mp3",
+      "exampleTone": null,
+      "sha256": "6d1299e0eac7bbe79d34575ee96a05479b555646498086a254b20c0592f33fd6",
+      "bytes": 7131
+    },
+    {
+      "id": "audio-syllable-yi3",
+      "targetSignature": "e0b6a98d15664baff03e6209b5bc65a32c8c634057693aea617e7e4f092e0400",
+      "filename": "yi3.mp3",
+      "exampleTone": null,
+      "sha256": "82e214af29dc6b72756bcf7ee69d34e44fd905eff14a2a298ef86291975a6625",
+      "bytes": 8046
+    },
+    {
+      "id": "audio-syllable-wu2",
+      "targetSignature": "b6e9a030d4340a96e43864cc4253e06d56e1020c47db2be77ab465880a75b2b6",
+      "filename": "wu2.mp3",
+      "exampleTone": null,
+      "sha256": "64b6bd793124c6e20e1f18ffb55daff251f0e70828f71f3ad663e5f1b94ebae5",
+      "bytes": 7314
+    },
+    {
+      "id": "audio-syllable-wu3",
+      "targetSignature": "17253f913db80a5c45f9734e44a9532c9a4e74a10bb009708dc7c466dd26dc81",
+      "filename": "wu3.mp3",
+      "exampleTone": null,
+      "sha256": "5eef0fc4d7f415fd09eae55aef89942b13a9f219f236ef25b4a19ea72662304d",
+      "bytes": 8594
+    },
+    {
+      "id": "audio-syllable-yu3",
+      "targetSignature": "fb41be4f0a4635bb063be46b022a9da4b477945f331510e8c1514afeda418036",
+      "filename": "yu3.mp3",
+      "exampleTone": null,
+      "sha256": "27122389b54171dd1693118b9bb1b8a7fa1d746a7f9b3af0602dffe2fb5d4b35",
+      "bytes": 9691
+    },
+    {
+      "id": "audio-syllable-ye3",
+      "targetSignature": "b124d34a4817734d1e9598ccbf7549f8764287ef862ad83dae05df8811af2ed1",
+      "filename": "ye3.mp3",
+      "exampleTone": null,
+      "sha256": "2161ce7032a65f027ff710d24d308d07739598fcdfa12d5aa53f2adc34717e06",
+      "bytes": 9143
+    },
+    {
+      "id": "audio-syllable-ye4",
+      "targetSignature": "6bb2468f7e287553e1e2c0cc8fee61b75bfa8c5aea70f02da50631158626918d",
+      "filename": "ye4.mp3",
+      "exampleTone": null,
+      "sha256": "f4658cd04d9f73e0a891efb3002e55756e942ea0b2ac38536daf2d1ede1d7605",
+      "bytes": 6949
+    },
+    {
+      "id": "audio-syllable-yue1",
+      "targetSignature": "d0a0aecefc0a7a22e7a76b7e8daa86988e21396fd163888f62e6793e6eae485e",
+      "filename": "yue1.mp3",
+      "exampleTone": null,
+      "sha256": "d9d0f3de2b970af7f49c1ed4c22d3cb59fe54c1c02dabfde88f6fd4446d6449b",
+      "bytes": 6034
+    },
+    {
+      "id": "audio-syllable-yuan2",
+      "targetSignature": "73dabbfdd059837b8934ed32909f70828e3ebea04bd3fa4972ef2c05d505657c",
+      "filename": "yuan2.mp3",
+      "exampleTone": null,
+      "sha256": "e0df49cc690a2f775c65c1c15de5b5a18fdcf971c29e0d058cf81cd66c234ca7",
+      "bytes": 8411
+    },
+    {
+      "id": "audio-syllable-yuan3",
+      "targetSignature": "6dba3dcd768f7a97d3af06c23cf051eeb117c257fe0b68a06b63ce5125d4ef1d",
+      "filename": "yuan3.mp3",
+      "exampleTone": null,
+      "sha256": "9ff01533854c9aad1600b4601b386c5fdb0a9980e70abcf3987a696fac4422d4",
+      "bytes": 8046
+    },
+    {
+      "id": "audio-syllable-yin2",
+      "targetSignature": "f0daf31d019a1a2506b39c1f6938809cd06add5d142dd3b18df90aa346727b96",
+      "filename": "yin2.mp3",
+      "exampleTone": null,
+      "sha256": "11ec388200f8f54298ce634ed4e7e145c75e9f7d12723e7b3c367737dfb34e8f",
+      "bytes": 7680
+    },
+    {
+      "id": "audio-syllable-yin3",
+      "targetSignature": "b2a2e95a9ae1fc135fb98058c4aaf7e93517eaed2adccb12a788c929747f2e78",
+      "filename": "yin3.mp3",
+      "exampleTone": null,
+      "sha256": "3089d679f2acb7667d7de7ce83a4008c99a85896dad2bccee751db3943a3e356",
+      "bytes": 8777
+    },
+    {
+      "id": "audio-syllable-yun3",
+      "targetSignature": "abd07d61b01d4045ff0aeafb8ba4f56b570d6a7126775d183f311a48c123f5c3",
+      "filename": "yun3.mp3",
+      "exampleTone": null,
+      "sha256": "29eb900d36034fd353f0b920ab3a130a24857fbd2280b608300be367db874a15",
+      "bytes": 7863
+    },
+    {
+      "id": "audio-syllable-ying2",
+      "targetSignature": "6a8bb9ab678e43bb9ec1839e4ee83e080b0d3eca11bd3c46c3981606ca8dd358",
+      "filename": "ying2.mp3",
+      "exampleTone": null,
+      "sha256": "2034d609d33bff1e12d36c292f944583dab9cf925a87f5f3cb9448cd5c2dfb13",
+      "bytes": 6766
+    },
+    {
+      "id": "audio-syllable-ying3",
+      "targetSignature": "830d52d61325f2a41decae7b9cd4fda6c13c4a7e23c9b6df35d0fbc924f27af0",
+      "filename": "ying3.mp3",
+      "exampleTone": null,
+      "sha256": "574bf6ab2ceed8b1bd89057fa3449f1786adab14721c7c8ecb9e7c4d25c1874a",
+      "bytes": 8411
     }
   ]
 }

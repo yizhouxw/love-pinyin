@@ -11,8 +11,78 @@ const validate = (input, release = false) =>
   validateCurriculum(input, schema, { sourceIds, release });
 
 describe('课程内容的保护门禁', () => {
+  it('BANK-06的整体认读音节在已学范围用同调候选辨听，不靠换顺序凑题', () => {
+    const added = data.exercises.filter(
+      (q) => Number(q.id.split('-').at(-1)) >= 100 && Number(q.id.split('-').at(-1)) < 120,
+    );
+    expect(added).toHaveLength(32);
+    const untone = (text) =>
+      text
+        .normalize('NFD')
+        .replace(/[\u0300\u0301\u0304\u030c]/gu, '')
+        .normalize('NFC');
+    const order = (id) => data.lessons.find((l) => l.id === id).order;
+    for (const k of data.knowledgeItems.filter((k) => k.category === 'whole-syllable')) {
+      const pair = added.filter((q) => q.primaryKnowledgeId === k.id);
+      expect(pair, k.id).toHaveLength(2);
+      expect(data.coverage.objectivePrimaryExerciseCounts[k.id]).toBeGreaterThanOrEqual(5);
+      expect(
+        new Set(
+          pair.map(
+            (q) =>
+              q.audioRef +
+              q.options
+                .map((o) => o.label)
+                .sort()
+                .join(','),
+          ),
+        ).size,
+      ).toBe(2);
+      const tones = [];
+      for (const q of pair) {
+        expect(q.type).toBe('listen-choice');
+        expect(q.knowledgeIds).toEqual([k.id]);
+        const answer = q.options.find((o) => o.id === q.answer.optionId).label;
+        expect(untone(answer)).toBe(k.symbol);
+        expect(data.audioRequirements.find((a) => a.id === q.audioRef).transcript).toBe(answer);
+        tones.push(pinyinTone(answer));
+        expect(new Set(q.options.map((o) => pinyinTone(o.label)))).toEqual(
+          new Set([pinyinTone(answer)]),
+        );
+        for (const option of q.options) {
+          const whole = data.knowledgeItems.find(
+            (w) => w.category === 'whole-syllable' && w.symbol === untone(option.label),
+          );
+          if (whole) {
+            expect(order(whole.lessonId)).toBeLessThanOrEqual(order(q.lessonId));
+            continue;
+          }
+          const parts = splitPinyinCandidate(option.label, data.inventory.initials);
+          expect(parts, q.id).toBeTruthy();
+          const onset = data.knowledgeItems.find(
+            (w) => w.category === 'initial' && w.symbol === parts.onset,
+          );
+          const writtenFinal = untone(parts.rime);
+          const finalSymbol =
+            ['j', 'q', 'x'].includes(parts.onset) && writtenFinal === 'ue' ? 'üe' : writtenFinal;
+          const final = data.knowledgeItems.find(
+            (w) => w.category === 'final' && w.symbol === finalSymbol,
+          );
+          expect(onset, q.id).toBeDefined();
+          expect(final, q.id).toBeDefined();
+          expect(order(onset.lessonId)).toBeLessThanOrEqual(order(q.lessonId));
+          expect(order(final.lessonId)).toBeLessThanOrEqual(order(q.lessonId));
+        }
+      }
+      expect(new Set(tones).size).toBe(k.symbol === 'ri' ? 1 : 2);
+      if (k.symbol === 'ri') expect(tones).toEqual([4, 4]);
+    }
+  });
+
   it('BANK-05的韵母听辨保持同声母同声调，正确处理ü和ün的拼写及先修范围', () => {
-    const added = data.exercises.filter((q) => Number(q.id.split('-').at(-1)) >= 80);
+    const added = data.exercises.filter(
+      (q) => Number(q.id.split('-').at(-1)) >= 80 && Number(q.id.split('-').at(-1)) < 100,
+    );
     expect(added).toHaveLength(48);
     const order = (id) => data.lessons.find((lesson) => lesson.id === id).order;
     const untone = (text) =>

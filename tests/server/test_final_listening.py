@@ -22,7 +22,7 @@ def test_all_new_final_listening_tasks_reachable_and_persisted(
         for q in content["exercises"]
         if q["lessonId"] == lesson_id and q["type"] != "read-aloud"
     }
-    new_ids = {qid for qid in questions if int(qid.rsplit("-", 1)[1]) >= 80}
+    new_ids = {qid for qid in questions if 80 <= int(qid.rsplit("-", 1)[1]) < 100}
     profile = client.get("/api/v1/profiles/progress").json()
     response = client.put(
         "/api/v1/household/current-lesson",

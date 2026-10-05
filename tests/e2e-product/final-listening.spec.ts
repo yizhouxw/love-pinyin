@@ -33,7 +33,10 @@ test('BANK-05: final contrasts cover isolated vowels, spelling and nasal endings
   ]) {
     const knowledge = curriculum.knowledgeItems.find((k) => k.id === focus[0])!;
     const wanted = curriculum.exercises.filter(
-      (q) => focus.includes(q.primaryKnowledgeId) && Number(q.id.split('-').at(-1)) >= 80,
+      (q) =>
+        focus.includes(q.primaryKnowledgeId) &&
+        Number(q.id.split('-').at(-1)) >= 80 &&
+        Number(q.id.split('-').at(-1)) < 100,
     );
     expect(wanted).toHaveLength(focus.length * 2);
     await page.getByRole('button', { name: '家长管理' }).click();

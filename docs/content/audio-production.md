@@ -8,7 +8,7 @@
 npm run prepare:pinyin
 ```
 
-显式下载固定提交62453b2a5ca6873eac1f4293b6e9794715d0fc8a的归档，校验归档与逐文件SHA-256；Mac本机解码、检查时长和非静音后安装到private/pinyinsound。177个课程目标映射保存在content/pinyin-source.json，去重后158份MP3。ü的显示与上游v文件名分开；整体认读目标的示范声调明确登记，不在运行时猜文件名。
+显式下载固定提交62453b2a5ca6873eac1f4293b6e9794715d0fc8a的归档，校验归档与逐文件SHA-256；Mac本机解码、检查时长和非静音后安装到private/pinyinsound。201个课程目标映射保存在content/pinyin-source.json，去重后179份MP3。ü的显示与上游v文件名分开；整体认读目标的示范声调明确登记，不在运行时猜文件名。
 
 已有固定归档时可离线安装：
 

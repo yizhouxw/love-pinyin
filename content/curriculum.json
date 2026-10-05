@@ -1278,7 +1278,13 @@
         "q-07-72",
         "q-07-73",
         "q-07-74",
-        "q-07-75"
+        "q-07-75",
+        "q-07-100",
+        "q-07-101",
+        "q-07-102",
+        "q-07-103",
+        "q-07-104",
+        "q-07-105"
       ],
       "readingTargetIds": [
         "rt-07-zi4",
@@ -1351,7 +1357,15 @@
         "q-08-74",
         "q-08-75",
         "q-08-76",
-        "q-08-77"
+        "q-08-77",
+        "q-08-100",
+        "q-08-101",
+        "q-08-102",
+        "q-08-103",
+        "q-08-104",
+        "q-08-105",
+        "q-08-106",
+        "q-08-107"
       ],
       "readingTargetIds": [
         "rt-08-chi1",
@@ -1404,7 +1418,13 @@
         "q-09-32",
         "q-09-40",
         "q-09-41",
-        "q-09-42"
+        "q-09-42",
+        "q-09-100",
+        "q-09-101",
+        "q-09-102",
+        "q-09-103",
+        "q-09-104",
+        "q-09-105"
       ],
       "readingTargetIds": ["rt-09-yi1", "rt-09-yu2", "rt-09-whole-wu"],
       "sourceIds": ["src-pep-2024-g1a"],
@@ -1540,7 +1560,11 @@
         "q-12-82",
         "q-12-83",
         "q-12-84",
-        "q-12-85"
+        "q-12-85",
+        "q-12-100",
+        "q-12-101",
+        "q-12-102",
+        "q-12-103"
       ],
       "readingTargetIds": [
         "rt-12-xue3",
@@ -1613,7 +1637,13 @@
         "q-13-86",
         "q-13-87",
         "q-13-88",
-        "q-13-89"
+        "q-13-89",
+        "q-13-100",
+        "q-13-101",
+        "q-13-102",
+        "q-13-103",
+        "q-13-104",
+        "q-13-105"
       ],
       "readingTargetIds": [
         "rt-13-shan1",
@@ -1677,7 +1707,9 @@
         "q-14-84",
         "q-14-85",
         "q-14-86",
-        "q-14-87"
+        "q-14-87",
+        "q-14-100",
+        "q-14-101"
       ],
       "readingTargetIds": [
         "rt-14-feng1",
@@ -12153,6 +12185,934 @@
       "license": "MIT",
       "audioRef": "audio-syllable-tong2",
       "promptAudioRef": "audio-prompt-94b00f8f702c"
+    },
+    {
+      "id": "q-07-100",
+      "lessonId": "lesson-07",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-zi",
+      "knowledgeIds": ["k-whole-zi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zǐ"
+        },
+        {
+          "id": "b",
+          "label": "cǐ"
+        },
+        {
+          "id": "c",
+          "label": "sǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-zi3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-07-101",
+      "lessonId": "lesson-07",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-zi",
+      "knowledgeIds": ["k-whole-zi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "cì"
+        },
+        {
+          "id": "b",
+          "label": "sì"
+        },
+        {
+          "id": "c",
+          "label": "zì"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-07-zi4",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-07-102",
+      "lessonId": "lesson-07",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-ci",
+      "knowledgeIds": ["k-whole-ci"],
+      "options": [
+        {
+          "id": "a",
+          "label": "lí"
+        },
+        {
+          "id": "b",
+          "label": "mí"
+        },
+        {
+          "id": "c",
+          "label": "cí"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-ci2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-07-103",
+      "lessonId": "lesson-07",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-ci",
+      "knowledgeIds": ["k-whole-ci"],
+      "options": [
+        {
+          "id": "a",
+          "label": "sì"
+        },
+        {
+          "id": "b",
+          "label": "zì"
+        },
+        {
+          "id": "c",
+          "label": "cì"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-ci4",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-07-104",
+      "lessonId": "lesson-07",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-si",
+      "knowledgeIds": ["k-whole-si"],
+      "options": [
+        {
+          "id": "a",
+          "label": "xī"
+        },
+        {
+          "id": "b",
+          "label": "sī"
+        },
+        {
+          "id": "c",
+          "label": "sū"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-si1",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-07-105",
+      "lessonId": "lesson-07",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-si",
+      "knowledgeIds": ["k-whole-si"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zì"
+        },
+        {
+          "id": "b",
+          "label": "cì"
+        },
+        {
+          "id": "c",
+          "label": "sì"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-07-si4",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-08-100",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-zhi",
+      "knowledgeIds": ["k-whole-zhi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zhī"
+        },
+        {
+          "id": "b",
+          "label": "chī"
+        },
+        {
+          "id": "c",
+          "label": "shī"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-zhi1",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-08-101",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-zhi",
+      "knowledgeIds": ["k-whole-zhi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "chǐ"
+        },
+        {
+          "id": "b",
+          "label": "shǐ"
+        },
+        {
+          "id": "c",
+          "label": "zhǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-zhi3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-08-102",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-chi",
+      "knowledgeIds": ["k-whole-chi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "chī"
+        },
+        {
+          "id": "b",
+          "label": "shī"
+        },
+        {
+          "id": "c",
+          "label": "zhī"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-08-chi1",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-08-103",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-chi",
+      "knowledgeIds": ["k-whole-chi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "shí"
+        },
+        {
+          "id": "b",
+          "label": "zhí"
+        },
+        {
+          "id": "c",
+          "label": "chí"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-chi2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-08-104",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-shi",
+      "knowledgeIds": ["k-whole-shi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "shí"
+        },
+        {
+          "id": "b",
+          "label": "zhí"
+        },
+        {
+          "id": "c",
+          "label": "chí"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-shi2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-08-105",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-shi",
+      "knowledgeIds": ["k-whole-shi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "shì"
+        },
+        {
+          "id": "b",
+          "label": "rì"
+        },
+        {
+          "id": "c",
+          "label": "zhì"
+        },
+        {
+          "id": "d",
+          "label": "chì"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-shi4",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-08-106",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-ri",
+      "knowledgeIds": ["k-whole-ri"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zhì"
+        },
+        {
+          "id": "b",
+          "label": "shì"
+        },
+        {
+          "id": "c",
+          "label": "rì"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-08-ri4",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-08-107",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-ri",
+      "knowledgeIds": ["k-whole-ri"],
+      "options": [
+        {
+          "id": "a",
+          "label": "rì"
+        },
+        {
+          "id": "b",
+          "label": "lì"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-08-ri4",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-09-100",
+      "lessonId": "lesson-09",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yi",
+      "knowledgeIds": ["k-whole-yi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "wú"
+        },
+        {
+          "id": "b",
+          "label": "yú"
+        },
+        {
+          "id": "c",
+          "label": "yí"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-yi2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-09-101",
+      "lessonId": "lesson-09",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yi",
+      "knowledgeIds": ["k-whole-yi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yǔ"
+        },
+        {
+          "id": "b",
+          "label": "yǐ"
+        },
+        {
+          "id": "c",
+          "label": "wǔ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-yi3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-09-102",
+      "lessonId": "lesson-09",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-wu",
+      "knowledgeIds": ["k-whole-wu"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yú"
+        },
+        {
+          "id": "b",
+          "label": "yí"
+        },
+        {
+          "id": "c",
+          "label": "wú"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-wu2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-09-103",
+      "lessonId": "lesson-09",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-wu",
+      "knowledgeIds": ["k-whole-wu"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yǐ"
+        },
+        {
+          "id": "b",
+          "label": "wǔ"
+        },
+        {
+          "id": "c",
+          "label": "yǔ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-wu3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-09-104",
+      "lessonId": "lesson-09",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yu",
+      "knowledgeIds": ["k-whole-yu"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yí"
+        },
+        {
+          "id": "b",
+          "label": "wú"
+        },
+        {
+          "id": "c",
+          "label": "yú"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-09-yu2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-09-105",
+      "lessonId": "lesson-09",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yu",
+      "knowledgeIds": ["k-whole-yu"],
+      "options": [
+        {
+          "id": "a",
+          "label": "wǔ"
+        },
+        {
+          "id": "b",
+          "label": "yǔ"
+        },
+        {
+          "id": "c",
+          "label": "yǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-yu3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-12-100",
+      "lessonId": "lesson-12",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-ye",
+      "knowledgeIds": ["k-whole-ye"],
+      "options": [
+        {
+          "id": "a",
+          "label": "xiě"
+        },
+        {
+          "id": "b",
+          "label": "jiě"
+        },
+        {
+          "id": "c",
+          "label": "yě"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-ye3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-12-101",
+      "lessonId": "lesson-12",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-ye",
+      "knowledgeIds": ["k-whole-ye"],
+      "options": [
+        {
+          "id": "a",
+          "label": "xiè"
+        },
+        {
+          "id": "b",
+          "label": "yè"
+        },
+        {
+          "id": "c",
+          "label": "yuè"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-ye4",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-12-102",
+      "lessonId": "lesson-12",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yue",
+      "knowledgeIds": ["k-whole-yue"],
+      "options": [
+        {
+          "id": "a",
+          "label": "xuē"
+        },
+        {
+          "id": "b",
+          "label": "yuē"
+        },
+        {
+          "id": "c",
+          "label": "yē"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-yue1",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-12-103",
+      "lessonId": "lesson-12",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yue",
+      "knowledgeIds": ["k-whole-yue"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yuè"
+        },
+        {
+          "id": "b",
+          "label": "yè"
+        },
+        {
+          "id": "c",
+          "label": "xuè"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-12-yue4",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-13-100",
+      "lessonId": "lesson-13",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yuan",
+      "knowledgeIds": ["k-whole-yuan"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yuán"
+        },
+        {
+          "id": "b",
+          "label": "yún"
+        },
+        {
+          "id": "c",
+          "label": "yín"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-yuan2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-13-101",
+      "lessonId": "lesson-13",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yuan",
+      "knowledgeIds": ["k-whole-yuan"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yǔn"
+        },
+        {
+          "id": "b",
+          "label": "yǐn"
+        },
+        {
+          "id": "c",
+          "label": "yuǎn"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-yuan3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-13-102",
+      "lessonId": "lesson-13",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yin",
+      "knowledgeIds": ["k-whole-yin"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yún"
+        },
+        {
+          "id": "b",
+          "label": "yín"
+        },
+        {
+          "id": "c",
+          "label": "yuán"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-yin2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-13-103",
+      "lessonId": "lesson-13",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yin",
+      "knowledgeIds": ["k-whole-yin"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yǐn"
+        },
+        {
+          "id": "b",
+          "label": "yuǎn"
+        },
+        {
+          "id": "c",
+          "label": "yǔn"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-yin3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-13-104",
+      "lessonId": "lesson-13",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yun",
+      "knowledgeIds": ["k-whole-yun"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yín"
+        },
+        {
+          "id": "b",
+          "label": "yuán"
+        },
+        {
+          "id": "c",
+          "label": "yún"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-13-yun2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-13-105",
+      "lessonId": "lesson-13",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-yun",
+      "knowledgeIds": ["k-whole-yun"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yuǎn"
+        },
+        {
+          "id": "b",
+          "label": "yǔn"
+        },
+        {
+          "id": "c",
+          "label": "yǐn"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-yun3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-14-100",
+      "lessonId": "lesson-14",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-ying",
+      "knowledgeIds": ["k-whole-ying"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yíng"
+        },
+        {
+          "id": "b",
+          "label": "yín"
+        },
+        {
+          "id": "c",
+          "label": "líng"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-ying2",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-14-101",
+      "lessonId": "lesson-14",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的完整音节。",
+      "primaryKnowledgeId": "k-whole-ying",
+      "knowledgeIds": ["k-whole-ying"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yǐn"
+        },
+        {
+          "id": "b",
+          "label": "lǐng"
+        },
+        {
+          "id": "c",
+          "label": "yǐng"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-syllable-ying3",
+      "promptAudioRef": "audio-prompt-47ea3a26f62c"
     }
   ],
   "readingTargets": [
@@ -15799,6 +16759,173 @@
       "transcript": "tóng",
       "kind": "syllable",
       "knowledgeIds": ["k-final-ong", "k-initial-t", "k-tone-2"]
+    },
+    {
+      "id": "audio-prompt-47ea3a26f62c",
+      "transcript": "听一听，选出听到的完整音节。",
+      "kind": "instruction",
+      "knowledgeIds": [
+        "k-whole-zi",
+        "k-whole-ci",
+        "k-whole-si",
+        "k-whole-zhi",
+        "k-whole-chi",
+        "k-whole-shi",
+        "k-whole-ri",
+        "k-whole-yi",
+        "k-whole-wu",
+        "k-whole-yu",
+        "k-whole-ye",
+        "k-whole-yue",
+        "k-whole-yuan",
+        "k-whole-yin",
+        "k-whole-yun",
+        "k-whole-ying"
+      ]
+    },
+    {
+      "id": "audio-syllable-zi3",
+      "transcript": "zǐ",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-zi", "k-tone-3"]
+    },
+    {
+      "id": "audio-syllable-ci2",
+      "transcript": "cí",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-ci", "k-tone-2"]
+    },
+    {
+      "id": "audio-syllable-ci4",
+      "transcript": "cì",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-ci", "k-tone-4"]
+    },
+    {
+      "id": "audio-syllable-si1",
+      "transcript": "sī",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-si", "k-tone-1"]
+    },
+    {
+      "id": "audio-syllable-zhi1",
+      "transcript": "zhī",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-zhi", "k-tone-1"]
+    },
+    {
+      "id": "audio-syllable-zhi3",
+      "transcript": "zhǐ",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-zhi", "k-tone-3"]
+    },
+    {
+      "id": "audio-syllable-chi2",
+      "transcript": "chí",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-chi", "k-tone-2"]
+    },
+    {
+      "id": "audio-syllable-shi2",
+      "transcript": "shí",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-shi", "k-tone-2"]
+    },
+    {
+      "id": "audio-syllable-shi4",
+      "transcript": "shì",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-shi", "k-tone-4"]
+    },
+    {
+      "id": "audio-syllable-yi2",
+      "transcript": "yí",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-yi", "k-tone-2"]
+    },
+    {
+      "id": "audio-syllable-yi3",
+      "transcript": "yǐ",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-yi", "k-tone-3"]
+    },
+    {
+      "id": "audio-syllable-wu2",
+      "transcript": "wú",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-wu", "k-tone-2"]
+    },
+    {
+      "id": "audio-syllable-wu3",
+      "transcript": "wǔ",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-wu", "k-tone-3"]
+    },
+    {
+      "id": "audio-syllable-yu3",
+      "transcript": "yǔ",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-yu", "k-tone-3"]
+    },
+    {
+      "id": "audio-syllable-ye3",
+      "transcript": "yě",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-ye", "k-tone-3"]
+    },
+    {
+      "id": "audio-syllable-ye4",
+      "transcript": "yè",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-ye", "k-tone-4"]
+    },
+    {
+      "id": "audio-syllable-yue1",
+      "transcript": "yuē",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-yue", "k-tone-1"]
+    },
+    {
+      "id": "audio-syllable-yuan2",
+      "transcript": "yuán",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-yuan", "k-tone-2"]
+    },
+    {
+      "id": "audio-syllable-yuan3",
+      "transcript": "yuǎn",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-yuan", "k-tone-3"]
+    },
+    {
+      "id": "audio-syllable-yin2",
+      "transcript": "yín",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-yin", "k-tone-2"]
+    },
+    {
+      "id": "audio-syllable-yin3",
+      "transcript": "yǐn",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-yin", "k-tone-3"]
+    },
+    {
+      "id": "audio-syllable-yun3",
+      "transcript": "yǔn",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-yun", "k-tone-3"]
+    },
+    {
+      "id": "audio-syllable-ying2",
+      "transcript": "yíng",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-ying", "k-tone-2"]
+    },
+    {
+      "id": "audio-syllable-ying3",
+      "transcript": "yǐng",
+      "kind": "syllable",
+      "knowledgeIds": ["k-whole-ying", "k-tone-3"]
     }
   ],
   "supplementalTopics": [
@@ -15916,7 +17043,7 @@
   "coverage": {
     "purpose": "authored-practice-bank-with-local-standard-audio",
     "knowledgeItemCount": 83,
-    "exerciseCount": 377,
+    "exerciseCount": 409,
     "readingTargetCount": 79,
     "primaryExerciseCounts": {
       "k-final-a": 6,
@@ -15942,20 +17069,20 @@
       "k-initial-z": 5,
       "k-initial-c": 5,
       "k-initial-s": 5,
-      "k-whole-zi": 4,
-      "k-whole-ci": 3,
-      "k-whole-si": 4,
+      "k-whole-zi": 6,
+      "k-whole-ci": 5,
+      "k-whole-si": 6,
       "k-initial-zh": 5,
       "k-initial-ch": 5,
       "k-initial-sh": 5,
       "k-initial-r": 5,
-      "k-whole-zhi": 3,
-      "k-whole-chi": 4,
-      "k-whole-shi": 3,
-      "k-whole-ri": 4,
-      "k-whole-yi": 4,
-      "k-whole-wu": 3,
-      "k-whole-yu": 4,
+      "k-whole-zhi": 5,
+      "k-whole-chi": 6,
+      "k-whole-shi": 5,
+      "k-whole-ri": 6,
+      "k-whole-yi": 6,
+      "k-whole-wu": 5,
+      "k-whole-yu": 6,
       "k-letter-y": 2,
       "k-letter-w": 2,
       "k-final-ai": 6,
@@ -15967,21 +17094,21 @@
       "k-final-ie": 5,
       "k-final-ve": 6,
       "k-final-er": 5,
-      "k-whole-ye": 3,
-      "k-whole-yue": 4,
+      "k-whole-ye": 5,
+      "k-whole-yue": 6,
       "k-final-an": 6,
       "k-final-en": 5,
       "k-final-in": 5,
       "k-final-un": 5,
       "k-final-vn": 5,
-      "k-whole-yuan": 3,
-      "k-whole-yin": 3,
-      "k-whole-yun": 4,
+      "k-whole-yuan": 5,
+      "k-whole-yin": 5,
+      "k-whole-yun": 6,
       "k-final-ang": 5,
       "k-final-eng": 6,
       "k-final-ing": 6,
       "k-final-ong": 5,
-      "k-whole-ying": 3,
+      "k-whole-ying": 5,
       "k-tone-1": 5,
       "k-tone-2": 6,
       "k-tone-3": 8,
@@ -16011,7 +17138,7 @@
       "书写仅有概念题；正式版必须补笔顺/占格示范及紙筆观察，不用识别题冒充书写达标。",
       "首版不含发音评测；现有朗读目标仅作未来研究资料。",
       "首版 requiredModes 只包含客观题型；朗读目标暂不参与课程、练习和掌握度。",
-      "83个知识点均有至少2道当前可用视觉题，21个声母与24个韵母已有至少5道客观主目标题；其余32项仍不足5道。题量不代表完整听说读写能力。",
+      "83个知识点均有至少2道当前可用视觉题，21个声母、24个韵母与16个整体认读音节已有至少5道客观主目标题；其余16项仍不足5道。题量不代表完整听说读写能力。",
       "第一课有a、o、e各四声的12道标准音听辨，不能代表词语变调、口语或其他韵母四声全面覆盖。",
       "全部客观题已在content/narration.json配中文脚本，本机预生成声音只作中文指令；不合成拉丁拼音示范。旧promptAudioRef保留公开录制规划，实际中文语音由独立清单管理。",
       "纯拼音选项无选项语音引用，答题前不可自动播读以免改变任务或泄露辨听答案。",
@@ -16041,20 +17168,20 @@
       "k-initial-z": 5,
       "k-initial-c": 5,
       "k-initial-s": 5,
-      "k-whole-zi": 3,
-      "k-whole-ci": 3,
-      "k-whole-si": 3,
+      "k-whole-zi": 5,
+      "k-whole-ci": 5,
+      "k-whole-si": 5,
       "k-initial-zh": 5,
       "k-initial-ch": 5,
       "k-initial-sh": 5,
       "k-initial-r": 5,
-      "k-whole-zhi": 3,
-      "k-whole-chi": 3,
-      "k-whole-shi": 3,
-      "k-whole-ri": 3,
-      "k-whole-yi": 3,
-      "k-whole-wu": 3,
-      "k-whole-yu": 3,
+      "k-whole-zhi": 5,
+      "k-whole-chi": 5,
+      "k-whole-shi": 5,
+      "k-whole-ri": 5,
+      "k-whole-yi": 5,
+      "k-whole-wu": 5,
+      "k-whole-yu": 5,
       "k-letter-y": 2,
       "k-letter-w": 2,
       "k-final-ai": 5,
@@ -16066,21 +17193,21 @@
       "k-final-ie": 5,
       "k-final-ve": 5,
       "k-final-er": 5,
-      "k-whole-ye": 3,
-      "k-whole-yue": 3,
+      "k-whole-ye": 5,
+      "k-whole-yue": 5,
       "k-final-an": 5,
       "k-final-en": 5,
       "k-final-in": 5,
       "k-final-un": 5,
       "k-final-vn": 5,
-      "k-whole-yuan": 3,
-      "k-whole-yin": 3,
-      "k-whole-yun": 3,
+      "k-whole-yuan": 5,
+      "k-whole-yin": 5,
+      "k-whole-yun": 5,
       "k-final-ang": 5,
       "k-final-eng": 5,
       "k-final-ing": 5,
       "k-final-ong": 5,
-      "k-whole-ying": 3,
+      "k-whole-ying": 5,
       "k-tone-1": 5,
       "k-tone-2": 6,
       "k-tone-3": 8,
@@ -16102,28 +17229,12 @@
       "rule-er": 2,
       "rule-front-back-nasal": 2
     },
-    "objectiveExerciseCount": 349,
+    "objectiveExerciseCount": 381,
     "insufficientObjectiveReviewKnowledgeIds": [],
     "insufficientObjectiveReleaseKnowledgeIds": [
       "k-tone-0",
-      "k-whole-zi",
-      "k-whole-ci",
-      "k-whole-si",
-      "k-whole-zhi",
-      "k-whole-chi",
-      "k-whole-shi",
-      "k-whole-ri",
-      "k-whole-yi",
-      "k-whole-wu",
-      "k-whole-yu",
       "k-letter-y",
       "k-letter-w",
-      "k-whole-ye",
-      "k-whole-yue",
-      "k-whole-yuan",
-      "k-whole-yin",
-      "k-whole-yun",
-      "k-whole-ying",
       "rule-tone-placement",
       "rule-grid-writing",
       "rule-i-dot",
@@ -16141,10 +17252,10 @@
     "toneListeningExerciseCount": 12,
     "releaseMinimumObjectiveExercisesPerKnowledge": 5,
     "releaseMinimumDistinctObjectiveReviewExercisesPerKnowledge": 2,
-    "audioRequirementCount": 299,
-    "promptAudioRequirementCount": 98,
+    "audioRequirementCount": 324,
+    "promptAudioRequirementCount": 99,
     "optionAudioRequirementCount": 24,
-    "pronunciationAudioRequirementCount": 177,
+    "pronunciationAudioRequirementCount": 201,
     "isolatedInitialTargetCount": 21,
     "isolatedFinalTargetCount": 24,
     "wholeSyllableKnowledgeCoveredCount": 16,
@@ -16202,5 +17313,5 @@
       "rt-14-whole-ying"
     ]
   },
-  "contentVersion": "2026.10.05.9"
+  "contentVersion": "2026.10.05.10"
 }
