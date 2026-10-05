@@ -210,20 +210,10 @@ def test_passing_two_question_review_advances_stage_from_shanghai_completion_day
     assert plan["due_date"] == (completed_on + timedelta(days=3)).isoformat()
 
 
-# BANK-02 IDs are authored content; only historical due-state is seeded in isolated SQLite.
-BANK02_KNOWLEDGE = sorted(
-    {
-        q["primaryKnowledgeId"]
-        for q in load_curriculum()["exercises"]
-        if int(q["id"].rsplit("-", 1)[1]) >= 30
-    }
-)
-
-
-@pytest.mark.parametrize("knowledge_id", BANK02_KNOWLEDGE)
-def test_bank02_actual_content_provides_two_distinct_visual_review_tasks(
-    paired_client, knowledge_id
-):
+# BANK-03 checks all actual knowledge, with only historical due-state seeded in
+# isolated SQLite. Missing standard audio must not leave a one-question review.
+@pytest.mark.parametrize("knowledge_id", [k["id"] for k in load_curriculum()["knowledgeItems"]])
+def test_all_knowledge_has_two_distinct_available_visual_review_tasks(paired_client, knowledge_id):
     client = paired_client
     household_id = _set_due_plan(client, knowledge_id=knowledge_id)
     with storage.transaction() as db:
@@ -245,7 +235,7 @@ def test_bank02_actual_content_provides_two_distinct_visual_review_tasks(
         answered = client.post(
             f"/api/v1/instances/{task['instanceId']}/answer",
             json={
-                "requestId": f"bank02-review-{index}",
+                "requestId": f"bank03-review-{index}",
                 "answerOptionId": question["answer"]["optionId"],
             },
             headers=_headers(client),

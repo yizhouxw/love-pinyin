@@ -11,7 +11,10 @@ const validate = (input, release = false) =>
 
 describe('课程内容的保护门禁', () => {
   it('BANK-02为原先缺题的二十一项提供两道不同视觉复习题，不移除听辨要求', () => {
-    const added = data.exercises.filter((q) => Number(q.id.split('-').at(-1)) >= 30);
+    const added = data.exercises.filter((q) => {
+      const sequence = Number(q.id.split('-').at(-1));
+      return sequence >= 30 && sequence < 40;
+    });
     const affected = new Set(added.map((q) => q.primaryKnowledgeId));
     expect(affected.size).toBe(21);
     for (const id of affected) {
@@ -29,6 +32,33 @@ describe('课程内容的保护门禁', () => {
     expect(neutral.prompt).toContain('爸爸');
     expect(neutral.options.find((o) => o.id === neutral.answer.optionId).label).toBe('ba');
   });
+  it('BANK-03每个知识点至少两道不同可用视觉题，仍保留所有听辨目标', () => {
+    for (const knowledge of data.knowledgeItems) {
+      const visual = data.exercises.filter(
+        (q) => q.primaryKnowledgeId === knowledge.id && q.type !== 'read-aloud' && !q.audioRef,
+      );
+      expect(visual.length, knowledge.id).toBeGreaterThanOrEqual(2);
+      expect(new Set(visual.map((q) => q.prompt)).size, knowledge.id).toBe(visual.length);
+    }
+    expect(data.exercises.filter((q) => q.type === 'listen-choice')).toHaveLength(61);
+    expect(
+      data.knowledgeItems.filter((k) => k.requiredModes.includes('listen-choice')),
+    ).toHaveLength(61);
+    const byKnowledge = (id) =>
+      data.exercises.find(
+        (q) => q.primaryKnowledgeId === id && Number(q.id.split('-').at(-1)) >= 40,
+      );
+    for (const [id, expected] of [
+      ['k-initial-zh', 'zh'],
+      ['k-final-ve', 'üe'],
+      ['k-final-in', 'in'],
+      ['k-whole-yu', 'yu'],
+    ]) {
+      const question = byKnowledge(id);
+      expect(question.options.find((o) => o.id === question.answer.optionId).label).toBe(expected);
+    }
+  });
+
   it('每课至少六道不同视觉练习，保留听辨与知识点门槛', () => {
     for (const lesson of data.lessons) {
       const questions = data.exercises.filter(
