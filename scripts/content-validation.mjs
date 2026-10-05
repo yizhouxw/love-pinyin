@@ -185,6 +185,30 @@ export function validateCurriculum(data, schema, { sourceIds = [], release = fal
     else if (value && typeof value === 'object') Object.values(value).forEach(checkUnicode);
   }
   checkUnicode(data);
+  // These authoring summaries ship with the content and must not silently keep
+  // the old seed-bank numbers when exercises are added or removed.
+  const coverage = data.coverage;
+  if (coverage) {
+    assert(coverage.exerciseCount === data.exercises.length, 'coverage: stale exercise count');
+    assert(
+      coverage.objectiveExerciseCount ===
+        data.exercises.filter((q) => q.type !== 'read-aloud').length,
+      'coverage: stale objective exercise count',
+    );
+    assert(
+      coverage.audioRequirementCount === audio.size,
+      'coverage: stale audio requirement count',
+    );
+    for (const k of data.knowledgeItems) {
+      const primary = data.exercises.filter((q) => q.primaryKnowledgeId === k.id);
+      assert(
+        coverage.primaryExerciseCounts?.[k.id] === primary.length &&
+          coverage.objectivePrimaryExerciseCounts?.[k.id] ===
+            primary.filter((q) => q.type !== 'read-aloud').length,
+        `coverage: stale primary count for ${k.id}`,
+      );
+    }
+  }
   if (release) {
     const rows = [
       data,

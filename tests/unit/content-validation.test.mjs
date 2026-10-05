@@ -10,9 +10,41 @@ const validate = (input, release = false) =>
   validateCurriculum(input, schema, { sourceIds, release });
 
 describe('课程内容的保护门禁', () => {
+  it('每课至少六道不同视觉练习，保留听辨与知识点门槛', () => {
+    for (const lesson of data.lessons) {
+      const questions = data.exercises.filter(
+        (q) => q.lessonId === lesson.id && q.type !== 'read-aloud' && !q.audioRef,
+      );
+      expect(questions.length, lesson.id).toBeGreaterThanOrEqual(6);
+      expect(new Set(questions.map((q) => q.prompt)).size, lesson.id).toBe(questions.length);
+    }
+    expect(validate(data, true)).toContain(
+      'release: seed bank needs at least 5 distinct objective primary exercises per knowledge item',
+    );
+  });
+
+  it('新增拼写题保留两点、省略两点及复韵母标调的不同规则', () => {
+    const answer = (id) => {
+      const q = data.exercises.find((item) => item.id === id);
+      return q.options.find((option) => option.id === q.answer.optionId).label;
+    };
+    expect(answer('q-04-23')).toBe('lǘ');
+    expect(answer('q-06-22')).toBe('xǔ');
+    expect(answer('q-11-23')).toBe('jiǔ');
+    expect(answer('q-12-21')).toBe('lüè');
+  });
+
   it('当前草稿结构成立，但不冒称可正式发布', () => {
     expect(validate(data)).toEqual([]);
     expect(validate(data, true)).toContain('release: teacher review incomplete');
+  });
+  it('新增或删除题目时不能保留过期的覆盖率摘要', () => {
+    const stale = structuredClone(data);
+    stale.coverage.exerciseCount -= 1;
+    stale.coverage.objectivePrimaryExerciseCounts['k-final-o'] -= 1;
+    const errors = validate(stale);
+    expect(errors).toContain('coverage: stale exercise count');
+    expect(errors).toContain('coverage: stale primary count for k-final-o');
   });
   it('发音评测不是首版发布门禁', () => {
     const errors = validate(data, true).join('\n');

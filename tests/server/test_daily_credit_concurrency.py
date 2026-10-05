@@ -44,6 +44,12 @@ def test_same_exercise_credit_is_atomic_per_shanghai_day_across_devices(paired_c
         tablet_session = tablet.post(
             "/api/v1/sessions", json={"lessonId": "lesson-01"}, headers=headers(tablet)
         ).json()
+        # Freeze another instance before any answer. Normal practice rotates
+        # completed questions now; the credit rule still applies to the same
+        # frozen exercise when submitted after midnight.
+        next_session = parent.post(
+            "/api/v1/sessions", json={"lessonId": "lesson-01"}, headers=headers(parent)
+        ).json()
         parent_task = parent_session["tasks"][0]
         tablet_task = tablet_session["tasks"][0]
         assert parent_task["exercise"]["id"] == tablet_task["exercise"]["id"]
@@ -69,9 +75,6 @@ def test_same_exercise_credit_is_atomic_per_shanghai_day_across_devices(paired_c
         # UTC 16:00 is the next Asia/Shanghai business day; the same exercise
         # may earn exactly one new credit after that boundary.
         ControlledDateTime.value = before_midnight + timedelta(seconds=1)
-        next_session = parent.post(
-            "/api/v1/sessions", json={"lessonId": "lesson-01"}, headers=headers(parent)
-        ).json()
         next_task = next_session["tasks"][0]
         assert next_task["exercise"]["id"] == exercise_id
         next_answer = parent.post(

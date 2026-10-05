@@ -8,7 +8,9 @@ const narration = JSON.parse(readFileSync('content/narration.json', 'utf8'));
 describe('初学儿童的中文朗读脚本', () => {
   it('覆盖全部客观题和汉字选项，将拼音保留为视觉目标', () => {
     expect(validateNarration(curriculum, narration)).toEqual([]);
-    expect(Object.keys(narration.exercises)).toHaveLength(117);
+    expect(Object.keys(narration.exercises)).toHaveLength(
+      curriculum.exercises.filter((question) => question.type !== 'read-aloud').length,
+    );
     expect(narration.exercises['q-03-05'].visualCue).toBe('b ＋ ā');
     expect(narration.exercises['q-13-10'].options).toEqual({
       a: '有两点的那一组',

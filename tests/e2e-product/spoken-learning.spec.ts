@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+import curriculum from '../../content/curriculum.json' with { type: 'json' };
 import { test } from '../support/real-server';
 
 // This suite requires actual prepared family audio. Missing files fail rather than skip.
@@ -59,7 +60,9 @@ test('VOICE-05: actual narration and course audio decode, replay and separate fr
   expect(decoded.unavailable).toEqual([]);
   expect(decoded.unavailableLessons).toEqual([]);
   expect(decoded.lessonCount).toBe(14);
-  expect(decoded.assets.filter((asset) => asset.id.startsWith('prompt-'))).toHaveLength(117);
+  expect(decoded.assets.filter((asset) => asset.id.startsWith('prompt-'))).toHaveLength(
+    curriculum.exercises.filter((question) => question.type !== 'read-aloud').length,
+  );
   for (const asset of decoded.assets) {
     expect(asset.seconds, asset.id).toBeGreaterThan(0.1);
     expect(asset.peak, asset.id).toBeGreaterThan(0.001);
@@ -201,4 +204,54 @@ test('CORRECTION-01: correcting a first mistake gives feedback without another s
   const saved = JSON.parse(await backup.inputValue());
   expect(saved.attempts).toHaveLength(1);
   expect(saved.attempts[0].first_try_correct).toBe(0);
+});
+
+test('BANK-01: the former two-question nasal lesson completes six spoken tasks', async ({
+  page,
+  appUrl,
+}) => {
+  await page.goto(appUrl);
+  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
+  expect(code).toBeTruthy();
+  await page.getByLabel('家长配对码').fill(code!);
+  await page.getByRole('button', { name: '连接家庭' }).click();
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByRole('combobox').selectOption('lesson-13');
+  const saved = page.waitForResponse(
+    (response) =>
+      response.url().endsWith('/household/current-lesson') && response.request().method() === 'PUT',
+  );
+  await page.getByRole('button', { name: '保存', exact: true }).click();
+  expect((await saved).ok()).toBe(true);
+  await page.getByRole('button', { name: '返回学习', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: '第 13 课 · an en in un ün', exact: true }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: '开始今天的练习' }).click();
+  const lesson = curriculum.lessons.find((item) => item.id === 'lesson-13')!;
+  const questions = lesson.exerciseIds
+    .map((id) => curriculum.exercises.find((q) => q.id === id)!)
+    .filter((q) => q.type !== 'read-aloud' && !q.audioRef);
+  expect(questions).toHaveLength(6);
+  for (const [index, question] of questions.entries()) {
+    await expect(page.locator('.play-nav strong')).toHaveText(`第 ${index + 1} / 6 关`);
+    await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 15_000 });
+    const choice = question.options.findIndex((option) => option.id === question.answer.optionId);
+    await page.locator('.game-option').nth(choice).click();
+    await expect(page.getByText('答对啦！', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: '继续 →', exact: true }).click();
+  }
+  await expect(page.getByRole('heading', { name: '今天的探索完成啦！' })).toBeVisible();
+  await expect(page.getByLabel('本次练习小结')).toContainText('独立答对：6 题');
+  await page.getByRole('button', { name: '回到小岛' }).click();
+  const backup = await page.evaluate(async () => {
+    const response = await fetch('/api/v1/profiles/export');
+    if (!response.ok) throw new Error('family export unavailable');
+    return response.json();
+  });
+  expect(
+    backup.attempts.map((attempt: { exercise_id: string }) => attempt.exercise_id).sort(),
+  ).toEqual(questions.map((q) => q.id).sort());
 });

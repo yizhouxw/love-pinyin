@@ -10,6 +10,37 @@ MASTERY_RULE_VERSION = "mastery-v1"
 BUSINESS_TIMEZONE = ZoneInfo("Asia/Shanghai")
 
 
+@dataclass(frozen=True)
+class PracticeCompletion:
+    exercise_id: str
+    occurred_at: datetime
+
+
+def plan_practice(
+    eligible_ids: list[str], completions: list[PracticeCompletion], limit: int = 6
+) -> list[str]:
+    """Rotate authored tasks by exposure, independently from mastery or correctness."""
+    if limit < 1:
+        raise ValueError("practice limit must be positive")
+    candidates = list(dict.fromkeys(eligible_ids))
+    counts = dict.fromkeys(candidates, 0)
+    latest: dict[str, float] = {}
+    for item in completions:
+        if item.exercise_id not in counts:
+            continue
+        if item.occurred_at.tzinfo is None or item.occurred_at.utcoffset() is None:
+            raise ValueError("practice history requires timezone-aware timestamps")
+        counts[item.exercise_id] += 1
+        latest[item.exercise_id] = max(
+            latest.get(item.exercise_id, float("-inf")), item.occurred_at.timestamp()
+        )
+    # Python's stable sort preserves content order when both history keys tie.
+    return sorted(
+        candidates,
+        key=lambda exercise_id: (counts[exercise_id], latest.get(exercise_id, float("-inf"))),
+    )[:limit]
+
+
 def business_date(instant: datetime) -> date:
     """Return the Shanghai calendar date for an aware timestamp."""
     if instant.tzinfo is None or instant.utcoffset() is None:

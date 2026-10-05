@@ -15,7 +15,14 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from server.audio_assets import _registered_path, _verified_file, audio_response
 from server.content import load_curriculum, map_by_id
-from server.domain import Event, business_date, calculate_mastery, next_review
+from server.domain import (
+    Event,
+    PracticeCompletion,
+    business_date,
+    calculate_mastery,
+    next_review,
+    plan_practice,
+)
 from server.learning_audio import learning_audio_response, learning_audio_status
 from server.storage import connect, now_iso, public_profile, transaction
 
@@ -1485,9 +1492,6 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
     ]
     if not questions:
         raise HTTPException(409, detail={"code": "LESSON_NOT_READY"})
-    question_set = questions[:6]
-    if not question_set:
-        raise HTTPException(409, detail={"code": "LESSON_NOT_READY"})
     session_id = secrets.token_urlsafe(18)
     now = now_iso()
     tasks = []
@@ -1501,6 +1505,23 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         ).fetchone()
         if household["rounds_since_break"] >= 2:
             raise HTTPException(409, detail={"code": "REST_REQUIRED"})
+        history = db.execute(
+            """SELECT i.exercise_id, COALESCE(a.occurred_at,s.skipped_at) AS completed_at
+               FROM exercise_instances i
+               LEFT JOIN attempts a ON a.instance_id=i.id
+               LEFT JOIN skipped_instances s ON s.instance_id=i.id
+               WHERE i.household_id=? AND i.lesson_id=?
+                 AND (a.id IS NOT NULL OR s.instance_id IS NOT NULL)""",
+            (device["household_id"], lesson["id"]),
+        ).fetchall()
+        selected_ids = plan_practice(
+            [q["id"] for q in questions],
+            [
+                PracticeCompletion(row["exercise_id"], datetime.fromisoformat(row["completed_at"]))
+                for row in history
+            ],
+        )
+        question_set = [by_id[exercise_id] for exercise_id in selected_ids]
         for q in question_set:
             instance_id = secrets.token_urlsafe(18)
             db.execute(
