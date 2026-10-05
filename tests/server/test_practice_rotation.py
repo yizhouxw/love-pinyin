@@ -122,7 +122,9 @@ def test_every_lesson_has_six_real_tasks_and_all_authored_visual_tasks_are_reach
     assert client.get("/api/v1/profiles/progress").json()["attempts"] == []
 
 
-def test_resumed_lesson_keeps_frozen_identity_across_content_update(paired_client, monkeypatch):
+def test_resumed_lesson_keeps_frozen_identity_across_content_update(
+    paired_client, monkeypatch, tmp_path
+):
     client = paired_client
     original = post(client, "/api/v1/sessions", {})
     resumed = client.get("/api/v1/sessions/current").json()
@@ -130,6 +132,28 @@ def test_resumed_lesson_keeps_frozen_identity_across_content_update(paired_clien
         assert resumed[key] == original[key]
     assert resumed["reviewKnowledgeId"] is None
     assert "tasks_json" not in resumed and "device_id" not in resumed
+    # Simulate the mandatory snapshot step before a future content upgrade.
+    import hashlib
+    import json
+
+    from server import content_history
+
+    snapshot = {
+        "contentVersion": original["contentVersion"],
+        "exercises": load_curriculum()["exercises"],
+    }
+    raw = json.dumps(snapshot).encode()
+    (tmp_path / "before.json").write_bytes(raw)
+    index = [
+        {
+            "contentVersion": original["contentVersion"],
+            "file": "before.json",
+            "sha256": hashlib.sha256(raw).hexdigest(),
+        }
+    ]
+    monkeypatch.setattr(content_history, "HISTORY_DIR", tmp_path)
+    monkeypatch.setattr(content_history, "revision_index", lambda: index)
+    content_history.archived_exercises.cache_clear()
     newer = deepcopy(load_curriculum())
     newer["contentVersion"] = "test-newer-content"
     frozen_task = original["tasks"][0]

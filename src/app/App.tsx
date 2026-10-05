@@ -4,6 +4,8 @@ import { audioPlayer } from '../platform/audio/browser-audio-player';
 import narrationData from '../../content/narration.json';
 import { useLearningVoice, VoiceButton, VoiceFailure, type LearningAudio } from './learning-voice';
 import './styles.css';
+import { WritingChoice, WritingWorkshop } from './writing';
+import type { WritingCatalog, WritingOption } from '../domain/writing';
 import { guestApi, isGuest, startGuest, leaveGuest, learningAssetUrl } from '../platform/guest';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- API JSON mirrors the versioned content schema. */
@@ -19,7 +21,7 @@ type Bootstrap = {
     [key: string]: unknown;
   };
 };
-type Option = { id: string; label: string };
+type Option = { id: string; label: string; writing?: WritingOption };
 type Lesson = {
   id: string;
   order: number;
@@ -97,6 +99,7 @@ type AttemptHistoryPage = {
   error: boolean;
 };
 type Curriculum = {
+  writing?: WritingCatalog;
   lessons: Lesson[];
   knowledgeItems: Knowledge[];
   exercises: Exercise[];
@@ -129,11 +132,16 @@ function GameOptionContent({
   type,
   label,
   initials,
+  writing,
+  writingCatalog,
 }: {
   type: string;
   label: string;
   initials: string[];
+  writing?: WritingOption;
+  writingCatalog?: WritingCatalog;
 }) {
+  if (writing) return <WritingChoice catalog={writingCatalog} value={writing} />;
   if (type === 'blend-choice') {
     const parts = splitPinyinCandidate(label, initials);
     return (
@@ -869,6 +877,8 @@ function LearningApp() {
                 >
                   <span className="option-index">{String.fromCharCode(65 + index)}</span>
                   <GameOptionContent
+                    writing={option.writing}
+                    writingCatalog={curriculum?.writing}
                     type={question.type}
                     label={option.label}
                     initials={curriculum?.inventory?.initials ?? []}
@@ -997,6 +1007,7 @@ function LearningApp() {
           {answer && (
             <button
               className="next-button"
+              disabled={busy}
               onClick={() =>
                 void act(async () => {
                   stopVoice();
@@ -1197,6 +1208,8 @@ function LearningApp() {
               }
               audioRequirements={curriculum?.audioRequirements ?? []}
               familyAudio={learningAudio?.lessons[lessonViewId]}
+              writingCatalog={curriculum?.writing}
+              soundEnabled={progress?.settings.soundEnabled !== false}
               masteryById={masteryById}
               busy={busy}
               withinCurrentRange={Boolean(
@@ -1411,6 +1424,8 @@ function LessonDetail({
   knowledge,
   audioRequirements,
   familyAudio,
+  writingCatalog,
+  soundEnabled,
   masteryById,
   busy,
   withinCurrentRange,
@@ -1423,6 +1438,8 @@ function LessonDetail({
   knowledge: Knowledge[];
   audioRequirements: AudioRequirement[];
   familyAudio?: LearningAudio['lessons'][string];
+  writingCatalog?: WritingCatalog;
+  soundEnabled: boolean;
   masteryById: Map<string, Progress['mastery'][number]>;
   busy: boolean;
   withinCurrentRange: boolean;
@@ -1531,6 +1548,13 @@ function LessonDetail({
           </details>
         </div>
       </section>
+      {writingCatalog && (
+        <WritingWorkshop
+          catalog={writingCatalog}
+          lessonId={lesson.id}
+          soundEnabled={soundEnabled}
+        />
+      )}
       <ul className="lesson-objectives">
         {lesson.objectives.map((objective) => (
           <li key={objective}>{objective}</li>

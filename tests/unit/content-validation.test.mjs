@@ -16,7 +16,7 @@ describe('课程内容的保护门禁', () => {
       (q) => Number(q.id.split('-').at(-1)) >= 120 && Number(q.id.split('-').at(-1)) < 140,
     );
     expect(added).toHaveLength(40);
-    expect(data.coverage.insufficientObjectiveReleaseKnowledgeIds).toEqual(['rule-grid-writing']);
+    expect(data.coverage.insufficientObjectiveReleaseKnowledgeIds).toEqual([]);
     const answer = (id) => {
       const q = added.find((q) => q.id === id);
       return q.options.find((o) => o.id === q.answer.optionId).label;
@@ -353,7 +353,7 @@ describe('课程内容的保护门禁', () => {
       expect(questions.length, lesson.id).toBeGreaterThanOrEqual(6);
       expect(new Set(questions.map((q) => q.prompt)).size, lesson.id).toBe(questions.length);
     }
-    expect(validate(data, true)).toContain(
+    expect(validate(data, true)).not.toContain(
       'release: seed bank needs at least 5 distinct objective primary exercises per knowledge item',
     );
   });
@@ -369,10 +369,11 @@ describe('课程内容的保护门禁', () => {
     expect(answer('q-12-21')).toBe('lüè');
   });
 
-  it('当前草稿结构成立，但不冒称可正式发布', () => {
+  it('内容结构成立，但最新课标原文仍阻止正式发布', () => {
+    expect(validate(data, true).length).toBeGreaterThan(0);
     expect(validate(data)).toEqual([]);
     expect(validate(data, true).join(' ')).not.toMatch(/teacher|review evidence/);
-    expect(validate(data, true)).toContain(
+    expect(validate(data, true)).not.toContain(
       'release: seed bank needs at least 5 distinct objective primary exercises per knowledge item',
     );
   });

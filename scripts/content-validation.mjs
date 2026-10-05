@@ -134,7 +134,9 @@ export function validateCurriculum(data, schema, { sourceIds = [], release = fal
       const options = new Set(q.options.map((o) => o.id));
       assert(options.size === q.options.length && options.size >= 2, `${q.id}: invalid options`);
       assert(
-        new Set(q.options.map((o) => o.label)).size === q.options.length,
+        new Set(
+          q.options.map((o) => JSON.stringify([o.label, o.writing?.glyphId, o.writing?.offsetY])),
+        ).size === q.options.length,
         `${q.id}: duplicate option labels`,
       );
       assert(options.has(q.answer.optionId), `${q.id}: answer not in options`);

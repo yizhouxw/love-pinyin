@@ -118,6 +118,8 @@ test('DATA-01: old guest tab upgrades and keeps saved answers after reload', asy
   await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 15000 });
   await page.locator('.game-option').first().press('Enter');
   await expect(page.locator('.feedback')).toBeVisible();
+  // Wait for the queued progress read to persist before constructing an old cache.
+  await expect(page.getByRole('button', { name: '继续 →', exact: true })).toBeEnabled();
   await page.evaluate(() => {
     const cached = JSON.parse(sessionStorage.getItem('lp.guest.v1')!);
     cached.state.contentVersion = cached.state.profile.contentVersion = '2026.10.05.10';

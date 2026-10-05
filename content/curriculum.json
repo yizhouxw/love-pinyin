@@ -982,7 +982,8 @@
         "q-01-82",
         "q-01-83",
         "q-01-84",
-        "q-01-85"
+        "q-01-85",
+        "q-01-140"
       ],
       "readingTargetIds": [
         "rt-01-a1",
@@ -1082,7 +1083,8 @@
         "q-03-120",
         "q-03-121",
         "q-03-122",
-        "q-03-123"
+        "q-03-123",
+        "q-03-140"
       ],
       "readingTargetIds": [
         "rt-03-ba1",
@@ -1230,7 +1232,8 @@
         "q-06-74",
         "q-06-75",
         "q-06-120",
-        "q-06-121"
+        "q-06-121",
+        "q-06-140"
       ],
       "readingTargetIds": [
         "rt-06-qi1",
@@ -14256,6 +14259,135 @@
       "license": "MIT",
       "promptAudioRef": "audio-prompt-9574fcdd76fa",
       "audioRef": "audio-syllable-er4"
+    },
+    {
+      "id": "q-01-140",
+      "lessonId": "lesson-01",
+      "type": "symbol-choice",
+      "prompt": "观察 a，选出四线三格位置正确的字卡。",
+      "primaryKnowledgeId": "rule-grid-writing",
+      "knowledgeIds": ["rule-grid-writing"],
+      "options": [
+        {
+          "id": "a",
+          "label": "a",
+          "writing": {
+            "glyphId": "v1-a",
+            "offsetY": -60,
+            "description": "字母放在上格。"
+          }
+        },
+        {
+          "id": "b",
+          "label": "a",
+          "writing": {
+            "glyphId": "v1-a",
+            "offsetY": 0,
+            "description": "字母放在中格。"
+          }
+        },
+        {
+          "id": "c",
+          "label": "a",
+          "writing": {
+            "glyphId": "v1-a",
+            "offsetY": 60,
+            "description": "字母放在下格。"
+          }
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-e9c27d1805e4"
+    },
+    {
+      "id": "q-03-140",
+      "lessonId": "lesson-03",
+      "type": "symbol-choice",
+      "prompt": "观察 b，选出四线三格位置正确的字卡。",
+      "primaryKnowledgeId": "rule-grid-writing",
+      "knowledgeIds": ["rule-grid-writing"],
+      "options": [
+        {
+          "id": "a",
+          "label": "b",
+          "writing": {
+            "glyphId": "v1-b",
+            "offsetY": 0,
+            "description": "长竖从上格写到第三条线，圆肚子在中格。"
+          }
+        },
+        {
+          "id": "b",
+          "label": "b",
+          "writing": {
+            "glyphId": "v1-b",
+            "offsetY": 60,
+            "description": "长竖从中格写到下格，圆肚子在下格。"
+          }
+        },
+        {
+          "id": "c",
+          "label": "b",
+          "writing": {
+            "glyphId": "v1-b",
+            "offsetY": -60,
+            "description": "长竖超出第一条线，圆肚子在上格。"
+          }
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-8e9ae65224ef"
+    },
+    {
+      "id": "q-06-140",
+      "lessonId": "lesson-06",
+      "type": "symbol-choice",
+      "prompt": "观察 j，选出四线三格位置正确的字卡。",
+      "primaryKnowledgeId": "rule-grid-writing",
+      "knowledgeIds": ["rule-grid-writing"],
+      "options": [
+        {
+          "id": "a",
+          "label": "j",
+          "writing": {
+            "glyphId": "v1-j",
+            "offsetY": 60,
+            "description": "点在中格，竖的下端超出第四条线。"
+          }
+        },
+        {
+          "id": "b",
+          "label": "j",
+          "writing": {
+            "glyphId": "v1-j",
+            "offsetY": -60,
+            "description": "点超出第一条线，下端留在中格。"
+          }
+        },
+        {
+          "id": "c",
+          "label": "j",
+          "writing": {
+            "glyphId": "v1-j",
+            "offsetY": 0,
+            "description": "点在上格，竖从中格伸到下格。"
+          }
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-a8efcfcd7d0c"
     }
   ],
   "readingTargets": [
@@ -18309,6 +18441,24 @@
       "transcript": "èr",
       "kind": "syllable",
       "knowledgeIds": ["rule-er", "k-tone-4"]
+    },
+    {
+      "id": "audio-prompt-e9c27d1805e4",
+      "transcript": "观察 a，选出四线三格位置正确的字卡。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-grid-writing"]
+    },
+    {
+      "id": "audio-prompt-8e9ae65224ef",
+      "transcript": "观察 b，选出四线三格位置正确的字卡。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-grid-writing"]
+    },
+    {
+      "id": "audio-prompt-a8efcfcd7d0c",
+      "transcript": "观察 j，选出四线三格位置正确的字卡。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-grid-writing"]
     }
   ],
   "supplementalTopics": [
@@ -18426,12 +18576,16 @@
   "coverage": {
     "purpose": "authored-practice-bank-with-local-standard-audio",
     "knowledgeItemCount": 83,
-    "exerciseCount": 449,
+    "exerciseCount": 452,
     "readingTargetCount": 79,
     "primaryExerciseCounts": {
       "k-final-a": 6,
       "k-final-o": 5,
       "k-final-e": 6,
+      "k-tone-1": 5,
+      "k-tone-2": 6,
+      "k-tone-3": 8,
+      "k-tone-4": 10,
       "k-final-i": 6,
       "k-final-u": 5,
       "k-final-v": 6,
@@ -18439,6 +18593,7 @@
       "k-initial-p": 5,
       "k-initial-m": 6,
       "k-initial-f": 5,
+      "k-tone-0": 5,
       "k-initial-d": 5,
       "k-initial-t": 6,
       "k-initial-n": 6,
@@ -18492,15 +18647,10 @@
       "k-final-ing": 6,
       "k-final-ong": 5,
       "k-whole-ying": 5,
-      "k-tone-1": 5,
-      "k-tone-2": 6,
-      "k-tone-3": 8,
-      "k-tone-4": 10,
       "rule-tone-placement": 5,
-      "rule-grid-writing": 2,
+      "rule-grid-writing": 5,
       "rule-i-dot": 5,
       "rule-two-part": 5,
-      "k-tone-0": 5,
       "rule-confusable-shapes": 5,
       "rule-three-part": 6,
       "rule-jqx-v": 6,
@@ -18518,10 +18668,10 @@
       "标准音直接采用cmguo/PinYinSound，家庭课程和中文指令已接入本机声音；题库数量、书写与词义迁移继续完善。",
       "每个基础知识项至少有两道可用视觉主目标题，不等于辨听、拼读、书写、迁移等维度充分覆盖。",
       "本库不是全部合法普通话音节词典，不可据此生成任意拼接。",
-      "书写仅有概念题；正式版必须补笔顺/占格示范及紙筆观察，不用识别题冒充书写达标。",
+      "已有26个无调基础字母的原创笔画、占格与纸笔引导；带调书写示范和真机仍待补齐，不用识别题冒充书写达标。",
       "首版不含发音评测；现有朗读目标仅作未来研究资料。",
       "首版 requiredModes 只包含客观题型；朗读目标暂不参与课程、练习和掌握度。",
-      "83个知识点均有至少2道当前可用视觉题；82项已有至少5道客观主目标题，仅四线三格待随书写示范补齐。题量不代表完整听说读写能力。",
+      "83个知识点均有至少5道客观主目标题；题量不代表完整听说读写能力。",
       "第一课有a、o、e各四声的12道标准音听辨，不能代表词语变调、口语或其他韵母四声全面覆盖。",
       "全部客观题已在content/narration.json配中文脚本，本机预生成声音只作中文指令；不合成拉丁拼音示范。旧promptAudioRef保留公开录制规划，实际中文语音由独立清单管理。",
       "纯拼音选项无选项语音引用，答题前不可自动播读以免改变任务或泄露辨听答案。",
@@ -18531,6 +18681,10 @@
       "k-final-a": 5,
       "k-final-o": 5,
       "k-final-e": 5,
+      "k-tone-1": 5,
+      "k-tone-2": 6,
+      "k-tone-3": 8,
+      "k-tone-4": 10,
       "k-final-i": 5,
       "k-final-u": 5,
       "k-final-v": 5,
@@ -18538,6 +18692,7 @@
       "k-initial-p": 5,
       "k-initial-m": 5,
       "k-initial-f": 5,
+      "k-tone-0": 5,
       "k-initial-d": 5,
       "k-initial-t": 5,
       "k-initial-n": 5,
@@ -18591,15 +18746,10 @@
       "k-final-ing": 5,
       "k-final-ong": 5,
       "k-whole-ying": 5,
-      "k-tone-1": 5,
-      "k-tone-2": 6,
-      "k-tone-3": 8,
-      "k-tone-4": 10,
       "rule-tone-placement": 5,
-      "rule-grid-writing": 2,
+      "rule-grid-writing": 5,
       "rule-i-dot": 5,
       "rule-two-part": 5,
-      "k-tone-0": 5,
       "rule-confusable-shapes": 5,
       "rule-three-part": 5,
       "rule-jqx-v": 5,
@@ -18612,14 +18762,14 @@
       "rule-er": 5,
       "rule-front-back-nasal": 5
     },
-    "objectiveExerciseCount": 421,
+    "objectiveExerciseCount": 424,
     "insufficientObjectiveReviewKnowledgeIds": [],
-    "insufficientObjectiveReleaseKnowledgeIds": ["rule-grid-writing"],
+    "insufficientObjectiveReleaseKnowledgeIds": [],
     "toneListeningExerciseCount": 12,
     "releaseMinimumObjectiveExercisesPerKnowledge": 5,
     "releaseMinimumDistinctObjectiveReviewExercisesPerKnowledge": 2,
-    "audioRequirementCount": 364,
-    "promptAudioRequirementCount": 133,
+    "audioRequirementCount": 367,
+    "promptAudioRequirementCount": 136,
     "optionAudioRequirementCount": 26,
     "pronunciationAudioRequirementCount": 205,
     "isolatedInitialTargetCount": 21,
@@ -18679,5 +18829,5 @@
       "rt-14-whole-ying"
     ]
   },
-  "contentVersion": "2026.10.05.11"
+  "contentVersion": "2026.10.05.12"
 }

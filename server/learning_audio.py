@@ -14,6 +14,7 @@ from fastapi import HTTPException
 from fastapi.responses import Response, StreamingResponse
 
 from server.audio_assets import _byte_range, _chunks, _verified_file
+from server.content import load_writing
 
 ROOT = Path(__file__).resolve().parents[1]
 NARRATION_PATH = ROOT / "content" / "narration.json"
@@ -43,6 +44,12 @@ def narration_scripts() -> dict[str, str]:
         scripts[f"hint-{question_id}"] = item["hint"]
         for option_id, text in item.get("options", {}).items():
             scripts[f"option-{question_id}-{option_id}"] = text
+    writing = load_writing()
+    scripts.update({f"writing-ui-{key}": text for key, text in writing["ui"].items()})
+    for glyph_id, glyph in writing["glyphs"].items():
+        scripts[f"writing-{glyph_id}-placement"] = glyph["description"]
+        for i, stroke in enumerate(glyph["strokes"], 1):
+            scripts[f"writing-{glyph_id}-stroke-{i}"] = stroke["instruction"]
     for asset_id, text in scripts.items():
         if not _ID.fullmatch(asset_id) or not isinstance(text, str) or not text.strip():
             raise ValueError(f"invalid narration script: {asset_id}")

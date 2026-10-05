@@ -1,0 +1,895 @@
+{
+  "version": 1,
+  "license": "MIT",
+  "source": {
+    "sourceId": "src-pep-2024-g1a",
+    "pages": [21, 23, 25, 26, 32, 34, 36, 38, 40],
+    "sha256": "cc43f42bd4271a6d57811922816aa8abafec31cd2c0e97423ac272676df7fd58",
+    "note": "原创笔画轨迹；教材仅核对笔顺、占格与单层字形，不复制扫描素材。"
+  },
+  "grid": {
+    "lines": [20, 80, 140, 200],
+    "letterWidth": 150
+  },
+  "ui": {
+    "intro": "四条线分成上中下三格。先选字母，再点向右的箭头，一笔一笔看。蓝点是起笔的地方，箭头告诉你往哪边写。",
+    "paper": "拿出纸和铅笔，坐正，放松手。先用手指跟着示范比画，再在四线三格里慢慢写。写好后看看占格和笔画，也可以请家长一起看。这项练习不打分。",
+    "full": "这是完整的字形。点第一笔，可以重新一笔一笔看。",
+    "choose": "点一个字母或组合，再听占格，或点箭头看每一笔。"
+  },
+  "glyphs": {
+    "v1-a": {
+      "symbol": "a",
+      "lessonId": "lesson-01",
+      "sourcePage": 21,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M 100 88.301 C 85 74.926 40 74.926 40 109.319 C 40 145.622 86 145.622 100 130.337",
+          "start": [100, 88.301],
+          "guide": "M 98 85.435 L 79 82.569",
+          "instruction": "先写左半圆，从右上方向左绕到下面。"
+        },
+        {
+          "d": "M100 80 L100 132 Q100 140 108 140",
+          "start": [100, 80],
+          "guide": "M100 90 L100 113",
+          "instruction": "再写竖右弯，从上往下，到底部稍向右弯。"
+        }
+      ]
+    },
+    "v1-o": {
+      "symbol": "o",
+      "lessonId": "lesson-01",
+      "sourcePage": 21,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M72 80 C28 80 28 140 72 140 C116 140 116 80 72 80",
+          "start": [72, 80],
+          "guide": "M64 81 L46 91",
+          "instruction": "从上方起笔，先向左，再向下绕一圈，回到起点。"
+        }
+      ]
+    },
+    "v1-e": {
+      "symbol": "e",
+      "lessonId": "lesson-01",
+      "sourcePage": 21,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M 38 108.89 L 104 108.89 C 104 70.847 38 69.896 38 108.89 C 38 144.08 85 146.933 104 129.814",
+          "start": [38, 108.89],
+          "guide": "M 49 108.89 L 75 108.89",
+          "instruction": "从中间起笔，先向右写横，再向上、向左绕下来，一笔写完。"
+        }
+      ]
+    },
+    "v1-i": {
+      "symbol": "i",
+      "lessonId": "lesson-02",
+      "sourcePage": 23,
+      "placement": "上中格",
+      "description": "这个字母占上格和中格。看清伸到上格的部分，底部到第三条线。",
+      "strokes": [
+        {
+          "d": "M75 80 L75 140",
+          "start": [75, 80],
+          "guide": "M75 90 L75 115",
+          "instruction": "先从第二条线往下写竖，到第三条线。"
+        },
+        {
+          "d": "M75 55 L75 56",
+          "start": [75, 55],
+          "guide": "M60 43 L70 52",
+          "instruction": "再在竖的上方点一个点，点放在上格。"
+        }
+      ]
+    },
+    "v1-u": {
+      "symbol": "u",
+      "lessonId": "lesson-02",
+      "sourcePage": 23,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M40 80 L40 120 Q40 140 67 140 Q96 140 100 120",
+          "start": [40, 80],
+          "guide": "M40 90 L40 114",
+          "instruction": "先写竖右弯，从上往下，再沿底部向右弯。"
+        },
+        {
+          "d": "M100 80 L100 140",
+          "start": [100, 80],
+          "guide": "M100 89 L100 114",
+          "instruction": "再在右边从上往下写竖。"
+        }
+      ]
+    },
+    "v1-v": {
+      "symbol": "ü",
+      "lessonId": "lesson-02",
+      "sourcePage": 23,
+      "placement": "上中格",
+      "description": "下面的部分写在中格，上面两点放在上格，不能少写。",
+      "strokes": [
+        {
+          "d": "M40 80 L40 120 Q40 140 67 140 Q96 140 100 120",
+          "start": [40, 80],
+          "guide": "M40 90 L40 114",
+          "instruction": "先写竖右弯，在中格向下再向右弯。"
+        },
+        {
+          "d": "M100 80 L100 140",
+          "start": [100, 80],
+          "guide": "M100 90 L100 113",
+          "instruction": "再在右边从上往下写竖。"
+        },
+        {
+          "d": "M48 55 L48 56",
+          "start": [48, 55],
+          "guide": "M33 43 L43 52",
+          "instruction": "第三笔在左上方点一点。"
+        },
+        {
+          "d": "M92 55 L92 56",
+          "start": [92, 55],
+          "guide": "M107 43 L97 52",
+          "instruction": "第四笔在右上方点一点，两点一样高，都在上格。"
+        }
+      ]
+    },
+    "v1-b": {
+      "symbol": "b",
+      "lessonId": "lesson-03",
+      "sourcePage": 25,
+      "placement": "上中格",
+      "description": "这个字母占上格和中格。看清伸到上格的部分，底部到第三条线。",
+      "strokes": [
+        {
+          "d": "M40 32 L40 140",
+          "start": [40, 32],
+          "guide": "M40 43 L40 67",
+          "instruction": "先从上格往下写竖，到第三条线。"
+        },
+        {
+          "d": "M 40 94.885 C 61 68.547 106 79.277 106 110.492 C 106 142.683 63 148.535 40 128.051",
+          "start": [40, 94.885],
+          "guide": "M 47 87.081 L 68 83.179",
+          "instruction": "再写右半圆，圆肚子在中格。"
+        }
+      ]
+    },
+    "v1-p": {
+      "symbol": "p",
+      "lessonId": "lesson-03",
+      "sourcePage": 25,
+      "placement": "中下格",
+      "description": "这个字母占中格和下格。圆肚子或上半部在中格，长笔画伸进下格。",
+      "strokes": [
+        {
+          "d": "M40 80 L40 185",
+          "start": [40, 80],
+          "guide": "M40 90 L40 115",
+          "instruction": "先从第二条线向下写竖，伸进下格，不碰第四条线。"
+        },
+        {
+          "d": "M 40 94.885 C 61 68.547 106 79.277 106 110.492 C 106 142.683 63 148.535 40 128.051",
+          "start": [40, 94.885],
+          "guide": "M 47 87.081 L 68 83.179",
+          "instruction": "再写右半圆，圆肚子留在中格。"
+        }
+      ]
+    },
+    "v1-m": {
+      "symbol": "m",
+      "lessonId": "lesson-03",
+      "sourcePage": 25,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M25 80 L25 140",
+          "start": [25, 80],
+          "guide": "M25 90 L25 115",
+          "instruction": "先在中格从上往下写竖。"
+        },
+        {
+          "d": "M 25 98.219 C 25 73.927 75 73.927 75 98.219 L 75 140",
+          "start": [25, 98.219],
+          "guide": "M 30 86.559 L 47 81.7",
+          "instruction": "再写右弯竖，向右弯过来，再向下写。"
+        },
+        {
+          "d": "M 75 98.219 C 75 73.927 125 73.927 125 98.219 L 125 140",
+          "start": [75, 98.219],
+          "guide": "M 80 86.559 L 97 81.7",
+          "instruction": "第三笔再写一个右弯竖，两边一样高。"
+        }
+      ]
+    },
+    "v1-f": {
+      "symbol": "f",
+      "lessonId": "lesson-03",
+      "sourcePage": 25,
+      "placement": "上中格",
+      "description": "这个字母占上格和中格。看清伸到上格的部分，底部到第三条线。",
+      "strokes": [
+        {
+          "d": "M99 38 C78 20 60 30 60 51 L60 140",
+          "start": [99, 38],
+          "guide": "M91 32 L 73 33",
+          "instruction": "先写右弯竖，在上格起笔向左弯，再向下写到第三条线。"
+        },
+        {
+          "d": "M35 80 L92 80",
+          "start": [35, 80],
+          "guide": "M45 80 L68 80",
+          "instruction": "再沿第二条线从左往右写短横。"
+        }
+      ]
+    },
+    "v1-d": {
+      "symbol": "d",
+      "lessonId": "lesson-04",
+      "sourcePage": 26,
+      "placement": "上中格",
+      "description": "这个字母占上格和中格。看清伸到上格的部分，底部到第三条线。",
+      "strokes": [
+        {
+          "d": "M 100 88.301 C 85 74.926 40 74.926 40 109.319 C 40 145.622 86 145.622 100 130.337",
+          "start": [100, 88.301],
+          "guide": "M 98 85.435 L 79 82.569",
+          "instruction": "先在中格写左半圆。"
+        },
+        {
+          "d": "M100 32 L100 140",
+          "start": [100, 32],
+          "guide": "M100 43 L100 67",
+          "instruction": "再从上格向下写竖，到第三条线。"
+        }
+      ]
+    },
+    "v1-t": {
+      "symbol": "t",
+      "lessonId": "lesson-04",
+      "sourcePage": 26,
+      "placement": "上中格",
+      "description": "这个字母占上格和中格。看清伸到上格的部分，底部到第三条线。",
+      "strokes": [
+        {
+          "d": "M65 48 L65 122 Q65 141 87 140",
+          "start": [65, 48],
+          "guide": "M65 58 L65 80",
+          "instruction": "先写竖右弯，从上格向下，在中格底部向右弯。"
+        },
+        {
+          "d": "M41 80 L91 80",
+          "start": [41, 80],
+          "guide": "M50 80 L72 80",
+          "instruction": "再沿第二条线从左往右写短横。"
+        }
+      ]
+    },
+    "v1-n": {
+      "symbol": "n",
+      "lessonId": "lesson-04",
+      "sourcePage": 26,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M40 80 L40 140",
+          "start": [40, 80],
+          "guide": "M40 90 L40 113",
+          "instruction": "先在中格写竖。"
+        },
+        {
+          "d": "M 40 98.605 C 40 73.965 102 72.979 102 100.576 L 102 140",
+          "start": [40, 98.605],
+          "guide": "M 46 85.792 L 68 80.864",
+          "instruction": "再写右弯竖，先向右弯，再向下写。"
+        }
+      ]
+    },
+    "v1-l": {
+      "symbol": "l",
+      "lessonId": "lesson-04",
+      "sourcePage": 26,
+      "placement": "上中格",
+      "description": "这个字母占上格和中格。看清伸到上格的部分，底部到第三条线。",
+      "strokes": [
+        {
+          "d": "M75 32 L75 140",
+          "start": [75, 32],
+          "guide": "M75 42 L75 67",
+          "instruction": "从上格起笔，向下写直，到第三条线。"
+        }
+      ]
+    },
+    "v1-g": {
+      "symbol": "g",
+      "lessonId": "lesson-05",
+      "sourcePage": 32,
+      "placement": "中下格",
+      "description": "这个字母占中格和下格。圆肚子或上半部在中格，长笔画伸进下格。",
+      "strokes": [
+        {
+          "d": "M 100 88.301 C 85 74.926 40 74.926 40 109.319 C 40 145.622 86 145.622 100 130.337",
+          "start": [100, 88.301],
+          "guide": "M 98 85.435 L 79 82.569",
+          "instruction": "先在中格写左半圆。"
+        },
+        {
+          "d": "M100 80 L100 164 C100 187 67 193 46 176",
+          "start": [100, 80],
+          "guide": "M100 90 L100 115",
+          "instruction": "再写竖左弯，从第二条线向下，伸入下格再向左弯。"
+        }
+      ]
+    },
+    "v1-k": {
+      "symbol": "k",
+      "lessonId": "lesson-05",
+      "sourcePage": 32,
+      "placement": "上中格",
+      "description": "这个字母占上格和中格。看清伸到上格的部分，底部到第三条线。",
+      "strokes": [
+        {
+          "d": "M 40 32 L40 140",
+          "start": [40, 32],
+          "guide": "M40 42 L40 67",
+          "instruction": "先从上格往下写竖，到第三条线。"
+        },
+        {
+          "d": "M101 80 L42 110 L102 140",
+          "start": [101, 80],
+          "guide": "M91 85 L72 95",
+          "instruction": "再写左斜右斜，从右上往左下，到竖的中间再向右下，一笔连着写。"
+        }
+      ]
+    },
+    "v1-h": {
+      "symbol": "h",
+      "lessonId": "lesson-05",
+      "sourcePage": 32,
+      "placement": "上中格",
+      "description": "这个字母占上格和中格。看清伸到上格的部分，底部到第三条线。",
+      "strokes": [
+        {
+          "d": "M40 32 L40 140",
+          "start": [40, 32],
+          "guide": "M40 42 L40 67",
+          "instruction": "先从上格往下写竖。"
+        },
+        {
+          "d": "M 40 98.605 C 40 73.965 102 72.979 102 100.576 L 102 140",
+          "start": [40, 98.605],
+          "guide": "M 46 85.792 L 68 80.864",
+          "instruction": "再在中格写右弯竖。"
+        }
+      ]
+    },
+    "v1-j": {
+      "symbol": "j",
+      "lessonId": "lesson-06",
+      "sourcePage": 34,
+      "placement": "上中下格",
+      "description": "这个字母占上、中、下三格。点在上格，竖从中格伸进下格，末尾向左弯。",
+      "strokes": [
+        {
+          "d": "M85 80 L85 167 Q85 198  50 178",
+          "start": [85, 80],
+          "guide": "M85 90 L85 115",
+          "instruction": "先写竖左弯，从第二条线向下，伸入下格再向左弯。"
+        },
+        {
+          "d": "M85 55 L85 56",
+          "start": [85, 55],
+          "guide": "M70 43 L80 52",
+          "instruction": "再在正上方点一点，点放在上格。"
+        }
+      ]
+    },
+    "v1-q": {
+      "symbol": "q",
+      "lessonId": "lesson-06",
+      "sourcePage": 34,
+      "placement": "中下格",
+      "description": "这个字母占中格和下格。圆肚子或上半部在中格，长笔画伸进下格。",
+      "strokes": [
+        {
+          "d": "M 100 88.301 C 85 74.926 40 74.926 40 109.319 C 40 145.622 86 145.622 100 130.337",
+          "start": [100, 88.301],
+          "guide": "M 98 85.435 L 79 82.569",
+          "instruction": "先在中格写左半圆。"
+        },
+        {
+          "d": "M100 80 L100 185",
+          "start": [100, 80],
+          "guide": "M100 90 L100 115",
+          "instruction": "再从第二条线向下写竖，伸入下格，不碰第四条线。"
+        }
+      ]
+    },
+    "v1-x": {
+      "symbol": "x",
+      "lessonId": "lesson-06",
+      "sourcePage": 34,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M40 80 L105 140",
+          "start": [40, 80],
+          "guide": "M48 88 L65 104",
+          "instruction": "先从左上向右下写斜线。"
+        },
+        {
+          "d": "M105 80 L40 140",
+          "start": [105, 80],
+          "guide": "M96 88 L78 105",
+          "instruction": "再从右上向左下写斜线，在中间交叉。"
+        }
+      ]
+    },
+    "v1-z": {
+      "symbol": "z",
+      "lessonId": "lesson-07",
+      "sourcePage": 36,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M40 80 L105 80 L40 140 L105 140",
+          "start": [40, 80],
+          "guide": "M50 80 L75 80",
+          "instruction": "先向右写横，再向左下写斜线，最后向右写横，一笔写完。"
+        }
+      ]
+    },
+    "v1-c": {
+      "symbol": "c",
+      "lessonId": "lesson-07",
+      "sourcePage": 36,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M 105 89.811 C 80 71.309 38 79.635 38 109.238 C 38 141.617 79 149.018 105 128.665",
+          "start": [105, 89.811],
+          "guide": "M 96 85.185 L 77 81.485",
+          "instruction": "从右上起笔向左绕，再向下、向右弯，右边留开口。"
+        }
+      ]
+    },
+    "v1-s": {
+      "symbol": "s",
+      "lessonId": "lesson-07",
+      "sourcePage": 36,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M 100 90.515 C 82 73.583 43 78.286 43 96.159 C 43 112.151 103 109.329 103 126.261 C 103 143.193 62 144.134 40 130.964",
+          "start": [100, 90.515],
+          "guide": "M 90 83.93 L 68 82.049",
+          "instruction": "从右上起笔，先向左弯，再向右弯下来，最后向左收笔，一笔写完。"
+        }
+      ]
+    },
+    "v1-r": {
+      "symbol": "r",
+      "lessonId": "lesson-08",
+      "sourcePage": 38,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M50 80 L50 140",
+          "start": [50, 80],
+          "guide": "M50 90 L50 115",
+          "instruction": "先在中格从上往下写竖。"
+        },
+        {
+          "d": "M50 98 C60 80 82 75 96 84",
+          "start": [50, 98],
+          "guide": "M57 89 L77 81",
+          "instruction": "再从竖的上部向右写一小弯。"
+        }
+      ]
+    },
+    "v1-y": {
+      "symbol": "y",
+      "lessonId": "lesson-09",
+      "sourcePage": 40,
+      "placement": "中下格",
+      "description": "这个字母占中格和下格。圆肚子或上半部在中格，长笔画伸进下格。",
+      "strokes": [
+        {
+          "d": "M40 80 L76 140",
+          "start": [40, 80],
+          "guide": "M46 90 L61 115",
+          "instruction": "先在中格从左上向右下写斜线。"
+        },
+        {
+          "d": "M110 80 L 50 185",
+          "start": [110, 80],
+          "guide": "M104 91 L90 115",
+          "instruction": "再从右上向左下写长斜线，伸入下格。"
+        }
+      ]
+    },
+    "v1-w": {
+      "symbol": "w",
+      "lessonId": "lesson-09",
+      "sourcePage": 40,
+      "placement": "中格",
+      "description": "这个字母写在中格，放在第二条线和第三条线之间。",
+      "strokes": [
+        {
+          "d": "M20 80 L 45 140 L 75 80",
+          "start": [20, 80],
+          "guide": "M25 91 L35 115",
+          "instruction": "先写斜下斜上，落到第三条线再回到第二条线，一笔连着写。"
+        },
+        {
+          "d": "M75 80 L100 140 L130 80",
+          "start": [75, 80],
+          "guide": "M80 91 L90 115",
+          "instruction": "再写斜下斜上，两边一样高。"
+        }
+      ]
+    }
+  },
+  "lessons": {
+    "lesson-01": [
+      {
+        "id": "write-01-a",
+        "label": "a",
+        "glyphIds": ["v1-a"]
+      },
+      {
+        "id": "write-01-o",
+        "label": "o",
+        "glyphIds": ["v1-o"]
+      },
+      {
+        "id": "write-01-e",
+        "label": "e",
+        "glyphIds": ["v1-e"]
+      }
+    ],
+    "lesson-02": [
+      {
+        "id": "write-02-i",
+        "label": "i",
+        "glyphIds": ["v1-i"]
+      },
+      {
+        "id": "write-02-u",
+        "label": "u",
+        "glyphIds": ["v1-u"]
+      },
+      {
+        "id": "write-02-v",
+        "label": "ü",
+        "glyphIds": ["v1-v"]
+      }
+    ],
+    "lesson-03": [
+      {
+        "id": "write-03-b",
+        "label": "b",
+        "glyphIds": ["v1-b"]
+      },
+      {
+        "id": "write-03-p",
+        "label": "p",
+        "glyphIds": ["v1-p"]
+      },
+      {
+        "id": "write-03-m",
+        "label": "m",
+        "glyphIds": ["v1-m"]
+      },
+      {
+        "id": "write-03-f",
+        "label": "f",
+        "glyphIds": ["v1-f"]
+      }
+    ],
+    "lesson-04": [
+      {
+        "id": "write-04-d",
+        "label": "d",
+        "glyphIds": ["v1-d"]
+      },
+      {
+        "id": "write-04-t",
+        "label": "t",
+        "glyphIds": ["v1-t"]
+      },
+      {
+        "id": "write-04-n",
+        "label": "n",
+        "glyphIds": ["v1-n"]
+      },
+      {
+        "id": "write-04-l",
+        "label": "l",
+        "glyphIds": ["v1-l"]
+      }
+    ],
+    "lesson-05": [
+      {
+        "id": "write-05-g",
+        "label": "g",
+        "glyphIds": ["v1-g"]
+      },
+      {
+        "id": "write-05-k",
+        "label": "k",
+        "glyphIds": ["v1-k"]
+      },
+      {
+        "id": "write-05-h",
+        "label": "h",
+        "glyphIds": ["v1-h"]
+      }
+    ],
+    "lesson-06": [
+      {
+        "id": "write-06-j",
+        "label": "j",
+        "glyphIds": ["v1-j"]
+      },
+      {
+        "id": "write-06-q",
+        "label": "q",
+        "glyphIds": ["v1-q"]
+      },
+      {
+        "id": "write-06-x",
+        "label": "x",
+        "glyphIds": ["v1-x"]
+      }
+    ],
+    "lesson-07": [
+      {
+        "id": "write-07-z",
+        "label": "z",
+        "glyphIds": ["v1-z"]
+      },
+      {
+        "id": "write-07-c",
+        "label": "c",
+        "glyphIds": ["v1-c"]
+      },
+      {
+        "id": "write-07-s",
+        "label": "s",
+        "glyphIds": ["v1-s"]
+      },
+      {
+        "id": "write-07-zi",
+        "label": "zi",
+        "glyphIds": ["v1-z", "v1-i"]
+      },
+      {
+        "id": "write-07-ci",
+        "label": "ci",
+        "glyphIds": ["v1-c", "v1-i"]
+      },
+      {
+        "id": "write-07-si",
+        "label": "si",
+        "glyphIds": ["v1-s", "v1-i"]
+      }
+    ],
+    "lesson-08": [
+      {
+        "id": "write-08-zh",
+        "label": "zh",
+        "glyphIds": ["v1-z", "v1-h"]
+      },
+      {
+        "id": "write-08-ch",
+        "label": "ch",
+        "glyphIds": ["v1-c", "v1-h"]
+      },
+      {
+        "id": "write-08-sh",
+        "label": "sh",
+        "glyphIds": ["v1-s", "v1-h"]
+      },
+      {
+        "id": "write-08-r",
+        "label": "r",
+        "glyphIds": ["v1-r"]
+      },
+      {
+        "id": "write-08-zhi",
+        "label": "zhi",
+        "glyphIds": ["v1-z", "v1-h", "v1-i"]
+      },
+      {
+        "id": "write-08-chi",
+        "label": "chi",
+        "glyphIds": ["v1-c", "v1-h", "v1-i"]
+      },
+      {
+        "id": "write-08-shi",
+        "label": "shi",
+        "glyphIds": ["v1-s", "v1-h", "v1-i"]
+      },
+      {
+        "id": "write-08-ri",
+        "label": "ri",
+        "glyphIds": ["v1-r", "v1-i"]
+      }
+    ],
+    "lesson-09": [
+      {
+        "id": "write-09-y",
+        "label": "y",
+        "glyphIds": ["v1-y"]
+      },
+      {
+        "id": "write-09-w",
+        "label": "w",
+        "glyphIds": ["v1-w"]
+      },
+      {
+        "id": "write-09-yi",
+        "label": "yi",
+        "glyphIds": ["v1-y", "v1-i"]
+      },
+      {
+        "id": "write-09-wu",
+        "label": "wu",
+        "glyphIds": ["v1-w", "v1-u"]
+      },
+      {
+        "id": "write-09-yu",
+        "label": "yu",
+        "glyphIds": ["v1-y", "v1-u"]
+      }
+    ],
+    "lesson-10": [
+      {
+        "id": "write-10-ai",
+        "label": "ai",
+        "glyphIds": ["v1-a", "v1-i"]
+      },
+      {
+        "id": "write-10-ei",
+        "label": "ei",
+        "glyphIds": ["v1-e", "v1-i"]
+      },
+      {
+        "id": "write-10-ui",
+        "label": "ui",
+        "glyphIds": ["v1-u", "v1-i"]
+      }
+    ],
+    "lesson-11": [
+      {
+        "id": "write-11-ao",
+        "label": "ao",
+        "glyphIds": ["v1-a", "v1-o"]
+      },
+      {
+        "id": "write-11-ou",
+        "label": "ou",
+        "glyphIds": ["v1-o", "v1-u"]
+      },
+      {
+        "id": "write-11-iu",
+        "label": "iu",
+        "glyphIds": ["v1-i", "v1-u"]
+      }
+    ],
+    "lesson-12": [
+      {
+        "id": "write-12-ie",
+        "label": "ie",
+        "glyphIds": ["v1-i", "v1-e"]
+      },
+      {
+        "id": "write-12-ve",
+        "label": "üe",
+        "glyphIds": ["v1-v", "v1-e"]
+      },
+      {
+        "id": "write-12-er",
+        "label": "er",
+        "glyphIds": ["v1-e", "v1-r"]
+      },
+      {
+        "id": "write-12-ye",
+        "label": "ye",
+        "glyphIds": ["v1-y", "v1-e"]
+      },
+      {
+        "id": "write-12-yue",
+        "label": "yue",
+        "glyphIds": ["v1-y", "v1-u", "v1-e"]
+      }
+    ],
+    "lesson-13": [
+      {
+        "id": "write-13-an",
+        "label": "an",
+        "glyphIds": ["v1-a", "v1-n"]
+      },
+      {
+        "id": "write-13-en",
+        "label": "en",
+        "glyphIds": ["v1-e", "v1-n"]
+      },
+      {
+        "id": "write-13-in",
+        "label": "in",
+        "glyphIds": ["v1-i", "v1-n"]
+      },
+      {
+        "id": "write-13-un",
+        "label": "un",
+        "glyphIds": ["v1-u", "v1-n"]
+      },
+      {
+        "id": "write-13-vn",
+        "label": "ün",
+        "glyphIds": ["v1-v", "v1-n"]
+      },
+      {
+        "id": "write-13-yuan",
+        "label": "yuan",
+        "glyphIds": ["v1-y", "v1-u", "v1-a", "v1-n"]
+      },
+      {
+        "id": "write-13-yin",
+        "label": "yin",
+        "glyphIds": ["v1-y", "v1-i", "v1-n"]
+      },
+      {
+        "id": "write-13-yun",
+        "label": "yun",
+        "glyphIds": ["v1-y", "v1-u", "v1-n"]
+      }
+    ],
+    "lesson-14": [
+      {
+        "id": "write-14-ang",
+        "label": "ang",
+        "glyphIds": ["v1-a", "v1-n", "v1-g"]
+      },
+      {
+        "id": "write-14-eng",
+        "label": "eng",
+        "glyphIds": ["v1-e", "v1-n", "v1-g"]
+      },
+      {
+        "id": "write-14-ing",
+        "label": "ing",
+        "glyphIds": ["v1-i", "v1-n", "v1-g"]
+      },
+      {
+        "id": "write-14-ong",
+        "label": "ong",
+        "glyphIds": ["v1-o", "v1-n", "v1-g"]
+      },
+      {
+        "id": "write-14-ying",
+        "label": "ying",
+        "glyphIds": ["v1-y", "v1-i", "v1-n", "v1-g"]
+      }
+    ]
+  }
+}

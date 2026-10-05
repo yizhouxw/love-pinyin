@@ -30,3 +30,8 @@ def load_curriculum() -> dict:
 
 def map_by_id(collection: str) -> dict[str, dict]:
     return {row["id"]: row for row in load_curriculum()[collection]}
+
+
+@lru_cache(maxsize=1)
+def load_writing() -> dict:
+    return json.loads((CONTENT_PATH.parent / "writing.json").read_text(encoding="utf-8"))

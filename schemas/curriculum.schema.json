@@ -337,6 +337,26 @@
                 "audioRef": {
                   "type": "string",
                   "minLength": 1
+                },
+                "writing": {
+                  "type": "object",
+                  "required": ["glyphId", "offsetY", "description"],
+                  "properties": {
+                    "glyphId": {
+                      "type": "string",
+                      "pattern": "^v[0-9]+-[a-z]+$"
+                    },
+                    "offsetY": {
+                      "type": "integer",
+                      "enum": [-60, 0, 60]
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
