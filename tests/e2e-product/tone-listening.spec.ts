@@ -95,16 +95,23 @@ test('TONE-01: course rotation reaches all twelve recorded tones with spoken fee
 
   // Reach the same question in a later instance without reloading: earlier
   // playback must not satisfy this instance's listening requirement.
-  for (let round = 5; round < 9; round += 1) {
+  const lessonSize = curriculum.exercises.filter(
+    (q) => q.lessonId === 'lesson-01' && q.type !== 'read-aloud',
+  ).length;
+  let repeatedChecked = false;
+  for (let round = 5; round < 5 + Math.ceil(lessonSize / 6) && !repeatedChecked; round += 1) {
     if (round % 2 === 0) await page.getByRole('button', { name: '休息好了，继续学习' }).click();
     const started = page.waitForResponse(
       (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
     );
     await page.getByRole('button', { name: '开始今天的练习' }).click();
     const repeated = await (await started).json();
-    if (round === 8) {
-      const question = curriculum.exercises.find((q) => q.id === repeated.tasks[0].exercise.id)!;
-      expect(question.id).toBe(wrongId);
+    for (const [index, task] of repeated.tasks.entries()) {
+      await expect(page.locator('.play-nav strong')).toHaveText(`第 ${index + 1} / 6 关`);
+      if (task.exercise.id !== wrongId) {
+        await page.getByRole('button', { name: '↷ 先跳过这题' }).click();
+        continue;
+      }
       await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
       await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
         timeout: 20000,
@@ -114,14 +121,12 @@ test('TONE-01: course rotation reaches all twelve recorded tones with spoken fee
       await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
       await page.getByRole('button', { name: '退出练习' }).click();
       expect(submitted).toHaveLength(12);
-    } else {
-      for (let index = 0; index < 6; index += 1) {
-        await expect(page.locator('.play-nav strong')).toHaveText(`第 ${index + 1} / 6 关`);
-        await page.getByRole('button', { name: '↷ 先跳过这题' }).click();
-      }
-      await page.getByRole('button', { name: '回到小岛' }).click();
+      repeatedChecked = true;
+      break;
     }
+    if (!repeatedChecked) await page.getByRole('button', { name: '回到小岛' }).click();
   }
+  expect(repeatedChecked).toBe(true);
   await page.reload();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
   const restored = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();

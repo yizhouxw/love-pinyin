@@ -1,3 +1,7 @@
+import hashlib
+import json
+from copy import deepcopy
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -69,3 +73,28 @@ def install_standard(monkeypatch):
         return path
 
     return install
+
+
+@pytest.fixture
+def registered_audio_catalog(monkeypatch):
+    source = deepcopy(source_audio.catalog())
+    payload = b"synthetic-registration-only-not-pronunciation-evidence"
+    digest = hashlib.sha256(payload).hexdigest()
+    for row in source["assets"]:
+        row.update(sha256=digest, bytes=len(payload))
+    monkeypatch.setattr(source_audio, "catalog", lambda: source)
+    root = source_audio.SOURCE_DIR
+    (root / "clips").mkdir(parents=True)
+    path = root / "clips" / f"{digest}.mp3"
+    path.write_bytes(payload)
+    (root / "installation.json").write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "enabled": True,
+                "commit": source["commit"],
+                "archiveSha256": source["archiveSha256"],
+            }
+        )
+    )
+    return path

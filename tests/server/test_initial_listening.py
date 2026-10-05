@@ -1,38 +1,8 @@
 """BANK-04 rotation/persistence boundaries; synthetic registration is not sound evidence."""
 
-import hashlib
-import json
-from copy import deepcopy
-
 import pytest
 
-from server import source_audio
 from server.content import load_curriculum
-
-
-@pytest.fixture
-def registered_audio(monkeypatch):
-    source = deepcopy(source_audio.catalog())
-    payload = b"synthetic-registration-only-not-pronunciation-evidence"
-    digest = hashlib.sha256(payload).hexdigest()
-    for row in source["assets"]:
-        row.update(sha256=digest, bytes=len(payload))
-    monkeypatch.setattr(source_audio, "catalog", lambda: source)
-    root = source_audio.SOURCE_DIR
-    (root / "clips").mkdir(parents=True)
-    path = root / "clips" / f"{digest}.mp3"
-    path.write_bytes(payload)
-    (root / "installation.json").write_text(
-        json.dumps(
-            {
-                "version": 1,
-                "enabled": True,
-                "commit": source["commit"],
-                "archiveSha256": source["archiveSha256"],
-            }
-        )
-    )
-    return path
 
 
 def post(client, path, body=None):
@@ -43,7 +13,7 @@ def post(client, path, body=None):
 
 @pytest.mark.parametrize("lesson_id", [f"lesson-{n:02}" for n in range(3, 9)])
 def test_all_new_initial_listening_tasks_reachable_and_persisted(
-    paired_client, registered_audio, lesson_id
+    paired_client, registered_audio_catalog, lesson_id
 ):
     client = paired_client
     content = load_curriculum()
@@ -91,7 +61,7 @@ def test_all_new_initial_listening_tasks_reachable_and_persisted(
     assert all(attempt["first_try_correct"] == 1 for attempt in backup["attempts"])
     # A broken file must remove those listening tasks from new sessions, not
     # substitute silent choices or record the device failure as a child's mistake.
-    registered_audio.write_bytes(b"corrupted")
+    registered_audio_catalog.write_bytes(b"corrupted")
     post(client, "/api/v1/rest/complete")
     after = post(client, "/api/v1/sessions", {})
     assert not any(task["exercise"].get("audioRef") for task in after["tasks"])

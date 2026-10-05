@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { validateCurriculum } from '../../scripts/content-validation.mjs';
-import { splitPinyinCandidate } from '../../src/domain/pinyin-presentation';
+import { pinyinTone, splitPinyinCandidate } from '../../src/domain/pinyin-presentation';
 
 const data = JSON.parse(readFileSync('content/curriculum.json', 'utf8'));
 const schema = JSON.parse(readFileSync('schemas/curriculum.schema.json', 'utf8'));
@@ -11,8 +11,64 @@ const validate = (input, release = false) =>
   validateCurriculum(input, schema, { sourceIds, release });
 
 describe('课程内容的保护门禁', () => {
+  it('BANK-05的韵母听辨保持同声母同声调，正确处理ü和ün的拼写及先修范围', () => {
+    const added = data.exercises.filter((q) => Number(q.id.split('-').at(-1)) >= 80);
+    expect(added).toHaveLength(48);
+    const order = (id) => data.lessons.find((lesson) => lesson.id === id).order;
+    const untone = (text) =>
+      text
+        .normalize('NFD')
+        .replace(/[\u0300\u0301\u0304\u030c]/gu, '')
+        .normalize('NFC');
+    const split = (label) => {
+      const part = splitPinyinCandidate(label, data.inventory.initials) ?? {
+        onset: '',
+        rime: label,
+      };
+      let final = untone(part.rime);
+      if (['j', 'q', 'x'].includes(part.onset) && ['u', 'un'].includes(final))
+        final = final.replace('u', 'ü');
+      return { onset: part.onset, final };
+    };
+    for (const knowledge of data.knowledgeItems.filter((k) => k.category === 'final')) {
+      const pair = added.filter((q) => q.primaryKnowledgeId === knowledge.id);
+      expect(pair, knowledge.id).toHaveLength(2);
+      expect(data.coverage.objectivePrimaryExerciseCounts[knowledge.id]).toBeGreaterThanOrEqual(5);
+      const conditions = [];
+      for (const q of pair) {
+        expect(q.type).toBe('listen-choice');
+        const candidates = q.options.map((o) => split(o.label));
+        expect(new Set(candidates.map((part) => part.onset)).size).toBe(1);
+        expect(new Set(q.options.map((o) => pinyinTone(o.label))).size).toBe(1);
+        expect(q.options.every((o) => pinyinTone(o.label) !== null)).toBe(true);
+        const answer = q.options.findIndex((o) => o.id === q.answer.optionId);
+        expect(candidates[answer].final).toBe(knowledge.symbol);
+        expect(data.audioRequirements.find((a) => a.id === q.audioRef).transcript).toBe(
+          q.options[answer].label,
+        );
+        for (const part of candidates) {
+          const final = data.knowledgeItems.find(
+            (k) => k.category === 'final' && k.symbol === part.final,
+          );
+          expect(final, q.id).toBeDefined();
+          expect(order(final.lessonId)).toBeLessThanOrEqual(order(q.lessonId));
+          if (part.onset) {
+            const onset = data.knowledgeItems.find(
+              (k) => k.category === 'initial' && k.symbol === part.onset,
+            );
+            expect(order(onset.lessonId)).toBeLessThanOrEqual(order(q.lessonId));
+          }
+        }
+        conditions.push(candidates[answer].onset || pinyinTone(q.options[answer].label));
+      }
+      expect(new Set(conditions).size).toBe(2);
+      expect(new Set(pair.map((q) => q.audioRef)).size).toBe(2);
+    }
+  });
   it('BANK-04每个声母有两种韵母的听辨，干扰项只改变已经学过的声母', () => {
-    const added = data.exercises.filter((q) => Number(q.id.split('-').at(-1)) >= 70);
+    const added = data.exercises.filter(
+      (q) => Number(q.id.split('-').at(-1)) >= 70 && Number(q.id.split('-').at(-1)) < 80,
+    );
     expect(added).toHaveLength(42);
     const initials = data.knowledgeItems.filter((k) => k.category === 'initial');
     const lessonOrder = (id) => data.lessons.find((lesson) => lesson.id === id).order;
