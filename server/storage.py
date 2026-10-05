@@ -11,6 +11,8 @@ from pathlib import Path
 
 DATA_DIR = Path(os.environ.get("LOVE_PINYIN_DATA_DIR", "private/data")).expanduser().resolve()
 DATABASE_PATH = DATA_DIR / "love-pinyin.sqlite3"
+# SQLite migration versions, independent of the portable JSON backup format.
+SUPPORTED_SCHEMA_VERSIONS = frozenset({1, 2, 3, 4, 5})
 _request_database: ContextVar[sqlite3.Connection | None] = ContextVar(
     "request_database", default=None
 )
@@ -75,6 +77,15 @@ def transaction(immediate: bool = True) -> Iterator[sqlite3.Connection]:
 
 def migrate() -> None:
     with connect() as db:
+        if db.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='schema_migrations'"
+        ).fetchone():
+            versions = {row[0] for row in db.execute("SELECT version FROM schema_migrations")}
+            if versions - SUPPORTED_SCHEMA_VERSIONS:
+                raise RuntimeError(
+                    "Unsupported database schema. 数据库包含本程序不支持的版本；"
+                    "请使用匹配的应用版本，或停服后恢复兼容备份。请勿删除迁移记录。"
+                )
         db.execute("PRAGMA journal_mode = WAL")
         try:
             # executescript can commit before running. Begin inside the script so

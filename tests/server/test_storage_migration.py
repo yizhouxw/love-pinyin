@@ -86,3 +86,28 @@ def test_failed_migration_rolls_back_schema_columns_and_version(monkeypatch, tmp
     assert "review_knowledge_id" not in session_columns
     assert tuple(household) == ("family", 4)
     assert new_tables is None
+
+
+@pytest.mark.parametrize("journal_mode", ["DELETE", "WAL"])
+def test_future_schema_is_rejected_before_any_database_change(monkeypatch, tmp_path, journal_mode):
+    database = tmp_path / "future.sqlite3"
+    monkeypatch.setattr(storage, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(storage, "DATABASE_PATH", database)
+    # Keep the WAL owner open so rejection must also preserve uncheckpointed data.
+    with sqlite3.connect(database) as owner:
+        owner.execute(f"PRAGMA journal_mode={journal_mode}")
+        owner.executescript("""
+            CREATE TABLE schema_migrations(version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL);
+            INSERT INTO schema_migrations VALUES(1,'2026-01-01');
+            INSERT INTO schema_migrations VALUES(6,'2026-01-01');
+            CREATE TABLE future_records(value TEXT NOT NULL);
+            INSERT INTO future_records VALUES('private test household');
+        """)
+        before = list(owner.iterdump())
+        files = [database, database.with_name(database.name + "-wal")]
+        bytes_before = {p.name: p.read_bytes() for p in files if p.exists()}
+        with pytest.raises(RuntimeError, match="Unsupported database schema"):
+            storage.migrate()
+        assert list(owner.iterdump()) == before
+        assert owner.execute("PRAGMA journal_mode").fetchone()[0] == journal_mode.lower()
+        assert {p.name: p.read_bytes() for p in files if p.exists()} == bytes_before

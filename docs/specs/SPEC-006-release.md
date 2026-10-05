@@ -140,3 +140,13 @@ DESKTOP-03完成证据：Safari27.0/macOS27.0的原生界面实际下载3277字�
 复用本地真实声音，不注入题目/答案、修改测试成绩或触碰真实家庭档案；专用窗口和临时服务完成后清理。此切片补充Mac原生Safari，家庭HTTPS、LAN、移动设备及屏幕阅读器仍单独验收。
 
 DESKTOP-04完成证据：原生Safari第四课实际字形/拼读两题首次正确，试选、撤销、刷新均不提前计分；Return确认后小结为2题独立正确、4题跳过。图片卡tǔ和中文说明、n逐笔、nǚ标调说明均有播放状态证据；刷新家长记录仍为2条，SQLite核对两类题、finished会话及冻结题单一致。专用窗口/临时服务/运行库已清理，详情见[Safari验收](../engineering/desktop-safari-acceptance.md)。仅文档变化，格式与差异检查通过，未声称其他设备或家庭HTTPS通过。
+
+## ROLLBACK-01：拒绝未知数据库版本
+
+启动迁移先读取现有schema_migrations；发现本程序不认识的迁移版本时，在切换journal模式、执行DDL或更新家庭资料前失败。错误明确要求使用匹配版本或恢复兼容备份，不能自动删除迁移记录或把未知结构当旧库升级。已知旧版仍按原事务迁移，新库/访客内存库不受影响。
+
+验收：以隔离SQLite分别保存DELETE/WAL模式的未来版本，调用实际迁移须拒绝且逻辑内容与文件摘要不变；启动真实Uvicorn进程应非零退出，不对外提供健康接口。保留被拒绝的测试库，恢复兼容快照后启动同一程序应正常提供健康接口。仅证明当前程序对未知schema的拒绝及同版备份恢复，不冒称某个尚不存在的未来版本或完整跨版本回滚已验收。无新增依赖，不触碰实际家庭库。
+
+ROLLBACK-01完成证据（2026-10-06）：修复前DELETE/WAL两项均复现未拒绝未来版本，日志private/rollback01-before.log。修复后两项均保持逻辑内容、DB/WAL字节及journal模式；真实Uvicorn未知版本非零退出且未进入监听，保留原库后恢复兼容快照可正常启动，逻辑数据逐字一致。首次进程测试误用健康字段persistence，按实际storage字段修正，失败记录保留private/rollback01-focused-initial.log。最终verify:all退出0，63前端/工具、290后端、30视口及24真实服务GUI全部通过，validate:release通过14课/83知识项/476题/79朗读目标；日志private/rollback01-verify.log、rollback01-release.log。无依赖/schema/内容版本变化。
+
+先用实际backup_database备份家庭库，再正常停止旧进程并启动本机8000服务；健康接口2026.10.05.15/sqlite及首页HTTP200，家庭数据库重启前后逻辑摘要一致，记录private/rollback01-deployment.json。保护不会自动使历史旧程序获得兼容能力，完整跨版本回滚和真实移动设备/LAN仍未验收。
