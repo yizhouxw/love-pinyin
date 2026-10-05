@@ -2,7 +2,7 @@
   "name": "love-pinyin",
   "version": "0.1.0",
   "private": true,
-  "description": "小学一年级汉语拼音学习应用：产品方案与开发基线",
+  "description": "小学一年级汉语拼音学习应用：Mac 本地服务与语音引导练习",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -19,7 +19,7 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate:content": "node scripts/validate-content.mjs",
+    "validate:content": "node scripts/validate-content.mjs && node scripts/validate-narration.mjs",
     "validate:release": "node scripts/validate-content.mjs --release",
     "licenses": "node scripts/dependency-inventory.mjs",
     "test": "vitest run",
@@ -39,7 +39,10 @@
     "audio:doctor": "uv run --locked --group assessment-poc python scripts/check_audio_runtime.py",
     "licenses:python": "uv run --locked --group assessment-poc python scripts/python-licenses.py",
     "test:e2e:local": "node scripts/e2e-local.mjs",
-    "test:e2e:live": "npm run build && playwright test --config playwright.live.config.ts"
+    "test:e2e:live": "npm run build && playwright test --config playwright.live.config.ts",
+    "prepare:voice": "uv run --locked python -m scripts.prepare_learning_audio",
+    "start": "npm run build && npm run prepare:voice && npm run serve:local",
+    "test:e2e:product": "npm run build && playwright test --config playwright.product.config.ts"
   },
   "dependencies": {
     "react": "19.3.0",

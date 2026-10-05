@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "lessons": {
+    "lesson-01": { "file": "1aoe.mp3", "title": "a o e 家庭课程录音" },
+    "lesson-02": {
+      "file": "2iuvYW.mp3",
+      "title": "i u ü 与 y w 合课录音（原素材第 2 课）"
+    },
+    "lesson-03": { "file": "3bpmf.mp3", "title": "b p m f 家庭课程录音" },
+    "lesson-04": { "file": "4dtnl.mp3", "title": "d t n l 家庭课程录音" },
+    "lesson-05": { "file": "5gkh.mp3", "title": "g k h 家庭课程录音" },
+    "lesson-06": { "file": "6jqx.mp3", "title": "j q x 家庭课程录音" },
+    "lesson-07": { "file": "7zcs.mp3", "title": "z c s 家庭课程录音" },
+    "lesson-08": { "file": "8zhchshr.mp3", "title": "zh ch sh r 家庭课程录音" },
+    "lesson-09": {
+      "file": "2iuvYW.mp3",
+      "title": "y w 与 i u ü 合课录音（原素材第 2 课）"
+    },
+    "lesson-10": { "file": "9ai ei ui.mp3", "title": "ai ei ui 家庭课程录音" },
+    "lesson-11": { "file": "10ao ou iu.mp3", "title": "ao ou iu 家庭课程录音" },
+    "lesson-12": { "file": "11ie ue er.mp3", "title": "ie üe er 家庭课程录音" },
+    "lesson-13": { "file": "12an en in un vn.mp3", "title": "an en in un ün 家庭课程录音" },
+    "lesson-14": { "file": "13ang eng ing ong.mp3", "title": "ang eng ing ong 家庭课程录音" }
+  }
+}

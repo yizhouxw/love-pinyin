@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { pinyinTone, splitPinyinCandidate } from '../domain/pinyin-presentation';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
+import narrationData from '../../content/narration.json';
+import { useLearningVoice, VoiceButton, VoiceFailure, type LearningAudio } from './learning-voice';
 import './styles.css';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- API JSON mirrors the versioned content schema. */
@@ -30,6 +32,7 @@ type Exercise = {
   type: string;
   prompt: string;
   options: Option[];
+  audioRef?: string;
 };
 type Knowledge = {
   id: string;
@@ -118,6 +121,11 @@ type Answer = {
   clockPending?: boolean;
 };
 type Hint = { explanation: string; answer: { optionId: string } };
+type Narration = {
+  ui: Record<string, { text: string }>;
+  exercises: Record<string, { text: string; visualCue?: string; options: Record<string, string> }>;
+};
+const narration: Narration = narrationData;
 
 function GameOptionContent({
   type,
@@ -317,10 +325,15 @@ export function App() {
   const [busy, setBusy] = useState(false);
   const [hint, setHint] = useState<Hint | null>(null);
   const [answer, setAnswer] = useState<Answer | null>(null);
+  const [correctedInstance, setCorrectedInstance] = useState<string | null>(null);
   const [parentOpen, setParentOpen] = useState(false);
   const [parentGateOpen, setParentGateOpen] = useState(false);
   const [lessonChoice, setLessonChoice] = useState('');
   const [lessonViewId, setLessonViewId] = useState<string | null>(null);
+  const [learningAudio, setLearningAudio] = useState<LearningAudio | null>(null);
+  const voice = useLearningVoice();
+  const { play: playVoice, stop: stopVoice } = voice;
+  const voiceStarted = useRef(false);
 
   useEffect(() => {
     document.documentElement.dataset.reducedMotion = String(
@@ -332,11 +345,13 @@ export function App() {
     const state = (await api('/bootstrap')) as Bootstrap;
     setBoot(state);
     if (!state.paired) return;
-    const [course, stats, current] = await Promise.all([
+    const [course, stats, current, sounds] = await Promise.all([
       api('/curriculum'),
       api('/profiles/progress'),
       api('/sessions/current'),
+      api('/learning-audio').catch(() => null),
     ]);
+    setLearningAudio(sounds as LearningAudio | null);
     const didReplay = await replayPendingAnswer(current as Session | null).catch(() => false);
     const [latestStats, latestCurrent] = didReplay
       ? await Promise.all([api('/profiles/progress'), api('/sessions/current')])
@@ -361,12 +376,14 @@ export function App() {
         if (cancelled) return;
         setBoot(state);
         if (!state.paired) return;
-        const [course, stats, current] = await Promise.all([
+        const [course, stats, current, sounds] = await Promise.all([
           api('/curriculum'),
           api('/profiles/progress'),
           api('/sessions/current'),
+          api('/learning-audio').catch(() => null),
         ]);
         if (cancelled) return;
+        setLearningAudio(sounds as LearningAudio | null);
         const didReplay = await replayPendingAnswer(current as Session | null).catch(() => false);
         const [latestStats, latestCurrent] = didReplay
           ? await Promise.all([api('/profiles/progress'), api('/sessions/current')])
@@ -404,13 +421,65 @@ export function App() {
       curriculum?.exercises.some(
         (exercise) =>
           exercise.id === exerciseId &&
-          ['symbol-choice', 'tone-choice', 'blend-choice'].includes(exercise.type),
+          ['listen-choice', 'symbol-choice', 'tone-choice', 'blend-choice'].includes(exercise.type),
       ),
     ),
   );
   const mastery = progress?.mastery ?? [];
   const mastered = mastery.filter((item) => item.status === 'mastered').length;
   const masteryById = new Map(mastery.map((item) => [item.knowledgeId, item]));
+  const active = session;
+  const taskIndex = active
+    ? active.tasks.findIndex((task: Json) => !active.results?.[task.instanceId])
+    : -1;
+  const task = active && taskIndex >= 0 ? active.tasks[taskIndex] : null;
+  const question = task?.exercise;
+  const corrected = Boolean(task && correctedInstance === task.instanceId);
+  const questionVoice = question ? narration.exercises[question.id] : undefined;
+  const promptHeard = Boolean(question && voice.completedIds.has(`prompt-${question.id}`));
+  const standardHeard = !question?.audioRef || voice.completedIds.has(question.audioRef);
+  const currentVoiceFailed = Boolean(
+    question &&
+    [...voice.failedIds].some(
+      (id) =>
+        id === `prompt-${question.id}` ||
+        id.startsWith(`option-${question.id}-`) ||
+        id === question.audioRef,
+    ),
+  );
+  const answerNeedsAudio = Boolean(
+    question && (!promptHeard || currentVoiceFailed || !standardHeard),
+  );
+  const autoVoiceId =
+    !boot?.paired || parentOpen || parentGateOpen || lessonViewId
+      ? null
+      : (boot.profile?.roundsSinceBreak ?? 0) >= 2
+        ? 'ui-rest'
+        : active && !question
+          ? 'ui-summary'
+          : question && answer
+            ? `ui-${answer.correct || corrected ? 'correct' : 'incorrect'}`
+            : question && hint
+              ? 'ui-hint'
+              : question
+                ? `prompt-${question.id}`
+                : null;
+
+  useEffect(() => {
+    if (autoVoiceId && voiceStarted.current && progress?.settings.soundEnabled !== false)
+      playVoice(autoVoiceId);
+    else stopVoice();
+    return stopVoice;
+  }, [
+    autoVoiceId,
+    playVoice,
+    stopVoice,
+    progress?.settings.soundEnabled,
+    lessonViewId,
+    parentOpen,
+    parentGateOpen,
+    boot?.paired,
+  ]);
 
   async function act(work: () => Promise<void>) {
     setBusy(true);
@@ -429,6 +498,8 @@ export function App() {
   }
 
   async function beginLesson(lessonId: string) {
+    voiceStarted.current = true;
+    if (progress?.settings.soundEnabled !== false) playVoice('ui-start');
     const started = (await api('/sessions', {
       method: 'POST',
       body: JSON.stringify({ lessonId }),
@@ -439,6 +510,8 @@ export function App() {
   }
 
   async function beginReview(knowledgeId: string) {
+    voiceStarted.current = true;
+    if (progress?.settings.soundEnabled !== false) playVoice('ui-start');
     const started = (await api(`/reviews/${encodeURIComponent(knowledgeId)}/sessions`, {
       method: 'POST',
       body: JSON.stringify({}),
@@ -543,6 +616,8 @@ export function App() {
           <p className="eyebrow">小小拼音家补充能量</p>
           <h1>连续完成两轮啦！</h1>
           <p>站起来活动一下、喝口水。你可以结束今天的练习，也可以休息后再继续。</p>
+          <VoiceButton id="ui-rest" voice={voice} label="听休息提醒" />
+          <VoiceFailure voice={voice} />
           <button
             autoFocus
             onClick={() =>
@@ -571,12 +646,6 @@ export function App() {
       </main>
     );
 
-  const active = session;
-  const taskIndex = active
-    ? active.tasks.findIndex((task: Json) => !active.results?.[task.instanceId])
-    : -1;
-  const task = active && taskIndex >= 0 ? active.tasks[taskIndex] : null;
-  const question = task?.exercise;
   const title =
     (active?.reviewKnowledgeId
       ? '两题复习'
@@ -586,16 +655,23 @@ export function App() {
 
   if (active && question)
     return (
-      <main className="play-page">
+      <main
+        className="play-page"
+        onClickCapture={() => {
+          voiceStarted.current = true;
+        }}
+      >
         <nav className="play-nav">
           <button
             className="icon-button"
             aria-label="退出练习"
             onClick={() =>
               void act(async () => {
+                stopVoice();
                 await api(`/sessions/${active.id}/finish`, { method: 'POST' });
                 setSession(null);
                 setAnswer(null);
+                setHint(null);
                 await refresh();
               })
             }
@@ -627,57 +703,108 @@ export function App() {
             🦊
           </div>
           <p className="eyebrow">
-            {question.type === 'tone-choice'
-              ? '声调观察站'
-              : question.type === 'blend-choice'
-                ? '拼读组合站'
-                : '字形发现站'}
+            {question.type === 'listen-choice'
+              ? '听音发现站'
+              : question.type === 'tone-choice'
+                ? '声调观察站'
+                : question.type === 'blend-choice'
+                  ? '拼读组合站'
+                  : '字形发现站'}
           </p>
-          <h1>{question.prompt}</h1>
+          {questionVoice?.visualCue && (
+            <div className="question-cue" aria-label="观察目标">
+              {questionVoice.visualCue}
+            </div>
+          )}
+          <h1>{questionVoice?.text ?? question.prompt}</h1>
+          <VoiceButton
+            id={`prompt-${question.id}`}
+            voice={voice}
+            label="听题目"
+            className="listen-question"
+          />
+          {question.audioRef && (
+            <VoiceButton
+              id={question.audioRef}
+              kind="standard"
+              voice={voice}
+              label="听拼音"
+              className="listen-question"
+            />
+          )}
+          {answerNeedsAudio && !answer && (
+            <p className="listen-before-answer" role="status">
+              🔊 先听一听，再选卡片
+            </p>
+          )}
+          <VoiceFailure voice={voice} />
           <div
             className={`options ${question.type === 'blend-choice' ? 'blend-options' : ''}`}
             role="group"
             aria-label={question.type === 'blend-choice' ? '完整拼读候选' : '选择答案'}
           >
             {question.options.map((option: Json, index: number) => (
-              <button
-                key={option.id}
-                className={`option game-option ${question.type} ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
-                disabled={Boolean(answer) || busy}
-                onClick={() =>
-                  void act(async () => {
-                    let pending = readPendingAnswer(task.instanceId);
-                    if (pending && pending.answerOptionId !== option.id)
-                      throw new Error('上一题提交结果待确认，请再点一次原来的答案以安全重试。');
-                    if (!pending) {
-                      pending = { requestId: idempotencyKey(), answerOptionId: option.id };
-                      savePendingAnswer(task.instanceId, pending);
-                    }
-                    const result = (await api(`/instances/${task.instanceId}/answer`, {
-                      method: 'POST',
-                      body: JSON.stringify(pending),
-                    })) as Omit<Answer, 'selectedOptionId'>;
-                    clearPendingAnswer(task.instanceId);
-                    setAnswer({
-                      ...result,
-                      selectedOptionId: pending.answerOptionId,
-                    });
-                    await refreshProgressOnly();
-                  })
-                }
-              >
-                <span className="option-index">{String.fromCharCode(65 + index)}</span>
-                <GameOptionContent
-                  type={question.type}
-                  label={option.label}
-                  initials={curriculum?.inventory?.initials ?? []}
-                />
-              </button>
+              <div className="option-with-voice" key={option.id}>
+                <button
+                  className={`option game-option ${question.type} ${hint?.answer.optionId === option.id && !answer ? 'hinted' : ''} ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
+                  disabled={
+                    Boolean(answer && (answer.correct || corrected)) || busy || answerNeedsAudio
+                  }
+                  onClick={() =>
+                    void act(async () => {
+                      if (answer) {
+                        if (option.id === answer.correctOptionId)
+                          setCorrectedInstance(task.instanceId);
+                        else playVoice('ui-incorrect');
+                        return;
+                      }
+                      let pending = readPendingAnswer(task.instanceId);
+                      if (pending && pending.answerOptionId !== option.id)
+                        throw new Error('上一题提交结果待确认，请再点一次原来的答案以安全重试。');
+                      if (!pending) {
+                        pending = { requestId: idempotencyKey(), answerOptionId: option.id };
+                        savePendingAnswer(task.instanceId, pending);
+                      }
+                      const result = (await api(`/instances/${task.instanceId}/answer`, {
+                        method: 'POST',
+                        body: JSON.stringify(pending),
+                      })) as Omit<Answer, 'selectedOptionId'>;
+                      clearPendingAnswer(task.instanceId);
+                      setAnswer({
+                        ...result,
+                        selectedOptionId: pending.answerOptionId,
+                      });
+                      await refreshProgressOnly();
+                    })
+                  }
+                >
+                  <span className="option-index">{String.fromCharCode(65 + index)}</span>
+                  <GameOptionContent
+                    type={question.type}
+                    label={option.label}
+                    initials={curriculum?.inventory?.initials ?? []}
+                  />
+                </button>
+                {questionVoice?.options[option.id] && (
+                  <VoiceButton
+                    id={`option-${question.id}-${option.id}`}
+                    voice={voice}
+                    label={`听选项 ${String.fromCharCode(65 + index)}`}
+                    className="option-voice"
+                  />
+                )}
+              </div>
             ))}
           </div>
           {answer && (
             <div className={`feedback ${answer.correct ? 'good' : 'try-again'}`} role="status">
-              <strong>{answer.correct ? '答对啦！' : '没关系，再看看正确答案。'}</strong>
+              <strong>
+                {answer.correct
+                  ? '答对啦！'
+                  : corrected
+                    ? '找到正确答案啦！'
+                    : '没关系，看看亮起来的卡片，再选一次。'}
+              </strong>
               <span>
                 {answer.clockPending
                   ? '此练习已保存为待校时记录，不计入掌握度。'
@@ -685,6 +812,11 @@ export function App() {
                     ? '这个知识点已掌握 ✨'
                     : '完成后继续下一关吧。'}
               </span>
+              <VoiceButton
+                id={`ui-${answer.correct || corrected ? 'correct' : 'incorrect'}`}
+                voice={voice}
+                label="听结果"
+              />
             </div>
           )}
           {!answer && (
@@ -700,37 +832,45 @@ export function App() {
                   )
                 }
               >
-                给我一点提示
+                💡 给我一点提示
               </button>
               <button
                 className="quiet skip-button"
                 disabled={busy}
                 onClick={() =>
                   void act(async () => {
+                    stopVoice();
                     await api(`/instances/${task.instanceId}/skip`, { method: 'POST' });
+                    const nextSession = (await api('/sessions/current')) as Session;
                     setHint(null);
-                    setSession((await api('/sessions/current')) as Session);
+                    setSession(nextSession);
                   })
                 }
               >
-                先跳过这题
+                ↷ 先跳过这题
               </button>
             </div>
           )}
           {hint && !answer && (
-            <p className="hint-box">
-              {hint.explanation} 答案提示：
-              {question.options.find((option: Json) => option.id === hint.answer.optionId)?.label}
-            </p>
+            <div className="hint-box">
+              <span>{narration.ui.hint?.text}</span>
+              <VoiceButton id="ui-hint" voice={voice} label="听提示" />
+              <details>
+                <summary>家长查看讲解</summary>
+                {hint.explanation}
+              </details>
+            </div>
           )}
           {answer && (
             <button
               className="next-button"
               onClick={() =>
                 void act(async () => {
+                  stopVoice();
+                  const nextSession = (await api('/sessions/current')) as Session;
                   setAnswer(null);
                   setHint(null);
-                  setSession((await api('/sessions/current')) as Session);
+                  setSession(nextSession);
                 })
               }
             >
@@ -748,6 +888,8 @@ export function App() {
           <div className="mascot">🎉</div>
           <h1>今天的探索完成啦！</h1>
           <p>你认真完成了这一小段练习，休息一下也很好。</p>
+          <VoiceButton id="ui-summary" voice={voice} label="听小结" />
+          <VoiceFailure voice={voice} />
           <ul className="session-summary" aria-label="本次练习小结">
             <li>
               独立答对：
@@ -822,54 +964,70 @@ export function App() {
       />
       {progress && (
         <>
-          <section className="welcome">
-            <div>
-              <p className="eyebrow">{parentOpen ? '家庭学习空间' : '今天也来探险吧'}</p>
-              <h1>
-                {parentOpen ? (
-                  '家长管理'
-                ) : (
+          {(!lessonViewId || parentOpen) && (
+            <section className="welcome">
+              <div>
+                <p className="eyebrow">{parentOpen ? '家庭学习空间' : '今天也来探险吧'}</p>
+                <h1>
+                  {parentOpen ? (
+                    '家长管理'
+                  ) : (
+                    <>
+                      你好，小小拼音家
+                      <br />
+                      <span>准备好出发了吗？</span>
+                    </>
+                  )}
+                </h1>
+                <p>
+                  {parentOpen
+                    ? `${boot.device?.label} · 家庭学习设置`
+                    : currentLesson
+                      ? `第 ${currentLesson.order} 课 · ${currentLesson.title}`
+                      : '请家长选择当前课'}
+                </p>
+                {!parentOpen && (
                   <>
-                    你好，小小拼音家
-                    <br />
-                    <span>准备好出发了吗？</span>
+                    <div className="start-actions">
+                      <button
+                        className="listen-lesson-button"
+                        disabled={!currentLesson || busy}
+                        onClick={() => currentLesson && setLessonViewId(currentLesson.id)}
+                      >
+                        <span aria-hidden="true">🎧</span> 听本课录音
+                      </button>
+                      <button
+                        className="start-button"
+                        disabled={busy || !currentLesson || !canPracticeCurrent}
+                        onClick={() =>
+                          void act(async () => {
+                            await beginLesson(progress.selectedLessonId);
+                          })
+                        }
+                      >
+                        {!currentLesson
+                          ? '请家长先选择当前课'
+                          : canPracticeCurrent
+                            ? '开始今天的练习'
+                            : '课程资料准备中'}{' '}
+                        <span aria-hidden="true">▶</span>
+                      </button>
+                    </div>
+                    <VoiceButton id="ui-welcome" voice={voice} label="听怎么玩" />
+                    <VoiceFailure voice={voice} />
                   </>
                 )}
-              </h1>
-              <p>{boot.device?.label} · 进度保存在本机 Mac Studio</p>
-            </div>
-            <div className="welcome-art" aria-hidden="true">
-              🌱
-            </div>
-          </section>
+              </div>
+              <div className="welcome-art" aria-hidden="true">
+                🌱
+              </div>
+            </section>
+          )}
           {!parentOpen && progress.clockSkewDetected && (
             <div className="error-notice" role="alert">
               Mac Studio
               时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度；请家长检查服务器时间。
             </div>
-          )}
-          {!parentOpen && (
-            <section className="garden-card" aria-labelledby="garden-title">
-              <div className="garden-copy">
-                <span className="eyebrow">拼音花园</span>
-                <h2 id="garden-title">每完成一轮，花园多一片叶子</h2>
-                <p>这里记录认真参与的每一轮。答错、休息或提前结束都不会失去已经长出的叶子。</p>
-              </div>
-              <div
-                className="garden-pot"
-                role="img"
-                aria-label={`拼音花园已长出 ${progress.completedSessions} 片叶子`}
-              >
-                <div className="garden-stem" aria-hidden="true">
-                  {Array.from({ length: Math.min(progress.completedSessions, 8) }, (_, index) => (
-                    <span className="garden-leaf" key={index} />
-                  ))}
-                </div>
-                <div className="garden-soil" aria-hidden="true" />
-                <div className="garden-planter" aria-hidden="true" />
-                <strong>{progress.completedSessions} 片叶子</strong>
-              </div>
-            </section>
           )}
           {parentOpen ? (
             <ParentPanel
@@ -881,6 +1039,7 @@ export function App() {
               busy={busy}
               refresh={refresh}
               act={act}
+              learningAudio={learningAudio}
             />
           ) : lessonViewId ? (
             <LessonDetail
@@ -890,6 +1049,7 @@ export function App() {
                 curriculum?.knowledgeItems.filter((item) => item.lessonId === lessonViewId) ?? []
               }
               audioRequirements={curriculum?.audioRequirements ?? []}
+              familyAudio={learningAudio?.lessons[lessonViewId]}
               masteryById={masteryById}
               busy={busy}
               withinCurrentRange={Boolean(
@@ -907,7 +1067,9 @@ export function App() {
                     curriculum?.exercises.some(
                       (exercise) =>
                         exercise.id === exerciseId &&
-                        ['symbol-choice', 'tone-choice', 'blend-choice'].includes(exercise.type),
+                        ['listen-choice', 'symbol-choice', 'tone-choice', 'blend-choice'].includes(
+                          exercise.type,
+                        ),
                     ),
                   ),
               )}
@@ -965,22 +1127,6 @@ export function App() {
                       : `共 ${lessons.length} 课 · 当前课待选择`}
                   </span>
                 </div>
-                <button
-                  className="start-button"
-                  disabled={busy || !currentLesson || !canPracticeCurrent}
-                  onClick={() =>
-                    void act(async () => {
-                      await beginLesson(progress.selectedLessonId);
-                    })
-                  }
-                >
-                  {!currentLesson
-                    ? '请家长先选择当前课'
-                    : canPracticeCurrent
-                      ? '开始今天的练习'
-                      : '课程资料准备中'}{' '}
-                  <span>→</span>
-                </button>
                 {!currentLesson ? (
                   <p className="session-note">学习路线仍可浏览，选择当前课后即可继续练习。</p>
                 ) : !canPracticeCurrent ? (
@@ -990,6 +1136,32 @@ export function App() {
                   建议陪伴练习约 {currentLesson?.suggestedSessionMinutes ?? 5} 分钟 · 可随时休息
                 </p>
               </section>
+              {!parentOpen && (
+                <section className="garden-card" aria-labelledby="garden-title">
+                  <div className="garden-copy">
+                    <span className="eyebrow">拼音花园</span>
+                    <h2 id="garden-title">每完成一轮，花园多一片叶子</h2>
+                    <p>这里记录认真参与的每一轮。答错、休息或提前结束都不会失去已经长出的叶子。</p>
+                  </div>
+                  <div
+                    className="garden-pot"
+                    role="img"
+                    aria-label={`拼音花园已长出 ${progress.completedSessions} 片叶子`}
+                  >
+                    <div className="garden-stem" aria-hidden="true">
+                      {Array.from(
+                        { length: Math.min(progress.completedSessions, 8) },
+                        (_, index) => (
+                          <span className="garden-leaf" key={index} />
+                        ),
+                      )}
+                    </div>
+                    <div className="garden-soil" aria-hidden="true" />
+                    <div className="garden-planter" aria-hidden="true" />
+                    <strong>{progress.completedSessions} 片叶子</strong>
+                  </div>
+                </section>
+              )}
               {(progress.reviewRecommendations ?? []).length > 0 && (
                 <section className="map-card review-recommendations" aria-label="今日推荐复习">
                   <div className="section-heading">
@@ -1077,18 +1249,6 @@ export function App() {
                   })}
                 </div>
               </section>
-              <div className="feature-row">
-                <div>
-                  <span>🎧</span>
-                  <strong>标准音资源准备中</strong>
-                  <small>不使用系统合成音代替</small>
-                </div>
-                <div>
-                  <span>🛡️</span>
-                  <strong>家庭数据本地保存</strong>
-                  <small>不连接第三方云服务</small>
-                </div>
-              </div>
             </>
           )}
           <footer>
@@ -1105,6 +1265,7 @@ function LessonDetail({
   lesson,
   knowledge,
   audioRequirements,
+  familyAudio,
   masteryById,
   busy,
   withinCurrentRange,
@@ -1116,6 +1277,7 @@ function LessonDetail({
   lesson?: Lesson;
   knowledge: Knowledge[];
   audioRequirements: AudioRequirement[];
+  familyAudio?: LearningAudio['lessons'][string];
   masteryById: Map<string, Progress['mastery'][number]>;
   busy: boolean;
   withinCurrentRange: boolean;
@@ -1124,6 +1286,9 @@ function LessonDetail({
   onReview: (knowledgeId: string) => void;
   onStart: () => void;
 }) {
+  const courseMedia = useRef<HTMLAudioElement | null>(null);
+  const [coursePlaying, setCoursePlaying] = useState(false);
+  const [courseError, setCourseError] = useState(false);
   const [playingAudioId, setPlayingAudioId] = useState<string | null>(null);
   const [audioFailureId, setAudioFailureId] = useState<string | null>(null);
   const playback = useRef<{ audioId: string; controller: AbortController } | null>(null);
@@ -1137,6 +1302,11 @@ function LessonDetail({
     releasePlayback();
     setPlayingAudioId(null);
   }, [releasePlayback]);
+
+  useEffect(() => {
+    const media = courseMedia.current;
+    if (media) return audioPlayer.registerExternalMedia(media);
+  }, [familyAudio?.audioId, lesson?.id]);
 
   useEffect(() => {
     const stopWhenHidden = () => {
@@ -1165,14 +1335,62 @@ function LessonDetail({
       </button>
       <p className="eyebrow">第 {lesson.order} 课 · 课程知识卡</p>
       <h2>{lesson.title}</h2>
+      <section className="family-course-audio" aria-label="家庭课程录音">
+        <span className="course-audio-icon" aria-hidden="true">
+          🎧
+        </span>
+        <div>
+          <h3>先听老师讲一讲</h3>
+          <button
+            className="voice-button"
+            aria-label={coursePlaying ? '停止播放课程录音' : '播放课程录音'}
+            aria-pressed={coursePlaying}
+            onClick={() => {
+              const media = courseMedia.current;
+              if (!media) return;
+              if (coursePlaying) media.pause();
+              else {
+                setCourseError(false);
+                if (media.error) media.load();
+                void media.play().catch(() => setCourseError(true));
+              }
+            }}
+          >
+            {coursePlaying ? 'Ⅱ 暂停课程录音' : '▶ 播放课程录音'}
+          </button>
+          <audio
+            ref={courseMedia}
+            aria-label="课程录音播放进度"
+            controls
+            preload="metadata"
+            src={`/api/v1/voice/${encodeURIComponent(familyAudio?.audioId ?? `lesson-${lesson.id}`)}`}
+            onPlay={() => setCoursePlaying(true)}
+            onPause={() => setCoursePlaying(false)}
+            onEnded={() => setCoursePlaying(false)}
+            onError={() => setCourseError(true)}
+          />
+          {courseError && (
+            <p className="audio-error" role="alert">
+              课程录音未能播放，请重试；仍未播放时请家长检查 Mac 上的家庭音频。
+            </p>
+          )}
+          <details>
+            <summary>家长查看录音来源</summary>
+            <p>
+              家庭提供的旧版整课录音，录音中提到的课次和页码与当前教材可能不同。本课按知识内容对应，不把整课录音当作单个拼音的标准音。
+            </p>
+            {familyAudio?.title && <p>{familyAudio.title}</p>}
+            {!familyAudio?.available && (
+              <p>尚未读取到本课录音，请在 Mac 上完成家庭学习音频准备后重试。</p>
+            )}
+          </details>
+        </div>
+      </section>
       <ul className="lesson-objectives">
         {lesson.objectives.map((objective) => (
           <li key={objective}>{objective}</li>
         ))}
       </ul>
-      <p className="draft-banner">
-        课程资料草稿，教学内容待教师审校。只播放有登记且审校通过的标准音，不使用系统合成音替代。
-      </p>
       {knowledge.length > 0 ? (
         <div className="knowledge-grid">
           {knowledge.map((item) => {
@@ -1240,15 +1458,7 @@ function LessonDetail({
                   >
                     {playingAudioId === audio.id ? '■ 停止标准音' : '♫ 播放标准音'}
                   </button>
-                ) : (
-                  <button
-                    className="audio-unavailable"
-                    disabled
-                    aria-label={`${item.symbol} 标准音待准备`}
-                  >
-                    ♫ 标准音待准备
-                  </button>
-                )}
+                ) : null}
                 {audioFailureId === audio?.id && (
                   <p className="audio-error" role="alert">
                     标准音暂时无法播放，请检查家庭 Mac 上的音频资源。
@@ -1267,7 +1477,7 @@ function LessonDetail({
       )}
       <div className="lesson-detail-actions">
         <button className="start-button" disabled={!canPractice} onClick={onStart}>
-          {canPractice ? '开始本课视觉练习 →' : '练习资料尚未准备好'}
+          {canPractice ? '开始本课练习 →' : '练习资料尚未准备好'}
         </button>
         {!withinCurrentRange ? (
           <small>这是一课预览。请家长先把当前学习课调整到这里，再开始练习。</small>
@@ -1288,6 +1498,7 @@ function ParentPanel({
   busy,
   refresh,
   act,
+  learningAudio,
 }: Json) {
   const [confirm, setConfirm] = useState('');
   const [resetConfirm, setResetConfirm] = useState('');
@@ -1389,13 +1600,85 @@ function ParentPanel({
           onClick={() =>
             void act(async () => {
               const data = await api('/profiles/export');
-              setExportJson(JSON.stringify(data, null, 2));
+              const contents = JSON.stringify(data, null, 2);
+              setExportJson(contents);
+              const downloadUrl = URL.createObjectURL(
+                new Blob([contents], { type: 'application/json' }),
+              );
+              const downloadLink = document.createElement('a');
+              downloadLink.href = downloadUrl;
+              downloadLink.download = `love-pinyin-backup-${new Date().toISOString().slice(0, 10)}.json`;
+              document.body.append(downloadLink);
+              downloadLink.click();
+              downloadLink.remove();
+              window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
               setExportRevision(progress.revision);
             })
           }
         >
           导出家庭数据
         </button>
+      </div>
+      <section className="parent-audio-status" aria-label="学习音频准备状态">
+        <h3>学习音频准备状态</h3>
+        <p>
+          中文引导：{Object.values(learningAudio?.narration ?? {}).filter(Boolean).length} /{' '}
+          {Object.keys(learningAudio?.narration ?? {}).length} 条可播放； 家庭课程录音：
+          {
+            Object.values(learningAudio?.lessons ?? {}).filter(
+              (item) => (item as { available: boolean }).available,
+            ).length
+          }{' '}
+          / {curriculum.lessons.length} 课可播放。
+        </p>
+        <p>
+          中文引导由本机系统声音生成，只读中文操作提示；拼音示范使用真人录音。个人音频留在家庭
+          Mac，不随开源代码发布。
+        </p>
+        {(!learningAudio ||
+          Object.values(learningAudio.narration ?? {}).some((ready) => !ready)) && (
+          <p className="audio-error">
+            学习音频尚未全部就绪。请在 Mac 项目目录运行 <code>npm run prepare:voice</code>，
+            再点重新检查；音频未就绪时不适合孩子独立使用。
+          </p>
+        )}
+        <details>
+          <summary>标准音与内容审校</summary>
+          <p>
+            逐目标标准音仍需逐条教学与授权审校。家庭整课录音和中文指令不是已审核的孤立拼音标准音，内容仍需家长陪伴核对。
+          </p>
+        </details>
+        <button className="quiet" disabled={busy} onClick={() => void act(refresh)}>
+          重新检查音频
+        </button>
+      </section>
+      <div className="parent-setting">
+        <div>
+          <strong>自动朗读题目</strong>
+          <p>开启后，孩子点击开始，新题和练习反馈会自动朗读。关闭后仍可点喇叭听题。</p>
+        </div>
+        <label>
+          <input
+            type="checkbox"
+            aria-label="自动朗读题目"
+            checked={progress.settings?.soundEnabled !== false}
+            disabled={!isParent || busy}
+            onChange={(event) => {
+              const soundEnabled = event.target.checked;
+              void act(async () => {
+                await api('/household/settings', {
+                  method: 'PUT',
+                  body: JSON.stringify({
+                    soundEnabled,
+                    reducedMotion: Boolean(progress.settings?.reducedMotion),
+                  }),
+                });
+                await refresh();
+              });
+            }}
+          />
+          开启自动朗读
+        </label>
       </div>
       <section className="parent-progress" aria-labelledby="parent-progress-title">
         <h3 id="parent-progress-title">按知识点查看进度</h3>
@@ -1901,16 +2184,15 @@ function ReducedMotionControl({
   disabled: boolean;
   onChange: (checked: boolean) => void;
 }) {
-  const [value, setValue] = useState(checked);
   return (
     <label className="setting-toggle">
       <input
         type="checkbox"
-        checked={value}
+        aria-label="减少动态效果"
+        checked={checked}
         disabled={disabled}
         onChange={(event) => {
           const next = event.currentTarget.checked;
-          setValue(next);
           onChange(next);
         }}
       />

@@ -1,60 +1,6 @@
-import { spawn } from 'node:child_process';
-import { mkdtemp, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { expect, test as base } from '@playwright/test';
-
-// One isolated real server/database per test; browser actions create all data.
-const test = base.extend<{ appUrl: string }>({
-  // Playwright requires a destructured fixture parameter even without dependencies.
-  // eslint-disable-next-line no-empty-pattern
-  appUrl: async ({}, use) => {
-    const directory = await mkdtemp(join(tmpdir(), 'love-pinyin-live-'));
-    const child = spawn(
-      'uv',
-      ['run', '--locked', 'uvicorn', 'server.main:app', '--host', '127.0.0.1', '--port', '0'],
-      {
-        env: { ...process.env, LOVE_PINYIN_DATA_DIR: directory },
-        stdio: ['ignore', 'pipe', 'pipe'],
-      },
-    );
-    const stopped = new Promise<void>((resolve) => child.once('close', () => resolve()));
-    let output = '';
-    try {
-      const url = await new Promise<string>((resolve, reject) => {
-        const timer = setTimeout(
-          () => reject(new Error(`Server startup timed out: ${output}`)),
-          20_000,
-        );
-        const collect = (chunk: Buffer) => {
-          output += chunk.toString();
-          const address = output.match(/Uvicorn running on (http:\/\/127\.0\.0\.1:\d+)/)?.[1];
-          if (address) {
-            clearTimeout(timer);
-            resolve(address);
-          }
-        };
-        child.stdout.on('data', collect);
-        child.stderr.on('data', collect);
-        child.once('error', (error) => {
-          clearTimeout(timer);
-          reject(error);
-        });
-        child.once('close', () => {
-          clearTimeout(timer);
-          reject(new Error(`Server exited: ${output}`));
-        });
-      });
-      await use(url);
-    } finally {
-      child.kill('SIGTERM');
-      const killTimer = setTimeout(() => child.kill('SIGKILL'), 5_000);
-      await stopped;
-      clearTimeout(killTimer);
-      await rm(directory, { recursive: true });
-    }
-  },
-});
+import { expect } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { test } from '../support/real-server';
 
 test('R-012-GUI-01: real family backup, deletion and restoration through desktop UI', async ({
   page,
@@ -69,18 +15,32 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
   await page.getByLabel('家长配对码').fill(code!);
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '开始今天的练习' }).click();
-  await page.getByRole('group', { name: '选择答案' }).getByRole('button').first().press('Enter');
+  const choice = page.getByRole('group', { name: '选择答案' }).getByRole('button').first();
+  await expect(choice).toBeEnabled({ timeout: 15_000 });
+  await choice.press('Enter');
   await expect(page.locator('.feedback')).toBeVisible();
   await page.getByRole('button', { name: '退出练习' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
   await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  const reducedMotion = page.getByRole('checkbox', { name: '减少动态效果' });
+  await reducedMotion.click();
+  await expect(reducedMotion).toBeChecked();
+  const downloadEvent = page.waitForEvent('download');
   await page.getByRole('button', { name: '导出家庭数据' }).click();
+  const download = await downloadEvent;
+  expect(download.suggestedFilename()).toMatch(/\.json$/);
+  const downloadedPath = await download.path();
+  expect(downloadedPath).toBeTruthy();
   const exported = page.getByLabel('导出的 JSON 数据');
   await expect(exported).toBeVisible();
   const backup = await exported.inputValue();
-  const original = JSON.parse(backup);
+  const downloadedBackup = await readFile(downloadedPath!, 'utf8');
+  expect(JSON.parse(downloadedBackup)).toEqual(JSON.parse(backup));
+  const original = JSON.parse(downloadedBackup);
   expect(original.attempts).toHaveLength(1);
+  await reducedMotion.click();
+  await expect(reducedMotion).not.toBeChecked();
 
   const fileInput = page.getByLabel('导入家庭备份文件');
   await fileInput.setInputFiles({
@@ -102,7 +62,7 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
   await fileInput.setInputFiles({
     name: 'family.json',
     mimeType: 'application/json',
-    buffer: Buffer.from(backup),
+    buffer: Buffer.from(downloadedBackup),
   });
   await expect(page.getByLabel('备份导入预览')).toContainText('1 条练习');
   const restore = page.getByRole('button', { name: '确认替换家庭数据' });
@@ -110,6 +70,7 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
   await page.getByLabel('确认替换家庭学习档案文字').fill('替换家庭学习档案');
   await restore.click();
   await expect(page.getByText('家庭数据已恢复。', { exact: true })).toBeVisible();
+  await expect(reducedMotion).toBeChecked();
   await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
   await page.reload();
   await page.getByRole('button', { name: '家长管理' }).click();

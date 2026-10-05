@@ -26,7 +26,8 @@ jobs:
       - run: git diff --exit-code -- docs/engineering/dependency-inventory.json
       - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run test:e2e
-      - run: npm run test:e2e:live
+      # Real GUI/product tests require prepared private speech assets on the Mac.
+      # Linux CI does not replace them with fake speech or claim audio acceptance.
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

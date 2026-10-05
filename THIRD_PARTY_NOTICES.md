@@ -12,3 +12,9 @@
 - 本地评分引擎/模型登记在`content/assessment-manifest.json`，当前为空且未通过。后续任何模型必须记录来源commit、文件SHA256、权重许可、适用目标和验证证据。
 
 开源发布前重新检查实际分发内容，不能以代码MIT替第三方素材消除条件。
+
+## 家庭私有语音资源（2026-10-05）
+
+`content/narration.json` 原创中文脚本为 MIT；由 Mac 已安装 Tingting 生成的 WAV 仅在用户本机 `private/learning-audio/` 使用，不作为 MIT 资产提交或再分发。系统声音与项目代码许可不同，参见 [Apple 软件许可](https://www.apple.com/legal/sla/) 及其中 system voices 条款（例如 [macOS Sonoma 许可](https://images.apple.com/legal/sla/docs/macOSSonoma.pdf)）。准备命令调用本机 `/usr/bin/say`，不联网、不自动下载音色，不合成拼音标准音。
+
+用户提供的13份课程MP3仅复制到家庭私有资源目录，保留来源文件名与SHA；原文件不修改。它们不是本仓库MIT素材，也不是已教师审校的逐目标标准音。公开仓库/发布包不包含它们；局域网客户端须配对方可读取。

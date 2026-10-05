@@ -1,8 +1,21 @@
 # 爱拼音 · Love Pinyin
 
-面向小学一年级的汉语拼音学习应用。当前提供课程研究、产品与技术方案，以及可在本机试用的 B/S 学习流程；首版暂不包含发音评测，正式儿童产品仍需教师审校、标准音授权和真实设备验收。
+面向小学一年级的汉语拼音学习应用。当前按语音优先的家庭产品实现：自有 Mac 提供课程录音、中文题目朗读、客观练习和家庭进度。首版不包含发音评测；完整单音听辨、足量题库和真实移动设备验收仍在实施。
 
 确定的产品方向：大陆统编人教版；电脑/iPad/手机浏览器；键鼠和触摸；短时游戏练习；首版不录音、不做发音评测。采用 **B/S + 自有 Mac Studio** 提供课程、资源与家庭进度服务。未来可封装 Android/iOS，本期不做原生工程。
+
+## 在这台 Mac 上使用
+
+第一次准备中文语音并导入你已提供的课程录音：
+
+```sh
+npm run prepare:voice -- --source '/Users/chad/Documents/1汉语拼音音频'
+npm start
+```
+
+打开 `http://127.0.0.1:8000`，在页面生成家长配对码后连接。以后只需 `npm start`；它会构建网页、复用已生成语音、启动同源服务，不下载模型。家长选课，孩子进入课程卡听课程录音，再开始有语音引导的练习。中文选项有单独喇叭按钮，听选项不会提交答案。家长页可实际下载 JSON 备份并恢复。
+
+中文指令由本机已安装的 Tingting 生成；缺该音色会报错，不联网补装或调用云端。语音文件、用户课程录音和数据库保存在 Git 忽略的 `private/`，不随 MIT 代码公开。原13课录音映射到新版14课，第2/9课共用旧合课录音；录音中的旧页码不代表新版教材页码。整课录音与逐目标标准音分别管理。
 
 ## 从哪里开始
 
@@ -36,7 +49,7 @@ npm run dev:api
 npm run dev
 ```
 
-前端 `http://127.0.0.1:5173`，Vite代理 `/api` 到 Mac本机8000端口。浏览器打开配对页；API健康检查为 `http://127.0.0.1:8000/api/v1/health`。首次在 Mac 本机生成配对码并完成家长配对。课程、会话、客观题提交及家庭进度由 SQLite 保存；当前练习只显示不需要播放音频的视觉选择题。
+前端 `http://127.0.0.1:5173`，Vite代理 `/api` 到 Mac本机8000端口。浏览器打开配对页；API健康检查为 `http://127.0.0.1:8000/api/v1/health`。首次在 Mac 本机生成配对码并完成家长配对。课程、会话、客观题提交及家庭进度由 SQLite 保存；当前所有客观题有中文指令脚本；已可出的视觉题有真实朗读。听辨仅在所需逐目标标准音真实就绪时加入，不以整课录音替代单音。
 
 也可运行同源 B/S 服务：
 
@@ -81,19 +94,20 @@ uv run --locked --group audio-asr python -m scripts.transcribe_audio_candidates 
 
 ## 验证命令
 
-| 命令                       | 内容                                                    |
-| -------------------------- | ------------------------------------------------------- |
-| `npm run verify`           | 格式、lint、TS、内容Schema、内容回归、前端构建          |
-| `npm run verify:server`    | Python lint/format/API测试                              |
-| `npm run test:e2e`         | Chromium/Firefox/WebKit与移动/平板模拟                  |
-| `npm run test:e2e:live`    | Chromium/WebKit 桌面 GUI 与真实 Mac API/SQLite 数据恢复 |
-| `npm run verify:all`       | 前后端+本机浏览器检查（Firefox例外见下）                |
-| `npm run validate:release` | 内容/音频授权与审校发布门禁；当前应失败                 |
-| `npm run licenses`         | 从npm锁文件更新依赖许可证清单                           |
+| 命令                       | 内容                                                        |
+| -------------------------- | ----------------------------------------------------------- |
+| `npm run verify`           | 格式、lint、TS、内容Schema、内容回归、前端构建              |
+| `npm run verify:server`    | Python lint/format/API测试                                  |
+| `npm run test:e2e`         | Chromium/Firefox/WebKit与移动/平板模拟                      |
+| `npm run test:e2e:live`    | Chromium/WebKit 桌面 GUI 与真实 Mac API/SQLite 数据恢复     |
+| `npm run test:e2e:product` | 真实中文语音/课程录音、听题重试、错答纠正；需先准备私有音频 |
+| `npm run verify:all`       | 前后端+本机浏览器检查（Firefox例外见下）                    |
+| `npm run validate:release` | 内容/音频授权与审校发布门禁；当前应失败                     |
+| `npm run licenses`         | 从npm锁文件更新依赖许可证清单                               |
 
 本机 macOS 27 的 Firefox 自动化启动存在与上游已知问题一致的限制。`test:e2e:local` / `verify:all` 会明确说明并只跑5个 Chromium/WebKit 项目；完整6项目保留在 `test:e2e` 与 Linux CI。尚无远程 CI 运行结果，见[测试说明](docs/engineering/testing.md)。
 
-首版不包含麦克风录音或发音评测；练习通过标准音播放和客观选择完成。标准音授权、审音与教师内容审校仍未完成。旧评分研究资料仅作历史记录，不构成当前实现门禁。应用范围见[状态记录](docs/STATUS.md)。
+首版不包含麦克风录音或发音评测；练习通过标准音播放和客观选择完成。逐目标标准音授权、审音与教师内容审校仍未完成；家庭课程录音与中文指令语音已单独接入。旧评分研究资料仅作历史记录，不构成当前实现门禁。应用范围见[状态记录](docs/STATUS.md)。
 
 ## 开源
 

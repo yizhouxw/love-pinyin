@@ -1,5 +1,53 @@
 import { expect, test } from '@playwright/test';
 
+// These routed tests exercise UI logic and viewports, not real audio decoding.
+// Private narration ends asynchronously; standard audio stays active so its
+// explicit stop controls can be tested. Real playback has a separate product suite.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    const instances: { src: string; paused: boolean }[] = [];
+    Object.defineProperty(window, '__lpAudioInstances', { value: instances });
+    class MockAudio extends EventTarget {
+      src: string;
+      paused = true;
+      preload = '';
+      private generation = 0;
+
+      constructor(source: string) {
+        super();
+        this.src = source;
+        instances.push(this);
+      }
+
+      play() {
+        this.paused = false;
+        const generation = ++this.generation;
+        const source = this.src;
+        if (source.startsWith('/api/v1/voice/')) {
+          queueMicrotask(() => {
+            if (this.generation !== generation || this.paused || this.src !== source) return;
+            this.paused = true;
+            this.dispatchEvent(new Event('ended'));
+          });
+        }
+        return Promise.resolve();
+      }
+
+      pause() {
+        this.generation += 1;
+        this.paused = true;
+      }
+
+      removeAttribute(name: string) {
+        if (name === 'src') this.src = '';
+      }
+
+      load() {}
+    }
+    Object.defineProperty(window, 'Audio', { value: MockAudio });
+  });
+});
+
 async function enterParentArea(page: import('@playwright/test').Page) {
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
@@ -47,33 +95,6 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
     results: {},
     draftContent: true,
   };
-
-  await page.addInitScript(() => {
-    const instances: { src: string; paused: boolean }[] = [];
-    Object.defineProperty(window, '__lpAudioInstances', { value: instances });
-    class MockAudio extends EventTarget {
-      src: string;
-      paused = true;
-      preload = '';
-      constructor(source: string) {
-        super();
-        this.src = source;
-        instances.push(this);
-      }
-      play() {
-        this.paused = false;
-        return Promise.resolve();
-      }
-      pause() {
-        this.paused = true;
-      }
-      removeAttribute(name: string) {
-        if (name === 'src') this.src = '';
-      }
-      load() {}
-    }
-    Object.defineProperty(window, 'Audio', { value: MockAudio });
-  });
 
   await page.context().route('**/api/v1/**', async (route) => {
     const url = new URL(route.request().url());
@@ -479,8 +500,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   else await currentLessonTile.press('Enter');
   await expect(page.getByText('第 1 课 · 课程知识卡')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'ü' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'ü 标准音待准备' })).toBeDisabled();
-  await expect(page.getByRole('button', { name: '开始本课视觉练习' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'ü 播放标准音' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '开始本课练习' })).toBeEnabled();
   await page.getByRole('button', { name: '← 返回学习路线' }).click();
   await page.locator('.lesson-tile').nth(1).click();
   await expect(page.getByText('第 2 课 · 课程知识卡')).toBeVisible();
@@ -621,8 +642,9 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await futureLessonProgress.locator(':scope > summary').click();
   await expect(futureLessonProgress).toContainText('暂无有效练习记录 · 需要练习：字形');
   await expect(page.getByText('已连接设备')).toBeVisible();
-  const reduceMotion = page.getByRole('checkbox');
-  await reduceMotion.check();
+  const reduceMotion = page.getByRole('checkbox', { name: '减少动态效果' });
+  await reduceMotion.click();
+  await expect(reduceMotion).toBeChecked();
   await expect
     .poll(() => page.evaluate(() => document.documentElement.dataset.reducedMotion))
     .toBe('true');
@@ -783,7 +805,7 @@ test('旧课程版本的当前课提示家长重选并保留学习路线', async
       '保存的当前课不在此课程版本中。已有学习记录会保留，请家长重新选择学校正在学习的课程。',
     ),
   ).toBeVisible();
-  await expect(page.getByRole('button', { name: '请家长先选择当前课 →' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: '请家长先选择当前课' })).toBeDisabled();
 
   await enterParentArea(page);
   await page.getByRole('combobox').selectOption('lesson-02');
@@ -792,7 +814,7 @@ test('旧课程版本的当前课提示家长重选并保留学习路线', async
   await expect(page.getByText('1 次练习记录')).toBeVisible();
   await page.getByRole('button', { name: '返回学习' }).click();
   await expect(page.getByRole('heading', { name: '第 2 课 · 新的当前课' })).toBeVisible();
-  await expect(page.getByRole('button', { name: '开始今天的练习 →' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeEnabled();
 });
 
 test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) => {

@@ -1,6 +1,7 @@
+import hashlib
 from datetime import UTC, date, datetime, timedelta
 
-from server import storage
+from server import api, audio_assets, storage
 from server.api import _review_recommendations
 from server.domain import business_date
 
@@ -106,3 +107,47 @@ def test_progress_api_returns_server_prioritized_recommendations(paired_client):
     assert recommendations[0]["knowledgeId"] == "k-tone-4"
     assert recommendations[0]["overdueDays"] == 3
     assert len(recommendations) <= 3
+
+
+def test_listening_review_recommendation_tracks_actual_standard_audio_once_per_request(
+    monkeypatch, tmp_path
+):
+    curriculum = _curriculum()
+    for question in curriculum["exercises"]:
+        if question["id"] in {"a", "b"}:
+            question.update(type="listen-choice", audioRef="audio-reviewed")
+        elif question["id"] == "c2":
+            question["type"] = "read-aloud"
+    standard_root = tmp_path / "audio"
+    standard_root.mkdir()
+    standard_file = standard_root / "sample.wav"
+    standard_file.write_bytes(b"RIFF-synthetic-adapter-test")
+    curriculum["audioRequirements"] = [
+        {
+            "id": "audio-reviewed",
+            "file": "/audio/sample.wav",
+            "sha256": hashlib.sha256(standard_file.read_bytes()).hexdigest(),
+            "status": "approved",
+            "reviewStatus": "approved",
+            "rightsEvidence": "synthetic-test-only",
+            "reviewEvidence": "adapter-test-not-pronunciation-validation",
+        }
+    ]
+    monkeypatch.setattr(audio_assets, "PUBLIC_AUDIO_DIR", standard_root)
+    checks = []
+    original = api._available_standard_audio
+
+    def count_check(content):
+        checks.append(1)
+        return original(content)
+
+    monkeypatch.setattr(api, "_available_standard_audio", count_check)
+    plan = [{"knowledge_id": "k-a", "due_date": "2026-09-26"}]
+    today = date(2026, 9, 26)
+    ready = _review_recommendations(curriculum, "lesson-01", plan, set(), today)
+    assert [item["knowledgeId"] for item in ready] == ["k-a"]
+    assert len(checks) == 1
+
+    standard_file.write_bytes(b"changed")
+    assert _review_recommendations(curriculum, "lesson-01", plan, set(), today) == []
+    assert len(checks) == 2

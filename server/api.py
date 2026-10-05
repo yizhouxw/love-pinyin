@@ -13,9 +13,10 @@ from urllib.parse import urlparse
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
-from server.audio_assets import audio_response
+from server.audio_assets import _registered_path, _verified_file, audio_response
 from server.content import load_curriculum, map_by_id
 from server.domain import Event, business_date, calculate_mastery, next_review
+from server.learning_audio import learning_audio_response, learning_audio_status
 from server.storage import connect, now_iso, public_profile, transaction
 
 router = APIRouter(prefix="/api/v1")
@@ -142,6 +143,33 @@ def _require_parent(device: dict) -> dict:
 
 def _public_exercise(question: dict) -> dict:
     return {key: value for key, value in question.items() if key not in {"answer", "hint"}}
+
+
+def _available_standard_audio(content: dict) -> set[str]:
+    available = set()
+    assets = content.get("audioRequirements", [])
+    for asset in assets:
+        # Duplicate IDs are also rejected by the serving endpoint.
+        if sum(item.get("id") == asset.get("id") for item in assets) != 1:
+            continue
+        try:
+            path, _, digest = _registered_path(asset)
+            handle, size = _verified_file(path, digest)
+            handle.close()
+            if size:
+                available.add(asset["id"])
+        except HTTPException:
+            continue
+    return available
+
+
+def _objective_available(question: dict, audio_ids: set[str]) -> bool:
+    if question["type"] not in {"listen-choice", "symbol-choice", "tone-choice", "blend-choice"}:
+        return False
+    audio_id = question.get("audioRef")
+    if audio_id or question["type"] == "listen-choice":
+        return audio_id in audio_ids
+    return True
 
 
 def _create_pairing_code() -> dict:
@@ -299,9 +327,23 @@ def health() -> dict:
 
 @router.get("/capabilities")
 def capabilities() -> dict:
+    content = load_curriculum()
+    standard_ids = _available_standard_audio(content)
+    learning = learning_audio_status()
     return {
-        "audio": {"available": False, "reason": "assets-not-recorded"},
-        "contentReview": "draft",
+        "audio": {
+            "available": bool(standard_ids),
+            "reason": "ready" if standard_ids else "assets-not-recorded",
+            "availableIds": sorted(standard_ids),
+        },
+        "learningAudio": {
+            "narrationReady": sum(learning["narration"].values()),
+            "narrationTotal": len(learning["narration"]),
+            "lessonRecordingsReady": sum(
+                item["available"] for item in learning["lessons"].values()
+            ),
+        },
+        "contentReview": "approved" if content.get("reviewStatus") == "approved" else "draft",
     }
 
 
@@ -359,6 +401,20 @@ def get_audio_asset(
     device: dict = Depends(paired),
 ) -> Response:
     return audio_response(asset_id, load_curriculum()["audioRequirements"], range_header)
+
+
+@router.get("/learning-audio")
+def get_learning_audio(device: dict = Depends(paired)) -> dict:
+    return learning_audio_status()
+
+
+@router.get("/voice/{asset_id}")
+def get_learning_voice(
+    asset_id: str,
+    range_header: str | None = Header(default=None, alias="Range"),
+    device: dict = Depends(paired),
+) -> Response:
+    return learning_audio_response(asset_id, range_header)
 
 
 class LessonChoice(BaseModel):
@@ -519,6 +575,7 @@ def _review_recommendations(
         return []
     knowledge = {item["id"]: item for item in curriculum["knowledgeItems"]}
     exercises = {item["id"]: item for item in curriculum["exercises"]}
+    audio_ids = _available_standard_audio(curriculum)
     due_plans = {
         row["knowledge_id"]: row
         for row in plans
@@ -537,7 +594,7 @@ def _review_recommendations(
             for exercise_id in candidate_lesson["exerciseIds"]
             if exercise_id in exercises
             and exercises[exercise_id]["primaryKnowledgeId"] == knowledge_id
-            and exercises[exercise_id]["type"] in {"symbol-choice", "tone-choice", "blend-choice"}
+            and _objective_available(exercises[exercise_id], audio_ids)
             and (knowledge_id, exercise_id) not in credited_today
         }
         if len(eligible) < 2:
@@ -1318,13 +1375,14 @@ def start_review_session(knowledge_id: str, device: dict = Depends(mutable)) -> 
         raise HTTPException(404, detail={"code": "KNOWLEDGE_NOT_FOUND"})
     current_order = _current_lesson_order(lessons, device["selected_lesson_id"])
     exercise_map = map_by_id("exercises")
+    audio_ids = _available_standard_audio(content)
     eligible = [
         exercise_map[exercise_id]
         for lesson in content["lessons"]
         if lesson["order"] <= current_order
         for exercise_id in lesson["exerciseIds"]
         if exercise_map[exercise_id]["primaryKnowledgeId"] == knowledge_id
-        and exercise_map[exercise_id]["type"] in {"symbol-choice", "tone-choice", "blend-choice"}
+        and _objective_available(exercise_map[exercise_id], audio_ids)
     ]
     eligible = list({item["id"]: item for item in eligible}.values())
     if len(eligible) < 2:
@@ -1400,7 +1458,7 @@ def start_review_session(knowledge_id: str, device: dict = Depends(mutable)) -> 
         "startedAt": now,
         "tasks": tasks,
         "draftContent": content["reviewStatus"] != "approved",
-        "audioAvailable": False,
+        "audioAvailable": any(task["exercise"].get("audioRef") in audio_ids for task in tasks),
         "revision": revision,
     }
 
@@ -1419,12 +1477,11 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
     if lesson["order"] > current_order:
         raise HTTPException(403, detail={"code": "LESSON_NOT_UNLOCKED"})
     by_id = map_by_id("exercises")
-    # Do not expose listening tasks until approved audio assets exist. Browser
-    # speech synthesis is not a substitute for reviewed Mandarin exemplars.
+    # Hearing exercises use only reviewed, present and integrity-checked standard
+    # sounds. Whole-lesson recordings and Chinese instructions cannot replace them.
+    audio_ids = _available_standard_audio(content)
     questions = [
-        by_id[qid]
-        for qid in lesson["exerciseIds"]
-        if by_id[qid]["type"] in {"symbol-choice", "tone-choice", "blend-choice"}
+        by_id[qid] for qid in lesson["exerciseIds"] if _objective_available(by_id[qid], audio_ids)
     ]
     if not questions:
         raise HTTPException(409, detail={"code": "LESSON_NOT_READY"})
@@ -1484,7 +1541,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         "startedAt": now,
         "tasks": tasks,
         "draftContent": content["reviewStatus"] != "approved",
-        "audioAvailable": False,
+        "audioAvailable": any(task["exercise"].get("audioRef") in audio_ids for task in tasks),
         "revision": revision,
     }
 

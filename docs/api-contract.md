@@ -55,3 +55,7 @@
 `profiles(id,nickname,created_at)`；`attempts(id,profile_id,session_id,exercise_id,knowledge_id,mode,first_try_correct,hint_used,occurred_at,content_version)`；`profile_state(profile_id,revision,selected_lesson_id,settings_json)`；`schema_migrations(version,applied_at)`。迁移代码允许识别历史评分摘要字段，但新数据不写入。
 
 外键约束和唯一索引必须显式建模。客户端不能写任意 profile，配对 session 需验证家庭范围。保存可重放客观事件而非只存累计百分比；题型/版本变更导致不兼容记录时保留历史但从新掌握度计算排除，家长可见原因。
+
+## 语音优先家庭资源（2026-10-05，ADR-0005）
+
+配对后 `GET /api/v1/learning-audio` 返回 `{ narration: Record<audioId, boolean>, lessons: Record<lessonId, {audioId,title,available,sourceType}> }`；可用性必须来自登记文件及摘要验证。`GET /api/v1/voice/{audioId}` 只读取固定私有根目录清单ID并支持Range，不接受文本合成、路径、外部URL。ID来自content/narration.json与lesson-recordings.json；内容文件与准备脚本记录不一致则不可用，不能播放旧题干。与 `/audio/{id}` 标准音审核路径分离；不产生任何作答记录。
