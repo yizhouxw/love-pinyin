@@ -557,6 +557,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   expect(smallScreen.targetSizes.every(({ width, height }) => width >= 48 && height >= 48)).toBe(
     true,
   );
+  await baOption.click();
+  await expect(page.getByLabel('当前拼读预览')).toContainText('bā');
   await page.evaluate(() => {
     const elements = Array.from(
       document.querySelectorAll('h1, h2, p, button, small, label, strong, li, span'),
@@ -571,8 +573,16 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   const zoomedScreen = await page.evaluate(() => ({
     contentWidth: document.documentElement.scrollWidth,
     viewportWidth: document.documentElement.clientWidth,
+    controls: Array.from(document.querySelectorAll('.blend-controls button')).map((button) => {
+      const { width, height } = button.getBoundingClientRect();
+      return { width, height };
+    }),
   }));
   expect(zoomedScreen.contentWidth).toBeLessThanOrEqual(zoomedScreen.viewportWidth);
+  expect(zoomedScreen.controls).toHaveLength(2);
+  expect(zoomedScreen.controls.every(({ width, height }) => width >= 48 && height >= 48)).toBe(
+    true,
+  );
   await expect(page.getByRole('heading', { name: 'b 和 ā 连起来是哪一个音节？' })).toBeVisible();
   await expect(page.getByRole('button', { name: /bā/ })).toBeVisible();
   await page.evaluate(() => {
@@ -581,10 +591,17 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
       (element as HTMLElement).style.fontSize = '';
     });
   });
+  await page.getByRole('button', { name: '撤销拼读选择', exact: true }).click();
+  await expect(baOption).toBeFocused();
   if (originalViewport) await page.setViewportSize(originalViewport);
   const correctCandidate = page.getByRole('button', { name: /bā/ });
   if (isMobile) await correctCandidate.tap();
   else await correctCandidate.press('Enter');
+  const confirmBlend = page.getByRole('button', { name: '确认拼读', exact: true });
+  await expect(confirmBlend).toBeFocused();
+  expect(answerRequests).toEqual([]);
+  if (isMobile) await confirmBlend.tap();
+  else await confirmBlend.press('Enter');
   await expect(page.getByRole('alert')).toContainText('本次操作结果未确认');
   await expect(page.getByRole('alert')).toContainText('会沿用原请求号，不会重复计分');
   await expect(page.getByRole('alert')).toBeVisible();
@@ -673,6 +690,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await page.getByRole('button', { name: '返回学习' }).click();
   await page.getByRole('button', { name: '开始今天的练习' }).click();
   await page.getByRole('button', { name: /bā/ }).click();
+  await page.getByRole('button', { name: '确认拼读', exact: true }).click();
   await page.getByRole('button', { name: '继续 →' }).click();
   await page.getByRole('button', { name: '先跳过这题' }).click();
   await expect(page.getByRole('heading', { name: '今天的探索完成啦！' })).toBeVisible();

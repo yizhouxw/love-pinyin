@@ -49,6 +49,8 @@ for (const { knowledgeId, symbol, slice } of [
       await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
       const answerIndex = q.options.findIndex((o) => o.id === q.answer.optionId);
       await page.locator('.game-option').nth(answerIndex).click();
+      if (q.type === 'blend-choice')
+        await page.getByRole('button', { name: '确认拼读', exact: true }).click();
       await expect(page.locator('.feedback')).toContainText('答对啦');
       await page.getByRole('button', { name: '继续 →', exact: true }).click();
     }

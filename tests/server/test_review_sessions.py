@@ -39,6 +39,11 @@ def test_review_session_has_two_distinct_questions_and_skip_keeps_plan_due(paire
     assert response.status_code == 200
     session = response.json()
     assert session["reviewKnowledgeId"] == "k-tone-4"
+    resumed = paired_client.get("/api/v1/sessions/current").json()
+    for key in ("id", "contentVersion", "startedAt", "reviewKnowledgeId", "draftContent", "tasks"):
+        assert resumed[key] == session[key]
+    assert resumed["lessonId"] is None
+    assert not {"tasks_json", "household_id", "device_id", "review_knowledge_id"} & resumed.keys()
     assert len(session["tasks"]) == 2
     assert len({task["exercise"]["id"] for task in session["tasks"]}) == 2
     for task in session["tasks"]:

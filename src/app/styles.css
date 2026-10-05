@@ -154,7 +154,8 @@ main {
 }
 .pair-input button,
 .start-button,
-.next-button {
+.next-button,
+.blend-confirm {
   border: 0;
   border-radius: 14px;
   background: var(--green);
@@ -1515,4 +1516,40 @@ footer {
   scroll-behavior: auto !important;
   animation: none !important;
   transition: none !important;
+}
+
+.blend-workbench {
+  margin-top: 18px;
+  padding: 16px;
+  border: 2px dashed var(--line);
+  border-radius: 20px;
+  background: var(--surface, #fffdf5);
+}
+.blend-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+  font-size: 48px;
+  overflow-wrap: anywhere;
+}
+.blend-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.blend-controls button {
+  flex: 1 1 160px;
+  min-height: 48px;
+  min-width: 0;
+  white-space: normal;
+}
+.blend-empty {
+  margin-bottom: 0;
+}
+.game-option[aria-pressed='true'] {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
 }

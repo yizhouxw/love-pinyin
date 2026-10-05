@@ -327,6 +327,11 @@ export function App() {
   const [hint, setHint] = useState<Hint | null>(null);
   const [answer, setAnswer] = useState<Answer | null>(null);
   const [correctedInstance, setCorrectedInstance] = useState<string | null>(null);
+  const [blendDraft, setBlendDraft] = useState<{ instanceId: string; optionId: string } | null>(
+    null,
+  );
+  const blendConfirm = useRef<HTMLButtonElement | null>(null);
+  const blendOptions = useRef(new Map<string, HTMLButtonElement>());
   const [parentOpen, setParentOpen] = useState(false);
   const [parentGateOpen, setParentGateOpen] = useState(false);
   const [lessonChoice, setLessonChoice] = useState('');
@@ -435,6 +440,13 @@ export function App() {
     : -1;
   const task = active && taskIndex >= 0 ? active.tasks[taskIndex] : null;
   const question = task?.exercise;
+  const blendPreview =
+    question?.type === 'blend-choice' && task?.instanceId === blendDraft?.instanceId
+      ? question.options.find((option: Option) => option.id === blendDraft?.optionId)
+      : undefined;
+  useEffect(() => {
+    if (blendPreview) blendConfirm.current?.focus();
+  }, [blendPreview, task?.instanceId]);
   const corrected = Boolean(task && correctedInstance === task.instanceId);
   const questionVoice = question ? narration.exercises[question.id] : undefined;
   const promptHeard = Boolean(question && voice.completedIds.has(`prompt-${question.id}`));
@@ -506,6 +518,7 @@ export function App() {
       body: JSON.stringify({ lessonId }),
     })) as Session;
     setSession(started);
+    setBlendDraft(null);
     setAnswer(null);
     setHint(null);
   }
@@ -518,8 +531,36 @@ export function App() {
       body: JSON.stringify({}),
     })) as Session;
     setSession(started);
+    setBlendDraft(null);
     setAnswer(null);
     setHint(null);
+  }
+
+  async function submitOption(optionId: string) {
+    if (!task || busy || answerNeedsAudio || (answer && (answer.correct || corrected))) return;
+    await act(async () => {
+      if (answer) {
+        if (optionId === answer.correctOptionId) setCorrectedInstance(task.instanceId);
+        else playVoice('ui-incorrect');
+        setBlendDraft(null);
+        return;
+      }
+      let pending = readPendingAnswer(task.instanceId);
+      if (pending && pending.answerOptionId !== optionId)
+        throw new Error('上一题提交结果待确认，请再点一次原来的答案以安全重试。');
+      if (!pending) {
+        pending = { requestId: idempotencyKey(), answerOptionId: optionId };
+        savePendingAnswer(task.instanceId, pending);
+      }
+      const result = (await api(`/instances/${task.instanceId}/answer`, {
+        method: 'POST',
+        body: JSON.stringify(pending),
+      })) as Omit<Answer, 'selectedOptionId'>;
+      clearPendingAnswer(task.instanceId);
+      setBlendDraft(null);
+      setAnswer({ ...result, selectedOptionId: pending.answerOptionId });
+      await refreshProgressOnly();
+    });
   }
 
   if (!boot)
@@ -671,6 +712,7 @@ export function App() {
                 stopVoice();
                 await api(`/sessions/${active.id}/finish`, { method: 'POST' });
                 setSession(null);
+                setBlendDraft(null);
                 setAnswer(null);
                 setHint(null);
                 await refresh();
@@ -694,7 +736,7 @@ export function App() {
         {active.draftContent && (
           <div className="draft-banner">试用课程草稿：题目尚待教师审校，请家长陪伴使用。</div>
         )}
-        {active.tasks.length < 6 && (
+        {!active.reviewKnowledgeId && active.tasks.length < 6 && (
           <p className="session-size-note" role="status">
             本课目前准备了 {active.tasks.length} 道可用练习，本轮先完成这些。
           </p>
@@ -751,33 +793,23 @@ export function App() {
                   disabled={
                     Boolean(answer && (answer.correct || corrected)) || busy || answerNeedsAudio
                   }
-                  onClick={() =>
-                    void act(async () => {
-                      if (answer) {
-                        if (option.id === answer.correctOptionId)
-                          setCorrectedInstance(task.instanceId);
-                        else playVoice('ui-incorrect');
-                        return;
-                      }
-                      let pending = readPendingAnswer(task.instanceId);
-                      if (pending && pending.answerOptionId !== option.id)
-                        throw new Error('上一题提交结果待确认，请再点一次原来的答案以安全重试。');
-                      if (!pending) {
-                        pending = { requestId: idempotencyKey(), answerOptionId: option.id };
-                        savePendingAnswer(task.instanceId, pending);
-                      }
-                      const result = (await api(`/instances/${task.instanceId}/answer`, {
-                        method: 'POST',
-                        body: JSON.stringify(pending),
-                      })) as Omit<Answer, 'selectedOptionId'>;
-                      clearPendingAnswer(task.instanceId);
-                      setAnswer({
-                        ...result,
-                        selectedOptionId: pending.answerOptionId,
-                      });
-                      await refreshProgressOnly();
-                    })
+                  ref={
+                    question.type === 'blend-choice'
+                      ? (element) => {
+                          if (element) blendOptions.current.set(option.id, element);
+                          else blendOptions.current.delete(option.id);
+                        }
+                      : undefined
                   }
+                  aria-pressed={
+                    question.type === 'blend-choice' ? blendPreview?.id === option.id : undefined
+                  }
+                  onClick={() => {
+                    if (question.type === 'blend-choice') {
+                      setBlendDraft({ instanceId: task.instanceId, optionId: option.id });
+                      if (progress?.settings.soundEnabled !== false) playVoice('ui-blend_ready');
+                    } else void submitOption(option.id);
+                  }}
                 >
                   <span className="option-index">{String.fromCharCode(65 + index)}</span>
                   <GameOptionContent
@@ -797,6 +829,47 @@ export function App() {
               </div>
             ))}
           </div>
+          {question.type === 'blend-choice' && (
+            <section className="blend-workbench" aria-label="拼读试选台">
+              <VoiceButton id="ui-blend_how" voice={voice} label="听拼读怎么玩" />
+              {blendPreview ? (
+                <>
+                  <div className="blend-preview" aria-label="当前拼读预览">
+                    <span aria-hidden="true">🧩</span>
+                    <strong>{blendPreview.label}</strong>
+                  </div>
+                  <div className="blend-controls">
+                    <button
+                      ref={blendConfirm}
+                      className="blend-confirm"
+                      aria-label="确认拼读"
+                      disabled={
+                        busy || answerNeedsAudio || Boolean(answer && (answer.correct || corrected))
+                      }
+                      onClick={() => void submitOption(blendPreview.id)}
+                    >
+                      ✓ 确认拼读
+                    </button>
+                    <button
+                      className="quiet"
+                      aria-label="撤销拼读选择"
+                      disabled={busy}
+                      onClick={() => {
+                        const id = blendPreview.id;
+                        setBlendDraft(null);
+                        stopVoice();
+                        blendOptions.current.get(id)?.focus();
+                      }}
+                    >
+                      ↶ 重新选择
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <p className="blend-empty">🧩 选一张卡片，看看拼在一起的样子</p>
+              )}
+            </section>
+          )}
           {answer && (
             <div className={`feedback ${answer.correct ? 'good' : 'try-again'}`} role="status">
               <strong>
@@ -844,6 +917,7 @@ export function App() {
                     await api(`/instances/${task.instanceId}/skip`, { method: 'POST' });
                     const nextSession = (await api('/sessions/current')) as Session;
                     setHint(null);
+                    setBlendDraft(null);
                     setSession(nextSession);
                   })
                 }

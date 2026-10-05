@@ -251,6 +251,8 @@ test('BANK-01: the former two-question nasal lesson completes six spoken tasks',
     await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 15_000 });
     const choice = question.options.findIndex((option) => option.id === question.answer.optionId);
     await page.locator('.game-option').nth(choice).click();
+    if (question.type === 'blend-choice')
+      await page.getByRole('button', { name: '确认拼读', exact: true }).click();
     await expect(page.getByText('答对啦！', { exact: true })).toBeVisible();
     await page.getByRole('button', { name: '继续 →', exact: true }).click();
   }

@@ -16,6 +16,8 @@ const requiredUi = [
   'lesson',
   'start',
   'audio_error',
+  'blend_how',
+  'blend_ready',
 ];
 const spokenChinese = /^[\p{Script=Han}\s，。！？、；：…“”‘’（）《》「」『』—·]+$/u;
 const hasHan = /\p{Script=Han}/u;

@@ -1639,7 +1639,26 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
             "skipped": True,
             "skippedAt": item["skipped_at"],
         }
-    return {**dict(row), "tasks": json.loads(row["tasks_json"]), "results": results}
+    tasks = json.loads(row["tasks_json"])
+    content = load_curriculum()
+    audio_ids = _available_standard_audio(content)
+    return {
+        "id": row["id"],
+        "status": row["status"],
+        "contentVersion": row["content_version"],
+        "startedAt": row["started_at"],
+        "reviewKnowledgeId": row["review_knowledge_id"],
+        "lessonId": tasks[0]["exercise"]["lessonId"]
+        if tasks and not row["review_knowledge_id"]
+        else None,
+        "tasks": tasks,
+        "results": results,
+        # Never infer approval of an older frozen pack from a newer pack's status.
+        "draftContent": row["content_version"] != content["contentVersion"]
+        or content["reviewStatus"] != "approved"
+        or any(task["exercise"].get("reviewStatus") != "approved" for task in tasks),
+        "audioAvailable": any(task["exercise"].get("audioRef") in audio_ids for task in tasks),
+    }
 
 
 @router.post("/sessions/{session_id}/finish")

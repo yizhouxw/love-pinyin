@@ -1,7 +1,9 @@
+from copy import deepcopy
 from datetime import UTC, datetime, timedelta
 
 import pytest
 
+from server import api
 from server.content import load_curriculum
 from server.domain import PracticeCompletion, plan_practice
 
@@ -118,3 +120,23 @@ def test_every_lesson_has_six_real_tasks_and_all_authored_visual_tasks_are_reach
             break
     assert seen == expected
     assert client.get("/api/v1/profiles/progress").json()["attempts"] == []
+
+
+def test_resumed_lesson_keeps_frozen_identity_and_draft_status_across_content_update(
+    paired_client, monkeypatch
+):
+    client = paired_client
+    original = post(client, "/api/v1/sessions", {})
+    resumed = client.get("/api/v1/sessions/current").json()
+    for key in ("id", "lessonId", "contentVersion", "startedAt", "draftContent", "tasks"):
+        assert resumed[key] == original[key]
+    assert resumed["reviewKnowledgeId"] is None
+    assert "tasks_json" not in resumed and "device_id" not in resumed
+    newer = deepcopy(load_curriculum())
+    newer["contentVersion"] = "test-newer-approved-content"
+    newer["reviewStatus"] = "approved"
+    monkeypatch.setattr(api, "load_curriculum", lambda: newer)
+    after_update = client.get("/api/v1/sessions/current").json()
+    assert after_update["contentVersion"] == original["contentVersion"]
+    assert after_update["tasks"] == original["tasks"]
+    assert after_update["draftContent"] is True
