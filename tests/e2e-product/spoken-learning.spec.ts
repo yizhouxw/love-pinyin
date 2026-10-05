@@ -235,12 +235,17 @@ test('BANK-01: the former two-question nasal lesson completes six spoken tasks',
   await expect(
     page.getByRole('heading', { name: '第 13 课 · an en in un ün', exact: true }),
   ).toBeVisible();
+  const sessionResponse = page.waitForResponse(
+    (response) => response.url().endsWith('/sessions') && response.request().method() === 'POST',
+  );
   await page.getByRole('button', { name: '开始今天的练习' }).click();
-  const lesson = curriculum.lessons.find((item) => item.id === 'lesson-13')!;
-  const questions = lesson.exerciseIds
-    .map((id) => curriculum.exercises.find((q) => q.id === id)!)
-    .filter((q) => q.type !== 'read-aloud' && !q.audioRef);
+  const started = await (await sessionResponse).json();
+  const questions = started.tasks.map((task: { exercise: { id: string } }) =>
+    curriculum.exercises.find((q) => q.id === task.exercise.id)!,
+  ) as typeof curriculum.exercises;
   expect(questions).toHaveLength(6);
+  expect(new Set(questions.map((q) => q.id)).size).toBe(6);
+  expect(questions.every((q) => q.lessonId === 'lesson-13' && !q.audioRef)).toBe(true);
   for (const [index, question] of questions.entries()) {
     await expect(page.locator('.play-nav strong')).toHaveText(`第 ${index + 1} / 6 关`);
     await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 15_000 });

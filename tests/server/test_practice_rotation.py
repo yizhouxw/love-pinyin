@@ -98,7 +98,9 @@ def test_every_lesson_has_six_real_tasks_and_all_authored_visual_tasks_are_reach
     )
     assert changed.status_code == 200
     seen = set()
-    for _ in range(2):
+    for round_index in range((len(expected) + 5) // 6):
+        if round_index and round_index % 2 == 0:
+            post(client, "/api/v1/rest/complete")
         session = post(client, "/api/v1/sessions", {})
         ids = [task["exercise"]["id"] for task in session["tasks"]]
         assert len(ids) == len(set(ids)) == 6

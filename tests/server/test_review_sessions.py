@@ -1,7 +1,10 @@
+from copy import deepcopy
 from datetime import UTC, date, datetime, timedelta
 
+import pytest
+
 from server import api, storage
-from server.content import map_by_id
+from server.content import load_curriculum, map_by_id
 
 
 def _set_due_plan(client, knowledge_id="k-tone-4", due=None):
@@ -54,16 +57,21 @@ def test_review_session_has_two_distinct_questions_and_skip_keeps_plan_due(paire
     assert plan["due_date"] == (date.today() - timedelta(days=1)).isoformat()
 
 
-def test_review_session_refuses_early_and_single_question_content(paired_client):
+def test_review_session_refuses_early_and_single_question_content(paired_client, monkeypatch):
     _set_due_plan(paired_client, due=date.today() + timedelta(days=1))
     early = paired_client.post(
         "/api/v1/reviews/k-tone-4/sessions", json={}, headers=_headers(paired_client)
     )
     assert early.status_code == 409
     assert early.json()["detail"]["code"] == "REVIEW_NOT_DUE"
-    _set_due_plan(paired_client, knowledge_id="k-letter-y")
+    _set_due_plan(paired_client, knowledge_id="k-tone-4")
+    content = deepcopy(load_curriculum())
+    candidates = [q["id"] for q in content["exercises"] if q["primaryKnowledgeId"] == "k-tone-4"]
+    for lesson in content["lessons"]:
+        lesson["exerciseIds"] = [qid for qid in lesson["exerciseIds"] if qid not in candidates[1:]]
+    monkeypatch.setattr(api, "load_curriculum", lambda: content)
     insufficient = paired_client.post(
-        "/api/v1/reviews/k-letter-y/sessions", json={}, headers=_headers(paired_client)
+        "/api/v1/reviews/k-tone-4/sessions", json={}, headers=_headers(paired_client)
     )
     assert insufficient.status_code == 409
     assert insufficient.json()["detail"]["code"] == "REVIEW_CONTENT_INSUFFICIENT"
@@ -200,3 +208,51 @@ def test_passing_two_question_review_advances_stage_from_shanghai_completion_day
         ).fetchone()
     assert plan["stage"] == 1
     assert plan["due_date"] == (completed_on + timedelta(days=3)).isoformat()
+
+
+# BANK-02 IDs are authored content; only historical due-state is seeded in isolated SQLite.
+BANK02_KNOWLEDGE = sorted(
+    {
+        q["primaryKnowledgeId"]
+        for q in load_curriculum()["exercises"]
+        if int(q["id"].rsplit("-", 1)[1]) >= 30
+    }
+)
+
+
+@pytest.mark.parametrize("knowledge_id", BANK02_KNOWLEDGE)
+def test_bank02_actual_content_provides_two_distinct_visual_review_tasks(
+    paired_client, knowledge_id
+):
+    client = paired_client
+    household_id = _set_due_plan(client, knowledge_id=knowledge_id)
+    with storage.transaction() as db:
+        db.execute(
+            "UPDATE household SET selected_lesson_id='lesson-14' WHERE id=?", (household_id,)
+        )
+    response = client.post(
+        f"/api/v1/reviews/{knowledge_id}/sessions", json={}, headers=_headers(client)
+    )
+    assert response.status_code == 200, response.text
+    session = response.json()
+    assert len(session["tasks"]) == 2
+    assert len({t["exercise"]["id"] for t in session["tasks"]}) == 2
+    questions = map_by_id("exercises")
+    for index, task in enumerate(session["tasks"]):
+        question = questions[task["exercise"]["id"]]
+        assert question["primaryKnowledgeId"] == knowledge_id
+        assert not question.get("audioRef")
+        answered = client.post(
+            f"/api/v1/instances/{task['instanceId']}/answer",
+            json={
+                "requestId": f"bank02-review-{index}",
+                "answerOptionId": question["answer"]["optionId"],
+            },
+            headers=_headers(client),
+        )
+        assert answered.status_code == 200
+        assert answered.json()["correct"] is True
+    finished = client.post(f"/api/v1/sessions/{session['id']}/finish", headers=_headers(client))
+    assert finished.status_code == 200
+    assert finished.json()["completedRound"] is True
+    assert len(client.get("/api/v1/profiles/progress").json()["attempts"]) == 2

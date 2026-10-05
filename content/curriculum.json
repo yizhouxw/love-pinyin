@@ -1043,7 +1043,10 @@
         "q-01-20",
         "q-01-21",
         "q-01-22",
-        "q-01-23"
+        "q-01-23",
+        "q-01-30",
+        "q-01-31",
+        "q-01-32"
       ],
       "readingTargetIds": [
         "rt-01-a1",
@@ -1118,7 +1121,9 @@
         "q-03-20",
         "q-03-21",
         "q-03-22",
-        "q-03-23"
+        "q-03-23",
+        "q-03-30",
+        "q-03-31"
       ],
       "readingTargetIds": [
         "rt-03-ba1",
@@ -1282,7 +1287,12 @@
         "q-07-20",
         "q-07-21",
         "q-07-22",
-        "q-07-23"
+        "q-07-23",
+        "q-07-30",
+        "q-07-31",
+        "q-07-32",
+        "q-07-33",
+        "q-07-34"
       ],
       "readingTargetIds": [
         "rt-07-zi4",
@@ -1335,7 +1345,16 @@
         "q-08-20",
         "q-08-21",
         "q-08-22",
-        "q-08-23"
+        "q-08-23",
+        "q-08-30",
+        "q-08-31",
+        "q-08-32",
+        "q-08-33",
+        "q-08-34",
+        "q-08-35",
+        "q-08-36",
+        "q-08-37",
+        "q-08-38"
       ],
       "readingTargetIds": [
         "rt-08-chi1",
@@ -1383,7 +1402,10 @@
         "q-09-20",
         "q-09-21",
         "q-09-22",
-        "q-09-23"
+        "q-09-23",
+        "q-09-30",
+        "q-09-31",
+        "q-09-32"
       ],
       "readingTargetIds": ["rt-09-yi1", "rt-09-yu2", "rt-09-whole-wu"],
       "reviewStatus": "needs-teacher-review",
@@ -1495,7 +1517,8 @@
         "q-12-20",
         "q-12-21",
         "q-12-22",
-        "q-12-23"
+        "q-12-23",
+        "q-12-30"
       ],
       "readingTargetIds": [
         "rt-12-xue3",
@@ -1547,7 +1570,15 @@
         "q-13-20",
         "q-13-21",
         "q-13-22",
-        "q-13-23"
+        "q-13-23",
+        "q-13-30",
+        "q-13-31",
+        "q-13-32",
+        "q-13-33",
+        "q-13-34",
+        "q-13-35",
+        "q-13-36",
+        "q-13-37"
       ],
       "readingTargetIds": [
         "rt-13-shan1",
@@ -1598,7 +1629,8 @@
         "q-14-20",
         "q-14-21",
         "q-14-22",
-        "q-14-23"
+        "q-14-23",
+        "q-14-30"
       ],
       "readingTargetIds": [
         "rt-14-feng1",
@@ -7168,6 +7200,940 @@
       "sourceIds": [],
       "license": "MIT",
       "promptAudioRef": "audio-prompt-c646a2b55540"
+    },
+    {
+      "id": "q-01-30",
+      "lessonId": "lesson-01",
+      "type": "symbol-choice",
+      "prompt": "把 à 的声调记号去掉，选出对应的韵母。",
+      "primaryKnowledgeId": "k-final-a",
+      "knowledgeIds": ["k-final-a"],
+      "options": [
+        {
+          "id": "a",
+          "label": "o"
+        },
+        {
+          "id": "b",
+          "label": "a"
+        },
+        {
+          "id": "c",
+          "label": "e"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-acda1ec3a9c9"
+    },
+    {
+      "id": "q-01-31",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "给 a 标第二声，选出正确写法。",
+      "primaryKnowledgeId": "k-final-a",
+      "knowledgeIds": ["k-final-a"],
+      "options": [
+        {
+          "id": "a",
+          "label": "à"
+        },
+        {
+          "id": "b",
+          "label": "ā"
+        },
+        {
+          "id": "c",
+          "label": "á"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-2b9ab80a8610"
+    },
+    {
+      "id": "q-01-32",
+      "lessonId": "lesson-01",
+      "type": "symbol-choice",
+      "prompt": "四线三格中，上格和下格之间是哪一格？",
+      "primaryKnowledgeId": "rule-grid-writing",
+      "knowledgeIds": ["rule-grid-writing"],
+      "options": [
+        {
+          "id": "a",
+          "label": "上格",
+          "audioRef": "audio-option-405a489b9047"
+        },
+        {
+          "id": "b",
+          "label": "中格",
+          "audioRef": "audio-option-b6c6d4a9e2b4"
+        },
+        {
+          "id": "c",
+          "label": "下格",
+          "audioRef": "audio-option-442847a35c7e"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-e3a0e12d4366"
+    },
+    {
+      "id": "q-03-30",
+      "lessonId": "lesson-03",
+      "type": "symbol-choice",
+      "prompt": "“爸爸”的第二个音节读轻声，选择正确标调。",
+      "primaryKnowledgeId": "k-tone-0",
+      "knowledgeIds": ["k-tone-0"],
+      "options": [
+        {
+          "id": "a",
+          "label": "bǎ"
+        },
+        {
+          "id": "b",
+          "label": "ba"
+        },
+        {
+          "id": "c",
+          "label": "bà"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-35c42252e3ef"
+    },
+    {
+      "id": "q-03-31",
+      "lessonId": "lesson-03",
+      "type": "blend-choice",
+      "prompt": "把 p 和 á 连起来，选出正确音节。",
+      "primaryKnowledgeId": "rule-two-part",
+      "knowledgeIds": ["rule-two-part"],
+      "options": [
+        {
+          "id": "a",
+          "label": "pá"
+        },
+        {
+          "id": "b",
+          "label": "pā"
+        },
+        {
+          "id": "c",
+          "label": "bá"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9f8a60c1b10c"
+    },
+    {
+      "id": "q-07-30",
+      "lessonId": "lesson-07",
+      "type": "symbol-choice",
+      "prompt": "把 zǐ 的声调记号去掉，选出对应的整体认读音节。",
+      "primaryKnowledgeId": "k-whole-zi",
+      "knowledgeIds": ["k-whole-zi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "z"
+        },
+        {
+          "id": "b",
+          "label": "ci"
+        },
+        {
+          "id": "c",
+          "label": "zi"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9b3eecf1c8b7"
+    },
+    {
+      "id": "q-07-31",
+      "lessonId": "lesson-07",
+      "type": "tone-choice",
+      "prompt": "给 zi 标第二声，选出正确写法。",
+      "primaryKnowledgeId": "k-whole-zi",
+      "knowledgeIds": ["k-whole-zi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zì"
+        },
+        {
+          "id": "b",
+          "label": "zí"
+        },
+        {
+          "id": "c",
+          "label": "zǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-d5e62dc94eae"
+    },
+    {
+      "id": "q-07-32",
+      "lessonId": "lesson-07",
+      "type": "symbol-choice",
+      "prompt": "把 sì 的声调记号去掉，选出对应的整体认读音节。",
+      "primaryKnowledgeId": "k-whole-si",
+      "knowledgeIds": ["k-whole-si"],
+      "options": [
+        {
+          "id": "a",
+          "label": "si"
+        },
+        {
+          "id": "b",
+          "label": "shi"
+        },
+        {
+          "id": "c",
+          "label": "s"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9b3eecf1c8b7"
+    },
+    {
+      "id": "q-07-33",
+      "lessonId": "lesson-07",
+      "type": "tone-choice",
+      "prompt": "给 si 标第一声，选出正确写法。",
+      "primaryKnowledgeId": "k-whole-si",
+      "knowledgeIds": ["k-whole-si"],
+      "options": [
+        {
+          "id": "a",
+          "label": "sí"
+        },
+        {
+          "id": "b",
+          "label": "shī"
+        },
+        {
+          "id": "c",
+          "label": "sī"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-8847c0fa7077"
+    },
+    {
+      "id": "q-07-34",
+      "lessonId": "lesson-07",
+      "type": "symbol-choice",
+      "prompt": "下面哪一张只表示声母，不是整体认读音节？",
+      "primaryKnowledgeId": "rule-whole-vs-initial",
+      "knowledgeIds": ["rule-whole-vs-initial"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zi"
+        },
+        {
+          "id": "b",
+          "label": "c"
+        },
+        {
+          "id": "c",
+          "label": "si"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-545cc6c806a9"
+    },
+    {
+      "id": "q-08-30",
+      "lessonId": "lesson-08",
+      "type": "blend-choice",
+      "prompt": "把 r 和 è 连起来，选出正确音节。",
+      "primaryKnowledgeId": "k-initial-r",
+      "knowledgeIds": ["k-initial-r"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ré"
+        },
+        {
+          "id": "b",
+          "label": "lè"
+        },
+        {
+          "id": "c",
+          "label": "rè"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9f8a60c1b10c"
+    },
+    {
+      "id": "q-08-31",
+      "lessonId": "lesson-08",
+      "type": "symbol-choice",
+      "prompt": "哪一个音节的声母是 r？",
+      "primaryKnowledgeId": "k-initial-r",
+      "knowledgeIds": ["k-initial-r"],
+      "options": [
+        {
+          "id": "a",
+          "label": "rì"
+        },
+        {
+          "id": "b",
+          "label": "shì"
+        },
+        {
+          "id": "c",
+          "label": "chī"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-579d30a16b87"
+    },
+    {
+      "id": "q-08-32",
+      "lessonId": "lesson-08",
+      "type": "symbol-choice",
+      "prompt": "把 chí 的声调记号去掉，选出对应的整体认读音节。",
+      "primaryKnowledgeId": "k-whole-chi",
+      "knowledgeIds": ["k-whole-chi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ci"
+        },
+        {
+          "id": "b",
+          "label": "chi"
+        },
+        {
+          "id": "c",
+          "label": "ch"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9b3eecf1c8b7"
+    },
+    {
+      "id": "q-08-33",
+      "lessonId": "lesson-08",
+      "type": "tone-choice",
+      "prompt": "给 chi 标第四声，选出正确写法。",
+      "primaryKnowledgeId": "k-whole-chi",
+      "knowledgeIds": ["k-whole-chi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "chì"
+        },
+        {
+          "id": "b",
+          "label": "cì"
+        },
+        {
+          "id": "c",
+          "label": "chí"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-438965bb1b2c"
+    },
+    {
+      "id": "q-08-34",
+      "lessonId": "lesson-08",
+      "type": "symbol-choice",
+      "prompt": "把 shí 的声调记号去掉，选出对应的整体认读音节。",
+      "primaryKnowledgeId": "k-whole-shi",
+      "knowledgeIds": ["k-whole-shi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "si"
+        },
+        {
+          "id": "b",
+          "label": "sh"
+        },
+        {
+          "id": "c",
+          "label": "shi"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9b3eecf1c8b7"
+    },
+    {
+      "id": "q-08-35",
+      "lessonId": "lesson-08",
+      "type": "tone-choice",
+      "prompt": "给 shi 标第三声，选出正确写法。",
+      "primaryKnowledgeId": "k-whole-shi",
+      "knowledgeIds": ["k-whole-shi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "shí"
+        },
+        {
+          "id": "b",
+          "label": "shǐ"
+        },
+        {
+          "id": "c",
+          "label": "sǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-abd130064d17"
+    },
+    {
+      "id": "q-08-36",
+      "lessonId": "lesson-08",
+      "type": "symbol-choice",
+      "prompt": "把 rì 的声调记号去掉，选出对应的整体认读音节。",
+      "primaryKnowledgeId": "k-whole-ri",
+      "knowledgeIds": ["k-whole-ri"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ri"
+        },
+        {
+          "id": "b",
+          "label": "r"
+        },
+        {
+          "id": "c",
+          "label": "li"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9b3eecf1c8b7"
+    },
+    {
+      "id": "q-08-37",
+      "lessonId": "lesson-08",
+      "type": "tone-choice",
+      "prompt": "给 ri 标第四声，选出正确写法。",
+      "primaryKnowledgeId": "k-whole-ri",
+      "knowledgeIds": ["k-whole-ri"],
+      "options": [
+        {
+          "id": "a",
+          "label": "rí"
+        },
+        {
+          "id": "b",
+          "label": "rǐ"
+        },
+        {
+          "id": "c",
+          "label": "rì"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-438965bb1b2c"
+    },
+    {
+      "id": "q-08-38",
+      "lessonId": "lesson-08",
+      "type": "symbol-choice",
+      "prompt": "哪一组能对比已经学过的平舌和翘舌声母？",
+      "primaryKnowledgeId": "rule-retroflex",
+      "knowledgeIds": ["rule-retroflex"],
+      "options": [
+        {
+          "id": "a",
+          "label": "b / p"
+        },
+        {
+          "id": "b",
+          "label": "c / ch"
+        },
+        {
+          "id": "c",
+          "label": "m / f"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-c501a005ce05"
+    },
+    {
+      "id": "q-09-30",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "哪一个音节开头使用拼写字母 y？",
+      "primaryKnowledgeId": "k-letter-y",
+      "knowledgeIds": ["k-letter-y"],
+      "options": [
+        {
+          "id": "a",
+          "label": "wū"
+        },
+        {
+          "id": "b",
+          "label": "yú"
+        },
+        {
+          "id": "c",
+          "label": "lǜ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-42c689693e74"
+    },
+    {
+      "id": "q-09-31",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "哪一个音节开头使用拼写字母 w？",
+      "primaryKnowledgeId": "k-letter-w",
+      "knowledgeIds": ["k-letter-w"],
+      "options": [
+        {
+          "id": "a",
+          "label": "wǔ"
+        },
+        {
+          "id": "b",
+          "label": "yǔ"
+        },
+        {
+          "id": "c",
+          "label": "nǚ"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-42c689693e74"
+    },
+    {
+      "id": "q-09-32",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "把 ǚ 单独写成第三声音节，选择正确拼写。",
+      "primaryKnowledgeId": "rule-y-v",
+      "knowledgeIds": ["rule-y-v"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ǚ"
+        },
+        {
+          "id": "b",
+          "label": "yǚ"
+        },
+        {
+          "id": "c",
+          "label": "yǔ"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9cfcc2e5fc44"
+    },
+    {
+      "id": "q-12-30",
+      "lessonId": "lesson-12",
+      "type": "symbol-choice",
+      "prompt": "分析音节 ér 时，下面哪一种说法正确？",
+      "primaryKnowledgeId": "rule-er",
+      "knowledgeIds": ["rule-er"],
+      "options": [
+        {
+          "id": "a",
+          "label": "前面的字母是声母",
+          "audioRef": "audio-option-ba811b3702b0"
+        },
+        {
+          "id": "b",
+          "label": "整个韵母独立成音节",
+          "audioRef": "audio-option-94c2167e189a"
+        },
+        {
+          "id": "c",
+          "label": "后面的字母是声母",
+          "audioRef": "audio-option-37bf200a2b87"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-fbd292bef0b8"
+    },
+    {
+      "id": "q-13-30",
+      "lessonId": "lesson-13",
+      "type": "symbol-choice",
+      "prompt": "把 ūn 的声调记号去掉，选出对应的韵母。",
+      "primaryKnowledgeId": "k-final-un",
+      "knowledgeIds": ["k-final-un"],
+      "options": [
+        {
+          "id": "a",
+          "label": "un"
+        },
+        {
+          "id": "b",
+          "label": "ün"
+        },
+        {
+          "id": "c",
+          "label": "in"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-acda1ec3a9c9"
+    },
+    {
+      "id": "q-13-31",
+      "lessonId": "lesson-13",
+      "type": "tone-choice",
+      "prompt": "给 un 标第三声，选出正确写法。",
+      "primaryKnowledgeId": "k-final-un",
+      "knowledgeIds": ["k-final-un"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ūn"
+        },
+        {
+          "id": "b",
+          "label": "ún"
+        },
+        {
+          "id": "c",
+          "label": "ǔn"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-55eb5dca5d9b"
+    },
+    {
+      "id": "q-13-32",
+      "lessonId": "lesson-13",
+      "type": "symbol-choice",
+      "prompt": "把 ǚn 的声调记号去掉，选出对应的韵母。",
+      "primaryKnowledgeId": "k-final-vn",
+      "knowledgeIds": ["k-final-vn"],
+      "options": [
+        {
+          "id": "a",
+          "label": "un"
+        },
+        {
+          "id": "b",
+          "label": "ün"
+        },
+        {
+          "id": "c",
+          "label": "in"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-acda1ec3a9c9"
+    },
+    {
+      "id": "q-13-33",
+      "lessonId": "lesson-13",
+      "type": "tone-choice",
+      "prompt": "给 ün 标第四声，选出正确写法。",
+      "primaryKnowledgeId": "k-final-vn",
+      "knowledgeIds": ["k-final-vn"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ǜn"
+        },
+        {
+          "id": "b",
+          "label": "ǘn"
+        },
+        {
+          "id": "c",
+          "label": "ǚn"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-8c1a2553f698"
+    },
+    {
+      "id": "q-13-34",
+      "lessonId": "lesson-13",
+      "type": "symbol-choice",
+      "prompt": "把 yuán 的声调记号去掉，选出对应的整体认读音节。",
+      "primaryKnowledgeId": "k-whole-yuan",
+      "knowledgeIds": ["k-whole-yuan"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yun"
+        },
+        {
+          "id": "b",
+          "label": "yan"
+        },
+        {
+          "id": "c",
+          "label": "yuan"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9b3eecf1c8b7"
+    },
+    {
+      "id": "q-13-35",
+      "lessonId": "lesson-13",
+      "type": "tone-choice",
+      "prompt": "给 yuan 标第三声，选出正确写法。",
+      "primaryKnowledgeId": "k-whole-yuan",
+      "knowledgeIds": ["k-whole-yuan"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yuán"
+        },
+        {
+          "id": "b",
+          "label": "yuǎn"
+        },
+        {
+          "id": "c",
+          "label": "yuàn"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-abd130064d17"
+    },
+    {
+      "id": "q-13-36",
+      "lessonId": "lesson-13",
+      "type": "symbol-choice",
+      "prompt": "把 yín 的声调记号去掉，选出对应的整体认读音节。",
+      "primaryKnowledgeId": "k-whole-yin",
+      "knowledgeIds": ["k-whole-yin"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yin"
+        },
+        {
+          "id": "b",
+          "label": "ying"
+        },
+        {
+          "id": "c",
+          "label": "yun"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9b3eecf1c8b7"
+    },
+    {
+      "id": "q-13-37",
+      "lessonId": "lesson-13",
+      "type": "tone-choice",
+      "prompt": "给 yin 标第四声，选出正确写法。",
+      "primaryKnowledgeId": "k-whole-yin",
+      "knowledgeIds": ["k-whole-yin"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yǐn"
+        },
+        {
+          "id": "b",
+          "label": "yín"
+        },
+        {
+          "id": "c",
+          "label": "yìn"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-438965bb1b2c"
+    },
+    {
+      "id": "q-14-30",
+      "lessonId": "lesson-14",
+      "type": "symbol-choice",
+      "prompt": "哪一组可以对比前鼻韵母和后鼻韵母？",
+      "primaryKnowledgeId": "rule-front-back-nasal",
+      "knowledgeIds": ["rule-front-back-nasal"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ai / ei"
+        },
+        {
+          "id": "b",
+          "label": "in / ing"
+        },
+        {
+          "id": "c",
+          "label": "ao / ou"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "reviewStatus": "needs-teacher-review",
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-a43992b98725"
     }
   ],
   "readingTargets": [
@@ -10919,6 +11885,289 @@
       "source": "planned-original-recording",
       "license": "MIT-intended-pending-performer-release",
       "file": null
+    },
+    {
+      "id": "audio-prompt-acda1ec3a9c9",
+      "transcript": "把上面韵母的声调记号去掉，选出对应的卡片。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-final-a", "k-final-un", "k-final-vn"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-2b9ab80a8610",
+      "transcript": "给上面的韵母标第二声，选出正确写法。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-final-a"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-option-405a489b9047",
+      "transcript": "上格",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-grid-writing"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-option-b6c6d4a9e2b4",
+      "transcript": "中格",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-grid-writing"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-option-442847a35c7e",
+      "transcript": "下格",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-grid-writing"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-e3a0e12d4366",
+      "transcript": "四线三格中，上格和下格之间是哪一格？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-grid-writing"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-35c42252e3ef",
+      "transcript": "爸爸的第二个音节读轻声，选择正确标调。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-tone-0"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-9f8a60c1b10c",
+      "transcript": "把上面的两部分连起来，选出正确音节。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-two-part", "k-initial-r"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-9b3eecf1c8b7",
+      "transcript": "把上面音节的声调记号去掉，选出对应的整体认读音节。",
+      "kind": "instruction",
+      "knowledgeIds": [
+        "k-whole-zi",
+        "k-whole-si",
+        "k-whole-chi",
+        "k-whole-shi",
+        "k-whole-ri",
+        "k-whole-yuan",
+        "k-whole-yin"
+      ],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-d5e62dc94eae",
+      "transcript": "给上面的整体认读音节标第二声，选出正确写法。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-whole-zi"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-8847c0fa7077",
+      "transcript": "给上面的整体认读音节标第一声，选出正确写法。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-whole-si"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-545cc6c806a9",
+      "transcript": "下面哪一张只表示声母，不是整体认读音节？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-whole-vs-initial"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-579d30a16b87",
+      "transcript": "哪一个音节的声母和上面的字母相同？",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-r"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-438965bb1b2c",
+      "transcript": "给上面的整体认读音节标第四声，选出正确写法。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-whole-chi", "k-whole-ri", "k-whole-yin"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-abd130064d17",
+      "transcript": "给上面的整体认读音节标第三声，选出正确写法。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-whole-shi", "k-whole-yuan"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-c501a005ce05",
+      "transcript": "哪一组能对比已经学过的平舌和翘舌声母？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-retroflex"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-42c689693e74",
+      "transcript": "哪一个音节开头使用上面的拼写字母？",
+      "kind": "instruction",
+      "knowledgeIds": ["k-letter-y", "k-letter-w"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-9cfcc2e5fc44",
+      "transcript": "把上面的韵母单独写成第三声音节，选择正确拼写。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-y-v"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-option-ba811b3702b0",
+      "transcript": "前面的字母是声母",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-er"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-option-94c2167e189a",
+      "transcript": "整个韵母独立成音节",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-er"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-option-37bf200a2b87",
+      "transcript": "后面的字母是声母",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-er"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-fbd292bef0b8",
+      "transcript": "看看上面的音节，下面哪一种说法正确？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-er"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-55eb5dca5d9b",
+      "transcript": "给上面的韵母标第三声，选出正确写法。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-final-un"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-8c1a2553f698",
+      "transcript": "给上面的韵母标第四声，选出正确写法。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-final-vn"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
+    },
+    {
+      "id": "audio-prompt-a43992b98725",
+      "transcript": "哪一组可以对比前鼻韵母和后鼻韵母？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-front-back-nasal"],
+      "status": "not-recorded",
+      "reviewStatus": "needs-teacher-review",
+      "source": "planned-original-recording",
+      "license": "MIT-intended-pending-performer-release",
+      "file": null
     }
   ],
   "supplementalTopics": [
@@ -11040,10 +12289,10 @@
   "coverage": {
     "purpose": "authored-practice-bank-awaiting-content-and-standard-audio-review",
     "knowledgeItemCount": 83,
-    "exerciseCount": 201,
+    "exerciseCount": 233,
     "readingTargetCount": 79,
     "primaryExerciseCounts": {
-      "k-final-a": 2,
+      "k-final-a": 4,
       "k-final-o": 2,
       "k-final-e": 3,
       "k-tone-1": 2,
@@ -11057,7 +12306,7 @@
       "k-initial-p": 2,
       "k-initial-m": 4,
       "k-initial-f": 2,
-      "k-tone-0": 1,
+      "k-tone-0": 2,
       "k-initial-d": 2,
       "k-initial-t": 3,
       "k-initial-n": 4,
@@ -11071,22 +12320,22 @@
       "k-initial-z": 2,
       "k-initial-c": 2,
       "k-initial-s": 2,
-      "k-whole-zi": 2,
+      "k-whole-zi": 4,
       "k-whole-ci": 2,
-      "k-whole-si": 2,
+      "k-whole-si": 4,
       "k-initial-zh": 2,
       "k-initial-ch": 2,
       "k-initial-sh": 2,
-      "k-initial-r": 1,
+      "k-initial-r": 3,
       "k-whole-zhi": 2,
-      "k-whole-chi": 2,
-      "k-whole-shi": 1,
-      "k-whole-ri": 2,
+      "k-whole-chi": 4,
+      "k-whole-shi": 3,
+      "k-whole-ri": 4,
       "k-whole-yi": 3,
       "k-whole-wu": 2,
       "k-whole-yu": 3,
-      "k-letter-y": 1,
-      "k-letter-w": 1,
+      "k-letter-y": 2,
+      "k-letter-w": 2,
       "k-final-ai": 4,
       "k-final-ei": 2,
       "k-final-ui": 4,
@@ -11101,10 +12350,10 @@
       "k-final-an": 3,
       "k-final-en": 2,
       "k-final-in": 2,
-      "k-final-un": 1,
-      "k-final-vn": 1,
-      "k-whole-yuan": 1,
-      "k-whole-yin": 1,
+      "k-final-un": 3,
+      "k-final-vn": 3,
+      "k-whole-yuan": 3,
+      "k-whole-yin": 3,
       "k-whole-yun": 3,
       "k-final-ang": 2,
       "k-final-eng": 3,
@@ -11112,20 +12361,20 @@
       "k-final-ong": 2,
       "k-whole-ying": 2,
       "rule-tone-placement": 3,
-      "rule-grid-writing": 1,
+      "rule-grid-writing": 2,
       "rule-i-dot": 3,
-      "rule-two-part": 1,
+      "rule-two-part": 2,
       "rule-confusable-shapes": 2,
       "rule-three-part": 6,
       "rule-jqx-v": 6,
-      "rule-whole-vs-initial": 1,
-      "rule-retroflex": 1,
+      "rule-whole-vs-initial": 2,
+      "rule-retroflex": 2,
       "rule-yw": 3,
-      "rule-y-v": 1,
+      "rule-y-v": 2,
       "rule-abbreviation": 3,
       "rule-iu-ui-tone": 3,
-      "rule-er": 1,
-      "rule-front-back-nasal": 1
+      "rule-er": 2,
+      "rule-front-back-nasal": 2
     },
     "uncoveredPrimaryKnowledgeIds": [],
     "limitations": [
@@ -11135,14 +12384,14 @@
       "书写仅有概念题；正式版必须补教师审校的笔顺/占格示范及紙筆观察，不用识别题冒充书写达标。",
       "首版不含发音评测；现有朗读目标仅作未来研究资料。",
       "首版 requiredModes 只包含客观题型；朗读目标暂不参与课程、练习和掌握度。",
-      "21个知识点少于2道客观主目标题，79个知识点少于5道；题库仍未覆盖完整掌握与两题复习。正式发布每知识点至少5道不同客观主目标题，朗读题不能抵数。",
-      "现有26道tone-choice只考视觉标调与认调号，声调听辨题为0。正式发布必须补有审校音频的声调听辨，不把视觉题当听辨已覆盖。",
+      "全部知识点至少2道客观主目标题，但仍有42项不足2道当前可用视觉题，79项不足5道客观题；未就绪听辨不计可用。保持正式发布每知识点至少5题要求。",
+      "现有36道tone-choice只考视觉标调与认调号，声调听辨题为0。正式发布必须补有审校音频的声调听辨，不把视觉题当听辨已覆盖。",
       "全部客观题已在content/narration.json配中文脚本，本机预生成声音只作中文指令；不合成拉丁拼音示范。旧promptAudioRef保留公开录制规划，不表示资源已审校。",
       "纯拼音选项无选项语音引用，答题前不可自动播读以免改变任务或泄露辨听答案。",
       "79条 readingTargets 是未来研究数据，不属于本期课程活动或验收；首版不采集录音、不生成跟读记录或发音分数。"
     ],
     "objectivePrimaryExerciseCounts": {
-      "k-final-a": 1,
+      "k-final-a": 3,
       "k-final-o": 2,
       "k-final-e": 2,
       "k-tone-1": 2,
@@ -11156,7 +12405,7 @@
       "k-initial-p": 2,
       "k-initial-m": 3,
       "k-initial-f": 2,
-      "k-tone-0": 1,
+      "k-tone-0": 2,
       "k-initial-d": 2,
       "k-initial-t": 2,
       "k-initial-n": 3,
@@ -11170,22 +12419,22 @@
       "k-initial-z": 2,
       "k-initial-c": 2,
       "k-initial-s": 2,
-      "k-whole-zi": 1,
+      "k-whole-zi": 3,
       "k-whole-ci": 2,
-      "k-whole-si": 1,
+      "k-whole-si": 3,
       "k-initial-zh": 2,
       "k-initial-ch": 2,
       "k-initial-sh": 2,
-      "k-initial-r": 1,
+      "k-initial-r": 3,
       "k-whole-zhi": 2,
-      "k-whole-chi": 1,
-      "k-whole-shi": 1,
-      "k-whole-ri": 1,
+      "k-whole-chi": 3,
+      "k-whole-shi": 3,
+      "k-whole-ri": 3,
       "k-whole-yi": 2,
       "k-whole-wu": 2,
       "k-whole-yu": 2,
-      "k-letter-y": 1,
-      "k-letter-w": 1,
+      "k-letter-y": 2,
+      "k-letter-w": 2,
       "k-final-ai": 3,
       "k-final-ei": 2,
       "k-final-ui": 3,
@@ -11200,10 +12449,10 @@
       "k-final-an": 2,
       "k-final-en": 2,
       "k-final-in": 2,
-      "k-final-un": 1,
-      "k-final-vn": 1,
-      "k-whole-yuan": 1,
-      "k-whole-yin": 1,
+      "k-final-un": 3,
+      "k-final-vn": 3,
+      "k-whole-yuan": 3,
+      "k-whole-yin": 3,
       "k-whole-yun": 2,
       "k-final-ang": 2,
       "k-final-eng": 2,
@@ -11211,45 +12460,23 @@
       "k-final-ong": 2,
       "k-whole-ying": 2,
       "rule-tone-placement": 3,
-      "rule-grid-writing": 1,
+      "rule-grid-writing": 2,
       "rule-i-dot": 3,
-      "rule-two-part": 1,
+      "rule-two-part": 2,
       "rule-confusable-shapes": 2,
       "rule-three-part": 5,
       "rule-jqx-v": 5,
-      "rule-whole-vs-initial": 1,
-      "rule-retroflex": 1,
+      "rule-whole-vs-initial": 2,
+      "rule-retroflex": 2,
       "rule-yw": 3,
-      "rule-y-v": 1,
+      "rule-y-v": 2,
       "rule-abbreviation": 3,
       "rule-iu-ui-tone": 3,
-      "rule-er": 1,
-      "rule-front-back-nasal": 1
+      "rule-er": 2,
+      "rule-front-back-nasal": 2
     },
-    "objectiveExerciseCount": 173,
-    "insufficientObjectiveReviewKnowledgeIds": [
-      "k-final-a",
-      "k-tone-0",
-      "k-whole-zi",
-      "k-whole-si",
-      "k-initial-r",
-      "k-whole-chi",
-      "k-whole-shi",
-      "k-whole-ri",
-      "k-letter-y",
-      "k-letter-w",
-      "k-final-un",
-      "k-final-vn",
-      "k-whole-yuan",
-      "k-whole-yin",
-      "rule-grid-writing",
-      "rule-two-part",
-      "rule-whole-vs-initial",
-      "rule-retroflex",
-      "rule-y-v",
-      "rule-er",
-      "rule-front-back-nasal"
-    ],
+    "objectiveExerciseCount": 205,
+    "insufficientObjectiveReviewKnowledgeIds": [],
     "insufficientObjectiveReleaseKnowledgeIds": [
       "k-final-a",
       "k-final-o",
@@ -11334,9 +12561,9 @@
     "toneListeningExerciseCount": 0,
     "releaseMinimumObjectiveExercisesPerKnowledge": 5,
     "releaseMinimumDistinctObjectiveReviewExercisesPerKnowledge": 2,
-    "audioRequirementCount": 174,
-    "promptAudioRequirementCount": 67,
-    "optionAudioRequirementCount": 18,
+    "audioRequirementCount": 199,
+    "promptAudioRequirementCount": 86,
+    "optionAudioRequirementCount": 24,
     "pronunciationAudioRequirementCount": 89,
     "isolatedInitialTargetCount": 21,
     "isolatedFinalTargetCount": 24,
@@ -11395,5 +12622,5 @@
       "rt-14-whole-ying"
     ]
   },
-  "contentVersion": "2026.10.05-draft.3"
+  "contentVersion": "2026.10.05-draft.4"
 }

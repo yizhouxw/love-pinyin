@@ -10,6 +10,25 @@ const validate = (input, release = false) =>
   validateCurriculum(input, schema, { sourceIds, release });
 
 describe('课程内容的保护门禁', () => {
+  it('BANK-02为原先缺题的二十一项提供两道不同视觉复习题，不移除听辨要求', () => {
+    const added = data.exercises.filter((q) => Number(q.id.split('-').at(-1)) >= 30);
+    const affected = new Set(added.map((q) => q.primaryKnowledgeId));
+    expect(affected.size).toBe(21);
+    for (const id of affected) {
+      const questions = data.exercises.filter(
+        (q) => q.primaryKnowledgeId === id && q.type !== 'read-aloud' && !q.audioRef,
+      );
+      expect(questions.length, id).toBeGreaterThanOrEqual(2);
+      expect(new Set(questions.map((q) => q.prompt)).size, id).toBe(questions.length);
+    }
+    expect(data.coverage.insufficientObjectiveReviewKnowledgeIds).toEqual([]);
+    expect(data.knowledgeItems.find((k) => k.id === 'k-final-a').requiredModes).toContain(
+      'listen-choice',
+    );
+    const neutral = added.find((q) => q.primaryKnowledgeId === 'k-tone-0');
+    expect(neutral.prompt).toContain('爸爸');
+    expect(neutral.options.find((o) => o.id === neutral.answer.optionId).label).toBe('ba');
+  });
   it('每课至少六道不同视觉练习，保留听辨与知识点门槛', () => {
     for (const lesson of data.lessons) {
       const questions = data.exercises.filter(

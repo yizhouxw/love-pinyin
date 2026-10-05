@@ -1,15 +1,53 @@
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test as base } from '@playwright/test';
 
-// One isolated real server/database per test; browser actions create all data.
-export const test = base.extend<{ appUrl: string }>({
-  // Playwright requires a destructured fixture parameter even without dependencies.
+// One isolated server/database per test. Browser actions create household data;
+// seedReview only supplies explicitly requested historical due-state for review tests.
+export const test = base.extend<{
+  appUrl: string;
+  dataDirectory: string;
+  seedReview: (knowledgeId: string) => Promise<void>;
+}>({
   // eslint-disable-next-line no-empty-pattern
-  appUrl: async ({}, use) => {
+  dataDirectory: async ({}, use) => {
     const directory = await mkdtemp(join(tmpdir(), 'love-pinyin-live-'));
+    try {
+      await use(directory);
+    } finally {
+      await rm(directory, { recursive: true });
+    }
+  },
+  seedReview: async ({ dataDirectory }, use) => {
+    await use(async (knowledgeId) => {
+      execFileSync(
+        'uv',
+        [
+          'run',
+          '--locked',
+          'python',
+          '-c',
+          `
+import sys
+from datetime import date, timedelta
+from server import storage
+from server.content import map_by_id
+k = map_by_id('knowledgeItems')[sys.argv[1]]
+with storage.transaction() as db:
+    row = db.execute('SELECT id FROM household').fetchone()
+    assert row, 'Pair the test household first'
+    db.execute('UPDATE household SET selected_lesson_id=? WHERE id=?', (k['lessonId'], row['id']))
+    db.execute('INSERT OR REPLACE INTO review_plans(household_id,knowledge_id,stage,due_date,updated_at) VALUES(?,?,?,?,?)', (row['id'], k['id'], 0, (date.today()-timedelta(days=1)).isoformat(), storage.now_iso()))
+`,
+          knowledgeId,
+        ],
+        { env: { ...process.env, LOVE_PINYIN_DATA_DIR: dataDirectory } },
+      );
+    });
+  },
+  appUrl: async ({ dataDirectory: directory }, use) => {
     const child = spawn(
       'uv',
       ['run', '--locked', 'uvicorn', 'server.main:app', '--host', '127.0.0.1', '--port', '0'],
@@ -51,7 +89,6 @@ export const test = base.extend<{ appUrl: string }>({
       const killTimer = setTimeout(() => child.kill('SIGKILL'), 5_000);
       await stopped;
       clearTimeout(killTimer);
-      await rm(directory, { recursive: true });
     }
   },
 });
