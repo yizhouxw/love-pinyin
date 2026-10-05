@@ -4,11 +4,13 @@ import { audioPlayer } from '../platform/audio/browser-audio-player';
 import narrationData from '../../content/narration.json';
 import { useLearningVoice, VoiceButton, VoiceFailure, type LearningAudio } from './learning-voice';
 import './styles.css';
+import { guestApi, isGuest, startGuest, leaveGuest, learningAssetUrl } from '../platform/guest';
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- API JSON mirrors the versioned content schema. */
 type Json = Record<string, any>;
 type Bootstrap = {
   paired: boolean;
+  guest?: boolean;
   isLocalHost?: boolean;
   device?: { label: string; isParent: boolean };
   profile?: {
@@ -230,6 +232,14 @@ function formatAttemptTime(value: string) {
 }
 
 async function api(path: string, options: RequestInit = {}): Promise<Json> {
+  if (isGuest()) {
+    try {
+      return (await guestApi(path, options)) as Json;
+    } catch (error) {
+      if (error instanceof TypeError) throw new Error('MAC_UNREACHABLE', { cause: error });
+      throw error;
+    }
+  }
   const headers = new Headers(options.headers);
   if (options.body) headers.set('Content-Type', 'application/json');
   const csrf = document.cookie
@@ -260,7 +270,8 @@ async function api(path: string, options: RequestInit = {}): Promise<Json> {
 }
 
 const idempotencyKey = () => crypto.randomUUID();
-const pendingAnswerKey = (instanceId: string) => `lp.pending-answer.${instanceId}`;
+const pendingAnswerKey = (instanceId: string) =>
+  `lp.${isGuest() ? 'guest.' : ''}pending-answer.${instanceId}`;
 
 function readPendingAnswer(instanceId: string): PendingAnswer | null {
   try {
@@ -311,6 +322,22 @@ async function replayPendingAnswer(session: Session | null): Promise<boolean> {
 }
 
 export function App() {
+  return (
+    <>
+      {isGuest() && (
+        <aside className="guest-banner" aria-label="访客模式">
+          <span>访客模式 · 进度仅缓存在当前标签页，刷新可继续，不保存到家庭档案。</span>
+          <button className="quiet" onClick={leaveGuest}>
+            清除并退出访客
+          </button>
+        </aside>
+      )}
+      <LearningApp />
+    </>
+  );
+}
+
+function LearningApp() {
   const [boot, setBoot] = useState<Bootstrap | null>(null);
   const [curriculum, setCurriculum] = useState<Curriculum | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
@@ -617,29 +644,58 @@ export function App() {
               <button disabled={busy || code.length < 8}>连接家庭</button>
             </div>
           </form>
-          {boot.isLocalHost && (
-            <div className="local-pair">
-              <button
-                className="quiet"
-                disabled={busy}
-                onClick={() =>
-                  void act(async () => {
-                    const result = await api('/local/pairing-code', { method: 'POST' });
-                    setPairCode(result.code);
-                  })
-                }
-              >
-                在 Mac 上生成家长配对码
-              </button>
-              {pairCode && (
-                <p className="pair-code">
-                  {pairCode}
-                  <small>5 分钟内一次有效</small>
-                </p>
-              )}
-            </div>
-          )}
-          <p className="privacy-note">🔒 本期练习不使用麦克风。学习记录保存在这台 Mac Studio。</p>
+          <div className="local-pair">
+            <h2>没有配对码？</h2>
+            {boot.isLocalHost ? (
+              <>
+                <button
+                  className="quiet"
+                  disabled={busy}
+                  onClick={() =>
+                    void act(async () => {
+                      const result = await api('/local/pairing-code', { method: 'POST' });
+                      setPairCode(result.code);
+                      setCode(result.code);
+                    })
+                  }
+                >
+                  在 Mac 上生成家长配对码
+                </button>
+                {pairCode && (
+                  <p className="pair-code">
+                    {pairCode}
+                    <small>5 分钟内一次有效</small>
+                  </p>
+                )}
+              </>
+            ) : (
+              <p>
+                请在服务器 Mac 上打开 <strong>http://127.0.0.1:8000</strong>，点击“在 Mac
+                上生成家长配对码”； 或在已连接设备的“家长管理”中生成配对码，再回到这里输入。
+              </p>
+            )}
+          </div>
+          <div className="local-pair">
+            <button
+              className="guest-start"
+              disabled={busy}
+              onClick={() =>
+                void act(async () => {
+                  startGuest();
+                  window.location.reload();
+                })
+              }
+            >
+              访客体验
+            </button>
+            <p>
+              无需配对。进度仅缓存在当前标签页，刷新可继续；退出会清除，不跨设备同步。仍需连接家庭
+              Mac。
+            </p>
+          </div>
+          <p className="privacy-note">
+            🔒 本期练习不使用麦克风。配对后的家庭进度保存在 Mac，访客进度仅临时缓存。
+          </p>
         </section>
         <Notice error={error} onReconnect={() => void act(refresh)} />
       </main>
@@ -1040,7 +1096,9 @@ export function App() {
           {(!lessonViewId || parentOpen) && (
             <section className="welcome">
               <div>
-                <p className="eyebrow">{parentOpen ? '家庭学习空间' : '今天也来探险吧'}</p>
+                <p className="eyebrow">
+                  {parentOpen ? (boot.guest ? '访客学习空间' : '家庭学习空间') : '今天也来探险吧'}
+                </p>
                 <h1>
                   {parentOpen ? (
                     '家长管理'
@@ -1054,7 +1112,7 @@ export function App() {
                 </h1>
                 <p>
                   {parentOpen
-                    ? `${boot.device?.label} · 家庭学习设置`
+                    ? `${boot.device?.label} · ${boot.guest ? '临时学习设置' : '家庭学习设置'}`
                     : currentLesson
                       ? `第 ${currentLesson.order} 课 · ${currentLesson.title}`
                       : '请家长选择当前课'}
@@ -1103,17 +1161,29 @@ export function App() {
             </div>
           )}
           {parentOpen ? (
-            <ParentPanel
-              boot={boot}
-              curriculum={curriculum}
-              progress={progress}
-              lessonChoice={lessonChoice}
-              setLessonChoice={setLessonChoice}
-              busy={busy}
-              refresh={refresh}
-              act={act}
-              learningAudio={learningAudio}
-            />
+            boot.guest ? (
+              <GuestPanel
+                curriculum={curriculum}
+                progress={progress}
+                lessonChoice={lessonChoice}
+                setLessonChoice={setLessonChoice}
+                busy={busy}
+                refresh={refresh}
+                act={act}
+              />
+            ) : (
+              <ParentPanel
+                boot={boot}
+                curriculum={curriculum}
+                progress={progress}
+                lessonChoice={lessonChoice}
+                setLessonChoice={setLessonChoice}
+                busy={busy}
+                refresh={refresh}
+                act={act}
+                learningAudio={learningAudio}
+              />
+            )
           ) : lessonViewId ? (
             <LessonDetail
               key={lessonViewId}
@@ -1434,7 +1504,7 @@ function LessonDetail({
             aria-label="课程录音播放进度"
             controls
             preload="metadata"
-            src={`/api/v1/voice/${encodeURIComponent(familyAudio?.audioId ?? `lesson-${lesson.id}`)}`}
+            src={learningAssetUrl('voice', familyAudio?.audioId ?? `lesson-${lesson.id}`)}
             onPlay={() => setCoursePlaying(true)}
             onPause={() => setCoursePlaying(false)}
             onEnded={() => setCoursePlaying(false)}
@@ -1559,6 +1629,78 @@ function LessonDetail({
           !canPractice && <small>没有可用的视觉练习题，暂不生成练习会话。</small>
         )}
       </div>
+    </section>
+  );
+}
+
+function GuestPanel({
+  curriculum,
+  progress,
+  lessonChoice,
+  setLessonChoice,
+  busy,
+  refresh,
+  act,
+}: Json) {
+  return (
+    <section className="parent-panel guest-settings">
+      <h2>访客学习设置</h2>
+      <p>
+        {progress.attemptCount ?? 0} 次临时练习记录 · {progress.completedSessions} 轮练习
+      </p>
+      <p>
+        进度只缓存在当前标签页。关闭标签页通常会清除；浏览器恢复会话可能恢复缓存，使用“清除并退出访客”可主动清除。不会合并到家庭档案。
+      </p>
+      <label htmlFor="guest-lesson">当前学习课</label>
+      <p role="status">
+        当前练习：第{' '}
+        {
+          curriculum.lessons.find((lesson: Lesson) => lesson.id === progress.selectedLessonId)
+            ?.order
+        }{' '}
+        课
+      </p>
+      <select
+        id="guest-lesson"
+        disabled={busy}
+        value={lessonChoice}
+        onChange={(event) => setLessonChoice(event.target.value)}
+      >
+        {curriculum.lessons.map((lesson: Lesson) => (
+          <option key={lesson.id} value={lesson.id}>
+            {lesson.order}. {lesson.title}
+          </option>
+        ))}
+      </select>
+      <button
+        className="quiet"
+        disabled={busy || !lessonChoice}
+        onClick={() =>
+          void act(async () => {
+            await api('/household/current-lesson', {
+              method: 'PUT',
+              body: JSON.stringify({ lessonId: lessonChoice, expectedRevision: progress.revision }),
+            });
+            await refresh();
+          })
+        }
+      >
+        应用到访客练习
+      </button>
+      <p>减少动态效果</p>
+      <ReducedMotionControl
+        checked={Boolean(progress.settings.reducedMotion)}
+        disabled={busy}
+        onChange={(next) =>
+          void act(async () => {
+            await api('/household/settings', {
+              method: 'PUT',
+              body: JSON.stringify({ soundEnabled: true, reducedMotion: next }),
+            });
+            await refresh();
+          })
+        }
+      />
     </section>
   );
 }
@@ -2322,10 +2464,18 @@ function AdultConfirmDialog({
 }
 
 function Notice({ error, onReconnect }: { error: string; onReconnect: () => void }) {
+  const guestMessages: Record<string, string> = {
+    GUEST_CACHE_INVALID: '访客缓存已损坏，无法继续读取。请清除并退出访客，再重新体验。',
+    GUEST_CACHE_FULL:
+      '访客临时缓存已满或不可用，本次操作未缓存。原记录保持不变；可清除并退出访客后重新体验。',
+    CONTENT_VERSION_UNSUPPORTED:
+      '课程版本已更新，旧访客缓存无法继续使用。请清除并退出访客后重新体验。',
+  };
   const message =
-    error === 'MAC_UNREACHABLE'
+    (isGuest() && guestMessages[error]) ||
+    (error === 'MAC_UNREACHABLE'
       ? '暂时无法连接家庭 Mac Studio，本次操作结果未确认。检查 Mac 和家庭局域网后，再点一次刚才的操作；答题会沿用原请求号，不会重复计分。'
-      : `操作未完成：${error}。请检查本机服务连接后重试。`;
+      : `操作未完成：${error}。请检查本机服务连接后重试。`);
   return error ? (
     <div className="error-notice" role="alert">
       <p>{message}</p>

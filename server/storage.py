@@ -5,11 +5,31 @@ import secrets
 import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
+from contextvars import ContextVar
 from datetime import UTC, datetime
 from pathlib import Path
 
 DATA_DIR = Path(os.environ.get("LOVE_PINYIN_DATA_DIR", "private/data")).expanduser().resolve()
 DATABASE_PATH = DATA_DIR / "love-pinyin.sqlite3"
+_request_database: ContextVar[sqlite3.Connection | None] = ContextVar(
+    "request_database", default=None
+)
+
+
+@contextmanager
+def ephemeral_database() -> Iterator[None]:
+    """Request-local guest storage; never opens a path or changes the household DB."""
+    db = sqlite3.connect(":memory:", isolation_level=None)
+    db.row_factory = sqlite3.Row
+    db.execute("PRAGMA foreign_keys = ON")
+    db.execute("PRAGMA temp_store = MEMORY")
+    token = _request_database.set(db)
+    try:
+        migrate()
+        yield
+    finally:
+        _request_database.reset(token)
+        db.close()
 
 
 def now_utc() -> datetime:
@@ -22,6 +42,10 @@ def now_iso() -> str:
 
 @contextmanager
 def connect() -> Iterator[sqlite3.Connection]:
+    ephemeral = _request_database.get()
+    if ephemeral is not None:
+        yield ephemeral
+        return
     DATA_DIR.mkdir(parents=True, exist_ok=True, mode=0o700)
     os.chmod(DATA_DIR, 0o700)
     db = sqlite3.connect(DATABASE_PATH, timeout=10, isolation_level=None)

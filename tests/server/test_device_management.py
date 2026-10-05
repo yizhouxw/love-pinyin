@@ -43,7 +43,8 @@ def test_parent_can_list_and_revoke_secondary_device_without_exposing_tokens(pai
         )
         assert revoked.status_code == 200
         assert revoked.json()["revoked"] is True
-        assert child.get("/api/v1/bootstrap").status_code == 401
+        assert child.get("/api/v1/bootstrap").json()["paired"] is False
+        assert child.get("/api/v1/profiles/progress").status_code == 401
         assert [item["id"] for item in parent.get("/api/v1/devices").json()["devices"]] == [
             item["id"] for item in devices if item["current"]
         ]

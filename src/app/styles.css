@@ -153,6 +153,7 @@ main {
   letter-spacing: 0.12em;
 }
 .pair-input button,
+.guest-start,
 .start-button,
 .next-button,
 .blend-confirm {
@@ -1545,4 +1546,31 @@ footer {
 .game-option[aria-pressed='true'] {
   outline: 3px solid var(--green);
   outline-offset: 3px;
+}
+
+.guest-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 20px;
+  background: #fff3d6;
+  color: #563e1d;
+  font-size: 14px;
+}
+
+.guest-banner button {
+  min-height: 44px;
+}
+
+.guest-settings select {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin: 8px 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: var(--card);
 }

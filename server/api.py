@@ -351,13 +351,16 @@ def capabilities() -> dict:
 
 @router.get("/bootstrap")
 def bootstrap(request: Request, lp_session: str | None = Cookie(default=None)) -> dict:
-    if not lp_session:
+    try:
+        device = _get_device(lp_session)
+    except HTTPException as error:
+        if error.status_code != 401:
+            raise
         return {
             "paired": False,
             "isLocalHost": _is_local(request),
             "contentVersion": load_curriculum()["contentVersion"],
         }
-    device = _get_device(lp_session)
     with connect() as db:
         count = db.execute(
             "SELECT COUNT(*) FROM attempts WHERE household_id=?", (device["household_id"],)

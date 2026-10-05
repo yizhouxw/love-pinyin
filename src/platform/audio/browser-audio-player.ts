@@ -1,4 +1,5 @@
 import type { AudioPlayer } from '../../domain/contracts';
+import { learningAssetUrl } from '../guest';
 
 type ActivePlayback = { stop: () => void };
 
@@ -52,7 +53,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
     if (!audioId.trim()) return Promise.reject(new Error('AUDIO_ID_INVALID'));
     if (signal?.aborted) return Promise.reject(aborted());
 
-    const source = `/api/v1/${kind}/${encodeURIComponent(audioId)}`;
+    const source = learningAssetUrl(kind, audioId);
     // Reuse the narration element after the child's first tap so iOS can keep its
     // media activation when a subsequent question starts after an API response.
     const audio = kind === 'voice' ? (this.privateMedia ??= new Audio(source)) : new Audio(source);

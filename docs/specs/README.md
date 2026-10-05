@@ -31,3 +31,5 @@
 需求冲突按用户最新确认 → PRD/已接受架构决策 → 契约 → 本切片细节处理；发现冲突先修正文档并说明。研究结论不能凭推测改成事实，资产「候选」不能改成「已授权」。
 
 推荐状态：`planned → implementing → software-verified → externally-verified → accepted`。003标准音直接信任cmguo/PinYinSound，按TRUST-01取消审核流程；006仍须真实设备与内容覆盖验证。发音评测如未来重启，另行建立 SPEC 与验收。
+
+新增 [SPEC-007 首页配对与访客学习](SPEC-007-guest-access.md)：ACCESS-01 修复配对入口、支持浏览器临时进度；依赖 001–005，共用现有练习与进度算法。

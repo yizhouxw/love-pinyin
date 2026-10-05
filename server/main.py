@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 
 from server.api import local_router, router
 from server.content import load_curriculum
+from server.guest import router as guest_router
 from server.storage import ensure_household, migrate
 
 
@@ -40,6 +41,7 @@ async def security_headers(request, call_next):
 
 
 app.include_router(local_router)
+app.include_router(guest_router)
 app.include_router(router)
 
 DIST = Path(__file__).resolve().parents[1] / "dist"

@@ -69,3 +69,11 @@ GET /audio/{id}仅播放该来源的固定本地文件，须配对，支持Range
 旧审音台的catalog/preview/draft/activate/deactivate服务已删除；capabilities不再返回contentReview，会话不返回draftContent。旧冻结题单的审核字段被忽略，内容版本/任务/作答与旧备份继续兼容，不回写approved。
 
 内容包格式现为schemaVersion 2.0.0（移除审核元数据），内容版本2026.10.05.6；家庭备份仍为schema v5，已有记录无须用户迁移或清空。
+
+## ACCESS-01：访客与配对首页
+
+`GET /bootstrap` 对缺失、过期或撤销的配对 Cookie 均返回 HTTP 200 的 `{paired:false,isLocalHost,contentVersion}`，以便展示正确的重新配对入口。受保护的数据接口仍返回401，不向未配对浏览器暴露家庭进度。
+
+`POST /guest/operate` 接收 `{path,method,body,state}`，state 为上一次返回的家庭备份格式临时快照（初始 null）。返回 `{result,state}`。路径白名单仅允许 bootstrap、进度、当前会话、开课/复习、提示/跳过/作答、结束/休息和选课/设置；不提供家庭管理操作。输入最大1MiB，来源检查、快照严格校验、内存事务执行、请求结束销毁，均不会写家庭数据库。浏览器串行调用并把结果保存在 sessionStorage。无服务端访客令牌；调用不携带家庭 Cookie。
+
+`GET /guest/curriculum`、`/guest/learning-audio`、`/guest/audio/{id}`、`/guest/voice/{id}` 无需配对，开放已安装的教学资源与声音，不包含家庭学习档案。音频仍使用白名单和完整性检查，支持 Range。家庭原有音频路由保持配对保护。

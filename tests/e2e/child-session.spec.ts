@@ -462,7 +462,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await page.goto('/');
   await expect(page.getByLabel('家长配对码')).toBeVisible();
   await expect(
-    page.getByText('🔒 本期练习不使用麦克风。学习记录保存在这台 Mac Studio。'),
+    page.getByText('🔒 本期练习不使用麦克风。配对后的家庭进度保存在 Mac，访客进度仅临时缓存。'),
   ).toBeVisible();
   await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
   await page.getByLabel('家长配对码').fill('23456789');

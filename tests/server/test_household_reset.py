@@ -110,7 +110,8 @@ def test_reset_clears_settings_and_revokes_every_device_and_pending_code(paired_
         assert "Max-Age=0" in reset.headers["set-cookie"]
         assert parent.cookies.get("lp_session") is None
         assert parent.get("/api/v1/bootstrap").json()["paired"] is False
-        assert tablet.get("/api/v1/bootstrap").status_code == 401
+        assert tablet.get("/api/v1/bootstrap").json()["paired"] is False
+        assert tablet.get("/api/v1/profiles/progress").status_code == 401
         assert (
             tablet.post("/api/v1/pair", json={"code": invite, "label": "旧邀请"}).status_code == 401
         )
