@@ -23,7 +23,7 @@
 
 ## 验证与 Git
 
-- `npm run verify:all` 验证工程；`npm run validate:release` 检查内容/资产发布门禁，当前预期失败。
+- `npm run verify:all` 验证工程；`npm run validate:release` 检查内容/资产发布门禁；通过不替代真实移动设备及家庭LAN验收。
 - 业务变更测试应覆盖真实边界；修复时加有意义的回归，不为文案变更堆测试。
 - 提交包含代码、相关 SPEC、测试与依赖清单；使用 `feat(SPEC-003): ...` 等提交信息。
 - 不覆盖其他人的改动。不自动推送、开源发布、安装根证书或购买 SDK。

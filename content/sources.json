@@ -167,6 +167,25 @@
       ],
       "verification": "从官方目录追踪附件并读取；扫描原件109页，已目视核对PDF第14、15页。文件20618661字节，SHA-256 3ef0ec8a30b5a950211202658df07d99f5427f750f8ba0c3cfda12736b7bd71a。仅核验2022基线，不证明2025修订条款。",
       "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-curriculum-2025-primary-shihe",
+      "title": "义务教育语文课程标准日常修订版（2022年版2025年修订）扫描原文",
+      "publisher": "浉河区教学教研信息化中心教育云空间公开附件（课标原文转载）",
+      "publishedAt": "2025-12-19",
+      "accessedAt": "2026-10-05",
+      "type": "education-agency-primary-text-mirror",
+      "url": "https://shjyxxzx.tianyuyun.com/index.php?r=space/org/content/view&sid=83b0fc096649400b87cdf4a44ae65da4&id=4417464&cid=552112",
+      "attachmentUrl": "https://whty-ypt-public-source-1256736654-cdn.huijiaoyun.com/999999/uploads/ue/2025/12/19/694507a701336/1766131623_0048_67656.pdf",
+      "bytes": 6143274,
+      "sha256": "37952ba03ca2eeb72134096fa366d2148d812ab68c5e3a034d64bf4eb869fae9",
+      "pageCount": 105,
+      "supports": [
+        "封面明确2022年版2025年修订；印刷页7、8、20、47的相关拼音目标、学习任务和过程评价原则与2022基线核对一致。",
+        "补充读取印刷页22、23、37、38、48以确认生活情境、学段边界和评价用途；不代表完整语文课标逐字比对。"
+      ],
+      "verification": "从机构资源下载列表追踪发布页和公开PDF，无登录或付费。目视核对PDF第1、10、11、23、25、26、40、41、50、51页；印刷页码加3为PDF页码。扫描文件有交叉引用/JPX封装解析警告，所核验页经Poppler渲染完整可读，不以空OCR文本下结论。2022基线文件SHA-256再次匹配既有登记，核对其PDF第14、15、27、54页。该来源为公开教研机构转载，非教育部官网直链。项目对照结论见docs/research/curriculum.md的CURR-02。",
+      "redistribution": "link-only-no-content-license-granted"
     }
   ],
   "openQuestions": [

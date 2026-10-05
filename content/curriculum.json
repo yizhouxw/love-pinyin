@@ -10,8 +10,9 @@
     "textbookLessonCount": 14,
     "curriculumBaseline": "义务教育语文课程标准（2022年版）",
     "latestRevisionEvidence": "2022年版2025年日常修订",
-    "latestRevisionPinyinClauses": "pending-primary-text-verification",
-    "verifiedAt": "2026-09-25"
+    "latestRevisionPinyinClauses": "verified",
+    "verifiedAt": "2026-10-05",
+    "latestRevisionPrimarySourceId": "src-curriculum-2025-primary-shihe"
   },
   "sourceIds": [
     "src-pep-2024-g1a",
@@ -19,7 +20,8 @@
     "src-pinyin-orthography-2012",
     "src-curriculum-2022",
     "src-curriculum-2025-interview",
-    "src-curriculum-2025-hep"
+    "src-curriculum-2025-hep",
+    "src-curriculum-2025-primary-shihe"
   ],
   "inventory": {
     "initials": [
@@ -19723,5 +19725,5 @@
       "rt-14-whole-ying"
     ]
   },
-  "contentVersion": "2026.10.05.14"
+  "contentVersion": "2026.10.05.15"
 }

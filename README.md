@@ -103,7 +103,7 @@ uv run --locked --group audio-asr python -m scripts.transcribe_audio_candidates 
 | `npm run test:e2e:live`    | Chromium/WebKit 桌面 GUI 与真实 Mac API/SQLite 数据恢复     |
 | `npm run test:e2e:product` | 真实中文语音/课程录音、听题重试、错答纠正；需先准备私有音频 |
 | `npm run verify:all`       | 前后端+本机浏览器检查（Firefox例外见下）                    |
-| `npm run validate:release` | 内容覆盖与实际音频资源检查；当前仍有内容缺口                |
+| `npm run validate:release` | 内容覆盖、课标依据与实际音频资源检查                        |
 | `npm run licenses`         | 从npm锁文件更新依赖许可证清单                               |
 
 本机 macOS 27 的 Firefox 自动化启动存在与上游已知问题一致的限制。`test:e2e:local` / `verify:all` 会明确说明并只跑5个 Chromium/WebKit 项目；完整6项目保留在 `test:e2e` 与 Linux CI。尚无远程 CI 运行结果，见[测试说明](docs/engineering/testing.md)。

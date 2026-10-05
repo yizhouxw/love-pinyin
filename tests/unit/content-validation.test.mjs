@@ -11,6 +11,29 @@ const validate = (input, release = false) =>
   validateCurriculum(input, schema, { sourceIds, release });
 
 describe('课程内容的保护门禁', () => {
+  it('CURR-02 records primary-text verification and rejects missing or unregistered evidence', () => {
+    expect(validate(data, true)).toEqual([]);
+    const copy = structuredClone(data);
+    copy.edition.latestRevisionPinyinClauses = 'pending-primary-text-verification';
+    expect(validate(copy, true)).toContain(
+      'release: latest curriculum clauses need primary-text verification',
+    );
+    copy.edition.latestRevisionPinyinClauses = 'verified';
+    for (const source of [undefined, 'unknown-primary-source']) {
+      copy.edition.latestRevisionPrimarySourceId = source;
+      expect(validate(copy, true)).toContain(
+        'release: latest curriculum verification needs a registered primary source reference',
+      );
+    }
+    copy.edition.latestRevisionPrimarySourceId = data.edition.latestRevisionPrimarySourceId;
+    copy.sourceIds = copy.sourceIds.filter(
+      (id) => id !== copy.edition.latestRevisionPrimarySourceId,
+    );
+    expect(validate(copy, true)).toContain(
+      'release: latest curriculum verification needs a registered primary source reference',
+    );
+  });
+
   it('BANK-07将规则应用到具体拼写、同调听辨和独立中文选项', () => {
     const added = data.exercises.filter(
       (q) => Number(q.id.split('-').at(-1)) >= 120 && Number(q.id.split('-').at(-1)) < 140,
@@ -369,8 +392,8 @@ describe('课程内容的保护门禁', () => {
     expect(answer('q-12-21')).toBe('lüè');
   });
 
-  it('内容结构成立，但最新课标原文仍阻止正式发布', () => {
-    expect(validate(data, true).length).toBeGreaterThan(0);
+  it('当前内容依据与覆盖通过，且不要求教师或音频审批', () => {
+    expect(validate(data, true)).toEqual([]);
     expect(validate(data)).toEqual([]);
     expect(validate(data, true).join(' ')).not.toMatch(/teacher|review evidence/);
     expect(validate(data, true)).not.toContain(

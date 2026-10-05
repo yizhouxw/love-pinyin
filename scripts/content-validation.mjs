@@ -212,6 +212,11 @@ export function validateCurriculum(data, schema, { sourceIds = [], release = fal
       'release: latest curriculum clauses need primary-text verification',
     );
     assert(
+      sourceIds.includes(data.edition.latestRevisionPrimarySourceId) &&
+        data.sourceIds.includes(data.edition.latestRevisionPrimarySourceId),
+      'release: latest curriculum verification needs a registered primary source reference',
+    );
+    assert(
       data.knowledgeItems.every(
         (k) =>
           data.exercises.filter((q) => q.primaryKnowledgeId === k.id && q.type !== 'read-aloud')
