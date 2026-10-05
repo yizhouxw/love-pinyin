@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "researchedAt": "2026-09-25",
+  "researchedAt": "2026-10-05",
   "scope": "大陆统编人教一年级上册拼音；来源仅作事实依据，不授予教材素材再分发许可",
   "sources": [
     {
@@ -151,6 +151,21 @@
       "accessedAt": "2026-09-25",
       "supports": ["状态现行；2025-09-05复审结论继续有效。"],
       "verification": "2026-09-25核验官方平台检索全文。",
+      "redistribution": "link-only-no-content-license-granted"
+    },
+    {
+      "id": "src-curriculum-2022-primary-pdf",
+      "title": "义务教育语文课程标准（2022年版）官方扫描全文",
+      "publisher": "教育部课程教材研究所下载中心",
+      "publishedAt": "2022",
+      "url": "https://www.ictr.edu.cn/Uploads/File/2022/04/28/3.义务教育语文课程标准（2022年版）.20220428161048.pdf",
+      "type": "official-policy",
+      "accessedAt": "2026-10-05",
+      "supports": [
+        "书内第7页（PDF第14页）第一学段识字与写字：读音、拼读、拼音书写与借助拼音识字是不同能力；第一学段覆盖1至2年级。",
+        "书内第8页（PDF第15页）表达与交流关注普通话表达与倾听；不规定使用自动发音评分。"
+      ],
+      "verification": "从官方目录追踪附件并读取；扫描原件109页，已目视核对PDF第14、15页。文件20618661字节，SHA-256 3ef0ec8a30b5a950211202658df07d99f5427f750f8ba0c3cfda12736b7bd71a。仅核验2022基线，不证明2025修订条款。",
       "redistribution": "link-only-no-content-license-granted"
     }
   ],
