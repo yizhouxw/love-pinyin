@@ -8,9 +8,9 @@
 
 部署只需Mac、同一局域网和浏览器，不需要Docker、公网IP或云账号。路由器给Mac保留固定LAN地址；客户端输入该地址或Mac的 `.local` 主机名。不要把127.0.0.1发给iPad，那会指向iPad自己。
 
-## HTTPS与麦克风
+## HTTPS与客户端连接
 
-远程LAN的普通HTTP不是浏览器安全上下文，不能据本机localhost录音成功推断iPad可录。[MDN getUserMedia要求](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)
+首版不使用麦克风。HTTPS用于保护家庭配对凭据与学习数据；客户端必须信任服务证书。Mac本机localhost可用不代表iPad或手机已完成局域网连接验收。
 
 家庭开发证书使用mkcert（BSD-3-Clause）；参考[官方安装与移动设备信任说明](https://github.com/FiloSottile/mkcert)。在自家设备上安装信任根是维护者明确操作；本仓库不自动更改系统信任。示例：
 
@@ -31,8 +31,11 @@ npm run build
 export LOVE_PINYIN_BIND_IP=192.168.1.20 # 与证书 SAN、Mac 当前 LAN IPv4 相同
 export LOVE_PINYIN_TLS_CERT="$PWD/certs/lan.pem"
 export LOVE_PINYIN_TLS_KEY="$PWD/certs/lan-key.pem"
+npm run doctor:lan
 npm run serve:lan
 ```
+
+`doctor:lan`只读检查当前地址、证书有效期、IPv4 SAN、私钥匹配及TLS解析；成功会显示连接URL和到期时间，不启动服务、不安装信任。`serve:lan`每次启动及`lan-service:install`写入服务前均复用该检查，证书过期或IP变化后需先更新证书。检查通过不代表其他设备已经信任该证书，也不证明防火墙或Wi-Fi可达；仍须用实际客户端访问。
 
 `LOVE_PINYIN_BIND_IP` 必须是此刻分配给 Mac 的非 loopback IPv4 地址；启动器会核对本机网络接口，只把 Uvicorn 绑定到该地址，不用 `0.0.0.0` 监听所有接口。IP 变更时启动会明确失败，更新证书和地址后再启动。可用 `LOVE_PINYIN_PORT` 改端口（默认 8443）。浏览器仍可访问证书 SAN 中的 `https://mac-studio.local:8443`。初次网络权限、防火墙弹窗由维护者批准；只开放家庭LAN，不配置路由器端口转发。静态资源自托管，不依赖字体CDN或Swagger CDN。若未来加反向代理，必须关闭音频上传请求的磁盘缓冲和body日志。
 

@@ -69,7 +69,7 @@ npm run backup:local
 
 默认存放在 `private/backups/`，最多保留最新 7 份；家庭备份 JSON 则可在家长页单独导出与恢复。
 
-局域网设备需先按[部署文档](docs/engineering/local-deployment.md)准备可信 HTTPS 证书，再设置 `LOVE_PINYIN_BIND_IP`（本机正在使用的 LAN IPv4）、`LOVE_PINYIN_TLS_CERT` 与 `LOVE_PINYIN_TLS_KEY` 并运行 `npm run serve:lan`。启动器只绑定指定接口地址，并检查该地址确属本机；不会监听所有接口，也不自动修改防火墙、信任证书或启用开机启动。
+局域网设备需先按[部署文档](docs/engineering/local-deployment.md)准备可信 HTTPS 证书，再设置 `LOVE_PINYIN_BIND_IP`（本机正在使用的 LAN IPv4）、`LOVE_PINYIN_TLS_CERT` 与 `LOVE_PINYIN_TLS_KEY`，先运行 `npm run doctor:lan` 检查证书和地址，再运行 `npm run serve:lan`。启动器只绑定指定接口地址，检查地址确属本机、证书有效期/IP SAN及私钥匹配；不会监听所有接口，也不自动修改防火墙、信任证书或启用开机启动。
 
 本地声学依赖检查：
 

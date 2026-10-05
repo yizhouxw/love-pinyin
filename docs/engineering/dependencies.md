@@ -44,3 +44,7 @@ REVIEW-01–05未增加npm/uv包：服务使用既有锁定FastAPI/Uvicorn，裁
 ## 2026-10-05 家庭选定音频资源
 
 [cmguo/PinYinSound](https://github.com/cmguo/PinYinSound/tree/62453b2a5ca6873eac1f4293b6e9794715d0fc8a)固定提交62453b2a5ca6873eac1f4293b6e9794715d0fc8a；归档SHA-256为c5d37feabd651ab3a1ccf7ac73d3a6e782c04caf4e61eb8778e7c7a7cacc5c18。原归档1420个MP3、22885289字节，未附LICENSE或来源说明，许可状态unknown，不作为MIT资产。已实际下载固定版本，205个映射经Mac afconvert解码/时长/非静音检查，183个去重MP3落在private/pinyinsound；各文件摘要见content/pinyin-source.json。不新增npm/uv软件依赖。产品按ADR-0008直接信任此来源作为标准音，不设置教学审核状态。
+
+## 2026-10-05 LAN-01证书预检
+
+运行端使用已锁定Node24.18.1内置`crypto.X509Certificate`、`createPrivateKey`与`tls.createSecureContext`，没有新增npm/uv包。测试调用现有系统OpenSSL生成临时自签证书；本机实测为OpenSSL3.6.4（2026-08-25），未安装或升级。该测试工具不随应用分发，也不在学习或预检命令中调用。官方[源码与版本来源](https://openssl-library.org/source/)及[许可证](https://openssl-library.org/source/license/index.html)说明3.x采用Apache-2.0。系统命令不受npm/uv锁文件管理，运行测试需提供支持`req -addext`的OpenSSL，并记录实际版本；没有自动下载或静默跳过证书单测。

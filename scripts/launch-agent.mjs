@@ -13,7 +13,7 @@ import {
 import { networkInterfaces } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { resolveLanConfig } from './serve-lan.mjs';
+import { resolveLanConfig, validateLanTls } from './serve-lan.mjs';
 
 const label = 'com.lovepinyin.server';
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -134,19 +134,13 @@ function assertMac() {
 
 function install() {
   assertMac();
-  if (!existsSync(join(projectRoot, 'dist', 'index.html')))
-    throw new Error('Build the web application first with npm run build.');
   const home = process.env.HOME;
   if (!home) throw new Error('HOME is not set for the current macOS user.');
   const env = { ...process.env, HOME: home };
   const config = resolveLanConfig(env, networkInterfaces());
-  for (const [path, labelText] of [
-    [config.cert, 'TLS certificate'],
-    [config.key, 'TLS private key'],
-  ]) {
-    accessSync(path, constants.R_OK);
-    if (!statSync(path).isFile()) throw new Error(`${labelText} must be a regular file: ${path}`);
-  }
+  validateLanTls(config);
+  if (!existsSync(join(projectRoot, 'dist', 'index.html')))
+    throw new Error('Build the web application first with npm run build.');
   const uvPath = findExecutable('uv');
   const pathValue = [
     dirname(uvPath),

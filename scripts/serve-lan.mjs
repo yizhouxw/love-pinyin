@@ -1,9 +1,11 @@
 import { spawn } from 'node:child_process';
+import { createPrivateKey, X509Certificate } from 'node:crypto';
+import { createSecureContext } from 'node:tls';
 import { isIP } from 'node:net';
 import { networkInterfaces } from 'node:os';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { accessSync, constants, statSync } from 'node:fs';
+import { accessSync, constants, readFileSync, statSync } from 'node:fs';
 
 export function resolveLanConfig(env, interfaces) {
   const host = env.LOVE_PINYIN_BIND_IP;
@@ -45,12 +47,63 @@ function assertReadableFile(path, label) {
   }
 }
 
+export function validateLanTls(config, now = new Date()) {
+  assertReadableFile(config.cert, 'TLS certificate');
+  assertReadableFile(config.key, 'TLS private key');
+  const cert = readFileSync(config.cert);
+  const key = readFileSync(config.key);
+  let certificate;
+  let privateKey;
+  try {
+    certificate = new X509Certificate(cert);
+  } catch {
+    throw new Error('TLS certificate is not a valid PEM certificate.');
+  }
+  if (now < certificate.validFromDate) {
+    throw new Error('TLS certificate is not yet valid. Check the Mac clock and certificate dates.');
+  }
+  if (now >= certificate.validToDate) {
+    throw new Error('TLS certificate has expired. Renew it before starting the LAN server.');
+  }
+  if (!certificate.checkIP(config.host)) {
+    throw new Error(
+      `TLS certificate must include IP SAN ${config.host}. Regenerate it for this Mac address.`,
+    );
+  }
+  try {
+    privateKey = createPrivateKey(key);
+  } catch {
+    throw new Error('TLS private key must be a valid unencrypted PEM private key.');
+  }
+  if (!certificate.checkPrivateKey(privateKey)) {
+    throw new Error('TLS private key does not match the certificate. Select the matching pair.');
+  }
+  try {
+    createSecureContext({ cert, key });
+  } catch {
+    throw new Error(
+      'TLS certificate and key cannot create a secure context. Check their PEM encoding and TLS compatibility.',
+    );
+  }
+  return { expiresAt: certificate.validToDate.toISOString() };
+}
+
 function main() {
   let config;
   try {
+    if (process.argv.slice(2).some((arg) => arg !== '--check')) {
+      throw new Error('Usage: node scripts/serve-lan.mjs [--check]');
+    }
     config = resolveLanConfig(process.env, networkInterfaces());
-    assertReadableFile(config.cert, 'TLS certificate');
-    assertReadableFile(config.key, 'TLS private key');
+    const tls = validateLanTls(config);
+    if (process.argv.includes('--check')) {
+      process.stdout.write(
+        `LAN configuration checked: https://${config.host}:${config.port}\n` +
+          `Certificate expires: ${tls.expiresAt}\n` +
+          'No server started. Client certificate trust and device connectivity still require verification.\n',
+      );
+      return;
+    }
   } catch (error) {
     process.stderr.write(`LAN server not started: ${error.message}\n`);
     process.exitCode = 2;
