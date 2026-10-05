@@ -99,3 +99,9 @@ Safari27.0真实界面已验证配对、课程录音/标准音、手动停止重
 verify:all通过63前端/工具、287后端、30视口及18真实服务GUI；新增实际语音GUI验证家庭与访客刷新顺序、听选项A的声音对应、错误后纠正仅计首次。2轮声音补测通过。44项完整声音专项最终全部通过（37.1分钟、exit 0），validate:release通过；日志private/option-order01-verify.log、option-order01-protocol.log、option-order01-soak-smoke.log与option-order01-product.log。
 
 已先备份SQLite，再正常重启8000端口产品服务。真实访客API验证6个v1题实例、恢复顺序、标准音Range播放响应；家庭数据库前后逻辑摘要一致，健康版本保持2026.10.05.15/sqlite。部署证据private/option-order01-deployment.json，截图归档private/option-order01-product-evidence/。该切片关闭前述首项位置偏差，未新增审核流程；真实移动设备、家庭LAN及其他交付缺口仍保留。
+
+## 练习结束操作修复 SUMMARY-01
+
+修复了小结返回按钮约30px高、结束失败没有错误入口，以及答题进度尚未刷新完就退出所引发的并发覆盖。返回按钮现为180×50px；失败保留小结并可重新连接、再次结束；保存中不能提前退出，避免新题被旧刷新覆盖。首版声音、直接信任PinYinSound及学生/家长两角色不变。
+
+verify:all通过63前端/工具、287后端、30视口、24真实服务GUI；validate:release通过。新增两引擎的尺寸/320px/200%文字、实际停服恢复、延迟真实进度请求回归。修复前缺陷均复现；首次完整回归的灾备失败已定位并修复，最终两引擎均通过。本机静态网页已更新，以访客验证返回正常，无后端/依赖/数据库结构变更。详见SPEC-004 SUMMARY-01，证据private/summary01-verify-final.log、summary01-after.json及截图；移动真机、家庭LAN与其他交付缺口继续保留。

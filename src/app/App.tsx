@@ -818,6 +818,7 @@ function LearningApp() {
           <button
             className="icon-button"
             aria-label="退出练习"
+            disabled={busy}
             onClick={() =>
               void act(async () => {
                 stopVoice();
@@ -1107,7 +1108,7 @@ function LearningApp() {
     );
   if (active && taskIndex < 0)
     return (
-      <main className="play-page">
+      <main className="play-page summary-page">
         <section className="question-card">
           <div className="mascot">🎉</div>
           <h1>今天的探索完成啦！</h1>
@@ -1143,6 +1144,8 @@ function LearningApp() {
             </li>
           </ul>
           <button
+            className="next-button"
+            disabled={busy}
             onClick={() =>
               void act(async () => {
                 await api(`/sessions/${active.id}/finish`, { method: 'POST' });
@@ -1154,6 +1157,7 @@ function LearningApp() {
             回到小岛
           </button>
         </section>
+        <Notice error={error} onReconnect={() => void act(refresh)} />
       </main>
     );
 

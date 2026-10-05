@@ -1111,6 +1111,12 @@ footer {
 .exercise-actions .hint-button {
   margin-top: 0;
 }
+.summary-page .voice-button {
+  max-width: 100%;
+}
+.summary-page .quiet {
+  min-height: 48px;
+}
 .session-summary {
   display: grid;
   gap: 8px;
