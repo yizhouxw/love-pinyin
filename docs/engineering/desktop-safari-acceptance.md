@@ -31,3 +31,20 @@
 本次GUI还暴露选项位置偏差：本轮6题有5题答案在第一项；只读统计全部204道listen-choice，有116道第一项正确，App.tsx直接按content里的options顺序展示。按固定位置猜测可能影响练习质量。此为独立课程交互问题，尚未修复，不算Safari兼容阻断，也不隐去；后续按SPEC-004单独定义稳定的选项变换与刷新/旧题兼容验收。
 
 本切片仅增加SPEC和验收文档，无生产代码/依赖/内容变更。文档格式与git diff --check核对；不重复前一提交已通过的全工程回归。
+
+## DESKTOP-03：实际文件下载与恢复补充
+
+2026-10-05，代码基线c632d8e，内容2026.10.05.15。Safari27.0（22625.1.29.11.27）/macOS27.0（26A428），独立FastAPI进程86364、loopback端口62498、新建专用Safari窗口。实际操作通过原生辅助功能、点击、系统文件选择器和确认文字输入完成；没有用WebKit自动化替代Safari，也没有粘贴备份JSON代替文件上传。
+
+1. 在隔离家庭配对，听中文指令及PinYinSound后选a并正确保存；退出后家长页显示1次练习、修订号3。
+2. 点击导出，Safari首次出现127.0.0.1下载许可提示，按正常下载流程选择允许；未进入设置界面更改安全或其他偏好。下载列表显示love-pinyin-backup-2026-10-05.json，实际文件3277字节、包含1条作答。SHA-256为4653d11e5abf0ad79db2c2b9cd6bda90098bdd236c21d2d4ebae2cb01f537b0e。
+3. 回到学习，再听标准音并选o正确保存；家长页显示2次练习、修订号6。恢复前只读复制临时SQLite留档，以保留这两条测试记录。
+4. 点击导入文件，原生选择器通过“前往文件夹”定位实际Downloads中的JSON，选择上传。应用预览显示格式通过、将恢复1条作答/1个会话，仍保留当前2条记录。
+5. 填写确认文字并点击替换，界面显示“家庭数据已恢复”、1次练习、修订号7。原生typeText未把中文写入框，核对截图后改用原生paste成功；未改应用或注入DOM。
+6. Safari刷新后仍为已配对主页，再进入家长区，1条记录及选课保留。后台只读确认该作答所有备份字段逐一相同，1个finished会话、6个题实例，tasks_json与恢复前同一会话完全一致，包含冻结的v1选项顺序；配对设备仍有效。
+
+证据位于private/safari03-readonly-proof.json、safari03-downloaded-backup.json、safari03-before-restore-ax.txt、safari03-restored-ax.txt、safari03-refreshed-ax.txt及三张jpg截图。恢复前测试库快照仅存private/safari03-before-restore.sqlite3；下载文件保留在Downloads，不清除原有下载。截图为实际窗口，不视为移动视口证据。
+
+专用窗口关闭后回到原有起始页；测试Uvicorn收到SIGINT正常退出，62498监听关闭，运行临时目录已删除，清理记录见private/safari03-run.json。8000端口家庭服务未重启、未向其写入测试记录。本轮仅增加SPEC与验收记录，文档格式和git diff --check通过，不重复已经通过的工程测试。
+
+此补充关闭原生Safari的实际文件导出/选择/同版本恢复缺口。完整键盘、其他题型、受信任HTTPS、iPad/iPhone/Android、家庭LAN/断WAN和系统重启仍未因此通过。DESKTOP-02发现的选项位置问题已由OPTION-ORDER-01修复，本次还核对了新排列在恢复中的稳定性。
