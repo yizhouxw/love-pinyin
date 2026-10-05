@@ -77,6 +77,6 @@ DISASTER-01的disaster-recovery.spec.ts使用真实浏览器操作配对和答�
 
 `npm run test:e2e:soak`在已安装Google Chrome（channel=chrome）与Playwright WebKit各执行至少20分钟墙钟时间，两个隔离服务/数据库并发运行；需已准备真实中文声音与PinYinSound。该命令独立于verify:all和普通product回归，缺声音会失败。`LOVE_PINYIN_SOAK_SECONDS=90 npm run test:e2e:soak`仅用于脚本烟测，不满足20分钟验收。
 
-每轮通过UI换课、完成实际题单，听完指令、标准音和反馈，使用产品休息入口；答案只取content库。WeakRef观测媒体，记录play到playing事件延迟、下一题可见的耗时，以及轮末src/readyState/networkState、AudioContext/Blob URL计数。currentSrc可能在src已移除、readyState/networkState均为0后保留旧地址，不能单凭这个地址判断资源仍加载。Chrome额外在轮末显式GC后取JS堆和DOM计数；这不是未经干预的原生内存曲线，WebKit也不虚填堆数据。没有替换Audio/网络响应，原生play方法仍实际执行。
+每轮通过UI换课、完成实际题单，听完指令、标准音和反馈，使用产品休息入口；答案只取content库。轮结束等待可操作的主页或休息页，再允许下一次选课；资源释放检查允许20秒以覆盖休息朗读（本机ui-rest长5.565秒）。单次操作/导航超时15秒，防止等控件的空转混入长测；completed与20分钟时长需同时满足才登记合格。WeakRef观测媒体，记录play到playing事件延迟、下一题可见的耗时，以及轮末src/readyState/networkState、AudioContext/Blob URL计数。currentSrc可能在src已移除、readyState/networkState均为0后保留旧地址，不能单凭这个地址判断资源仍加载。Chrome额外在轮末显式GC后取JS堆和DOM计数；这不是未经干预的原生内存曲线，WebKit也不虚填堆数据。没有替换Audio/网络响应，原生play方法仍实际执行。
 
 结果写入test-results/soak各项目的soak-report.json及最终截图；失败也尽量保存已完成样本。正式20分钟报告尚待此次长测完成，不能凭短跑或零活动资源断言所有内存无泄漏。两引擎并发产生本机负载，报告延迟不是移动设备、真实LAN或物理出声测量。

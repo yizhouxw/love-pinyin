@@ -139,6 +139,7 @@ test('SOAK-01: sustained real learning releases media and records playback laten
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeEnabled();
   const startedAt = Date.now();
+  let completed = false;
   let rounds = 0;
   let answers = 0;
   const transitions: number[] = [];
@@ -150,6 +151,7 @@ test('SOAK-01: sustained real learning releases media and records playback laten
         exact: true,
       });
       if (await restBeforeLesson.isVisible()) await restBeforeLesson.click();
+      await expect(page.getByRole('button', { name: '开始今天的练习', exact: true })).toBeEnabled();
       const lesson = curriculum.lessons[rounds % curriculum.lessons.length]!;
       await page.getByRole('button', { name: '家长管理' }).click();
       await page.getByRole('button', { name: '我是家长，继续' }).click();
@@ -161,6 +163,7 @@ test('SOAK-01: sustained real learning releases media and records playback laten
       if (await rest.isVisible()) await rest.click();
       const begun = page.waitForResponse(
         (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
+        { timeout: 15_000 },
       );
       await page.getByRole('button', { name: '开始今天的练习' }).click();
       const session = await (await begun).json();
@@ -199,11 +202,20 @@ test('SOAK-01: sustained real learning releases media and records playback laten
       }
       await expect(page.getByLabel('本次练习小结')).toBeVisible();
       await page.getByRole('button', { name: '回到小岛', exact: true }).click();
+      // Finish refresh can replace a briefly rendered home with the two-round rest page.
+      await expect(
+        page
+          .getByRole('button', { name: '开始今天的练习', exact: true })
+          .or(page.getByRole('button', { name: '休息好了，继续学习', exact: true })),
+      ).toBeEnabled();
       await expect
-        .poll(async () => {
-          const s = await page.evaluate(() => window.soakSample());
-          return s.loadedMedia + s.playingMedia + s.openContexts + s.blobUrls;
-        })
+        .poll(
+          async () => {
+            const s = await page.evaluate(() => window.soakSample());
+            return s.loadedMedia + s.playingMedia + s.openContexts + s.blobUrls;
+          },
+          { timeout: 20_000 },
+        )
         .toBe(0);
       if (cdp) await cdp.send('HeapProfiler.collectGarbage');
       const media = await page.evaluate(() => window.soakSample());
@@ -237,6 +249,7 @@ test('SOAK-01: sustained real learning releases media and records playback laten
     expect(exported.ok()).toBe(true);
     expect((await exported.json()).attempts).toHaveLength(answers);
     await page.screenshot({ path: info.outputPath('after-soak.png'), fullPage: true });
+    completed = true;
   } finally {
     const media = await page.evaluate(() => window.soakSample());
     const report = {
@@ -245,7 +258,8 @@ test('SOAK-01: sustained real learning releases media and records playback laten
       os: `${platform()} ${release()}`,
       requestedSeconds: seconds,
       elapsedMs: Date.now() - startedAt,
-      qualifiesFor20MinuteRun: seconds >= 1200 && Date.now() - startedAt >= 1_200_000,
+      completed,
+      qualifiesFor20MinuteRun: completed && seconds >= 1200 && Date.now() - startedAt >= 1_200_000,
       rounds,
       answers,
       errors,

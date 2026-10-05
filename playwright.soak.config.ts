@@ -7,7 +7,12 @@ export default defineConfig({
   timeout: 30 * 60_000,
   forbidOnly: !!process.env.CI,
   reporter: [['list']],
-  use: { screenshot: 'only-on-failure', trace: 'retain-on-failure' },
+  use: {
+    actionTimeout: 15_000,
+    navigationTimeout: 15_000,
+    screenshot: 'only-on-failure',
+    trace: 'retain-on-failure',
+  },
   projects: [
     { name: 'soak-installed-chrome', use: { ...devices['Desktop Chrome'], channel: 'chrome' } },
     { name: 'soak-webkit', use: { ...devices['Desktop Safari'] } },
