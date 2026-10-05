@@ -11,6 +11,82 @@ const validate = (input, release = false) =>
   validateCurriculum(input, schema, { sourceIds, release });
 
 describe('课程内容的保护门禁', () => {
+  it('BANK-07将规则应用到具体拼写、同调听辨和独立中文选项', () => {
+    const added = data.exercises.filter(
+      (q) => Number(q.id.split('-').at(-1)) >= 120 && Number(q.id.split('-').at(-1)) < 140,
+    );
+    expect(added).toHaveLength(40);
+    expect(data.coverage.insufficientObjectiveReleaseKnowledgeIds).toEqual(['rule-grid-writing']);
+    const answer = (id) => {
+      const q = added.find((q) => q.id === id);
+      return q.options.find((o) => o.id === q.answer.optionId).label;
+    };
+    for (const [id, expected] of [
+      ['q-09-125', 'w'],
+      ['q-11-120', 'a'],
+      ['q-11-121', 'o'],
+      ['q-02-120', '去掉小圆点'],
+      ['q-02-121', 'ü'],
+      ['q-09-126', 'ya'],
+      ['q-09-127', 'wa'],
+      ['q-09-128', 'yū'],
+      ['q-09-129', 'yù'],
+      ['q-12-120', 'yue'],
+      ['q-10-120', 'dui'],
+      ['q-11-122', 'jiu'],
+      ['q-11-123', 'shuì'],
+      ['q-11-124', 'niú'],
+    ])
+      expect(answer(id), id).toBe(expected);
+    expect(added.find((q) => q.id === 'q-09-125').prompt).toContain('把 u 写成');
+    const order = (id) => data.lessons.find((l) => l.id === id).order;
+    for (const q of added) {
+      const k = data.knowledgeItems.find((k) => k.id === q.primaryKnowledgeId);
+      expect(order(k.lessonId)).toBeLessThanOrEqual(order(q.lessonId));
+      if (k.id === 'k-tone-0') expect(pinyinTone(answer(q.id))).toBeNull();
+      if (q.type === 'blend-choice')
+        expect(answer(q.id)).toBe(q.prompt.match(/[a-züāáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜ]+/gu).join(''));
+      for (const o of q.options)
+        if (/\p{Script=Han}/u.test(o.label)) expect(o.audioRef).toBeTruthy();
+    }
+    const auditory = added.filter((q) => q.audioRef);
+    expect(auditory).toHaveLength(9);
+    for (const q of auditory) {
+      expect(new Set(q.options.map((o) => pinyinTone(o.label))).size).toBe(1);
+      expect(data.audioRequirements.find((a) => a.id === q.audioRef).transcript).toBe(answer(q.id));
+    }
+    const untone = (text) =>
+      text
+        .normalize('NFD')
+        .replace(/[\u0300\u0301\u0304\u030c]/gu, '')
+        .normalize('NFC');
+    for (const q of auditory)
+      for (const option of q.options) {
+        const parts = splitPinyinCandidate(option.label, data.inventory.initials) ?? {
+          onset: '',
+          rime: option.label,
+        };
+        const final = data.knowledgeItems.find(
+          (k) => k.category === 'final' && k.symbol === untone(parts.rime),
+        );
+        expect(final, q.id).toBeDefined();
+        expect(order(final.lessonId)).toBeLessThanOrEqual(order(q.lessonId));
+        if (parts.onset) {
+          const initial = data.knowledgeItems.find(
+            (k) => k.category === 'initial' && k.symbol === parts.onset,
+          );
+          expect(order(initial.lessonId)).toBeLessThanOrEqual(order(q.lessonId));
+        }
+      }
+    expect(added.find((q) => q.id === 'q-12-121').options.map((o) => o.label)).toEqual([
+      'é',
+      'ér',
+      'hé',
+    ]);
+    const oldNasal = data.exercises.find((q) => q.id === 'q-14-30');
+    expect(oldNasal.options.find((o) => o.id === oldNasal.answer.optionId).label).toBe('en / eng');
+  });
+
   it('BANK-06的整体认读音节在已学范围用同调候选辨听，不靠换顺序凑题', () => {
     const added = data.exercises.filter(
       (q) => Number(q.id.split('-').at(-1)) >= 100 && Number(q.id.split('-').at(-1)) < 120,

@@ -26,7 +26,10 @@ test('BANK-04: real course rotation reaches b, q and sh syllable listening with 
   for (const initial of ['b', 'q', 'sh']) {
     const knowledge = curriculum.knowledgeItems.find((k) => k.id === `k-initial-${initial}`)!;
     const wanted = curriculum.exercises.filter(
-      (q) => q.primaryKnowledgeId === knowledge.id && Number(q.id.split('-').at(-1)) >= 70,
+      (q) =>
+        q.primaryKnowledgeId === knowledge.id &&
+        Number(q.id.split('-').at(-1)) >= 70 &&
+        Number(q.id.split('-').at(-1)) < 80,
     );
     expect(wanted).toHaveLength(2);
     await page.getByRole('button', { name: '家长管理' }).click();

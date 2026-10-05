@@ -1026,7 +1026,9 @@
         "q-02-82",
         "q-02-83",
         "q-02-84",
-        "q-02-85"
+        "q-02-85",
+        "q-02-120",
+        "q-02-121"
       ],
       "readingTargetIds": ["rt-02-i1", "rt-02-v1", "rt-02-final-u"],
       "sourceIds": ["src-pep-2024-g1a"],
@@ -1076,7 +1078,11 @@
         "q-03-74",
         "q-03-75",
         "q-03-76",
-        "q-03-77"
+        "q-03-77",
+        "q-03-120",
+        "q-03-121",
+        "q-03-122",
+        "q-03-123"
       ],
       "readingTargetIds": [
         "rt-03-ba1",
@@ -1129,7 +1135,10 @@
         "q-04-74",
         "q-04-75",
         "q-04-76",
-        "q-04-77"
+        "q-04-77",
+        "q-04-120",
+        "q-04-121",
+        "q-04-122"
       ],
       "readingTargetIds": [
         "rt-04-tu3",
@@ -1219,7 +1228,9 @@
         "q-06-72",
         "q-06-73",
         "q-06-74",
-        "q-06-75"
+        "q-06-75",
+        "q-06-120",
+        "q-06-121"
       ],
       "readingTargetIds": [
         "rt-06-qi1",
@@ -1284,7 +1295,10 @@
         "q-07-102",
         "q-07-103",
         "q-07-104",
-        "q-07-105"
+        "q-07-105",
+        "q-07-120",
+        "q-07-121",
+        "q-07-122"
       ],
       "readingTargetIds": [
         "rt-07-zi4",
@@ -1365,7 +1379,10 @@
         "q-08-104",
         "q-08-105",
         "q-08-106",
-        "q-08-107"
+        "q-08-107",
+        "q-08-120",
+        "q-08-121",
+        "q-08-122"
       ],
       "readingTargetIds": [
         "rt-08-chi1",
@@ -1424,7 +1441,17 @@
         "q-09-102",
         "q-09-103",
         "q-09-104",
-        "q-09-105"
+        "q-09-105",
+        "q-09-120",
+        "q-09-121",
+        "q-09-122",
+        "q-09-123",
+        "q-09-124",
+        "q-09-125",
+        "q-09-126",
+        "q-09-127",
+        "q-09-128",
+        "q-09-129"
       ],
       "readingTargetIds": ["rt-09-yi1", "rt-09-yu2", "rt-09-whole-wu"],
       "sourceIds": ["src-pep-2024-g1a"],
@@ -1461,7 +1488,8 @@
         "q-10-82",
         "q-10-83",
         "q-10-84",
-        "q-10-85"
+        "q-10-85",
+        "q-10-120"
       ],
       "readingTargetIds": [
         "rt-10-bai2",
@@ -1505,7 +1533,12 @@
         "q-11-82",
         "q-11-83",
         "q-11-84",
-        "q-11-85"
+        "q-11-85",
+        "q-11-120",
+        "q-11-121",
+        "q-11-122",
+        "q-11-123",
+        "q-11-124"
       ],
       "readingTargetIds": [
         "rt-11-mao1",
@@ -1564,7 +1597,11 @@
         "q-12-100",
         "q-12-101",
         "q-12-102",
-        "q-12-103"
+        "q-12-103",
+        "q-12-120",
+        "q-12-121",
+        "q-12-122",
+        "q-12-123"
       ],
       "readingTargetIds": [
         "rt-12-xue3",
@@ -1709,7 +1746,10 @@
         "q-14-86",
         "q-14-87",
         "q-14-100",
-        "q-14-101"
+        "q-14-101",
+        "q-14-120",
+        "q-14-121",
+        "q-14-122"
       ],
       "readingTargetIds": [
         "rt-14-feng1",
@@ -7966,7 +8006,7 @@
         },
         {
           "id": "b",
-          "label": "in / ing"
+          "label": "en / eng"
         },
         {
           "id": "c",
@@ -13113,6 +13153,1109 @@
       "license": "MIT",
       "audioRef": "audio-syllable-ying3",
       "promptAudioRef": "audio-prompt-47ea3a26f62c"
+    },
+    {
+      "id": "q-03-120",
+      "lessonId": "lesson-03",
+      "type": "symbol-choice",
+      "prompt": "“妈妈”的第二个音节读轻声，选择正确标调。",
+      "primaryKnowledgeId": "k-tone-0",
+      "knowledgeIds": ["k-tone-0"],
+      "options": [
+        {
+          "id": "a",
+          "label": "mā"
+        },
+        {
+          "id": "b",
+          "label": "ma"
+        },
+        {
+          "id": "c",
+          "label": "mǎ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-ecf6d5f14d08"
+    },
+    {
+      "id": "q-03-121",
+      "lessonId": "lesson-03",
+      "type": "symbol-choice",
+      "prompt": "“伯伯”的第二个音节读轻声，选择正确标调。",
+      "primaryKnowledgeId": "k-tone-0",
+      "knowledgeIds": ["k-tone-0"],
+      "options": [
+        {
+          "id": "a",
+          "label": "bó"
+        },
+        {
+          "id": "b",
+          "label": "bò"
+        },
+        {
+          "id": "c",
+          "label": "bo"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-a16c6141d1ca"
+    },
+    {
+      "id": "q-04-120",
+      "lessonId": "lesson-04",
+      "type": "symbol-choice",
+      "prompt": "“弟弟”的第二个音节读轻声，选择正确标调。",
+      "primaryKnowledgeId": "k-tone-0",
+      "knowledgeIds": ["k-tone-0"],
+      "options": [
+        {
+          "id": "a",
+          "label": "di"
+        },
+        {
+          "id": "b",
+          "label": "dǐ"
+        },
+        {
+          "id": "c",
+          "label": "dì"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-6aad1a2bb376"
+    },
+    {
+      "id": "q-09-120",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "yā 的第一个字母是哪一个？",
+      "primaryKnowledgeId": "k-letter-y",
+      "knowledgeIds": ["k-letter-y"],
+      "options": [
+        {
+          "id": "a",
+          "label": "y"
+        },
+        {
+          "id": "b",
+          "label": "w"
+        },
+        {
+          "id": "c",
+          "label": "a"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-81df77014d4b"
+    },
+    {
+      "id": "q-09-121",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "哪一个音节以 y 开头？",
+      "primaryKnowledgeId": "k-letter-y",
+      "knowledgeIds": ["k-letter-y"],
+      "options": [
+        {
+          "id": "a",
+          "label": "wā"
+        },
+        {
+          "id": "b",
+          "label": "mā"
+        },
+        {
+          "id": "c",
+          "label": "yā"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-5a55041ea15a"
+    },
+    {
+      "id": "q-09-122",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "补全整体认读音节 _ī，缺少哪个开头字母？",
+      "primaryKnowledgeId": "k-letter-y",
+      "knowledgeIds": ["k-letter-y"],
+      "options": [
+        {
+          "id": "a",
+          "label": "i"
+        },
+        {
+          "id": "b",
+          "label": "y"
+        },
+        {
+          "id": "c",
+          "label": "w"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-e4f22c95e6d9"
+    },
+    {
+      "id": "q-09-123",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "wā 的第一个字母是哪一个？",
+      "primaryKnowledgeId": "k-letter-w",
+      "knowledgeIds": ["k-letter-w"],
+      "options": [
+        {
+          "id": "a",
+          "label": "y"
+        },
+        {
+          "id": "b",
+          "label": "w"
+        },
+        {
+          "id": "c",
+          "label": "a"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-d10dade0cf28"
+    },
+    {
+      "id": "q-09-124",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "哪一个音节以 w 开头？",
+      "primaryKnowledgeId": "k-letter-w",
+      "knowledgeIds": ["k-letter-w"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yā"
+        },
+        {
+          "id": "b",
+          "label": "mā"
+        },
+        {
+          "id": "c",
+          "label": "wā"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-6e6d5ac5b5f1"
+    },
+    {
+      "id": "q-09-125",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "把 u 写成整体认读音节 _u，补上开头的拼写字母。",
+      "primaryKnowledgeId": "k-letter-w",
+      "knowledgeIds": ["k-letter-w"],
+      "options": [
+        {
+          "id": "a",
+          "label": "i"
+        },
+        {
+          "id": "b",
+          "label": "y"
+        },
+        {
+          "id": "c",
+          "label": "w"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-42aec68bdfdb"
+    },
+    {
+      "id": "q-11-120",
+      "lessonId": "lesson-11",
+      "type": "symbol-choice",
+      "prompt": "给 ao 标调时，记号写在哪个字母上？",
+      "primaryKnowledgeId": "rule-tone-placement",
+      "knowledgeIds": ["rule-tone-placement"],
+      "options": [
+        {
+          "id": "a",
+          "label": "o"
+        },
+        {
+          "id": "b",
+          "label": "a"
+        },
+        {
+          "id": "c",
+          "label": "i"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-1008e2589f62"
+    },
+    {
+      "id": "q-11-121",
+      "lessonId": "lesson-11",
+      "type": "symbol-choice",
+      "prompt": "给 ou 标调时，记号写在哪个字母上？",
+      "primaryKnowledgeId": "rule-tone-placement",
+      "knowledgeIds": ["rule-tone-placement"],
+      "options": [
+        {
+          "id": "a",
+          "label": "u"
+        },
+        {
+          "id": "b",
+          "label": "i"
+        },
+        {
+          "id": "c",
+          "label": "o"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-cd7edc4774a8"
+    },
+    {
+      "id": "q-02-120",
+      "lessonId": "lesson-02",
+      "type": "symbol-choice",
+      "prompt": "给 i 加声调时，原来的小圆点怎么办？",
+      "primaryKnowledgeId": "rule-i-dot",
+      "knowledgeIds": ["rule-i-dot"],
+      "options": [
+        {
+          "id": "a",
+          "label": "去掉小圆点",
+          "audioRef": "audio-option-0f15f06be7d7"
+        },
+        {
+          "id": "b",
+          "label": "保留小圆点",
+          "audioRef": "audio-option-14434c789d78"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-8ea64df6bc07"
+    },
+    {
+      "id": "q-02-121",
+      "lessonId": "lesson-02",
+      "type": "symbol-choice",
+      "prompt": "去掉 ǜ 的声调记号，应该写成哪一张？",
+      "primaryKnowledgeId": "rule-i-dot",
+      "knowledgeIds": ["rule-i-dot"],
+      "options": [
+        {
+          "id": "a",
+          "label": "u"
+        },
+        {
+          "id": "b",
+          "label": "ü"
+        },
+        {
+          "id": "c",
+          "label": "ǔ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-0e72104bf914"
+    },
+    {
+      "id": "q-03-122",
+      "lessonId": "lesson-03",
+      "type": "blend-choice",
+      "prompt": "m 和 ǐ 连起来，选出正确音节。",
+      "primaryKnowledgeId": "rule-two-part",
+      "knowledgeIds": ["rule-two-part"],
+      "options": [
+        {
+          "id": "a",
+          "label": "mī"
+        },
+        {
+          "id": "b",
+          "label": "mǐ"
+        },
+        {
+          "id": "c",
+          "label": "bǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-187050827c1b"
+    },
+    {
+      "id": "q-03-123",
+      "lessonId": "lesson-03",
+      "type": "blend-choice",
+      "prompt": "f 和 ǔ 连起来，选出正确音节。",
+      "primaryKnowledgeId": "rule-two-part",
+      "knowledgeIds": ["rule-two-part"],
+      "options": [
+        {
+          "id": "a",
+          "label": "fú"
+        },
+        {
+          "id": "b",
+          "label": "pǔ"
+        },
+        {
+          "id": "c",
+          "label": "fǔ"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-6ecb91b983cf"
+    },
+    {
+      "id": "q-04-121",
+      "lessonId": "lesson-04",
+      "type": "blend-choice",
+      "prompt": "d 和 à 连起来，选出正确音节。",
+      "primaryKnowledgeId": "rule-two-part",
+      "knowledgeIds": ["rule-two-part"],
+      "options": [
+        {
+          "id": "a",
+          "label": "dà"
+        },
+        {
+          "id": "b",
+          "label": "dá"
+        },
+        {
+          "id": "c",
+          "label": "tà"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-61a426eba5bc"
+    },
+    {
+      "id": "q-04-122",
+      "lessonId": "lesson-04",
+      "type": "symbol-choice",
+      "prompt": "比较形近字母，找出 b。",
+      "primaryKnowledgeId": "rule-confusable-shapes",
+      "knowledgeIds": ["rule-confusable-shapes"],
+      "options": [
+        {
+          "id": "a",
+          "label": "d"
+        },
+        {
+          "id": "b",
+          "label": "b"
+        },
+        {
+          "id": "c",
+          "label": "p"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-abb956054d9e"
+    },
+    {
+      "id": "q-06-120",
+      "lessonId": "lesson-06",
+      "type": "symbol-choice",
+      "prompt": "比较形近字母，找出 p。",
+      "primaryKnowledgeId": "rule-confusable-shapes",
+      "knowledgeIds": ["rule-confusable-shapes"],
+      "options": [
+        {
+          "id": "a",
+          "label": "q"
+        },
+        {
+          "id": "b",
+          "label": "b"
+        },
+        {
+          "id": "c",
+          "label": "p"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-e6240a0d45e1"
+    },
+    {
+      "id": "q-06-121",
+      "lessonId": "lesson-06",
+      "type": "symbol-choice",
+      "prompt": "比较形近字母，找出 q。",
+      "primaryKnowledgeId": "rule-confusable-shapes",
+      "knowledgeIds": ["rule-confusable-shapes"],
+      "options": [
+        {
+          "id": "a",
+          "label": "q"
+        },
+        {
+          "id": "b",
+          "label": "p"
+        },
+        {
+          "id": "c",
+          "label": "d"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-98a497fa0d0f"
+    },
+    {
+      "id": "q-07-120",
+      "lessonId": "lesson-07",
+      "type": "symbol-choice",
+      "prompt": "哪一张卡片是整体认读音节，而不是声母？",
+      "primaryKnowledgeId": "rule-whole-vs-initial",
+      "knowledgeIds": ["rule-whole-vs-initial"],
+      "options": [
+        {
+          "id": "a",
+          "label": "c"
+        },
+        {
+          "id": "b",
+          "label": "ci"
+        },
+        {
+          "id": "c",
+          "label": "z"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-e325e7bb1c5e"
+    },
+    {
+      "id": "q-07-121",
+      "lessonId": "lesson-07",
+      "type": "symbol-choice",
+      "prompt": "找出可以整体认读的完整音节。",
+      "primaryKnowledgeId": "rule-whole-vs-initial",
+      "knowledgeIds": ["rule-whole-vs-initial"],
+      "options": [
+        {
+          "id": "a",
+          "label": "s"
+        },
+        {
+          "id": "b",
+          "label": "c"
+        },
+        {
+          "id": "c",
+          "label": "si"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-da652be185a2"
+    },
+    {
+      "id": "q-07-122",
+      "lessonId": "lesson-07",
+      "type": "symbol-choice",
+      "prompt": "哪一张卡片只有声母，不是完整的整体认读音节？",
+      "primaryKnowledgeId": "rule-whole-vs-initial",
+      "knowledgeIds": ["rule-whole-vs-initial"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zi"
+        },
+        {
+          "id": "b",
+          "label": "z"
+        },
+        {
+          "id": "c",
+          "label": "ci"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-80f9afa88ab2"
+    },
+    {
+      "id": "q-09-126",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "i ＋ a 连成不带声母的音节，规范拼写是哪一个？",
+      "primaryKnowledgeId": "rule-yw",
+      "knowledgeIds": ["rule-yw"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ia"
+        },
+        {
+          "id": "b",
+          "label": "ya"
+        },
+        {
+          "id": "c",
+          "label": "wa"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-7daead908c75"
+    },
+    {
+      "id": "q-09-127",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "u ＋ a 连成不带声母的音节，规范拼写是哪一个？",
+      "primaryKnowledgeId": "rule-yw",
+      "knowledgeIds": ["rule-yw"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ua"
+        },
+        {
+          "id": "b",
+          "label": "ya"
+        },
+        {
+          "id": "c",
+          "label": "wa"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-2fab1e5d66ec"
+    },
+    {
+      "id": "q-09-128",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "把 ǖ 独立写成音节，选择规范拼写。",
+      "primaryKnowledgeId": "rule-y-v",
+      "knowledgeIds": ["rule-y-v"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yǖ"
+        },
+        {
+          "id": "b",
+          "label": "yū"
+        },
+        {
+          "id": "c",
+          "label": "wū"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-ab200361cef9"
+    },
+    {
+      "id": "q-09-129",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "把 ǜ 独立写成音节，选择规范拼写。",
+      "primaryKnowledgeId": "rule-y-v",
+      "knowledgeIds": ["rule-y-v"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yǜ"
+        },
+        {
+          "id": "b",
+          "label": "wù"
+        },
+        {
+          "id": "c",
+          "label": "yù"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-fc8bf0773390"
+    },
+    {
+      "id": "q-12-120",
+      "lessonId": "lesson-12",
+      "type": "symbol-choice",
+      "prompt": "把 üe 独立写成音节，选择规范拼写。",
+      "primaryKnowledgeId": "rule-y-v",
+      "knowledgeIds": ["rule-y-v"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yüe"
+        },
+        {
+          "id": "b",
+          "label": "yue"
+        },
+        {
+          "id": "c",
+          "label": "ue"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-b9dbb9f29bf5"
+    },
+    {
+      "id": "q-10-120",
+      "lessonId": "lesson-10",
+      "type": "symbol-choice",
+      "prompt": "d ＋ uei 拼成音节，选择省写后的规范形式。",
+      "primaryKnowledgeId": "rule-abbreviation",
+      "knowledgeIds": ["rule-abbreviation"],
+      "options": [
+        {
+          "id": "a",
+          "label": "duei"
+        },
+        {
+          "id": "b",
+          "label": "dui"
+        },
+        {
+          "id": "c",
+          "label": "dei"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-17dd20cfce72"
+    },
+    {
+      "id": "q-11-122",
+      "lessonId": "lesson-11",
+      "type": "symbol-choice",
+      "prompt": "j ＋ iou 拼成音节，选择省写后的规范形式。",
+      "primaryKnowledgeId": "rule-abbreviation",
+      "knowledgeIds": ["rule-abbreviation"],
+      "options": [
+        {
+          "id": "a",
+          "label": "jiou"
+        },
+        {
+          "id": "b",
+          "label": "jou"
+        },
+        {
+          "id": "c",
+          "label": "jiu"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-4f111c3df612"
+    },
+    {
+      "id": "q-11-123",
+      "lessonId": "lesson-11",
+      "type": "symbol-choice",
+      "prompt": "给 shui 标第四声，选择规范写法。",
+      "primaryKnowledgeId": "rule-iu-ui-tone",
+      "knowledgeIds": ["rule-iu-ui-tone"],
+      "options": [
+        {
+          "id": "a",
+          "label": "shùi"
+        },
+        {
+          "id": "b",
+          "label": "shuì"
+        },
+        {
+          "id": "c",
+          "label": "shuǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-a10d78b520f5"
+    },
+    {
+      "id": "q-11-124",
+      "lessonId": "lesson-11",
+      "type": "symbol-choice",
+      "prompt": "给 niu 标第二声，选择规范写法。",
+      "primaryKnowledgeId": "rule-iu-ui-tone",
+      "knowledgeIds": ["rule-iu-ui-tone"],
+      "options": [
+        {
+          "id": "a",
+          "label": "niú"
+        },
+        {
+          "id": "b",
+          "label": "níu"
+        },
+        {
+          "id": "c",
+          "label": "niǔ"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-4951560239d3"
+    },
+    {
+      "id": "q-08-120",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，分清平舌和翘舌，选出听到的音节。",
+      "primaryKnowledgeId": "rule-retroflex",
+      "knowledgeIds": ["rule-retroflex"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zā"
+        },
+        {
+          "id": "b",
+          "label": "zhā"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-f5b7cecd6901",
+      "audioRef": "audio-syllable-zha1"
+    },
+    {
+      "id": "q-08-121",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，分清平舌和翘舌，选出听到的音节。",
+      "primaryKnowledgeId": "rule-retroflex",
+      "knowledgeIds": ["rule-retroflex"],
+      "options": [
+        {
+          "id": "a",
+          "label": "chā"
+        },
+        {
+          "id": "b",
+          "label": "cā"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-f5b7cecd6901",
+      "audioRef": "audio-syllable-ca1"
+    },
+    {
+      "id": "q-08-122",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听一听，分清平舌和翘舌，选出听到的音节。",
+      "primaryKnowledgeId": "rule-retroflex",
+      "knowledgeIds": ["rule-retroflex"],
+      "options": [
+        {
+          "id": "a",
+          "label": "sā"
+        },
+        {
+          "id": "b",
+          "label": "shā"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-f5b7cecd6901",
+      "audioRef": "audio-syllable-sha1"
+    },
+    {
+      "id": "q-14-120",
+      "lessonId": "lesson-14",
+      "type": "listen-choice",
+      "prompt": "听一听，注意鼻音结尾，选出听到的音节。",
+      "primaryKnowledgeId": "rule-front-back-nasal",
+      "knowledgeIds": ["rule-front-back-nasal"],
+      "options": [
+        {
+          "id": "a",
+          "label": "gāng"
+        },
+        {
+          "id": "b",
+          "label": "gān"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-04cc85aad8d8",
+      "audioRef": "audio-syllable-gan1"
+    },
+    {
+      "id": "q-14-121",
+      "lessonId": "lesson-14",
+      "type": "listen-choice",
+      "prompt": "听一听，注意鼻音结尾，选出听到的音节。",
+      "primaryKnowledgeId": "rule-front-back-nasal",
+      "knowledgeIds": ["rule-front-back-nasal"],
+      "options": [
+        {
+          "id": "a",
+          "label": "chén"
+        },
+        {
+          "id": "b",
+          "label": "chéng"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-04cc85aad8d8",
+      "audioRef": "audio-syllable-cheng2"
+    },
+    {
+      "id": "q-14-122",
+      "lessonId": "lesson-14",
+      "type": "listen-choice",
+      "prompt": "听一听，注意鼻音结尾，选出听到的音节。",
+      "primaryKnowledgeId": "rule-front-back-nasal",
+      "knowledgeIds": ["rule-front-back-nasal"],
+      "options": [
+        {
+          "id": "a",
+          "label": "jīng"
+        },
+        {
+          "id": "b",
+          "label": "jīn"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-04cc85aad8d8",
+      "audioRef": "audio-syllable-jin1"
+    },
+    {
+      "id": "q-12-121",
+      "lessonId": "lesson-12",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的音节，注意有没有声母。",
+      "primaryKnowledgeId": "rule-er",
+      "knowledgeIds": ["rule-er"],
+      "options": [
+        {
+          "id": "a",
+          "label": "é"
+        },
+        {
+          "id": "b",
+          "label": "ér"
+        },
+        {
+          "id": "c",
+          "label": "hé"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9574fcdd76fa",
+      "audioRef": "audio-syllable-er2"
+    },
+    {
+      "id": "q-12-122",
+      "lessonId": "lesson-12",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的音节，注意有没有声母。",
+      "primaryKnowledgeId": "rule-er",
+      "knowledgeIds": ["rule-er"],
+      "options": [
+        {
+          "id": "a",
+          "label": "rě"
+        },
+        {
+          "id": "b",
+          "label": "ě"
+        },
+        {
+          "id": "c",
+          "label": "ěr"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9574fcdd76fa",
+      "audioRef": "audio-syllable-er3"
+    },
+    {
+      "id": "q-12-123",
+      "lessonId": "lesson-12",
+      "type": "listen-choice",
+      "prompt": "听一听，选出听到的音节，注意有没有声母。",
+      "primaryKnowledgeId": "rule-er",
+      "knowledgeIds": ["rule-er"],
+      "options": [
+        {
+          "id": "a",
+          "label": "èr"
+        },
+        {
+          "id": "b",
+          "label": "rè"
+        },
+        {
+          "id": "c",
+          "label": "è"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-9574fcdd76fa",
+      "audioRef": "audio-syllable-er4"
     }
   ],
   "readingTargets": [
@@ -16926,6 +18069,246 @@
       "transcript": "yǐng",
       "kind": "syllable",
       "knowledgeIds": ["k-whole-ying", "k-tone-3"]
+    },
+    {
+      "id": "audio-prompt-ecf6d5f14d08",
+      "transcript": "“妈妈”的第二个音节读轻声，选择正确标调。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-tone-0"]
+    },
+    {
+      "id": "audio-prompt-a16c6141d1ca",
+      "transcript": "“伯伯”的第二个音节读轻声，选择正确标调。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-tone-0"]
+    },
+    {
+      "id": "audio-prompt-6aad1a2bb376",
+      "transcript": "“弟弟”的第二个音节读轻声，选择正确标调。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-tone-0"]
+    },
+    {
+      "id": "audio-prompt-81df77014d4b",
+      "transcript": "yā 的第一个字母是哪一个？",
+      "kind": "instruction",
+      "knowledgeIds": ["k-letter-y"]
+    },
+    {
+      "id": "audio-prompt-5a55041ea15a",
+      "transcript": "哪一个音节以 y 开头？",
+      "kind": "instruction",
+      "knowledgeIds": ["k-letter-y"]
+    },
+    {
+      "id": "audio-prompt-e4f22c95e6d9",
+      "transcript": "补全整体认读音节 _ī，缺少哪个开头字母？",
+      "kind": "instruction",
+      "knowledgeIds": ["k-letter-y"]
+    },
+    {
+      "id": "audio-prompt-d10dade0cf28",
+      "transcript": "wā 的第一个字母是哪一个？",
+      "kind": "instruction",
+      "knowledgeIds": ["k-letter-w"]
+    },
+    {
+      "id": "audio-prompt-6e6d5ac5b5f1",
+      "transcript": "哪一个音节以 w 开头？",
+      "kind": "instruction",
+      "knowledgeIds": ["k-letter-w"]
+    },
+    {
+      "id": "audio-prompt-42aec68bdfdb",
+      "transcript": "把 u 写成整体认读音节 _u，补上开头的拼写字母。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-letter-w"]
+    },
+    {
+      "id": "audio-prompt-1008e2589f62",
+      "transcript": "给 ao 标调时，记号写在哪个字母上？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-tone-placement"]
+    },
+    {
+      "id": "audio-prompt-cd7edc4774a8",
+      "transcript": "给 ou 标调时，记号写在哪个字母上？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-tone-placement"]
+    },
+    {
+      "id": "audio-option-0f15f06be7d7",
+      "transcript": "去掉小圆点",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-i-dot"]
+    },
+    {
+      "id": "audio-option-14434c789d78",
+      "transcript": "保留小圆点",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-i-dot"]
+    },
+    {
+      "id": "audio-prompt-8ea64df6bc07",
+      "transcript": "给 i 加声调时，原来的小圆点怎么办？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-i-dot"]
+    },
+    {
+      "id": "audio-prompt-0e72104bf914",
+      "transcript": "去掉 ǜ 的声调记号，应该写成哪一张？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-i-dot"]
+    },
+    {
+      "id": "audio-prompt-187050827c1b",
+      "transcript": "m 和 ǐ 连起来，选出正确音节。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-two-part"]
+    },
+    {
+      "id": "audio-prompt-6ecb91b983cf",
+      "transcript": "f 和 ǔ 连起来，选出正确音节。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-two-part"]
+    },
+    {
+      "id": "audio-prompt-61a426eba5bc",
+      "transcript": "d 和 à 连起来，选出正确音节。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-two-part"]
+    },
+    {
+      "id": "audio-prompt-abb956054d9e",
+      "transcript": "比较形近字母，找出 b。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-confusable-shapes"]
+    },
+    {
+      "id": "audio-prompt-e6240a0d45e1",
+      "transcript": "比较形近字母，找出 p。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-confusable-shapes"]
+    },
+    {
+      "id": "audio-prompt-98a497fa0d0f",
+      "transcript": "比较形近字母，找出 q。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-confusable-shapes"]
+    },
+    {
+      "id": "audio-prompt-e325e7bb1c5e",
+      "transcript": "哪一张卡片是整体认读音节，而不是声母？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-whole-vs-initial"]
+    },
+    {
+      "id": "audio-prompt-da652be185a2",
+      "transcript": "找出可以整体认读的完整音节。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-whole-vs-initial"]
+    },
+    {
+      "id": "audio-prompt-80f9afa88ab2",
+      "transcript": "哪一张卡片只有声母，不是完整的整体认读音节？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-whole-vs-initial"]
+    },
+    {
+      "id": "audio-prompt-7daead908c75",
+      "transcript": "i ＋ a 连成不带声母的音节，规范拼写是哪一个？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-yw"]
+    },
+    {
+      "id": "audio-prompt-2fab1e5d66ec",
+      "transcript": "u ＋ a 连成不带声母的音节，规范拼写是哪一个？",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-yw"]
+    },
+    {
+      "id": "audio-prompt-ab200361cef9",
+      "transcript": "把 ǖ 独立写成音节，选择规范拼写。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-y-v"]
+    },
+    {
+      "id": "audio-prompt-fc8bf0773390",
+      "transcript": "把 ǜ 独立写成音节，选择规范拼写。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-y-v"]
+    },
+    {
+      "id": "audio-prompt-b9dbb9f29bf5",
+      "transcript": "把 üe 独立写成音节，选择规范拼写。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-y-v"]
+    },
+    {
+      "id": "audio-prompt-17dd20cfce72",
+      "transcript": "d ＋ uei 拼成音节，选择省写后的规范形式。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-abbreviation"]
+    },
+    {
+      "id": "audio-prompt-4f111c3df612",
+      "transcript": "j ＋ iou 拼成音节，选择省写后的规范形式。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-abbreviation"]
+    },
+    {
+      "id": "audio-prompt-a10d78b520f5",
+      "transcript": "给 shui 标第四声，选择规范写法。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-iu-ui-tone"]
+    },
+    {
+      "id": "audio-prompt-4951560239d3",
+      "transcript": "给 niu 标第二声，选择规范写法。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-iu-ui-tone"]
+    },
+    {
+      "id": "audio-prompt-f5b7cecd6901",
+      "transcript": "听一听，分清平舌和翘舌，选出听到的音节。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-retroflex"]
+    },
+    {
+      "id": "audio-syllable-gan1",
+      "transcript": "gān",
+      "kind": "syllable",
+      "knowledgeIds": ["rule-front-back-nasal", "k-tone-1"]
+    },
+    {
+      "id": "audio-prompt-04cc85aad8d8",
+      "transcript": "听一听，注意鼻音结尾，选出听到的音节。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-front-back-nasal"]
+    },
+    {
+      "id": "audio-syllable-cheng2",
+      "transcript": "chéng",
+      "kind": "syllable",
+      "knowledgeIds": ["rule-front-back-nasal", "k-tone-2"]
+    },
+    {
+      "id": "audio-syllable-jin1",
+      "transcript": "jīn",
+      "kind": "syllable",
+      "knowledgeIds": ["rule-front-back-nasal", "k-tone-1"]
+    },
+    {
+      "id": "audio-prompt-9574fcdd76fa",
+      "transcript": "听一听，选出听到的音节，注意有没有声母。",
+      "kind": "instruction",
+      "knowledgeIds": ["rule-er"]
+    },
+    {
+      "id": "audio-syllable-er4",
+      "transcript": "èr",
+      "kind": "syllable",
+      "knowledgeIds": ["rule-er", "k-tone-4"]
     }
   ],
   "supplementalTopics": [
@@ -17043,7 +18426,7 @@
   "coverage": {
     "purpose": "authored-practice-bank-with-local-standard-audio",
     "knowledgeItemCount": 83,
-    "exerciseCount": 409,
+    "exerciseCount": 449,
     "readingTargetCount": 79,
     "primaryExerciseCounts": {
       "k-final-a": 6,
@@ -17083,8 +18466,8 @@
       "k-whole-yi": 6,
       "k-whole-wu": 5,
       "k-whole-yu": 6,
-      "k-letter-y": 2,
-      "k-letter-w": 2,
+      "k-letter-y": 5,
+      "k-letter-w": 5,
       "k-final-ai": 6,
       "k-final-ei": 5,
       "k-final-ui": 6,
@@ -17113,22 +18496,22 @@
       "k-tone-2": 6,
       "k-tone-3": 8,
       "k-tone-4": 10,
-      "rule-tone-placement": 3,
+      "rule-tone-placement": 5,
       "rule-grid-writing": 2,
-      "rule-i-dot": 3,
-      "rule-two-part": 2,
-      "k-tone-0": 2,
-      "rule-confusable-shapes": 2,
+      "rule-i-dot": 5,
+      "rule-two-part": 5,
+      "k-tone-0": 5,
+      "rule-confusable-shapes": 5,
       "rule-three-part": 6,
       "rule-jqx-v": 6,
-      "rule-whole-vs-initial": 2,
-      "rule-retroflex": 2,
-      "rule-yw": 3,
-      "rule-y-v": 2,
-      "rule-abbreviation": 3,
-      "rule-iu-ui-tone": 3,
-      "rule-er": 2,
-      "rule-front-back-nasal": 2
+      "rule-whole-vs-initial": 5,
+      "rule-retroflex": 5,
+      "rule-yw": 5,
+      "rule-y-v": 5,
+      "rule-abbreviation": 5,
+      "rule-iu-ui-tone": 5,
+      "rule-er": 5,
+      "rule-front-back-nasal": 5
     },
     "uncoveredPrimaryKnowledgeIds": [],
     "limitations": [
@@ -17138,7 +18521,7 @@
       "书写仅有概念题；正式版必须补笔顺/占格示范及紙筆观察，不用识别题冒充书写达标。",
       "首版不含发音评测；现有朗读目标仅作未来研究资料。",
       "首版 requiredModes 只包含客观题型；朗读目标暂不参与课程、练习和掌握度。",
-      "83个知识点均有至少2道当前可用视觉题，21个声母、24个韵母与16个整体认读音节已有至少5道客观主目标题；其余16项仍不足5道。题量不代表完整听说读写能力。",
+      "83个知识点均有至少2道当前可用视觉题；82项已有至少5道客观主目标题，仅四线三格待随书写示范补齐。题量不代表完整听说读写能力。",
       "第一课有a、o、e各四声的12道标准音听辨，不能代表词语变调、口语或其他韵母四声全面覆盖。",
       "全部客观题已在content/narration.json配中文脚本，本机预生成声音只作中文指令；不合成拉丁拼音示范。旧promptAudioRef保留公开录制规划，实际中文语音由独立清单管理。",
       "纯拼音选项无选项语音引用，答题前不可自动播读以免改变任务或泄露辨听答案。",
@@ -17182,8 +18565,8 @@
       "k-whole-yi": 5,
       "k-whole-wu": 5,
       "k-whole-yu": 5,
-      "k-letter-y": 2,
-      "k-letter-w": 2,
+      "k-letter-y": 5,
+      "k-letter-w": 5,
       "k-final-ai": 5,
       "k-final-ei": 5,
       "k-final-ui": 5,
@@ -17212,50 +18595,33 @@
       "k-tone-2": 6,
       "k-tone-3": 8,
       "k-tone-4": 10,
-      "rule-tone-placement": 3,
+      "rule-tone-placement": 5,
       "rule-grid-writing": 2,
-      "rule-i-dot": 3,
-      "rule-two-part": 2,
-      "k-tone-0": 2,
-      "rule-confusable-shapes": 2,
+      "rule-i-dot": 5,
+      "rule-two-part": 5,
+      "k-tone-0": 5,
+      "rule-confusable-shapes": 5,
       "rule-three-part": 5,
       "rule-jqx-v": 5,
-      "rule-whole-vs-initial": 2,
-      "rule-retroflex": 2,
-      "rule-yw": 3,
-      "rule-y-v": 2,
-      "rule-abbreviation": 3,
-      "rule-iu-ui-tone": 3,
-      "rule-er": 2,
-      "rule-front-back-nasal": 2
+      "rule-whole-vs-initial": 5,
+      "rule-retroflex": 5,
+      "rule-yw": 5,
+      "rule-y-v": 5,
+      "rule-abbreviation": 5,
+      "rule-iu-ui-tone": 5,
+      "rule-er": 5,
+      "rule-front-back-nasal": 5
     },
-    "objectiveExerciseCount": 381,
+    "objectiveExerciseCount": 421,
     "insufficientObjectiveReviewKnowledgeIds": [],
-    "insufficientObjectiveReleaseKnowledgeIds": [
-      "k-tone-0",
-      "k-letter-y",
-      "k-letter-w",
-      "rule-tone-placement",
-      "rule-grid-writing",
-      "rule-i-dot",
-      "rule-two-part",
-      "rule-confusable-shapes",
-      "rule-whole-vs-initial",
-      "rule-retroflex",
-      "rule-yw",
-      "rule-y-v",
-      "rule-abbreviation",
-      "rule-iu-ui-tone",
-      "rule-er",
-      "rule-front-back-nasal"
-    ],
+    "insufficientObjectiveReleaseKnowledgeIds": ["rule-grid-writing"],
     "toneListeningExerciseCount": 12,
     "releaseMinimumObjectiveExercisesPerKnowledge": 5,
     "releaseMinimumDistinctObjectiveReviewExercisesPerKnowledge": 2,
-    "audioRequirementCount": 324,
-    "promptAudioRequirementCount": 99,
-    "optionAudioRequirementCount": 24,
-    "pronunciationAudioRequirementCount": 201,
+    "audioRequirementCount": 364,
+    "promptAudioRequirementCount": 133,
+    "optionAudioRequirementCount": 26,
+    "pronunciationAudioRequirementCount": 205,
     "isolatedInitialTargetCount": 21,
     "isolatedFinalTargetCount": 24,
     "wholeSyllableKnowledgeCoveredCount": 16,
@@ -17313,5 +18679,5 @@
       "rt-14-whole-ying"
     ]
   },
-  "contentVersion": "2026.10.05.10"
+  "contentVersion": "2026.10.05.11"
 }

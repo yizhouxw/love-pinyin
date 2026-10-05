@@ -132,8 +132,23 @@ def test_resumed_lesson_keeps_frozen_identity_across_content_update(paired_clien
     assert "tasks_json" not in resumed and "device_id" not in resumed
     newer = deepcopy(load_curriculum())
     newer["contentVersion"] = "test-newer-content"
+    frozen_task = original["tasks"][0]
+    changed = next(q for q in newer["exercises"] if q["id"] == frozen_task["exercise"]["id"])
+    original_answer = changed["answer"]["optionId"]
+    changed["options"][0]["label"] = "新版选项"
+    changed["answer"]["optionId"] = next(
+        o["id"] for o in changed["options"] if o["id"] != original_answer
+    )
     monkeypatch.setattr(api, "load_curriculum", lambda: newer)
     after_update = client.get("/api/v1/sessions/current").json()
     assert after_update["contentVersion"] == original["contentVersion"]
     assert after_update["tasks"] == original["tasks"]
     assert "draftContent" not in after_update
+
+    answered = post(
+        client,
+        f"/api/v1/instances/{frozen_task['instanceId']}/answer",
+        {"requestId": "frozen-before-content-update", "answerOptionId": original_answer},
+    )
+    assert answered["correct"] is True
+    assert answered["correctOptionId"] == original_answer

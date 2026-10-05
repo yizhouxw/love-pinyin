@@ -18,7 +18,7 @@ def test_pinned_mapping_covers_existing_targets_and_preserves_teaching_boundarie
     }
     rows = {a["id"]: a for a in source["assets"]}
     assert rows.keys() == targets.keys()
-    assert len(rows) == 201
+    assert len(rows) == 205
     assert "teachingReview" not in source
     assert source["licenseStatus"] == "unknown"
     for key, target in targets.items():
