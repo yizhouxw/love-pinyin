@@ -65,3 +65,5 @@
 `GET /curriculum` 的audioRequirements各项新增布尔`available`，由实际文件/摘要/审音记录计算，公开status/reviewStatus保持原值。`GET /audio/{id}`先选合格公开资源，再选当前目标签名匹配的家庭私有标准音；配对与Range规则不变。练习准入使用同一结果，撤下影响新会话和后续音频请求。
 
 制作服务仅127.0.0.1:8019，与儿童API分离。GET `/api/catalog`（来源、候选、目标、草稿）；GET `/api/source/{id}`（固定目录内登记PCM）；POST `/api/preview`（sourceId,start,end）；POST `/api/draft`（另带targetId,expectedRevision）；POST `/api/activate`（targetId,sha256,revision,teachingReviewer,qualityReviewer及三项显式确认）；POST `/api/deactivate`（targetId,sha256）。写请求须持页面令牌；拒绝异源/非本机请求。草稿revision绑定源、边界、目标与摘要，旧版本返回409。工具不自动认证审音者资格。
+
+HINT-VOICE-01：提示接口返回的explanation来自content/narration.json对应题目的hint脚本；语音ID为`hint-{exerciseId}`。请求提示保留hint_used和revision原有语义，同题重复请求不再次推进revision。提示音通过原`/voice/{id}`接口提供，脚本改动使旧音频不可用。播放或重播不创建作答。

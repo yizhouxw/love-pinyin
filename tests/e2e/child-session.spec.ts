@@ -359,7 +359,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
         },
       });
     } else if (path === '/profiles/export') {
-      await route.fulfill({ json: { schemaVersion: 3 } });
+      await route.fulfill({ json: { schemaVersion: 5, profile: { revision: profileRevision } } });
     } else if (path === '/profiles/import-preview') {
       await route.fulfill({
         json: {

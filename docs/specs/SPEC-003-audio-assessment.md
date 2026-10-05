@@ -46,9 +46,9 @@
 
 ## R-022 语音优先实现契约
 
-- VOICE-01：content/narration.json version=1，ui 字典每项 text；exercises 按题目 ID 索引，包含 text（纯汉字中文引导）、可选 visualCue（可含拼音的视觉目标）、options（需朗读的汉字选项 ID→中文脚本）。所有客观题必须覆盖；禁止直接用 TTS 朗读拼音。
+- VOICE-01：content/narration.json version=1，ui 字典每项 text；exercises 按题目 ID 索引，包含 text（纯汉字中文引导）、hint（纯中文逐题提示，HINT-VOICE-01）、可选 visualCue（可含拼音的视觉目标）、options（需朗读的汉字选项 ID→中文脚本）。所有客观题必须覆盖；禁止直接用 TTS 朗读拼音。
 - VOICE-02：Mac 显式准备脚本生成私有 WAV 与摘要清单，用户原有课程 MP3 显式导入私有目录。清单不进入标准音 approved 状态。每个资源含 ID、来源、用途、sha256 和相对文件名。默认 private/learning-audio，可用 LOVE_PINYIN_LEARNING_AUDIO_DIR 指定独立目录。
-- VOICE-03：GET /api/v1/learning-audio（配对后）返回 {narration: {id: boolean}, lessons: {lessonId: {audioId,title,available,sourceType}}}；GET /api/v1/voice/{id} 返回已登记且摘要一致的私有音频，使用 Range 与配对认证，不接受路径/任意文本。资源 ID 规则：ui-{key}、prompt-{exerciseId}、option-{exerciseId}-{optionId}、lesson-{lessonId}。
+- VOICE-03：GET /api/v1/learning-audio（配对后）返回 {narration: {id: boolean}, lessons: {lessonId: {audioId,title,available,sourceType}}}；GET /api/v1/voice/{id} 返回已登记且摘要一致的私有音频，使用 Range 与配对认证，不接受路径/任意文本。资源 ID 规则：ui-{key}、prompt-{exerciseId}、hint-{exerciseId}、option-{exerciseId}-{optionId}、lesson-{lessonId}。
 - VOICE-04：孩子首次点击开始后，新题自动读中文指令；每题有大号听题/停止按钮和视觉目标，漢字选项用独立按钮听读，不触发作答；提示、正确/错误反馈、小结、休息有语音。浏览器禁播时可直接点按钮恢复。切题、跳页、隐藏后不重叠播放。
 - VOICE-05：真实 Chromium/WebKit 在真实 FastAPI/SQLite 上取得实际语音文件并成功解码；验证朗读/重播不创建作答、失败可重试且不计错。缺少语音的安装不得称儿童可用；设置页给出具体准备状态。
 - VOICE-06：课程详情可播放用户已提供的整课录音，标为家庭课程录音；不冒充孤立标准音。最新14课与原13课映射写入内容配置，y/w 使用合课录音时明确提示。

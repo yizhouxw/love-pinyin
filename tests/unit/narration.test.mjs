@@ -22,9 +22,11 @@ describe('初学儿童的中文朗读脚本', () => {
     const bad = structuredClone(narration);
     delete bad.exercises['q-14-08'];
     delete bad.exercises['q-01-08'].options.b;
+    delete bad.exercises['q-02-04'].hint;
     delete bad.ui.incorrect;
     const errors = validateNarration(curriculum, bad).join('\n');
     expect(errors).toContain('missing q-14-08');
+    expect(errors).toContain('q-02-04.hint: expected NFC Mandarin');
     expect(errors).toContain('q-01-08.options: missing Mandarin option b');
     expect(errors).toContain('ui: missing incorrect');
   });
@@ -34,10 +36,12 @@ describe('初学儿童的中文朗读脚本', () => {
     bad.exercises['q-03-06'].text = 'mǎ 是第几声？';
     bad.exercises['q-01-08'].options.a = 'a 的上方';
     bad.ui.next.text = '进入第 2 题';
+    bad.exercises['q-06-04'].hint = 'q 和 ü 相拼省点';
     const errors = validateNarration(curriculum, bad).join('\n');
     expect(errors).toContain('q-03-06.text: expected NFC Mandarin');
     expect(errors).toContain('q-01-08.options.a: expected NFC Mandarin');
     expect(errors).toContain('ui.next.text: expected NFC Mandarin');
+    expect(errors).toContain('q-06-04.hint: expected NFC Mandarin');
   });
 
   it('不能漏掉视觉拼音或泄露听辨目标，也不能把拼音选项替换成合成音', () => {

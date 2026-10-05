@@ -461,7 +461,7 @@ export function App() {
           : question && answer
             ? `ui-${answer.correct || corrected ? 'correct' : 'incorrect'}`
             : question && hint
-              ? 'ui-hint'
+              ? `hint-${question.id}`
               : question
                 ? `prompt-${question.id}`
                 : null;
@@ -854,12 +854,8 @@ export function App() {
           )}
           {hint && !answer && (
             <div className="hint-box">
-              <span>{narration.ui.hint?.text}</span>
-              <VoiceButton id="ui-hint" voice={voice} label="听提示" />
-              <details>
-                <summary>家长查看讲解</summary>
-                {hint.explanation}
-              </details>
+              <span>{hint.explanation}</span>
+              <VoiceButton id={`hint-${question.id}`} voice={voice} label="听提示" />
             </div>
           )}
           {answer && (
@@ -1616,7 +1612,7 @@ function ParentPanel({
               downloadLink.click();
               downloadLink.remove();
               window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-              setExportRevision(progress.revision);
+              setExportRevision(data.profile.revision);
             })
           }
         >

@@ -64,6 +64,7 @@ export function validateNarration(curriculum, narration) {
       continue;
     }
     checkText(script.text, `${exercise.id}.text`);
+    checkText(script.hint, `${exercise.id}.hint`);
 
     // Moving the original pinyin into a large visual cue must neither lose a
     // target nor introduce the answer of an auditory question into the screen.

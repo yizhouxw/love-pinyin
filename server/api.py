@@ -24,7 +24,7 @@ from server.domain import (
     next_review,
     plan_practice,
 )
-from server.learning_audio import learning_audio_response, learning_audio_status
+from server.learning_audio import learning_audio_response, learning_audio_status, narration_scripts
 from server.storage import connect, now_iso, public_profile, transaction
 
 router = APIRouter(prefix="/api/v1")
@@ -1774,7 +1774,7 @@ def mark_hint(instance_id: str, device: dict = Depends(mutable)) -> dict:
     return {
         "hintUsed": True,
         "answer": q["answer"],
-        "explanation": q.get("hint") or "先看清问题，再观察卡片上的拼音。",
+        "explanation": narration_scripts()[f"hint-{q['id']}"],
     }
 
 

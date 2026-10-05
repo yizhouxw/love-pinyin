@@ -40,6 +40,7 @@ def narration_scripts() -> dict[str, str]:
     scripts = {f"ui-{key}": value["text"] for key, value in data["ui"].items()}
     for question_id, item in data["exercises"].items():
         scripts[f"prompt-{question_id}"] = item["text"]
+        scripts[f"hint-{question_id}"] = item["hint"]
         for option_id, text in item.get("options", {}).items():
             scripts[f"option-{question_id}-{option_id}"] = text
     for asset_id, text in scripts.items():

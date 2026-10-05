@@ -21,7 +21,11 @@ def private_audio(monkeypatch, tmp_path):
         "version": 1,
         "ui": {"audio_error": {"text": "点一下小喇叭。"}},
         "exercises": {
-            "q-01-01": {"text": "请看看这张卡片。", "options": {"a": "字母的上方"}},
+            "q-01-01": {
+                "text": "请看看这张卡片。",
+                "hint": "仔细看上方的记号。",
+                "options": {"a": "字母的上方"},
+            },
         },
     }
     write_json(narration_path, narration)
@@ -76,6 +80,7 @@ def test_private_audio_is_seekable_and_catalog_does_not_expose_disk_paths(
     assert catalog.json()["narration"] == {
         "ui-audio_error": True,
         "prompt-q-01-01": False,
+        "hint-q-01-01": False,
         "option-q-01-01-a": False,
     }
     assert not catalog.json()["lessons"]["lesson-09"]["available"]
@@ -149,23 +154,23 @@ def test_preparer_uses_cache_and_keeps_course_sources_unchanged(
     source_file.write_bytes(b"MP3-fixture-bytes")
     source_stat = source_file.stat()
     first = prepare_learning_audio.prepare(source)
-    assert first["generatedFiles"] == 3
+    assert first["generatedFiles"] == 4
     assert first["importedFiles"] == 1
     assert first["lessonIds"] == 2
-    assert len(calls) == 3
+    assert len(calls) == 4
     assert source_file.stat().st_mtime_ns == source_stat.st_mtime_ns
     assert source_file.read_bytes() == b"MP3-fixture-bytes"
     second = prepare_learning_audio.prepare()
     assert second["generatedFiles"] == 0
     assert second["importedFiles"] == 0
     assert second["lessonIds"] == 2
-    assert len(calls) == 3
+    assert len(calls) == 4
     assert (root / "manifest.json").stat().st_mode & 0o777 == 0o600
     assert all(learning_audio.available_assets().values())
     narration["ui"]["audio_error"]["text"] = "请重播。"
     write_json(narration_path, narration)
     assert prepare_learning_audio.prepare()["generatedFiles"] == 1
-    assert len(calls) == 4
+    assert len(calls) == 5
 
 
 def test_preparer_refuses_latin_or_pinyin_before_synthesizing(private_audio, monkeypatch):
@@ -215,3 +220,23 @@ def test_real_approved_standard_asset_enables_listening_session_without_private_
     assert unavailable.status_code == 200
     assert all(task["exercise"]["type"] != "listen-choice" for task in unavailable.json()["tasks"])
     assert unavailable.json()["audioAvailable"] is False
+
+
+def test_hint_returns_question_specific_script_without_creating_answers(paired_client):
+    client = paired_client
+    csrf = {"X-LP-CSRF": client.cookies.get("lp_csrf")}
+    session = client.post("/api/v1/sessions", json={}, headers=csrf).json()
+    task = session["tasks"][0]
+    question_id = task["exercise"]["id"]
+    assert "hint" not in task["exercise"]
+    before = client.get("/api/v1/profiles/progress").json()
+    hint = client.post(f"/api/v1/instances/{task['instanceId']}/hint", headers=csrf)
+    assert hint.status_code == 200
+    assert hint.json()["explanation"] == learning_audio.narration_scripts()[f"hint-{question_id}"]
+    assert "第一声" in hint.json()["explanation"]  # Actual first usable question.
+    assert client.get("/api/v1/profiles/progress").json()["attempts"] == before["attempts"]
+    revision = client.get("/api/v1/profiles/progress").json()["revision"]
+    assert (
+        client.post(f"/api/v1/instances/{task['instanceId']}/hint", headers=csrf).status_code == 200
+    )
+    assert client.get("/api/v1/profiles/progress").json()["revision"] == revision

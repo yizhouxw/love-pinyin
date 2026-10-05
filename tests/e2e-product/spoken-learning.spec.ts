@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { expect } from '@playwright/test';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
 import { test } from '../support/real-server';
@@ -198,10 +199,15 @@ test('CORRECTION-01: correcting a first mistake gives feedback without another s
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
   await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: '导出家庭数据' }).click();
+  const download = await downloadPromise;
+  const file = await download.path();
+  expect(file).toBeTruthy();
+  const saved = JSON.parse(await readFile(file!, 'utf8'));
   const backup = page.getByLabel('导出的 JSON 数据');
   await expect(backup).toBeVisible();
-  const saved = JSON.parse(await backup.inputValue());
+  expect(JSON.parse(await backup.inputValue())).toEqual(saved);
   expect(saved.attempts).toHaveLength(1);
   expect(saved.attempts[0].first_try_correct).toBe(0);
 });
@@ -254,4 +260,66 @@ test('BANK-01: the former two-question nasal lesson completes six spoken tasks',
   expect(
     backup.attempts.map((attempt: { exercise_id: string }) => attempt.exercise_id).sort(),
   ).toEqual(questions.map((q) => q.id).sort());
+});
+
+test('HINT-VOICE-01: specific hint speaks, retries and replays without independent-answer credit', async ({
+  page,
+  appUrl,
+}) => {
+  const hints: string[] = [];
+  const answers: string[] = [];
+  const media: string[] = [];
+  page.on('request', (request) => {
+    if (request.url().endsWith('/hint')) hints.push(request.url());
+    if (request.url().endsWith('/answer')) answers.push(request.url());
+    if (request.url().includes('/voice/hint-')) media.push(request.url());
+  });
+  await page.goto(appUrl);
+  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
+  expect(code).toBeTruthy();
+  await page.getByLabel('家长配对码').fill(code!);
+  await page.getByRole('button', { name: '连接家庭' }).click();
+  await page.getByRole('button', { name: '开始今天的练习' }).click();
+  await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 15_000 });
+  expect(media).toEqual([]);
+  await page.route('**/api/v1/voice/hint-*', (route) => route.abort('failed'));
+  await page.getByRole('button', { name: '给我一点提示' }).click();
+  await expect(page.locator('.hint-box')).toContainText('第一声的声调记号是平平的一横');
+  await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
+  expect(answers).toEqual([]);
+  await page.unroute('**/api/v1/voice/hint-*');
+  const responsePromise = page.waitForResponse(
+    (response) => response.url().includes('/voice/hint-q-01-04') && response.ok(),
+  );
+  await page.getByRole('button', { name: '↻ 重试声音' }).click();
+  await responsePromise;
+  await expect(page.getByRole('button', { name: '停止听提示', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '听提示', exact: true })).toBeVisible({
+    timeout: 25_000,
+  });
+  await page.getByRole('button', { name: '听提示', exact: true }).press('Enter');
+  await expect(page.getByRole('button', { name: '停止听提示', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '停止听提示', exact: true }).click();
+  expect(hints).toHaveLength(1);
+  expect(answers).toEqual([]);
+  await page.screenshot({ path: test.info().outputPath('spoken-hint.png'), fullPage: true });
+  await page.locator('.game-option.hinted').click();
+  await expect(page.locator('.feedback')).toContainText('答对啦');
+  expect(answers).toHaveLength(1);
+  await page.getByRole('button', { name: '退出练习' }).click();
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await page.getByRole('button', { name: '我是家长，继续' }).click();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: '导出家庭数据' }).click();
+  const download = await downloadPromise;
+  const file = await download.path();
+  expect(file).toBeTruthy();
+  const saved = JSON.parse(await readFile(file!, 'utf8'));
+  const backup = page.getByLabel('导出的 JSON 数据');
+  await expect(backup).toBeVisible();
+  expect(JSON.parse(await backup.inputValue())).toEqual(saved);
+  expect(saved.attempts).toHaveLength(1);
+  expect(saved.attempts[0].hint_used).toBe(1);
+  expect(saved.attempts[0].first_try_correct).toBe(0);
 });
