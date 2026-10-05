@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import writing from '../../content/writing.json' with { type: 'json' };
+import type { WritingCatalog } from '../../src/domain/writing';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
 
 test.use({ selectedPinyinSource: true });
@@ -178,13 +179,14 @@ test('WRITE-01: all authored course targets render in order, including single-st
   await page.goto(appUrl);
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
   for (const [lessonId, targets] of Object.entries(writing.lessons)) {
+    const plain = targets.filter((t) => !('tone' in t));
     const number = lessonId.split('-')[1];
     await page.getByRole('button', { name: new RegExp(`^${number} `) }).click();
     await page.getByRole('button', { name: '打开书写课堂' }).click();
     await expect(page.getByRole('group', { name: '选择书写目标' }).getByRole('button')).toHaveCount(
-      targets.length,
+      plain.length,
     );
-    for (const target of targets) {
+    for (const target of plain) {
       await page.getByRole('button', { name: `观察 ${target.label} 的书写`, exact: true }).click();
       const count = target.glyphIds.reduce(
         (sum, id) => sum + writing.glyphs[id as keyof typeof writing.glyphs].strokes.length,
@@ -203,4 +205,124 @@ test('WRITE-01: all authored course targets render in order, including single-st
   }
   const state = await page.evaluate(() => JSON.parse(sessionStorage.getItem('lp.guest.v1')!).state);
   expect(state.attempts).toHaveLength(0);
+});
+
+test('WRITE-02: all marked targets, real tone narration, dot rules and keyboard recovery', async ({
+  page,
+  appUrl,
+}) => {
+  test.setTimeout(240_000);
+  const catalog = writing as WritingCatalog;
+  const external: string[] = [];
+  const submissions: string[] = [];
+  page.on('request', (r) => {
+    if (r.url().startsWith('http') && new URL(r.url()).origin !== appUrl) external.push(r.url());
+    if (r.url().endsWith('/answer')) submissions.push(r.url());
+  });
+  await page.goto(appUrl);
+  await page.getByRole('button', { name: '访客体验', exact: true }).click();
+  const ids = [
+    'writing-ui-tones',
+    'writing-ui-plain',
+    ...Object.keys(catalog.marks).map((id) => `writing-${id}`),
+  ];
+  const demonstrate = new Set(['ā', 'á', 'ǎ', 'à', 'ī', 'ǚ', 'duì', 'liú', 'xué', 'yún']);
+  for (const [lessonId, allTargets] of Object.entries(catalog.lessons)) {
+    const targets = allTargets.filter((t) => t.tone);
+    await page.getByRole('button', { name: new RegExp(`^${lessonId.split('-')[1]} `) }).click();
+    await page.getByRole('button', { name: '打开书写课堂' }).press('Enter');
+    await page.getByRole('button', { name: '带声调', exact: true }).press('Enter');
+    await expect(page.getByRole('group', { name: '选择书写目标' }).getByRole('button')).toHaveCount(
+      targets.length,
+    );
+    for (const target of targets) {
+      const tone = target.tone!;
+      ids.push(`writing-${target.id}-tone`);
+      await page
+        .getByRole('button', { name: `观察 ${target.label} 的书写`, exact: true })
+        .press('Enter');
+      await expect(page.locator('.writing-placement')).toContainText(target.note!);
+      await expect(page.getByRole('button', { name: /听.*占格/ })).toHaveCount(0);
+      const count =
+        target.glyphIds.reduce((n, id) => n + catalog.glyphs[id]!.strokes.length, 0) -
+        tone.omitStrokeIndices.length +
+        1;
+      await expect(page.locator('.writing-stage [data-stroke]')).toHaveCount(count);
+      await expect(page.locator('.writing-stage [data-kind="tone"]')).toHaveAttribute(
+        'data-glyph-index',
+        String(tone.glyphIndex),
+      );
+      const markedBase = page.locator(
+        `.writing-stage [data-kind="letter"][data-glyph-index="${tone.glyphIndex}"]`,
+      );
+      if (target.glyphIds[tone.glyphIndex] === 'v1-i') await expect(markedBase).toHaveCount(1);
+      if (target.glyphIds[tone.glyphIndex] === 'v1-v') await expect(markedBase).toHaveCount(4);
+      if (target.label === 'liú')
+        await expect(
+          page.locator('.writing-stage [data-kind="letter"][data-glyph-index="1"]'),
+        ).toHaveCount(2);
+      if (demonstrate.has(target.label)) {
+        await page.getByRole('button', { name: '看第一笔' }).press('Enter');
+        for (let i = 1; i < count; i++)
+          await page.getByRole('button', { name: '看下一笔' }).press('Enter');
+        await expect(page.locator('.writing-stage [data-kind="tone"] .active')).toHaveCount(1);
+        await expect(page.getByRole('button', { name: '看下一笔' })).toBeDisabled();
+        await expect(page.locator('.writing-instruction')).toContainText(
+          catalog.marks[tone.markId]!.stroke.instruction,
+        );
+        await expect(
+          page.getByRole('button', { name: '停止听当前步骤', exact: true }),
+        ).toBeVisible();
+        await page.getByRole('button', { name: '停止听当前步骤', exact: true }).click();
+        await page
+          .locator('.writing-workshop')
+          .screenshot({ path: test.info().outputPath(`${target.id}.png`) });
+      }
+    }
+    await page.getByRole('button', { name: '字母和组合', exact: true }).press('Enter');
+    await expect(page.getByRole('group', { name: '选择书写目标' }).getByRole('button')).toHaveCount(
+      allTargets.filter((t) => !t.tone).length,
+    );
+    await page.getByRole('button', { name: '返回学习路线' }).click();
+  }
+  // Decode every new file through the actual server and browser, independently of fast target changes.
+  await page.evaluate(async (ids) => {
+    const ac = new AudioContext();
+    try {
+      for (const id of ids) {
+        const r = await fetch(`/api/v1/guest/voice/${id}`);
+        if (!r.ok) throw new Error(`HTTP ${r.status}: ${id}`);
+        const buffer = await ac.decodeAudioData(await r.arrayBuffer());
+        if (buffer.duration < 0.1 || !buffer.getChannelData(0).some((s) => Math.abs(s) > 0.01))
+          throw new Error(`silent ${id}`);
+      }
+    } finally {
+      await ac.close();
+    }
+  }, ids);
+  await page.getByRole('button', { name: /^02 / }).click();
+  await page.getByRole('button', { name: '打开书写课堂' }).click();
+  await page.getByRole('button', { name: '带声调', exact: true }).click();
+  await page.getByRole('button', { name: '观察 ǚ 的书写', exact: true }).click();
+  await page.getByRole('button', { name: '看完整字形' }).click();
+  await page.route('**/voice/writing-write-02-v-caron-tone', (r) => r.abort('failed'));
+  await page.getByRole('button', { name: '听标调方法', exact: true }).click();
+  await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
+  await page.unroute('**/voice/writing-write-02-v-caron-tone');
+  await page.getByRole('button', { name: '↻ 重试声音' }).press('Enter');
+  await expect(page.getByRole('button', { name: '停止听标调方法', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '停止听标调方法', exact: true }).click();
+  await page.setViewportSize({ width: 320, height: 850 });
+  await page.addStyleTag({ content: 'html {font-size:200% !important}' });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(
+    true,
+  );
+  for (const button of await page.locator('.writing-workshop button:visible').all())
+    expect((await button.boundingBox())!.height).toBeGreaterThanOrEqual(48);
+  await page.getByRole('button', { name: '返回学习路线' }).click();
+  const state = await page.evaluate(() => JSON.parse(sessionStorage.getItem('lp.guest.v1')!).state);
+  expect(state.attempts).toHaveLength(0);
+  expect(state.sessions).toHaveLength(0);
+  expect(submissions).toEqual([]);
+  expect(external).toEqual([]);
 });

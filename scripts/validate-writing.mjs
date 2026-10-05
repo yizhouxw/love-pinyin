@@ -32,8 +32,38 @@ export function validateWriting(writing, curriculum) {
       typeof s === 'string' && chinese.test(s) && s.length <= 300,
       `writing Mandarin: ${location}`,
     );
-  for (const key of ['intro', 'paper', 'full', 'choose']) text(writing.ui?.[key], key);
-  for (const [id, g] of Object.entries(glyphs)) {
+  for (const key of ['intro', 'paper', 'full', 'choose', 'tones', 'plain'])
+    text(writing.ui?.[key], key);
+  const marks = writing.marks ?? {};
+  reject(
+    Object.keys(marks).length === 4 &&
+      new Set(Object.values(marks).map((m) => m.combining)).size === 4,
+    'writing four tone marks',
+  );
+  for (const [id, mark] of Object.entries(marks)) {
+    reject(
+      /^v[0-9]+-[a-z]+$/.test(id) &&
+        ['\u0304', '\u0301', '\u030c', '\u0300'].includes(mark.combining),
+      `writing tone identity: ${id}`,
+    );
+  }
+  // Tone symbols share the same safe stroke format as the letter trajectories.
+  const drawable = {
+    ...glyphs,
+    ...Object.fromEntries(
+      Object.entries(marks).map(([id, mark]) => [
+        id,
+        {
+          symbol: mark.combining,
+          lessonId: 'lesson-01',
+          sourcePage: 21,
+          description: mark.stroke.instruction,
+          strokes: [mark.stroke],
+        },
+      ]),
+    ),
+  };
+  for (const [id, g] of Object.entries(drawable)) {
     reject(
       /^v[0-9]+-[a-z]+$/.test(id) && g.symbol === g.symbol.normalize('NFC'),
       `writing identity: ${id}`,
@@ -72,8 +102,34 @@ export function validateWriting(writing, curriculum) {
     for (const t of targets) {
       reject(!targetIds.has(t.id), `writing duplicate target: ${t.id}`);
       targetIds.add(t.id);
+      const chars = t.glyphIds.map((id) => glyphs[id]?.symbol);
+      if (t.tone) {
+        const tone = t.tone;
+        const mark = marks[tone.markId];
+        const letter = chars[tone.glyphIndex];
+        reject(
+          Number.isInteger(tone.glyphIndex) && 'aoeiuü'.includes(letter ?? '?') && Boolean(mark),
+          `writing tone placement: ${t.id}`,
+        );
+        reject(
+          JSON.stringify(tone.omitStrokeIndices) === (letter === 'i' ? '[1]' : '[]'),
+          `writing tone dots: ${t.id}`,
+        );
+        reject(tone.offsetY === (letter === 'ü' ? -14 : 0), `writing tone height: ${t.id}`);
+        text(t.note, `${t.id} tone note`);
+        if (mark && letter) chars[tone.glyphIndex] = (letter + mark.combining).normalize('NFC');
+        if (lesson.order > 2)
+          reject(
+            curriculum.exercises.some(
+              (q) =>
+                q.lessonId === lesson.id &&
+                q.options.find((o) => o.id === q.answer?.optionId)?.label === t.label,
+            ),
+            `writing tone curriculum answer: ${t.id}`,
+          );
+      }
       reject(
-        t.glyphIds.map((id) => glyphs[id]?.symbol).join('') === t.label,
+        chars.join('') === t.label && t.label === t.label.normalize('NFC'),
         `writing target sequence: ${t.id}`,
       );
       reject(

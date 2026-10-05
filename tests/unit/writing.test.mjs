@@ -83,3 +83,57 @@ describe('WRITE-01 authored handwriting', () => {
     expect(errors.join('\n')).toContain('duplicate option labels');
   });
 });
+
+describe('WRITE-02 authored tone writing', () => {
+  const targets = Object.values(writing.lessons)
+    .flat()
+    .filter((t) => t.tone);
+  const target = (label) => targets.find((t) => t.label === label);
+  it('covers all six vowels in four tones and leaves the original glyph catalogue intact', () => {
+    expect(targets).toHaveLength(72);
+    for (const label of [...'āáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜ']) expect(target(label)).toBeDefined();
+    expect(
+      Object.values(writing.lessons)
+        .flat()
+        .filter((t) => !t.tone),
+    ).toHaveLength(63);
+    expect(writingSteps(target('ī'), writing).map((s) => s.kind)).toEqual(['letter', 'tone']);
+    expect(writingSteps(target('ǚ'), writing)).toHaveLength(5);
+    expect(writing.glyphs['v1-i'].strokes).toHaveLength(2);
+    expect(writing.glyphs['v1-v'].strokes).toHaveLength(4);
+  });
+  it('writes the mark last, removes only the accented i dot, and preserves ü and unaccented i dots', () => {
+    for (const [label, at, count] of [
+      ['duì', 2, 6],
+      ['liú', 2, 6],
+      ['ǚ', 0, 5],
+    ]) {
+      const steps = writingSteps(target(label), writing);
+      expect(steps).toHaveLength(count);
+      expect(steps.at(-1).kind).toBe('tone');
+      expect(steps.at(-1).glyphIndex).toBe(at);
+      expect(steps.filter((s) => s.kind === 'letter' && s.glyphId === 'v1-i')).toHaveLength(
+        label === 'duì' ? 1 : label === 'liú' ? 2 : 0,
+      );
+    }
+    expect(writingSteps(target('ǚ'), writing).at(-1).offsetY).toBe(-14);
+    expect(writingSteps(target('xué'), writing).at(-1).glyphIndex).toBe(2);
+  });
+  it('rejects marks on the wrong letter, extra dots, erased ü dots and overlapping ü accents', () => {
+    for (const [label, change, message] of [
+      ['duì', (t) => (t.tone.glyphIndex = 1), 'target sequence'],
+      ['ī', (t) => (t.tone.omitStrokeIndices = []), 'tone dots'],
+      ['ǚ', (t) => (t.tone.omitStrokeIndices = [2, 3]), 'tone dots'],
+      ['ǚ', (t) => (t.tone.offsetY = 0), 'tone height'],
+      ['liú', (t) => (t.note = 'write iu'), 'Mandarin'],
+    ]) {
+      const bad = structuredClone(writing);
+      change(
+        Object.values(bad.lessons)
+          .flat()
+          .find((t) => t.label === label),
+      );
+      expect(validateWriting(bad, curriculum).join('\n')).toContain(message);
+    }
+  });
+});

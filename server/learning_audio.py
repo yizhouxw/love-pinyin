@@ -50,6 +50,12 @@ def narration_scripts() -> dict[str, str]:
         scripts[f"writing-{glyph_id}-placement"] = glyph["description"]
         for i, stroke in enumerate(glyph["strokes"], 1):
             scripts[f"writing-{glyph_id}-stroke-{i}"] = stroke["instruction"]
+    for mark_id, mark in writing.get("marks", {}).items():
+        scripts[f"writing-{mark_id}"] = mark["stroke"]["instruction"]
+    for targets in writing.get("lessons", {}).values():
+        for target in targets:
+            if "tone" in target:
+                scripts[f"writing-{target['id']}-tone"] = target["note"]
     for asset_id, text in scripts.items():
         if not _ID.fullmatch(asset_id) or not isinstance(text, str) or not text.strip():
             raise ValueError(f"invalid narration script: {asset_id}")

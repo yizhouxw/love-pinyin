@@ -16,6 +16,12 @@ def test_writing_catalog_and_voice_contract(paired_client):
         assert scripts[f"writing-{key}-placement"] == glyph["description"]
         for i, stroke in enumerate(glyph["strokes"], 1):
             assert scripts[f"writing-{key}-stroke-{i}"] == stroke["instruction"]
+    for key, mark in writing["marks"].items():
+        assert scripts[f"writing-{key}"] == mark["stroke"]["instruction"]
+    for targets in writing["lessons"].values():
+        for target in targets:
+            if "tone" in target:
+                assert scripts[f"writing-{target['id']}-tone"] == target["note"]
     assert paired_client.get("/api/v1/profiles/export").json()["attempts"] == []
 
 

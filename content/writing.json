@@ -15,7 +15,9 @@
     "intro": "四条线分成上中下三格。先选字母，再点向右的箭头，一笔一笔看。蓝点是起笔的地方，箭头告诉你往哪边写。",
     "paper": "拿出纸和铅笔，坐正，放松手。先用手指跟着示范比画，再在四线三格里慢慢写。写好后看看占格和笔画，也可以请家长一起看。这项练习不打分。",
     "full": "这是完整的字形。点第一笔，可以重新一笔一笔看。",
-    "choose": "点一个字母或组合，再听占格，或点箭头看每一笔。"
+    "choose": "点一个字母或组合，再听占格，或点箭头看每一笔。",
+    "tones": "这里练习带声调的书写。先选一个目标，听标调方法，再点箭头看每一笔。先写字母，最后写声调。",
+    "plain": "这里练习字母和组合。选一个目标，听占格，再点箭头看每一笔。"
   },
   "glyphs": {
     "v1-a": {
@@ -563,6 +565,150 @@
         "id": "write-01-e",
         "label": "e",
         "glyphIds": ["v1-e"]
+      },
+      {
+        "id": "write-01-a-macron",
+        "label": "ā",
+        "glyphIds": ["v1-a"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-a-acute",
+        "label": "á",
+        "glyphIds": ["v1-a"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-a-caron",
+        "label": "ǎ",
+        "glyphIds": ["v1-a"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-a-grave",
+        "label": "à",
+        "glyphIds": ["v1-a"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-o-macron",
+        "label": "ō",
+        "glyphIds": ["v1-o"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-o-acute",
+        "label": "ó",
+        "glyphIds": ["v1-o"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-o-caron",
+        "label": "ǒ",
+        "glyphIds": ["v1-o"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-o-grave",
+        "label": "ò",
+        "glyphIds": ["v1-o"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-e-macron",
+        "label": "ē",
+        "glyphIds": ["v1-e"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-e-acute",
+        "label": "é",
+        "glyphIds": ["v1-e"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-e-caron",
+        "label": "ě",
+        "glyphIds": ["v1-e"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-01-e-grave",
+        "label": "è",
+        "glyphIds": ["v1-e"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
       }
     ],
     "lesson-02": [
@@ -580,6 +726,150 @@
         "id": "write-02-v",
         "label": "ü",
         "glyphIds": ["v1-v"]
+      },
+      {
+        "id": "write-02-i-macron",
+        "label": "ī",
+        "glyphIds": ["v1-i"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-02-i-acute",
+        "label": "í",
+        "glyphIds": ["v1-i"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-02-i-caron",
+        "label": "ǐ",
+        "glyphIds": ["v1-i"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-02-i-grave",
+        "label": "ì",
+        "glyphIds": ["v1-i"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-02-u-macron",
+        "label": "ū",
+        "glyphIds": ["v1-u"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-02-u-acute",
+        "label": "ú",
+        "glyphIds": ["v1-u"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-02-u-caron",
+        "label": "ǔ",
+        "glyphIds": ["v1-u"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-02-u-grave",
+        "label": "ù",
+        "glyphIds": ["v1-u"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
+      },
+      {
+        "id": "write-02-v-macron",
+        "label": "ǖ",
+        "glyphIds": ["v1-v"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 0,
+          "offsetY": -14,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。两点要保留，声调写在两点上方。"
+      },
+      {
+        "id": "write-02-v-acute",
+        "label": "ǘ",
+        "glyphIds": ["v1-v"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 0,
+          "offsetY": -14,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。两点要保留，声调写在两点上方。"
+      },
+      {
+        "id": "write-02-v-caron",
+        "label": "ǚ",
+        "glyphIds": ["v1-v"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 0,
+          "offsetY": -14,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。两点要保留，声调写在两点上方。"
+      },
+      {
+        "id": "write-02-v-grave",
+        "label": "ǜ",
+        "glyphIds": ["v1-v"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 0,
+          "offsetY": -14,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。两点要保留，声调写在两点上方。"
       }
     ],
     "lesson-03": [
@@ -602,6 +892,54 @@
         "id": "write-03-f",
         "label": "f",
         "glyphIds": ["v1-f"]
+      },
+      {
+        "id": "write-03-ba-macron",
+        "label": "bā",
+        "glyphIds": ["v1-b", "v1-a"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-03-mi-caron",
+        "label": "mǐ",
+        "glyphIds": ["v1-m", "v1-i"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-03-po-macron",
+        "label": "pō",
+        "glyphIds": ["v1-p", "v1-o"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-03-fu-caron",
+        "label": "fǔ",
+        "glyphIds": ["v1-f", "v1-u"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
       }
     ],
     "lesson-04": [
@@ -624,6 +962,54 @@
         "id": "write-04-l",
         "label": "l",
         "glyphIds": ["v1-l"]
+      },
+      {
+        "id": "write-04-da-caron",
+        "label": "dǎ",
+        "glyphIds": ["v1-d", "v1-a"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-04-tu-caron",
+        "label": "tǔ",
+        "glyphIds": ["v1-t", "v1-u"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-04-nv-caron",
+        "label": "nǚ",
+        "glyphIds": ["v1-n", "v1-v"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": -14,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。两点要保留，声调写在两点上方。"
+      },
+      {
+        "id": "write-04-lv-acute",
+        "label": "lǘ",
+        "glyphIds": ["v1-l", "v1-v"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 1,
+          "offsetY": -14,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。两点要保留，声调写在两点上方。"
       }
     ],
     "lesson-05": [
@@ -641,6 +1027,54 @@
         "id": "write-05-h",
         "label": "h",
         "glyphIds": ["v1-h"]
+      },
+      {
+        "id": "write-05-gua-macron",
+        "label": "guā",
+        "glyphIds": ["v1-g", "v1-u", "v1-a"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。"
+      },
+      {
+        "id": "write-05-he-acute",
+        "label": "hé",
+        "glyphIds": ["v1-h", "v1-e"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-05-ku-grave",
+        "label": "kù",
+        "glyphIds": ["v1-k", "v1-u"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-05-hua-macron",
+        "label": "huā",
+        "glyphIds": ["v1-h", "v1-u", "v1-a"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。"
       }
     ],
     "lesson-06": [
@@ -658,6 +1092,54 @@
         "id": "write-06-x",
         "label": "x",
         "glyphIds": ["v1-x"]
+      },
+      {
+        "id": "write-06-ji-macron",
+        "label": "jī",
+        "glyphIds": ["v1-j", "v1-i"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-06-qi-caron",
+        "label": "qǐ",
+        "glyphIds": ["v1-q", "v1-i"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-06-xu-caron",
+        "label": "xǔ",
+        "glyphIds": ["v1-x", "v1-u"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。这个音节里，两点已经按拼写规则省去，不要补上。"
+      },
+      {
+        "id": "write-06-jia-macron",
+        "label": "jiā",
+        "glyphIds": ["v1-j", "v1-i", "v1-a"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。"
       }
     ],
     "lesson-07": [
@@ -690,6 +1172,54 @@
         "id": "write-07-si",
         "label": "si",
         "glyphIds": ["v1-s", "v1-i"]
+      },
+      {
+        "id": "write-07-zi-caron",
+        "label": "zǐ",
+        "glyphIds": ["v1-z", "v1-i"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-07-ci-acute",
+        "label": "cí",
+        "glyphIds": ["v1-c", "v1-i"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-07-si-grave",
+        "label": "sì",
+        "glyphIds": ["v1-s", "v1-i"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-07-su-macron",
+        "label": "sū",
+        "glyphIds": ["v1-s", "v1-u"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
       }
     ],
     "lesson-08": [
@@ -732,6 +1262,54 @@
         "id": "write-08-ri",
         "label": "ri",
         "glyphIds": ["v1-r", "v1-i"]
+      },
+      {
+        "id": "write-08-zhu-macron",
+        "label": "zhū",
+        "glyphIds": ["v1-z", "v1-h", "v1-u"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。"
+      },
+      {
+        "id": "write-08-che-macron",
+        "label": "chē",
+        "glyphIds": ["v1-c", "v1-h", "v1-e"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。"
+      },
+      {
+        "id": "write-08-shi-caron",
+        "label": "shǐ",
+        "glyphIds": ["v1-s", "v1-h", "v1-i"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-08-ri-grave",
+        "label": "rì",
+        "glyphIds": ["v1-r", "v1-i"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
       }
     ],
     "lesson-09": [
@@ -759,6 +1337,54 @@
         "id": "write-09-yu",
         "label": "yu",
         "glyphIds": ["v1-y", "v1-u"]
+      },
+      {
+        "id": "write-09-yi-acute",
+        "label": "yí",
+        "glyphIds": ["v1-y", "v1-i"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-09-wu-caron",
+        "label": "wǔ",
+        "glyphIds": ["v1-w", "v1-u"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-09-yu-caron",
+        "label": "yǔ",
+        "glyphIds": ["v1-y", "v1-u"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。这个音节里，两点已经按拼写规则省去，不要补上。"
+      },
+      {
+        "id": "write-09-yu-grave",
+        "label": "yù",
+        "glyphIds": ["v1-y", "v1-u"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。这个音节里，两点已经按拼写规则省去，不要补上。"
       }
     ],
     "lesson-10": [
@@ -776,6 +1402,54 @@
         "id": "write-10-ui",
         "label": "ui",
         "glyphIds": ["v1-u", "v1-i"]
+      },
+      {
+        "id": "write-10-bai-acute",
+        "label": "bái",
+        "glyphIds": ["v1-b", "v1-a", "v1-i"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-10-mei-caron",
+        "label": "měi",
+        "glyphIds": ["v1-m", "v1-e", "v1-i"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-10-dui-grave",
+        "label": "duì",
+        "glyphIds": ["v1-d", "v1-u", "v1-i"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。这里两个单韵母并排，声调标在后一个上。"
+      },
+      {
+        "id": "write-10-tui-macron",
+        "label": "tuī",
+        "glyphIds": ["v1-t", "v1-u", "v1-i"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。这里两个单韵母并排，声调标在后一个上。"
       }
     ],
     "lesson-11": [
@@ -793,6 +1467,54 @@
         "id": "write-11-iu",
         "label": "iu",
         "glyphIds": ["v1-i", "v1-u"]
+      },
+      {
+        "id": "write-11-liu-acute",
+        "label": "liú",
+        "glyphIds": ["v1-l", "v1-i", "v1-u"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。这里两个单韵母并排，声调标在后一个上。前一个字母的点保留。"
+      },
+      {
+        "id": "write-11-jiu-caron",
+        "label": "jiǔ",
+        "glyphIds": ["v1-j", "v1-i", "v1-u"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。这里两个单韵母并排，声调标在后一个上。前一个字母的点保留。"
+      },
+      {
+        "id": "write-11-gou-caron",
+        "label": "gǒu",
+        "glyphIds": ["v1-g", "v1-o", "v1-u"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-11-mao-macron",
+        "label": "māo",
+        "glyphIds": ["v1-m", "v1-a", "v1-o"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
       }
     ],
     "lesson-12": [
@@ -820,6 +1542,54 @@
         "id": "write-12-yue",
         "label": "yue",
         "glyphIds": ["v1-y", "v1-u", "v1-e"]
+      },
+      {
+        "id": "write-12-xue-acute",
+        "label": "xué",
+        "glyphIds": ["v1-x", "v1-u", "v1-e"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。这个音节里，两点已经按拼写规则省去，不要补上。"
+      },
+      {
+        "id": "write-12-lve-grave",
+        "label": "lüè",
+        "glyphIds": ["v1-l", "v1-v", "v1-e"],
+        "tone": {
+          "markId": "v1-grave",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。"
+      },
+      {
+        "id": "write-12-xie-caron",
+        "label": "xiě",
+        "glyphIds": ["v1-x", "v1-i", "v1-e"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。"
+      },
+      {
+        "id": "write-12-er-acute",
+        "label": "ér",
+        "glyphIds": ["v1-e", "v1-r"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 0,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第一个字母的上方写声调。"
       }
     ],
     "lesson-13": [
@@ -862,6 +1632,54 @@
         "id": "write-13-yun",
         "label": "yun",
         "glyphIds": ["v1-y", "v1-u", "v1-n"]
+      },
+      {
+        "id": "write-13-ban-macron",
+        "label": "bān",
+        "glyphIds": ["v1-b", "v1-a", "v1-n"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-13-lin-acute",
+        "label": "lín",
+        "glyphIds": ["v1-l", "v1-i", "v1-n"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-13-yun-acute",
+        "label": "yún",
+        "glyphIds": ["v1-y", "v1-u", "v1-n"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。这个音节里，两点已经按拼写规则省去，不要补上。"
+      },
+      {
+        "id": "write-13-yuan-caron",
+        "label": "yuǎn",
+        "glyphIds": ["v1-y", "v1-u", "v1-a", "v1-n"],
+        "tone": {
+          "markId": "v1-caron",
+          "glyphIndex": 2,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第三个字母的上方写声调。这个音节里，两点已经按拼写规则省去，不要补上。"
       }
     ],
     "lesson-14": [
@@ -889,7 +1707,93 @@
         "id": "write-14-ying",
         "label": "ying",
         "glyphIds": ["v1-y", "v1-i", "v1-n", "v1-g"]
+      },
+      {
+        "id": "write-14-gang-macron",
+        "label": "gāng",
+        "glyphIds": ["v1-g", "v1-a", "v1-n", "v1-g"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-14-teng-acute",
+        "label": "téng",
+        "glyphIds": ["v1-t", "v1-e", "v1-n", "v1-g"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
+      },
+      {
+        "id": "write-14-ming-acute",
+        "label": "míng",
+        "glyphIds": ["v1-m", "v1-i", "v1-n", "v1-g"],
+        "tone": {
+          "markId": "v1-acute",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": [1]
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。标声调的这个字母不写点，声调写在原来点的上方。"
+      },
+      {
+        "id": "write-14-dong-macron",
+        "label": "dōng",
+        "glyphIds": ["v1-d", "v1-o", "v1-n", "v1-g"],
+        "tone": {
+          "markId": "v1-macron",
+          "glyphIndex": 1,
+          "offsetY": 0,
+          "omitStrokeIndices": []
+        },
+        "note": "先写字母，最后在从左往右数第二个字母的上方写声调。"
       }
     ]
+  },
+  "marks": {
+    "v1-macron": {
+      "combining": "̄",
+      "stroke": {
+        "d": "M50 47 L100 47",
+        "start": [50, 47],
+        "guide": "M60 47 L83 47",
+        "instruction": "最后写第一声。从左向右写一小横，保持平直。"
+      }
+    },
+    "v1-acute": {
+      "combining": "́",
+      "stroke": {
+        "d": "M50 58 L100 36",
+        "start": [50, 58],
+        "guide": "M60 54 L85 43",
+        "instruction": "最后写第二声。从左下方向右上方写一小斜线。"
+      }
+    },
+    "v1-caron": {
+      "combining": "̌",
+      "stroke": {
+        "d": "M50 36 L75 58 L100 36",
+        "start": [50, 36],
+        "guide": "M53 39 L69 53",
+        "instruction": "最后写第三声。从左上方斜向右下，再折向右上，一笔写成。"
+      }
+    },
+    "v1-grave": {
+      "combining": "̀",
+      "stroke": {
+        "d": "M50 36 L100 58",
+        "start": [50, 36],
+        "guide": "M60 40 L85 51",
+        "instruction": "最后写第四声。从左上方向右下方写一小斜线。"
+      }
+    }
   }
 }

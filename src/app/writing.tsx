@@ -10,19 +10,21 @@ import { useLearningVoice, VoiceButton, VoiceFailure } from './learning-voice';
 export function WritingDiagram({
   catalog,
   glyphIds,
+  tone,
   step = null,
   offsetY = 0,
   option = false,
 }: {
   catalog: WritingCatalog;
   glyphIds: string[];
+  tone?: WritingTarget['tone'];
   step?: number | null;
   offsetY?: number;
   option?: boolean;
 }) {
   const marker = useId();
   const width = glyphIds.length * catalog.grid.letterWidth + 40;
-  let count = 0;
+  const steps = writingSteps({ id: 'diagram', label: '', glyphIds, tone }, catalog);
   return (
     <svg
       className={`writing-diagram ${option ? 'writing-option' : ''}`}
@@ -49,34 +51,34 @@ export function WritingDiagram({
           className={i === 1 || i === 2 ? 'writing-grid-middle' : 'writing-grid-outer'}
         />
       ))}
-      {glyphIds.map((id, gi) => (
-        <g
-          key={`${id}-${gi}`}
-          transform={`translate(${20 + gi * catalog.grid.letterWidth},${offsetY})`}
-        >
-          {catalog.glyphs[id]!.strokes.map((stroke, si) => {
-            const index = count++;
-            const active = index === step;
-            return (
-              <g key={si} data-stroke={index + 1}>
-                <path
-                  d={stroke.d}
-                  className={`writing-stroke ${active ? 'active' : step !== null && index > step ? 'future' : ''}`}
-                />
-                {active && (
-                  <g className="writing-direction">
-                    <circle cx={stroke.start[0]} cy={stroke.start[1]} r="6" />
-                    <path d={stroke.guide} markerEnd={`url(#${marker})`} />
-                    <text x={stroke.start[0]! - 13} y={stroke.start[1]! - 12}>
-                      {si + 1}
-                    </text>
-                  </g>
-                )}
+      {steps.map((item, index) => {
+        const { stroke, glyphIndex, kind } = item;
+        const active = index === step;
+        return (
+          <g
+            key={index}
+            data-stroke={index + 1}
+            data-kind={kind}
+            data-glyph-index={glyphIndex}
+            data-source-stroke={item.strokeIndex}
+            transform={`translate(${20 + glyphIndex * catalog.grid.letterWidth},${offsetY + item.offsetY})`}
+          >
+            <path
+              d={stroke.d}
+              className={`writing-stroke ${active ? 'active' : step !== null && index > step ? 'future' : ''}`}
+            />
+            {active && (
+              <g className="writing-direction">
+                <circle cx={stroke.start[0]} cy={stroke.start[1]} r="6" />
+                <path d={stroke.guide} markerEnd={`url(#${marker})`} />
+                <text x={stroke.start[0]! - 13} y={stroke.start[1]! - 12}>
+                  {index + 1}
+                </text>
               </g>
-            );
-          })}
-        </g>
-      ))}
+            )}
+          </g>
+        );
+      })}
     </svg>
   );
 }
@@ -109,7 +111,9 @@ export function WritingWorkshop({
   soundEnabled: boolean;
 }) {
   const [opened, setOpened] = useState(false);
-  const targets = catalog.lessons[lessonId] ?? [];
+  const [toneGroup, setToneGroup] = useState(false);
+  const allTargets = catalog.lessons[lessonId] ?? [];
+  const targets = allTargets.filter((t) => Boolean(t.tone) === toneGroup);
   const [selected, setSelected] = useState(targets[0]?.id);
   const target = targets.find((t) => t.id === selected) ?? targets[0];
   const [step, setStep] = useState<number | null>(null);
@@ -122,7 +126,8 @@ export function WritingWorkshop({
     voice.stop();
     setSelected(next.id);
     setStep(null);
-    if (soundEnabled) voice.play(`writing-${next.glyphIds[0]}-placement`);
+    if (soundEnabled)
+      voice.play(next.tone ? `writing-${next.id}-tone` : `writing-${next.glyphIds[0]}-placement`);
   }
   function showStep(next: number | null) {
     voice.stop();
@@ -148,7 +153,30 @@ export function WritingWorkshop({
       </div>
       {opened && (
         <>
-          <p>{catalog.ui.choose}</p>
+          <div className="writing-targets" role="group" aria-label="选择书写类型">
+            {[false, true].map((tones) => (
+              <button
+                key={String(tones)}
+                className="quiet"
+                aria-pressed={toneGroup === tones}
+                onClick={() => {
+                  voice.stop();
+                  setToneGroup(tones);
+                  setStep(null);
+                  setSelected(allTargets.find((t) => Boolean(t.tone) === tones)?.id);
+                  if (soundEnabled) voice.play(tones ? 'writing-ui-tones' : 'writing-ui-plain');
+                }}
+              >
+                {tones ? '带声调' : '字母和组合'}
+              </button>
+            ))}
+          </div>
+          <p>{toneGroup ? catalog.ui.tones : catalog.ui.choose}</p>
+          <VoiceButton
+            id={toneGroup ? 'writing-ui-tones' : 'writing-ui-plain'}
+            voice={voice}
+            label="听选择方法"
+          />
           <div className="writing-targets" role="group" aria-label="选择书写目标">
             {targets.map((t) => (
               <button
@@ -163,7 +191,12 @@ export function WritingWorkshop({
             ))}
           </div>
           <div className="writing-stage" aria-label={`${target.label} 四线三格示范`}>
-            <WritingDiagram catalog={catalog} glyphIds={target.glyphIds} step={step} />
+            <WritingDiagram
+              catalog={catalog}
+              glyphIds={target.glyphIds}
+              tone={target.tone}
+              step={step}
+            />
           </div>
           <div className="writing-controls" role="group" aria-label="逐笔操作">
             <button className="quiet" onClick={() => showStep(0)} aria-label="看第一笔">
@@ -200,21 +233,30 @@ export function WritingWorkshop({
               label="听当前步骤"
             />
           </div>
-          <div className="writing-placement">
-            {(active ? [active.glyphId] : [...new Set(target.glyphIds)]).map((id) => (
-              <div key={id}>
-                <p>
-                  {catalog.glyphs[id]!.symbol} · {catalog.glyphs[id]!.placement}
-                </p>
-                <VoiceButton
-                  id={`writing-${id}-placement`}
-                  voice={voice}
-                  label={`听${catalog.glyphs[id]!.symbol}占格`}
-                />
-              </div>
-            ))}
-          </div>
-          {activeGlyph && <span className="screen-reader-only">{activeGlyph.description}</span>}
+          {target.tone ? (
+            <div className="writing-placement">
+              <p>{target.note}</p>
+              <VoiceButton id={`writing-${target.id}-tone`} voice={voice} label="听标调方法" />
+            </div>
+          ) : (
+            <div className="writing-placement">
+              {(active ? [active.glyphId] : [...new Set(target.glyphIds)]).map((id) => (
+                <div key={id}>
+                  <p>
+                    {catalog.glyphs[id]!.symbol} · {catalog.glyphs[id]!.placement}
+                  </p>
+                  <VoiceButton
+                    id={`writing-${id}-placement`}
+                    voice={voice}
+                    label={`听${catalog.glyphs[id]!.symbol}占格`}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          {activeGlyph && !target.tone && (
+            <span className="screen-reader-only">{activeGlyph.description}</span>
+          )}
           <div className="writing-paper">
             <span aria-hidden="true">✎ ▤</span>
             <p>拿出纸笔，慢慢写一写</p>
