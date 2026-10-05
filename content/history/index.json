@@ -60,6 +60,12 @@
       "file": "2026.10.05.11.json",
       "sourceCommit": "ed900051e941247dc1178d0f31a856319b3413b0",
       "sha256": "16d69589f4f749803b5a239edfcaa1292ce495ad4a9d93bd2e4474629c2b2b6a"
+    },
+    {
+      "contentVersion": "2026.10.05.12",
+      "file": "2026.10.05.12.json",
+      "sourceCommit": "e6884e88bd7ff5e061713a75eab6ada073543d93",
+      "sha256": "bac9cbbf92f2778945feeab5eb5ec9ed60d56e33e2cc2bde9722e63434dd1816"
     }
   ]
 }
