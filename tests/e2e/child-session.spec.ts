@@ -440,10 +440,15 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
 
   await page.goto('/');
   await expect(page.getByLabel('家长配对码')).toBeVisible();
+  await expect(
+    page.getByText('🔒 本期练习不使用麦克风。学习记录保存在这台 Mac Studio。'),
+  ).toBeVisible();
   await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
   await page.getByLabel('家长配对码').fill('23456789');
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
+  await expect(page.getByText(/自动评分尚未通过离线验证/)).toHaveCount(0);
+  await expect(page.getByText('离线评分验证中')).toHaveCount(0);
   const originalHomeViewport = page.viewportSize();
   await page.setViewportSize({ width: 320, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
@@ -507,6 +512,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   expect(noOverflow).toBe(true);
   await page.getByRole('button', { name: '开始今天的练习' }).click();
   await expect(page.getByRole('heading', { name: 'b 和 ā 连起来是哪一个音节？' })).toBeVisible();
+  await expect(page.locator('.adult-hint')).toHaveCount(0);
+  await expect(page.getByText(/暂时没有标准音频/)).toHaveCount(0);
   await expect(page.getByRole('status')).toContainText('本课目前准备了 2 道可用练习');
   await expect(page.getByText('拼读组合站')).toBeVisible();
   await expect(page.getByLabel('完整拼读候选')).toBeVisible();
@@ -587,6 +594,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   if (isMobile) await adultConfirm.tap();
   else await adultConfirm.press('Enter');
   await expect(page.getByRole('heading', { name: '按知识点查看进度' })).toBeVisible();
+  await expect(page.getByText('录音与自动评分')).toHaveCount(0);
+  await expect(page.getByText(/评分服务未通过儿童语音离线验证/)).toHaveCount(0);
   const firstLessonProgress = page.locator('.parent-lesson-progress').first();
   await firstLessonProgress.locator(':scope > summary').click();
   await expect(firstLessonProgress).toContainText('ü');

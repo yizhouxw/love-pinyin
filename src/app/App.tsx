@@ -527,9 +527,7 @@ export function App() {
               )}
             </div>
           )}
-          <p className="privacy-note">
-            🔒 录音不会发送到互联网。当前自动评分尚未通过离线验证，跟读暂未开启。
-          </p>
+          <p className="privacy-note">🔒 本期练习不使用麦克风。学习记录保存在这台 Mac Studio。</p>
         </section>
         <Notice error={error} onReconnect={() => void act(refresh)} />
       </main>
@@ -636,11 +634,6 @@ export function App() {
                 : '字形发现站'}
           </p>
           <h1>{question.prompt}</h1>
-          <p className="adult-hint">
-            {question.type === 'blend-choice'
-              ? '请选择一个完整的拼读候选。标准示范音暂未准备，不拼接或播放未审校的字母音。'
-              : '这道题暂时没有标准音频，可请家长读题，不会录音或评分。'}
-          </p>
           <div
             className={`options ${question.type === 'blend-choice' ? 'blend-options' : ''}`}
             role="group"
@@ -1087,13 +1080,8 @@ export function App() {
               <div className="feature-row">
                 <div>
                   <span>🎧</span>
-                  <strong>标准音频准备中</strong>
+                  <strong>标准音资源准备中</strong>
                   <small>不使用系统合成音代替</small>
-                </div>
-                <div>
-                  <span>🎙️</span>
-                  <strong>离线评分验证中</strong>
-                  <small>通过本机验证后开放</small>
                 </div>
                 <div>
                   <span>🛡️</span>
@@ -1572,13 +1560,6 @@ function ParentPanel({
             保存
           </button>
         </div>
-      </div>
-      <div className="parent-setting">
-        <div>
-          <strong>录音与自动评分</strong>
-          <p>评分服务未通过儿童语音离线验证。不会采集或上传录音。</p>
-        </div>
-        <span className="status-pill">暂未开启</span>
       </div>
       {(progress.clockSkewDetected || (progress.pendingClockAttempts ?? 0) > 0) && (
         <div className="parent-setting clock-pending-setting">
