@@ -110,3 +110,5 @@ DISASTER-01完成证据：两引擎实际在线备份、停服、坏候选拒绝
 SOAK-01运行边界补充：轮结束后需等待可操作主页或休息页，不能把短暂的旧主页当作完成；单次浏览器操作/导航设置15秒超时，避免等待不到的控件消耗整个长测时长。报告只有在完整UI/数据断言均完成且实际时长达标时才能标记qualifiesFor20MinuteRun，时长达到但中断/失败不能算通过。2026-10-05首轮正式运行在第2轮后卡住，trace确认测试抢先进入家长页后被实际休息页替换，已主动中止并保存private/soak01-interrupted；属于验收脚本同步问题，此运行不作为20分钟证据。
 
 SOAK-01跨休息页修正验证：原生媒体采样显示ui-rest仍在播放（readyState=4、paused=false），本机manifest时长5.565秒，因此资源释放等待从5秒调整为与中文朗读一致的20秒，并非放宽归零要求。修正后实际Chrome完成232秒、WebKit完成245秒，各4轮24题，经过休息页继续学习；所有轮末媒体/AudioContext/Blob URL归零，页面错误与第三方请求均为空，实际导出记录数匹配。两份报告completed=true但qualifiesFor20MinuteRun=false，仍明确不满足20分钟；日志private/soak01-rest-smoke-final.log。类型、lint及格式通过，无生产代码/依赖变化。
+
+SOAK-01采样完整性补充：统计standardPlays与standard=true的playing事件数，所有实际听完的标准音都须有延迟样本，否则报告不得标记completed。音频初始化也会异步触发emptied，只有src确实清空时才撤销未完成的监听；同一媒体发起新play前清理前一次观测，原生play及其异常继续原样返回。记录instrumentationVersion以区分早期漏记标准音的观测版本。旧20分钟运行可作为其实际保存数据和轮末资源的证据，缺失的标准音延迟明确记不可用，不由零值、中文朗读样本或推算替代。

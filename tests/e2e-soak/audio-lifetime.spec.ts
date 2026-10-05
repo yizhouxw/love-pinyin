@@ -47,6 +47,7 @@ test('SOAK-01: sustained real learning releases media and records playback laten
   await page.addInitScript(() => {
     const media = new Map<number, WeakRef<HTMLMediaElement>>();
     const ids = new WeakMap<HTMLMediaElement, number>();
+    const pending = new WeakMap<HTMLMediaElement, () => void>();
     const contexts: WeakRef<AudioContext>[] = [];
     const blobs = new Set<string>();
     const latencies: { standard: boolean; ms: number }[] = [];
@@ -55,6 +56,7 @@ test('SOAK-01: sustained real learning releases media and records playback laten
     let standardPlays = 0;
     const nativePlay = HTMLMediaElement.prototype.play;
     HTMLMediaElement.prototype.play = function () {
+      pending.get(this)?.();
       if (!ids.has(this)) {
         ids.set(this, ++sequence);
         media.set(sequence, new WeakRef(this));
@@ -67,15 +69,28 @@ test('SOAK-01: sustained real learning releases media and records playback laten
         latencies.push({ standard, ms: performance.now() - start });
         clean();
       };
+      const emptied = () => {
+        // Initial source selection can emit emptied after play(); it is not a cancellation.
+        if (!this.getAttribute('src')) clean();
+      };
       const clean = () => {
         this.removeEventListener('playing', playing);
-        this.removeEventListener('emptied', clean);
+        this.removeEventListener('emptied', emptied);
         this.removeEventListener('error', clean);
+        if (pending.get(this) === clean) pending.delete(this);
       };
+      pending.set(this, clean);
       this.addEventListener('playing', playing, { once: true });
-      this.addEventListener('emptied', clean, { once: true });
+      this.addEventListener('emptied', emptied);
       this.addEventListener('error', clean, { once: true });
-      return nativePlay.call(this);
+      try {
+        const result = nativePlay.call(this);
+        void result.catch(clean);
+        return result;
+      } catch (error) {
+        clean();
+        throw error;
+      }
     };
     window.AudioContext = new Proxy(window.AudioContext, {
       construct(target, args) {
@@ -248,11 +263,17 @@ test('SOAK-01: sustained real learning releases media and records playback laten
     const exported = await page.request.get(`${appUrl}/api/v1/profiles/export`);
     expect(exported.ok()).toBe(true);
     expect((await exported.json()).attempts).toHaveLength(answers);
+    const finalMedia = await page.evaluate(() => window.soakSample());
+    expect(finalMedia.standardPlays).toBeGreaterThan(0);
+    expect(finalMedia.latencies.filter((sample) => sample.standard)).toHaveLength(
+      finalMedia.standardPlays,
+    );
     await page.screenshot({ path: info.outputPath('after-soak.png'), fullPage: true });
     completed = true;
   } finally {
     const media = await page.evaluate(() => window.soakSample());
     const report = {
+      instrumentationVersion: 2,
       project: info.project.name,
       browser: browser.version(),
       os: `${platform()} ${release()}`,

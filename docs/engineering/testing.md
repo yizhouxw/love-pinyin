@@ -79,4 +79,4 @@ DISASTER-01的disaster-recovery.spec.ts使用真实浏览器操作配对和答�
 
 每轮通过UI换课、完成实际题单，听完指令、标准音和反馈，使用产品休息入口；答案只取content库。轮结束等待可操作的主页或休息页，再允许下一次选课；资源释放检查允许20秒以覆盖休息朗读（本机ui-rest长5.565秒）。单次操作/导航超时15秒，防止等控件的空转混入长测；completed与20分钟时长需同时满足才登记合格。WeakRef观测媒体，记录play到playing事件延迟、下一题可见的耗时，以及轮末src/readyState/networkState、AudioContext/Blob URL计数。currentSrc可能在src已移除、readyState/networkState均为0后保留旧地址，不能单凭这个地址判断资源仍加载。Chrome额外在轮末显式GC后取JS堆和DOM计数；这不是未经干预的原生内存曲线，WebKit也不虚填堆数据。没有替换Audio/网络响应，原生play方法仍实际执行。
 
-结果写入test-results/soak各项目的soak-report.json及最终截图；失败也尽量保存已完成样本。正式20分钟报告尚待此次长测完成，不能凭短跑或零活动资源断言所有内存无泄漏。两引擎并发产生本机负载，报告延迟不是移动设备、真实LAN或物理出声测量。
+结果写入test-results/soak各项目的soak-report.json及最终截图；失败也尽量保存已完成样本。两引擎均为无头模式、并发产生本机负载，报告延迟不是移动设备、真实LAN或物理出声测量。观测器v2要求全部实际标准音play均有playing延迟样本，初始化的emptied不能被误作取消；src确实清空、新play或异常才清理未完成监听。完整时长v1已取得资源/数据证据但漏记标准音，v2烟测通过、完整重跑仍在进行，分开登记于[长测报告](audio-soak-results.md)。不能凭短跑或零活动资源断言所有内存无泄漏。
