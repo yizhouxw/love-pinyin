@@ -2,7 +2,7 @@
 
 # SPEC-006：局域网离线、跨端与发布
 
-状态：软件切片进行中（整体验收未开始）。需求：R-013–019 及所有 P0 最终回归。依赖 001–005；内容覆盖、资源完整性和真机缺口须如实记录。标准音直接信任cmguo/PinYinSound，不设教师或音频审批门槛；外部素材再分发许可仅约束公开发布包。发音评测 R-017/R-021 已移至 P2，不属于此 SPEC。
+状态：软件切片进行中（整体交付未完成）。需求：R-013–019 及所有 P0 最终回归。依赖 001–005；内容覆盖、资源完整性和真机缺口须如实记录。标准音直接信任cmguo/PinYinSound，不设教师或音频审批门槛；外部素材再分发许可仅约束公开发布包。发音评测 R-017/R-021 已移至 P2，不属于此 SPEC。
 
 ## 范围和文件
 
@@ -112,3 +112,7 @@ SOAK-01运行边界补充：轮结束后需等待可操作主页或休息页，�
 SOAK-01跨休息页修正验证：原生媒体采样显示ui-rest仍在播放（readyState=4、paused=false），本机manifest时长5.565秒，因此资源释放等待从5秒调整为与中文朗读一致的20秒，并非放宽归零要求。修正后实际Chrome完成232秒、WebKit完成245秒，各4轮24题，经过休息页继续学习；所有轮末媒体/AudioContext/Blob URL归零，页面错误与第三方请求均为空，实际导出记录数匹配。两份报告completed=true但qualifiesFor20MinuteRun=false，仍明确不满足20分钟；日志private/soak01-rest-smoke-final.log。类型、lint及格式通过，无生产代码/依赖变化。
 
 SOAK-01采样完整性补充：统计standardPlays与standard=true的playing事件数，所有实际听完的标准音都须有延迟样本，否则报告不得标记completed。音频初始化也会异步触发emptied，只有src确实清空时才撤销未完成的监听；同一媒体发起新play前清理前一次观测，原生play及其异常继续原样返回。记录instrumentationVersion以区分早期漏记标准音的观测版本。旧20分钟运行可作为其实际保存数据和轮末资源的证据，缺失的标准音延迟明确记不可用，不由零值、中文朗读样本或推算替代。
+
+SOAK-01完成证据：观测器v2完整重跑退出0；实际Chrome1,244,003ms、21轮126题，Playwright WebKit1,257,552ms、20轮120题，均全14课且每轮活动资源归零、真实导出数匹配、无页面错误/第三方请求。两者标准音57次与延迟样本57个一致，首次22.7/28ms、p95为24/35ms。Chrome GC后两窗口堆中位数增长126,604字节（2.12%），保留逐轮数据，不宣称全部内存无增长。两报告completed与qualifiesFor20MinuteRun均true，原始JSON、日志、截图已归档private/soak01-v2-final；完整方法与限制见[长测结果](../engineering/audio-soak-results.md)。旧v1结果保留且不与本次混合。该切片通过不替代原生Safari/Windows/移动设备或家庭LAN验收。
+
+最终工程验证：npm run verify:all退出0，63项前端/工具、276项后端、30项视口模拟及14项真实服务GUI通过；npm run validate:release通过14课/83知识项/476题。Firefox本机限制仍明确记录，未计为通过。日志private/verify-soak01-final.log与private/release-soak01-final.log。loopback健康接口仍为2026.10.05.15/sqlite，未重启产品服务。
