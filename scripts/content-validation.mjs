@@ -138,6 +138,13 @@ export function validateCurriculum(data, schema, { sourceIds = [], release = fal
         `${q.id}: duplicate option labels`,
       );
       assert(options.has(q.answer.optionId), `${q.id}: answer not in options`);
+      if (q.audioRef && audio.has(q.audioRef)) {
+        assert(
+          q.options.find((option) => option.id === q.answer.optionId)?.label ===
+            audio.get(q.audioRef).transcript,
+          `${q.id}: listening answer must match the recorded target`,
+        );
+      }
     }
   }
   for (const r of data.readingTargets) {

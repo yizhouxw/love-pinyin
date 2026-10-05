@@ -369,8 +369,10 @@ function LearningApp() {
 
   const refresh = useCallback(async () => {
     const state = (await api('/bootstrap')) as Bootstrap;
-    setBoot(state);
-    if (!state.paired) return;
+    if (!state.paired) {
+      setBoot(state);
+      return;
+    }
     const [course, stats, current, sounds] = await Promise.all([
       api('/curriculum'),
       api('/profiles/progress'),
@@ -392,6 +394,8 @@ function LearningApp() {
         ? (nextStats.selectedLessonId ?? '')
         : '',
     );
+    // Reveal the next screen only with its matching progress revision and settings.
+    setBoot(state);
   }, []);
 
   useEffect(() => {
@@ -2032,6 +2036,7 @@ function ParentPanel({
         <div className="inline-control">
           <select
             value={selectedLessonChoice}
+            disabled={busy}
             onChange={(event) => setLessonChoice(event.target.value)}
           >
             <option value="">请选择当前课程</option>
@@ -2043,7 +2048,7 @@ function ParentPanel({
           </select>
           <button
             className="quiet"
-            disabled={!isParent || !selectedLessonChoice}
+            disabled={busy || !isParent || !selectedLessonChoice}
             onClick={() =>
               void act(async () => {
                 await api('/household/current-lesson', {

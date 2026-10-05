@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { validateCurriculum } from '../../scripts/content-validation.mjs';
+import { splitPinyinCandidate } from '../../src/domain/pinyin-presentation';
 
 const data = JSON.parse(readFileSync('content/curriculum.json', 'utf8'));
 const schema = JSON.parse(readFileSync('schemas/curriculum.schema.json', 'utf8'));
@@ -10,6 +11,54 @@ const validate = (input, release = false) =>
   validateCurriculum(input, schema, { sourceIds, release });
 
 describe('课程内容的保护门禁', () => {
+  it('BANK-04每个声母有两种韵母的听辨，干扰项只改变已经学过的声母', () => {
+    const added = data.exercises.filter((q) => Number(q.id.split('-').at(-1)) >= 70);
+    expect(added).toHaveLength(42);
+    const initials = data.knowledgeItems.filter((k) => k.category === 'initial');
+    const lessonOrder = (id) => data.lessons.find((lesson) => lesson.id === id).order;
+    for (const knowledge of initials) {
+      const pair = added.filter((q) => q.primaryKnowledgeId === knowledge.id);
+      expect(pair, knowledge.id).toHaveLength(2);
+      expect(data.coverage.objectivePrimaryExerciseCounts[knowledge.id]).toBeGreaterThanOrEqual(5);
+      const finals = [];
+      for (const q of pair) {
+        expect(q.type).toBe('listen-choice');
+        const candidates = q.options.map((o) =>
+          splitPinyinCandidate(o.label, data.inventory.initials),
+        );
+        expect(candidates.every(Boolean)).toBe(true);
+        expect(new Set(candidates.map((candidate) => candidate.rime)).size).toBe(1);
+        const answer = q.options.findIndex((o) => o.id === q.answer.optionId);
+        expect(candidates[answer].onset).toBe(knowledge.symbol);
+        expect(data.audioRequirements.find((a) => a.id === q.audioRef).transcript).toBe(
+          q.options[answer].label,
+        );
+        for (const candidate of candidates) {
+          const onset = initials.find((k) => k.symbol === candidate.onset);
+          expect(lessonOrder(onset.lessonId)).toBeLessThanOrEqual(lessonOrder(q.lessonId));
+        }
+        for (const id of q.knowledgeIds)
+          expect(
+            lessonOrder(data.knowledgeItems.find((k) => k.id === id).lessonId),
+          ).toBeLessThanOrEqual(lessonOrder(q.lessonId));
+        finals.push(
+          candidates[0].rime
+            .normalize('NFD')
+            .replace(/[\u0300\u0301\u0304\u030c]/gu, '')
+            .normalize('NFC'),
+        );
+        if (['j', 'q', 'x'].includes(knowledge.symbol) && finals.at(-1) === 'u')
+          expect(q.knowledgeIds).toContain('k-final-v');
+      }
+      expect(new Set(finals).size).toBe(2);
+      expect(new Set(pair.map((q) => q.audioRef)).size).toBe(2);
+    }
+    const wrong = structuredClone(data);
+    wrong.exercises.find((q) => q.id === added[0].id).audioRef = added[2].audioRef;
+    expect(validate(wrong)).toContain(
+      `${added[0].id}: listening answer must match the recorded target`,
+    );
+  });
   it('TONE-01按真实标准音辨别同一韵母的四声，全部来自已学第一课', () => {
     const auditory = data.exercises.filter((q) => q.type === 'tone-choice' && q.audioRef);
     expect(auditory).toHaveLength(12);
@@ -71,7 +120,11 @@ describe('课程内容的保护门禁', () => {
       expect(visual.length, knowledge.id).toBeGreaterThanOrEqual(2);
       expect(new Set(visual.map((q) => q.prompt)).size, knowledge.id).toBe(visual.length);
     }
-    expect(data.exercises.filter((q) => q.type === 'listen-choice')).toHaveLength(61);
+    expect(
+      data.exercises.filter(
+        (q) => q.type === 'listen-choice' && Number(q.id.split('-').at(-1)) < 70,
+      ),
+    ).toHaveLength(61);
     expect(
       data.knowledgeItems.filter((k) => k.requiredModes.includes('listen-choice')),
     ).toHaveLength(61);
