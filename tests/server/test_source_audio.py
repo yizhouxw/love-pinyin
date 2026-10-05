@@ -18,7 +18,7 @@ def test_pinned_mapping_covers_existing_targets_and_preserves_teaching_boundarie
     }
     rows = {a["id"]: a for a in source["assets"]}
     assert rows.keys() == targets.keys()
-    assert len(rows) == 89
+    assert len(rows) == 99
     assert "teachingReview" not in source
     assert source["licenseStatus"] == "unknown"
     for key, target in targets.items():
@@ -27,6 +27,18 @@ def test_pinned_mapping_covers_existing_targets_and_preserves_teaching_boundarie
     assert rows["audio-rt-04-nv3"]["filename"] == "nv3.mp3"
     assert rows["audio-whole-syllable-ri"]["filename"] == "ri4.mp3"
     assert rows["audio-whole-syllable-zi"]["exampleTone"] == 1
+    for base, labels in (("a", "āáǎà"), ("o", "ōóǒò"), ("e", "ēéěè")):
+        for tone, label in enumerate(labels, 1):
+            question = next(
+                q
+                for q in load_curriculum()["exercises"]
+                if q["type"] == "tone-choice"
+                and q.get("audioRef")
+                and q["primaryKnowledgeId"] == f"k-tone-{tone}"
+                and f"k-final-{base}" in q["knowledgeIds"]
+            )
+            assert targets[question["audioRef"]]["transcript"] == label
+            assert rows[question["audioRef"]]["filename"] == f"{base}{tone}.mp3"
 
 
 @pytest.fixture

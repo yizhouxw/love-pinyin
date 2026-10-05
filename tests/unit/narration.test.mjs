@@ -48,11 +48,13 @@ describe('初学儿童的中文朗读脚本', () => {
     const bad = structuredClone(narration);
     delete bad.exercises['q-03-05'].visualCue;
     bad.exercises['q-01-01'].visualCue = 'a';
+    bad.exercises['q-01-50'].visualCue = 'ā';
     bad.exercises['q-01-01'].options.a = '啊';
     bad.exercises['q-01-01'].options.z = '错误选项';
     const errors = validateNarration(curriculum, bad).join('\n');
     expect(errors).toContain('q-03-05.visualCue: pinyin targets must match');
     expect(errors).toContain('q-01-01.visualCue: auditory targets must not be disclosed');
+    expect(errors).toContain('q-01-50.visualCue: auditory targets must not be disclosed');
     expect(errors).toContain('q-01-01.options.a: pinyin targets must not use narration');
     expect(errors).toContain('q-01-01.options: unknown option z');
   });

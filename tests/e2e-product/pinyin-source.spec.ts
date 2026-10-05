@@ -44,7 +44,7 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
     },
     source.assets.map((a) => a.id),
   );
-  expect(decoded).toHaveLength(89);
+  expect(decoded).toHaveLength(source.assets.length);
   for (const result of decoded) {
     expect(result.seconds, result.id).toBeGreaterThan(0.1);
     expect(result.seconds, result.id).toBeLessThan(10);
@@ -101,7 +101,9 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
   await page.getByRole('button', { name: '回到小岛' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  await expect(page.getByLabel('学习音频准备状态')).toContainText('89 项可播放');
+  await expect(page.getByLabel('学习音频准备状态')).toContainText(
+    `${source.assets.length} 项可播放`,
+  );
   await expect(page.getByLabel('学习音频准备状态')).toContainText('标准音来源：cmguo/PinYinSound');
   await expect(page.getByText(/教师审校|待审音|审核者|课程草稿/)).toHaveCount(0);
   const exported = await page.request.get(`${appUrl}/api/v1/profiles/export`);

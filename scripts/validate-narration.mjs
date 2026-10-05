@@ -85,7 +85,7 @@ export function validateNarration(curriculum, narration) {
     ) {
       errors.push(`${exercise.id}.visualCue: expected a nonempty NFC display cue`);
     }
-    if (exercise.type === 'listen-choice' && script.visualCue !== undefined) {
+    if (exercise.audioRef && script.visualCue !== undefined) {
       errors.push(`${exercise.id}.visualCue: auditory targets must not be disclosed`);
     }
 

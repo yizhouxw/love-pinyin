@@ -964,7 +964,19 @@
         "q-01-31",
         "q-01-32",
         "q-01-40",
-        "q-01-41"
+        "q-01-41",
+        "q-01-50",
+        "q-01-51",
+        "q-01-52",
+        "q-01-53",
+        "q-01-54",
+        "q-01-55",
+        "q-01-56",
+        "q-01-57",
+        "q-01-58",
+        "q-01-59",
+        "q-01-60",
+        "q-01-61"
       ],
       "readingTargetIds": [
         "rt-01-a1",
@@ -9021,6 +9033,402 @@
       "sourceIds": [],
       "license": "MIT",
       "promptAudioRef": "audio-prompt-84f9a277ef04"
+    },
+    {
+      "id": "q-01-50",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-1",
+      "knowledgeIds": ["k-tone-1", "k-final-a"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ā"
+        },
+        {
+          "id": "b",
+          "label": "á"
+        },
+        {
+          "id": "c",
+          "label": "ǎ"
+        },
+        {
+          "id": "d",
+          "label": "à"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-01-a1",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-51",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-2",
+      "knowledgeIds": ["k-tone-2", "k-final-a"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ā"
+        },
+        {
+          "id": "b",
+          "label": "á"
+        },
+        {
+          "id": "c",
+          "label": "ǎ"
+        },
+        {
+          "id": "d",
+          "label": "à"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-a2",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-52",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-3",
+      "knowledgeIds": ["k-tone-3", "k-final-a"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ā"
+        },
+        {
+          "id": "b",
+          "label": "á"
+        },
+        {
+          "id": "c",
+          "label": "ǎ"
+        },
+        {
+          "id": "d",
+          "label": "à"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-a3",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-53",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-4",
+      "knowledgeIds": ["k-tone-4", "k-final-a"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ā"
+        },
+        {
+          "id": "b",
+          "label": "á"
+        },
+        {
+          "id": "c",
+          "label": "ǎ"
+        },
+        {
+          "id": "d",
+          "label": "à"
+        }
+      ],
+      "answer": {
+        "optionId": "d"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-a4",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-54",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-1",
+      "knowledgeIds": ["k-tone-1", "k-final-o"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ó"
+        },
+        {
+          "id": "b",
+          "label": "ǒ"
+        },
+        {
+          "id": "c",
+          "label": "ò"
+        },
+        {
+          "id": "d",
+          "label": "ō"
+        }
+      ],
+      "answer": {
+        "optionId": "d"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-o1",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-55",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-2",
+      "knowledgeIds": ["k-tone-2", "k-final-o"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ó"
+        },
+        {
+          "id": "b",
+          "label": "ǒ"
+        },
+        {
+          "id": "c",
+          "label": "ò"
+        },
+        {
+          "id": "d",
+          "label": "ō"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-o2",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-56",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-3",
+      "knowledgeIds": ["k-tone-3", "k-final-o"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ó"
+        },
+        {
+          "id": "b",
+          "label": "ǒ"
+        },
+        {
+          "id": "c",
+          "label": "ò"
+        },
+        {
+          "id": "d",
+          "label": "ō"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-o3",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-57",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-4",
+      "knowledgeIds": ["k-tone-4", "k-final-o"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ó"
+        },
+        {
+          "id": "b",
+          "label": "ǒ"
+        },
+        {
+          "id": "c",
+          "label": "ò"
+        },
+        {
+          "id": "d",
+          "label": "ō"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-o4",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-58",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-1",
+      "knowledgeIds": ["k-tone-1", "k-final-e"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ě"
+        },
+        {
+          "id": "b",
+          "label": "è"
+        },
+        {
+          "id": "c",
+          "label": "ē"
+        },
+        {
+          "id": "d",
+          "label": "é"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-e1",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-59",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-2",
+      "knowledgeIds": ["k-tone-2", "k-final-e"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ě"
+        },
+        {
+          "id": "b",
+          "label": "è"
+        },
+        {
+          "id": "c",
+          "label": "ē"
+        },
+        {
+          "id": "d",
+          "label": "é"
+        }
+      ],
+      "answer": {
+        "optionId": "d"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-rt-01-e2",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-60",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-3",
+      "knowledgeIds": ["k-tone-3", "k-final-e"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ě"
+        },
+        {
+          "id": "b",
+          "label": "è"
+        },
+        {
+          "id": "c",
+          "label": "ē"
+        },
+        {
+          "id": "d",
+          "label": "é"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-e3",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
+    },
+    {
+      "id": "q-01-61",
+      "lessonId": "lesson-01",
+      "type": "tone-choice",
+      "prompt": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "primaryKnowledgeId": "k-tone-4",
+      "knowledgeIds": ["k-tone-4", "k-final-e"],
+      "options": [
+        {
+          "id": "a",
+          "label": "ě"
+        },
+        {
+          "id": "b",
+          "label": "è"
+        },
+        {
+          "id": "c",
+          "label": "ē"
+        },
+        {
+          "id": "d",
+          "label": "é"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "audioRef": "audio-tone-e4",
+      "promptAudioRef": "audio-prompt-dda9955896b2"
     }
   ],
   "readingTargets": [
@@ -12067,6 +12475,72 @@
       "transcript": "哪一个是可以独立成音节，不和声母拼在一起的特殊韵母？",
       "kind": "instruction",
       "knowledgeIds": ["k-final-er"]
+    },
+    {
+      "id": "audio-prompt-dda9955896b2",
+      "transcript": "先点听拼音的小喇叭，听完整，再选出声调一样的拼音。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-tone-1", "k-tone-2", "k-tone-3", "k-tone-4"]
+    },
+    {
+      "id": "audio-tone-a2",
+      "transcript": "á",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-a", "k-tone-2"]
+    },
+    {
+      "id": "audio-tone-a3",
+      "transcript": "ǎ",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-a", "k-tone-3"]
+    },
+    {
+      "id": "audio-tone-a4",
+      "transcript": "à",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-a", "k-tone-4"]
+    },
+    {
+      "id": "audio-tone-o1",
+      "transcript": "ō",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-o", "k-tone-1"]
+    },
+    {
+      "id": "audio-tone-o2",
+      "transcript": "ó",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-o", "k-tone-2"]
+    },
+    {
+      "id": "audio-tone-o3",
+      "transcript": "ǒ",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-o", "k-tone-3"]
+    },
+    {
+      "id": "audio-tone-o4",
+      "transcript": "ò",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-o", "k-tone-4"]
+    },
+    {
+      "id": "audio-tone-e1",
+      "transcript": "ē",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-e", "k-tone-1"]
+    },
+    {
+      "id": "audio-tone-e3",
+      "transcript": "ě",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-e", "k-tone-3"]
+    },
+    {
+      "id": "audio-tone-e4",
+      "transcript": "è",
+      "kind": "syllable",
+      "knowledgeIds": ["k-final-e", "k-tone-4"]
     }
   ],
   "supplementalTopics": [
@@ -12182,18 +12656,14 @@
     }
   ],
   "coverage": {
-    "purpose": "authored-practice-bank-awaiting-content-and-standard-audio-review",
+    "purpose": "authored-practice-bank-with-local-standard-audio",
     "knowledgeItemCount": 83,
-    "exerciseCount": 275,
+    "exerciseCount": 287,
     "readingTargetCount": 79,
     "primaryExerciseCounts": {
       "k-final-a": 4,
       "k-final-o": 3,
       "k-final-e": 4,
-      "k-tone-1": 2,
-      "k-tone-2": 3,
-      "k-tone-3": 5,
-      "k-tone-4": 7,
       "k-final-i": 4,
       "k-final-u": 3,
       "k-final-v": 4,
@@ -12201,7 +12671,6 @@
       "k-initial-p": 3,
       "k-initial-m": 4,
       "k-initial-f": 3,
-      "k-tone-0": 2,
       "k-initial-d": 3,
       "k-initial-t": 4,
       "k-initial-n": 4,
@@ -12255,10 +12724,15 @@
       "k-final-ing": 4,
       "k-final-ong": 3,
       "k-whole-ying": 3,
+      "k-tone-1": 5,
+      "k-tone-2": 6,
+      "k-tone-3": 8,
+      "k-tone-4": 10,
       "rule-tone-placement": 3,
       "rule-grid-writing": 2,
       "rule-i-dot": 3,
       "rule-two-part": 2,
+      "k-tone-0": 2,
       "rule-confusable-shapes": 2,
       "rule-three-part": 6,
       "rule-jqx-v": 6,
@@ -12279,8 +12753,8 @@
       "书写仅有概念题；正式版必须补笔顺/占格示范及紙筆观察，不用识别题冒充书写达标。",
       "首版不含发音评测；现有朗读目标仅作未来研究资料。",
       "首版 requiredModes 只包含客观题型；朗读目标暂不参与课程、练习和掌握度。",
-      "83个知识点均有至少2道当前可用视觉题，79项仍不足5道客观题；未就绪听辨不计可用。保持正式发布每知识点至少5题要求。",
-      "当前声调选择题只考视觉标调与认调号，声调听辨题为0。正式发布必须补使用标准音的声调听辨，不把视觉题当听辨已覆盖。",
+      "83个知识点均有至少2道当前可用视觉题，77项仍不足5道客观题。保持正式发布每知识点至少5题要求。",
+      "第一课有a、o、e各四声的12道标准音听辨，不能代表词语变调、口语或其他韵母四声全面覆盖。",
       "全部客观题已在content/narration.json配中文脚本，本机预生成声音只作中文指令；不合成拉丁拼音示范。旧promptAudioRef保留公开录制规划，实际中文语音由独立清单管理。",
       "纯拼音选项无选项语音引用，答题前不可自动播读以免改变任务或泄露辨听答案。",
       "79条 readingTargets 是未来研究数据，不属于本期课程活动或验收；首版不采集录音、不生成跟读记录或发音分数。"
@@ -12289,10 +12763,6 @@
       "k-final-a": 3,
       "k-final-o": 3,
       "k-final-e": 3,
-      "k-tone-1": 2,
-      "k-tone-2": 3,
-      "k-tone-3": 5,
-      "k-tone-4": 7,
       "k-final-i": 3,
       "k-final-u": 3,
       "k-final-v": 3,
@@ -12300,7 +12770,6 @@
       "k-initial-p": 3,
       "k-initial-m": 3,
       "k-initial-f": 3,
-      "k-tone-0": 2,
       "k-initial-d": 3,
       "k-initial-t": 3,
       "k-initial-n": 3,
@@ -12354,10 +12823,15 @@
       "k-final-ing": 3,
       "k-final-ong": 3,
       "k-whole-ying": 3,
+      "k-tone-1": 5,
+      "k-tone-2": 6,
+      "k-tone-3": 8,
+      "k-tone-4": 10,
       "rule-tone-placement": 3,
       "rule-grid-writing": 2,
       "rule-i-dot": 3,
       "rule-two-part": 2,
+      "k-tone-0": 2,
       "rule-confusable-shapes": 2,
       "rule-three-part": 5,
       "rule-jqx-v": 5,
@@ -12370,14 +12844,12 @@
       "rule-er": 2,
       "rule-front-back-nasal": 2
     },
-    "objectiveExerciseCount": 247,
+    "objectiveExerciseCount": 259,
     "insufficientObjectiveReviewKnowledgeIds": [],
     "insufficientObjectiveReleaseKnowledgeIds": [
       "k-final-a",
       "k-final-o",
       "k-final-e",
-      "k-tone-1",
-      "k-tone-2",
       "k-final-i",
       "k-final-u",
       "k-final-v",
@@ -12453,13 +12925,13 @@
       "rule-er",
       "rule-front-back-nasal"
     ],
-    "toneListeningExerciseCount": 0,
+    "toneListeningExerciseCount": 12,
     "releaseMinimumObjectiveExercisesPerKnowledge": 5,
     "releaseMinimumDistinctObjectiveReviewExercisesPerKnowledge": 2,
-    "audioRequirementCount": 207,
-    "promptAudioRequirementCount": 94,
+    "audioRequirementCount": 218,
+    "promptAudioRequirementCount": 95,
     "optionAudioRequirementCount": 24,
-    "pronunciationAudioRequirementCount": 89,
+    "pronunciationAudioRequirementCount": 99,
     "isolatedInitialTargetCount": 21,
     "isolatedFinalTargetCount": 24,
     "wholeSyllableKnowledgeCoveredCount": 16,
@@ -12517,5 +12989,5 @@
       "rt-14-whole-ying"
     ]
   },
-  "contentVersion": "2026.10.05.6"
+  "contentVersion": "2026.10.05.7"
 }

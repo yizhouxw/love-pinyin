@@ -10,10 +10,14 @@ export type LearningAudio = {
 };
 
 /** Playback failure stays separate from answers and never creates learning records. */
-export function useLearningVoice() {
+export function useLearningVoice(scope: string | null) {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [failureId, setFailureId] = useState<string | null>(null);
-  const [completedIds, setCompletedIds] = useState<ReadonlySet<string>>(() => new Set());
+  const [completed, setCompleted] = useState<{ scope: string | null; ids: ReadonlySet<string> }>(
+    () => ({ scope, ids: new Set() }),
+  );
+  // A previous exercise's playback cannot unlock a new instance of the same question.
+  const completedIds = completed.scope === scope ? completed.ids : new Set<string>();
   const [failedIds, setFailedIds] = useState<ReadonlySet<string>>(() => new Set());
   const failedKind = useRef<'private' | 'standard'>('private');
   const active = useRef<AbortController | null>(null);
@@ -34,10 +38,10 @@ export function useLearningVoice() {
       active.current = controller;
       setFailureId(null);
       setPlayingId(id);
-      setCompletedIds((previous) => {
-        const next = new Set(previous);
+      setCompleted((previous) => {
+        const next = new Set(previous.scope === scope ? previous.ids : []);
         next.delete(id);
-        return next;
+        return { scope, ids: next };
       });
       const playback =
         kind === 'standard'
@@ -46,7 +50,10 @@ export function useLearningVoice() {
       void playback
         .then(() => {
           if (active.current === controller && !controller.signal.aborted) {
-            setCompletedIds((previous) => new Set(previous).add(id));
+            setCompleted((previous) => ({
+              scope,
+              ids: new Set(previous.scope === scope ? previous.ids : []).add(id),
+            }));
             setFailedIds((previous) => {
               const next = new Set(previous);
               next.delete(id);
@@ -70,7 +77,7 @@ export function useLearningVoice() {
           }
         });
     },
-    [release],
+    [release, scope],
   );
   const play = useCallback((id: string) => playAsset(id, 'private'), [playAsset]);
   const playStandard = useCallback((id: string) => playAsset(id, 'standard'), [playAsset]);
@@ -86,7 +93,7 @@ export function useLearningVoice() {
       document.removeEventListener('visibilitychange', onHidden);
       release();
     };
-  }, [release, stop]);
+  }, [release, stop, scope]);
   return { playingId, failureId, completedIds, failedIds, play, playStandard, retry, stop };
 }
 

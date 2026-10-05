@@ -10,6 +10,37 @@ const validate = (input, release = false) =>
   validateCurriculum(input, schema, { sourceIds, release });
 
 describe('课程内容的保护门禁', () => {
+  it('TONE-01按真实标准音辨别同一韵母的四声，全部来自已学第一课', () => {
+    const auditory = data.exercises.filter((q) => q.type === 'tone-choice' && q.audioRef);
+    expect(auditory).toHaveLength(12);
+    for (const [base, labels] of [
+      ['a', 'āáǎà'],
+      ['o', 'ōóǒò'],
+      ['e', 'ēéěè'],
+    ]) {
+      for (const [index, label] of [...labels].entries()) {
+        const matches = auditory.filter(
+          (q) =>
+            q.primaryKnowledgeId === `k-tone-${index + 1}` &&
+            q.knowledgeIds.includes(`k-final-${base}`),
+        );
+        expect(matches).toHaveLength(1);
+        const q = matches[0];
+        expect(q.lessonId).toBe('lesson-01');
+        expect(new Set(q.options.map((o) => o.label))).toEqual(new Set(labels));
+        expect(q.options.find((o) => o.id === q.answer.optionId).label).toBe(label);
+        expect(data.audioRequirements.find((a) => a.id === q.audioRef).transcript).toBe(label);
+        expect(q.prompt).not.toMatch(/[一二三四]声|[a-zāáǎàōóǒòēéěè]/u);
+        expect(data.lessons[0].exerciseIds).toContain(q.id);
+      }
+    }
+    expect(validate(data, true)).not.toContain(
+      'release: auditory coverage for all four tones missing',
+    );
+    const stale = structuredClone(data);
+    stale.coverage.toneListeningExerciseCount = 0;
+    expect(validate(stale)).toContain('coverage: stale tone listening count');
+  });
   it('BANK-02为原先缺题的二十一项提供两道不同视觉复习题，不移除听辨要求', () => {
     const added = data.exercises.filter((q) => {
       const sequence = Number(q.id.split('-').at(-1));

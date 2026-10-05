@@ -719,6 +719,86 @@
       "exampleTone": 1,
       "sha256": "71663696306ab572fbf1b5153497dd2327f77e19a8ec81de453f73d15313de14",
       "bytes": 20921
+    },
+    {
+      "id": "audio-tone-a2",
+      "targetSignature": "7b80c8465ec0db93265062badfd0a63ff07623706d629d7848b5d274f0a09841",
+      "filename": "a2.mp3",
+      "exampleTone": null,
+      "sha256": "1de37bb68b9c13bb0ff772f260055fbedf9114855dc134970f528a13e1808f28",
+      "bytes": 8411
+    },
+    {
+      "id": "audio-tone-a3",
+      "targetSignature": "eb01d00c7620fd6c2f4323c6a86f8007a0c7c0a949cfe0fabafd8c35636054b5",
+      "filename": "a3.mp3",
+      "exampleTone": null,
+      "sha256": "d8711a7aac3d3ef011e7561cd332e6691211a18fad7188148c6659e1a36b0d9b",
+      "bytes": 8411
+    },
+    {
+      "id": "audio-tone-a4",
+      "targetSignature": "a56cd30989c3f39d4e5183d0737bd2b24f2f93643439d0448fadcf30e6c6f038",
+      "filename": "a4.mp3",
+      "exampleTone": null,
+      "sha256": "9a76c330190041a5393421d5adbd02b1eb2042c69a52b4527873be5aff0a6efe",
+      "bytes": 7314
+    },
+    {
+      "id": "audio-tone-o1",
+      "targetSignature": "aa078d8d8ad3a6ed3def6a7f7a310ee64cba7b8515279083625f2ede716217a3",
+      "filename": "o1.mp3",
+      "exampleTone": null,
+      "sha256": "e09204d534601116cdc9a8b971365043a6d4df869eff580e2318933dd4fbb013",
+      "bytes": 8777
+    },
+    {
+      "id": "audio-tone-o2",
+      "targetSignature": "be21900e68dabe8573e6c50367ddf3bc7d8f2921de90d557a8c169b8aa1fddd9",
+      "filename": "o2.mp3",
+      "exampleTone": null,
+      "sha256": "0383aae6a66ccefc5272f619cd038a5581a0be127af8dfc5f47c3eb01ee7db8d",
+      "bytes": 10057
+    },
+    {
+      "id": "audio-tone-o3",
+      "targetSignature": "09637135e9b363a8ea8f903f759d5b91aac9d12b8ce3a0c1bc1c666fabf05444",
+      "filename": "o3.mp3",
+      "exampleTone": null,
+      "sha256": "2dee2de6f690405952d6f4aa8e568dd77eea7e6c569ab36b2e2a0f4c0b34440d",
+      "bytes": 9143
+    },
+    {
+      "id": "audio-tone-o4",
+      "targetSignature": "75990ba88485bcb3849d7639e5f708431c524922d8ca4e4bc0f4a2eeb5ec1593",
+      "filename": "o4.mp3",
+      "exampleTone": null,
+      "sha256": "d4c9d9a7cdfa1859626cd5f822b712cf53c8088511903972ca9a52680ee07350",
+      "bytes": 7131
+    },
+    {
+      "id": "audio-tone-e1",
+      "targetSignature": "90828d9a6ef989b8e5b6cba888bf4322a7a00b3724c4e6a4e3e3bc764e0079df",
+      "filename": "e1.mp3",
+      "exampleTone": null,
+      "sha256": "491d969ac086b39699f5d83301aa7f95442b52aefe0b1a513b09849976e5c531",
+      "bytes": 7680
+    },
+    {
+      "id": "audio-tone-e3",
+      "targetSignature": "e26d92b3e8200714ba2eb9c196200c7e988a2932f53afd66e118603b69c7e634",
+      "filename": "e3.mp3",
+      "exampleTone": null,
+      "sha256": "40f8ae25312435e10836ea6d4cf4292ebf89785c40f8ca31b83997928ae0f4cb",
+      "bytes": 9874
+    },
+    {
+      "id": "audio-tone-e4",
+      "targetSignature": "44a849d7c1e4e34f21adacc09aa146489e2ad7ee9d43a1dd67d563274004780f",
+      "filename": "e4.mp3",
+      "exampleTone": null,
+      "sha256": "de0095181a6f4ecc7f43c38358f9aad52f30f0a39447fb725f8a01d01fd6867d",
+      "bytes": 7680
     }
   ]
 }

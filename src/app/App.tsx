@@ -332,8 +332,6 @@ export function App() {
   const [lessonChoice, setLessonChoice] = useState('');
   const [lessonViewId, setLessonViewId] = useState<string | null>(null);
   const [learningAudio, setLearningAudio] = useState<LearningAudio | null>(null);
-  const voice = useLearningVoice();
-  const { play: playVoice, stop: stopVoice } = voice;
   const voiceStarted = useRef(false);
 
   useEffect(() => {
@@ -434,6 +432,8 @@ export function App() {
     ? active.tasks.findIndex((task: Json) => !active.results?.[task.instanceId])
     : -1;
   const task = active && taskIndex >= 0 ? active.tasks[taskIndex] : null;
+  const voice = useLearningVoice(task?.instanceId ?? null);
+  const { play: playVoice, stop: stopVoice } = voice;
   const question = task?.exercise;
   const blendPreview =
     question?.type === 'blend-choice' && task?.instanceId === blendDraft?.instanceId
@@ -743,7 +743,9 @@ export function App() {
             {question.type === 'listen-choice'
               ? '听音发现站'
               : question.type === 'tone-choice'
-                ? '声调观察站'
+                ? question.audioRef
+                  ? '声调听辨站'
+                  : '声调观察站'
                 : question.type === 'blend-choice'
                   ? '拼读组合站'
                   : '字形发现站'}

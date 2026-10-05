@@ -172,6 +172,11 @@ export function validateCurriculum(data, schema, { sourceIds = [], release = fal
   // the old seed-bank numbers when exercises are added or removed.
   const coverage = data.coverage;
   if (coverage) {
+    assert(
+      coverage.toneListeningExerciseCount ===
+        data.exercises.filter((q) => q.type === 'tone-choice' && q.audioRef).length,
+      'coverage: stale tone listening count',
+    );
     assert(coverage.exerciseCount === data.exercises.length, 'coverage: stale exercise count');
     assert(
       coverage.objectiveExerciseCount ===
