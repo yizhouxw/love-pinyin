@@ -21,7 +21,10 @@ def test_same_exercise_credit_is_atomic_per_shanghai_day_across_devices(paired_c
             == 200
         )
 
-        before_midnight = datetime(2026, 9, 27, 15, 59, 59, tzinfo=UTC)
+        # Keep the frozen instant after the fixture's real last-observed time,
+        # while staying on the same Asia/Shanghai boundary across run dates.
+        utc_day = datetime.now(UTC).date() + timedelta(days=1)
+        before_midnight = datetime(utc_day.year, utc_day.month, utc_day.day, 15, 59, 59, tzinfo=UTC)
 
         class ControlledDateTime(datetime):
             value = before_midnight
@@ -89,4 +92,9 @@ def test_same_exercise_credit_is_atomic_per_shanghai_day_across_devices(paired_c
         credits_by_day = defaultdict(int)
         for row in rows:
             credits_by_day[row["business_date"]] += row["due_credit"]
-        assert dict(credits_by_day) == {"2026-09-27": 1, "2026-09-28": 1}
+        first_business_day = (before_midnight + timedelta(hours=8)).date()
+        next_business_day = first_business_day + timedelta(days=1)
+        assert dict(credits_by_day) == {
+            first_business_day.isoformat(): 1,
+            next_business_day.isoformat(): 1,
+        }
