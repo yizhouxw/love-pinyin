@@ -2269,6 +2269,9 @@ function ParentPanel({
         {importPreview && (
           <div className="import-preview" aria-label="备份导入预览">
             <strong>{importFileName} · 已通过格式检查</strong>
+            {importPreview.migratedFromContentVersion && (
+              <p>这份备份来自较早课程，恢复后会保留当时的题目和成绩。</p>
+            )}
             {importPreview.migratedFromSchemaVersion && (
               <p>
                 这份 schema v{importPreview.migratedFromSchemaVersion}{' '}

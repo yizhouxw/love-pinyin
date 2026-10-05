@@ -15,6 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from server import source_audio
 from server.content import load_curriculum, map_by_id
+from server.content_history import compatible_revision, exercises_for_revision
 from server.domain import (
     Event,
     PracticeCompletion,
@@ -685,7 +686,8 @@ def _validate_backup(value: object) -> dict:
     _require(backup["schemaVersion"] == 5, "BACKUP_VERSION_UNSUPPORTED")
     curriculum = load_curriculum()
     _require(
-        backup["contentVersion"] == curriculum["contentVersion"], "CONTENT_VERSION_UNSUPPORTED"
+        compatible_revision(backup["contentVersion"], curriculum["contentVersion"]),
+        "CONTENT_VERSION_UNSUPPORTED",
     )
     _require(backup["masteryRuleVersion"] == 1, "MASTERY_RULE_VERSION_UNSUPPORTED")
     _parse_datetime(backup["exportedAt"], "BACKUP_TIME_INVALID")
@@ -744,7 +746,7 @@ def _validate_backup(value: object) -> dict:
             "BACKUP_DUPLICATE_ID",
         )
         _require(
-            row["contentVersion"] == backup["contentVersion"]
+            compatible_revision(row["contentVersion"], backup["contentVersion"])
             and row["status"] in {"active", "finished"},
             "BACKUP_SESSION_INVALID",
         )
@@ -788,7 +790,13 @@ def _validate_backup(value: object) -> dict:
             "BACKUP_REFERENCE_INVALID",
         )
         _require(
-            row["content_version"] == backup["contentVersion"] and row["session_id"] in sessions,
+            row["session_id"] in sessions
+            and row["content_version"] == sessions[row["session_id"]]["contentVersion"],
+            "BACKUP_REFERENCE_INVALID",
+        )
+        historical = exercises_for_revision(row["content_version"]).get(row["exercise_id"])
+        _require(
+            historical is not None and historical["lessonId"] == row["lesson_id"],
             "BACKUP_REFERENCE_INVALID",
         )
         _require(type(row["position"]) is int and row["position"] >= 0, "BACKUP_INSTANCE_INVALID")
@@ -833,7 +841,11 @@ def _validate_backup(value: object) -> dict:
             "BACKUP_DUPLICATE_ID",
         )
         attempt_ids.add(row["id"])
-        exercise = exercises.get(row["exercise_id"])
+        original_instance = instances.get(row["instance_id"])
+        _require(original_instance is not None, "BACKUP_REFERENCE_INVALID")
+        exercise = exercises_for_revision(original_instance["content_version"]).get(
+            row["exercise_id"]
+        )
         _require(
             bool(exercise)
             and row["knowledge_id"] == exercise["primaryKnowledgeId"]
@@ -968,7 +980,11 @@ def _validate_backup(value: object) -> dict:
             "BACKUP_ASSESSMENT_INVALID",
         )
         _parse_datetime(row["createdAt"], "BACKUP_TIME_INVALID")
-    return backup
+    return {
+        **backup,
+        "contentVersion": curriculum["contentVersion"],
+        "profile": {**backup["profile"], "contentVersion": curriculum["contentVersion"]},
+    }
 
 
 def _migrate_v2_backup(value: dict) -> dict:
@@ -1093,6 +1109,9 @@ async def import_preview(request: Request, device: dict = Depends(parent)) -> di
     return {
         "previewToken": token,
         "sha256": digest,
+        "migratedFromContentVersion": payload.get("contentVersion")
+        if payload.get("contentVersion") != backup["contentVersion"]
+        else None,
         "migratedFromSchemaVersion": payload.get("schemaVersion")
         if payload.get("schemaVersion") in {2, 3, 4}
         else None,
@@ -1127,7 +1146,6 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
     db.execute("DELETE FROM review_plans WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM assessment_summaries WHERE household_id=?", (household_id,))
 
-    exercises = map_by_id("exercises")
     instance_groups: dict[str, list[dict]] = defaultdict(list)
     for instance in backup["exerciseInstances"]:
         instance_groups[instance["session_id"]].append(instance)
@@ -1135,7 +1153,9 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
         tasks = [
             {
                 "instanceId": item["id"],
-                "exercise": _public_exercise(exercises[item["exercise_id"]]),
+                "exercise": _public_exercise(
+                    exercises_for_revision(item["content_version"])[item["exercise_id"]]
+                ),
             }
             for item in sorted(instance_groups[session["id"]], key=lambda row: row["position"])
         ]
@@ -1610,7 +1630,7 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
         for item in attempts
         if item["attempt_id"] in result_by_attempt
     }
-    exercises = map_by_id("exercises")
+    exercises = exercises_for_revision(row["content_version"])
     for item in attempts:
         if item["attempt_id"] and item["instance_id"] not in results:
             exercise = exercises[item["exercise_id"]]
@@ -1782,7 +1802,7 @@ def mark_hint(instance_id: str, device: dict = Depends(mutable)) -> dict:
                 "UPDATE household SET revision=revision+1 WHERE id=?",
                 (device["household_id"],),
             )
-    q = map_by_id("exercises")[row["exercise_id"]]
+    q = exercises_for_revision(row["content_version"])[row["exercise_id"]]
     return {
         "hintUsed": True,
         "answer": q["answer"],
@@ -1891,7 +1911,7 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
             "SELECT 1 FROM skipped_instances WHERE instance_id=?", (instance_id,)
         ).fetchone():
             raise HTTPException(409, detail={"code": "INSTANCE_ALREADY_SKIPPED"})
-        question = map_by_id("exercises").get(instance["exercise_id"])
+        question = exercises_for_revision(instance["content_version"]).get(instance["exercise_id"])
         if not question or question["type"] == "read-aloud":
             raise HTTPException(409, detail={"code": "EXERCISE_NOT_READY"})
         option_ids = {option["id"] for option in question["options"]}

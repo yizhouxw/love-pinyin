@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "revisions": [
+    {
+      "contentVersion": "2026.09.25-draft.2",
+      "file": "2026.09.25-draft.2.json",
+      "sourceCommit": "3ab6be109a1dbbf9f09007a1c29e8a6acee3f0e6",
+      "sha256": "b8067eb0e8c359ed052fce487f9ac23d4d12eed4ffc98a18695e48c779872d39"
+    },
+    {
+      "contentVersion": "2026.10.05-draft.3",
+      "file": "2026.10.05-draft.3.json",
+      "sourceCommit": "fcaf59edde431d5f350e0cb6433a0b7167a800b9",
+      "sha256": "444655cd30fa041c6dc36108943bd24ec20d9adbf8a61fa7133f949811f2e8ea"
+    },
+    {
+      "contentVersion": "2026.10.05-draft.4",
+      "file": "2026.10.05-draft.4.json",
+      "sourceCommit": "f99b643a844d55ef4c3cb4b629593fb6be45f7f5",
+      "sha256": "2580723a6b6929e39bad465fceb0f9f494ba2d15242627f55f4d064d3c03b071"
+    },
+    {
+      "contentVersion": "2026.10.05-draft.5",
+      "file": "2026.10.05-draft.5.json",
+      "sourceCommit": "6c8348a2bafe968ee281a429e4664e3bbeb13a03",
+      "sha256": "c662828ea2e2ec2b027cebd6005a43da52a5de6bf987aee328d174adfb4b572c"
+    },
+    {
+      "contentVersion": "2026.10.05.6",
+      "file": "2026.10.05.6.json",
+      "sourceCommit": "a60cab290643b11de576431c24cd01a15b484901",
+      "sha256": "6e53ad90a375c38dc5bda0e741d1ab2f9286e88c2c4c4127ec89cedf1fe48206"
+    },
+    {
+      "contentVersion": "2026.10.05.7",
+      "file": "2026.10.05.7.json",
+      "sourceCommit": "54a51b49d63f9424cb85eb13ee7f61463483fef0",
+      "sha256": "955833f196fe3c78c7c16723bf2c70d25300067fed80654f9f7d680a69ed120b"
+    },
+    {
+      "contentVersion": "2026.10.05.8",
+      "file": "2026.10.05.8.json",
+      "sourceCommit": "ad9ff8e25feb7c4900a1b95a1aed3bfb32966ec9",
+      "sha256": "90f4944df72c933fc754195432e4124fa5523f4e711cbaf4df0a9c821034690c"
+    },
+    {
+      "contentVersion": "2026.10.05.9",
+      "file": "2026.10.05.9.json",
+      "sourceCommit": "052cd779a3a8a7dd2fd2732bf17e695459273311",
+      "sha256": "1d65413877e0dc70e4504d420a50ebcc316fdd45963ddb2d73c2ed48e53a3a75"
+    },
+    {
+      "contentVersion": "2026.10.05.10",
+      "file": "2026.10.05.10.json",
+      "sourceCommit": "ba245d8e8ed3910832a756b17611604016577983",
+      "sha256": "61f414cce62b0322944c18deb9e97b8868c87580519dba4ecca063075059c04f"
+    },
+    {
+      "contentVersion": "2026.10.05.11",
+      "file": "2026.10.05.11.json",
+      "sourceCommit": "ed900051e941247dc1178d0f31a856319b3413b0",
+      "sha256": "16d69589f4f749803b5a239edfcaa1292ce495ad4a9d93bd2e4474629c2b2b6a"
+    }
+  ]
+}

@@ -139,6 +139,9 @@ def test_resumed_lesson_keeps_frozen_identity_across_content_update(paired_clien
     changed["answer"]["optionId"] = next(
         o["id"] for o in changed["options"] if o["id"] != original_answer
     )
+    from server import content
+
+    monkeypatch.setattr(content, "load_curriculum", lambda: newer)
     monkeypatch.setattr(api, "load_curriculum", lambda: newer)
     after_update = client.get("/api/v1/sessions/current").json()
     assert after_update["contentVersion"] == original["contentVersion"]
