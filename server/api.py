@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
+from server import private_standard_audio
 from server.audio_assets import _registered_path, _verified_file, audio_response
 from server.content import load_curriculum, map_by_id
 from server.domain import (
@@ -166,7 +167,8 @@ def _available_standard_audio(content: dict) -> set[str]:
             if size:
                 available.add(asset["id"])
         except HTTPException:
-            continue
+            if private_standard_audio.available(asset):
+                available.add(asset["id"])
     return available
 
 
@@ -398,6 +400,10 @@ def curriculum(device: dict = Depends(paired)) -> dict:
         )
     }
     result["exercises"] = [_public_exercise(item) for item in data["exercises"]]
+    audio_ids = _available_standard_audio(data)
+    result["audioRequirements"] = [
+        {**asset, "available": asset["id"] in audio_ids} for asset in data["audioRequirements"]
+    ]
     return result
 
 
@@ -407,7 +413,14 @@ def get_audio_asset(
     range_header: str | None = Header(default=None, alias="Range"),
     device: dict = Depends(paired),
 ) -> Response:
-    return audio_response(asset_id, load_curriculum()["audioRequirements"], range_header)
+    requirements = load_curriculum()["audioRequirements"]
+    try:
+        return audio_response(asset_id, requirements, range_header)
+    except HTTPException as error:
+        matches = [asset for asset in requirements if asset["id"] == asset_id]
+        if error.status_code != 404 or len(matches) != 1:
+            raise
+        return private_standard_audio.audio_response(matches[0], range_header)
 
 
 @router.get("/learning-audio")

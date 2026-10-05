@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="review-token" content="__TOKEN__" />
+    <title>爱拼音 · 本机审音台</title>
+    <link rel="stylesheet" href="/review.css" />
+    <script type="module" src="/review.js"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p>爱拼音 · 仅在这台 Mac 上制作</p>
+        <h1>把课程录音整理成拼音标准音</h1>
+        <p>
+          先听原音和裁切结果，再核对目标。转写只是机器草稿；保存草稿不会开放给孩子。家庭启用不代表可以公开分发。
+        </p>
+      </header>
+      <p id="status" role="status">正在读取本机素材…</p>
+      <fieldset id="workspace">
+        <section>
+          <h2>一、找到声音</h2>
+          <label>课程源录音<select id="source"></select></label
+          ><label
+            >筛选候选转写<input
+              id="search"
+              type="search"
+              placeholder="例如：声母、韵母；不依据转写自动确认" /></label
+          ><label>粗切候选<select id="candidate" size="6"></select></label>
+          <p id="transcript"></p>
+          <audio id="original" controls preload="metadata"></audio>
+          <p>候选可能含讲解或多个音，请试听后缩小起止范围。</p>
+        </section>
+        <section>
+          <h2>二、试听并保存裁切</h2>
+          <div class="bounds">
+            <label>开始（秒）<input id="start" type="number" min="0" step="0.01" value="0" /></label
+            ><label
+              >结束（秒）<input id="end" type="number" min="0.1" step="0.01" value="1"
+            /></label>
+          </div>
+          <div class="actions">
+            <button id="seek">从开始位置听原音</button><button id="preview">试听裁切</button>
+          </div>
+          <audio id="preview-audio" controls></audio
+          ><label
+            >对应的标准音目标<select id="target">
+              <option value="">请选择实际听到的拼音目标</option>
+            </select></label
+          >
+          <p id="draft-status">尚未保存当前裁切</p>
+          <button id="save">保存草稿</button>
+        </section>
+        <section>
+          <h2>三、核对后启用</h2>
+          <p>
+            请分别由教学审音者和音质核对者听过当前裁切后填写。不要按文件名或转写结果代签；如不能确定，请保留草稿。
+          </p>
+          <label>教学审音者<input id="teaching" autocomplete="off" maxlength="100" /></label
+          ><label
+            >音质核对者（另一人）<input id="quality" autocomplete="off" maxlength="100" /></label
+          ><label class="check"
+            ><input
+              id="target-ok"
+              type="checkbox"
+            />已试听并核对拼音、声调及呼读／本音类型与所选目标一致</label
+          ><label class="check"
+            ><input
+              id="quality-ok"
+              type="checkbox"
+            />已试听并确认没有截断、额外讲解或明显杂音</label
+          ><label class="check"
+            ><input
+              id="private-ok"
+              type="checkbox"
+            />只用于本家庭，不把原音、裁切或核对记录公开分发</label
+          >
+          <div class="actions">
+            <button id="activate" disabled>启用家庭标准音</button
+            ><button id="deactivate" disabled>从家庭练习撤下</button>
+          </div>
+          <p id="active-status"></p>
+        </section>
+      </fieldset>
+      <footer>
+        源文件不会修改。裁切、草稿和核对记录保存在 private/；未启用的声音不会进入孩子的听辨练习。
+      </footer>
+    </main>
+  </body>
+</html>

@@ -126,6 +126,13 @@ def audio_response(asset_id: str, requirements: list[dict], range_header: str | 
     if len(matches) != 1:
         raise _not_found()
     path, mime_type, digest = _registered_path(matches[0])
+    return file_audio_response(path, mime_type, digest, range_header)
+
+
+def file_audio_response(
+    path: Path, mime_type: str, digest: str, range_header: str | None
+) -> Response:
+    """Internal helper; callers must resolve a registered, permitted asset first."""
     audio, size = _verified_file(path, digest)
     headers = {
         "Accept-Ranges": "bytes",

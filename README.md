@@ -112,3 +112,9 @@ uv run --locked --group audio-asr python -m scripts.transcribe_audio_candidates 
 ## 开源
 
 项目代码、文档和原创题目采用 [MIT](LICENSE)。引用教材/政策链接不授予其素材的再分发权；示范音、字体、模型、第三方依赖各自保留许可证，详见 [第三方与资产说明](THIRD_PARTY_NOTICES.md)。目前只有本地Git仓库，没有自动创建远程仓库或公开发布。
+
+## 将课程录音制作成家庭标准音
+
+运行`npm run audio:review -- --source '/Users/chad/Documents/1汉语拼音音频' --candidates '/Users/chad/Documents/1汉语拼音音频/提取候选_20260927'`，打开[本机审音台](http://127.0.0.1:8019)。已导入后只需`npm run audio:review`。
+
+可听原音、调整裁切边界、试听并保存草稿，教学与音质两人确认后才开放到听辨练习；不能将机器转写自动当作标准音。撤下即时影响后续请求。数据在`private/`，不随MIT代码分发。步骤和验收边界见[音频制作](docs/content/audio-production.md)。

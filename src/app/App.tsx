@@ -105,6 +105,7 @@ type Curriculum = {
 };
 type AudioRequirement = {
   id: string;
+  available?: boolean;
   knowledgeIds: string[];
   status: string;
   reviewStatus: string;
@@ -1398,9 +1399,12 @@ function LessonDetail({
             const audio = audioRequirements.find(
               (asset) =>
                 asset.knowledgeIds.includes(item.id) &&
-                asset.status === 'approved' &&
-                asset.reviewStatus === 'approved' &&
-                Boolean(asset.file && asset.sha256 && asset.rightsEvidence && asset.reviewEvidence),
+                (asset.available ??
+                  (asset.status === 'approved' &&
+                    asset.reviewStatus === 'approved' &&
+                    Boolean(
+                      asset.file && asset.sha256 && asset.rightsEvidence && asset.reviewEvidence,
+                    ))),
             );
             const statusLabel =
               state?.status === 'mastered'

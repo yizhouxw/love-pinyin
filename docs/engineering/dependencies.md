@@ -36,3 +36,7 @@ npm全部传递依赖的许可证声明见[自动清单](dependency-inventory.js
 一手资料：[Vite要求](https://vite.dev/guide/)、[uv项目与锁文件](https://docs.astral.sh/uv/guides/projects/)、[FastAPI部署](https://fastapi.tiangolo.com/deployment/)、[librosa](https://librosa.org/doc/latest/index.html)、[Playwright](https://playwright.dev/docs/intro)。版本和许可证通过npm/PyPI包元数据及实际安装核对，详见锁文件，不靠搜索片段推定。
 
 已观察到的非阻塞提示：npm未执行可选fsevents安装脚本（未放宽脚本授权，Vite构建/测试已可运行）；FastAPI的上游TestClient对httpx与AnyIO接口发出弃用提醒，当前2项API测试通过，升级测试客户端时再处理，不屏蔽警告。
+
+## 本机私有音频制作依赖
+
+REVIEW-01–05未增加npm/uv包：服务使用既有锁定FastAPI/Uvicorn，裁切使用Python3.12标准库`wave`（PCM帧，不做合成拼音）。Mac源音解码调用操作系统自带`/usr/bin/afconvert`，官方来源是本机Apple系统安装，不复制或分发二进制，适用系统软件许可。该系统组件随macOS升级，不能通过npm/uv锁版；部署检查必须保留实际系统版本与13份MP3转换结果。开发机macOS27实装成功，其他系统不能声称已支持。运行时学习API不需要afconvert或ASR模型。
