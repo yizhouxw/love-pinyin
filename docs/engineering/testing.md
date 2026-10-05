@@ -32,3 +32,7 @@ Playwright覆盖当前随锁文件安装的Chromium/Firefox/WebKit、iPad/iPhone
 `validate:release` 当前应失败：草稿未教师批准、音频未制作、最新课标条文差异未审、每知识点题库需扩展。首版已暂缓发音评测，不再以评分模型/儿童样本门禁阻塞发布。
 
 发音样本指标和设备预算以 SPEC-000 为准，性能预算是验收目标而非实测结论。持权样本保存在私有测试位置，不进入开源仓库；只入库匿名聚合结果与脚本。
+
+## 真实 B/S 桌面数据往返
+
+`npm run test:e2e:live` 构建前端后，在 Chromium 和 WebKit 桌面浏览器分别执行 R-012-GUI-01：通过页面配对与作答、导出真实 JSON、拒绝损坏备份且保留已有记录、确认删除、预览并确认导入、刷新后再次导出并比较原始作答和会话。它不拦截或模拟 API；每个测试启动真实 FastAPI、独立 SQLite 临时目录和系统分配的 loopback 端口，结束后停止服务并清理该目录。已纳入 `verify:all` 与 CI。失败保留 Playwright trace 和截图到忽略的 `test-results/`，不记录家庭真实数据。此项与模拟 API 的跨视口测试互补，不是 LAN/真机验收。

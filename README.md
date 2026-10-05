@@ -81,14 +81,15 @@ uv run --locked --group audio-asr python -m scripts.transcribe_audio_candidates 
 
 ## 验证命令
 
-| 命令                       | 内容                                           |
-| -------------------------- | ---------------------------------------------- |
-| `npm run verify`           | 格式、lint、TS、内容Schema、内容回归、前端构建 |
-| `npm run verify:server`    | Python lint/format/API测试                     |
-| `npm run test:e2e`         | Chromium/Firefox/WebKit与移动/平板模拟         |
-| `npm run verify:all`       | 前后端+本机浏览器检查（Firefox例外见下）       |
-| `npm run validate:release` | 内容/音频授权与审校发布门禁；当前应失败        |
-| `npm run licenses`         | 从npm锁文件更新依赖许可证清单                  |
+| 命令                       | 内容                                                    |
+| -------------------------- | ------------------------------------------------------- |
+| `npm run verify`           | 格式、lint、TS、内容Schema、内容回归、前端构建          |
+| `npm run verify:server`    | Python lint/format/API测试                              |
+| `npm run test:e2e`         | Chromium/Firefox/WebKit与移动/平板模拟                  |
+| `npm run test:e2e:live`    | Chromium/WebKit 桌面 GUI 与真实 Mac API/SQLite 数据恢复 |
+| `npm run verify:all`       | 前后端+本机浏览器检查（Firefox例外见下）                |
+| `npm run validate:release` | 内容/音频授权与审校发布门禁；当前应失败                 |
+| `npm run licenses`         | 从npm锁文件更新依赖许可证清单                           |
 
 本机 macOS 27 的 Firefox 自动化启动存在与上游已知问题一致的限制。`test:e2e:local` / `verify:all` 会明确说明并只跑5个 Chromium/WebKit 项目；完整6项目保留在 `test:e2e` 与 Linux CI。尚无远程 CI 运行结果，见[测试说明](docs/engineering/testing.md)。
 

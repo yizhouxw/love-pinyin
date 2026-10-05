@@ -35,10 +35,11 @@
     "backup:local": "uv run --locked python -m server.backup",
     "test:server": "uv run --locked pytest",
     "verify:server": "uv run --locked ruff check . && uv run --locked ruff format --check . && uv run --locked pytest",
-    "verify:all": "npm run verify && npm run verify:server && npm run test:e2e:local",
+    "verify:all": "npm run verify && npm run verify:server && npm run test:e2e:local && npm run test:e2e:live",
     "audio:doctor": "uv run --locked --group assessment-poc python scripts/check_audio_runtime.py",
     "licenses:python": "uv run --locked --group assessment-poc python scripts/python-licenses.py",
-    "test:e2e:local": "node scripts/e2e-local.mjs"
+    "test:e2e:local": "node scripts/e2e-local.mjs",
+    "test:e2e:live": "npm run build && playwright test --config playwright.live.config.ts"
   },
   "dependencies": {
     "react": "19.3.0",
