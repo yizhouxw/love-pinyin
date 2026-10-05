@@ -85,3 +85,9 @@ v2完整运行已通过：实际Chrome20分44.0秒、21轮126题；Playwright We
 此次只完善测试观测与验收记录，产品服务和真实家庭数据保持原状。该结果不补齐原生Safari/Windows/Firefox、移动真机、家庭LAN/断WAN、系统运维与儿童试用缺口，整体目标继续保持未完成。
 
 最终工程验证：npm run verify:all退出0，63项前端/工具、276项后端、30项视口模拟及14项真实服务GUI通过；npm run validate:release通过14课/83知识项/476题。Firefox本机限制仍明确记录，未计为通过。日志private/verify-soak01-final.log与private/release-soak01-final.log。loopback健康接口仍为2026.10.05.15/sqlite，未重启产品服务。
+
+## 原生Safari基础流程 DESKTOP-02
+
+Safari27.0真实界面已验证配对、课程录音/标准音、手动停止重播、跨页切换、Option-Tab/Return作答、首次错答修正、整轮6题及刷新保留。家长页与只读SQLite一致：6条答案、5次首次正确、1次首次错误；专用窗口、隔离服务和临时库均已清理。详见[验收记录](engineering/desktop-safari-acceptance.md)。仅本机loopback、第1课听辨/声调与局部键盘路径通过，HTTPS、全部题型、文件操作及其他设备仍不扩大结论。
+
+实际操作发现听辨204题中116题把正确答案放在第一项，当前界面保持内容顺序；此偏差待按SPEC-003独立修正。该发现不是添加审核流程，修复需保持选项ID、首次成绩及刷新/历史会话语义。本轮只改文档，无新依赖、家庭数据或产品服务变化。

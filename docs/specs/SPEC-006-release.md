@@ -116,3 +116,11 @@ SOAK-01采样完整性补充：统计standardPlays与standard=true的playing事�
 SOAK-01完成证据：观测器v2完整重跑退出0；实际Chrome1,244,003ms、21轮126题，Playwright WebKit1,257,552ms、20轮120题，均全14课且每轮活动资源归零、真实导出数匹配、无页面错误/第三方请求。两者标准音57次与延迟样本57个一致，首次22.7/28ms、p95为24/35ms。Chrome GC后两窗口堆中位数增长126,604字节（2.12%），保留逐轮数据，不宣称全部内存无增长。两报告completed与qualifiesFor20MinuteRun均true，原始JSON、日志、截图已归档private/soak01-v2-final；完整方法与限制见[长测结果](../engineering/audio-soak-results.md)。旧v1结果保留且不与本次混合。该切片通过不替代原生Safari/Windows/移动设备或家庭LAN验收。
 
 最终工程验证：npm run verify:all退出0，63项前端/工具、276项后端、30项视口模拟及14项真实服务GUI通过；npm run validate:release通过14课/83知识项/476题。Firefox本机限制仍明确记录，未计为通过。日志private/verify-soak01-final.log与private/release-soak01-final.log。loopback健康接口仍为2026.10.05.15/sqlite，未重启产品服务。
+
+## DESKTOP-02：原生Safari桌面基础学习流程
+
+使用本机实际Safari、新建专用窗口与独立临时FastAPI/SQLite，通过可见界面生成配对码、连接、播放课程和PinYinSound、完成六题、查看家长记录、刷新后核对配对及数据保留。至少一次键盘激活与鼠标作答；声音播放状态、停止/重听和跨页停止需要可见证据。实际版本、系统、访问方式及输入范围登记，不改变用户Safari偏好、安全设置、原有标签页或真实家庭数据。
+
+后台只读校对隔离数据库，写入必须经UI；记录实际首次结果，不为了通过修改答案。录音/麦克风和审批流程均不出现。此切片为loopback基础流程，不能声称HTTPS信任、完整键盘矩阵、全部题型、iPad Safari或Windows已验收。操作受用户桌面控制中断时保留已完成证据并明确未完成部分，不冒充产品故障。
+
+DESKTOP-02完成证据：原生Safari27.0在独立loopback服务完成配对、实际课程/a/e播放、音频互斥与停止重播、Option-Tab/Return作答、错答修正、六题小结、刷新配对及家长明细保留。只读SQLite有6条实际答案、5次首次正确、1次首次错误，唯一会话finished，无纠正重复记录。专用窗口已关闭、测试服务正常停止、临时数据库移除；详见[Safari验收](../engineering/desktop-safari-acceptance.md)。全部浏览器/设备矩阵仍未完成；此次还登记听辨选项第一位置偏差，留待SPEC-003独立修正。
