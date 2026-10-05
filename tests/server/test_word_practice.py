@@ -48,7 +48,9 @@ def test_word_questions_rotate_save_and_restore(paired_client, registered_audio_
             qid = task["exercise"]["id"]
             if qid in wanted and qid not in found:
                 q = wanted[qid]
-                assert task["exercise"]["options"] == q["options"]
+                assert {o["id"]: o for o in task["exercise"]["options"]} == {
+                    o["id"]: o for o in q["options"]
+                }
                 assert task["exercise"].get("pictureId") == q.get("pictureId")
                 result = post(
                     client,

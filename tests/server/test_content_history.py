@@ -15,7 +15,7 @@ def headers(client):
     return {"X-LP-CSRF": client.cookies.get("lp_csrf")}
 
 
-def historical_backup(client, monkeypatch):
+def historical_backup(client, monkeypatch, legacy_ids=True):
     current = content.load_curriculum()
     older = deepcopy(current)
     older["contentVersion"] = OLD
@@ -24,6 +24,9 @@ def historical_backup(client, monkeypatch):
     for lesson in older["lessons"]:
         lesson["exerciseIds"] = [qid for qid in lesson["exerciseIds"] if qid in ids]
     with monkeypatch.context() as patch:
+        if legacy_ids:
+            # Reproduce IDs produced by the historical application, before ordering v1.
+            patch.setattr(api, "OPTION_ORDER_V1_PREFIX", "")
         patch.setattr(content, "load_curriculum", lambda: older)
         patch.setattr(api, "load_curriculum", lambda: older)
         household = storage.ensure_household(OLD)
@@ -165,3 +168,18 @@ def test_corrupt_history_never_falls_back_to_current_questions(monkeypatch, tmp_
     finally:
         content_history.revision_index.cache_clear()
         content_history.archived_exercises.cache_clear()
+
+
+def test_v1_order_restores_from_historical_content_without_using_current_options(
+    paired_client, monkeypatch
+):
+    client = paired_client
+    backup = historical_backup(client, monkeypatch, legacy_ids=False)
+    frozen = client.get("/api/v1/sessions/current").json()["tasks"]
+    assert all(task["instanceId"].startswith("op1_") for task in frozen)
+    result = preview(client, backup)
+    assert result.status_code == 200
+    assert confirm(client, result.json()).status_code == 200
+    assert client.get("/api/v1/sessions/current").json()["tasks"] == frozen
+    old_labels = {option["id"]: option["label"] for option in frozen[1]["exercise"]["options"]}
+    assert old_labels["b"] == "in / ing"

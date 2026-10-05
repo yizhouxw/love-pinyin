@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import narration from '../../content/narration.json' with { type: 'json' };
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
@@ -78,7 +79,7 @@ test('BANK-05: final contrasts cover isolated vowels, spelling and nasal endings
         await audio;
         await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
         const choice = q.options.findIndex((o) => o.id === q.answer.optionId);
-        await page.locator('.game-option').nth(choice).press('Enter');
+        await optionById(page, q.options[choice]!.id).press('Enter');
         await expect(page.locator('.feedback')).toContainText('答对啦');
         const hint = narration.exercises[q.id as keyof typeof narration.exercises].hint;
         if (!playedHints.has(hint)) {

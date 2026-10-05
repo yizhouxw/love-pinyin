@@ -55,7 +55,10 @@ def test_grid_diagram_task_rotation_and_restore(paired_client, lesson_id):
         if found:
             break
         post(client, f"/api/v1/sessions/{session['id']}/finish")
-    assert found and found["exercise"]["options"] == question["options"]
+    assert found
+    assert {o["id"]: o for o in found["exercise"]["options"]} == {
+        o["id"]: o for o in question["options"]
+    }
     result = post(
         client,
         f"/api/v1/instances/{found['instanceId']}/answer",

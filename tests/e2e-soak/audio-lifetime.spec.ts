@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { writeFile } from 'node:fs/promises';
 import { platform, release } from 'node:os';
 import { expect } from '@playwright/test';
@@ -193,9 +194,7 @@ test('SOAK-01: sustained real learning releases media and records playback laten
         });
         if (question.audioRef)
           await page.getByRole('button', { name: '听拼音', exact: true }).click();
-        const choice = page
-          .locator('.game-option')
-          .nth(question.options.findIndex((o) => o.id === question.answer.optionId));
+        const choice = optionById(page, question.answer.optionId);
         await expect(choice).toBeEnabled({ timeout: 20_000 });
         await choice.click();
         if (question.type === 'blend-choice')

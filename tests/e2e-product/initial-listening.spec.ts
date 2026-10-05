@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
 import { test } from '../support/real-server';
@@ -71,7 +72,7 @@ test('BANK-04: real course rotation reaches b, q and sh syllable listening with 
         await audio;
         await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
         const choice = q.options.findIndex((o) => o.id === q.answer.optionId);
-        await page.locator('.game-option').nth(choice).press('Enter');
+        await optionById(page, q.options[choice]!.id).press('Enter');
         await expect(page.locator('.feedback')).toContainText('答对啦');
         await page.getByRole('button', { name: '听讲解', exact: true }).click();
         await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();

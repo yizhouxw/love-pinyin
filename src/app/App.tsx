@@ -921,6 +921,7 @@ function LearningApp() {
             {question.options.map((option: Json, index: number) => (
               <div className="option-with-voice" key={option.id}>
                 <button
+                  data-option-id={option.id}
                   className={`option game-option ${question.type} ${hint?.answer.optionId === option.id && !answer ? 'hinted' : ''} ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
                   disabled={
                     Boolean(answer && (answer.correct || corrected)) ||

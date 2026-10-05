@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import narration from '../../content/narration.json' with { type: 'json' };
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
@@ -96,7 +97,7 @@ test('BANK-07: spoken rules, independent option audio, blend confirmation and re
           }
         }
         const choice = q.options.findIndex((o) => o.id === q.answer.optionId);
-        await page.locator('.game-option').nth(choice).press('Enter');
+        await optionById(page, q.options[choice]!.id).press('Enter');
         if (q.type === 'blend-choice') {
           await expect(page.getByLabel('当前拼读预览')).toContainText(q.options[choice]!.label);
           expect(submitted).toHaveLength(before);

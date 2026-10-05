@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
@@ -48,7 +49,7 @@ for (const { knowledgeId, symbol, slice } of [
       await expect(page.locator('.play-nav strong')).toHaveText(`第 ${i + 1} / 2 关`);
       await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
       const answerIndex = q.options.findIndex((o) => o.id === q.answer.optionId);
-      await page.locator('.game-option').nth(answerIndex).click();
+      await optionById(page, q.options[answerIndex]!.id).click();
       if (q.type === 'blend-choice')
         await page.getByRole('button', { name: '确认拼读', exact: true }).click();
       await expect(page.locator('.feedback')).toContainText('答对啦');

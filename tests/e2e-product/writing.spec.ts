@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import writing from '../../content/writing.json' with { type: 'json' };
@@ -145,10 +146,7 @@ test('WRITE-01: graphical grid questions are reached and stored through real les
         }
         await expect(page.locator('.writing-option')).toHaveCount(3);
         await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
-        await page
-          .locator('.game-option')
-          .nth(wanted.options.findIndex((o) => o.id === wanted.answer.optionId))
-          .press('Enter');
+        await optionById(page, wanted.answer.optionId).press('Enter');
         await expect(page.locator('.feedback')).toContainText('答对啦');
         await page.screenshot({ path: test.info().outputPath(`${wanted.id}.png`), fullPage: true });
         reached.push(wanted.id);

@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
 import source from '../../content/pinyin-source.json' with { type: 'json' };
@@ -91,7 +92,7 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
     if (index === 0)
       await page.screenshot({ path: test.info().outputPath('real-listening.png'), fullPage: true });
     const choice = question.options.findIndex((o) => o.id === question.answer.optionId);
-    await page.locator('.game-option').nth(choice).click();
+    await optionById(page, question.options[choice]!.id).click();
     if (question.type === 'blend-choice')
       await page.getByRole('button', { name: '确认拼读', exact: true }).click();
     await expect(page.locator('.feedback')).toContainText('答对啦');

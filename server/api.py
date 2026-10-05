@@ -17,11 +17,13 @@ from server import source_audio
 from server.content import load_curriculum, load_illustrations, load_writing, map_by_id
 from server.content_history import compatible_revision, exercises_for_revision
 from server.domain import (
+    OPTION_ORDER_V1_PREFIX,
     Event,
     PracticeCompletion,
     business_date,
     calculate_mastery,
     next_review,
+    order_options,
     plan_practice,
 )
 from server.learning_audio import learning_audio_response, learning_audio_status, narration_scripts
@@ -149,12 +151,15 @@ def _require_parent(device: dict) -> dict:
     return device
 
 
-def _public_exercise(question: dict) -> dict:
-    return {
+def _public_exercise(question: dict, *, instance_id: str | None = None) -> dict:
+    result = {
         key: value
         for key, value in question.items()
         if key not in {"answer", "hint", "reviewStatus"}
     }
+    if instance_id is not None and "options" in result:
+        result["options"] = order_options(result["options"], instance_id)
+    return result
 
 
 def _available_standard_audio(content: dict) -> set[str]:
@@ -1156,7 +1161,8 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
             {
                 "instanceId": item["id"],
                 "exercise": _public_exercise(
-                    exercises_for_revision(item["content_version"])[item["exercise_id"]]
+                    exercises_for_revision(item["content_version"])[item["exercise_id"]],
+                    instance_id=item["id"],
                 ),
             }
             for item in sorted(instance_groups[session["id"]], key=lambda row: row["position"])
@@ -1454,7 +1460,7 @@ def start_review_session(knowledge_id: str, device: dict = Depends(mutable)) -> 
             raise HTTPException(409, detail={"code": "REVIEW_TODAY_EXHAUSTED"})
         tasks = []
         for q in available[:2]:
-            instance_id = secrets.token_urlsafe(18)
+            instance_id = OPTION_ORDER_V1_PREFIX + secrets.token_urlsafe(18)
             lesson_id = next(
                 lesson["id"] for lesson in content["lessons"] if q["id"] in lesson["exerciseIds"]
             )
@@ -1471,7 +1477,12 @@ def start_review_session(knowledge_id: str, device: dict = Depends(mutable)) -> 
                     session_id,
                 ),
             )
-            tasks.append({"instanceId": instance_id, "exercise": _public_exercise(q)})
+            tasks.append(
+                {
+                    "instanceId": instance_id,
+                    "exercise": _public_exercise(q, instance_id=instance_id),
+                }
+            )
         db.execute(
             """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
                tasks_json,review_knowledge_id) VALUES(?,?,?,?,?,?,?)""",
@@ -1553,7 +1564,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         )
         question_set = [by_id[exercise_id] for exercise_id in selected_ids]
         for q in question_set:
-            instance_id = secrets.token_urlsafe(18)
+            instance_id = OPTION_ORDER_V1_PREFIX + secrets.token_urlsafe(18)
             db.execute(
                 """INSERT INTO exercise_instances(
                    id,household_id,exercise_id,lesson_id,content_version,
@@ -1568,7 +1579,12 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                     session_id,
                 ),
             )
-            tasks.append({"instanceId": instance_id, "exercise": _public_exercise(q)})
+            tasks.append(
+                {
+                    "instanceId": instance_id,
+                    "exercise": _public_exercise(q, instance_id=instance_id),
+                }
+            )
         db.execute(
             """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,tasks_json)
                VALUES(?,?,?,?,?,?)""",

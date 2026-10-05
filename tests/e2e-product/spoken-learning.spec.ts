@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { readFile } from 'node:fs/promises';
 import { expect } from '@playwright/test';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
@@ -193,7 +194,11 @@ test('FEEDBACK-01: spoken correction retries without another answer or hint cred
   const choices = page.locator('.game-option');
   await expect(choices.first()).toBeEnabled({ timeout: 15_000 });
   await page.route('**/api/v1/voice/hint-*', (route) => route.abort('failed'));
-  await choices.nth(1).click();
+  const correctionQuestion = curriculum.exercises.find((q) => q.id === 'q-01-04')!;
+  const wrongId = correctionQuestion.options.find(
+    (o) => o.id !== correctionQuestion.answer.optionId,
+  )!.id;
+  await optionById(page, wrongId).click();
   await expect(page.locator('.feedback')).toContainText('再选一次');
   await expect(page.locator('.answer-explanation')).toContainText('第一声的声调记号是平平的一横');
   await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
@@ -204,7 +209,7 @@ test('FEEDBACK-01: spoken correction retries without another answer or hint cred
   await page.getByRole('button', { name: '听讲解', exact: true }).press('Enter');
   await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
   await expect(choices.first()).toBeEnabled();
-  await choices.first().press('Enter');
+  await optionById(page, correctionQuestion.answer.optionId).press('Enter');
   await expect(page.locator('.feedback')).toContainText('找到正确答案啦');
   expect(answerRequests).toHaveLength(1);
   expect(hintRequests).toEqual([]);
@@ -264,7 +269,7 @@ test('BANK-01: the former two-question nasal lesson completes six spoken tasks',
     await expect(page.locator('.play-nav strong')).toHaveText(`第 ${index + 1} / 6 关`);
     await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 15_000 });
     const choice = question.options.findIndex((option) => option.id === question.answer.optionId);
-    await page.locator('.game-option').nth(choice).click();
+    await optionById(page, question.options[choice]!.id).click();
     if (question.type === 'blend-choice')
       await page.getByRole('button', { name: '确认拼读', exact: true }).click();
     await expect(page.getByText('答对啦！', { exact: true })).toBeVisible();

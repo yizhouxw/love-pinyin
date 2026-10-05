@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
@@ -37,17 +38,17 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   const confirm = page.getByRole('button', { name: '确认拼读', exact: true });
   const undo = page.getByRole('button', { name: '撤销拼读选择', exact: true });
   await expect(options.first()).toBeEnabled({ timeout: 20000 });
-  await options.nth(wrongIndex).press('Enter');
+  await optionById(page, question.options[wrongIndex]!.id).press('Enter');
   await expect(confirm).toBeFocused();
   await expect(confirm).toBeInViewport();
   await expect(page.getByLabel('当前拼读预览')).toContainText(question.options[wrongIndex]!.label);
   await expect.poll(() => voices.some((url) => url.endsWith('/voice/ui-blend_ready'))).toBe(true);
   expect(submitted).toEqual([]);
   await undo.press('Enter');
-  await expect(options.nth(wrongIndex)).toBeFocused();
-  await expect(options.nth(wrongIndex)).toBeInViewport();
+  await expect(optionById(page, question.options[wrongIndex]!.id)).toBeFocused();
+  await expect(optionById(page, question.options[wrongIndex]!.id)).toBeInViewport();
   await expect(page.getByLabel('当前拼读预览')).toHaveCount(0);
-  await options.nth(correctIndex).press('Enter');
+  await optionById(page, question.options[correctIndex]!.id).press('Enter');
   await page.reload();
   await expect(page.getByLabel('当前拼读预览')).toHaveCount(0);
   await expect(page.locator('.play-nav')).toContainText('两题复习');
@@ -56,7 +57,7 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   expect(submitted).toEqual([]);
   await page.getByRole('button', { name: '听题目', exact: true }).click();
   await expect(options.first()).toBeEnabled({ timeout: 20000 });
-  await options.nth(wrongIndex).press('Enter');
+  await optionById(page, question.options[wrongIndex]!.id).press('Enter');
   await page.screenshot({ path: test.info().outputPath('blend-preview.png'), fullPage: true });
   const answerPattern = `**/instances/${session.tasks[0].instanceId}/answer`;
   await page.route(answerPattern, (route) => route.abort('failed'));
@@ -78,8 +79,8 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   expect(submitted[1]).toEqual(submitted[0]);
   // Feedback can render before the progress refresh releases the busy state.
   // Keyboard presses do not wait for enabled controls as mouse clicks do.
-  await expect(options.nth(correctIndex)).toBeEnabled();
-  await options.nth(correctIndex).press('Enter');
+  await expect(optionById(page, question.options[correctIndex]!.id)).toBeEnabled();
+  await optionById(page, question.options[correctIndex]!.id).press('Enter');
   await confirm.press('Enter');
   await expect(page.locator('.feedback')).toContainText('找到正确答案啦');
   expect(submitted).toHaveLength(2);

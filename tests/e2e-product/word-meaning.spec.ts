@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import illustrations from '../../content/illustrations.json' with { type: 'json' };
@@ -178,15 +179,12 @@ test('WORD-01: picture choices and contextual blending rotate, retry audio and p
           await page.getByRole('button', { name: '停止听选项 A', exact: true }).click();
         } else await expect(page.locator('.word-question-picture img')).toHaveCount(1);
         if (q.id === 'q-03-150') {
-          await page
-            .locator('.game-option')
-            .nth((correct + 1) % 3)
-            .press('Enter');
+          await optionById(page, q.options[(correct + 1) % 3]!.id).press('Enter');
           await expect(page.locator('.feedback')).toContainText('再选一次');
-          await expect(page.locator('.game-option').nth(correct)).toBeEnabled();
+          await expect(optionById(page, q.options[correct]!.id)).toBeEnabled();
         }
         const before = posts.length;
-        await page.locator('.game-option').nth(correct).press('Enter');
+        await optionById(page, q.options[correct]!.id).press('Enter');
         if (q.type === 'blend-choice') {
           expect(posts).toHaveLength(before);
           await expect(page.locator('.blend-preview')).toContainText(q.options[correct]!.label);

@@ -1,5 +1,6 @@
 """Deterministic rules for objective practice and spaced review."""
 
+import hashlib
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from typing import Literal
@@ -8,6 +9,26 @@ from zoneinfo import ZoneInfo
 OBJECTIVE_MODES = frozenset({"listen-choice", "symbol-choice", "tone-choice", "blend-choice"})
 MASTERY_RULE_VERSION = "mastery-v1"
 BUSINESS_TIMEZONE = ZoneInfo("Asia/Shanghai")
+
+
+OPTION_ORDER_V1_PREFIX = "op1_"
+
+
+def order_options(options: list[dict], instance_id: str) -> list[dict]:
+    """Freeze v1 display order by opaque instance ID; preserve legacy layouts.
+
+    This protocol must remain stable for backup/guest reconstruction. It does
+    not know the answer and never changes options or the authored collection.
+    """
+    if not (instance_id.startswith(OPTION_ORDER_V1_PREFIX) and len(instance_id) == 28):
+        return list(options)
+    return sorted(
+        options,
+        key=lambda option: (
+            hashlib.sha256(f"{instance_id}:{option['id']}".encode()).digest(),
+            option["id"],
+        ),
+    )
 
 
 @dataclass(frozen=True)

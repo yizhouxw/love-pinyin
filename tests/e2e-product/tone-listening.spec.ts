@@ -1,3 +1,4 @@
+import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
 import { test } from '../support/real-server';
@@ -59,23 +60,20 @@ test('TONE-01: course rotation reaches all twelve recorded tones with spoken fee
       const choice = question.options.findIndex((o) => o.id === question.answer.optionId);
       if (!wrongId) {
         wrongId = question.id;
-        await page
-          .locator('.game-option')
-          .nth((choice + 1) % 4)
-          .click();
+        await optionById(page, question.options[(choice + 1) % 4]!.id).click();
         await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
         await expect(page.getByRole('button', { name: '听讲解', exact: true })).toBeVisible({
           timeout: 20000,
         });
         expect(submitted).toHaveLength(1);
-        await page.locator('.game-option').nth(choice).press('Enter');
+        await optionById(page, question.options[choice]!.id).press('Enter');
         expect(submitted).toHaveLength(1);
         await page.screenshot({
           path: test.info().outputPath('four-tone-correction.png'),
           fullPage: true,
         });
       } else {
-        await page.locator('.game-option').nth(choice).press('Enter');
+        await optionById(page, question.options[choice]!.id).press('Enter');
         await expect(page.locator('.feedback')).toContainText('答对啦');
       }
       await page.getByRole('button', { name: '继续 →', exact: true }).click();

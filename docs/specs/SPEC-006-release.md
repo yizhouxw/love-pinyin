@@ -123,4 +123,4 @@ SOAK-01完成证据：观测器v2完整重跑退出0；实际Chrome1,244,003ms�
 
 后台只读校对隔离数据库，写入必须经UI；记录实际首次结果，不为了通过修改答案。录音/麦克风和审批流程均不出现。此切片为loopback基础流程，不能声称HTTPS信任、完整键盘矩阵、全部题型、iPad Safari或Windows已验收。操作受用户桌面控制中断时保留已完成证据并明确未完成部分，不冒充产品故障。
 
-DESKTOP-02完成证据：原生Safari27.0在独立loopback服务完成配对、实际课程/a/e播放、音频互斥与停止重播、Option-Tab/Return作答、错答修正、六题小结、刷新配对及家长明细保留。只读SQLite有6条实际答案、5次首次正确、1次首次错误，唯一会话finished，无纠正重复记录。专用窗口已关闭、测试服务正常停止、临时数据库移除；详见[Safari验收](../engineering/desktop-safari-acceptance.md)。全部浏览器/设备矩阵仍未完成；此次还登记听辨选项第一位置偏差，留待SPEC-003独立修正。
+DESKTOP-02完成证据：原生Safari27.0在独立loopback服务完成配对、实际课程/a/e播放、音频互斥与停止重播、Option-Tab/Return作答、错答修正、六题小结、刷新配对及家长明细保留。只读SQLite有6条实际答案、5次首次正确、1次首次错误，唯一会话finished，无纠正重复记录。专用窗口已关闭、测试服务正常停止、临时数据库移除；详见[Safari验收](../engineering/desktop-safari-acceptance.md)。全部浏览器/设备矩阵仍未完成；此次还登记听辨选项第一位置偏差，留待SPEC-004独立修正。
