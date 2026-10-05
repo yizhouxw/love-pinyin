@@ -72,3 +72,11 @@ RECOVERY-01：共享real-server测试服务现在可在同一临时数据库与�
 DESKTOP-01使用实际已安装Chrome与原生macOS控件，完成独立家庭的配对、选课、声音播放状态、正误作答/修正、明细、下载/文件选择/恢复；不是Playwright引擎模拟。只读SQLite交叉核对恢复数据，所有产品写入经UI。设备版本、局限及本地证据见[实际Chrome验收](desktop-chrome-acceptance.md)。
 
 DISASTER-01的disaster-recovery.spec.ts使用真实浏览器操作配对和答题，在线调用生产backup_database（显式目标目录隔离），随后实际停服、校验坏候选、在临时库注入损坏、留档并恢复已校验快照。重启后原cookie可读取家庭，profile/attempts/sessions/exerciseInstances/skippedInstances/reviewPlans与备份前完全一致，继续答题和刷新保存成功。故障注入只改测试数据库；不是Mock API或预置学习记录，不触碰家庭运行服务。此项演练同版本运维恢复，不等于跨schema程序回滚、磁盘耗尽或整机恢复。
+
+## SOAK-01 长时媒体测试
+
+`npm run test:e2e:soak`在已安装Google Chrome（channel=chrome）与Playwright WebKit各执行至少20分钟墙钟时间，两个隔离服务/数据库并发运行；需已准备真实中文声音与PinYinSound。该命令独立于verify:all和普通product回归，缺声音会失败。`LOVE_PINYIN_SOAK_SECONDS=90 npm run test:e2e:soak`仅用于脚本烟测，不满足20分钟验收。
+
+每轮通过UI换课、完成实际题单，听完指令、标准音和反馈，使用产品休息入口；答案只取content库。WeakRef观测媒体，记录play到playing事件延迟、下一题可见的耗时，以及轮末src/readyState/networkState、AudioContext/Blob URL计数。currentSrc可能在src已移除、readyState/networkState均为0后保留旧地址，不能单凭这个地址判断资源仍加载。Chrome额外在轮末显式GC后取JS堆和DOM计数；这不是未经干预的原生内存曲线，WebKit也不虚填堆数据。没有替换Audio/网络响应，原生play方法仍实际执行。
+
+结果写入test-results/soak各项目的soak-report.json及最终截图；失败也尽量保存已完成样本。正式20分钟报告尚待此次长测完成，不能凭短跑或零活动资源断言所有内存无泄漏。两引擎并发产生本机负载，报告延迟不是移动设备、真实LAN或物理出声测量。

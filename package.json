@@ -45,7 +45,8 @@
     "start": "npm run build && npm run prepare:voice && npm run serve:local",
     "test:e2e:product": "npm run build && playwright test --config playwright.product.config.ts",
     "prepare:pinyin": "uv run --locked python -m scripts.prepare_pinyin_source",
-    "snapshot:content": "node scripts/snapshot-content.mjs"
+    "snapshot:content": "node scripts/snapshot-content.mjs",
+    "test:e2e:soak": "npm run build && playwright test --config playwright.soak.config.ts"
   },
   "dependencies": {
     "react": "19.3.0",
