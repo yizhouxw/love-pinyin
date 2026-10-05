@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "license": "MIT",
+  "intro": "看一看生活里的图片。点喇叭听拼音，再听图片说明，想一想这个声音说的是什么。这里可以慢慢看，不打分。",
+  "items": {
+    "v1-rice": {
+      "name": "米",
+      "pinyin": "mǐ",
+      "lessonId": "lesson-03",
+      "audioRef": "audio-rt-03-mi3",
+      "description": "一碗米，许多小米粒装在碗里。",
+      "prerequisiteKnowledgeIds": ["k-initial-m", "k-final-i"]
+    },
+    "v1-soil": {
+      "name": "土",
+      "pinyin": "tǔ",
+      "lessonId": "lesson-04",
+      "audioRef": "audio-rt-04-tu3",
+      "description": "一堆土，里面有小土块。",
+      "prerequisiteKnowledgeIds": ["k-initial-t", "k-final-u"]
+    },
+    "v1-melon": {
+      "name": "瓜",
+      "pinyin": "guā",
+      "lessonId": "lesson-05",
+      "audioRef": "audio-rt-05-gua1",
+      "description": "一片西瓜，绿皮红瓤，里面有黑色的籽。",
+      "prerequisiteKnowledgeIds": ["k-initial-g", "rule-three-part"]
+    },
+    "v1-chicken": {
+      "name": "鸡",
+      "pinyin": "jī",
+      "lessonId": "lesson-06",
+      "audioRef": "audio-syllable-ji1",
+      "description": "一只鸡，有鸡冠、尖嘴和两只脚。",
+      "prerequisiteKnowledgeIds": ["k-initial-j", "k-final-i"]
+    },
+    "v1-seed": {
+      "name": "籽",
+      "pinyin": "zǐ",
+      "lessonId": "lesson-07",
+      "audioRef": "audio-syllable-zi3",
+      "description": "两颗瓜籽，外壳黑黑的，形状一头尖一头圆。",
+      "prerequisiteKnowledgeIds": ["k-whole-zi"]
+    },
+    "v1-pig": {
+      "name": "猪",
+      "pinyin": "zhū",
+      "lessonId": "lesson-08",
+      "audioRef": "audio-syllable-zhu1",
+      "description": "一头猪，圆脸、大鼻子，鼻子上有两个鼻孔。",
+      "prerequisiteKnowledgeIds": ["k-initial-zh", "k-final-u"]
+    },
+    "v1-fish": {
+      "name": "鱼",
+      "pinyin": "yú",
+      "lessonId": "lesson-09",
+      "audioRef": "audio-rt-09-yu2",
+      "description": "一条鱼，有鱼鳍和尾巴。",
+      "prerequisiteKnowledgeIds": ["k-whole-yu"]
+    },
+    "v1-water": {
+      "name": "水",
+      "pinyin": "shuǐ",
+      "lessonId": "lesson-10",
+      "audioRef": "audio-rt-10-shui3",
+      "description": "一滴水，下面还有水波纹。",
+      "prerequisiteKnowledgeIds": ["k-initial-sh", "k-final-ui"]
+    },
+    "v1-cat": {
+      "name": "猫",
+      "pinyin": "māo",
+      "lessonId": "lesson-11",
+      "audioRef": "audio-rt-11-mao1",
+      "description": "一只猫，有尖耳朵和长胡须。",
+      "prerequisiteKnowledgeIds": ["k-initial-m", "k-final-ao"]
+    },
+    "v1-moon": {
+      "name": "月",
+      "pinyin": "yuè",
+      "lessonId": "lesson-12",
+      "audioRef": "audio-rt-12-yue4",
+      "description": "弯弯的月亮，像一只小船。",
+      "prerequisiteKnowledgeIds": ["k-whole-yue"]
+    },
+    "v1-mountain": {
+      "name": "山",
+      "pinyin": "shān",
+      "lessonId": "lesson-13",
+      "audioRef": "audio-rt-13-shan1",
+      "description": "两座山，山峰高高的。",
+      "prerequisiteKnowledgeIds": ["k-initial-sh", "k-final-an"]
+    },
+    "v1-star": {
+      "name": "星",
+      "pinyin": "xīng",
+      "lessonId": "lesson-14",
+      "audioRef": "audio-rt-14-xing1",
+      "description": "一颗星星，用五个尖角表示。",
+      "prerequisiteKnowledgeIds": ["k-initial-x", "k-final-ing"]
+    }
+  },
+  "error": "图片还没有加载好，先不要选答案。点圆箭头重试，也可以先跳过，或者回到学习路线。图片没有显示出来，不算你答错。"
+}

@@ -19,7 +19,7 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate:content": "node scripts/validate-content.mjs && node scripts/validate-narration.mjs && node scripts/validate-writing.mjs",
+    "validate:content": "node scripts/validate-content.mjs && node scripts/validate-narration.mjs && node scripts/validate-writing.mjs && node scripts/validate-illustrations.mjs",
     "validate:release": "node scripts/validate-content.mjs --release",
     "licenses": "node scripts/dependency-inventory.mjs",
     "test": "vitest run",

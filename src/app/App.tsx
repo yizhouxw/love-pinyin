@@ -4,6 +4,8 @@ import { audioPlayer } from '../platform/audio/browser-audio-player';
 import narrationData from '../../content/narration.json';
 import { useLearningVoice, VoiceButton, VoiceFailure, type LearningAudio } from './learning-voice';
 import './styles.css';
+import { Picture, WordCards } from './illustrations';
+import type { IllustrationCatalog } from '../domain/illustrations';
 import { WritingChoice, WritingWorkshop } from './writing';
 import type { WritingCatalog, WritingOption } from '../domain/writing';
 import { guestApi, isGuest, startGuest, leaveGuest, learningAssetUrl } from '../platform/guest';
@@ -21,7 +23,7 @@ type Bootstrap = {
     [key: string]: unknown;
   };
 };
-type Option = { id: string; label: string; writing?: WritingOption };
+type Option = { id: string; label: string; writing?: WritingOption; pictureId?: string };
 type Lesson = {
   id: string;
   order: number;
@@ -37,6 +39,7 @@ type Exercise = {
   prompt: string;
   options: Option[];
   audioRef?: string;
+  pictureId?: string;
 };
 type Knowledge = {
   id: string;
@@ -99,6 +102,7 @@ type AttemptHistoryPage = {
   error: boolean;
 };
 type Curriculum = {
+  illustrations?: IllustrationCatalog;
   writing?: WritingCatalog;
   lessons: Lesson[];
   knowledgeItems: Knowledge[];
@@ -134,13 +138,33 @@ function GameOptionContent({
   initials,
   writing,
   writingCatalog,
+  pictureId,
+  illustrations,
+  pictureKey,
+  pictureRetry,
+  onPictureStatus,
 }: {
   type: string;
   label: string;
   initials: string[];
   writing?: WritingOption;
   writingCatalog?: WritingCatalog;
+  pictureId?: string;
+  illustrations?: IllustrationCatalog;
+  pictureKey?: string;
+  pictureRetry?: number;
+  onPictureStatus?: (id: string, ready: boolean) => void;
 }) {
+  if (pictureId)
+    return (
+      <Picture
+        key={pictureKey}
+        id={pictureId}
+        catalog={illustrations}
+        retry={pictureRetry}
+        onStatus={(ready) => onPictureStatus?.(pictureId, ready)}
+      />
+    );
   if (writing) return <WritingChoice catalog={writingCatalog} value={writing} />;
   if (type === 'blend-choice') {
     const parts = splitPinyinCandidate(label, initials);
@@ -356,6 +380,8 @@ function LearningApp() {
   const [busy, setBusy] = useState(false);
   const [hint, setHint] = useState<Hint | null>(null);
   const [answer, setAnswer] = useState<Answer | null>(null);
+  const [pictureStatus, setPictureStatus] = useState<Record<string, boolean>>({});
+  const [pictureRetry, setPictureRetry] = useState(0);
   const [correctedInstance, setCorrectedInstance] = useState<string | null>(null);
   const [blendDraft, setBlendDraft] = useState<{ instanceId: string; optionId: string } | null>(
     null,
@@ -474,6 +500,19 @@ function LearningApp() {
   const voice = useLearningVoice(task?.instanceId ?? null);
   const { play: playVoice, stop: stopVoice } = voice;
   const question = task?.exercise;
+  const pictureIds = [
+    ...new Set(
+      [question?.pictureId, ...(question?.options.map((o) => o.pictureId) ?? [])].filter(
+        (id): id is string => Boolean(id),
+      ),
+    ),
+  ];
+  const pictureScope = `${task?.instanceId ?? ''}/${pictureRetry}`;
+  const picturesPending = pictureIds.some((id) => pictureStatus[`${pictureScope}/${id}`] !== true);
+  const picturesFailed = pictureIds.some((id) => pictureStatus[`${pictureScope}/${id}`] === false);
+  function onPictureStatus(id: string, ready: boolean) {
+    setPictureStatus((prior) => ({ ...prior, [`${pictureScope}/${id}`]: ready }));
+  }
   const blendPreview =
     question?.type === 'blend-choice' && task?.instanceId === blendDraft?.instanceId
       ? question.options.find((option: Option) => option.id === blendDraft?.optionId)
@@ -573,7 +612,14 @@ function LearningApp() {
   }
 
   async function submitOption(optionId: string) {
-    if (!task || busy || answerNeedsAudio || (answer && (answer.correct || corrected))) return;
+    if (
+      !task ||
+      busy ||
+      answerNeedsAudio ||
+      picturesPending ||
+      (answer && (answer.correct || corrected))
+    )
+      return;
     await act(async () => {
       if (answer) {
         if (optionId === answer.correctOptionId) setCorrectedInstance(task.instanceId);
@@ -808,16 +854,29 @@ function LearningApp() {
             🦊
           </div>
           <p className="eyebrow">
-            {question.type === 'listen-choice'
-              ? '听音发现站'
-              : question.type === 'tone-choice'
-                ? question.audioRef
-                  ? '声调听辨站'
-                  : '声调观察站'
-                : question.type === 'blend-choice'
-                  ? '拼读组合站'
-                  : '字形发现站'}
+            {question.pictureId || question.options.some((o) => o.pictureId)
+              ? '生活拼音站'
+              : question.type === 'listen-choice'
+                ? '听音发现站'
+                : question.type === 'tone-choice'
+                  ? question.audioRef
+                    ? '声调听辨站'
+                    : '声调观察站'
+                  : question.type === 'blend-choice'
+                    ? '拼读组合站'
+                    : '字形发现站'}
           </p>
+          {question.pictureId && (
+            <div className="word-question-picture">
+              <Picture
+                key={pictureScope}
+                id={question.pictureId}
+                catalog={curriculum?.illustrations}
+                retry={pictureRetry}
+                onStatus={(ready) => onPictureStatus(question.pictureId!, ready)}
+              />
+            </div>
+          )}
           {questionVoice?.visualCue && (
             <div className="question-cue" aria-label="观察目标">
               {questionVoice.visualCue}
@@ -845,6 +904,15 @@ function LearningApp() {
             </p>
           )}
           <VoiceFailure voice={voice} />
+          {picturesPending && (
+            <div className="picture-failure" role="status">
+              <p>{picturesFailed ? '图片暂时没加载好，可以重试。' : '图片正在加载，请稍等。'}</p>
+              <button className="quiet" onClick={() => setPictureRetry((n) => n + 1)}>
+                ↻ 重试图片
+              </button>
+              <VoiceButton id="picture-error" voice={voice} label="听图片提示" />
+            </div>
+          )}
           <div
             className={`options ${question.type === 'blend-choice' ? 'blend-options' : ''}`}
             role="group"
@@ -855,7 +923,10 @@ function LearningApp() {
                 <button
                   className={`option game-option ${question.type} ${hint?.answer.optionId === option.id && !answer ? 'hinted' : ''} ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
                   disabled={
-                    Boolean(answer && (answer.correct || corrected)) || busy || answerNeedsAudio
+                    Boolean(answer && (answer.correct || corrected)) ||
+                    busy ||
+                    answerNeedsAudio ||
+                    picturesPending
                   }
                   ref={
                     question.type === 'blend-choice'
@@ -877,6 +948,11 @@ function LearningApp() {
                 >
                   <span className="option-index">{String.fromCharCode(65 + index)}</span>
                   <GameOptionContent
+                    pictureId={option.pictureId}
+                    pictureKey={pictureScope}
+                    pictureRetry={pictureRetry}
+                    onPictureStatus={onPictureStatus}
+                    illustrations={curriculum?.illustrations}
                     writing={option.writing}
                     writingCatalog={curriculum?.writing}
                     type={question.type}
@@ -910,7 +986,10 @@ function LearningApp() {
                       className="blend-confirm"
                       aria-label="确认拼读"
                       disabled={
-                        busy || answerNeedsAudio || Boolean(answer && (answer.correct || corrected))
+                        busy ||
+                        answerNeedsAudio ||
+                        picturesPending ||
+                        Boolean(answer && (answer.correct || corrected))
                       }
                       onClick={() => void submitOption(blendPreview.id)}
                     >
@@ -1208,6 +1287,7 @@ function LearningApp() {
               }
               audioRequirements={curriculum?.audioRequirements ?? []}
               familyAudio={learningAudio?.lessons[lessonViewId]}
+              illustrations={curriculum?.illustrations}
               writingCatalog={curriculum?.writing}
               soundEnabled={progress?.settings.soundEnabled !== false}
               masteryById={masteryById}
@@ -1425,6 +1505,7 @@ function LessonDetail({
   audioRequirements,
   familyAudio,
   writingCatalog,
+  illustrations,
   soundEnabled,
   masteryById,
   busy,
@@ -1439,6 +1520,7 @@ function LessonDetail({
   audioRequirements: AudioRequirement[];
   familyAudio?: LearningAudio['lessons'][string];
   writingCatalog?: WritingCatalog;
+  illustrations?: IllustrationCatalog;
   soundEnabled: boolean;
   masteryById: Map<string, Progress['mastery'][number]>;
   busy: boolean;
@@ -1548,6 +1630,7 @@ function LessonDetail({
           </details>
         </div>
       </section>
+      {illustrations && <WordCards catalog={illustrations} lessonId={lesson.id} />}
       {writingCatalog && (
         <WritingWorkshop
           catalog={writingCatalog}

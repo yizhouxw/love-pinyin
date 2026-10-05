@@ -1,4 +1,6 @@
 import { readFile } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
+import { validateIllustrations } from './validate-illustrations.mjs';
 import { execFileSync } from 'node:child_process';
 import { validateCurriculum } from './content-validation.mjs';
 
@@ -13,6 +15,14 @@ const errors = validateCurriculum(data, schema, {
   release,
 });
 if (release) {
+  errors.push(
+    ...validateIllustrations(
+      await readJson('content/illustrations.json'),
+      data,
+      await readJson('content/narration.json'),
+      (id) => readFileSync(`public/illustrations/${id}.svg`, 'utf8'),
+    ),
+  );
   try {
     execFileSync('uv', ['run', '--locked', 'python', '-m', 'scripts.validate_audio_resources'], {
       encoding: 'utf8',

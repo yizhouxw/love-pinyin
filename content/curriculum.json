@@ -1084,7 +1084,9 @@
         "q-03-121",
         "q-03-122",
         "q-03-123",
-        "q-03-140"
+        "q-03-140",
+        "q-03-150",
+        "q-03-151"
       ],
       "readingTargetIds": [
         "rt-03-ba1",
@@ -1140,7 +1142,9 @@
         "q-04-77",
         "q-04-120",
         "q-04-121",
-        "q-04-122"
+        "q-04-122",
+        "q-04-150",
+        "q-04-151"
       ],
       "readingTargetIds": [
         "rt-04-tu3",
@@ -1185,7 +1189,9 @@
         "q-05-72",
         "q-05-73",
         "q-05-74",
-        "q-05-75"
+        "q-05-75",
+        "q-05-150",
+        "q-05-151"
       ],
       "readingTargetIds": [
         "rt-05-gua1",
@@ -1233,7 +1239,9 @@
         "q-06-75",
         "q-06-120",
         "q-06-121",
-        "q-06-140"
+        "q-06-140",
+        "q-06-150",
+        "q-06-151"
       ],
       "readingTargetIds": [
         "rt-06-qi1",
@@ -1301,7 +1309,9 @@
         "q-07-105",
         "q-07-120",
         "q-07-121",
-        "q-07-122"
+        "q-07-122",
+        "q-07-150",
+        "q-07-151"
       ],
       "readingTargetIds": [
         "rt-07-zi4",
@@ -1385,7 +1395,9 @@
         "q-08-107",
         "q-08-120",
         "q-08-121",
-        "q-08-122"
+        "q-08-122",
+        "q-08-150",
+        "q-08-151"
       ],
       "readingTargetIds": [
         "rt-08-chi1",
@@ -1454,7 +1466,9 @@
         "q-09-126",
         "q-09-127",
         "q-09-128",
-        "q-09-129"
+        "q-09-129",
+        "q-09-150",
+        "q-09-151"
       ],
       "readingTargetIds": ["rt-09-yi1", "rt-09-yu2", "rt-09-whole-wu"],
       "sourceIds": ["src-pep-2024-g1a"],
@@ -1492,7 +1506,9 @@
         "q-10-83",
         "q-10-84",
         "q-10-85",
-        "q-10-120"
+        "q-10-120",
+        "q-10-150",
+        "q-10-151"
       ],
       "readingTargetIds": [
         "rt-10-bai2",
@@ -1541,7 +1557,9 @@
         "q-11-121",
         "q-11-122",
         "q-11-123",
-        "q-11-124"
+        "q-11-124",
+        "q-11-150",
+        "q-11-151"
       ],
       "readingTargetIds": [
         "rt-11-mao1",
@@ -1604,7 +1622,9 @@
         "q-12-120",
         "q-12-121",
         "q-12-122",
-        "q-12-123"
+        "q-12-123",
+        "q-12-150",
+        "q-12-151"
       ],
       "readingTargetIds": [
         "rt-12-xue3",
@@ -1683,7 +1703,9 @@
         "q-13-102",
         "q-13-103",
         "q-13-104",
-        "q-13-105"
+        "q-13-105",
+        "q-13-150",
+        "q-13-151"
       ],
       "readingTargetIds": [
         "rt-13-shan1",
@@ -1752,7 +1774,9 @@
         "q-14-101",
         "q-14-120",
         "q-14-121",
-        "q-14-122"
+        "q-14-122",
+        "q-14-150",
+        "q-14-151"
       ],
       "readingTargetIds": [
         "rt-14-feng1",
@@ -14388,6 +14412,786 @@
       "sourceIds": [],
       "license": "MIT",
       "promptAudioRef": "audio-prompt-a8efcfcd7d0c"
+    },
+    {
+      "id": "q-03-150",
+      "lessonId": "lesson-03",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-initial-m",
+      "knowledgeIds": ["k-initial-m"],
+      "options": [
+        {
+          "id": "a",
+          "label": "mǐ",
+          "pictureId": "v1-rice",
+          "audioRef": "audio-prompt-29a2a182c030"
+        },
+        {
+          "id": "b",
+          "label": "zǐ",
+          "pictureId": "v1-seed",
+          "audioRef": "audio-prompt-12b6152eff64"
+        },
+        {
+          "id": "c",
+          "label": "māo",
+          "pictureId": "v1-cat",
+          "audioRef": "audio-prompt-ed1d8074a98d"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-rt-03-mi3"
+    },
+    {
+      "id": "q-03-151",
+      "lessonId": "lesson-03",
+      "type": "blend-choice",
+      "prompt": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "primaryKnowledgeId": "k-initial-m",
+      "knowledgeIds": ["k-initial-m"],
+      "options": [
+        {
+          "id": "a",
+          "label": "bǐ"
+        },
+        {
+          "id": "b",
+          "label": "mǐ"
+        },
+        {
+          "id": "c",
+          "label": "pǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-78bcda25a60e",
+      "audioRef": "audio-rt-03-mi3",
+      "pictureId": "v1-rice"
+    },
+    {
+      "id": "q-04-150",
+      "lessonId": "lesson-04",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-initial-t",
+      "knowledgeIds": ["k-initial-t"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zhū",
+          "pictureId": "v1-pig",
+          "audioRef": "audio-prompt-36bf9fdf4823"
+        },
+        {
+          "id": "b",
+          "label": "tǔ",
+          "pictureId": "v1-soil",
+          "audioRef": "audio-prompt-09f60d9e6ded"
+        },
+        {
+          "id": "c",
+          "label": "yuè",
+          "pictureId": "v1-moon",
+          "audioRef": "audio-prompt-c0934fa278bc"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-rt-04-tu3"
+    },
+    {
+      "id": "q-04-151",
+      "lessonId": "lesson-04",
+      "type": "blend-choice",
+      "prompt": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "primaryKnowledgeId": "k-initial-t",
+      "knowledgeIds": ["k-initial-t"],
+      "options": [
+        {
+          "id": "a",
+          "label": "tǔ"
+        },
+        {
+          "id": "b",
+          "label": "dǔ"
+        },
+        {
+          "id": "c",
+          "label": "nǔ"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-78bcda25a60e",
+      "audioRef": "audio-rt-04-tu3",
+      "pictureId": "v1-soil"
+    },
+    {
+      "id": "q-05-150",
+      "lessonId": "lesson-05",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-initial-g",
+      "knowledgeIds": ["k-initial-g"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yú",
+          "pictureId": "v1-fish",
+          "audioRef": "audio-prompt-f0866134d6cf"
+        },
+        {
+          "id": "b",
+          "label": "shān",
+          "pictureId": "v1-mountain",
+          "audioRef": "audio-prompt-edb8db7251c9"
+        },
+        {
+          "id": "c",
+          "label": "guā",
+          "pictureId": "v1-melon",
+          "audioRef": "audio-prompt-a00e7e7bef21"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-rt-05-gua1"
+    },
+    {
+      "id": "q-05-151",
+      "lessonId": "lesson-05",
+      "type": "blend-choice",
+      "prompt": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "primaryKnowledgeId": "k-initial-g",
+      "knowledgeIds": ["k-initial-g"],
+      "options": [
+        {
+          "id": "a",
+          "label": "kuā"
+        },
+        {
+          "id": "b",
+          "label": "huā"
+        },
+        {
+          "id": "c",
+          "label": "guā"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-78bcda25a60e",
+      "audioRef": "audio-rt-05-gua1",
+      "pictureId": "v1-melon"
+    },
+    {
+      "id": "q-06-150",
+      "lessonId": "lesson-06",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-initial-j",
+      "knowledgeIds": ["k-initial-j"],
+      "options": [
+        {
+          "id": "a",
+          "label": "jī",
+          "pictureId": "v1-chicken",
+          "audioRef": "audio-prompt-37583dfe01d5"
+        },
+        {
+          "id": "b",
+          "label": "shuǐ",
+          "pictureId": "v1-water",
+          "audioRef": "audio-prompt-3eeaa33dbfd4"
+        },
+        {
+          "id": "c",
+          "label": "xīng",
+          "pictureId": "v1-star",
+          "audioRef": "audio-prompt-eacfbd5e9411"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-syllable-ji1"
+    },
+    {
+      "id": "q-06-151",
+      "lessonId": "lesson-06",
+      "type": "blend-choice",
+      "prompt": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "primaryKnowledgeId": "k-initial-j",
+      "knowledgeIds": ["k-initial-j"],
+      "options": [
+        {
+          "id": "a",
+          "label": "qī"
+        },
+        {
+          "id": "b",
+          "label": "jī"
+        },
+        {
+          "id": "c",
+          "label": "xī"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-78bcda25a60e",
+      "audioRef": "audio-syllable-ji1",
+      "pictureId": "v1-chicken"
+    },
+    {
+      "id": "q-07-150",
+      "lessonId": "lesson-07",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-whole-zi",
+      "knowledgeIds": ["k-whole-zi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "māo",
+          "pictureId": "v1-cat",
+          "audioRef": "audio-prompt-ed1d8074a98d"
+        },
+        {
+          "id": "b",
+          "label": "zǐ",
+          "pictureId": "v1-seed",
+          "audioRef": "audio-prompt-12b6152eff64"
+        },
+        {
+          "id": "c",
+          "label": "mǐ",
+          "pictureId": "v1-rice",
+          "audioRef": "audio-prompt-29a2a182c030"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-syllable-zi3"
+    },
+    {
+      "id": "q-07-151",
+      "lessonId": "lesson-07",
+      "type": "symbol-choice",
+      "prompt": "看看图片，听拼音，选择对应的完整音节。",
+      "primaryKnowledgeId": "k-whole-zi",
+      "knowledgeIds": ["k-whole-zi"],
+      "options": [
+        {
+          "id": "a",
+          "label": "zǐ"
+        },
+        {
+          "id": "b",
+          "label": "cǐ"
+        },
+        {
+          "id": "c",
+          "label": "sǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-25c818de7d62",
+      "audioRef": "audio-syllable-zi3",
+      "pictureId": "v1-seed"
+    },
+    {
+      "id": "q-08-150",
+      "lessonId": "lesson-08",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-initial-zh",
+      "knowledgeIds": ["k-initial-zh"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yuè",
+          "pictureId": "v1-moon",
+          "audioRef": "audio-prompt-c0934fa278bc"
+        },
+        {
+          "id": "b",
+          "label": "tǔ",
+          "pictureId": "v1-soil",
+          "audioRef": "audio-prompt-09f60d9e6ded"
+        },
+        {
+          "id": "c",
+          "label": "zhū",
+          "pictureId": "v1-pig",
+          "audioRef": "audio-prompt-36bf9fdf4823"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-syllable-zhu1"
+    },
+    {
+      "id": "q-08-151",
+      "lessonId": "lesson-08",
+      "type": "blend-choice",
+      "prompt": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "primaryKnowledgeId": "k-initial-zh",
+      "knowledgeIds": ["k-initial-zh"],
+      "options": [
+        {
+          "id": "a",
+          "label": "chū"
+        },
+        {
+          "id": "b",
+          "label": "shū"
+        },
+        {
+          "id": "c",
+          "label": "zhū"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-78bcda25a60e",
+      "audioRef": "audio-syllable-zhu1",
+      "pictureId": "v1-pig"
+    },
+    {
+      "id": "q-09-150",
+      "lessonId": "lesson-09",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-whole-yu",
+      "knowledgeIds": ["k-whole-yu"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yú",
+          "pictureId": "v1-fish",
+          "audioRef": "audio-prompt-f0866134d6cf"
+        },
+        {
+          "id": "b",
+          "label": "shān",
+          "pictureId": "v1-mountain",
+          "audioRef": "audio-prompt-edb8db7251c9"
+        },
+        {
+          "id": "c",
+          "label": "guā",
+          "pictureId": "v1-melon",
+          "audioRef": "audio-prompt-a00e7e7bef21"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-rt-09-yu2"
+    },
+    {
+      "id": "q-09-151",
+      "lessonId": "lesson-09",
+      "type": "symbol-choice",
+      "prompt": "看看图片，听拼音，选择对应的完整音节。",
+      "primaryKnowledgeId": "k-whole-yu",
+      "knowledgeIds": ["k-whole-yu"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yǔ"
+        },
+        {
+          "id": "b",
+          "label": "yú"
+        },
+        {
+          "id": "c",
+          "label": "yù"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-25c818de7d62",
+      "audioRef": "audio-rt-09-yu2",
+      "pictureId": "v1-fish"
+    },
+    {
+      "id": "q-10-150",
+      "lessonId": "lesson-10",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-final-ui",
+      "knowledgeIds": ["k-final-ui"],
+      "options": [
+        {
+          "id": "a",
+          "label": "xīng",
+          "pictureId": "v1-star",
+          "audioRef": "audio-prompt-eacfbd5e9411"
+        },
+        {
+          "id": "b",
+          "label": "shuǐ",
+          "pictureId": "v1-water",
+          "audioRef": "audio-prompt-3eeaa33dbfd4"
+        },
+        {
+          "id": "c",
+          "label": "jī",
+          "pictureId": "v1-chicken",
+          "audioRef": "audio-prompt-37583dfe01d5"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-rt-10-shui3"
+    },
+    {
+      "id": "q-10-151",
+      "lessonId": "lesson-10",
+      "type": "blend-choice",
+      "prompt": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "primaryKnowledgeId": "k-final-ui",
+      "knowledgeIds": ["k-final-ui"],
+      "options": [
+        {
+          "id": "a",
+          "label": "shuǐ"
+        },
+        {
+          "id": "b",
+          "label": "zuǐ"
+        },
+        {
+          "id": "c",
+          "label": "tuǐ"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-78bcda25a60e",
+      "audioRef": "audio-rt-10-shui3",
+      "pictureId": "v1-water"
+    },
+    {
+      "id": "q-11-150",
+      "lessonId": "lesson-11",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-final-ao",
+      "knowledgeIds": ["k-final-ao"],
+      "options": [
+        {
+          "id": "a",
+          "label": "mǐ",
+          "pictureId": "v1-rice",
+          "audioRef": "audio-prompt-29a2a182c030"
+        },
+        {
+          "id": "b",
+          "label": "zǐ",
+          "pictureId": "v1-seed",
+          "audioRef": "audio-prompt-12b6152eff64"
+        },
+        {
+          "id": "c",
+          "label": "māo",
+          "pictureId": "v1-cat",
+          "audioRef": "audio-prompt-ed1d8074a98d"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-rt-11-mao1"
+    },
+    {
+      "id": "q-11-151",
+      "lessonId": "lesson-11",
+      "type": "blend-choice",
+      "prompt": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "primaryKnowledgeId": "k-final-ao",
+      "knowledgeIds": ["k-final-ao"],
+      "options": [
+        {
+          "id": "a",
+          "label": "bāo"
+        },
+        {
+          "id": "b",
+          "label": "dāo"
+        },
+        {
+          "id": "c",
+          "label": "māo"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-78bcda25a60e",
+      "audioRef": "audio-rt-11-mao1",
+      "pictureId": "v1-cat"
+    },
+    {
+      "id": "q-12-150",
+      "lessonId": "lesson-12",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-whole-yue",
+      "knowledgeIds": ["k-whole-yue"],
+      "options": [
+        {
+          "id": "a",
+          "label": "yuè",
+          "pictureId": "v1-moon",
+          "audioRef": "audio-prompt-c0934fa278bc"
+        },
+        {
+          "id": "b",
+          "label": "tǔ",
+          "pictureId": "v1-soil",
+          "audioRef": "audio-prompt-09f60d9e6ded"
+        },
+        {
+          "id": "c",
+          "label": "zhū",
+          "pictureId": "v1-pig",
+          "audioRef": "audio-prompt-36bf9fdf4823"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-rt-12-yue4"
+    },
+    {
+      "id": "q-12-151",
+      "lessonId": "lesson-12",
+      "type": "symbol-choice",
+      "prompt": "看看图片，听拼音，选择对应的完整音节。",
+      "primaryKnowledgeId": "k-whole-yue",
+      "knowledgeIds": ["k-whole-yue"],
+      "options": [
+        {
+          "id": "a",
+          "label": "xuè"
+        },
+        {
+          "id": "b",
+          "label": "yuè"
+        },
+        {
+          "id": "c",
+          "label": "què"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-25c818de7d62",
+      "audioRef": "audio-rt-12-yue4",
+      "pictureId": "v1-moon"
+    },
+    {
+      "id": "q-13-150",
+      "lessonId": "lesson-13",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-final-an",
+      "knowledgeIds": ["k-final-an"],
+      "options": [
+        {
+          "id": "a",
+          "label": "guā",
+          "pictureId": "v1-melon",
+          "audioRef": "audio-prompt-a00e7e7bef21"
+        },
+        {
+          "id": "b",
+          "label": "shān",
+          "pictureId": "v1-mountain",
+          "audioRef": "audio-prompt-edb8db7251c9"
+        },
+        {
+          "id": "c",
+          "label": "yú",
+          "pictureId": "v1-fish",
+          "audioRef": "audio-prompt-f0866134d6cf"
+        }
+      ],
+      "answer": {
+        "optionId": "b"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-rt-13-shan1"
+    },
+    {
+      "id": "q-13-151",
+      "lessonId": "lesson-13",
+      "type": "blend-choice",
+      "prompt": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "primaryKnowledgeId": "k-final-an",
+      "knowledgeIds": ["k-final-an"],
+      "options": [
+        {
+          "id": "a",
+          "label": "shān"
+        },
+        {
+          "id": "b",
+          "label": "sān"
+        },
+        {
+          "id": "c",
+          "label": "chān"
+        }
+      ],
+      "answer": {
+        "optionId": "a"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-78bcda25a60e",
+      "audioRef": "audio-rt-13-shan1",
+      "pictureId": "v1-mountain"
+    },
+    {
+      "id": "q-14-150",
+      "lessonId": "lesson-14",
+      "type": "listen-choice",
+      "prompt": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "primaryKnowledgeId": "k-final-ing",
+      "knowledgeIds": ["k-final-ing"],
+      "options": [
+        {
+          "id": "a",
+          "label": "jī",
+          "pictureId": "v1-chicken",
+          "audioRef": "audio-prompt-37583dfe01d5"
+        },
+        {
+          "id": "b",
+          "label": "shuǐ",
+          "pictureId": "v1-water",
+          "audioRef": "audio-prompt-3eeaa33dbfd4"
+        },
+        {
+          "id": "c",
+          "label": "xīng",
+          "pictureId": "v1-star",
+          "audioRef": "audio-prompt-eacfbd5e9411"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-20f0c96c60f3",
+      "audioRef": "audio-rt-14-xing1"
+    },
+    {
+      "id": "q-14-151",
+      "lessonId": "lesson-14",
+      "type": "blend-choice",
+      "prompt": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "primaryKnowledgeId": "k-final-ing",
+      "knowledgeIds": ["k-final-ing"],
+      "options": [
+        {
+          "id": "a",
+          "label": "jīng"
+        },
+        {
+          "id": "b",
+          "label": "qīng"
+        },
+        {
+          "id": "c",
+          "label": "xīng"
+        }
+      ],
+      "answer": {
+        "optionId": "c"
+      },
+      "sourceIds": [],
+      "license": "MIT",
+      "promptAudioRef": "audio-prompt-78bcda25a60e",
+      "audioRef": "audio-rt-14-xing1",
+      "pictureId": "v1-star"
     }
   ],
   "readingTargets": [
@@ -18459,6 +19263,96 @@
       "transcript": "观察 j，选出四线三格位置正确的字卡。",
       "kind": "instruction",
       "knowledgeIds": ["rule-grid-writing"]
+    },
+    {
+      "id": "audio-prompt-29a2a182c030",
+      "transcript": "一碗米，许多小米粒装在碗里。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-m"]
+    },
+    {
+      "id": "audio-prompt-12b6152eff64",
+      "transcript": "两颗瓜籽，外壳黑黑的，形状一头尖一头圆。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-m"]
+    },
+    {
+      "id": "audio-prompt-ed1d8074a98d",
+      "transcript": "一只猫，有尖耳朵和长胡须。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-m"]
+    },
+    {
+      "id": "audio-prompt-20f0c96c60f3",
+      "transcript": "听拼音，找到对应的图片。每张图片下方的小喇叭可以听图片说明。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-m"]
+    },
+    {
+      "id": "audio-prompt-78bcda25a60e",
+      "transcript": "看看图片，听拼音，试着拼一拼。先选卡片，再点勾确认。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-m"]
+    },
+    {
+      "id": "audio-prompt-36bf9fdf4823",
+      "transcript": "一头猪，圆脸、大鼻子，鼻子上有两个鼻孔。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-t"]
+    },
+    {
+      "id": "audio-prompt-09f60d9e6ded",
+      "transcript": "一堆土，里面有小土块。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-t"]
+    },
+    {
+      "id": "audio-prompt-c0934fa278bc",
+      "transcript": "弯弯的月亮，像一只小船。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-t"]
+    },
+    {
+      "id": "audio-prompt-f0866134d6cf",
+      "transcript": "一条鱼，有鱼鳍和尾巴。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-g"]
+    },
+    {
+      "id": "audio-prompt-edb8db7251c9",
+      "transcript": "两座山，山峰高高的。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-g"]
+    },
+    {
+      "id": "audio-prompt-a00e7e7bef21",
+      "transcript": "一片西瓜，绿皮红瓤，里面有黑色的籽。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-g"]
+    },
+    {
+      "id": "audio-prompt-37583dfe01d5",
+      "transcript": "一只鸡，有鸡冠、尖嘴和两只脚。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-j"]
+    },
+    {
+      "id": "audio-prompt-3eeaa33dbfd4",
+      "transcript": "一滴水，下面还有水波纹。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-j"]
+    },
+    {
+      "id": "audio-prompt-eacfbd5e9411",
+      "transcript": "一颗星星，用五个尖角表示。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-initial-j"]
+    },
+    {
+      "id": "audio-prompt-25c818de7d62",
+      "transcript": "看看图片，听拼音，选择对应的完整音节。",
+      "kind": "instruction",
+      "knowledgeIds": ["k-whole-zi"]
     }
   ],
   "supplementalTopics": [
@@ -18576,7 +19470,7 @@
   "coverage": {
     "purpose": "authored-practice-bank-with-local-standard-audio",
     "knowledgeItemCount": 83,
-    "exerciseCount": 452,
+    "exerciseCount": 476,
     "readingTargetCount": 79,
     "primaryExerciseCounts": {
       "k-final-a": 6,
@@ -18591,26 +19485,26 @@
       "k-final-v": 6,
       "k-initial-b": 6,
       "k-initial-p": 5,
-      "k-initial-m": 6,
+      "k-initial-m": 8,
       "k-initial-f": 5,
       "k-tone-0": 5,
       "k-initial-d": 5,
-      "k-initial-t": 6,
+      "k-initial-t": 8,
       "k-initial-n": 6,
       "k-initial-l": 5,
-      "k-initial-g": 5,
+      "k-initial-g": 7,
       "k-initial-k": 5,
       "k-initial-h": 6,
-      "k-initial-j": 5,
+      "k-initial-j": 7,
       "k-initial-q": 6,
       "k-initial-x": 5,
       "k-initial-z": 5,
       "k-initial-c": 5,
       "k-initial-s": 5,
-      "k-whole-zi": 6,
+      "k-whole-zi": 8,
       "k-whole-ci": 5,
       "k-whole-si": 6,
-      "k-initial-zh": 5,
+      "k-initial-zh": 7,
       "k-initial-ch": 5,
       "k-initial-sh": 5,
       "k-initial-r": 5,
@@ -18620,21 +19514,21 @@
       "k-whole-ri": 6,
       "k-whole-yi": 6,
       "k-whole-wu": 5,
-      "k-whole-yu": 6,
+      "k-whole-yu": 8,
       "k-letter-y": 5,
       "k-letter-w": 5,
       "k-final-ai": 6,
       "k-final-ei": 5,
-      "k-final-ui": 6,
-      "k-final-ao": 6,
+      "k-final-ui": 8,
+      "k-final-ao": 8,
       "k-final-ou": 5,
       "k-final-iu": 6,
       "k-final-ie": 5,
       "k-final-ve": 6,
       "k-final-er": 5,
       "k-whole-ye": 5,
-      "k-whole-yue": 6,
-      "k-final-an": 6,
+      "k-whole-yue": 8,
+      "k-final-an": 8,
       "k-final-en": 5,
       "k-final-in": 5,
       "k-final-un": 5,
@@ -18644,7 +19538,7 @@
       "k-whole-yun": 6,
       "k-final-ang": 5,
       "k-final-eng": 6,
-      "k-final-ing": 6,
+      "k-final-ing": 8,
       "k-final-ong": 5,
       "k-whole-ying": 5,
       "rule-tone-placement": 5,
@@ -18668,13 +19562,13 @@
       "标准音直接采用cmguo/PinYinSound，家庭课程和中文指令已接入本机声音；题库数量、书写与词义迁移继续完善。",
       "每个基础知识项至少有两道可用视觉主目标题，不等于辨听、拼读、书写、迁移等维度充分覆盖。",
       "本库不是全部合法普通话音节词典，不可据此生成任意拼接。",
-      "已有26个无调基础字母的原创笔画、占格与纸笔引导；带调书写示范和真机仍待补齐，不用识别题冒充书写达标。",
+      "已有26个基础字母、63个无调目标及72个带调目标的原创书写示范；纸笔练习不打分，真机仍待验收。",
       "首版不含发音评测；现有朗读目标仅作未来研究资料。",
       "首版 requiredModes 只包含客观题型；朗读目标暂不参与课程、练习和掌握度。",
       "83个知识点均有至少5道客观主目标题；题量不代表完整听说读写能力。",
       "第一课有a、o、e各四声的12道标准音听辨，不能代表词语变调、口语或其他韵母四声全面覆盖。",
       "全部客观题已在content/narration.json配中文脚本，本机预生成声音只作中文指令；不合成拉丁拼音示范。旧promptAudioRef保留公开录制规划，实际中文语音由独立清单管理。",
-      "纯拼音选项无选项语音引用，答题前不可自动播读以免改变任务或泄露辨听答案。",
+      "文字拼音选项不使用中文合成音朗读；图片选项的内部label保留规范拼音用于资源校验，实际只显示图片并播放中文图义说明。",
       "79条 readingTargets 是未来研究数据，不属于本期课程活动或验收；首版不采集录音、不生成跟读记录或发音分数。"
     ],
     "objectivePrimaryExerciseCounts": {
@@ -18690,26 +19584,26 @@
       "k-final-v": 5,
       "k-initial-b": 5,
       "k-initial-p": 5,
-      "k-initial-m": 5,
+      "k-initial-m": 7,
       "k-initial-f": 5,
       "k-tone-0": 5,
       "k-initial-d": 5,
-      "k-initial-t": 5,
+      "k-initial-t": 7,
       "k-initial-n": 5,
       "k-initial-l": 5,
-      "k-initial-g": 5,
+      "k-initial-g": 7,
       "k-initial-k": 5,
       "k-initial-h": 5,
-      "k-initial-j": 5,
+      "k-initial-j": 7,
       "k-initial-q": 5,
       "k-initial-x": 5,
       "k-initial-z": 5,
       "k-initial-c": 5,
       "k-initial-s": 5,
-      "k-whole-zi": 5,
+      "k-whole-zi": 7,
       "k-whole-ci": 5,
       "k-whole-si": 5,
-      "k-initial-zh": 5,
+      "k-initial-zh": 7,
       "k-initial-ch": 5,
       "k-initial-sh": 5,
       "k-initial-r": 5,
@@ -18719,21 +19613,21 @@
       "k-whole-ri": 5,
       "k-whole-yi": 5,
       "k-whole-wu": 5,
-      "k-whole-yu": 5,
+      "k-whole-yu": 7,
       "k-letter-y": 5,
       "k-letter-w": 5,
       "k-final-ai": 5,
       "k-final-ei": 5,
-      "k-final-ui": 5,
-      "k-final-ao": 5,
+      "k-final-ui": 7,
+      "k-final-ao": 7,
       "k-final-ou": 5,
       "k-final-iu": 5,
       "k-final-ie": 5,
       "k-final-ve": 5,
       "k-final-er": 5,
       "k-whole-ye": 5,
-      "k-whole-yue": 5,
-      "k-final-an": 5,
+      "k-whole-yue": 7,
+      "k-final-an": 7,
       "k-final-en": 5,
       "k-final-in": 5,
       "k-final-un": 5,
@@ -18743,7 +19637,7 @@
       "k-whole-yun": 5,
       "k-final-ang": 5,
       "k-final-eng": 5,
-      "k-final-ing": 5,
+      "k-final-ing": 7,
       "k-final-ong": 5,
       "k-whole-ying": 5,
       "rule-tone-placement": 5,
@@ -18762,15 +19656,15 @@
       "rule-er": 5,
       "rule-front-back-nasal": 5
     },
-    "objectiveExerciseCount": 424,
+    "objectiveExerciseCount": 448,
     "insufficientObjectiveReviewKnowledgeIds": [],
     "insufficientObjectiveReleaseKnowledgeIds": [],
     "toneListeningExerciseCount": 12,
     "releaseMinimumObjectiveExercisesPerKnowledge": 5,
     "releaseMinimumDistinctObjectiveReviewExercisesPerKnowledge": 2,
-    "audioRequirementCount": 367,
-    "promptAudioRequirementCount": 136,
-    "optionAudioRequirementCount": 26,
+    "audioRequirementCount": 382,
+    "promptAudioRequirementCount": 139,
+    "optionAudioRequirementCount": 38,
     "pronunciationAudioRequirementCount": 205,
     "isolatedInitialTargetCount": 21,
     "isolatedFinalTargetCount": 24,
@@ -18829,5 +19723,5 @@
       "rt-14-whole-ying"
     ]
   },
-  "contentVersion": "2026.10.05.13"
+  "contentVersion": "2026.10.05.14"
 }

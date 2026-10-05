@@ -357,6 +357,10 @@
                     }
                   },
                   "additionalProperties": false
+                },
+                "pictureId": {
+                  "type": "string",
+                  "pattern": "^v[0-9]+-[a-z]+$"
                 }
               },
               "additionalProperties": false
@@ -402,6 +406,10 @@
           "promptAudioRef": {
             "type": "string",
             "minLength": 1
+          },
+          "pictureId": {
+            "type": "string",
+            "pattern": "^v[0-9]+-[a-z]+$"
           }
         },
         "additionalProperties": false

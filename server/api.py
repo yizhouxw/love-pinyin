@@ -14,7 +14,7 @@ from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Query, Re
 from pydantic import BaseModel, ConfigDict, Field
 
 from server import source_audio
-from server.content import load_curriculum, load_writing, map_by_id
+from server.content import load_curriculum, load_illustrations, load_writing, map_by_id
 from server.content_history import compatible_revision, exercises_for_revision
 from server.domain import (
     Event,
@@ -396,6 +396,7 @@ def curriculum(device: dict = Depends(paired)) -> dict:
         )
     }
     result["writing"] = load_writing()
+    result["illustrations"] = load_illustrations()
     result["exercises"] = [_public_exercise(item) for item in data["exercises"]]
     audio_ids = _available_standard_audio(data)
     result["audioRequirements"] = [

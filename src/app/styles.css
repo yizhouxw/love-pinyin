@@ -1696,3 +1696,49 @@ footer {
   min-width: 0;
   padding: 8px;
 }
+
+.word-cards {
+  margin-block: 24px;
+  padding: 20px;
+  border: 2px solid #d2e5d9;
+  border-radius: 22px;
+  background: #f3faf4;
+}
+.word-heading,
+.word-card,
+.word-card > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.word-card figure {
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  text-align: center;
+}
+.word-card figcaption span {
+  display: block;
+  font-size: 2rem;
+}
+.word-card figcaption small {
+  font-size: 1rem;
+}
+.word-picture {
+  display: block;
+  width: min(240px, 100%);
+  height: auto;
+  object-fit: contain;
+}
+.word-question-picture {
+  display: flex;
+  justify-content: center;
+  margin: 16px;
+}
+.game-option:has(.word-picture) {
+  padding: 12px;
+}
+.game-option .word-picture {
+  width: min(180px, 100%);
+}

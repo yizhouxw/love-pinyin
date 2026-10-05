@@ -14,7 +14,7 @@ from fastapi import HTTPException
 from fastapi.responses import Response, StreamingResponse
 
 from server.audio_assets import _byte_range, _chunks, _verified_file
-from server.content import load_writing
+from server.content import load_illustrations, load_writing
 
 ROOT = Path(__file__).resolve().parents[1]
 NARRATION_PATH = ROOT / "content" / "narration.json"
@@ -56,6 +56,13 @@ def narration_scripts() -> dict[str, str]:
         for target in targets:
             if "tone" in target:
                 scripts[f"writing-{target['id']}-tone"] = target["note"]
+    illustrations = load_illustrations()
+    if illustrations.get("intro"):
+        scripts["picture-intro"] = illustrations["intro"]
+    if illustrations.get("error"):
+        scripts["picture-error"] = illustrations["error"]
+    for picture_id, item in illustrations["items"].items():
+        scripts[f"picture-{picture_id}"] = item["description"]
     for asset_id, text in scripts.items():
         if not _ID.fullmatch(asset_id) or not isinstance(text, str) or not text.strip():
             raise ValueError(f"invalid narration script: {asset_id}")

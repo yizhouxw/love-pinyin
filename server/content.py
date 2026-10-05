@@ -35,3 +35,8 @@ def map_by_id(collection: str) -> dict[str, dict]:
 @lru_cache(maxsize=1)
 def load_writing() -> dict:
     return json.loads((CONTENT_PATH.parent / "writing.json").read_text(encoding="utf-8"))
+
+
+@lru_cache(maxsize=1)
+def load_illustrations() -> dict:
+    return json.loads((CONTENT_PATH.parent / "illustrations.json").read_text(encoding="utf-8"))

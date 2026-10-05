@@ -42,6 +42,7 @@ def private_audio(monkeypatch, tmp_path):
     root = tmp_path / "private-audio"
     root.mkdir()
     monkeypatch.setattr(learning_audio, "load_writing", lambda: {"ui": {}, "glyphs": {}})
+    monkeypatch.setattr(learning_audio, "load_illustrations", lambda: {"items": {}})
     monkeypatch.setattr(learning_audio, "NARRATION_PATH", narration_path)
     monkeypatch.setattr(learning_audio, "RECORDINGS_PATH", recordings_path)
     monkeypatch.setattr(learning_audio, "LEARNING_AUDIO_DIR", root)

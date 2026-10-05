@@ -95,14 +95,14 @@ export function validateNarration(curriculum, narration) {
     }
     const options = new Map(exercise.options.map((option) => [option.id, option]));
     for (const option of exercise.options) {
-      if (hasHan.test(option.label) && !(option.id in script.options)) {
+      if ((hasHan.test(option.label) || option.pictureId) && !(option.id in script.options)) {
         errors.push(`${exercise.id}.options: missing Mandarin option ${option.id}`);
       }
     }
     for (const [optionId, text] of Object.entries(script.options)) {
       const option = options.get(optionId);
       if (!option) errors.push(`${exercise.id}.options: unknown option ${optionId}`);
-      else if (!hasHan.test(option.label)) {
+      else if (!hasHan.test(option.label) && !option.pictureId) {
         errors.push(`${exercise.id}.options.${optionId}: pinyin targets must not use narration`);
       }
       checkText(text, `${exercise.id}.options.${optionId}`);
