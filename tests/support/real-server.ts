@@ -11,6 +11,7 @@ export const test = base.extend<{
   dataDirectory: string;
   seedReview: (knowledgeId: string) => Promise<void>;
   selectedPinyinSource: boolean;
+  serverControl: { url: string; stop: () => Promise<void>; start: () => Promise<void> };
 }>({
   selectedPinyinSource: [false, { option: true }],
   // eslint-disable-next-line no-empty-pattern
@@ -49,25 +50,52 @@ with storage.transaction() as db:
       );
     });
   },
-  appUrl: async ({ dataDirectory: directory, selectedPinyinSource }, use) => {
-    const child = spawn(
-      'uv',
-      ['run', '--locked', 'uvicorn', 'server.main:app', '--host', '127.0.0.1', '--port', '0'],
-      {
-        env: {
-          ...process.env,
-          LOVE_PINYIN_DATA_DIR: directory,
-          LOVE_PINYIN_SOURCE_AUDIO_DIR: selectedPinyinSource
-            ? join(process.cwd(), 'private/pinyinsound')
-            : join(directory, 'source-audio'),
+  appUrl: async ({ serverControl }, use) => {
+    await use(serverControl.url);
+  },
+  serverControl: async ({ dataDirectory: directory, selectedPinyinSource }, use) => {
+    let child: ReturnType<typeof spawn> | undefined;
+    let stopped = Promise.resolve();
+    let url = '';
+    async function stop() {
+      if (!child) return;
+      const current = child;
+      current.kill('SIGTERM');
+      const killTimer = setTimeout(() => current.kill('SIGKILL'), 5_000);
+      await stopped;
+      clearTimeout(killTimer);
+      child = undefined;
+    }
+    async function start() {
+      if (child) throw new Error('Test server is already started');
+      child = spawn(
+        'uv',
+        [
+          'run',
+          '--locked',
+          'uvicorn',
+          'server.main:app',
+          '--host',
+          '127.0.0.1',
+          '--port',
+          url ? new URL(url).port : '0',
+          '--no-access-log',
+        ],
+        {
+          env: {
+            ...process.env,
+            LOVE_PINYIN_DATA_DIR: directory,
+            LOVE_PINYIN_SOURCE_AUDIO_DIR: selectedPinyinSource
+              ? join(process.cwd(), 'private/pinyinsound')
+              : join(directory, 'source-audio'),
+          },
+          stdio: ['ignore', 'pipe', 'pipe'],
         },
-        stdio: ['ignore', 'pipe', 'pipe'],
-      },
-    );
-    const stopped = new Promise<void>((resolve) => child.once('close', () => resolve()));
-    let output = '';
-    try {
-      const url = await new Promise<string>((resolve, reject) => {
+      );
+      const current = child;
+      stopped = new Promise<void>((resolve) => current.once('close', () => resolve()));
+      let output = '';
+      url = await new Promise<string>((resolve, reject) => {
         const timer = setTimeout(
           () => reject(new Error(`Server startup timed out: ${output}`)),
           20_000,
@@ -80,23 +108,23 @@ with storage.transaction() as db:
             resolve(address);
           }
         };
-        child.stdout.on('data', collect);
-        child.stderr.on('data', collect);
-        child.once('error', (error) => {
+        current.stdout!.on('data', collect);
+        current.stderr!.on('data', collect);
+        current.once('error', (error) => {
           clearTimeout(timer);
           reject(error);
         });
-        child.once('close', () => {
+        current.once('close', () => {
           clearTimeout(timer);
           reject(new Error(`Server exited: ${output}`));
         });
       });
-      await use(url);
+    }
+    try {
+      await start();
+      await use({ url, stop, start });
     } finally {
-      child.kill('SIGTERM');
-      const killTimer = setTimeout(() => child.kill('SIGKILL'), 5_000);
-      await stopped;
-      clearTimeout(killTimer);
+      await stop();
     }
   },
 });
