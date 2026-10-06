@@ -28,7 +28,7 @@ jobs:
       - run: npm run test:e2e
       # Real GUI/product tests require prepared private speech assets on the Mac.
       # Linux CI does not replace them with fake speech or claim audio acceptance.
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report
