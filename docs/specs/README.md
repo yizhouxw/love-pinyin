@@ -20,10 +20,10 @@
 
 1. 先读根 `AGENTS.md`、[PRD](../product/PRD.md)、[UX](../product/UX.md)、[架构](../architecture.md) 与当前 SPEC，再检查现有类型和 OpenAPI。
 2. 接口和内容格式以 `src/domain/contracts.ts`、服务端 OpenAPI、JSON Schema 为权威；新增/变更需先更新契约及契约测试，再写实现。SPEC 中列出的新增端点是目标接口，尚未实现时不得声称当前可用。
-3. 每次只完成一个切片；遵守列明文件边界。必要跨边界改动先更新相邻 SPEC 的依赖说明，不自行更换技术栈或新增云服务。
+3. 每次提交闭合一个清晰切片，可连续完成多个；遵守列明文件边界。必要跨边界改动先更新相邻 SPEC 的依赖说明，不自行更换技术栈或新增云服务。
 4. 课程排序读取内容 `order`/manifest，不在代码按「第几周」拼装。知识点、课程、音频和题目 ID 都引用内容包，禁止在组件中发明第二套 ID。
 5. 不修改验收阈值让测试通过。测试应覆盖输入/状态/边界，不能仅断言实现内部常量。对可逆纯样式改动优先人工视觉验证，不制造无意义快照。
-6. `npm run verify` 必须全绿；适用时运行 `npm run test:e2e`。服务端运行 `npm run verify:server`（锁定依赖的 Ruff 与 pytest）；全量门禁为 `npm run verify:all`。尚未实现的功能应在 SPEC 中保留未完成状态。
+6. 业务变更的 `npm run verify` 必须全绿；纯文档检查格式、链接和实现一致性。适用时运行 `npm run test:e2e`。服务端运行 `npm run verify:server`（锁定依赖的 Ruff 与 pytest）；全量门禁为 `npm run verify:all`。尚未实现的功能应在 SPEC 中保留未完成状态。
 7. 交付说明列出已实现需求 ID、实际命令结果、未通过门禁、人工/设备证据。每个切片独立 git commit；不提交录音、密钥、私有样本、模型权重或外部音频素材。
 
 ## 冲突及状态

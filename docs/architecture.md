@@ -1,59 +1,53 @@
 # 技术架构：自有 Mac Studio 上的 B/S
 
-状态：家庭B/S服务、语音学习及进度已实现；当前标准音机制见ADR-0008。
-
-## 选型与边界
-
-前端 React + TypeScript + Vite，普通 HTML/CSS/SVG 构建轻游戏，不引入重型游戏引擎。后端 Python 3.12 + FastAPI + Uvicorn；SQLite 通过标准库访问。锁定版本见 `package-lock.json`、`uv.lock`。
-
-当前实测主机：Apple M2 Ultra、64 GB 内存、arm64。Mac 提供家庭服务和本地课程资源。
+React + TypeScript + Vite 输出静态网页，FastAPI + Uvicorn 在 Mac 上提供同源网页、API和音频，Python 标准库 SQLite 保存家庭档案。版本由锁文件固定，见[依赖记录](engineering/dependencies.md)。不需要声学 worker、云服务或模型。
 
 ```mermaid
 flowchart LR
-  Browser[电脑 / iPad / 手机浏览器] -->|局域网 HTTPS 同源 API| API[Mac Studio FastAPI]
-  API --> Web[React 静态资源 / 课程 / 标准音频]
-  API --> DB[(本地 SQLite 学习记录)]
-  API --> Assets[PinYinSound标准音与中文指令]
+  Browser[电脑 / iPad / 手机浏览器] -->|同源 API 与声音| Mac[Mac FastAPI]
+  Mac --> Web[React 静态构建]
+  Mac --> DB[(SQLite 家庭进度)]
+  Mac --> Audio[本地标准音 / 中文指令 / 课程录音]
 ```
 
-首版不请求麦克风，不处理儿童录音。数据库保存必要的客观练习事件，不生成发音评测摘要。ASR 仅是维护者本机素材整理工具，不在应用运行时加载。
+## 实际模块
 
-## 目录与依赖方向
+| 路径                                          | 当前职责                                       |
+| --------------------------------------------- | ---------------------------------------------- |
+| `src/app/App.tsx`                             | 页面、React状态导航、API调用辅助函数和游戏交互 |
+| `src/app/learning-voice.tsx`                  | 中文声音引导与播放状态                         |
+| `src/app/writing.tsx`、`illustrations.tsx`    | 书写观察与生活图片卡                           |
+| `src/domain/`                                 | 契约、拼音呈现、书写与图片数据类型/纯函数      |
+| `src/platform/audio/browser-audio-player.ts`  | 浏览器音频适配器                               |
+| `src/platform/guest.ts`                       | 访客临时状态与请求串行化                       |
+| `server/api.py`、`main.py`                    | 路由、认证、请求事务及同源服务入口             |
+| `server/domain.py`、`storage.py`              | 确定性进度/选题规则、SQLite与迁移              |
+| `server/content.py`、`content_history.py`     | 当前课程及不可覆盖的历史内容                   |
+| `server/source_audio.py`、`learning_audio.py` | 标准音与中文声音/课程录音清单、完整性及读取    |
+| `server/guest.py`、`backup.py`                | 请求级访客内存库、SQLite运维备份               |
+| `content/`、`schemas/`                        | 课程、答案、教学规则、资源映射及格式约束       |
+| `private/`（忽略）                            | 声音、家庭数据库、备份、证书及本机测试证据     |
 
-| 目录                    | 职责                       | 约束                                    |
-| ----------------------- | -------------------------- | --------------------------------------- |
-| `src/app/`              | 页面、导航、样式           | 不直接写进度算法                        |
-| `src/domain/`           | 纯类型和规则               | 不依赖 React、网络、设备 API            |
-| `src/features/`（待建） | 课程、游戏、家长功能       | 每个 SPEC 独立边界                      |
-| `src/platform/`（待建） | 音频播放、API client       | 后续可替换为原生适配                    |
-| `server/`               | API、配对、存储            | 默认只监听 loopback；显式配置 HTTPS LAN |
-| `content/` + `schemas/` | 结构化课程/原创题/资产状态 | CI 验证引用、依赖图、目标映射和完整性   |
-| `private/`（不入 Git）  | SQLite、备份、授权文件     | 不由静态服务器挂载                      |
-| `models/`（不入 Git）   | 本机维护工具使用的研究模型 | 固定哈希、来源、许可；不由应用启动加载  |
+当前没有 hash 路由、独立 `src/services/` 或 `src/features/` 模块；API 辅助函数仍在 App 内。进度计算在服务端纯函数中，不由 React 重复实现。详细路由和表见[API契约](api-contract.md)。
 
-数据契约见 `docs/api-contract.md`、`src/domain/contracts.ts`；内容 JSON Schema 在 `schemas/`。API 版本固定 `/api/v1`，修改已有语义须迁移或新版本。
+## 状态与一致性
 
-## 客户端
+家庭模式的权威状态在 SQLite。写入通过事务保存事件、幂等回执和 revision；同一实例仅有一次首次作答。按服务器 UTC 时间保存事件，业务日使用 Asia/Shanghai。每日同题计分去重由事务内查询保证，不是“日期字段唯一索引”。
 
-首版路由采用 hash 路由，适配 FastAPI 静态挂载及未来 Capacitor 本地文件路径。使用响应式布局，最小宽度 320 CSS px；支持触摸与键鼠，游戏操作应当可中断、重播和恢复。
+会话冻结题目、内容版本和选项顺序；已登记旧内容可恢复。备份包含规则版本，进度返回当前规则标识；当前不是逐事件多版本规则执行器，未来修改算法仍须迁移规范。未知数据库迁移版本在启动写入前拒绝。
 
-本期浏览器只播放登记的标准音与题干音频；不申请麦克风、不生成 PCM 录音、不使用 MediaRecorder。
+访客调用白名单操作，每次使用隔离内存 SQLite，结果快照回存浏览器 sessionStorage，不写家庭库。访客音频接口无需配对，因此能访问服务的设备可以读取已安装的教学声音；家庭进度仍受配对保护。
 
-断互联网不影响安装完整后的局域网使用。断 LAN 或 Mac 停机则进度保存不可用，显示明确状态。首版不承诺浏览器脱离服务器仍能学习；不因此实现两套主数据与复杂同步。初次依赖/示范音获取可以联网，运行时不自动访问外部服务。
+## 音频与网络
 
-## 服务端与进度
+标准音直接采用固定 cmguo/PinYinSound；中文题目/导航由准备阶段生成；课程录音由家长提供。运行时按登记ID和摘要读本机文件，不接受任意路径、远程URL或动态合成文本。首版不请求麦克风，不写入新发音评分。
 
-SQLite 保存 profiles / settings / attempts / schema_migrations。开启 foreign_keys、WAL，事务提交时同时完成幂等写入与 revision 更新。小型家庭服务优先单个 Uvicorn worker。历史 schema 中预留的评分摘要字段仅为备份/迁移兼容，本期不写入新评测结果。
+默认只监听 loopback。家庭访问需显式 LAN IPv4 与可信 HTTPS。会话 Cookie 为 HttpOnly、SameSite=Strict，HTTPS 时加 Secure；本机 HTTP 开发不加 Secure。写操作校验 CSRF及已提供的 Origin，不配置通配 CORS。当前安全头与缺口见[隐私边界](engineering/privacy.md)。
 
-服务器 UTC 时间为事件时间，业务日按 Asia/Shanghai；客户端时间仅作显示参考。`requestId` 和 `attempt.id` 去重，不靠客户端请求次数累加。保留知识项稳定 ID 与内容版本，迁移中不得静默重置掌握度。
+没有 service worker 或浏览器独立离线数据库；断互联网但 LAN 可用是目标使用方式，真实断WAN验收仍待完成。Mac/LAN不可达不能假称已保存，待确认请求按原ID恢复。
 
-家长在 Mac 端生成短期配对码，浏览器换取同源 HttpOnly / Secure / SameSite=Strict 会话 cookie。用户不需要手机号、真实姓名或第三方账号。管理删除/导入需单独家长权限；不是解一道算术题就获得管理权限。详见 SPEC-001/005。
+## 未来扩展与验收边界
 
-## 未来 Android/iOS
+原生封装仅为后续方向，未安装 Capacitor 或生成 Xcode/Gradle 工程。届时需独立SPEC处理网络发现、权限、证书信任、后台行为和商店发布。
 
-应用主体仍为 Web 代码；通过 Capacitor 封装时保留 API client、音频和存储接口，新增本地网络权限、证书信任及安装发布配置。本期不安装 Capacitor、不生成 Xcode/Gradle 工程。迁移不是零工作，iOS 本地网络/ATS、服务器地址发现及 app store 审核均需另立 SPEC；若未来研究发音评测，录音权限也需单独立项。[Capacitor 官方说明](https://capacitorjs.com/docs)
-
-## 未关闭的技术门禁
-
-1. 标准音固定采用cmguo/PinYinSound，软件不设置审音或审批；外部文件不随MIT源码分发。
-2. 2025 日常修订课标的拼音具体条款原文核验与真机 HTTPS 播放均属正式发布前证据，见交付状态表。
+课程原文拼音条款核对已完成，见[课程研究](research/curriculum.md)。设备支持下限尚未冻结：Vite构建目标只是语法目标，不能代替实际 iPad、手机、Windows 和 Firefox 验收。当前证据统一见[状态表](STATUS.md)。

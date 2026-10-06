@@ -1,82 +1,57 @@
 # 验证策略
 
-自动化覆盖语音引导的实际桌面练习、家长管理、SQLite事务/API、真实文件和跨视口交互。下表区分实际产品用例与模拟边界、人工和真机验收；最新数量与未完成项见 [STATUS](../STATUS.md)。
+自动化、真实声音、实际浏览器与家庭真机各自证明不同范围。最新已记录结果集中在[STATUS](../STATUS.md)，需求对应关系见[交付核对](delivery-audit.md)。
 
-## 分层
+## 准备与命令
 
-| 层        | 自动检查                                                   | 关键人工检查                           |
-| --------- | ---------------------------------------------------------- | -------------------------------------- |
-| 内容      | Schema、ID、引用、先修DAG、选项答案、NFC、题目知识点覆盖   | 参考资料核对音节/字形/课标差异         |
-| 领域      | Vitest掌握函数；API幂等、双设备并发、复习、迁移与事务回滚  | 是否适合课堂节奏、完整算法验收         |
-| API       | 隔离SQLite认证、会话、家庭数据、备份和恢复校验             | WAN断网仅LAN运行、整机/磁盘耗尽恢复    |
-| UI        | Chromium/WebKit真实桌面产品与模拟视口，键盘/触摸、错误态   | 真机手指操作、可读字形、声音与打断行为 |
-| 声音      | 实际WAV/MP3解码、内容脚本覆盖、同源播放和故障重试          | 实际设备音量与播放中断行为             |
-| 安全/隐私 | 配对/撤销、CSRF/Origin、无第三方音频代码路径、私有文件权限 | WAN隔离抓包、证书信任、家长同意说明    |
+先用锁定环境安装依赖和Playwright浏览器。`test:e2e:live`、`test:e2e:product`、`test:e2e:soak`及包含live的 `verify:all` 都需要按README准备本机私有声音；缺资源应失败，不填入假音频。
 
-## 设备矩阵
+| 命令                       | 覆盖与限制                                                        |
+| -------------------------- | ----------------------------------------------------------------- |
+| `npm run verify`           | 格式、lint、TS、Schema/内容、Vitest及构建                         |
+| `npm run verify:server`    | Ruff与pytest：纯领域规则、实际SQLite/API、权限/迁移/并发/版本边界 |
+| `npm run test:e2e`         | 六个引擎/视口项目，可使用API/Audio替身验证布局和故障              |
+| `npm run test:e2e:local`   | 本机兼容选择，Firefox例外见下                                     |
+| `npm run test:e2e:live`    | 独立真实服务/SQLite，家庭/访客数据、历史恢复、停服、灾备与小结    |
+| `npm run test:e2e:product` | 实际WAV/MP3、完整游戏、讲解、书写/图片与资源失败恢复              |
+| `npm run test:e2e:soak`    | 独立20分钟长测；不包含在verify:all中                              |
+| `npm run verify:all`       | verify + verify:server + test:e2e:local + test:e2e:live           |
+| `npm run validate:release` | 当前内容覆盖、课标证据与本机声音完整性，不含真机验收              |
 
-开发基线目标：桌面Chrome/Edge120+、Firefox121+、Safari17+；iPadOS/iOS17+ Safari；Android Chrome120+。这是项目拟支持下限，不代表所有历史版本已验证。生产构建明确使用相应target。
+Linux CI安装锁定依赖，执行工程/API、许可证清单检查和完整六视口项目。CI不带家庭私有声音，不执行live/product/soak或完整家庭发布验收。运行记录须注明命令、提交、环境和范围，不将本地结果写作远程CI通过。
 
-Playwright覆盖当前随锁文件安装的Chromium/Firefox/WebKit、iPad/iPhone/Pixel视口。真实发布至少覆盖：Mac键鼠；Windows Chrome/Edge；iPad Safari横竖屏+触摸；iPhone Safari；Android Chrome。真实测试记录OS/浏览器精确版本、日期、设备、结果；不能把WebKit模拟称为iOS真机。
+## 回归证据组织
 
-### 当前主机的 Firefox 例外
+| 范围       | 核验方式                                                                                          |
+| ---------- | ------------------------------------------------------------------------------------------------- |
+| 内容       | 引用、NFC、先修、答案/目标、题量、中文语音与书写/图片结构；人工另核课程依据和字形                 |
+| 进度       | Python纯函数与SQLite事务覆盖8条窗口、模式、业务日、并发去重、复习、时钟回退                       |
+| 配对/备份  | 权限、CSRF、坏备份拒绝、预览revision、事务替换、删除与撤销；真实浏览器文件往返                    |
+| 历史与顺序 | 登记快照、冻结题单/选项、旧答案判分、访客恢复；未知版本拒绝                                       |
+| 声音       | 实际解码、非静音、播放/停止/重听、互斥、题前播放门槛与故障重试                                    |
+| 游戏       | 四类玩法、提示/纠正只保留首答、拼读确认前不提交、跳过/休息/小结                                   |
+| 书写/图片  | 逐笔及标调说明、图片加载门槛、语音互斥；课程活动不写伪成绩                                        |
+| 服务故障   | RECOVERY-01实际stop/start；DISASTER-01仅损坏临时库并同版恢复；ROLLBACK-01未知schema拒绝且文件不变 |
+| LAN工具    | 临时真实证书检验有效期/IP SAN/密钥匹配，独立HTTPS服务；不安装系统信任                             |
 
-本机macOS27.0 + Playwright1.63.0的Firefox155启动立即报`Could not find profile folder`，显式新建profile和更换TMPDIR仍失败。症状与[Playwright #42768](https://github.com/microsoft/playwright/issues/42768)、[Mozilla #2060476](https://bugzilla.mozilla.org/show_bug.cgi?id=2060476)一致；没有改系统权限或降低安全设置。该上游报告本身记录其他Playwright版本，本机1.63结论来自实际复现，不能混淆。
+测试数据库、端口与声音资源访问须隔离于运行家庭服务。真实产品成功路径不mock API或Audio；请求中断可用于故障注入。复习/历史测试会在隔离库构造过去状态，应明确这不是孩子实际掌握或运行过旧二进制的证据。
 
-`npm run test:e2e`始终运行完整6项目，当前主机会重现Firefox启动失败。`npm run test:e2e:local`只在macOS27且精确Playwright1.63、非CI时明确打印原因并运行另外5项目；其他环境仍全跑。`verify:all`使用这个本机命令。Linux CI使用完整命令，不能把本机5/5写成完整跨浏览器验收。升级Playwright后本机命令自动恢复Firefox测试；真实Firefox与真机仍是发布门禁。
+## 浏览器与实际设备
 
-最低必测：320px无横向滚动、200%缩放、触摸目标≥48px、仅键盘可完成、拖拽替代、减少动画、音频播放释放、LAN断开、Mac重启、iPad证书信任。
+Vite的Chrome/Edge120、Firefox121、Safari17是构建语法目标，产品支持下限待真机矩阵冻结。至少补齐Mac/Windows键鼠、iPad横竖屏与触摸、iPhone Safari、Android Chrome、Firefox、屏幕阅读器、320px/200%文字、48px目标和音频中断。
 
-## 发布门禁
+实际Mac操作证据分别见[Chrome](desktop-chrome-acceptance.md)与[Safari](desktop-safari-acceptance.md)。Playwright WebKit不等于原生Safari，iPad视口不等于iPad设备；本机服务停止不等于真实Wi-Fi故障。
 
-`validate:release`检查内容覆盖和实际音频，不要求教师或审核者批准。每知识点五题已满足，CURR-02已核对最新课标相关拼音条款原文并登记来源；标准音已按PinYinSound安装，损坏/缺失会另行报出。首版不含发音评测。
+### 本机Firefox例外
 
-SPEC-000保留为已暂停的研究；其样本和性能目标不属于本期验收。
+已记录macOS27.0 + Playwright1.63.0 Firefox启动报 `Could not find profile folder`。`test:e2e:local`只在这一精确组合且非CI时打印原因并选择另外五项目；`test:e2e`始终保留六项目，其他环境不跳过。既有调查关联[Playwright #42768](https://github.com/microsoft/playwright/issues/42768)及[Mozilla #2060476](https://bugzilla.mozilla.org/show_bug.cgi?id=2060476)，不将上游其他版本的报告当作本机测试。升级后须重验，不能把五项目通过写成Firefox通过。
 
-## 真实 B/S 桌面数据往返
+## SOAK-01 长时观测
 
-`npm run test:e2e:live` 构建前端后，在 Chromium 和 WebKit 桌面浏览器分别执行 R-012-GUI-01：通过页面配对与作答、导出真实 JSON、拒绝损坏备份且保留已有记录、确认删除、预览并确认导入、刷新后再次导出并比较原始作答和会话。它不拦截或模拟 API；每个测试启动真实 FastAPI、独立 SQLite 临时目录和系统分配的 loopback 端口，结束后停止服务并清理该目录。已纳入 Mac 本机 `verify:all`。Linux CI 无家庭私有语音资源，不执行该产品流程，也不把模拟测试替代为产品验收。失败保留 Playwright trace 和截图到忽略的 `test-results/`，不记录家庭真实数据。此项与模拟 API 的跨视口测试互补，不是 LAN/真机验收。
+实际安装Chrome与Playwright WebKit分别在隔离服务中运行至少20分钟墙钟时间。`LOVE_PINYIN_SOAK_SECONDS=90 npm run test:e2e:soak`仅是烟测，不满足长测验收。全程真实题目与声音、UI答题和休息，导出记录数必须一致。
 
-## 真实语音产品验收
+WeakRef追踪媒体，记录play到playing、切题延迟及轮末媒体/AudioContext/Blob URL；等待休息语音释放后活动资源归零。观测器v2要求每次标准音都有延迟样本，失败或中断即使满20分钟也不能算完成。Chrome轮末显式GC后的堆数据不是自然内存曲线；WebKit不填虚构堆值。详情和原始证据索引见[长测结果](audio-soak-results.md)。
 
-`npm run test:e2e:product` 必须先准备真实 `private/learning-audio/` 与 `private/pinyinsound/`；资源缺失会失败，不跳过也不填入测试音。测试独立SQLite，在Chromium/WebKit解码全部中文语音和14课映射录音，检查真实非静音样本/时长，通过界面开始听题、停止、重播及听中文选项，并核对无作答请求。媒体故障使用请求中断注入以验证失败与重试，成功路径没有mock API或Audio。另验证资源状态未知也不放开无声答题、退出后不留提示，以及错答后修正只存一次首次错误。标准音按产品决定直接信任PinYinSound；声音测试验证完整性、解码与实际播放。此命令不在没有私有语音资源的Linux CI伪造通过；普通CI继续跑逻辑、接口和模拟浏览器边界测试。
+## 文档变更
 
-## 标准音完整性与兼容回归
-
-TRUST-01覆盖配对认证、Range、固定映射、文件摘要、停用、路径越界以及旧审核字段不影响标准音。实际桌面GUI解码89个映射，通过课程卡播放/停止/重播及六题听辨流程；所有成功响应来自真实API与声音文件。旧审音台及对应测试已删除，软件不再提供审核端点或角色。
-
-BANK-02/BANK-03真实复习GUI使用real-server的seedReview，仅在该测试独有临时SQLite中建立过去到期的计划并设置对应课；不伪造课程、语音、答题或结束响应。测试报告必须区分历史状态构造与实际浏览器完成的两题流程，不能将此视作学生真实达到掌握阈值。
-
-BLEND-01真实桌面用例：在临时数据库设置复习到期状态，实际声音引导下试选、撤销、刷新、确认前中断请求并用原请求重试，再修正错误；导出仅有一条首次错误、未用提示的记录。检查刷新后复习类型与冻结内容版本保留。模拟窄屏另验证预览/确认/撤销在320px及200%文字下无横向溢出且按钮至少48px；此处仍不代表真机触摸通过。
-
-TONE-01新增a、o、e各四声12题，使用实际标准音及中文题目、讲解。在隔离真实服务上，从第一课轮转经过休息到达全部新题；听音前禁止选择，键盘作答，错答纠正只存首次成绩，再次遇到同题须重新听音。全标准音解码范围扩展到99个目标。
-
-BANK-04：API在隔离库中轮转第3–8课，验证全部42道新增声母听辨能进入题单、保存及损坏资产时退出新题单；注册夹具是合成字节，仅验证资源准入和业务。真实桌面GUI经过正常课程轮转到达b/q/sh各两题，播放真实题干/标准音/讲解、键盘作答、休息、换课与刷新后导出；另延迟真实进度响应确认加载中不能提交旧修订号。全138个标准音与646个中文语音入口的实际解码由声音产品测试覆盖。
-
-BANK-05：七课API轮转覆盖全部48道新增韵母听辨并持久保存，统一使用明确的合成注册夹具验证准入。真实桌面GUI从课程自然轮转到达ü、ui、üe、er、ün、eng各两题，播放指令、标准音和两类讲解，包含省略ü两点及前后鼻韵母对照；声音专项解码177标准音、742中文语音入口及14课录音。TONE-01按实际题量轮转重访同题，仍断言重新听音后才能提交。
-
-BANK-06：32道整体认读题验证同调干扰项、两种对比条件、完整音节知识身份和先修范围；真实API逐课轮转、保存与损坏资源排除。真实声音GUI覆盖zi、ri、yu、yue、yuan、ying各两题，含讲解、键盘、休息和刷新持久化。
-
-BANK-07：40道规则题验证具体拼写/标调、轻声不标调、两拼与同调听辨、先修和中文选项语音；API逐课轮转/保存/损坏资源排除。冻结题单测试实际修改新版选项和答案，仍按旧题判分。真实声音GUI覆盖汉字选项独立播放、拼读先选后确认、拼写和三类规则听辨。
-
-DATA-01：历史题库清单和每个SHA-256均有回归；服务端使用实际旧快照创建数据，再升级、恢复及按旧题判分。真实桌面GUI构造与已登记旧快照一致的备份/访客版本，通过上传预览确认或标签页刷新继续作答。未知版本、会话/实例错接、坏答案和损坏快照不得默默使用当前题目。测试构造与真实用户历史数据明确区分，隔离数据库不触碰家庭数据。
-
-WRITE-01的writing.spec.ts使用真实服务和私有语音，覆盖逐笔选择、重听/失败重试、课程声音互斥、所有14课63目标、a/b/j三道图形题的自然轮转与保存。全部26字母的实际浏览器截图逐一目视核对；SVG路径结构校验只能证明可解析、引用与先修范围，不能证明字形教学正确。纸笔活动不生成作答，备份中只出现实际提交的客观题。
-
-LAN-01：`tests/unit/lan-tls.test.mjs`用系统OpenSSL临时生成真实PEM证书/密钥，覆盖有效期、IP SAN、匹配/加密/损坏/缺失密钥、CLI检查与失败启动，以及Mac安装失败不覆盖原LaunchAgent。退出时清理临时目录，不提交私钥。CLI用例需要当前非loopback IPv4，LaunchAgent用例仅在Mac执行；不适用平台会明确skip，其余证书检查仍运行。本机另以临时数据库运行真实HTTPS服务，用仅限测试客户端的显式CA完成页面与健康接口请求，确认关闭后监听已释放；不安装系统信任，不作为iPad/手机实测。
-
-CURR-02：发布校验仍要求最新拼音条款核验状态，并要求原文来源同时登记于sources与课程sourceIds；缺失或未知引用有负例回归。检查只能约束证据引用，不自动证明教研原文真实性、全文未变或学习效果。2026.10.05.15仅更新课程版本依据，题库/规则/声音不变，2026.10.05.14快照在修改前保存。
-
-RECOVERY-01：共享real-server测试服务现在可在同一临时数据库与端口上stop/start。server-recovery.spec.ts实际终止进程、确认端口不可达、从已加载页面提交并观察未确认提示，重启后刷新重放同一请求号；真实导出确认两条不同实例、旧记录不变、再次刷新不重复。仅停止测试自身子进程，不停止家庭服务；此项区别于请求拦截，也不等于真实Wi-Fi/断公网或整机重启。
-
-DESKTOP-01使用实际已安装Chrome与原生macOS控件，完成独立家庭的配对、选课、声音播放状态、正误作答/修正、明细、下载/文件选择/恢复；不是Playwright引擎模拟。只读SQLite交叉核对恢复数据，所有产品写入经UI。设备版本、局限及本地证据见[实际Chrome验收](desktop-chrome-acceptance.md)。
-
-DISASTER-01的disaster-recovery.spec.ts使用真实浏览器操作配对和答题，在线调用生产backup_database（显式目标目录隔离），随后实际停服、校验坏候选、在临时库注入损坏、留档并恢复已校验快照。重启后原cookie可读取家庭，profile/attempts/sessions/exerciseInstances/skippedInstances/reviewPlans与备份前完全一致，继续答题和刷新保存成功。故障注入只改测试数据库；不是Mock API或预置学习记录，不触碰家庭运行服务。此项演练同版本运维恢复，不等于跨schema程序回滚、磁盘耗尽或整机恢复。
-
-## SOAK-01 长时媒体测试
-
-`npm run test:e2e:soak`在已安装Google Chrome（channel=chrome）与Playwright WebKit各执行至少20分钟墙钟时间，两个隔离服务/数据库并发运行；需已准备真实中文声音与PinYinSound。该命令独立于verify:all和普通product回归，缺声音会失败。`LOVE_PINYIN_SOAK_SECONDS=90 npm run test:e2e:soak`仅用于脚本烟测，不满足20分钟验收。
-
-每轮通过UI换课、完成实际题单，听完指令、标准音和反馈，使用产品休息入口；答案只取content库。轮结束等待可操作的主页或休息页，再允许下一次选课；资源释放检查允许20秒以覆盖休息朗读（本机ui-rest长5.565秒）。单次操作/导航超时15秒，防止等控件的空转混入长测；completed与20分钟时长需同时满足才登记合格。WeakRef观测媒体，记录play到playing事件延迟、下一题可见的耗时，以及轮末src/readyState/networkState、AudioContext/Blob URL计数。currentSrc可能在src已移除、readyState/networkState均为0后保留旧地址，不能单凭这个地址判断资源仍加载。Chrome额外在轮末显式GC后取JS堆和DOM计数；这不是未经干预的原生内存曲线，WebKit也不虚填堆数据。没有替换Audio/网络响应，原生play方法仍实际执行。
-
-结果写入test-results/soak各项目的soak-report.json及最终截图；失败也尽量保存已完成样本。两引擎均为无头模式、并发产生本机负载，报告延迟不是移动设备、真实LAN或物理出声测量。观测器v2要求全部实际标准音play均有playing延迟样本，初始化的emptied不能被误作取消；src确实清空、新play或异常才清理未完成监听。完整时长v1已取得资源/数据证据但漏记标准音；v2完整20分钟重跑已通过，两引擎标准音各57次全部采样，分开登记于[长测报告](audio-soak-results.md)。不能凭短跑或零活动资源断言所有内存无泄漏。
+纯文档切片检查Prettier、本地链接、命令/路径/接口与代码一致性；有数量描述时从内容/资源生成结果核对。无需重跑与文字无关的GUI。修改验收要求不得删除尚未完成的门禁，历史报告的限制必须保留。

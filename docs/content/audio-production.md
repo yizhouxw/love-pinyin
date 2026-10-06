@@ -20,7 +20,7 @@ npm run prepare:pinyin -- --archive /绝对路径/source.zip
 
 ## 中文指令与整课录音
 
-`npm run prepare:voice -- --source '/Users/chad/Documents/1汉语拼音音频'`生成中文操作语音、导入原13课录音。中文TTS不读拼音，长录音不替代单音。资源各自通过本机配对接口播放。
+先安装README要求的锁定依赖，再运行 `npm run prepare:voice -- --source '/绝对路径/1汉语拼音音频'`。目录须包含 `content/lesson-recordings.json` 登记的原13份录音文件；脚本按登记文件名复制并记录摘要，用于后续完整性校验；它不自动辨认录音教学内容，家长需提供匹配的源文件。使用本机已安装Tingting生成中文指令，缺失即报错。中文TTS不读拼音，长录音不替代单音。家庭资源接口需配对，访客资源接口无需配对，均按登记ID读取。
 
 ## 验证与维护
 

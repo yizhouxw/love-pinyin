@@ -6,7 +6,7 @@
 2. 在 `codex/spec-xxx-short-name` 分支选清晰切片，写出本次完成的验收编号。允许常规实现选择自主推进；改变已确认需求时先更新SPEC。
 3. 定义/更新数据契约和失败行为，然后实现最小纵向功能。内容、界面、算法、平台API各自分层。
 4. 对真实业务边界写测试：幂等、重复提交、回退、断网、音频取消、错误声调、权限拒绝、数据迁移。
-5. 运行 `npm run verify:all`；语音产品变更再运行 `npm run test:e2e:product`。功能发布前还须 `validate:release` 与人工验收。旧评分PoC已暂停，不作为首版前置条件。
+5. 业务变更运行 `npm run verify:all`（需先准备私有声音）；纯文档改动检查格式、链接和实现一致性。语音产品变更再运行 `npm run test:e2e:product`。功能发布前还须 `validate:release` 与人工验收。旧评分PoC已暂停，不作为首版前置条件。
 6. 更新SPEC状态、ADR、依赖/许可证、测试证据。提交应可独立理解、可回退。
 
 ## 完成定义
@@ -20,8 +20,7 @@
 - 主分支 `main`；本地已初始化，提交按 Conventional Commits，例如 `feat(SPEC-002): add lesson map`、`fix(SPEC-003): stop narration on exit`。
 - PR模板见 `.github/pull_request_template.md`。小PR宜覆盖一个SPEC切片；大任务先合并接口再实现适配器。
 - 不提交node_modules、venv、构建物、私钥、数据库、原始声音、儿童测试集或商业SDK。
-- 开源前检查历史中是否有秘密/个人信息、许可证、README链接与发布门禁。远程地址由项目维护者决定，本阶段不推送。
-- 当前机器没有Git作者身份时，初始化提交使用项目署名 `Love Pinyin contributors <contributors@love-pinyin.local>`；不是用户真实身份。维护者可在后续提交配置自己的身份。
+- 开源前检查历史中是否有秘密/个人信息、许可证、README链接与发布门禁。远程为私有仓库yizhouxw/love-pinyin，默认main；不自动推送或公开发布。
 
 ## 低成本模型任务模板
 

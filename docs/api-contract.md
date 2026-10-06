@@ -1,79 +1,75 @@
 # API 与数据契约
 
-状态：下表混合已实现端点与目标端点；后端运行时 `/openapi.json` 只描述已实现端点，不能把规划端点看成已经存在。
+本文描述当前 `server/api.py` 的实现。路径统一以 `/api/v1` 为前缀；运行服务的 `/openapi.json` 提供请求模型，客户端类型见 `src/domain/contracts.ts`。首版无录音上传、识别或评测端点。
 
-## 基本规则
+## 认证、错误与一致性
 
-- 前后端同源；API base 为 `/api/v1`。首版没有语音上传或评分端点。
-- JSON 用 UTF-8、NFC；ID 稳定且区分大小写；日期为 UTC ISO8601，业务日期固定 Asia/Shanghai。
-- 错误体 `{error:{code,message?,retryable}}`，无堆栈、密钥或数据库路径。
-- 写操作需配对会话、Origin 检查、CSRF token 和请求体限制；没有通配 CORS。
-- 路径参数不得转成任意文件路径；资源通过登记 ID 查找。无远程 URL 抓取或用户提交的模型名加载。
+- 家庭接口需 `lp_session` Cookie；写操作另需可读 `lp_csrf` Cookie对应的 `X-LP-CSRF`。会话Cookie为HttpOnly、SameSite=Strict，HTTPS时加Secure，有效期30天。
+- 首次loopback生成配对码；第一个有效家长设备建立家长角色，后续设备为学生。配对码5分钟、一次使用有效，失败限制为同一客户端地址60秒内5次，进程内计数。
+- 提供Origin时检查同源；未提供时不统一拒绝。无通配CORS。访客请求另经白名单和隔离内存状态处理。
+- 业务错误通常为 `{"detail":{"code":"..."}}`；请求模型校验为422 `detail` 数组，不存在统一的 `error.retryable` 包装。客户端应处理网络故障和非业务错误。
+- 参数ID按登记内容查询，不作为任意文件路径。音频端点核验实际文件及摘要、支持单段Range；缺失404，非法Range416。
+- 作答只提交 `requestId` 与 `answerOptionId`，正确性和时间由服务器决定。相同请求重试返回回执；同一请求号改实例/答案返回409 `IDEMPOTENCY_KEY_REUSED`；同一实例换请求号再答返回409。
+- 选课要求 `expectedRevision`；导入确认绑定预览token、文件hash和revision。设置、普通作答不要求客户端传revision。
 
-## 端点清单
+## 当前路由
 
-| 方法/路径                                        | 输入                       | 返回与约束                                                                                              |
-| ------------------------------------------------ | -------------------------- | ------------------------------------------------------------------------------------------------------- |
-| GET `/health`                                    | 无                         | 200 服务状态；不暴露主机标识                                                                            |
-| GET `/capabilities`                              | 无                         | 标准音资源状态和内容审核状态                                                                            |
-| POST `/pair`                                     | 短期 code                  | Cookie + CSRF token；5次失败/分钟冷却；code 使用一次失效                                                |
-| DELETE `/session`                                | Cookie + CSRF              | 204 清本设备配对，不删除家庭数据                                                                        |
-| GET `/devices`                                   | 家长配对会话               | 仅设备 ID、标签、加入时间和当前设备标记；不返回任何令牌                                                 |
-| DELETE `/devices/{deviceId}`                     | 家长 + CSRF                | 撤销同一家庭的次设备；不能撤销当前家长设备                                                              |
-| GET `/curriculum`                                | 配对                       | 课程内容明确为草稿；题目不含答案/提示，答案只在作答或请求提示后返回                                     |
-| PUT `/household/current-lesson`                  | 家长 + expectedRevision    | 更改当前课程；revision 冲突 409；未知/过期选课不默默回退到第一课                                        |
-| POST `/profiles/clock-pending/resolve`           | 家长 + CSRF                | 时钟恢复后将待校时练习整体删除，或保留为不计分练习；未恢复时返回 409                                    |
-| PUT `/household/settings`                        | 家长 + CSRF                | 更新音频及减少动态效果设置；减少动态效果会随家庭备份保存                                                |
-| POST `/sessions`                                 | 配对 + CSRF                | 冻结当前内容的最多6题会话；休息待处理时返回 `REST_REQUIRED`                                             |
-| POST `/sessions/{id}/finish`                     | 配对 + CSRF                | 结束会话；仅全部题目已答/跳过的会话计为完整一轮                                                         |
-| POST `/rest/complete`                            | 配对 + CSRF                | 清除连续轮次计数并允许继续练习                                                                          |
-| GET `/audio/{id}`                                | 配对 + 登记 id             | 已实现：提供合格公开资源或本机已确认私有标准音，均核验摘要；正确 MIME/单段 Range；缺失404；禁止目录穿越 |
-| GET `/profiles`                                  | 配对                       | 本地昵称/随机头像ID，不要求真名                                                                         |
-| GET `/profiles/progress`                         | 配对                       | mastery snapshot、设置、家庭 revision 与服务端派生的完整会话数（花园叶片）                              |
-| GET `/profiles/knowledge/{knowledgeId}/attempts` | 配对                       | 按知识点读取练习记录；稳定时间/ID 降序，cursor 分页，每页最多50条；游标限定同家庭、同知识点             |
-| POST `/profiles/{id}/attempts`                   | 事件 + expectedRevision    | 幂等插入；服务器生成时间；冲突409后重取，按attempt.id安全重试                                           |
-| POST `/instances/{id}/skip`                      | 配对会话 + CSRF            | 当前会话内幂等标记跳过；不创建作答/掌握事件，刷新可恢复                                                 |
-| GET `/attempts/{requestId}`                      | 同一配对会话               | 已提交事件或404；客户端用原ID重试保证幂等                                                               |
-| GET `/profiles/export`                           | 家长权限                   | 限定schema JSON，不含声音或会话凭据                                                                     |
-| POST `/profiles/import-preview`                  | 家长 + JSON≤1MiB           | 已实现 schema v5 上传校验与5分钟预览token；显式迁移v2/v3/v4、严格校验且不写DB；最多缓存8个预览          |
-| POST `/profiles/import`                          | 家长 + token/hash/revision | 已实现整档案单事务替换；revision过期/变化/跨家庭或hash不匹配均拒绝；家长UI已接入                        |
-| DELETE `/profiles/data`                          | 家长+确认词                | 原子清练习/会话/复习/评分摘要与休息计数，保留家长设置和所有配对设备                                     |
-| DELETE `/profiles/reset`                         | 家长+确认词                | 原子清学习数据/家长设置、撤销全部设备并清未使用配对码；清当前家长Cookie后要求重新配对                   |
+“公开”表示不需要家庭配对，并不表示适合开放公网。“家长”由服务端角色校验，“写入”遵守相应CSRF/来源规则。
 
-配对、认证和数据持久化由 SPEC-001 实现。局域网部署仍需配置 HTTPS 与设备信任；开发服务器默认只用于本机开发。
+| 方法   | 路径（省略 `/api/v1`）                        | 行为及访问范围                                                                |
+| ------ | --------------------------------------------- | ----------------------------------------------------------------------------- |
+| POST   | `/local/pairing-code`                         | 仅loopback生成首次配对码                                                      |
+| POST   | `/pairing-codes`                              | 家长生成新设备配对码                                                          |
+| POST   | `/pair`                                       | 以配对码换取Cookie                                                            |
+| DELETE | `/session`                                    | 取消本设备会话                                                                |
+| GET    | `/devices`                                    | 家长查看设备，不返回令牌                                                      |
+| DELETE | `/devices/{device_id}`                        | 家长撤销次设备，不可撤销当前家长设备                                          |
+| GET    | `/health`                                     | 公开；服务状态、contentVersion、storage                                       |
+| GET    | `/capabilities`                               | 公开；标准音及中文声音/课程录音就绪情况                                       |
+| GET    | `/bootstrap`                                  | 未配对/失效Cookie返回200 paired=false；有效会话返回家庭入口信息               |
+| GET    | `/curriculum`                                 | 配对；课程、知识点、题目、书写/图片和实际音频状态；移除答案、提示与旧审核字段 |
+| GET    | `/audio/{asset_id}`                           | 配对；PinYinSound标准音                                                       |
+| GET    | `/learning-audio`                             | 配对；中文声音和课程录音可用性映射                                            |
+| GET    | `/voice/{asset_id}`                           | 配对；登记的中文声音或课程录音                                                |
+| PUT    | `/household/current-lesson`                   | 家长；选课及revision冲突检查                                                  |
+| PUT    | `/household/settings`                         | 家长；soundEnabled、reducedMotion                                             |
+| GET    | `/profiles/export`                            | 家长；家庭JSON备份                                                            |
+| POST   | `/profiles/import-preview`                    | 家长；校验备份，生成5分钟预览token，不写学习数据                              |
+| POST   | `/profiles/import`                            | 家长；确认后单事务全量替换                                                    |
+| DELETE | `/profiles/data`                              | 家长确认；清学习记录，保留设置与配对                                          |
+| POST   | `/profiles/clock-pending/resolve`             | 家长确认；时钟恢复后删除待校时记录或保留为不计分                              |
+| DELETE | `/profiles/reset`                             | 家长确认；清数据/设置，撤销全部设备并清配对码                                 |
+| POST   | `/reviews/{knowledge_id}/sessions`            | 配对；选定知识点的独立两题复习                                                |
+| POST   | `/sessions`                                   | 配对；当前课最多六题，冻结题单与选项顺序                                      |
+| GET    | `/sessions/current`                           | 配对；当前未结束会话及已答/跳过状态                                           |
+| POST   | `/sessions/{session_id}/finish`               | 配对；结束会话，全部题目已答/跳过才计完整轮次                                 |
+| POST   | `/rest/complete`                              | 配对；完成休息，允许继续练习                                                  |
+| POST   | `/instances/{instance_id}/hint`               | 配对；标记提示已使用并返回提示，不单独生成作答                                |
+| POST   | `/instances/{instance_id}/skip`               | 配对；幂等跳过，不计作答/掌握度                                               |
+| POST   | `/instances/{instance_id}/answer`             | 配对；保存首次作答并返回反馈                                                  |
+| GET    | `/attempts/{request_id}`                      | 配对；查询待确认请求回执                                                      |
+| GET    | `/profiles/progress`                          | 配对；掌握状态、复习、设置、revision及完成轮次                                |
+| GET    | `/profiles/knowledge/{knowledge_id}/attempts` | 配对；知识点记录，限定家庭/知识点的cursor分页，最多50条                       |
+| POST   | `/guest/operate`                              | 公开；白名单操作与临时快照，返回result/state                                  |
+| GET    | `/guest/curriculum`                           | 公开；教学内容，无家庭档案                                                    |
+| GET    | `/guest/learning-audio`                       | 公开；已安装教学声音状态                                                      |
+| GET    | `/guest/audio/{asset_id}`                     | 公开；已安装标准音                                                            |
+| GET    | `/guest/voice/{asset_id}`                     | 公开；已安装中文声音及课程录音                                                |
 
-若 `selected_lesson_id` 在当前课程包中不存在，`GET /profiles/progress` 保留并返回原 ID，客户端将其显示为待重新选择；`POST /sessions` 与 `POST /reviews/{knowledgeId}/sessions` 返回 409 `CURRENT_LESSON_REQUIRES_SELECTION`，不隐式回退首课、不创建会话。家长通过当前课更新端点选择有效课程后继续学习，历史会话与作答不变。
+`learning-audio` 的形状为 `{narration: Record<audioId, boolean>, lessons: Record<lessonId, {audioId,title,available,sourceType}>}`。课程音频需求附 `available` 及可用时的 `standardSource`。标准音唯一来源是固定cmguo/PinYinSound；没有审核状态或备用审音来源。
 
-`GET /profiles/progress` 返回 `clockSkewDetected` 与 `pendingClockAttempts`。MAC 当前 UTC 时间比家庭档案最后观察时间回退超过 5 分钟时，后续新作答保留在本地数据库，但 `due_credit=0` 且 `clock_pending=1`，不参与掌握度或复习推进；时钟恢复到最后观察时间的 5 分钟范围内后，家长用 `POST /profiles/clock-pending/resolve` 并明确确认，将这些记录删除或保留为不计分练习。备份 schema v5 携带待校时标记；v2/v3/v4 迁移时旧记录默认不挂起。
+访客 `operate` 接收 `{path,method,body,state}`，初始state为null。仅允许学习、选课/设置和查询等白名单操作，不支持家庭管理；客户端不携带家庭Cookie。请求最大1MiB，快照经校验后在请求级内存SQLite中执行，结果回存sessionStorage。公开资源接口包含课程录音，见[隐私边界](engineering/privacy.md)。
 
-## 未来可能的发音评测
+## 备份、时间与历史内容
 
-发音评测已从首版移除，不存在 `POST /assessments`、评分状态查询或取消端点。历史备份 schema 与数据库可保留旧摘要字段以兼容旧数据，但新版本不创建评分记录。若未来重新启动，需新 SPEC 定义录音处理、局域网隐私、请求限制、结果契约和清理测试，再恢复相应 API。
+家庭JSON schema为v5，显式迁移v2/v3/v4；最大1MiB、最多50000条作答，内存预览缓存最多8个。导入失败不部分写入。导出包含 `masteryRuleVersion: 1`；进度返回 `masteryRuleVersion: "mastery-v1"`，二者属于不同响应格式，不能交换使用。
 
-## 存储设计（待实现）
+选课ID已不在当前课程时，进度保留原ID，创建普通/复习会话返回409 `CURRENT_LESSON_REQUIRES_SELECTION`，家长重选后继续，不隐式改成第一课。旧会话从已登记历史内容及冻结题单恢复；未知历史版本拒绝。
 
-`profiles(id,nickname,created_at)`；`attempts(id,profile_id,session_id,exercise_id,knowledge_id,mode,first_try_correct,hint_used,occurred_at,content_version)`；`profile_state(profile_id,revision,selected_lesson_id,settings_json)`；`schema_migrations(version,applied_at)`。迁移代码允许识别历史评分摘要字段，但新数据不写入。
+服务器时间比最后观察时间回退超过5分钟时，新记录 `clock_pending=1`、`due_credit=0`，不推进掌握度/复习。恢复后由家长选择清除或保留为不计分记录，不自动改写时间戳。
 
-外键约束和唯一索引必须显式建模。客户端不能写任意 profile，配对 session 需验证家庭范围。保存可重放客观事件而非只存累计百分比；题型/版本变更导致不兼容记录时保留历史但从新掌握度计算排除，家长可见原因。
+## 实际 SQLite 存储
 
-## 语音优先家庭资源（2026-10-05，ADR-0005）
+`server/storage.py` 维护迁移1–5及下列表：`schema_migrations`、`household`、`pairing_codes`、`devices`、`exercise_instances`、`attempts`、`request_receipts`、`review_plans`、`sessions`、`skipped_instances`、`assessment_summaries`。家庭设置在household中，没有独立profiles/settings表；assessment_summaries仅为历史兼容，首版不创建发音评测结果。
 
-配对后 `GET /api/v1/learning-audio` 返回 `{ narration: Record<audioId, boolean>, lessons: Record<lessonId, {audioId,title,available,sourceType}> }`；可用性必须来自登记文件及摘要验证。`GET /api/v1/voice/{audioId}` 只读取固定私有根目录清单ID并支持Range，不接受文本合成、路径、外部URL。ID来自content/narration.json与lesson-recordings.json；内容文件与准备脚本记录不一致则不可用，不能播放旧题干。与 `/audio/{id}` 标准音路径分离；不产生任何作答记录。
-
-## 标准音（TRUST-01，ADR-0008）
-
-GET /curriculum返回audioRequirements的available和可用时的standardSource（id/title/exampleTone）。唯一标准音源为cmguo/PinYinSound；可用性由安装、启用、目标映射与实际文件摘要决定，不返回status、reviewStatus或teachingReview。
-
-GET /audio/{id}仅播放该来源的固定本地文件，须配对，支持Range；未知、重复ID、缺失/损坏、目标变化或停用返回404，非法Range为416。没有公共已审资源优先级或私有裁切回退。
-
-旧审音台的catalog/preview/draft/activate/deactivate服务已删除；capabilities不再返回contentReview，会话不返回draftContent。旧冻结题单的审核字段被忽略，内容版本/任务/作答与旧备份继续兼容，不回写approved。
-
-内容包格式现为schemaVersion 2.0.0（移除审核元数据），内容版本2026.10.05.6；家庭备份仍为schema v5，已有记录无须用户迁移或清空。
-
-## ACCESS-01：访客与配对首页
-
-`GET /bootstrap` 对缺失、过期或撤销的配对 Cookie 均返回 HTTP 200 的 `{paired:false,isLocalHost,contentVersion}`，以便展示正确的重新配对入口。受保护的数据接口仍返回401，不向未配对浏览器暴露家庭进度。
-
-`POST /guest/operate` 接收 `{path,method,body,state}`，state 为上一次返回的家庭备份格式临时快照（初始 null）。返回 `{result,state}`。路径白名单仅允许 bootstrap、进度、当前会话、开课/复习、提示/跳过/作答、结束/休息和选课/设置；不提供家庭管理操作。输入最大1MiB，来源检查、快照严格校验、内存事务执行、请求结束销毁，均不会写家庭数据库。浏览器串行调用并把结果保存在 sessionStorage。无服务端访客令牌；调用不携带家庭 Cookie。
-
-`GET /guest/curriculum`、`/guest/learning-audio`、`/guest/audio/{id}`、`/guest/voice/{id}` 无需配对，开放已安装的教学资源与声音，不包含家庭学习档案。音频仍使用白名单和完整性检查，支持 Range。家庭原有音频路由保持配对保护。
+外键、实例唯一约束及事务保证一致性。每日同题去重在写事务内查询，服务端进度可从有效事件重建。未知迁移版本在改journal模式和执行DDL前拒绝，不能自动清库。具体字段与约束以迁移代码为准。
