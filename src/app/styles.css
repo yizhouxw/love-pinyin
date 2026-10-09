@@ -18,6 +18,8 @@
   --muted: #738177;
   --card: #fffefa;
   --line: #e5e9db;
+  --control-gap: 12px;
+  --group-gap: 18px;
 }
 * {
   box-sizing: border-box;
@@ -35,6 +37,8 @@ select {
   font: inherit;
 }
 button {
+  min-height: 48px;
+  max-width: 100%;
   cursor: pointer;
   touch-action: manipulation;
 }
@@ -1081,11 +1085,11 @@ footer {
 }
 .feedback {
   display: grid;
-  gap: 4px;
+  gap: var(--control-gap);
   max-width: 420px;
   margin: 18px auto 0;
-  padding: 13px;
-  border-radius: 15px;
+  padding: 18px;
+  border-radius: 18px;
 }
 .feedback.good {
   background: #eff8e7;
@@ -1802,4 +1806,203 @@ footer {
 }
 .lesson-navigation + .welcome h1 {
   font-size: clamp(28px, 4vw, 36px);
+}
+
+/* Shared control rhythm across child activities and family settings. */
+.quiet,
+.parent-button,
+.icon-button,
+.danger-button,
+.guest-banner button,
+.knowledge-attempt-history summary {
+  min-height: 48px;
+}
+button {
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #c67e32;
+  outline-offset: 4px;
+}
+button:not(:disabled):active {
+  box-shadow: inset 0 2px 4px #253a3126;
+}
+@media (hover: hover) {
+  button:not(:disabled):hover {
+    box-shadow: 0 3px 10px #28594618;
+  }
+  .quiet:not(:disabled):hover,
+  .voice-button:not(:disabled):not([aria-pressed='true']):hover,
+  .audio-play-button:not(:disabled):not([aria-pressed='true']):hover {
+    background-color: #e0eedf;
+    border-color: #89ad96;
+  }
+  .danger-button:not(:disabled):hover {
+    background-color: #ffe4dd;
+    border-color: #d49b8a;
+  }
+}
+.welcome .start-actions {
+  margin-bottom: var(--group-gap);
+}
+.writing-heading {
+  margin-bottom: var(--group-gap);
+}
+.writing-targets,
+.writing-placement {
+  margin-block: var(--group-gap);
+}
+.writing-workshop > .voice-button {
+  margin-bottom: var(--group-gap);
+}
+.writing-targets {
+  padding: 8px 0;
+}
+.knowledge-card > button + button {
+  margin-top: var(--control-gap);
+}
+.knowledge-card > .quiet {
+  width: 100%;
+  margin-bottom: var(--control-gap);
+}
+.word-heading {
+  margin-bottom: var(--group-gap);
+}
+.word-card {
+  padding-block: var(--control-gap);
+}
+.picture-failure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--control-gap);
+  padding: 16px;
+  margin-top: var(--group-gap);
+  border-radius: 14px;
+  background: #fff5e7;
+}
+.picture-failure p {
+  flex-basis: 100%;
+  margin: 0;
+}
+.exercise-actions,
+.device-actions,
+.clock-pending-actions,
+.inline-control {
+  gap: var(--control-gap);
+}
+.feedback .voice-button > span {
+  font-size: 24px;
+}
+.answer-explanation {
+  padding-top: var(--control-gap);
+  border-top: 1px solid #28594620;
+}
+.answer-explanation p {
+  margin: 0 0 var(--control-gap);
+  line-height: 1.7;
+}
+.parent-setting,
+.inline-control {
+  flex-wrap: wrap;
+}
+.inline-control {
+  min-width: 0;
+  max-width: 100%;
+  align-items: center;
+}
+.inline-control select {
+  min-height: 48px;
+  min-width: 0;
+  max-width: 100%;
+}
+.danger-setting {
+  margin-block: var(--group-gap);
+  padding: 20px;
+  border: 1px solid #ecd2c8;
+  border-radius: 18px;
+  background: #fff9f5;
+}
+.lesson-tile.locked {
+  color: #637268;
+}
+.lesson-navigation .lesson-grid {
+  gap: 12px;
+}
+@media (max-width: 600px) {
+  .parent-setting {
+    align-items: flex-start;
+  }
+  .parent-setting > div:first-child {
+    flex-basis: 100%;
+  }
+  .inline-control {
+    width: 100%;
+  }
+  .inline-control select {
+    flex: 1 1 160px;
+  }
+  .writing-heading .voice-button,
+  .word-card > div .voice-button {
+    flex: 1 1 180px;
+  }
+  .danger-setting {
+    padding: 16px;
+  }
+}
+
+.file-control,
+.import-confirm-label {
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+.file-control input,
+.import-confirm-label input {
+  width: 100%;
+  min-width: 0;
+}
+input:not([type='checkbox']):not([type='radio']) {
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid #cbd7c8;
+  border-radius: 12px;
+  color: var(--ink);
+  background: #fff;
+}
+input[type='file']::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 12px;
+  border: 1px solid #aec9bb;
+  border-radius: 8px;
+  background: #edf6ee;
+  color: var(--green);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.adult-confirm-actions button:not(.quiet) {
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--green);
+  color: white;
+  font-weight: 750;
+}
+
+.question-audio-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--control-gap);
+  margin-block: var(--group-gap);
+}
+.question-audio-actions .listen-question {
+  margin: 0;
 }

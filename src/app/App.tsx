@@ -884,21 +884,23 @@ function LearningApp() {
             </div>
           )}
           <h1>{questionVoice?.text ?? question.prompt}</h1>
-          <VoiceButton
-            id={`prompt-${question.id}`}
-            voice={voice}
-            label="听题目"
-            className="listen-question"
-          />
-          {question.audioRef && (
+          <div className="question-audio-actions" role="group" aria-label="听题与示范音">
             <VoiceButton
-              id={question.audioRef}
-              kind="standard"
+              id={`prompt-${question.id}`}
               voice={voice}
-              label="听拼音"
+              label="听题目"
               className="listen-question"
             />
-          )}
+            {question.audioRef && (
+              <VoiceButton
+                id={question.audioRef}
+                kind="standard"
+                voice={voice}
+                label="听拼音"
+                className="listen-question"
+              />
+            )}
+          </div>
           {answerNeedsAudio && !answer && (
             <p className="listen-before-answer" role="status">
               🔊 先听一听，再选卡片
