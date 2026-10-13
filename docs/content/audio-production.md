@@ -20,7 +20,7 @@ npm run prepare:pinyin -- --archive /绝对路径/source.zip
 
 ## 中文指令与整课录音
 
-现行普通开发者运行 `./run.sh` 即可使用已提交的13份课程MP3与全部开源中文引导，不再手工提供源目录或安装Tingting。中文素材由Kokoro-82M-v1.1-zh本地生成，维护者运行 `npm run prepare:voice` 校验模型后重生成；参数/摘要见content/voice-build.json。旧Mac声音准备脚本仅保留测试及私人素材兼容，不进入发布素材。中文TTS不替代固定PinYinSound单音，原长录音仍保留独立来源。家庭/访客接口均只按登记ID读取。
+现行普通开发者运行 `./run.sh` 即可使用已提交的13份课程MP3与全部开源中文引导，不再手工提供源目录或安装Tingting。中文素材由Qwen3-TTS-12Hz-1.7B-CustomVoice本地生成，维护者运行 `npm run prepare:voice` 校验模型后重生成；参数/摘要见content/voice-build.json。旧Mac声音准备脚本仅保留测试及私人素材兼容，不进入发布素材。中文TTS不替代固定PinYinSound单音，原长录音仍保留独立来源。家庭/访客接口均只按登记ID读取。
 
 ## 验证与维护
 

@@ -86,6 +86,22 @@
       "licenseFiles": ["LICENSE"]
     },
     {
+      "name": "filelock",
+      "version": "4.1.1",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "fsspec",
+      "version": "2026.9.0",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
       "name": "h11",
       "version": "0.16.0",
       "licenseExpression": null,
@@ -94,8 +110,24 @@
       "licenseFiles": ["LICENSE.txt"]
     },
     {
+      "name": "hf-xet",
+      "version": "1.7.0",
+      "licenseExpression": "Apache-2.0",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: Apache Software License"],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
       "name": "httpcore",
       "version": "1.0.9",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "licenseFiles": ["LICENSE.md"]
+    },
+    {
+      "name": "httpcore2",
+      "version": "2.13.1",
       "licenseExpression": "BSD-3-Clause",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
@@ -108,6 +140,22 @@
       "licenseMetadataFirstLine": ["BSD-3-Clause"],
       "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
       "licenseFiles": []
+    },
+    {
+      "name": "httpx2",
+      "version": "2.13.1",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "licenseFiles": ["LICENSE.md"]
+    },
+    {
+      "name": "huggingface_hub",
+      "version": "2.2.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["Apache-2.0"],
+      "licenseClassifiers": ["License :: OSI Approved :: Apache Software License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "idna",
@@ -156,6 +204,54 @@
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
       "licenseFiles": ["LICENSE", "LICENSE.thirdparty"]
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.2.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE", "LICENSE.markdown-it"]
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": []
+    },
+    {
+      "name": "miniaudio",
+      "version": "1.71",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "mlx",
+      "version": "0.32.3",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "mlx-audio",
+      "version": "0.5.8",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "mlx-metal",
+      "version": "0.32.3",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "msgpack",
@@ -296,6 +392,22 @@
       "licenseFiles": ["LICENSE"]
     },
     {
+      "name": "PyYAML",
+      "version": "6.0.3",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "regex",
+      "version": "2026.9.29",
+      "licenseExpression": "Apache-2.0 AND CNRI-Python",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE.txt"]
+    },
+    {
       "name": "requests",
       "version": "2.34.2",
       "licenseExpression": null,
@@ -304,11 +416,27 @@
       "licenseFiles": ["LICENSE", "NOTICE"]
     },
     {
+      "name": "rich",
+      "version": "15.0.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
       "name": "ruff",
       "version": "0.16.8",
       "licenseExpression": "MIT",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "safetensors",
+      "version": "0.8.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: Apache Software License"],
       "licenseFiles": ["LICENSE"]
     },
     {
@@ -330,20 +458,20 @@
       "licenseFiles": []
     },
     {
-      "name": "sherpa_onnx",
-      "version": "1.13.8",
+      "name": "shellingham",
+      "version": "1.5.4",
       "licenseExpression": null,
-      "licenseMetadataFirstLine": ["Apache licensed, as found in the LICENSE file"],
-      "licenseClassifiers": [],
+      "licenseMetadataFirstLine": ["ISC License"],
+      "licenseClassifiers": ["License :: OSI Approved :: ISC License (ISCL)"],
       "licenseFiles": ["LICENSE"]
     },
     {
-      "name": "sherpa-onnx-core",
-      "version": "1.13.8",
-      "licenseExpression": null,
-      "licenseMetadataFirstLine": ["Apache-2.0"],
+      "name": "sounddevice",
+      "version": "0.5.6",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
-      "licenseFiles": []
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "soundfile",
@@ -378,12 +506,44 @@
       "licenseFiles": ["LICENSE"]
     },
     {
+      "name": "tokenizers",
+      "version": "0.23.3",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: Apache Software License"],
+      "licenseFiles": []
+    },
+    {
       "name": "tqdm",
       "version": "4.70.1",
       "licenseExpression": null,
       "licenseMetadataFirstLine": ["MPL-2.0 AND MIT"],
       "licenseClassifiers": [],
       "licenseFiles": ["LICENCE"]
+    },
+    {
+      "name": "transformers",
+      "version": "5.19.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["Apache 2.0 License"],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "truststore",
+      "version": "0.10.5",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "typer",
+      "version": "0.27.3",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "typing_extensions",

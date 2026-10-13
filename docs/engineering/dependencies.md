@@ -60,3 +60,9 @@ assessment-poc与audio-asr保留为维护研究依赖组，不由默认学习服
 Kokoro-82M-v1.1-zh，Apache-2.0，官方hexgrad模型卡与k2-fsa/sherpa-onnx官方ONNX转换。固定完整精度模型、归档和每个文件SHA见content/voice-build.json。实际本地CPU生成，无训练或云服务。模型/字典不入Git，输出中文WAV随仓库。MeloTTS与int8仅候选实验，未进入发布素材或最终构建配置。
 
 一键脚本需要系统Git/curl/tar/shasum/macOS afconvert。缺失Node24.18.1/uv0.12.5时从官方nodejs.org及astral-sh GitHub固定release安装项目私有副本，下载SHA校验；npm11.16.0从官方registry固定包安装。Python3.12.12由uv使用.python-version安装。无全局npm升级、brew自动安装或sudo。
+
+## SPEC-011 VOICE-09 中文质量替换（2026-10-13）
+
+Kokoro/sherpa-onnx维护依赖已移除；使用[MLX-Audio 0.5.8](https://pypi.org/project/mlx-audio/0.5.8/)（[官方源码](https://github.com/Blaizzy/mlx-audio)，MIT），仅macOS arm64 voice-build组。锁文件固定mlx/metal 0.32.3（Apple MLX，MIT）、transformers 5.19.0（Hugging Face，Apache-2.0）及其全部传递依赖/轮子摘要；实装CPython3.12成功，Metal本地推理生成样例成功。许可元数据见python-dependency-inventory.json，安装包保留原许可。
+
+[Qwen3-TTS-12Hz-1.7B-CustomVoice](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice)采用Apache-2.0；[mlx-community bf16转换](https://huggingface.co/mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-bf16)固定revision52f4770fd9726457eae3d3b6aa92047a25a10776。主权重3833402589字节SHA3a791fb8250fc32ab0259b679d834159d3c8516af62f033ff2b9f42913e3fab6；语音分词器682293092字节SHA836b7b357f5ea43e889936a3709af68dfe3751881acefe4ecf0dbd30ba571258。其余文件SHA/尺寸在content/voice-build.json。固定Serena/Chinese/教学语气，模型仅维护者显式下载，应用无模型推理依赖。无新增npm包、个人声纹、远程音频服务或模型训练。

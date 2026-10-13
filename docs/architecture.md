@@ -56,4 +56,4 @@ flowchart LR
 
 content/daily-reading.json保存用户PDF的14份练习和固定音频白名单；同源daily-reading/daily-audio接口提供目录与摘要校验音频，访客资源接口同样可用。中文引导与少量轻声词句朗读走既有voice接口。浏览器BrowserReadingRecorder仅保留当前条Blob，SPEC-009新增有界PCM上传家庭Mac内存与本地Whisper识别匹配，不作专业自动判分；全局播放器协调示范与回放。所有练习标记只留当前页面，不修改家庭掌握度。
 
-按ADR-0017/0018，课程MP3、PDF及Kokoro生成的中文WAV/manifest存于resources并随当前仓库提供；应用默认读取resources/audio，支持环境变量显式配置私人资源。run.sh负责显式联网安装，普通播放与识别不下载资源。
+按ADR-0017/0019，课程MP3、PDF及Qwen3-TTS生成的中文WAV/manifest存于resources并随当前仓库提供；应用默认读取resources/audio，支持环境变量显式配置私人资源。run.sh负责显式联网安装，普通播放与识别不下载资源。

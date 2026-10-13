@@ -55,6 +55,8 @@ ASR-01/02/03：按用户后续要求以语音识别能否匹配判断，不训�
 
 ## 一键安装与开源中文声音（2026-10-13）
 
-SPEC-010/011已实现：run.sh/run.command完成macOS项目本地工具安装、锁定依赖、PinYinSound Git同步/固定版本校验、bundled语音校验、首次Whisper安装、构建及启动。普通运行无需系统音色/TTS模型。全部1270中文声音ID由本地Kokoro v1.1中文模型生成，436份去重WAV，与13份课程MP3及PDF按用户授权入库，附独立许可。
+SPEC-010/011已实现：run.sh/run.command完成macOS项目本地工具安装、锁定依赖、PinYinSound Git同步/固定版本校验、bundled语音校验、首次Whisper安装、构建及启动。普通运行无需系统音色/TTS模型。全部1270中文声音ID现由本地Qwen3-TTS 1.7B中文女声Serena生成，436份去重WAV，与13份课程MP3及PDF按用户授权入库，附独立许可。
 
-verify:all、validate:release和12项Chromium/WebKit真实声音/识别专项通过；GitHub全新clone目录通过隔离PATH安装Node/npm/uv、创建新.venv、首次标准音及Whisper准备并启动，健康/1284声音ID/840示范/参考音ASR matched及浏览器播放通过。没有复制原private/models，不包含TTS模型。证据见SPEC-010/011。未把单机clone验证扩展为另一台Mac、移动/LAN或儿童准确率验收。
+一键安装上一切片的verify:all、validate:release和12项真实声音/识别专项通过；GitHub全新clone目录通过隔离PATH安装Node/npm/uv、创建新.venv、首次标准音及Whisper准备并启动，健康/1284声音ID/840示范/参考音ASR matched及浏览器播放通过。没有复制原private/models，不包含TTS模型。证据见SPEC-010/011。未把单机clone验证扩展为另一台Mac、移动/LAN或儿童准确率验收。
+
+VOICE-09替换已完成：Qwen3-TTS 1.7B bf16／MLX-Audio 0.5.8／Serena普通话女声，全量436 WAV约104.5MB，模型权重不在Git。verify:all与变更后verify、发布门禁、一键准备及12项双浏览器声音/跟读/识别专项通过；全部436 WAV解码通过。现有8001服务欢迎语已核对新文件摘要。普通运行环境未安装MLX，不新增播放等待；原有引导开关和标准拼音来源保留。16条转写抽查不替代人工听感或儿童理解验收，剩余家庭门禁仍适用。

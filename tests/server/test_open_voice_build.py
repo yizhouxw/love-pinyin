@@ -1,8 +1,6 @@
 import hashlib
 import json
-import sys
 import wave
-from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -13,19 +11,18 @@ from scripts import build_open_voice as voice
 def setup_voice(tmp_path, monkeypatch, silent=False):
     model = tmp_path / "models" / "fixture"
     model.mkdir(parents=True)
-    (model / "model.onnx").write_bytes(b"explicit-test-model-fixture")
+    (model / "model.safetensors").write_bytes(b"explicit-test-model-fixture")
     config = {
         "directory": "fixture",
-        "modelFile": "model.onnx",
-        "lexicons": [],
-        "ruleFiles": [],
-        "files": {"model.onnx": hashlib.sha256((model / "model.onnx").read_bytes()).hexdigest()},
-        "threads": 1,
-        "speaker": 3,
-        "speed": 0.95,
+        "files": {
+            "model.safetensors": hashlib.sha256(
+                (model / "model.safetensors").read_bytes()
+            ).hexdigest()
+        },
+        "revision": "fixed-test-revision",
+        "speaker": "Serena",
         "model": "test-fixture",
         "engineVersion": "test",
-        "archiveSha256": "a" * 64,
         "license": "Apache-2.0",
     }
     path = tmp_path / "config.json"
@@ -51,18 +48,9 @@ def setup_voice(tmp_path, monkeypatch, silent=False):
     def generate(text, **kwargs):
         calls.append(text)
         samples = np.zeros(1600) if silent else np.sin(np.arange(1600) / 8) * 0.1
-        return SimpleNamespace(samples=samples, sample_rate=16000)
+        return samples, 16000
 
-    monkeypatch.setitem(
-        sys.modules,
-        "sherpa_onnx",
-        SimpleNamespace(
-            OfflineTts=lambda _: SimpleNamespace(generate=generate),
-            OfflineTtsConfig=lambda **kwargs: kwargs,
-            OfflineTtsModelConfig=lambda **kwargs: kwargs,
-            OfflineTtsKokoroModelConfig=lambda **kwargs: kwargs,
-        ),
-    )
+    monkeypatch.setattr(voice, "create_engine", lambda model, config: generate)
     return model.parent, texts, calls
 
 
@@ -93,6 +81,69 @@ def test_open_voice_rejects_model_tampering_and_silence_without_publishing(tmp_p
     with pytest.raises(ValueError, match="Empty/invalid"):
         voice.generate(output, model)
     assert manifest.read_text() == "preserve-existing-manifest"
-    (model / "fixture" / "model.onnx").write_bytes(b"changed")
+    (model / "fixture" / "model.safetensors").write_bytes(b"changed")
     with pytest.raises(ValueError, match="digest mismatch"):
         voice.generate(output, model)
+
+
+def test_qwen_adapter_passes_chinese_style_and_rejects_truncated_speech(tmp_path, monkeypatch):
+    import os
+    import sys
+    from types import SimpleNamespace
+
+    monkeypatch.setenv("HF_HUB_OFFLINE", "0")
+    monkeypatch.setenv("TRANSFORMERS_OFFLINE", "0")
+    config = {
+        "seed": 42,
+        "speaker": "Serena",
+        "language": "Chinese",
+        "instruct": "清晰自然。",
+        "generation": {"max_tokens": 512, "temperature": 0.7},
+    }
+    calls = []
+    seed_calls = []
+    tokens = [10]
+
+    def generated(**kwargs):
+        calls.append(kwargs)
+        yield SimpleNamespace(audio=np.ones(1600) * 0.1, sample_rate=24000, token_count=tokens[0])
+
+    monkeypatch.setitem(
+        sys.modules,
+        "mlx",
+        SimpleNamespace(
+            core=SimpleNamespace(
+                random=SimpleNamespace(seed=seed_calls.append), clear_cache=lambda: None
+            )
+        ),
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "mlx.core",
+        SimpleNamespace(random=SimpleNamespace(seed=seed_calls.append), clear_cache=lambda: None),
+    )
+    monkeypatch.setitem(sys.modules, "mlx_audio", SimpleNamespace())
+    monkeypatch.setitem(sys.modules, "mlx_audio.tts", SimpleNamespace())
+    monkeypatch.setitem(
+        sys.modules,
+        "mlx_audio.tts.utils",
+        SimpleNamespace(load_model=lambda path: SimpleNamespace(generate_custom_voice=generated)),
+    )
+    synthesize = voice.create_engine(tmp_path, config)
+    samples, rate = synthesize("点一下开始。")
+    assert rate == 24000 and samples.size == 1600
+    assert calls[0] == {
+        "text": "点一下开始。",
+        "speaker": "Serena",
+        "language": "Chinese",
+        "instruct": "清晰自然。",
+        "max_tokens": 512,
+        "temperature": 0.7,
+    }
+    assert os.environ["HF_HUB_OFFLINE"] == "1"
+    assert os.environ["TRANSFORMERS_OFFLINE"] == "1"
+    synthesize("点一下开始。")
+    assert seed_calls[0] == seed_calls[1]
+    tokens[0] = 512
+    with pytest.raises(ValueError, match="truncated"):
+        synthesize("点一下开始。")

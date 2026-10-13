@@ -2,17 +2,30 @@ import { readFile } from 'node:fs/promises';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 
-test('VOICE-06/07: bundled open Chinese voices all decode through the real local API', async ({
+test('VOICE-09: Qwen Chinese voices all decode through the real local API', async ({
   page,
   appUrl,
 }) => {
   test.setTimeout(120000);
   const manifest = JSON.parse(await readFile('resources/audio/manifest.json', 'utf8')) as {
-    assets: { id: string; file: string; purpose: string; sourceType: string }[];
+    assets: {
+      id: string;
+      file: string;
+      purpose: string;
+      sourceType: string;
+      voice?: string;
+      speaker?: string;
+      modelRevision?: string;
+    }[];
   };
   const narration = manifest.assets.filter((asset) => asset.purpose === 'chinese-instruction');
   expect(narration).toHaveLength(1270);
   expect(narration.every((asset) => asset.sourceType === 'local-open-tts')).toBe(true);
+  expect(narration.every((asset) => asset.voice === 'Qwen3-TTS-12Hz-1.7B-CustomVoice')).toBe(true);
+  expect(narration.every((asset) => asset.speaker === 'Serena')).toBe(true);
+  expect(
+    narration.every((asset) => asset.modelRevision === '52f4770fd9726457eae3d3b6aa92047a25a10776'),
+  ).toBe(true);
   const ids = [...new Map(narration.map((asset) => [asset.file, asset.id])).values()];
   expect(ids).toHaveLength(436);
   await page.goto(appUrl);

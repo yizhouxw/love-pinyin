@@ -71,7 +71,7 @@ test('DAILY-01/02: all PDF demonstrations decode and the real reading page follo
   await expect(page.getByRole('button', { name: '停止示范' })).toBeVisible();
   await page.getByRole('button', { name: '第 3 份', exact: true }).click();
   await page.getByRole('button', { name: '读词语', exact: false }).click();
-  await expect(current).toContainText('中文词句朗读 · 本地 Kokoro');
+  await expect(current).toContainText('中文词句朗读 · 普通话示范');
   const voice = page.waitForResponse(
     (r) => r.url().endsWith('/voice/daily-word-day-03-s3-i1') && r.ok(),
   );

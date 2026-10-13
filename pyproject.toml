@@ -26,8 +26,7 @@ dev = [
     "ruff==0.16.8",
 ]
 voice-build = [
-    "sherpa-onnx==1.13.8",
-    "sherpa-onnx-core==1.13.8",
+    "mlx-audio==0.5.8 ; platform_machine == 'arm64' and sys_platform == 'darwin'",
 ]
 
 [tool.pytest.ini_options]
