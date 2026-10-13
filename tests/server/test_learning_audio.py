@@ -6,7 +6,7 @@ from copy import deepcopy
 import pytest
 
 from scripts import prepare_learning_audio
-from server import api, learning_audio
+from server import api, daily_reading, learning_audio, reading_recognition
 
 
 def write_json(path, value):
@@ -41,6 +41,8 @@ def private_audio(monkeypatch, tmp_path):
     )
     root = tmp_path / "private-audio"
     root.mkdir()
+    monkeypatch.setattr(daily_reading, "scripts", lambda: {})
+    monkeypatch.setattr(reading_recognition, "config", lambda: {"ui": {}})
     monkeypatch.setattr(learning_audio, "load_writing", lambda: {"ui": {}, "glyphs": {}})
     monkeypatch.setattr(learning_audio, "load_illustrations", lambda: {"items": {}})
     monkeypatch.setattr(learning_audio, "NARRATION_PATH", narration_path)

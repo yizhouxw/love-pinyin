@@ -7,7 +7,7 @@ def test_health_and_deferred_assessment_are_not_exposed(paired_client):
     assert (
         paired_client.get("/api/v1/health")
         .headers["permissions-policy"]
-        .startswith("microphone=()")
+        .startswith("microphone=(self)")
     )
 
 

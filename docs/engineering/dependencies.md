@@ -48,3 +48,7 @@ assessment-poc与audio-asr保留为维护研究依赖组，不由默认学习服
 ## 2026-10-05 LAN-01证书预检
 
 运行端使用已锁定Node24.18.1内置`crypto.X509Certificate`、`createPrivateKey`与`tls.createSecureContext`，没有新增npm/uv包。测试调用现有系统OpenSSL生成临时自签证书；本机实测为OpenSSL3.6.4（2026-08-25），未安装或升级。该测试工具不随应用分发，也不在学习或预检命令中调用。官方[源码与版本来源](https://openssl-library.org/source/)及[许可证](https://openssl-library.org/source/license/index.html)说明3.x采用Apache-2.0。系统命令不受npm/uv锁文件管理，运行测试需提供支持`req -addext`的OpenSSL，并记录实际版本；没有自动下载或静默跳过证书单测。
+
+## SPEC-009增量（2026-10-13）
+
+新增pypinyin==0.55.0（MIT，官方PyPI及mozillazg/python-pinyin），uv.lock已固定，uv add实装成功；用于将本地识别文字转换为拼音，不判断实际声调。pywhispercpp==1.5.1（MIT）从可选维护组提升为运行依赖，复用原Whisper small文件和固定摘要，无新权重/训练。

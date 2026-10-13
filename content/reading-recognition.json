@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "mode": "asr-syllable-match",
+  "language": "zh",
+  "initialPrompt": "这是一年级汉语拼音跟读练习。录音可能包含单韵母、声母、带调音节、词语或短句。请保留实际听到的内容，不补充讲解。",
+  "noContext": true,
+  "temperature": 0,
+  "minimumSegmentProbability": 0.35,
+  "maximumSeconds": 30,
+  "timeoutSeconds": 45,
+  "initialReadingAliases": {
+    "b": ["b", "bo"],
+    "p": ["p", "po"],
+    "m": ["m", "mo"],
+    "f": ["f", "fo"],
+    "d": ["d", "de"],
+    "t": ["t", "te"],
+    "n": ["n", "ne"],
+    "l": ["l", "le"],
+    "g": ["g", "ge"],
+    "k": ["k", "ke"],
+    "h": ["h", "he"],
+    "j": ["j", "ji"],
+    "q": ["q", "qi"],
+    "x": ["x", "xi"],
+    "zh": ["zh", "zhi"],
+    "ch": ["ch", "chi"],
+    "sh": ["sh", "shi"],
+    "r": ["r", "ri"],
+    "z": ["z", "zi"],
+    "c": ["c", "ci"],
+    "s": ["s", "si"],
+    "y": ["y", "yi"],
+    "w": ["w", "wu"]
+  },
+  "ui": {
+    "matched": "电脑识别出的音节和目标相符。可以继续下一条。",
+    "different": "电脑这次识别成了别的内容。再听一遍示范，试着读一次。",
+    "uncertain": "电脑这次没有听清。可以再录一次，也可以继续跟读。",
+    "unavailable": "电脑暂时不能识别。请家长检查本地识别服务。你仍可以听示范和跟读。"
+  }
+}

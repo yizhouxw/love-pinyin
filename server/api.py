@@ -2167,3 +2167,31 @@ def knowledge_attempt_history(
         "nextCursor": visible[-1]["id"] if has_more and visible else None,
         "hasMore": has_more,
     }
+
+
+@router.get("/daily-reading")
+def get_daily_reading(device: dict = Depends(paired)) -> dict:
+    from server.daily_reading import status
+
+    return status()
+
+
+@router.get("/daily-audio/{asset_id}")
+def get_daily_audio(
+    asset_id: str,
+    range_header: str | None = Header(default=None, alias="Range"),
+    device: dict = Depends(paired),
+) -> Response:
+    from server.daily_reading import audio_response
+
+    return audio_response(asset_id, range_header)
+
+
+@router.post("/daily-reading/{item_id}/recognize")
+async def recognize_daily_reading(item_id: str, request: Request, device: dict = Depends(mutable)):
+    from fastapi.concurrency import run_in_threadpool
+
+    from server.reading_recognition import recognize, request_audio
+
+    payload = await request_audio(request, item_id)
+    return await run_in_threadpool(recognize, item_id, payload)

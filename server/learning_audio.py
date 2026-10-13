@@ -63,6 +63,12 @@ def narration_scripts() -> dict[str, str]:
         scripts["picture-error"] = illustrations["error"]
     for picture_id, item in illustrations["items"].items():
         scripts[f"picture-{picture_id}"] = item["description"]
+    from server.daily_reading import scripts as daily_scripts
+
+    scripts.update(daily_scripts())
+    from server.reading_recognition import config as recognition_config
+
+    scripts.update({f"recognition-{key}": text for key, text in recognition_config()["ui"].items()})
     for asset_id, text in scripts.items():
         if not _ID.fullmatch(asset_id) or not isinstance(text, str) or not text.strip():
             raise ValueError(f"invalid narration script: {asset_id}")

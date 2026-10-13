@@ -1,6 +1,6 @@
 # 数据与本地运行边界
 
-首版只有学生和家长，家庭模式使用一个匿名档案。无外部账号、麦克风录音、语音上传、发音评分或遥测 SDK。此处记录实际工程行为，不等于公网或学校运营的法律审查。
+首版只有学生和家长，家庭模式使用一个匿名档案。无外部账号、外部语音上传、专业发音评分或遥测 SDK。SPEC-008/009每日跟读例外允许主动录音，只在当前浏览器页面内存保留，换条/后台/退出清除；停止录音后仅发送家庭Mac内存做识别匹配，不落盘、不进入SQLite或备份。此处记录实际工程行为，不等于公网或学校运营的法律审查。
 
 | 数据                               | 保存与清理                                                                                   |
 | ---------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -18,7 +18,7 @@
 
 访客教学资源接口无配对要求，包括已安装的课程录音。家庭数据接口仍需配对；不要把局域网教学资源当作受家长身份保护的私人文件分享系统。
 
-服务设置 `X-Content-Type-Options: nosniff`、`Referrer-Policy: no-referrer`、禁止麦克风/摄像头/定位的 `Permissions-Policy`，API使用 `Cache-Control: no-store`。Swagger/ReDoc页面关闭，本地OpenAPI JSON保留。**尚未设置 Content-Security-Policy**；这是待完成的安全加固，不能因没有外部资源而声称已实施CSP。没有service worker缓存家庭数据。
+服务设置 `X-Content-Type-Options: nosniff`、`Referrer-Policy: no-referrer`、仅允许同源麦克风，禁止摄像头/定位的 `Permissions-Policy`，API使用 `Cache-Control: no-store`。Swagger/ReDoc页面关闭，本地OpenAPI JSON保留。**尚未设置 Content-Security-Policy**；这是待完成的安全加固，不能因没有外部资源而声称已实施CSP。没有service worker缓存家庭数据。
 
 ## 待完成的验证
 

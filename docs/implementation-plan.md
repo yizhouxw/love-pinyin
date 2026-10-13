@@ -1,6 +1,6 @@
 # 实际可用产品实施计划
 
-当前目标是家庭实际可用产品，范围见[PRD](product/PRD.md)与[产品重审](product/reimplementation-review.md)。按[ADR-0005](adr/0005-voice-first-product.md)提供语音引导，按[ADR-0008](adr/0008-trusted-standard-audio.md)直接采用PinYinSound。用户仅学生和家长；首版不录音或评分。
+当前目标是家庭实际可用产品，范围见[PRD](product/PRD.md)与[产品重审](product/reimplementation-review.md)。按[ADR-0005](adr/0005-voice-first-product.md)提供语音引导，按[ADR-0008](adr/0008-trusted-standard-audio.md)直接采用PinYinSound。用户仅学生和家长；原课程不录音或评分。2026-10-13新增[SPEC-008每日跟读](specs/SPEC-008-daily-reading.md)，允许浏览器内存录音回放；用户随后要求不训练，以识别结果判断；[SPEC-009](specs/SPEC-009-asr-reading-match.md)接入已有本地Whisper，提供音节识别匹配，不作专业发音/四声评分。
 
 ## 当前阶段
 

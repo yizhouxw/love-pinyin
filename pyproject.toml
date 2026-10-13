@@ -6,6 +6,8 @@ requires-python = ">=3.12,<3.13"
 license = "MIT"
 dependencies = [
     "fastapi==0.141.1",
+    "pypinyin==0.55.0",
+    "pywhispercpp==1.5.1",
     "uvicorn==0.53.0",
 ]
 

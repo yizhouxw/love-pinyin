@@ -16,6 +16,10 @@ export class BrowserAudioPlayer implements AudioPlayer {
     return this.playFrom('audio', audioId, signal);
   }
 
+  playDaily(audioId: string, signal?: AbortSignal): Promise<void> {
+    return this.playFrom('daily-audio', audioId, signal);
+  }
+
   /** Private narration and family course recordings share the same playback lifetime. */
   playPrivate(audioId: string, signal?: AbortSignal): Promise<void> {
     return this.playFrom('voice', audioId, signal);
@@ -47,7 +51,11 @@ export class BrowserAudioPlayer implements AudioPlayer {
     };
   }
 
-  private playFrom(kind: 'audio' | 'voice', audioId: string, signal?: AbortSignal): Promise<void> {
+  private playFrom(
+    kind: 'audio' | 'voice' | 'daily-audio',
+    audioId: string,
+    signal?: AbortSignal,
+  ): Promise<void> {
     this.stop();
     if (typeof document !== 'undefined' && document.hidden) return Promise.reject(aborted());
     if (!audioId.trim()) return Promise.reject(new Error('AUDIO_ID_INVALID'));

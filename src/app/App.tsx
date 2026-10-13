@@ -4,6 +4,7 @@ import { audioPlayer } from '../platform/audio/browser-audio-player';
 import narrationData from '../../content/narration.json';
 import { useLearningVoice, VoiceButton, VoiceFailure, type LearningAudio } from './learning-voice';
 import './styles.css';
+import { DailyReadingPage } from './daily-reading';
 import { Picture, WordCards } from './illustrations';
 import type { IllustrationCatalog } from '../domain/illustrations';
 import { WritingChoice, WritingWorkshop } from './writing';
@@ -388,6 +389,12 @@ function LearningApp() {
   );
   const blendConfirm = useRef<HTMLButtonElement | null>(null);
   const blendOptions = useRef(new Map<string, HTMLButtonElement>());
+  const [dailyOpen, setDailyOpen] = useState(window.location.hash === '#daily-reading');
+  useEffect(() => {
+    const followHash = () => setDailyOpen(window.location.hash === '#daily-reading');
+    window.addEventListener('hashchange', followHash);
+    return () => window.removeEventListener('hashchange', followHash);
+  }, []);
   const [parentOpen, setParentOpen] = useState(false);
   const [parentGateOpen, setParentGateOpen] = useState(false);
   const [lessonChoice, setLessonChoice] = useState('');
@@ -752,7 +759,7 @@ function LearningApp() {
             </p>
           </div>
           <p className="privacy-note">
-            🔒 本期练习不使用麦克风。配对后的家庭进度保存在 Mac，访客进度仅临时缓存。
+            🔒 课程练习不使用麦克风。每日跟读可自愿录音，电脑本地识别，不保存。
           </p>
         </section>
         <Notice error={error} onReconnect={() => void act(refresh)} />
@@ -1167,6 +1174,18 @@ function LearningApp() {
     setProgress((await api('/profiles/progress')) as Progress);
   }
 
+  if (dailyOpen)
+    return (
+      <main className="home-page">
+        <DailyReadingPage
+          onBack={() => {
+            window.location.hash = '';
+            setDailyOpen(false);
+          }}
+        />
+      </main>
+    );
+
   return (
     <main className="home-page">
       <header className="topbar">
@@ -1388,6 +1407,23 @@ function LearningApp() {
             />
           ) : (
             <>
+              <section className="daily-entry">
+                <div>
+                  <span className="eyebrow">学校每日练习</span>
+                  <h2>天天练拼音</h2>
+                  <p>14 份练习 · 听示范，跟着读，也可以录音回放。</p>
+                  <VoiceButton id="daily-ui-intro" voice={voice} label="听每日跟读说明" />
+                </div>
+                <button
+                  onClick={() => {
+                    stopVoice();
+                    window.location.hash = 'daily-reading';
+                    setDailyOpen(true);
+                  }}
+                >
+                  进入天天练拼音 →
+                </button>
+              </section>
               <section className="journey-card">
                 <div className="journey-title">
                   <div>

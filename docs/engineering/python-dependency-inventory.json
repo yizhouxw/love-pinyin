@@ -1,5 +1,5 @@
 {
-  "scope": "macOS arm64 installed packages including assessment-poc; metadata is not legal clearance",
+  "scope": "macOS arm64 packages including assessment-poc; metadata is not legal clearance",
   "packages": [
     {
       "name": "annotated-doc",
@@ -272,10 +272,26 @@
       "licenseFiles": ["AUTHORS", "LICENSE"]
     },
     {
+      "name": "pypinyin",
+      "version": "0.55.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE.txt"]
+    },
+    {
       "name": "pytest",
       "version": "9.1.1",
       "licenseExpression": "MIT",
       "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "pywhispercpp",
+      "version": "1.5.1",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
       "licenseClassifiers": [],
       "licenseFiles": ["LICENSE"]
     },
@@ -344,6 +360,14 @@
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
       "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.1",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MPL-2.0 AND MIT"],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENCE"]
     },
     {
       "name": "typing_extensions",

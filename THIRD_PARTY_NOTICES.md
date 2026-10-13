@@ -18,3 +18,11 @@
 `content/narration.json` 原创中文脚本为 MIT；由 Mac 已安装 Tingting 生成的 WAV 仅在用户本机 `private/learning-audio/` 使用，不作为 MIT 资产提交或再分发。系统声音与项目代码许可不同，参见 [Apple 软件许可](https://www.apple.com/legal/sla/) 及其中 system voices 条款（例如 [macOS Sonoma 许可](https://images.apple.com/legal/sla/docs/macOSSonoma.pdf)）。准备命令调用本机 `/usr/bin/say`，不联网、不自动下载音色，不合成拼音标准音。
 
 用户提供的13份课程MP3仅复制到家庭私有资源目录，保留来源文件名与SHA；原文件不修改。它们不是本仓库MIT素材，也不替代PinYinSound逐目标标准音。公开仓库/发布包不包含它们；本机同源家庭/访客资源接口分别提供配对访问与只读体验。
+
+## 用户提供《一年级天天练拼音》
+
+来源：行知小学一年级语文组，2026年9月，根目录用户提供PDF，SHA-256见content/daily-reading.json。转换为14份家庭每日跟读资料，保留原份号与PDF页码。不主张对原练习取得MIT许可；源PDF不提交Git，不公开发行本功能内容包。标准音复用既有固定cmguo/PinYinSound归档；42条中文词句用已安装macOS Tingting本机生成，个人家庭使用、不公开再分发。没有新增运行依赖。
+
+## 本地跟读识别（SPEC-009）
+
+pypinyin==0.55.0，MIT，官方https://pypi.org/project/pypinyin/0.55.0/ 与 https://github.com/mozillazg/python-pinyin；uv已锁定并实际安装。pywhispercpp==1.5.1（MIT）由原维护工具依赖提升为应用运行依赖，版本未改变，复用已锁定numpy。Whisper small固定来源、大小、SHA-256、MIT见scripts/asr_model.py；本次读取已有模型，无新模型下载、训练或外部识别。

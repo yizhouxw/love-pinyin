@@ -51,3 +51,7 @@ flowchart LR
 原生封装仅为后续方向，未安装 Capacitor 或生成 Xcode/Gradle 工程。届时需独立SPEC处理网络发现、权限、证书信任、后台行为和商店发布。
 
 课程原文拼音条款核对已完成，见[课程研究](research/curriculum.md)。设备支持下限尚未冻结：Vite构建目标只是语法目标，不能代替实际 iPad、手机、Windows 和 Firefox 验收。当前证据统一见[状态表](STATUS.md)。
+
+## 每日跟读（ADR-0014）
+
+content/daily-reading.json保存用户PDF的14份练习和固定音频白名单；同源daily-reading/daily-audio接口提供目录与摘要校验音频，访客资源接口同样可用。中文引导与少量轻声词句朗读走既有voice接口。浏览器BrowserReadingRecorder仅保留当前条Blob，SPEC-009新增有界PCM上传家庭Mac内存与本地Whisper识别匹配，不作专业自动判分；全局播放器协调示范与回放。所有练习标记只留当前页面，不修改家庭掌握度。

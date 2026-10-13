@@ -32,7 +32,7 @@ export function leaveGuest() {
   window.location.reload();
 }
 
-export function learningAssetUrl(kind: 'audio' | 'voice', id: string) {
+export function learningAssetUrl(kind: 'audio' | 'voice' | 'daily-audio', id: string) {
   return `/api/v1/${isGuest() ? 'guest/' : ''}${kind}/${encodeURIComponent(id)}`;
 }
 

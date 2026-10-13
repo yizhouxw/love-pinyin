@@ -143,3 +143,22 @@ def audio(asset_id: str, range_header: str | None = Header(default=None, alias="
 @router.get("/voice/{asset_id}")
 def voice(asset_id: str, range_header: str | None = Header(default=None, alias="Range")):
     return api.get_learning_voice(asset_id, range_header, {})
+
+
+@router.get("/daily-reading")
+def daily_reading():
+    return api.get_daily_reading({})
+
+
+@router.get("/daily-audio/{asset_id}")
+def daily_audio(asset_id: str, range_header: str | None = Header(default=None, alias="Range")):
+    return api.get_daily_audio(asset_id, range_header, {})
+
+
+@router.post("/daily-reading/{item_id}/recognize")
+async def recognize_daily_reading(item_id: str, request: Request):
+    from server.reading_recognition import recognize, request_audio
+
+    api._check_origin(request)
+    payload = await request_audio(request, item_id)
+    return await run_in_threadpool(recognize, item_id, payload)
