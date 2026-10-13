@@ -268,3 +268,73 @@ test('DAILY-04: guidance can be skipped, remembered and restored while target au
     'daily-ui-follow',
   ]);
 });
+
+test('DAILY-05: parent opt-out reaches daily practice and nearby shortcuts share one preference', async ({
+  page,
+  appUrl,
+}) => {
+  // An old default-on daily preference must never bypass the family opt-out.
+  await page.addInitScript(() => {
+    if (!localStorage.getItem('love-pinyin.guidance'))
+      localStorage.setItem('love-pinyin.daily-guidance', 'on');
+  });
+  const instructions: string[] = [];
+  page.on('request', (request) => {
+    if (/\/voice\/daily-(instruction-|ui-follow)/.test(request.url()))
+      instructions.push(request.url());
+  });
+  const entry = await page.goto(appUrl);
+  expect(entry?.headers()['cache-control']).toBe('no-store');
+  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
+  await page.getByLabel('家长配对码').fill(code!);
+  await page.getByRole('button', { name: '连接家庭' }).click();
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByRole('checkbox', { name: '自动朗读题目', exact: true }).click();
+  await expect(page.getByRole('checkbox', { name: '自动朗读题目', exact: true })).not.toBeChecked();
+  await expect(page.getByRole('checkbox', { name: '自动朗读题目', exact: true })).toBeEnabled();
+  await page.getByRole('button', { name: '返回学习', exact: true }).click();
+  const shortcut = page.getByRole('checkbox', { name: '语音引导', exact: true });
+  await expect(shortcut).not.toBeChecked();
+  await page.getByRole('button', { name: '进入天天练拼音' }).click();
+  await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
+  const reader = page.getByLabel('当前跟读内容');
+  await expect(reader.getByRole('checkbox', { name: '语音引导', exact: true })).not.toBeChecked();
+  await page.getByRole('button', { name: '开始跟读', exact: false }).click();
+  await expect(reader.getByRole('status')).toHaveText('轮到你读啦，读完点下一条。');
+  expect(instructions).toEqual([]);
+  await shortcut.check();
+  await reader.getByRole('button', { name: 'ā', exact: true }).click();
+  await expect.poll(() => instructions.length).toBeGreaterThan(0);
+  await shortcut.uncheck();
+  await expect(page.getByRole('button', { name: '停止示范' })).toHaveCount(0);
+  await expect(reader.getByRole('alert')).toHaveCount(0);
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia: () => Promise.reject(new DOMException('denied', 'NotAllowedError')) },
+    });
+  });
+  await shortcut.check();
+  await page.getByRole('button', { name: '录下我的跟读' }).click();
+  await shortcut.uncheck();
+  await expect(reader.getByRole('alert')).toContainText('麦克风没有开启');
+  await page.screenshot({
+    path: `private/shared-guidance-${test.info().project.name}.png`,
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: '返回小岛' }).click();
+  await expect(shortcut).not.toBeChecked();
+  await page.reload();
+  await expect(shortcut).not.toBeChecked();
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByRole('checkbox', { name: '自动朗读题目', exact: true }).click();
+  await expect(page.getByRole('checkbox', { name: '自动朗读题目', exact: true })).toBeChecked();
+  await expect(page.getByRole('checkbox', { name: '自动朗读题目', exact: true })).toBeEnabled();
+  await page.getByRole('button', { name: '返回学习', exact: true }).click();
+  await expect(shortcut).toBeChecked();
+  await page.getByRole('button', { name: '进入天天练拼音' }).click();
+  await expect(shortcut).toBeChecked();
+});

@@ -11,6 +11,7 @@ import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { BrowserReadingRecorder } from '../platform/audio/browser-reading-recorder';
 import { isGuest } from '../platform/guest';
 import { recognizeReading, type RecognitionResult } from '../platform/audio/reading-recognition';
+import { GuidanceSwitch } from './guidance-switch';
 import recognitionContent from '../../content/reading-recognition.json';
 
 async function readDaily(): Promise<DailyReading> {
@@ -19,14 +20,15 @@ async function readDaily(): Promise<DailyReading> {
   return response.json() as Promise<DailyReading>;
 }
 
-export function DailyReadingPage({ onBack }: { onBack: () => void }) {
-  const [guidanceEnabled, setGuidanceEnabled] = useState(() => {
-    try {
-      return localStorage.getItem('love-pinyin.daily-guidance') !== 'off';
-    } catch {
-      return true;
-    }
-  });
+export function DailyReadingPage({
+  onBack,
+  guidanceEnabled,
+  onGuidanceChange,
+}: {
+  onBack: () => void;
+  guidanceEnabled: boolean;
+  onGuidanceChange: (enabled: boolean) => void;
+}) {
   const [data, setData] = useState<DailyReading | null>(null);
   const [error, setError] = useState(false);
   const [dayId, setDayId] = useState('day-01');
@@ -69,23 +71,7 @@ export function DailyReadingPage({ onBack }: { onBack: () => void }) {
           ā
         </span>
       </div>
-      <label className="daily-guidance">
-        <input
-          type="checkbox"
-          checked={guidanceEnabled}
-          onChange={(event) => {
-            const enabled = event.currentTarget.checked;
-            setGuidanceEnabled(enabled);
-            try {
-              localStorage.setItem('love-pinyin.daily-guidance', enabled ? 'on' : 'off');
-            } catch {
-              // The current page still works when browser storage is unavailable.
-            }
-          }}
-        />
-        语音引导
-        <small>{guidanceEnabled ? '开启：先听操作说明' : '关闭：点击拼音直接听示范'}</small>
-      </label>
+      {!section && <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />}
       <p className="daily-privacy">
         停止录音后，电脑自动识别并匹配音节。录音只发送家庭
         Mac，在内存中处理，不保存。识别匹配不判四声准确度。本次练习标记退出后清除。
@@ -146,6 +132,7 @@ export function DailyReadingPage({ onBack }: { onBack: () => void }) {
               key={section.id}
               day={day}
               guidanceEnabled={guidanceEnabled}
+              onGuidanceChange={onGuidanceChange}
               section={section}
               marks={marks}
               onMark={(id, mark) => setMarks((previous) => ({ ...previous, [id]: mark }))}
@@ -167,12 +154,14 @@ export function DailyReadingPage({ onBack }: { onBack: () => void }) {
 function ReadingSession({
   day,
   guidanceEnabled,
+  onGuidanceChange,
   section,
   marks,
   onMark,
 }: {
   day: DailyDay;
   guidanceEnabled: boolean;
+  onGuidanceChange: (enabled: boolean) => void;
   section: DailySection;
   marks: Record<string, ReadingMark>;
   onMark: (id: string, mark: ReadingMark) => void;
@@ -205,7 +194,10 @@ function ReadingSession({
     setRecognizing(false);
   }, []);
   useEffect(() => {
-    if (previousGuidance.current !== guidanceEnabled && phase === 'playing') stop();
+    if (previousGuidance.current !== guidanceEnabled && !guidanceEnabled) {
+      if (phase === 'playing' || (phase === 'finished' && controller.current)) stop();
+      else audioPlayer.stop();
+    }
     previousGuidance.current = guidanceEnabled;
   }, [guidanceEnabled, phase, stop]);
   const clearCapture = useCallback(() => {
@@ -311,7 +303,13 @@ function ReadingSession({
     const active = new AbortController();
     controller.current = active;
     try {
-      if (guidance.current) await playPrivate('daily-ui-record', active.signal);
+      if (guidance.current) {
+        try {
+          await playPrivate('daily-ui-record', active.signal);
+        } catch (error) {
+          if (guidance.current || active.signal.aborted) throw error;
+        }
+      }
       instructionHeard = true;
       if (active.signal.aborted) return;
       await recorder.current.start(
@@ -377,6 +375,7 @@ function ReadingSession({
             第 {index + 1} / {section.items.length} 条
           </strong>
         </div>
+        <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
         <p>{section.instruction}</p>
         <button
           className="quiet daily-target"

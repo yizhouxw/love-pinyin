@@ -35,7 +35,7 @@ async def security_headers(request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["Permissions-Policy"] = "microphone=(self), camera=(), geolocation=()"
-    if request.url.path.startswith("/api/"):
+    if not request.url.path.startswith("/assets/"):
         response.headers["Cache-Control"] = "no-store"
     return response
 

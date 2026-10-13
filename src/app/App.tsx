@@ -4,6 +4,12 @@ import { audioPlayer } from '../platform/audio/browser-audio-player';
 import narrationData from '../../content/narration.json';
 import { useLearningVoice, VoiceButton, VoiceFailure, type LearningAudio } from './learning-voice';
 import './styles.css';
+import { GuidanceSwitch } from './guidance-switch';
+import {
+  readGuidancePreference,
+  resolveGuidance,
+  saveGuidancePreference,
+} from '../platform/guidance-preference';
 import { DailyReadingPage } from './daily-reading';
 import { Picture, WordCards } from './illustrations';
 import type { IllustrationCatalog } from '../domain/illustrations';
@@ -374,6 +380,14 @@ function LearningApp() {
   const [boot, setBoot] = useState<Bootstrap | null>(null);
   const [curriculum, setCurriculum] = useState<Curriculum | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
+  const [guidancePreference, setGuidancePreference] = useState(readGuidancePreference);
+  const familyGuidance = progress?.settings.soundEnabled !== false;
+  const guidanceEnabled = resolveGuidance(familyGuidance, guidancePreference);
+  function changeGuidance(enabled: boolean) {
+    const preference = { enabled, familyDefault: familyGuidance };
+    setGuidancePreference(preference);
+    saveGuidancePreference(preference);
+  }
   const [session, setSession] = useState<Session | null>(null);
   const [code, setCode] = useState('');
   const [pairCode, setPairCode] = useState('');
@@ -561,15 +575,14 @@ function LearningApp() {
                 : null;
 
   useEffect(() => {
-    if (autoVoiceId && voiceStarted.current && progress?.settings.soundEnabled !== false)
-      playVoice(autoVoiceId);
+    if (autoVoiceId && voiceStarted.current && guidanceEnabled) playVoice(autoVoiceId);
     else stopVoice();
     return stopVoice;
   }, [
     autoVoiceId,
     playVoice,
     stopVoice,
-    progress?.settings.soundEnabled,
+    guidanceEnabled,
     lessonViewId,
     parentOpen,
     parentGateOpen,
@@ -594,7 +607,7 @@ function LearningApp() {
 
   async function beginLesson(lessonId: string) {
     voiceStarted.current = true;
-    if (progress?.settings.soundEnabled !== false) playVoice('ui-start');
+    if (guidanceEnabled) playVoice('ui-start');
     const started = (await api('/sessions', {
       method: 'POST',
       body: JSON.stringify({ lessonId }),
@@ -607,7 +620,7 @@ function LearningApp() {
 
   async function beginReview(knowledgeId: string) {
     voiceStarted.current = true;
-    if (progress?.settings.soundEnabled !== false) playVoice('ui-start');
+    if (guidanceEnabled) playVoice('ui-start');
     const started = (await api(`/reviews/${encodeURIComponent(knowledgeId)}/sessions`, {
       method: 'POST',
       body: JSON.stringify({}),
@@ -822,6 +835,7 @@ function LearningApp() {
         }}
       >
         <nav className="play-nav">
+          <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
           <button
             className="icon-button"
             aria-label="退出练习"
@@ -953,7 +967,7 @@ function LearningApp() {
                   onClick={() => {
                     if (question.type === 'blend-choice') {
                       setBlendDraft({ instanceId: task.instanceId, optionId: option.id });
-                      if (progress?.settings.soundEnabled !== false) playVoice('ui-blend_ready');
+                      if (guidanceEnabled) playVoice('ui-blend_ready');
                     } else void submitOption(option.id);
                   }}
                 >
@@ -1178,6 +1192,8 @@ function LearningApp() {
     return (
       <main className="home-page">
         <DailyReadingPage
+          guidanceEnabled={guidanceEnabled}
+          onGuidanceChange={changeGuidance}
           onBack={() => {
             window.location.hash = '';
             setDailyOpen(false);
@@ -1189,6 +1205,7 @@ function LearningApp() {
   return (
     <main className="home-page">
       <header className="topbar">
+        <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
         <div className="brand">
           <span className="brand-mark">拼</span>
           <span>爱拼音</span>
@@ -1354,6 +1371,7 @@ function LearningApp() {
                 refresh={refresh}
                 act={act}
                 learningAudio={learningAudio}
+                onGuidanceChange={changeGuidance}
               />
             )
           ) : lessonViewId ? (
@@ -1367,7 +1385,7 @@ function LearningApp() {
               familyAudio={learningAudio?.lessons[lessonViewId]}
               illustrations={curriculum?.illustrations}
               writingCatalog={curriculum?.writing}
-              soundEnabled={progress?.settings.soundEnabled !== false}
+              soundEnabled={guidanceEnabled}
               masteryById={masteryById}
               busy={busy}
               withinCurrentRange={Boolean(
@@ -1851,7 +1869,10 @@ function GuestPanel({
           void act(async () => {
             await api('/household/settings', {
               method: 'PUT',
-              body: JSON.stringify({ soundEnabled: true, reducedMotion: next }),
+              body: JSON.stringify({
+                soundEnabled: progress.settings.soundEnabled !== false,
+                reducedMotion: next,
+              }),
             });
             await refresh();
           })
@@ -1863,6 +1884,7 @@ function GuestPanel({
 
 function ParentPanel({
   boot,
+  onGuidanceChange,
   curriculum,
   progress,
   lessonChoice,
@@ -2028,7 +2050,9 @@ function ParentPanel({
       <div className="parent-setting">
         <div>
           <strong>自动朗读题目</strong>
-          <p>开启后，孩子点击开始，新题和练习反馈会自动朗读。关闭后仍可点喇叭听题。</p>
+          <p>
+            开启后，新题、练习反馈和天天练操作说明会自动朗读。关闭后天天练直接播放示范，仍可点喇叭听题；学习页面也可快捷切换。
+          </p>
         </div>
         <label>
           <input
@@ -2038,6 +2062,7 @@ function ParentPanel({
             disabled={!isParent || busy}
             onChange={(event) => {
               const soundEnabled = event.target.checked;
+              onGuidanceChange(soundEnabled);
               void act(async () => {
                 await api('/household/settings', {
                   method: 'PUT',
