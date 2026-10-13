@@ -8,7 +8,17 @@ case "${1:-}" in
   ""|--prepare-only) ;;
   *) echo "Usage: ./run.sh [--prepare-only]" >&2; exit 1 ;;
 esac
-command -v git >/dev/null || { echo "Install the macOS Command Line Tools (xcode-select --install) to provide Git." >&2; exit 1; }
+git_binary="${LOVE_PINYIN_GIT_BIN:-$(command -v git || true)}"
+if [[ -z "$git_binary" ]] || ! "$git_binary" --version >/dev/null 2>&1; then
+  git_binary=""
+  for candidate in /opt/homebrew/bin/git /usr/local/bin/git; do
+    if [[ -x "$candidate" ]] && "$candidate" --version >/dev/null 2>&1; then
+      git_binary="$candidate"; break
+    fi
+  done
+fi
+[[ -n "$git_binary" ]] || { echo "A working Git is required. Complete Command Line Tools setup or provide LOVE_PINYIN_GIT_BIN." >&2; exit 1; }
+export LOVE_PINYIN_GIT_BIN="$git_binary"
 mkdir -p private/runtime
 setup_lock="$PWD/private/setup.lock"
 if ! mkdir "$setup_lock" 2>/dev/null; then

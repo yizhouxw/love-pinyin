@@ -1,6 +1,7 @@
 """Explicit Git sync and integrity-checked import of the content-pinned standard audio."""
 
 import hashlib
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -13,11 +14,12 @@ from server import daily_reading, source_audio
 from server.content import load_curriculum
 
 ROOT = Path(__file__).resolve().parents[1]
+GIT = os.environ.get("LOVE_PINYIN_GIT_BIN", "git")
 
 
 def git(repo: Path, *args: str) -> str:
     return subprocess.run(
-        ["git", "-C", str(repo), *args], check=True, capture_output=True, text=True, timeout=120
+        [GIT, "-C", str(repo), *args], check=True, capture_output=True, text=True, timeout=120
     ).stdout.strip()
 
 
@@ -26,7 +28,7 @@ def sync(repo: Path) -> dict:
     if not repo.exists():
         repo.parent.mkdir(parents=True, exist_ok=True)
         subprocess.run(
-            ["git", "clone", catalog["repository"] + ".git", str(repo)], check=True, timeout=180
+            [GIT, "clone", catalog["repository"] + ".git", str(repo)], check=True, timeout=180
         )
     if git(repo, "remote", "get-url", "origin").removesuffix(".git") != catalog["repository"]:
         raise ValueError("Cached standard audio has an unexpected Git origin")
