@@ -12,11 +12,13 @@ from scripts.prepare_pinyin_source import MAX_ARCHIVE, atomic_json, check_record
 from server import daily_reading, source_audio
 
 
-def prepare(archive: Path) -> dict:
+def prepare(archive: Path, *, archive_digest: str | None = None) -> dict:
     source = source_audio.catalog()
     if archive.stat().st_size > MAX_ARCHIVE:
         raise ValueError("Source archive too large")
-    if hashlib.sha256(archive.read_bytes()).hexdigest() != source["archiveSha256"]:
+    if hashlib.sha256(archive.read_bytes()).hexdigest() != (
+        archive_digest or source["archiveSha256"]
+    ):
         raise ValueError("Source archive does not match pinned PinYinSound")
     if not source_audio.installed():
         raise ValueError(

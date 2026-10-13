@@ -1,0 +1,7 @@
+# ADR 0017：可复现的一键安装与资源分发
+
+2026-10-13采纳，依据SPEC-010。用户授权在main提交资源并让开发者clone后直接运行，覆盖旧文档禁止课程素材提交和显式启动阶段不得自动下载模型的限制；应用处理录音时仍不下载、不访问外部识别。
+
+run.sh协调锁定依赖、准备资源、构建和启动。标准音用Git clone/pull同步用户指定上游，但资源仍从content登记的固定commit读取，逐文件hash/实际解码验证，不改教学目标。来源Git工作目录留private，更新失败有已验证的固定commit可离线复用。
+
+课程13份用户提供MP3及PDF按用户请求进入resources，保留非MIT许可；不包含儿童音频或数据。Apple系统声音录音不随仓库分发；原创中文脚本已按SPEC-011用开源Kokoro本地重生成并打包。Whisper权重488MB在显式一键启动首次下载固定版本、摘要验证，不纳入普通Git。无新增npm/uv依赖，固定Node/npm/uv缺失时在项目private/runtime中安装，系统Git和macOS解码工具为前置。新增voice-build依赖见SPEC-011。

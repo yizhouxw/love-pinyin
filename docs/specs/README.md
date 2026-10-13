@@ -33,3 +33,5 @@
 推荐状态：`planned → implementing → software-verified → externally-verified → accepted`。003标准音直接信任cmguo/PinYinSound，按TRUST-01取消审核流程；006仍须真实设备与内容覆盖验证。发音评测如未来重启，另行建立 SPEC 与验收。
 
 新增 [SPEC-007 首页配对与访客学习](SPEC-007-guest-access.md)：ACCESS-01 修复配对入口、支持浏览器临时进度；依赖 001–005，共用现有练习与进度算法。
+
+新增[SPEC-010一键安装](SPEC-010-one-command-setup.md)与[SPEC-011开源中文声音](SPEC-011-open-chinese-voice.md)：用户授权课程/PDF及开源生成语音入仓库，显式启动准备模型；不包含儿童录音或模型权重。

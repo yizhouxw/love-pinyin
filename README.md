@@ -6,24 +6,21 @@
 
 ## 安装与启动
 
-准备 Node **24.18.1**、npm **11.16.0**、uv **0.12.5**；项目使用 Python **3.12.12**。首次安装依赖可联网，资源准备完成后的学习不需要互联网，但浏览器必须能连接 Mac。
+macOS 开发者 clone 后，在项目目录执行：
 
 ```sh
-npm ci
-uv sync --locked
-npm run prepare:voice -- --source '/绝对路径/1汉语拼音音频'
-npm run prepare:pinyin
-npm run prepare:daily -- --archive /绝对路径/固定版本PinYinSound.zip
-npm start
+./run.sh
 ```
 
-`prepare:voice` 导入家长提供的课程录音，并用 Mac 已安装的 Tingting 音色生成中文指令。音色缺失会报错，不自动补装。课程录音文件名/映射见[音频制作说明](docs/content/audio-production.md)；原13课映射新版14课，第2/9课共用旧合课录音，录音中的旧页码不是新版页码。
+也可双击 `run.command`。脚本自动安装项目本地 Node **24.18.1**、npm **11.16.0**、uv **0.12.5**（已有匹配版本则复用），用锁文件安装依赖和 Python **3.12.12**，自动 Git clone/pull 标准读音仓库、导入登记固定版本、校验仓库内课程/中文引导音频，首次下载并校验 Whisper small，构建并启动。需要系统 Git（通常在 clone 时已安装）；缺少时先运行 `xcode-select --install`。首次运行需要联网，模型约488MB，完成后不需要手动复制任何资源。普通启动无需TTS模型、Tingting或系统音色。
 
-`prepare:pinyin` 显式下载固定版本的 cmguo/PinYinSound，校验摘要并在本机解码。也可用 `-- --archive /绝对路径/source.zip` 安装已有归档。应用直接信任此来源作为标准音，没有教师角色、审音台或批准流程。运行时不访问 GitHub，不加载识别模型。
+打开 `http://127.0.0.1:8000`，可先访客体验或生成家长配对码。Ctrl+C停止。默认端口占用可用 `LOVE_PINYIN_PORT=8001 ./run.sh`。`./run.sh --prepare-only`只安装准备，不启动；`npm start`调用同一脚本。重复启动检查并复用资源；上游联网更新失败且已有固定版本时可继续，新安装失败明确退出。不要同时运行两份准备脚本。
 
-打开 `http://127.0.0.1:8000`。可先访客体验；要保存家庭进度，在 Mac 本机生成配对码并连接，第一个家长设备可选课和管理其他设备。访客进度仅留在当前浏览器标签页，不能替代家庭档案。以后运行 `npm start` 即可构建网页、复用/准备本地中文声音并启动服务。
+标准音直接信任[cmguo/PinYinSound](https://github.com/cmguo/PinYinSound)，自动同步上游但按`content/pinyin-source.json`的commit和逐文件摘要导入，不把上游HEAD更新直接变为教材声音。源码、课程JSON、原创SVG、13份课程MP3、每日PDF、全部中文引导WAV与白名单manifest都在仓库。课程录音与PDF保留非MIT说明。中文引导由本地开源 **Kokoro-82M-v1.1-zh / sherpa-onnx** 重新生成，已附许可。日常运行直接播放，不调用TTS或外部语音服务。
 
-声音、课程录音、数据库和备份留在 Git 忽略的 `private/`。家长页可下载 JSON 备份、预览恢复和清除记录；`npm run backup:local` 另生成 SQLite 运维备份，默认保留最近7份。
+维护者如修改中文脚本，可运行 `npm run prepare:voice` 下载校验固定Kokoro模型并离线重生成，再提交音频和manifest；模型大文件不入Git。固定参数和摘要见 `content/voice-build.json`。旧Mac声音准备工具仅保留兼容测试，不再是启动依赖。
+
+数据库、儿童跟读、备份、上游Git缓存和模型留在忽略目录；家长页可下载JSON备份，`npm run backup:local`生成SQLite运维备份，默认保留最近7份。
 
 ## iPad / 手机与家庭局域网
 
@@ -35,7 +32,7 @@ npm start
 
 开发时分别运行 `npm run dev:api` 和 `npm run dev`；前端 `http://127.0.0.1:5173` 代理本机8000端口。生产形态用 `npm start`，不要把 Vite 开发服务当家庭部署。
 
-安装测试浏览器：`npx playwright install chromium firefox webkit`。真实声音测试前必须完成上面的私有资源准备；仅克隆 MIT 源码不包含音频。
+安装测试浏览器：`npx playwright install chromium firefox webkit`。真实声音测试前运行 `./run.sh --prepare-only`；中文引导与课程录音已随仓库提供，标准音仍从上游同步。
 
 | 命令                       | 范围                                          |
 | -------------------------- | --------------------------------------------- |
@@ -63,4 +60,4 @@ npm start
 
 首页“进入天天练拼音”可选择14份练习、分节逐条示范或连播。“语音引导”继承家长自动朗读设置；首页、课程练习导航及天天练当前内容区均有快捷开关，在浏览器记住选择，家庭设置变更优先。关闭后跳过操作说明，点击拼音或本节条目立即听示范，录音和识别仍可使用。点“录下我的跟读”才请求麦克风；录音只留当前页面内存，停止后发送家庭Mac内存做本地识别匹配；换条/退出/后台清除，不落盘。需要localhost或受信任HTTPS。可直接不录音跟读，家长标记只留本次页面，退出清除，不计入客观题成绩。
 
-每日标准音与原课程共享固定来源，先prepare:pinyin，再显式prepare:daily导入同版本归档（本机已有归档可用private/pinyinsound-source/source.zip）；最后prepare:voice生成中文引导及42条中文词句朗读。拼音标准音与中文词句朗读在页面区分。停止录音后电脑自动识别，显示识别文字、对应拼音和音节匹配结果；听不清拒判。ASR匹配不代表四声/专业发音准确度，不生成分数或课程正确成绩。运行识别需显式安装已固定的Whisper small权重（已有models/whisper-small/ggml-small.bin可复用）；缺失时运行 `uv run --locked --group audio-asr python -m scripts.fetch_asr_model`，应用不会自动下载。详见[SPEC-009](docs/specs/SPEC-009-asr-reading-match.md)与[SPEC-008](docs/specs/SPEC-008-daily-reading.md)。来源PDF为用户家庭素材，不加入Git或MIT公开素材包。
+每日标准音与原课程共享固定来源；run.sh自动导入840条示范所需资源。42条轻声词句以本地Kokoro中文朗读提供，并与拼音标准音区分。停止录音后本机Whisper识别、核对音节；听不清拒判，不判断四声或专业发音准确度。模型首次显式启动下载，应用处理录音时不下载、不访问外网。详见[SPEC-009](docs/specs/SPEC-009-asr-reading-match.md)、[一键安装](docs/specs/SPEC-010-one-command-setup.md)与[开源中文声音](docs/specs/SPEC-011-open-chinese-voice.md)。

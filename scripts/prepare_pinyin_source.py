@@ -57,11 +57,13 @@ def check_recording(path: Path, output: Path) -> dict:
     return {"seconds": round(seconds, 6), "peak": round(peak, 6), "rms": round(rms, 6)}
 
 
-def prepare(archive: Path, destination: Path) -> dict:
+def prepare(archive: Path, destination: Path, *, archive_digest: str | None = None) -> dict:
     source = source_audio.catalog()
     if archive.stat().st_size > MAX_ARCHIVE:
         raise ValueError("Source archive too large")
-    if hashlib.sha256(archive.read_bytes()).hexdigest() != source["archiveSha256"]:
+    if hashlib.sha256(archive.read_bytes()).hexdigest() != (
+        archive_digest or source["archiveSha256"]
+    ):
         raise ValueError("Source archive digest does not match the pinned version")
     targets = {a["id"]: a for a in load_curriculum()["audioRequirements"]}
     for row in source["assets"]:
@@ -108,6 +110,8 @@ def prepare(archive: Path, destination: Path) -> dict:
         "archiveSha256": source["archiveSha256"],
         "preparedAt": datetime.now(UTC).isoformat(),
     }
+    if archive_digest:
+        state.update(transport="git-archive", transportSha256=archive_digest)
     atomic_json(destination / "decode-report.json", {"assets": report})
     atomic_json(destination / "installation.json", state)
     return {**state, "mappings": len(report), "files": len({r["sha256"] for r in source["assets"]})}
