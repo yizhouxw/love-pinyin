@@ -12,21 +12,21 @@ flowchart LR
 
 ## 实际模块
 
-| 路径                                          | 当前职责                                       |
-| --------------------------------------------- | ---------------------------------------------- |
-| `src/app/App.tsx`                             | 页面、React状态导航、API调用辅助函数和游戏交互 |
-| `src/app/learning-voice.tsx`                  | 中文声音引导与播放状态                         |
-| `src/app/writing.tsx`、`illustrations.tsx`    | 书写观察与生活图片卡                           |
-| `src/domain/`                                 | 契约、拼音呈现、书写与图片数据类型/纯函数      |
-| `src/platform/audio/browser-audio-player.ts`  | 浏览器音频适配器                               |
-| `src/platform/guest.ts`                       | 访客临时状态与请求串行化                       |
-| `server/api.py`、`main.py`                    | 路由、认证、请求事务及同源服务入口             |
-| `server/domain.py`、`storage.py`              | 确定性进度/选题规则、SQLite与迁移              |
-| `server/content.py`、`content_history.py`     | 当前课程及不可覆盖的历史内容                   |
-| `server/source_audio.py`、`learning_audio.py` | 标准音与中文声音/课程录音清单、完整性及读取    |
-| `server/guest.py`、`backup.py`                | 请求级访客内存库、SQLite运维备份               |
-| `content/`、`schemas/`                        | 课程、答案、教学规则、资源映射及格式约束       |
-| `private/`（忽略）                            | 声音、家庭数据库、备份、证书及本机测试证据     |
+| 路径                                          | 当前职责                                             |
+| --------------------------------------------- | ---------------------------------------------------- |
+| `src/app/App.tsx`                             | 页面、React状态导航、API调用辅助函数和游戏交互       |
+| `src/app/learning-voice.tsx`                  | 中文声音引导与播放状态                               |
+| `src/app/writing.tsx`、`illustrations.tsx`    | 书写观察与生活图片卡                                 |
+| `src/domain/`                                 | 契约、拼音呈现、书写与图片数据类型/纯函数            |
+| `src/platform/audio/browser-audio-player.ts`  | 浏览器音频适配器                                     |
+| `src/platform/guest.ts`                       | 访客临时状态与请求串行化                             |
+| `server/api.py`、`main.py`                    | 路由、认证、请求事务及同源服务入口                   |
+| `server/domain.py`、`storage.py`              | 确定性进度/选题规则、SQLite与迁移                    |
+| `server/content.py`、`content_history.py`     | 当前课程及不可覆盖的历史内容                         |
+| `server/source_audio.py`、`learning_audio.py` | 标准音与中文声音/课程录音清单、完整性及读取          |
+| `server/guest.py`、`backup.py`                | 请求级访客内存库、SQLite运维备份                     |
+| `content/`、`schemas/`                        | 课程、答案、教学规则、资源映射及格式约束             |
+| `private/`（忽略）                            | 上游标准音缓存、模型、家庭数据库、备份及本机测试证据 |
 
 当前没有 hash 路由、独立 `src/services/` 或 `src/features/` 模块；API 辅助函数仍在 App 内。进度计算在服务端纯函数中，不由 React 重复实现。详细路由和表见[API契约](api-contract.md)。
 
@@ -55,3 +55,5 @@ flowchart LR
 ## 每日跟读（ADR-0014）
 
 content/daily-reading.json保存用户PDF的14份练习和固定音频白名单；同源daily-reading/daily-audio接口提供目录与摘要校验音频，访客资源接口同样可用。中文引导与少量轻声词句朗读走既有voice接口。浏览器BrowserReadingRecorder仅保留当前条Blob，SPEC-009新增有界PCM上传家庭Mac内存与本地Whisper识别匹配，不作专业自动判分；全局播放器协调示范与回放。所有练习标记只留当前页面，不修改家庭掌握度。
+
+按ADR-0017/0018，课程MP3、PDF及Kokoro生成的中文WAV/manifest存于resources并随当前仓库提供；应用默认读取resources/audio，支持环境变量显式配置私人资源。run.sh负责显式联网安装，普通播放与识别不下载资源。

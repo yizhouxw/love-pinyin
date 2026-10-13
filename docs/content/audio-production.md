@@ -20,7 +20,7 @@ npm run prepare:pinyin -- --archive /绝对路径/source.zip
 
 ## 中文指令与整课录音
 
-先安装README要求的锁定依赖，再运行 `npm run prepare:voice -- --source '/绝对路径/1汉语拼音音频'`。目录须包含 `content/lesson-recordings.json` 登记的原13份录音文件；脚本按登记文件名复制并记录摘要，用于后续完整性校验；它不自动辨认录音教学内容，家长需提供匹配的源文件。使用本机已安装Tingting生成中文指令，缺失即报错。中文TTS不读拼音，长录音不替代单音。家庭资源接口需配对，访客资源接口无需配对，均按登记ID读取。
+现行普通开发者运行 `./run.sh` 即可使用已提交的13份课程MP3与全部开源中文引导，不再手工提供源目录或安装Tingting。中文素材由Kokoro-82M-v1.1-zh本地生成，维护者运行 `npm run prepare:voice` 校验模型后重生成；参数/摘要见content/voice-build.json。旧Mac声音准备脚本仅保留测试及私人素材兼容，不进入发布素材。中文TTS不替代固定PinYinSound单音，原长录音仍保留独立来源。家庭/访客接口均只按登记ID读取。
 
 ## 验证与维护
 

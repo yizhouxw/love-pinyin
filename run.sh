@@ -59,7 +59,7 @@ if ! command -v uv >/dev/null || [[ "$(uv --version)" != 'uv 0.12.5'* ]]; then
   tar -xzf "$runtime_root/$uv_file" -C "$runtime_root/uv" --strip-components=1
 fi
 printf '\nInstalling locked dependencies…\n'
-npm ci
+npm ci --prefer-offline --no-audit --no-fund
 uv sync --locked
 printf '\nSynchronizing standard pinyin recordings…\n'
 uv run --locked python -m scripts.sync_standard_audio
