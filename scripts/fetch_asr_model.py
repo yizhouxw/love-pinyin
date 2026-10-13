@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import argparse
 import os
+import subprocess
 import tempfile
-import urllib.request
 from pathlib import Path
 
-from .asr_model import MODEL_FILENAME, MODEL_URL, validate_model
+from .asr_model import MODEL_FILENAME, MODEL_SIZE, MODEL_URL, validate_model
 
 
 def install(destination: Path) -> Path:
@@ -16,12 +16,32 @@ def install(destination: Path) -> Path:
     if destination.exists():
         validate_model(destination)
         return destination
-    request = urllib.request.Request(MODEL_URL, headers={"User-Agent": "love-pinyin-model-fetch/1"})
     fd, temporary = tempfile.mkstemp(prefix=f".{MODEL_FILENAME}.", dir=destination.parent)
+    os.close(fd)
     try:
-        with os.fdopen(fd, "wb") as output, urllib.request.urlopen(request, timeout=60) as response:
-            while block := response.read(1024 * 1024):
-                output.write(block)
+        subprocess.run(
+            [
+                "curl",
+                "--fail",
+                "--location",
+                "--retry",
+                "3",
+                "--retry-delay",
+                "2",
+                "--connect-timeout",
+                "20",
+                "--max-time",
+                "900",
+                "--max-filesize",
+                str(MODEL_SIZE),
+                "--output",
+                temporary,
+                MODEL_URL,
+            ],
+            check=True,
+            capture_output=True,
+            timeout=930,
+        )
         temporary_path = Path(temporary)
         validate_model(temporary_path)
         temporary_path.replace(destination)
