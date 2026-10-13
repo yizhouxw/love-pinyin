@@ -1,4 +1,4 @@
-"""Explicitly download the pinned Whisper model; never called at app startup."""
+"""Install the pinned Whisper model during explicit setup, never during inference."""
 
 from __future__ import annotations
 
