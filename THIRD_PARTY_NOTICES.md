@@ -26,3 +26,13 @@
 ## 本地跟读识别（SPEC-009）
 
 pypinyin==0.55.0，MIT，官方https://pypi.org/project/pypinyin/0.55.0/ 与 https://github.com/mozillazg/python-pinyin；uv已锁定并实际安装。pywhispercpp==1.5.1（MIT）由原维护工具依赖提升为应用运行依赖，版本未改变，复用已锁定numpy。Whisper small固定来源、大小、SHA-256、MIT见scripts/asr_model.py；本次读取已有模型，无新模型下载、训练或外部识别。
+
+## 2026-10-13 clone资源与开源中文声音更新
+
+用户明确授权将当前13份课程MP3与《一年级天天练拼音》PDF提交当前私有仓库供开发者使用，文件位于resources/audio/lessons与resources，保留用户提供、非MIT的来源说明；此请求覆盖上文“不提交”限制，不授权以代码MIT公开发行原素材。儿童声音、数据库、证书、模型权重不包含。
+
+旧Tingting生成录音未进入Git；现行中文声音由本地Kokoro-82M-v1.1-zh生成，模型Apache-2.0，官方模型卡https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh；官方sherpa-onnx转换来源、全部文件SHA/参数在content/voice-build.json，许可原文在resources/licenses/Kokoro-Apache-2.0.txt。本项目提供的原创脚本与生成音频可按Apache-2.0使用，课程录音/PDF仍排除。音频不含真实儿童或克隆用户人声。
+
+维护组sherpa-onnx==1.13.8与sherpa-onnx-core==1.13.8来自官方PyPI/k2-fsa，Apache-2.0；原生运行时包含ONNX Runtime等上游组件，仅用于本地构建声音，不打包原生库/模型。保留安装包中的上游许可，依赖锁和清单记录版本。正常服务只读取已生成WAV，不安装或运行TTS维护组。
+
+显式一键启动会自动Git clone/pull标准音原仓库并导入固定commit，不把许可unknown的上游标准音复制进本Git；首次下载已固定MIT Whisper small，应用录音推理期间不下载。Node24.18.1（MIT/内附第三方notice）、npm11.16.0（Artistic-2.0）和uv0.12.5（MIT/Apache-2.0）可自动安装到私有runtime目录，不随源码再分发其二进制。

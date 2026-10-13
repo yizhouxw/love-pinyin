@@ -30,7 +30,10 @@ for package in lock["package"]:
     )
 
 output = {
-    "scope": ("macOS arm64 packages including assessment-poc; metadata is not legal clearance"),
+    "scope": (
+        "macOS arm64 packages including assessment-poc and voice-build; "
+        "metadata is not legal clearance"
+    ),
     "packages": packages,
 }
 Path("docs/engineering/python-dependency-inventory.json").write_text(

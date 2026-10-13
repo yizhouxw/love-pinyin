@@ -52,3 +52,11 @@ assessment-poc与audio-asr保留为维护研究依赖组，不由默认学习服
 ## SPEC-009增量（2026-10-13）
 
 新增pypinyin==0.55.0（MIT，官方PyPI及mozillazg/python-pinyin），uv.lock已固定，uv add实装成功；用于将本地识别文字转换为拼音，不判断实际声调。pywhispercpp==1.5.1（MIT）从可选维护组提升为运行依赖，复用原Whisper small文件和固定摘要，无新权重/训练。
+
+## SPEC-010/011（2026-10-13）
+
+维护组voice-build新增sherpa-onnx==1.13.8与sherpa-onnx-core==1.13.8，官方https://pypi.org/project/sherpa-onnx/1.13.8/ 与 https://pypi.org/project/sherpa-onnx-core/1.13.8/，k2-fsa Apache-2.0。macOS arm64 CPython3.12轮子实装成功；核心轮子提供libonnxruntime.dylib，不能仅安装Python扩展。uv.lock固定轮子哈希；仅维护生成组，播放服务不依赖它们。
+
+Kokoro-82M-v1.1-zh，Apache-2.0，官方hexgrad模型卡与k2-fsa/sherpa-onnx官方ONNX转换。固定完整精度模型、归档和每个文件SHA见content/voice-build.json。实际本地CPU生成，无训练或云服务。模型/字典不入Git，输出中文WAV随仓库。MeloTTS与int8仅候选实验，未进入发布素材或最终构建配置。
+
+一键脚本需要系统Git/curl/tar/shasum/macOS afconvert。缺失Node24.18.1/uv0.12.5时从官方nodejs.org及astral-sh GitHub固定release安装项目私有副本，下载SHA校验；npm11.16.0从官方registry固定包安装。Python3.12.12由uv使用.python-version安装。无全局npm升级、brew自动安装或sudo。

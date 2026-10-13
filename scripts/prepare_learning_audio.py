@@ -128,6 +128,7 @@ def prepare(source: Path | None = None) -> dict:
         asset = {
             "id": asset_id,
             **expected[asset_id],
+            "sourceType": "macos-local-narration",
             "file": relative,
             "sha256": file_digest(path),
             "durationSeconds": round(duration, 3),
@@ -213,6 +214,8 @@ def main() -> None:
         "--source", type=Path, help="Explicit directory of user-provided course MP3s"
     )
     args = parser.parse_args()
+    if "LOVE_PINYIN_LEARNING_AUDIO_DIR" not in os.environ:
+        learning_audio.LEARNING_AUDIO_DIR = learning_audio.ROOT / "private" / "learning-audio"
     print(json.dumps(prepare(args.source), ensure_ascii=False, indent=2))
 
 

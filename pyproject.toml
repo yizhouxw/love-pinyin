@@ -25,6 +25,10 @@ dev = [
     "pytest==9.1.1",
     "ruff==0.16.8",
 ]
+voice-build = [
+    "sherpa-onnx==1.13.8",
+    "sherpa-onnx-core==1.13.8",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests/server"]

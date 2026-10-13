@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 NARRATION_PATH = ROOT / "content" / "narration.json"
 RECORDINGS_PATH = ROOT / "content" / "lesson-recordings.json"
 LEARNING_AUDIO_DIR = (
-    Path(os.environ.get("LOVE_PINYIN_LEARNING_AUDIO_DIR", ROOT / "private" / "learning-audio"))
+    Path(os.environ.get("LOVE_PINYIN_LEARNING_AUDIO_DIR", ROOT / "resources" / "audio"))
     .expanduser()
     .resolve()
 )
@@ -98,7 +98,7 @@ def lesson_recordings() -> dict[str, dict]:
 def expected_assets() -> dict[str, dict]:
     expected = {
         asset_id: {
-            "sourceType": "macos-local-narration",
+            "sourceType": "local-open-tts",
             "purpose": "chinese-instruction",
             "textSha256": text_digest(text),
         }
@@ -137,7 +137,15 @@ def _not_found() -> HTTPException:
 
 
 def registered_file(asset: dict, expected: dict) -> tuple[Path, str, str]:
-    if any(asset.get(key) != value for key, value in expected.items()):
+    legacy = (
+        expected.get("purpose") == "chinese-instruction"
+        and asset.get("sourceType") == "macos-local-narration"
+    )
+    if any(
+        asset.get(key) != value
+        for key, value in expected.items()
+        if not (legacy and key == "sourceType")
+    ):
         raise _not_found()
     relative = asset.get("file")
     digest = asset.get("sha256")
@@ -154,7 +162,7 @@ def registered_file(asset: dict, expected: dict) -> tuple[Path, str, str]:
     mime_type = _MIME.get(Path(relative).suffix.lower())
     if not mime_type:
         raise _not_found()
-    if expected["sourceType"] == "macos-local-narration" and mime_type != "audio/wav":
+    if expected["purpose"] == "chinese-instruction" and mime_type != "audio/wav":
         raise _not_found()
     if expected["sourceType"] == "user-provided-recording" and mime_type != "audio/mpeg":
         raise _not_found()

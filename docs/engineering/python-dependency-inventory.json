@@ -1,5 +1,5 @@
 {
-  "scope": "macOS arm64 packages including assessment-poc; metadata is not legal clearance",
+  "scope": "macOS arm64 packages including assessment-poc and voice-build; metadata is not legal clearance",
   "packages": [
     {
       "name": "annotated-doc",
@@ -327,6 +327,22 @@
         "Copyright (c) 2001-2002 Enthought, Inc. 2003, SciPy Developers."
       ],
       "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "licenseFiles": []
+    },
+    {
+      "name": "sherpa_onnx",
+      "version": "1.13.8",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["Apache licensed, as found in the LICENSE file"],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "sherpa-onnx-core",
+      "version": "1.13.8",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["Apache-2.0"],
+      "licenseClassifiers": [],
       "licenseFiles": []
     },
     {
