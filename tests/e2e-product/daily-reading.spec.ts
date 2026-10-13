@@ -131,6 +131,12 @@ test('ASR-04: native browser recording of permitted reference audio reaches loca
     '轮到你读啦，读完点下一条。',
     { timeout: 25000 },
   );
+  await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
+  const skippedGuides: string[] = [];
+  page.on('request', (request) => {
+    if (/\/voice\/(daily-ui-record|recognition-)/.test(request.url()))
+      skippedGuides.push(request.url());
+  });
   await page.evaluate(() => {
     Object.defineProperty(navigator, 'mediaDevices', {
       configurable: true,
@@ -174,6 +180,7 @@ test('ASR-04: native browser recording of permitted reference audio reaches loca
     await expect(page.locator('.daily-recognition')).toContainText('识别文字：');
     await expect(page.locator('.daily-recognition')).toContainText('不是发音分数');
   }
+  expect(skippedGuides).toEqual([]);
   await page.screenshot({
     path: `private/daily-asr-${test.info().project.name}.png`,
     fullPage: true,
@@ -181,4 +188,83 @@ test('ASR-04: native browser recording of permitted reference audio reaches loca
   await page.getByRole('button', { name: '读过了，下一条' }).click();
   await expect(page.getByLabel('回放我的跟读')).toHaveCount(0);
   await expect(page.locator('.daily-recognition')).toHaveCount(0);
+});
+
+test('DAILY-04: guidance can be skipped, remembered and restored while target audio stays direct', async ({
+  page,
+  appUrl,
+}) => {
+  await page.addInitScript(() => {
+    const mediaStarts: string[] = [];
+    Object.assign(window, { mediaStarts });
+    const nativePlay = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function () {
+      mediaStarts.push(this.src);
+      return nativePlay.call(this);
+    };
+  });
+  const voices: string[] = [];
+  const targets: string[] = [];
+  page.on('request', (request) => {
+    const path = new URL(request.url()).pathname;
+    if (path.includes('/voice/')) voices.push(path.split('/').at(-1)!);
+    if (path.includes('/daily-audio/')) targets.push(path.split('/').at(-1)!);
+  });
+  await page.goto(`${appUrl}/#daily-reading`);
+  await page.getByRole('button', { name: '访客体验', exact: true }).click();
+  const guidance = page.getByRole('checkbox', { name: '语音引导' });
+  await expect(guidance).toBeChecked();
+  await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
+  await page.getByRole('button', { name: '开始跟读', exact: false }).click();
+  await expect.poll(() => voices.some((id) => id.startsWith('daily-instruction-'))).toBe(true);
+  await guidance.uncheck();
+  await expect(page.getByRole('button', { name: '停止示范' })).toHaveCount(0);
+  const current = page.getByLabel('当前跟读内容');
+  const list = page.getByLabel('第1份本节内容');
+  voices.length = 0;
+  targets.length = 0;
+  await list.getByRole('button').nth(1).click();
+  await expect(current.getByRole('button', { name: 'á', exact: true })).toBeVisible();
+  await expect(current.getByRole('status')).toHaveText('轮到你读啦，读完点下一条。');
+  expect([...new Set(targets)]).toEqual(['daily-a2']);
+  expect(voices).toEqual([]);
+  await current.getByRole('button', { name: 'á', exact: true }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          (window as unknown as { mediaStarts: string[] }).mediaStarts.filter((url) =>
+            url.endsWith('/daily-audio/daily-a2'),
+          ).length,
+      ),
+    )
+    .toBe(2);
+  await expect(current.getByRole('status')).toHaveText('轮到你读啦，读完点下一条。');
+  await page.getByRole('button', { name: '连播本节' }).click();
+  await list.getByRole('button').nth(2).click();
+  await expect(current.getByRole('status')).toHaveText('轮到你读啦，读完点下一条。');
+  expect(targets.at(-1)).toBe('daily-a3');
+  expect(voices).toEqual([]);
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia: () => Promise.reject(new DOMException('denied', 'NotAllowedError')) },
+    });
+  });
+  await page.getByRole('button', { name: '录下我的跟读' }).click();
+  await expect(page.getByRole('alert')).toContainText('麦克风没有开启');
+  expect(voices).toEqual([]);
+  await page.reload();
+  await expect(guidance).not.toBeChecked();
+  await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
+  await guidance.check();
+  voices.length = 0;
+  await current.getByRole('button', { name: 'ā', exact: true }).click();
+  await expect(current.getByRole('status')).toHaveText('轮到你读啦，读完点下一条。', {
+    timeout: 25000,
+  });
+  expect([...new Set(voices)]).toEqual([
+    `daily-instruction-${reading.days[0]!.sections[0]!.id}`,
+    'daily-ui-follow',
+  ]);
 });

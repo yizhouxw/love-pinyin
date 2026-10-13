@@ -20,6 +20,13 @@ async function readDaily(): Promise<DailyReading> {
 }
 
 export function DailyReadingPage({ onBack }: { onBack: () => void }) {
+  const [guidanceEnabled, setGuidanceEnabled] = useState(() => {
+    try {
+      return localStorage.getItem('love-pinyin.daily-guidance') !== 'off';
+    } catch {
+      return true;
+    }
+  });
   const [data, setData] = useState<DailyReading | null>(null);
   const [error, setError] = useState(false);
   const [dayId, setDayId] = useState('day-01');
@@ -62,6 +69,23 @@ export function DailyReadingPage({ onBack }: { onBack: () => void }) {
           ā
         </span>
       </div>
+      <label className="daily-guidance">
+        <input
+          type="checkbox"
+          checked={guidanceEnabled}
+          onChange={(event) => {
+            const enabled = event.currentTarget.checked;
+            setGuidanceEnabled(enabled);
+            try {
+              localStorage.setItem('love-pinyin.daily-guidance', enabled ? 'on' : 'off');
+            } catch {
+              // The current page still works when browser storage is unavailable.
+            }
+          }}
+        />
+        语音引导
+        <small>{guidanceEnabled ? '开启：先听操作说明' : '关闭：点击拼音直接听示范'}</small>
+      </label>
       <p className="daily-privacy">
         停止录音后，电脑自动识别并匹配音节。录音只发送家庭
         Mac，在内存中处理，不保存。识别匹配不判四声准确度。本次练习标记退出后清除。
@@ -121,6 +145,7 @@ export function DailyReadingPage({ onBack }: { onBack: () => void }) {
             <ReadingSession
               key={section.id}
               day={day}
+              guidanceEnabled={guidanceEnabled}
               section={section}
               marks={marks}
               onMark={(id, mark) => setMarks((previous) => ({ ...previous, [id]: mark }))}
@@ -141,11 +166,13 @@ export function DailyReadingPage({ onBack }: { onBack: () => void }) {
 
 function ReadingSession({
   day,
+  guidanceEnabled,
   section,
   marks,
   onMark,
 }: {
   day: DailyDay;
+  guidanceEnabled: boolean;
   section: DailySection;
   marks: Record<string, ReadingMark>;
   onMark: (id: string, mark: ReadingMark) => void;
@@ -166,6 +193,9 @@ function ReadingSession({
   const recorder = useRef(new BrowserReadingRecorder());
   const replay = useRef<HTMLAudioElement | null>(null);
   const item = section.items[index]!;
+  const previousGuidance = useRef(guidanceEnabled);
+  const guidance = useRef(guidanceEnabled);
+  guidance.current = guidanceEnabled;
   const stop = useCallback(() => {
     controller.current?.abort();
     controller.current = null;
@@ -174,6 +204,10 @@ function ReadingSession({
     setPhase('ready');
     setRecognizing(false);
   }, []);
+  useEffect(() => {
+    if (previousGuidance.current !== guidanceEnabled && phase === 'playing') stop();
+    previousGuidance.current = guidanceEnabled;
+  }, [guidanceEnabled, phase, stop]);
   const clearCapture = useCallback(() => {
     controller.current?.abort();
     controller.current = null;
@@ -223,7 +257,7 @@ function ReadingSession({
     }
     setHighlight(-1);
   }
-  async function play(all = false) {
+  async function play(all = false, startIndex = index) {
     stop();
     clearCapture();
     setFailure('');
@@ -231,18 +265,18 @@ function ReadingSession({
     controller.current = active;
     setPhase('playing');
     try {
-      await playPrivate(`daily-instruction-${section.id}`, active.signal);
+      if (guidance.current) await playPrivate(`daily-instruction-${section.id}`, active.signal);
       if (all) {
-        for (let cursor = index; cursor < section.items.length; cursor += 1) {
+        for (let cursor = startIndex; cursor < section.items.length; cursor += 1) {
           const target = section.items[cursor]!;
           setIndex(cursor);
           await demo(target, active.signal);
         }
         setPhase('finished');
-        await playPrivate('daily-ui-done', active.signal);
+        if (guidance.current) await playPrivate('daily-ui-done', active.signal);
       } else {
-        await demo(item, active.signal);
-        await playPrivate('daily-ui-follow', active.signal);
+        await demo(section.items[startIndex]!, active.signal);
+        if (guidance.current) await playPrivate('daily-ui-follow', active.signal);
         setPhase('follow');
       }
     } catch {
@@ -277,7 +311,7 @@ function ReadingSession({
     const active = new AbortController();
     controller.current = active;
     try {
-      await playPrivate('daily-ui-record', active.signal);
+      if (guidance.current) await playPrivate('daily-ui-record', active.signal);
       instructionHeard = true;
       if (active.signal.aborted) return;
       await recorder.current.start(
@@ -316,7 +350,8 @@ function ReadingSession({
       if (active.signal.aborted || controller.current !== active) return;
       setRecognition(result);
       setRecognizing(false);
-      await playPrivate(`recognition-${result.status}`, active.signal).catch(() => undefined);
+      if (guidance.current)
+        await playPrivate(`recognition-${result.status}`, active.signal).catch(() => undefined);
     } catch (error) {
       if (active.signal.aborted || controller.current !== active) return;
       setRecognizing(false);
@@ -343,13 +378,18 @@ function ReadingSession({
           </strong>
         </div>
         <p>{section.instruction}</p>
-        <div className="daily-target" aria-label={item.display}>
+        <button
+          className="quiet daily-target"
+          aria-label={item.display}
+          disabled={recording !== 'idle'}
+          onClick={() => void play()}
+        >
           {item.syllables.map((syllable, position) => (
             <span key={position} className={highlight === position ? 'daily-highlight' : ''}>
               {syllable}
             </span>
           ))}
-        </div>
+        </button>
         {item.original !== item.display && <p className="daily-original">原稿：{item.original}</p>}
         <p className="daily-source-kind">
           {item.narrationId ? '中文词句朗读 · 本机音色' : '拼音标准音 · 逐音节示范'}
@@ -498,7 +538,10 @@ function ReadingSession({
             key={value.id}
             className="quiet"
             aria-current={position === index ? 'step' : undefined}
-            onClick={() => select(position)}
+            onClick={() => {
+              select(position);
+              if (!guidanceEnabled) void play(false, position);
+            }}
           >
             <span>{position + 1}</span>
             <strong>{value.display}</strong>

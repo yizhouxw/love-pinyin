@@ -2095,7 +2095,19 @@ input[type='file']::file-selector-button {
   border-radius: 24px;
   padding: clamp(1rem, 3vw, 2rem);
 }
+.daily-guidance {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+.daily-guidance input {
+  width: 1.5rem;
+  height: 1.5rem;
+}
 .daily-target {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
