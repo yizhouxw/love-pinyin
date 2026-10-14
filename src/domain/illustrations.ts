@@ -8,6 +8,8 @@ export type IllustrationCatalog = {
       pinyin: string;
       lessonId: string;
       audioRef: string;
+      audioKind?: 'daily';
+      associationNote?: string;
       description: string;
     }
   >;

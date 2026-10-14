@@ -1,0 +1,2946 @@
+{
+  "version": 1,
+  "intro": "展开看看组词样例。你也可以想到别的词语，样例不是唯一答案。",
+  "items": {
+    "bā": {
+      "id": "daily-example-ba1",
+      "examples": [
+        {
+          "text": "八个",
+          "pinyin": "bā gè"
+        },
+        {
+          "text": "八月",
+          "pinyin": "bā yuè"
+        }
+      ],
+      "spokenText": "八个。八月。"
+    },
+    "pá": {
+      "id": "daily-example-pa2",
+      "examples": [
+        {
+          "text": "爬山",
+          "pinyin": "pá shān"
+        },
+        {
+          "text": "爬树",
+          "pinyin": "pá shù"
+        }
+      ],
+      "spokenText": "爬山。爬树。"
+    },
+    "bō": {
+      "id": "daily-example-bo1",
+      "examples": [
+        {
+          "text": "波浪",
+          "pinyin": "bō làng"
+        },
+        {
+          "text": "玻璃",
+          "pinyin": "bō lí"
+        }
+      ],
+      "spokenText": "波浪。玻璃。"
+    },
+    "pó": {
+      "id": "daily-example-po2",
+      "examples": [
+        {
+          "text": "婆婆",
+          "pinyin": "pó po"
+        },
+        {
+          "text": "外婆",
+          "pinyin": "wài pó"
+        }
+      ],
+      "spokenText": "婆婆。外婆。"
+    },
+    "bǐ": {
+      "id": "daily-example-bi3",
+      "examples": [
+        {
+          "text": "比赛",
+          "pinyin": "bǐ sài"
+        },
+        {
+          "text": "铅笔",
+          "pinyin": "qiān bǐ"
+        }
+      ],
+      "spokenText": "比赛。铅笔。"
+    },
+    "bù": {
+      "id": "daily-example-bu4",
+      "examples": [
+        {
+          "text": "布袋",
+          "pinyin": "bù dài"
+        },
+        {
+          "text": "瀑布",
+          "pinyin": "pù bù"
+        }
+      ],
+      "spokenText": "布袋。瀑布。"
+    },
+    "pū": {
+      "id": "daily-example-pu1",
+      "examples": [
+        {
+          "text": "铺床",
+          "pinyin": "pū chuáng"
+        },
+        {
+          "text": "扑过来",
+          "pinyin": "pū guò lái"
+        }
+      ],
+      "spokenText": "铺床。扑过来。"
+    },
+    "mǎ": {
+      "id": "daily-example-ma3",
+      "examples": [
+        {
+          "text": "马车",
+          "pinyin": "mǎ chē"
+        },
+        {
+          "text": "小马",
+          "pinyin": "xiǎo mǎ"
+        }
+      ],
+      "spokenText": "马车。小马。"
+    },
+    "mà": {
+      "id": "daily-example-ma4",
+      "examples": [
+        {
+          "text": "骂人",
+          "pinyin": "mà rén"
+        },
+        {
+          "text": "责骂",
+          "pinyin": "zé mà"
+        }
+      ],
+      "spokenText": "骂人。责骂。"
+    },
+    "fó": {
+      "id": "daily-example-fo2",
+      "examples": [
+        {
+          "text": "佛像",
+          "pinyin": "fó xiàng"
+        },
+        {
+          "text": "佛教",
+          "pinyin": "fó jiào"
+        }
+      ],
+      "spokenText": "佛像。佛教。"
+    },
+    "pí": {
+      "id": "daily-example-pi2",
+      "examples": [
+        {
+          "text": "皮球",
+          "pinyin": "pí qiú"
+        },
+        {
+          "text": "橘皮",
+          "pinyin": "jú pí"
+        }
+      ],
+      "spokenText": "皮球。橘皮。"
+    },
+    "pō": {
+      "id": "daily-example-po1",
+      "examples": [
+        {
+          "text": "山坡",
+          "pinyin": "shān pō"
+        },
+        {
+          "text": "坡道",
+          "pinyin": "pō dào"
+        }
+      ],
+      "spokenText": "山坡。坡道。"
+    },
+    "mā": {
+      "id": "daily-example-ma1",
+      "examples": [
+        {
+          "text": "妈妈",
+          "pinyin": "mā mā"
+        },
+        {
+          "text": "姑妈",
+          "pinyin": "gū mā"
+        }
+      ],
+      "spokenText": "妈妈。姑妈。"
+    },
+    "mǐ": {
+      "id": "daily-example-mi3",
+      "examples": [
+        {
+          "text": "大米",
+          "pinyin": "dà mǐ"
+        },
+        {
+          "text": "米饭",
+          "pinyin": "mǐ fàn"
+        }
+      ],
+      "spokenText": "大米。米饭。"
+    },
+    "fú": {
+      "id": "daily-example-fu2",
+      "examples": [
+        {
+          "text": "衣服",
+          "pinyin": "yī fú"
+        },
+        {
+          "text": "幸福",
+          "pinyin": "xìng fú"
+        }
+      ],
+      "spokenText": "衣服。幸福。"
+    },
+    "bà": {
+      "id": "daily-example-ba4",
+      "examples": [
+        {
+          "text": "爸爸",
+          "pinyin": "bà bà"
+        },
+        {
+          "text": "大坝",
+          "pinyin": "dà bà"
+        }
+      ],
+      "spokenText": "爸爸。大坝。"
+    },
+    "mù": {
+      "id": "daily-example-mu4",
+      "examples": [
+        {
+          "text": "木头",
+          "pinyin": "mù tou"
+        },
+        {
+          "text": "树木",
+          "pinyin": "shù mù"
+        }
+      ],
+      "spokenText": "木头。树木。"
+    },
+    "bǎ": {
+      "id": "daily-example-ba3",
+      "examples": [
+        {
+          "text": "把手",
+          "pinyin": "bǎ shǒu"
+        },
+        {
+          "text": "火把",
+          "pinyin": "huǒ bǎ"
+        }
+      ],
+      "spokenText": "把手。火把。"
+    },
+    "pà": {
+      "id": "daily-example-pa4",
+      "examples": [
+        {
+          "text": "害怕",
+          "pinyin": "hài pà"
+        },
+        {
+          "text": "怕热",
+          "pinyin": "pà rè"
+        }
+      ],
+      "spokenText": "害怕。怕热。"
+    },
+    "má": {
+      "id": "daily-example-ma2",
+      "examples": [
+        {
+          "text": "麻花",
+          "pinyin": "má huā"
+        },
+        {
+          "text": "芝麻",
+          "pinyin": "zhī má"
+        }
+      ],
+      "spokenText": "麻花。芝麻。"
+    },
+    "tā": {
+      "id": "daily-example-ta1",
+      "examples": [
+        {
+          "text": "他",
+          "pinyin": "tā"
+        },
+        {
+          "text": "她",
+          "pinyin": "tā"
+        }
+      ],
+      "spokenText": "他。她。"
+    },
+    "nǐ": {
+      "id": "daily-example-ni3",
+      "examples": [
+        {
+          "text": "你好",
+          "pinyin": "nǐ hǎo"
+        },
+        {
+          "text": "你们",
+          "pinyin": "nǐ men"
+        }
+      ],
+      "spokenText": "你好。你们。"
+    },
+    "dú": {
+      "id": "daily-example-du2",
+      "examples": [
+        {
+          "text": "读书",
+          "pinyin": "dú shū"
+        },
+        {
+          "text": "朗读",
+          "pinyin": "lǎng dú"
+        }
+      ],
+      "spokenText": "读书。朗读。"
+    },
+    "dǎ": {
+      "id": "daily-example-da3",
+      "examples": [
+        {
+          "text": "打球",
+          "pinyin": "dǎ qiú"
+        },
+        {
+          "text": "打鼓",
+          "pinyin": "dǎ gǔ"
+        }
+      ],
+      "spokenText": "打球。打鼓。"
+    },
+    "tù": {
+      "id": "daily-example-tu4",
+      "examples": [
+        {
+          "text": "兔子",
+          "pinyin": "tù zi"
+        },
+        {
+          "text": "白兔",
+          "pinyin": "bái tù"
+        }
+      ],
+      "spokenText": "兔子。白兔。"
+    },
+    "dì": {
+      "id": "daily-example-di4",
+      "examples": [
+        {
+          "text": "地板",
+          "pinyin": "dì bǎn"
+        },
+        {
+          "text": "弟弟",
+          "pinyin": "dì di"
+        }
+      ],
+      "spokenText": "地板。弟弟。"
+    },
+    "ná": {
+      "id": "daily-example-na2",
+      "examples": [
+        {
+          "text": "拿来",
+          "pinyin": "ná lái"
+        },
+        {
+          "text": "拿手",
+          "pinyin": "ná shǒu"
+        }
+      ],
+      "spokenText": "拿来。拿手。"
+    },
+    "lǎ": {
+      "id": "daily-example-la3",
+      "examples": [
+        {
+          "text": "喇叭",
+          "pinyin": "lǎ bā"
+        }
+      ],
+      "spokenText": "喇叭。"
+    },
+    "lù": {
+      "id": "daily-example-lu4",
+      "examples": [
+        {
+          "text": "马路",
+          "pinyin": "mǎ lù"
+        },
+        {
+          "text": "小鹿",
+          "pinyin": "xiǎo lù"
+        }
+      ],
+      "spokenText": "马路。小鹿。"
+    },
+    "nǚ": {
+      "id": "daily-example-nv3",
+      "examples": [
+        {
+          "text": "女孩",
+          "pinyin": "nǚ hái"
+        },
+        {
+          "text": "女儿",
+          "pinyin": "nǚ ér"
+        }
+      ],
+      "spokenText": "女孩。女儿。"
+    },
+    "lí": {
+      "id": "daily-example-li2",
+      "examples": [
+        {
+          "text": "梨子",
+          "pinyin": "lí zi"
+        },
+        {
+          "text": "分离",
+          "pinyin": "fēn lí"
+        }
+      ],
+      "spokenText": "梨子。分离。"
+    },
+    "tǐ": {
+      "id": "daily-example-ti3",
+      "examples": [
+        {
+          "text": "身体",
+          "pinyin": "shēn tǐ"
+        },
+        {
+          "text": "体操",
+          "pinyin": "tǐ cāo"
+        }
+      ],
+      "spokenText": "身体。体操。"
+    },
+    "dé": {
+      "id": "daily-example-de2",
+      "examples": [
+        {
+          "text": "得到",
+          "pinyin": "dé dào"
+        },
+        {
+          "text": "获得",
+          "pinyin": "huò dé"
+        }
+      ],
+      "spokenText": "得到。获得。"
+    },
+    "dā": {
+      "id": "daily-example-da1",
+      "examples": [
+        {
+          "text": "搭车",
+          "pinyin": "dā chē"
+        },
+        {
+          "text": "搭积木",
+          "pinyin": "dā jī mù"
+        }
+      ],
+      "spokenText": "搭车。搭积木。"
+    },
+    "dí": {
+      "id": "daily-example-di2",
+      "examples": [
+        {
+          "text": "笛子",
+          "pinyin": "dí zi"
+        },
+        {
+          "text": "敌人",
+          "pinyin": "dí rén"
+        }
+      ],
+      "spokenText": "笛子。敌人。"
+    },
+    "dá": {
+      "id": "daily-example-da2",
+      "examples": [
+        {
+          "text": "回答",
+          "pinyin": "huí dá"
+        },
+        {
+          "text": "到达",
+          "pinyin": "dào dá"
+        }
+      ],
+      "spokenText": "回答。到达。"
+    },
+    "dī": {
+      "id": "daily-example-di1",
+      "examples": [
+        {
+          "text": "水滴",
+          "pinyin": "shuǐ dī"
+        },
+        {
+          "text": "低头",
+          "pinyin": "dī tóu"
+        }
+      ],
+      "spokenText": "水滴。低头。"
+    },
+    "dū": {
+      "id": "daily-example-du1",
+      "examples": [
+        {
+          "text": "首都",
+          "pinyin": "shǒu dū"
+        },
+        {
+          "text": "都市",
+          "pinyin": "dū shì"
+        }
+      ],
+      "spokenText": "首都。都市。"
+    },
+    "tè": {
+      "id": "daily-example-te4",
+      "examples": [
+        {
+          "text": "特别",
+          "pinyin": "tè bié"
+        },
+        {
+          "text": "特长",
+          "pinyin": "tè cháng"
+        }
+      ],
+      "spokenText": "特别。特长。"
+    },
+    "tǎ": {
+      "id": "daily-example-ta3",
+      "examples": [
+        {
+          "text": "宝塔",
+          "pinyin": "bǎo tǎ"
+        },
+        {
+          "text": "塔楼",
+          "pinyin": "tǎ lóu"
+        }
+      ],
+      "spokenText": "宝塔。塔楼。"
+    },
+    "nǔ": {
+      "id": "daily-example-nu3",
+      "examples": [
+        {
+          "text": "努力",
+          "pinyin": "nǔ lì"
+        }
+      ],
+      "spokenText": "努力。"
+    },
+    "ní": {
+      "id": "daily-example-ni2",
+      "examples": [
+        {
+          "text": "泥土",
+          "pinyin": "ní tǔ"
+        },
+        {
+          "text": "水泥",
+          "pinyin": "shuǐ ní"
+        }
+      ],
+      "spokenText": "泥土。水泥。"
+    },
+    "lā": {
+      "id": "daily-example-la1",
+      "examples": [
+        {
+          "text": "拉手",
+          "pinyin": "lā shǒu"
+        },
+        {
+          "text": "拉车",
+          "pinyin": "lā chē"
+        }
+      ],
+      "spokenText": "拉手。拉车。"
+    },
+    "lè": {
+      "id": "daily-example-le4",
+      "examples": [
+        {
+          "text": "快乐",
+          "pinyin": "kuài lè"
+        },
+        {
+          "text": "乐园",
+          "pinyin": "lè yuán"
+        }
+      ],
+      "spokenText": "快乐。乐园。"
+    },
+    "gē": {
+      "id": "daily-example-ge1",
+      "examples": [
+        {
+          "text": "哥哥",
+          "pinyin": "gē gē"
+        },
+        {
+          "text": "唱歌",
+          "pinyin": "chàng gē"
+        }
+      ],
+      "spokenText": "哥哥。唱歌。"
+    },
+    "gù": {
+      "id": "daily-example-gu4",
+      "examples": [
+        {
+          "text": "故事",
+          "pinyin": "gù shì"
+        },
+        {
+          "text": "照顾",
+          "pinyin": "zhào gù"
+        }
+      ],
+      "spokenText": "故事。照顾。"
+    },
+    "kē": {
+      "id": "daily-example-ke1",
+      "examples": [
+        {
+          "text": "科学",
+          "pinyin": "kē xué"
+        },
+        {
+          "text": "一颗星",
+          "pinyin": "yī kē xīng"
+        }
+      ],
+      "spokenText": "科学。一颗星。"
+    },
+    "kù": {
+      "id": "daily-example-ku4",
+      "examples": [
+        {
+          "text": "裤子",
+          "pinyin": "kù zi"
+        },
+        {
+          "text": "仓库",
+          "pinyin": "cāng kù"
+        }
+      ],
+      "spokenText": "裤子。仓库。"
+    },
+    "kǎ": {
+      "id": "daily-example-ka3",
+      "examples": [
+        {
+          "text": "卡片",
+          "pinyin": "kǎ piàn"
+        },
+        {
+          "text": "贺卡",
+          "pinyin": "hè kǎ"
+        }
+      ],
+      "spokenText": "卡片。贺卡。"
+    },
+    "hā": {
+      "id": "daily-example-ha1",
+      "examples": [
+        {
+          "text": "哈哈笑",
+          "pinyin": "hā hā xiào"
+        }
+      ],
+      "spokenText": "哈哈笑。"
+    },
+    "hé": {
+      "id": "daily-example-he2",
+      "examples": [
+        {
+          "text": "河水",
+          "pinyin": "hé shuǐ"
+        },
+        {
+          "text": "盒子",
+          "pinyin": "hé zi"
+        }
+      ],
+      "spokenText": "河水。盒子。"
+    },
+    "hú": {
+      "id": "daily-example-hu2",
+      "examples": [
+        {
+          "text": "湖水",
+          "pinyin": "hú shuǐ"
+        },
+        {
+          "text": "水壶",
+          "pinyin": "shuǐ hú"
+        }
+      ],
+      "spokenText": "湖水。水壶。"
+    },
+    "gé": {
+      "id": "daily-example-ge2",
+      "examples": [
+        {
+          "text": "格子",
+          "pinyin": "gé zi"
+        },
+        {
+          "text": "格外",
+          "pinyin": "gé wài"
+        }
+      ],
+      "spokenText": "格子。格外。"
+    },
+    "gǔ": {
+      "id": "daily-example-gu3",
+      "examples": [
+        {
+          "text": "鼓声",
+          "pinyin": "gǔ shēng"
+        },
+        {
+          "text": "山谷",
+          "pinyin": "shān gǔ"
+        }
+      ],
+      "spokenText": "鼓声。山谷。"
+    },
+    "ké": {
+      "id": "daily-example-ke2",
+      "examples": [
+        {
+          "text": "咳嗽",
+          "pinyin": "ké sòu"
+        }
+      ],
+      "spokenText": "咳嗽。"
+    },
+    "kǔ": {
+      "id": "daily-example-ku3",
+      "examples": [
+        {
+          "text": "苦瓜",
+          "pinyin": "kǔ guā"
+        },
+        {
+          "text": "辛苦",
+          "pinyin": "xīn kǔ"
+        }
+      ],
+      "spokenText": "苦瓜。辛苦。"
+    },
+    "hē": {
+      "id": "daily-example-he1",
+      "examples": [
+        {
+          "text": "喝水",
+          "pinyin": "hē shuǐ"
+        },
+        {
+          "text": "喝茶",
+          "pinyin": "hē chá"
+        }
+      ],
+      "spokenText": "喝水。喝茶。"
+    },
+    "hù": {
+      "id": "daily-example-hu4",
+      "examples": [
+        {
+          "text": "保护",
+          "pinyin": "bǎo hù"
+        },
+        {
+          "text": "门户",
+          "pinyin": "mén hù"
+        }
+      ],
+      "spokenText": "保护。门户。"
+    },
+    "gè": {
+      "id": "daily-example-ge4",
+      "examples": [
+        {
+          "text": "个子",
+          "pinyin": "gè zi"
+        },
+        {
+          "text": "个人",
+          "pinyin": "gè rén"
+        }
+      ],
+      "spokenText": "个子。个人。"
+    },
+    "kě": {
+      "id": "daily-example-ke3",
+      "examples": [
+        {
+          "text": "可以",
+          "pinyin": "kě yǐ"
+        },
+        {
+          "text": "口渴",
+          "pinyin": "kǒu kě"
+        }
+      ],
+      "spokenText": "可以。口渴。"
+    },
+    "hè": {
+      "id": "daily-example-he4",
+      "examples": [
+        {
+          "text": "贺卡",
+          "pinyin": "hè kǎ"
+        },
+        {
+          "text": "祝贺",
+          "pinyin": "zhù hè"
+        }
+      ],
+      "spokenText": "贺卡。祝贺。"
+    },
+    "hǔ": {
+      "id": "daily-example-hu3",
+      "examples": [
+        {
+          "text": "老虎",
+          "pinyin": "lǎo hǔ"
+        },
+        {
+          "text": "壁虎",
+          "pinyin": "bì hǔ"
+        }
+      ],
+      "spokenText": "老虎。壁虎。"
+    },
+    "kè": {
+      "id": "daily-example-ke4",
+      "examples": [
+        {
+          "text": "上课",
+          "pinyin": "shàng kè"
+        },
+        {
+          "text": "客人",
+          "pinyin": "kè rén"
+        }
+      ],
+      "spokenText": "上课。客人。"
+    },
+    "gū": {
+      "id": "daily-example-gu1",
+      "examples": [
+        {
+          "text": "姑姑",
+          "pinyin": "gū gū"
+        },
+        {
+          "text": "蘑菇",
+          "pinyin": "mó gū"
+        }
+      ],
+      "spokenText": "姑姑。蘑菇。"
+    },
+    "há": {
+      "id": "daily-example-ha2",
+      "examples": [
+        {
+          "text": "蛤蟆",
+          "pinyin": "há ma"
+        }
+      ],
+      "spokenText": "蛤蟆。"
+    },
+    "kū": {
+      "id": "daily-example-ku1",
+      "examples": [
+        {
+          "text": "哭泣",
+          "pinyin": "kū qì"
+        },
+        {
+          "text": "哭声",
+          "pinyin": "kū shēng"
+        }
+      ],
+      "spokenText": "哭泣。哭声。"
+    },
+    "hū": {
+      "id": "daily-example-hu1",
+      "examples": [
+        {
+          "text": "呼吸",
+          "pinyin": "hū xī"
+        },
+        {
+          "text": "呼喊",
+          "pinyin": "hū hǎn"
+        }
+      ],
+      "spokenText": "呼吸。呼喊。"
+    },
+    "gà": {
+      "id": "daily-example-ga4",
+      "examples": [
+        {
+          "text": "尴尬",
+          "pinyin": "gān gà"
+        }
+      ],
+      "spokenText": "尴尬。"
+    },
+    "guā": {
+      "id": "daily-example-gua1",
+      "examples": [
+        {
+          "text": "西瓜",
+          "pinyin": "xī guā"
+        },
+        {
+          "text": "南瓜",
+          "pinyin": "nán guā"
+        }
+      ],
+      "spokenText": "西瓜。南瓜。"
+    },
+    "kuā": {
+      "id": "daily-example-kua1",
+      "examples": [
+        {
+          "text": "夸奖",
+          "pinyin": "kuā jiǎng"
+        }
+      ],
+      "spokenText": "夸奖。"
+    },
+    "huà": {
+      "id": "daily-example-hua4",
+      "examples": [
+        {
+          "text": "画画",
+          "pinyin": "huà huà"
+        },
+        {
+          "text": "电话",
+          "pinyin": "diàn huà"
+        }
+      ],
+      "spokenText": "画画。电话。"
+    },
+    "guó": {
+      "id": "daily-example-guo2",
+      "examples": [
+        {
+          "text": "中国",
+          "pinyin": "zhōng guó"
+        },
+        {
+          "text": "国旗",
+          "pinyin": "guó qí"
+        }
+      ],
+      "spokenText": "中国。国旗。"
+    },
+    "kuò": {
+      "id": "daily-example-kuo4",
+      "examples": [
+        {
+          "text": "宽阔",
+          "pinyin": "kuān kuò"
+        },
+        {
+          "text": "扩大",
+          "pinyin": "kuò dà"
+        }
+      ],
+      "spokenText": "宽阔。扩大。"
+    },
+    "huǒ": {
+      "id": "daily-example-huo3",
+      "examples": [
+        {
+          "text": "火车",
+          "pinyin": "huǒ chē"
+        },
+        {
+          "text": "火花",
+          "pinyin": "huǒ huā"
+        }
+      ],
+      "spokenText": "火车。火花。"
+    },
+    "guà": {
+      "id": "daily-example-gua4",
+      "examples": [
+        {
+          "text": "挂钟",
+          "pinyin": "guà zhōng"
+        },
+        {
+          "text": "挂面",
+          "pinyin": "guà miàn"
+        }
+      ],
+      "spokenText": "挂钟。挂面。"
+    },
+    "guō": {
+      "id": "daily-example-guo1",
+      "examples": [
+        {
+          "text": "铁锅",
+          "pinyin": "tiě guō"
+        },
+        {
+          "text": "锅盖",
+          "pinyin": "guō gài"
+        }
+      ],
+      "spokenText": "铁锅。锅盖。"
+    },
+    "huā": {
+      "id": "daily-example-hua1",
+      "examples": [
+        {
+          "text": "花朵",
+          "pinyin": "huā duǒ"
+        },
+        {
+          "text": "花园",
+          "pinyin": "huā yuán"
+        }
+      ],
+      "spokenText": "花朵。花园。"
+    },
+    "guò": {
+      "id": "daily-example-guo4",
+      "examples": [
+        {
+          "text": "过河",
+          "pinyin": "guò hé"
+        },
+        {
+          "text": "过去",
+          "pinyin": "guò qù"
+        }
+      ],
+      "spokenText": "过河。过去。"
+    },
+    "huó": {
+      "id": "daily-example-huo2",
+      "examples": [
+        {
+          "text": "生活",
+          "pinyin": "shēng huó"
+        },
+        {
+          "text": "干活",
+          "pinyin": "gàn huó"
+        }
+      ],
+      "spokenText": "生活。干活。"
+    },
+    "huá": {
+      "id": "daily-example-hua2",
+      "examples": [
+        {
+          "text": "滑梯",
+          "pinyin": "huá tī"
+        },
+        {
+          "text": "划船",
+          "pinyin": "huá chuán"
+        }
+      ],
+      "spokenText": "滑梯。划船。"
+    },
+    "huò": {
+      "id": "daily-example-huo4",
+      "examples": [
+        {
+          "text": "收获",
+          "pinyin": "shōu huò"
+        },
+        {
+          "text": "货车",
+          "pinyin": "huò chē"
+        }
+      ],
+      "spokenText": "收获。货车。"
+    },
+    "guǒ": {
+      "id": "daily-example-guo3",
+      "examples": [
+        {
+          "text": "水果",
+          "pinyin": "shuǐ guǒ"
+        },
+        {
+          "text": "果皮",
+          "pinyin": "guǒ pí"
+        }
+      ],
+      "spokenText": "水果。果皮。"
+    },
+    "jī": {
+      "id": "daily-example-ji1",
+      "examples": [
+        {
+          "text": "小鸡",
+          "pinyin": "xiǎo jī"
+        },
+        {
+          "text": "积木",
+          "pinyin": "jī mù"
+        }
+      ],
+      "spokenText": "小鸡。积木。"
+    },
+    "qù": {
+      "id": "daily-example-qu4",
+      "examples": [
+        {
+          "text": "过去",
+          "pinyin": "guò qù"
+        },
+        {
+          "text": "出去",
+          "pinyin": "chū qù"
+        }
+      ],
+      "spokenText": "过去。出去。"
+    },
+    "xì": {
+      "id": "daily-example-xi4",
+      "examples": [
+        {
+          "text": "游戏",
+          "pinyin": "yóu xì"
+        },
+        {
+          "text": "细心",
+          "pinyin": "xì xīn"
+        }
+      ],
+      "spokenText": "游戏。细心。"
+    },
+    "qì": {
+      "id": "daily-example-qi4",
+      "examples": [
+        {
+          "text": "气球",
+          "pinyin": "qì qiú"
+        },
+        {
+          "text": "空气",
+          "pinyin": "kōng qì"
+        }
+      ],
+      "spokenText": "气球。空气。"
+    },
+    "jù": {
+      "id": "daily-example-ju4",
+      "examples": [
+        {
+          "text": "句子",
+          "pinyin": "jù zi"
+        },
+        {
+          "text": "玩具",
+          "pinyin": "wán jù"
+        }
+      ],
+      "spokenText": "句子。玩具。"
+    },
+    "xí": {
+      "id": "daily-example-xi2",
+      "examples": [
+        {
+          "text": "学习",
+          "pinyin": "xué xí"
+        },
+        {
+          "text": "复习",
+          "pinyin": "fù xí"
+        }
+      ],
+      "spokenText": "学习。复习。"
+    },
+    "xǔ": {
+      "id": "daily-example-xu3",
+      "examples": [
+        {
+          "text": "许多",
+          "pinyin": "xǔ duō"
+        },
+        {
+          "text": "允许",
+          "pinyin": "yǔn xǔ"
+        }
+      ],
+      "spokenText": "许多。允许。"
+    },
+    "qí": {
+      "id": "daily-example-qi2",
+      "examples": [
+        {
+          "text": "国旗",
+          "pinyin": "guó qí"
+        },
+        {
+          "text": "骑车",
+          "pinyin": "qí chē"
+        }
+      ],
+      "spokenText": "国旗。骑车。"
+    },
+    "xī": {
+      "id": "daily-example-xi1",
+      "examples": [
+        {
+          "text": "西瓜",
+          "pinyin": "xī guā"
+        },
+        {
+          "text": "夕阳",
+          "pinyin": "xī yáng"
+        }
+      ],
+      "spokenText": "西瓜。夕阳。"
+    },
+    "jǔ": {
+      "id": "daily-example-ju3",
+      "examples": [
+        {
+          "text": "举手",
+          "pinyin": "jǔ shǒu"
+        },
+        {
+          "text": "举起",
+          "pinyin": "jǔ qǐ"
+        }
+      ],
+      "spokenText": "举手。举起。"
+    },
+    "jū": {
+      "id": "daily-example-ju1",
+      "examples": [
+        {
+          "text": "居住",
+          "pinyin": "jū zhù"
+        },
+        {
+          "text": "邻居",
+          "pinyin": "lín jū"
+        }
+      ],
+      "spokenText": "居住。邻居。"
+    },
+    "xū": {
+      "id": "daily-example-xu1",
+      "examples": [
+        {
+          "text": "需要",
+          "pinyin": "xū yào"
+        },
+        {
+          "text": "虚心",
+          "pinyin": "xū xīn"
+        }
+      ],
+      "spokenText": "需要。虚心。"
+    },
+    "qī": {
+      "id": "daily-example-qi1",
+      "examples": [
+        {
+          "text": "七个",
+          "pinyin": "qī gè"
+        },
+        {
+          "text": "日期",
+          "pinyin": "rì qī"
+        }
+      ],
+      "spokenText": "七个。日期。"
+    },
+    "xǐ": {
+      "id": "daily-example-xi3",
+      "examples": [
+        {
+          "text": "洗手",
+          "pinyin": "xǐ shǒu"
+        },
+        {
+          "text": "喜欢",
+          "pinyin": "xǐ huān"
+        }
+      ],
+      "spokenText": "洗手。喜欢。"
+    },
+    "qǐ": {
+      "id": "daily-example-qi3",
+      "examples": [
+        {
+          "text": "起床",
+          "pinyin": "qǐ chuáng"
+        },
+        {
+          "text": "起飞",
+          "pinyin": "qǐ fēi"
+        }
+      ],
+      "spokenText": "起床。起飞。"
+    },
+    "jǐ": {
+      "id": "daily-example-ji3",
+      "examples": [
+        {
+          "text": "几个",
+          "pinyin": "jǐ gè"
+        },
+        {
+          "text": "自己",
+          "pinyin": "zì jǐ"
+        }
+      ],
+      "spokenText": "几个。自己。"
+    },
+    "qū": {
+      "id": "daily-example-qu1",
+      "examples": [
+        {
+          "text": "弯曲",
+          "pinyin": "wān qū"
+        },
+        {
+          "text": "地区",
+          "pinyin": "dì qū"
+        }
+      ],
+      "spokenText": "弯曲。地区。"
+    },
+    "qú": {
+      "id": "daily-example-qu2",
+      "examples": [
+        {
+          "text": "水渠",
+          "pinyin": "shuǐ qú"
+        },
+        {
+          "text": "渠道",
+          "pinyin": "qú dào"
+        }
+      ],
+      "spokenText": "水渠。渠道。"
+    },
+    "jí": {
+      "id": "daily-example-ji2",
+      "examples": [
+        {
+          "text": "集合",
+          "pinyin": "jí hé"
+        },
+        {
+          "text": "着急",
+          "pinyin": "zháo jí"
+        }
+      ],
+      "spokenText": "集合。着急。"
+    },
+    "jì": {
+      "id": "daily-example-ji4",
+      "examples": [
+        {
+          "text": "记住",
+          "pinyin": "jì zhù"
+        },
+        {
+          "text": "季节",
+          "pinyin": "jì jié"
+        }
+      ],
+      "spokenText": "记住。季节。"
+    },
+    "xù": {
+      "id": "daily-example-xu4",
+      "examples": [
+        {
+          "text": "顺序",
+          "pinyin": "shùn xù"
+        },
+        {
+          "text": "继续",
+          "pinyin": "jì xù"
+        }
+      ],
+      "spokenText": "顺序。继续。"
+    },
+    "jú": {
+      "id": "daily-example-ju2",
+      "examples": [
+        {
+          "text": "橘子",
+          "pinyin": "jú zi"
+        },
+        {
+          "text": "菊花",
+          "pinyin": "jú huā"
+        }
+      ],
+      "spokenText": "橘子。菊花。"
+    },
+    "jiā": {
+      "id": "daily-example-jia1",
+      "examples": [
+        {
+          "text": "家人",
+          "pinyin": "jiā rén"
+        },
+        {
+          "text": "参加",
+          "pinyin": "cān jiā"
+        }
+      ],
+      "spokenText": "家人。参加。"
+    },
+    "qià": {
+      "id": "daily-example-qia4",
+      "examples": [
+        {
+          "text": "恰好",
+          "pinyin": "qià hǎo"
+        },
+        {
+          "text": "恰巧",
+          "pinyin": "qià qiǎo"
+        }
+      ],
+      "spokenText": "恰好。恰巧。"
+    },
+    "xiā": {
+      "id": "daily-example-xia1",
+      "examples": [
+        {
+          "text": "虾米",
+          "pinyin": "xiā mǐ"
+        },
+        {
+          "text": "龙虾",
+          "pinyin": "lóng xiā"
+        }
+      ],
+      "spokenText": "虾米。龙虾。"
+    },
+    "xià": {
+      "id": "daily-example-xia4",
+      "examples": [
+        {
+          "text": "夏天",
+          "pinyin": "xià tiān"
+        },
+        {
+          "text": "下雨",
+          "pinyin": "xià yǔ"
+        }
+      ],
+      "spokenText": "夏天。下雨。"
+    },
+    "qiǎ": {
+      "id": "daily-example-qia3",
+      "examples": [
+        {
+          "text": "关卡",
+          "pinyin": "guān qiǎ"
+        }
+      ],
+      "spokenText": "关卡。"
+    },
+    "jiǎ": {
+      "id": "daily-example-jia3",
+      "examples": [
+        {
+          "text": "假如",
+          "pinyin": "jiǎ rú"
+        },
+        {
+          "text": "指甲",
+          "pinyin": "zhǐ jiǎ"
+        }
+      ],
+      "spokenText": "假如。指甲。"
+    },
+    "jià": {
+      "id": "daily-example-jia4",
+      "examples": [
+        {
+          "text": "书架",
+          "pinyin": "shū jià"
+        },
+        {
+          "text": "放假",
+          "pinyin": "fàng jià"
+        }
+      ],
+      "spokenText": "书架。放假。"
+    },
+    "zǔ": {
+      "id": "daily-example-zu3",
+      "examples": [
+        {
+          "text": "祖国",
+          "pinyin": "zǔ guó"
+        },
+        {
+          "text": "小组",
+          "pinyin": "xiǎo zǔ"
+        }
+      ],
+      "spokenText": "祖国。小组。"
+    },
+    "cì": {
+      "id": "daily-example-ci4",
+      "examples": [
+        {
+          "text": "一次",
+          "pinyin": "yī cì"
+        },
+        {
+          "text": "刺猬",
+          "pinyin": "cì wèi"
+        }
+      ],
+      "spokenText": "一次。刺猬。"
+    },
+    "zì": {
+      "id": "daily-example-zi4",
+      "examples": [
+        {
+          "text": "写字",
+          "pinyin": "xiě zì"
+        },
+        {
+          "text": "自己",
+          "pinyin": "zì jǐ"
+        }
+      ],
+      "spokenText": "写字。自己。"
+    },
+    "sù": {
+      "id": "daily-example-su4",
+      "examples": [
+        {
+          "text": "速度",
+          "pinyin": "sù dù"
+        },
+        {
+          "text": "住宿",
+          "pinyin": "zhù sù"
+        }
+      ],
+      "spokenText": "速度。住宿。"
+    },
+    "zā": {
+      "id": "daily-example-za1",
+      "examples": [
+        {
+          "text": "包扎",
+          "pinyin": "bāo zā"
+        }
+      ],
+      "spokenText": "包扎。"
+    },
+    "cè": {
+      "id": "daily-example-ce4",
+      "examples": [
+        {
+          "text": "测量",
+          "pinyin": "cè liáng"
+        },
+        {
+          "text": "侧面",
+          "pinyin": "cè miàn"
+        }
+      ],
+      "spokenText": "测量。侧面。"
+    },
+    "zá": {
+      "id": "daily-example-za2",
+      "examples": [
+        {
+          "text": "杂技",
+          "pinyin": "zá jì"
+        },
+        {
+          "text": "杂志",
+          "pinyin": "zá zhì"
+        }
+      ],
+      "spokenText": "杂技。杂志。"
+    },
+    "sǐ": {
+      "id": "daily-example-si3",
+      "examples": [
+        {
+          "text": "生死",
+          "pinyin": "shēng sǐ"
+        }
+      ],
+      "spokenText": "生死。"
+    },
+    "zū": {
+      "id": "daily-example-zu1",
+      "examples": [
+        {
+          "text": "出租",
+          "pinyin": "chū zū"
+        },
+        {
+          "text": "租房",
+          "pinyin": "zū fáng"
+        }
+      ],
+      "spokenText": "出租。租房。"
+    },
+    "cū": {
+      "id": "daily-example-cu1",
+      "examples": [
+        {
+          "text": "粗细",
+          "pinyin": "cū xì"
+        },
+        {
+          "text": "粗心",
+          "pinyin": "cū xīn"
+        }
+      ],
+      "spokenText": "粗细。粗心。"
+    },
+    "zǐ": {
+      "id": "daily-example-zi3",
+      "examples": [
+        {
+          "text": "瓜籽",
+          "pinyin": "guā zǐ"
+        },
+        {
+          "text": "紫色",
+          "pinyin": "zǐ sè"
+        }
+      ],
+      "spokenText": "瓜籽。紫色。"
+    },
+    "cā": {
+      "id": "daily-example-ca1",
+      "examples": [
+        {
+          "text": "擦桌子",
+          "pinyin": "cā zhuō zi"
+        },
+        {
+          "text": "擦手",
+          "pinyin": "cā shǒu"
+        }
+      ],
+      "spokenText": "擦桌子。擦手。"
+    },
+    "sè": {
+      "id": "daily-example-se4",
+      "examples": [
+        {
+          "text": "颜色",
+          "pinyin": "yán sè"
+        },
+        {
+          "text": "色彩",
+          "pinyin": "sè cǎi"
+        }
+      ],
+      "spokenText": "颜色。色彩。"
+    },
+    "sū": {
+      "id": "daily-example-su1",
+      "examples": [
+        {
+          "text": "酥饼",
+          "pinyin": "sū bǐng"
+        },
+        {
+          "text": "酥脆",
+          "pinyin": "sū cuì"
+        }
+      ],
+      "spokenText": "酥饼。酥脆。"
+    },
+    "sú": {
+      "id": "daily-example-su2",
+      "examples": [
+        {
+          "text": "风俗",
+          "pinyin": "fēng sú"
+        },
+        {
+          "text": "习俗",
+          "pinyin": "xí sú"
+        }
+      ],
+      "spokenText": "风俗。习俗。"
+    },
+    "sī": {
+      "id": "daily-example-si1",
+      "examples": [
+        {
+          "text": "丝线",
+          "pinyin": "sī xiàn"
+        },
+        {
+          "text": "吐司",
+          "pinyin": "tǔ sī"
+        }
+      ],
+      "spokenText": "丝线。吐司。"
+    },
+    "cí": {
+      "id": "daily-example-ci2",
+      "examples": [
+        {
+          "text": "词语",
+          "pinyin": "cí yǔ"
+        },
+        {
+          "text": "瓷碗",
+          "pinyin": "cí wǎn"
+        }
+      ],
+      "spokenText": "词语。瓷碗。"
+    },
+    "suǒ": {
+      "id": "daily-example-suo3",
+      "examples": [
+        {
+          "text": "开锁",
+          "pinyin": "kāi suǒ"
+        },
+        {
+          "text": "所以",
+          "pinyin": "suǒ yǐ"
+        }
+      ],
+      "spokenText": "开锁。所以。"
+    },
+    "zuǒ": {
+      "id": "daily-example-zuo3",
+      "examples": [
+        {
+          "text": "左手",
+          "pinyin": "zuǒ shǒu"
+        },
+        {
+          "text": "左边",
+          "pinyin": "zuǒ biān"
+        }
+      ],
+      "spokenText": "左手。左边。"
+    },
+    "zuó": {
+      "id": "daily-example-zuo2",
+      "examples": [
+        {
+          "text": "昨天",
+          "pinyin": "zuó tiān"
+        },
+        {
+          "text": "昨日",
+          "pinyin": "zuó rì"
+        }
+      ],
+      "spokenText": "昨天。昨日。"
+    },
+    "suō": {
+      "id": "daily-example-suo1",
+      "examples": [
+        {
+          "text": "蓑衣",
+          "pinyin": "suō yī"
+        },
+        {
+          "text": "缩小",
+          "pinyin": "suō xiǎo"
+        }
+      ],
+      "spokenText": "蓑衣。缩小。"
+    },
+    "cuò": {
+      "id": "daily-example-cuo4",
+      "examples": [
+        {
+          "text": "错误",
+          "pinyin": "cuò wù"
+        },
+        {
+          "text": "过错",
+          "pinyin": "guò cuò"
+        }
+      ],
+      "spokenText": "错误。过错。"
+    },
+    "cuō": {
+      "id": "daily-example-cuo1",
+      "examples": [
+        {
+          "text": "搓手",
+          "pinyin": "cuō shǒu"
+        },
+        {
+          "text": "搓泥",
+          "pinyin": "cuō ní"
+        }
+      ],
+      "spokenText": "搓手。搓泥。"
+    },
+    "zuò": {
+      "id": "daily-example-zuo4",
+      "examples": [
+        {
+          "text": "坐下",
+          "pinyin": "zuò xià"
+        },
+        {
+          "text": "做事",
+          "pinyin": "zuò shì"
+        }
+      ],
+      "spokenText": "坐下。做事。"
+    },
+    "zhà": {
+      "id": "daily-example-zha4",
+      "examples": [
+        {
+          "text": "炸开",
+          "pinyin": "zhà kāi"
+        },
+        {
+          "text": "爆炸",
+          "pinyin": "bào zhà"
+        }
+      ],
+      "spokenText": "炸开。爆炸。"
+    },
+    "zhé": {
+      "id": "daily-example-zhe2",
+      "examples": [
+        {
+          "text": "折纸",
+          "pinyin": "zhé zhǐ"
+        },
+        {
+          "text": "折叠",
+          "pinyin": "zhé dié"
+        }
+      ],
+      "spokenText": "折纸。折叠。"
+    },
+    "chě": {
+      "id": "daily-example-che3",
+      "examples": [
+        {
+          "text": "拉扯",
+          "pinyin": "lā chě"
+        },
+        {
+          "text": "扯开",
+          "pinyin": "chě kāi"
+        }
+      ],
+      "spokenText": "拉扯。扯开。"
+    },
+    "shā": {
+      "id": "daily-example-sha1",
+      "examples": [
+        {
+          "text": "沙子",
+          "pinyin": "shā zi"
+        },
+        {
+          "text": "沙滩",
+          "pinyin": "shā tān"
+        }
+      ],
+      "spokenText": "沙子。沙滩。"
+    },
+    "zhǔ": {
+      "id": "daily-example-zhu3",
+      "examples": [
+        {
+          "text": "煮饭",
+          "pinyin": "zhǔ fàn"
+        },
+        {
+          "text": "主要",
+          "pinyin": "zhǔ yào"
+        }
+      ],
+      "spokenText": "煮饭。主要。"
+    },
+    "chū": {
+      "id": "daily-example-chu1",
+      "examples": [
+        {
+          "text": "出门",
+          "pinyin": "chū mén"
+        },
+        {
+          "text": "出发",
+          "pinyin": "chū fā"
+        }
+      ],
+      "spokenText": "出门。出发。"
+    },
+    "shé": {
+      "id": "daily-example-she2",
+      "examples": [
+        {
+          "text": "舌头",
+          "pinyin": "shé tou"
+        },
+        {
+          "text": "小蛇",
+          "pinyin": "xiǎo shé"
+        }
+      ],
+      "spokenText": "舌头。小蛇。"
+    },
+    "chà": {
+      "id": "daily-example-cha4",
+      "examples": [
+        {
+          "text": "相差",
+          "pinyin": "xiāng chà"
+        },
+        {
+          "text": "差不多",
+          "pinyin": "chà bu duō"
+        }
+      ],
+      "spokenText": "相差。差不多。"
+    },
+    "shǎ": {
+      "id": "daily-example-sha3",
+      "examples": [
+        {
+          "text": "傻笑",
+          "pinyin": "shǎ xiào"
+        }
+      ],
+      "spokenText": "傻笑。"
+    },
+    "rè": {
+      "id": "daily-example-re4",
+      "examples": [
+        {
+          "text": "热水",
+          "pinyin": "rè shuǐ"
+        },
+        {
+          "text": "热闹",
+          "pinyin": "rè nào"
+        }
+      ],
+      "spokenText": "热水。热闹。"
+    },
+    "shě": {
+      "id": "daily-example-she3",
+      "examples": [
+        {
+          "text": "舍得",
+          "pinyin": "shě de"
+        },
+        {
+          "text": "舍弃",
+          "pinyin": "shě qì"
+        }
+      ],
+      "spokenText": "舍得。舍弃。"
+    },
+    "shǔ": {
+      "id": "daily-example-shu3",
+      "examples": [
+        {
+          "text": "老鼠",
+          "pinyin": "lǎo shǔ"
+        },
+        {
+          "text": "鼠标",
+          "pinyin": "shǔ biāo"
+        }
+      ],
+      "spokenText": "老鼠。鼠标。"
+    },
+    "rì": {
+      "id": "daily-example-ri4",
+      "examples": [
+        {
+          "text": "日出",
+          "pinyin": "rì chū"
+        },
+        {
+          "text": "日期",
+          "pinyin": "rì qī"
+        }
+      ],
+      "spokenText": "日出。日期。"
+    },
+    "rú": {
+      "id": "daily-example-ru2",
+      "examples": [
+        {
+          "text": "如果",
+          "pinyin": "rú guǒ"
+        },
+        {
+          "text": "如今",
+          "pinyin": "rú jīn"
+        }
+      ],
+      "spokenText": "如果。如今。"
+    },
+    "zhuō": {
+      "id": "daily-example-zhuo1",
+      "examples": [
+        {
+          "text": "桌子",
+          "pinyin": "zhuō zi"
+        },
+        {
+          "text": "书桌",
+          "pinyin": "shū zhuō"
+        }
+      ],
+      "spokenText": "桌子。书桌。"
+    },
+    "chuō": {
+      "id": "daily-example-chuo1",
+      "examples": [
+        {
+          "text": "戳一下",
+          "pinyin": "chuō yī xià"
+        }
+      ],
+      "spokenText": "戳一下。"
+    },
+    "shuō": {
+      "id": "daily-example-shuo1",
+      "examples": [
+        {
+          "text": "说话",
+          "pinyin": "shuō huà"
+        },
+        {
+          "text": "说明",
+          "pinyin": "shuō míng"
+        }
+      ],
+      "spokenText": "说话。说明。"
+    },
+    "zhuā": {
+      "id": "daily-example-zhua1",
+      "examples": [
+        {
+          "text": "抓住",
+          "pinyin": "zhuā zhù"
+        },
+        {
+          "text": "抓手",
+          "pinyin": "zhuā shǒu"
+        }
+      ],
+      "spokenText": "抓住。抓手。"
+    },
+    "shuā": {
+      "id": "daily-example-shua1",
+      "examples": [
+        {
+          "text": "刷牙",
+          "pinyin": "shuā yá"
+        },
+        {
+          "text": "刷子",
+          "pinyin": "shuā zi"
+        }
+      ],
+      "spokenText": "刷牙。刷子。"
+    },
+    "ruò": {
+      "id": "daily-example-ruo4",
+      "examples": [
+        {
+          "text": "弱小",
+          "pinyin": "ruò xiǎo"
+        },
+        {
+          "text": "软弱",
+          "pinyin": "ruǎn ruò"
+        }
+      ],
+      "spokenText": "弱小。软弱。"
+    },
+    "yī": {
+      "id": "daily-example-yi1",
+      "examples": [
+        {
+          "text": "衣服",
+          "pinyin": "yī fú"
+        },
+        {
+          "text": "医生",
+          "pinyin": "yī shēng"
+        }
+      ],
+      "spokenText": "衣服。医生。"
+    },
+    "yí": {
+      "id": "daily-example-yi2",
+      "examples": [
+        {
+          "text": "阿姨",
+          "pinyin": "ā yí"
+        },
+        {
+          "text": "移动",
+          "pinyin": "yí dòng"
+        }
+      ],
+      "spokenText": "阿姨。移动。"
+    },
+    "yǐ": {
+      "id": "daily-example-yi3",
+      "examples": [
+        {
+          "text": "椅子",
+          "pinyin": "yǐ zi"
+        },
+        {
+          "text": "蚂蚁",
+          "pinyin": "mǎ yǐ"
+        }
+      ],
+      "spokenText": "椅子。蚂蚁。"
+    },
+    "yì": {
+      "id": "daily-example-yi4",
+      "examples": [
+        {
+          "text": "记忆",
+          "pinyin": "jì yì"
+        },
+        {
+          "text": "益虫",
+          "pinyin": "yì chóng"
+        }
+      ],
+      "spokenText": "记忆。益虫。"
+    },
+    "yú": {
+      "id": "daily-example-yu2",
+      "examples": [
+        {
+          "text": "小鱼",
+          "pinyin": "xiǎo yú"
+        },
+        {
+          "text": "金鱼",
+          "pinyin": "jīn yú"
+        }
+      ],
+      "spokenText": "小鱼。金鱼。"
+    },
+    "wǔ": {
+      "id": "daily-example-wu3",
+      "examples": [
+        {
+          "text": "跳舞",
+          "pinyin": "tiào wǔ"
+        },
+        {
+          "text": "五个",
+          "pinyin": "wǔ gè"
+        }
+      ],
+      "spokenText": "跳舞。五个。"
+    },
+    "wū": {
+      "id": "daily-example-wu1",
+      "examples": [
+        {
+          "text": "乌鸦",
+          "pinyin": "wū yā"
+        },
+        {
+          "text": "房屋",
+          "pinyin": "fáng wū"
+        }
+      ],
+      "spokenText": "乌鸦。房屋。"
+    },
+    "wú": {
+      "id": "daily-example-wu2",
+      "examples": [
+        {
+          "text": "无数",
+          "pinyin": "wú shù"
+        },
+        {
+          "text": "梧桐",
+          "pinyin": "wú tóng"
+        }
+      ],
+      "spokenText": "无数。梧桐。"
+    },
+    "wù": {
+      "id": "daily-example-wu4",
+      "examples": [
+        {
+          "text": "雾气",
+          "pinyin": "wù qì"
+        },
+        {
+          "text": "物品",
+          "pinyin": "wù pǐn"
+        }
+      ],
+      "spokenText": "雾气。物品。"
+    },
+    "yǔ": {
+      "id": "daily-example-yu3",
+      "examples": [
+        {
+          "text": "下雨",
+          "pinyin": "xià yǔ"
+        },
+        {
+          "text": "语文",
+          "pinyin": "yǔ wén"
+        }
+      ],
+      "spokenText": "下雨。语文。"
+    },
+    "yū": {
+      "id": "daily-example-yu1",
+      "examples": [
+        {
+          "text": "淤泥",
+          "pinyin": "yū ní"
+        },
+        {
+          "text": "淤积",
+          "pinyin": "yū jī"
+        }
+      ],
+      "spokenText": "淤泥。淤积。"
+    },
+    "yù": {
+      "id": "daily-example-yu4",
+      "examples": [
+        {
+          "text": "玉米",
+          "pinyin": "yù mǐ"
+        },
+        {
+          "text": "体育",
+          "pinyin": "tǐ yù"
+        }
+      ],
+      "spokenText": "玉米。体育。"
+    },
+    "bái": {
+      "id": "daily-example-bai2",
+      "examples": [
+        {
+          "text": "白云",
+          "pinyin": "bái yún"
+        },
+        {
+          "text": "白菜",
+          "pinyin": "bái cài"
+        }
+      ],
+      "spokenText": "白云。白菜。"
+    },
+    "mǎi": {
+      "id": "daily-example-mai3",
+      "examples": [
+        {
+          "text": "买菜",
+          "pinyin": "mǎi cài"
+        },
+        {
+          "text": "购买",
+          "pinyin": "gòu mǎi"
+        }
+      ],
+      "spokenText": "买菜。购买。"
+    },
+    "tái": {
+      "id": "daily-example-tai2",
+      "examples": [
+        {
+          "text": "台灯",
+          "pinyin": "tái dēng"
+        },
+        {
+          "text": "抬头",
+          "pinyin": "tái tóu"
+        }
+      ],
+      "spokenText": "台灯。抬头。"
+    },
+    "lái": {
+      "id": "daily-example-lai2",
+      "examples": [
+        {
+          "text": "过来",
+          "pinyin": "guò lái"
+        },
+        {
+          "text": "未来",
+          "pinyin": "wèi lái"
+        }
+      ],
+      "spokenText": "过来。未来。"
+    },
+    "dài": {
+      "id": "daily-example-dai4",
+      "examples": [
+        {
+          "text": "袋子",
+          "pinyin": "dài zi"
+        },
+        {
+          "text": "口袋",
+          "pinyin": "kǒu dài"
+        }
+      ],
+      "spokenText": "袋子。口袋。"
+    },
+    "nǎi": {
+      "id": "daily-example-nai3",
+      "examples": [
+        {
+          "text": "牛奶",
+          "pinyin": "niú nǎi"
+        },
+        {
+          "text": "奶奶",
+          "pinyin": "nǎi nǎi"
+        }
+      ],
+      "spokenText": "牛奶。奶奶。"
+    },
+    "cài": {
+      "id": "daily-example-cai4",
+      "examples": [
+        {
+          "text": "青菜",
+          "pinyin": "qīng cài"
+        },
+        {
+          "text": "白菜",
+          "pinyin": "bái cài"
+        }
+      ],
+      "spokenText": "青菜。白菜。"
+    },
+    "bēi": {
+      "id": "daily-example-bei1",
+      "examples": [
+        {
+          "text": "杯子",
+          "pinyin": "bēi zi"
+        },
+        {
+          "text": "背包",
+          "pinyin": "bēi bāo"
+        }
+      ],
+      "spokenText": "杯子。背包。"
+    },
+    "péi": {
+      "id": "daily-example-pei2",
+      "examples": [
+        {
+          "text": "陪伴",
+          "pinyin": "péi bàn"
+        },
+        {
+          "text": "培养",
+          "pinyin": "péi yǎng"
+        }
+      ],
+      "spokenText": "陪伴。培养。"
+    },
+    "měi": {
+      "id": "daily-example-mei3",
+      "examples": [
+        {
+          "text": "美丽",
+          "pinyin": "měi lì"
+        },
+        {
+          "text": "美好",
+          "pinyin": "měi hǎo"
+        }
+      ],
+      "spokenText": "美丽。美好。"
+    },
+    "fēi": {
+      "id": "daily-example-fei1",
+      "examples": [
+        {
+          "text": "飞机",
+          "pinyin": "fēi jī"
+        },
+        {
+          "text": "飞鸟",
+          "pinyin": "fēi niǎo"
+        }
+      ],
+      "spokenText": "飞机。飞鸟。"
+    },
+    "gěi": {
+      "id": "daily-example-gei3",
+      "examples": [
+        {
+          "text": "送给",
+          "pinyin": "sòng gěi"
+        },
+        {
+          "text": "交给",
+          "pinyin": "jiāo gěi"
+        }
+      ],
+      "spokenText": "送给。交给。"
+    },
+    "hēi": {
+      "id": "daily-example-hei1",
+      "examples": [
+        {
+          "text": "黑色",
+          "pinyin": "hēi sè"
+        },
+        {
+          "text": "黑板",
+          "pinyin": "hēi bǎn"
+        }
+      ],
+      "spokenText": "黑色。黑板。"
+    },
+    "wèi": {
+      "id": "daily-example-wei4",
+      "examples": [
+        {
+          "text": "味道",
+          "pinyin": "wèi dào"
+        },
+        {
+          "text": "位置",
+          "pinyin": "wèi zhì"
+        }
+      ],
+      "spokenText": "味道。位置。"
+    },
+    "guī": {
+      "id": "daily-example-gui1",
+      "examples": [
+        {
+          "text": "乌龟",
+          "pinyin": "wū guī"
+        },
+        {
+          "text": "归来",
+          "pinyin": "guī lái"
+        }
+      ],
+      "spokenText": "乌龟。归来。"
+    },
+    "kuí": {
+      "id": "daily-example-kui2",
+      "examples": [
+        {
+          "text": "葵花",
+          "pinyin": "kuí huā"
+        },
+        {
+          "text": "向日葵",
+          "pinyin": "xiàng rì kuí"
+        }
+      ],
+      "spokenText": "葵花。向日葵。"
+    },
+    "huí": {
+      "id": "daily-example-hui2",
+      "examples": [
+        {
+          "text": "回家",
+          "pinyin": "huí jiā"
+        },
+        {
+          "text": "回答",
+          "pinyin": "huí dá"
+        }
+      ],
+      "spokenText": "回家。回答。"
+    },
+    "tuǐ": {
+      "id": "daily-example-tui3",
+      "examples": [
+        {
+          "text": "大腿",
+          "pinyin": "dà tuǐ"
+        },
+        {
+          "text": "小腿",
+          "pinyin": "xiǎo tuǐ"
+        }
+      ],
+      "spokenText": "大腿。小腿。"
+    },
+    "zhuī": {
+      "id": "daily-example-zhui1",
+      "examples": [
+        {
+          "text": "追赶",
+          "pinyin": "zhuī gǎn"
+        },
+        {
+          "text": "追求",
+          "pinyin": "zhuī qiú"
+        }
+      ],
+      "spokenText": "追赶。追求。"
+    },
+    "chuī": {
+      "id": "daily-example-chui1",
+      "examples": [
+        {
+          "text": "吹风",
+          "pinyin": "chuī fēng"
+        },
+        {
+          "text": "吹泡泡",
+          "pinyin": "chuī pào pào"
+        }
+      ],
+      "spokenText": "吹风。吹泡泡。"
+    },
+    "shuǐ": {
+      "id": "daily-example-shui3",
+      "examples": [
+        {
+          "text": "水杯",
+          "pinyin": "shuǐ bēi"
+        },
+        {
+          "text": "河水",
+          "pinyin": "hé shuǐ"
+        }
+      ],
+      "spokenText": "水杯。河水。"
+    },
+    "tiáo": {
+      "id": "daily-example-tiao2",
+      "examples": [
+        {
+          "text": "面条",
+          "pinyin": "miàn tiáo"
+        },
+        {
+          "text": "条纹",
+          "pinyin": "tiáo wén"
+        }
+      ],
+      "spokenText": "面条。条纹。"
+    },
+    "bào": {
+      "id": "daily-example-bao4",
+      "examples": [
+        {
+          "text": "抱抱",
+          "pinyin": "bào bào"
+        },
+        {
+          "text": "报纸",
+          "pinyin": "bào zhǐ"
+        }
+      ],
+      "spokenText": "抱抱。报纸。"
+    },
+    "jiǔ": {
+      "id": "daily-example-jiu3",
+      "examples": [
+        {
+          "text": "九个",
+          "pinyin": "jiǔ gè"
+        },
+        {
+          "text": "长久",
+          "pinyin": "cháng jiǔ"
+        }
+      ],
+      "spokenText": "九个。长久。"
+    },
+    "yòu": {
+      "id": "daily-example-you4",
+      "examples": [
+        {
+          "text": "右手",
+          "pinyin": "yòu shǒu"
+        },
+        {
+          "text": "又来",
+          "pinyin": "yòu lái"
+        }
+      ],
+      "spokenText": "右手。又来。"
+    },
+    "liǎo": {
+      "id": "daily-example-liao3",
+      "examples": [
+        {
+          "text": "了解",
+          "pinyin": "liǎo jiě"
+        },
+        {
+          "text": "了不起",
+          "pinyin": "liǎo bù qǐ"
+        }
+      ],
+      "spokenText": "了解。了不起。"
+    },
+    "liú": {
+      "id": "daily-example-liu2",
+      "examples": [
+        {
+          "text": "流水",
+          "pinyin": "liú shuǐ"
+        },
+        {
+          "text": "流动",
+          "pinyin": "liú dòng"
+        }
+      ],
+      "spokenText": "流水。流动。"
+    },
+    "chóu": {
+      "id": "daily-example-chou2",
+      "examples": [
+        {
+          "text": "发愁",
+          "pinyin": "fā chóu"
+        },
+        {
+          "text": "愁眉苦脸",
+          "pinyin": "chóu méi kǔ liǎn"
+        }
+      ],
+      "spokenText": "发愁。愁眉苦脸。"
+    },
+    "hóu": {
+      "id": "daily-example-hou2",
+      "examples": [
+        {
+          "text": "猴子",
+          "pinyin": "hóu zi"
+        },
+        {
+          "text": "猴山",
+          "pinyin": "hóu shān"
+        }
+      ],
+      "spokenText": "猴子。猴山。"
+    },
+    "qiáo": {
+      "id": "daily-example-qiao2",
+      "examples": [
+        {
+          "text": "桥梁",
+          "pinyin": "qiáo liáng"
+        },
+        {
+          "text": "石桥",
+          "pinyin": "shí qiáo"
+        }
+      ],
+      "spokenText": "桥梁。石桥。"
+    },
+    "gǒu": {
+      "id": "daily-example-gou3",
+      "examples": [
+        {
+          "text": "小狗",
+          "pinyin": "xiǎo gǒu"
+        },
+        {
+          "text": "花狗",
+          "pinyin": "huā gǒu"
+        }
+      ],
+      "spokenText": "小狗。花狗。"
+    },
+    "dòu": {
+      "id": "daily-example-dou4",
+      "examples": [
+        {
+          "text": "豆子",
+          "pinyin": "dòu zi"
+        },
+        {
+          "text": "豆角",
+          "pinyin": "dòu jiǎo"
+        }
+      ],
+      "spokenText": "豆子。豆角。"
+    },
+    "xiù": {
+      "id": "daily-example-xiu4",
+      "examples": [
+        {
+          "text": "袖子",
+          "pinyin": "xiù zi"
+        },
+        {
+          "text": "绣花",
+          "pinyin": "xiù huā"
+        }
+      ],
+      "spokenText": "袖子。绣花。"
+    },
+    "lóu": {
+      "id": "daily-example-lou2",
+      "examples": [
+        {
+          "text": "楼房",
+          "pinyin": "lóu fáng"
+        },
+        {
+          "text": "上楼",
+          "pinyin": "shàng lóu"
+        }
+      ],
+      "spokenText": "楼房。上楼。"
+    },
+    "shōu": {
+      "id": "daily-example-shou1",
+      "examples": [
+        {
+          "text": "收拾",
+          "pinyin": "shōu shí"
+        },
+        {
+          "text": "丰收",
+          "pinyin": "fēng shōu"
+        }
+      ],
+      "spokenText": "收拾。丰收。"
+    },
+    "niú": {
+      "id": "daily-example-niu2",
+      "examples": [
+        {
+          "text": "小牛",
+          "pinyin": "xiǎo niú"
+        },
+        {
+          "text": "牛奶",
+          "pinyin": "niú nǎi"
+        }
+      ],
+      "spokenText": "小牛。牛奶。"
+    },
+    "qiú": {
+      "id": "daily-example-qiu2",
+      "examples": [
+        {
+          "text": "皮球",
+          "pinyin": "pí qiú"
+        },
+        {
+          "text": "地球",
+          "pinyin": "dì qiú"
+        }
+      ],
+      "spokenText": "皮球。地球。"
+    },
+    "yē": {
+      "id": "daily-example-ye1",
+      "examples": [
+        {
+          "text": "椰子",
+          "pinyin": "yē zi"
+        },
+        {
+          "text": "椰树",
+          "pinyin": "yē shù"
+        }
+      ],
+      "spokenText": "椰子。椰树。"
+    },
+    "ěr": {
+      "id": "daily-example-er3",
+      "examples": [
+        {
+          "text": "耳朵",
+          "pinyin": "ěr duǒ"
+        },
+        {
+          "text": "耳环",
+          "pinyin": "ěr huán"
+        }
+      ],
+      "spokenText": "耳朵。耳环。"
+    },
+    "yě": {
+      "id": "daily-example-ye3",
+      "examples": [
+        {
+          "text": "野花",
+          "pinyin": "yě huā"
+        },
+        {
+          "text": "野外",
+          "pinyin": "yě wài"
+        }
+      ],
+      "spokenText": "野花。野外。"
+    },
+    "yuē": {
+      "id": "daily-example-yue1",
+      "examples": [
+        {
+          "text": "约定",
+          "pinyin": "yuē dìng"
+        },
+        {
+          "text": "约会",
+          "pinyin": "yuē huì"
+        }
+      ],
+      "spokenText": "约定。约会。"
+    },
+    "nüè": {
+      "id": "daily-example-nve4",
+      "examples": [
+        {
+          "text": "虐待",
+          "pinyin": "nüè dài"
+        }
+      ],
+      "spokenText": "虐待。"
+    },
+    "lüè": {
+      "id": "daily-example-lve4",
+      "examples": [
+        {
+          "text": "略过",
+          "pinyin": "lüè guò"
+        },
+        {
+          "text": "省略",
+          "pinyin": "shěng lüè"
+        }
+      ],
+      "spokenText": "略过。省略。"
+    },
+    "yè": {
+      "id": "daily-example-ye4",
+      "examples": [
+        {
+          "text": "叶子",
+          "pinyin": "yè zi"
+        },
+        {
+          "text": "夜晚",
+          "pinyin": "yè wǎn"
+        }
+      ],
+      "spokenText": "叶子。夜晚。"
+    },
+    "yuè": {
+      "id": "daily-example-yue4",
+      "examples": [
+        {
+          "text": "月亮",
+          "pinyin": "yuè liàng"
+        },
+        {
+          "text": "音乐",
+          "pinyin": "yīn yuè"
+        }
+      ],
+      "spokenText": "月亮。音乐。"
+    },
+    "ér": {
+      "id": "daily-example-er2",
+      "examples": [
+        {
+          "text": "儿童",
+          "pinyin": "ér tóng"
+        },
+        {
+          "text": "儿子",
+          "pinyin": "ér zi"
+        }
+      ],
+      "spokenText": "儿童。儿子。"
+    },
+    "yé": {
+      "id": "daily-example-ye2",
+      "examples": [
+        {
+          "text": "爷爷",
+          "pinyin": "yé yé"
+        }
+      ],
+      "spokenText": "爷爷。"
+    }
+  }
+}

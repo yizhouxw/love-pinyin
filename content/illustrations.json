@@ -98,6 +98,654 @@
       "audioRef": "audio-rt-14-xing1",
       "description": "一颗星星，用五个尖角表示。",
       "prerequisiteKnowledgeIds": ["k-initial-x", "k-final-ing"]
+    },
+    "v2-openmouth": {
+      "name": "张嘴",
+      "pinyin": "a",
+      "lessonId": "lesson-01",
+      "audioRef": "audio-final-a",
+      "description": "张开嘴巴，练习单韵母的口形。",
+      "prerequisiteKnowledgeIds": ["k-final-a", "k-final-o", "k-final-e"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-yawn": {
+      "name": "打哈欠",
+      "pinyin": "a",
+      "lessonId": "lesson-01",
+      "audioRef": "audio-final-a",
+      "description": "小朋友张开嘴打哈欠。",
+      "prerequisiteKnowledgeIds": ["k-final-a", "k-final-o", "k-final-e"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-rooster": {
+      "name": "公鸡",
+      "pinyin": "o",
+      "lessonId": "lesson-01",
+      "audioRef": "audio-final-o",
+      "description": "公鸡伸长脖子叫，是单韵母的记音图。",
+      "prerequisiteKnowledgeIds": ["k-final-a", "k-final-o", "k-final-e"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-roundmouth": {
+      "name": "圆嘴",
+      "pinyin": "o",
+      "lessonId": "lesson-01",
+      "audioRef": "audio-final-o",
+      "description": "小朋友把嘴唇拢圆。",
+      "prerequisiteKnowledgeIds": ["k-final-a", "k-final-o", "k-final-e"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-goose": {
+      "name": "白鹅",
+      "pinyin": "e",
+      "lessonId": "lesson-01",
+      "audioRef": "audio-final-e",
+      "description": "一只白鹅在水边，是单韵母的记音图。",
+      "prerequisiteKnowledgeIds": ["k-final-a", "k-final-o", "k-final-e"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-forehead": {
+      "name": "额头",
+      "pinyin": "e",
+      "lessonId": "lesson-01",
+      "audioRef": "audio-final-e",
+      "description": "小朋友指着自己的额头。",
+      "prerequisiteKnowledgeIds": ["k-final-a", "k-final-o", "k-final-e"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-shirt": {
+      "name": "衣服",
+      "pinyin": "i",
+      "lessonId": "lesson-02",
+      "audioRef": "audio-final-i",
+      "description": "一件衣服，有领口和袖子。",
+      "prerequisiteKnowledgeIds": ["k-final-i", "k-final-u", "k-final-v"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-chair": {
+      "name": "椅子",
+      "pinyin": "i",
+      "lessonId": "lesson-02",
+      "audioRef": "audio-final-i",
+      "description": "一把椅子，可以坐着休息。",
+      "prerequisiteKnowledgeIds": ["k-final-i", "k-final-u", "k-final-v"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-crow": {
+      "name": "乌鸦",
+      "pinyin": "u",
+      "lessonId": "lesson-02",
+      "audioRef": "audio-final-u",
+      "description": "一只黑色的乌鸦，有尖尖的嘴。",
+      "prerequisiteKnowledgeIds": ["k-final-i", "k-final-u", "k-final-v"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-vowelturtle": {
+      "name": "乌龟",
+      "pinyin": "u",
+      "lessonId": "lesson-02",
+      "audioRef": "audio-final-u",
+      "description": "乌龟背着圆圆的壳，慢慢爬。",
+      "prerequisiteKnowledgeIds": ["k-final-i", "k-final-u", "k-final-v"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-vowelfish": {
+      "name": "小鱼",
+      "pinyin": "ü",
+      "lessonId": "lesson-02",
+      "audioRef": "audio-final-v",
+      "description": "小鱼游过来，吐出两个泡泡。",
+      "prerequisiteKnowledgeIds": ["k-final-i", "k-final-u", "k-final-v"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-vowelrain": {
+      "name": "雨天",
+      "pinyin": "ü",
+      "lessonId": "lesson-02",
+      "audioRef": "audio-final-v",
+      "description": "下雨了，撑开雨伞再出门。",
+      "prerequisiteKnowledgeIds": ["k-final-i", "k-final-u", "k-final-v"],
+      "associationNote": "记音图：先听单韵母的声音，完整词语会在后面学习。"
+    },
+    "v2-eight": {
+      "name": "八",
+      "pinyin": "bā",
+      "lessonId": "lesson-03",
+      "audioRef": "daily-ba1",
+      "description": "八块积木，分成两排摆好。",
+      "prerequisiteKnowledgeIds": ["rule-two-part"],
+      "audioKind": "daily"
+    },
+    "v2-horse": {
+      "name": "马",
+      "pinyin": "mǎ",
+      "lessonId": "lesson-03",
+      "audioRef": "daily-ma3",
+      "description": "小马有长脸和两个耳朵。",
+      "prerequisiteKnowledgeIds": ["rule-two-part"],
+      "audioKind": "daily"
+    },
+    "v2-cloth": {
+      "name": "布",
+      "pinyin": "bù",
+      "lessonId": "lesson-03",
+      "audioRef": "daily-bu4",
+      "description": "一块花布，可以用来做衣服。",
+      "prerequisiteKnowledgeIds": ["rule-two-part"],
+      "audioKind": "daily"
+    },
+    "v2-wave": {
+      "name": "波",
+      "pinyin": "bō",
+      "lessonId": "lesson-03",
+      "audioRef": "daily-bo1",
+      "description": "水面起了波浪，浪花向前涌。",
+      "prerequisiteKnowledgeIds": ["rule-two-part"],
+      "audioKind": "daily"
+    },
+    "v2-bus": {
+      "name": "巴士",
+      "pinyin": "bā",
+      "lessonId": "lesson-03",
+      "audioRef": "daily-ba1",
+      "description": "一辆巴士，有车门和窗户，听巴士的巴。",
+      "prerequisiteKnowledgeIds": ["rule-two-part"],
+      "audioKind": "daily"
+    },
+    "v2-rabbit": {
+      "name": "兔",
+      "pinyin": "tù",
+      "lessonId": "lesson-04",
+      "audioRef": "daily-tu4",
+      "description": "白兔竖着两只长耳朵。",
+      "prerequisiteKnowledgeIds": ["rule-confusable-shapes"],
+      "audioKind": "daily"
+    },
+    "v2-deer": {
+      "name": "鹿",
+      "pinyin": "lù",
+      "lessonId": "lesson-04",
+      "audioRef": "daily-lu4",
+      "description": "小鹿头上有分叉的角。",
+      "prerequisiteKnowledgeIds": ["rule-confusable-shapes"],
+      "audioKind": "daily"
+    },
+    "v2-pear": {
+      "name": "梨",
+      "pinyin": "lí",
+      "lessonId": "lesson-04",
+      "audioRef": "daily-li2",
+      "description": "一个黄梨，上面长着一片叶子。",
+      "prerequisiteKnowledgeIds": ["rule-confusable-shapes"],
+      "audioKind": "daily"
+    },
+    "v2-girl": {
+      "name": "女",
+      "pinyin": "nǚ",
+      "lessonId": "lesson-04",
+      "audioRef": "daily-nv3",
+      "description": "一个女孩扎着辫子，面带微笑。",
+      "prerequisiteKnowledgeIds": ["rule-confusable-shapes"],
+      "audioKind": "daily"
+    },
+    "v2-drum": {
+      "name": "打鼓",
+      "pinyin": "dǎ",
+      "lessonId": "lesson-04",
+      "audioRef": "daily-da3",
+      "description": "两根鼓槌正在打鼓，听打鼓的打。",
+      "prerequisiteKnowledgeIds": ["rule-confusable-shapes"],
+      "audioKind": "daily"
+    },
+    "v2-river": {
+      "name": "河",
+      "pinyin": "hé",
+      "lessonId": "lesson-05",
+      "audioRef": "daily-he2",
+      "description": "河水弯弯地流过草地。",
+      "prerequisiteKnowledgeIds": ["rule-three-part"],
+      "audioKind": "daily"
+    },
+    "v2-tiger": {
+      "name": "虎",
+      "pinyin": "hǔ",
+      "lessonId": "lesson-05",
+      "audioRef": "daily-hu3",
+      "description": "老虎脸上有黑色的条纹。",
+      "prerequisiteKnowledgeIds": ["rule-three-part"],
+      "audioKind": "daily"
+    },
+    "v2-pot": {
+      "name": "锅",
+      "pinyin": "guō",
+      "lessonId": "lesson-05",
+      "audioRef": "daily-guo1",
+      "description": "锅里冒出热气，两边有把手。",
+      "prerequisiteKnowledgeIds": ["rule-three-part"],
+      "audioKind": "daily"
+    },
+    "v2-flower": {
+      "name": "花",
+      "pinyin": "huā",
+      "lessonId": "lesson-05",
+      "audioRef": "daily-hua1",
+      "description": "花朵开在绿叶上面。",
+      "prerequisiteKnowledgeIds": ["rule-three-part"],
+      "audioKind": "daily"
+    },
+    "v2-fire": {
+      "name": "火",
+      "pinyin": "huǒ",
+      "lessonId": "lesson-05",
+      "audioRef": "daily-huo3",
+      "description": "一团火焰，外面红，里面黄。",
+      "prerequisiteKnowledgeIds": ["rule-three-part"],
+      "audioKind": "daily"
+    },
+    "v2-seven": {
+      "name": "七",
+      "pinyin": "qī",
+      "lessonId": "lesson-06",
+      "audioRef": "daily-qi1",
+      "description": "七块彩色积木，慢慢数一数。",
+      "prerequisiteKnowledgeIds": ["rule-jqx-v"],
+      "audioKind": "daily"
+    },
+    "v2-flag": {
+      "name": "旗",
+      "pinyin": "qí",
+      "lessonId": "lesson-06",
+      "audioRef": "daily-qi2",
+      "description": "国旗挂在旗杆上，随风飘动。",
+      "prerequisiteKnowledgeIds": ["rule-jqx-v"],
+      "audioKind": "daily"
+    },
+    "v2-orange": {
+      "name": "橘",
+      "pinyin": "jú",
+      "lessonId": "lesson-06",
+      "audioRef": "daily-ju2",
+      "description": "一个橘子，果皮上有许多小点。",
+      "prerequisiteKnowledgeIds": ["rule-jqx-v"],
+      "audioKind": "daily"
+    },
+    "v2-shrimp": {
+      "name": "虾",
+      "pinyin": "xiā",
+      "lessonId": "lesson-06",
+      "audioRef": "daily-xia1",
+      "description": "一只虾，身子弯弯，触须长长。",
+      "prerequisiteKnowledgeIds": ["rule-jqx-v"],
+      "audioKind": "daily"
+    },
+    "v2-wash": {
+      "name": "洗",
+      "pinyin": "xǐ",
+      "lessonId": "lesson-06",
+      "audioRef": "daily-xi3",
+      "description": "打开水龙头，用清水洗手。",
+      "prerequisiteKnowledgeIds": ["rule-jqx-v"],
+      "audioKind": "daily"
+    },
+    "v2-four": {
+      "name": "四",
+      "pinyin": "sì",
+      "lessonId": "lesson-07",
+      "audioRef": "daily-si4",
+      "description": "四块积木，排成一排。",
+      "prerequisiteKnowledgeIds": ["rule-whole-vs-initial"],
+      "audioKind": "daily"
+    },
+    "v2-silk": {
+      "name": "丝",
+      "pinyin": "sī",
+      "lessonId": "lesson-07",
+      "audioRef": "daily-si1",
+      "description": "一团丝线，末端拉出一根细线。",
+      "prerequisiteKnowledgeIds": ["rule-whole-vs-initial"],
+      "audioKind": "daily"
+    },
+    "v2-wipe": {
+      "name": "擦",
+      "pinyin": "cā",
+      "lessonId": "lesson-07",
+      "audioRef": "daily-ca1",
+      "description": "用抹布擦桌子，让桌面干干净净。",
+      "prerequisiteKnowledgeIds": ["rule-whole-vs-initial"],
+      "audioKind": "daily"
+    },
+    "v2-rope": {
+      "name": "粗",
+      "pinyin": "cū",
+      "lessonId": "lesson-07",
+      "audioRef": "daily-cu1",
+      "description": "一根粗绳子，能看见绳子上的纹路。",
+      "prerequisiteKnowledgeIds": ["rule-whole-vs-initial"],
+      "audioKind": "daily"
+    },
+    "v2-lock": {
+      "name": "锁",
+      "pinyin": "suǒ",
+      "lessonId": "lesson-07",
+      "audioRef": "daily-suo3",
+      "description": "一把锁，下面有一个钥匙孔。",
+      "prerequisiteKnowledgeIds": ["rule-whole-vs-initial"],
+      "audioKind": "daily"
+    },
+    "v2-sun": {
+      "name": "日",
+      "pinyin": "rì",
+      "lessonId": "lesson-08",
+      "audioRef": "daily-ri4",
+      "description": "太阳光照向四周，日出后天亮了。",
+      "prerequisiteKnowledgeIds": ["rule-retroflex"],
+      "audioKind": "daily"
+    },
+    "v2-tea": {
+      "name": "茶",
+      "pinyin": "chá",
+      "lessonId": "lesson-08",
+      "audioRef": "daily-cha2",
+      "description": "茶杯里有茶水，上面冒着热气。",
+      "prerequisiteKnowledgeIds": ["rule-retroflex"],
+      "audioKind": "daily"
+    },
+    "v2-sand": {
+      "name": "沙",
+      "pinyin": "shā",
+      "lessonId": "lesson-08",
+      "audioRef": "daily-sha1",
+      "description": "沙地上放着小桶和铲子。",
+      "prerequisiteKnowledgeIds": ["rule-retroflex"],
+      "audioKind": "daily"
+    },
+    "v2-desk": {
+      "name": "桌",
+      "pinyin": "zhuō",
+      "lessonId": "lesson-08",
+      "audioRef": "daily-zhuo1",
+      "description": "书桌上有一本书和一支笔。",
+      "prerequisiteKnowledgeIds": ["rule-retroflex"],
+      "audioKind": "daily"
+    },
+    "v2-book": {
+      "name": "书",
+      "pinyin": "shū",
+      "lessonId": "lesson-08",
+      "audioRef": "daily-shu1",
+      "description": "一本打开的书，两边都是书页。",
+      "prerequisiteKnowledgeIds": ["rule-retroflex"],
+      "audioKind": "daily"
+    },
+    "v2-shirtword": {
+      "name": "衣",
+      "pinyin": "yī",
+      "lessonId": "lesson-09",
+      "audioRef": "daily-yi1",
+      "description": "衣服挂起来，有领口和两只袖子。",
+      "prerequisiteKnowledgeIds": ["rule-yw"],
+      "audioKind": "daily"
+    },
+    "v2-crowword": {
+      "name": "乌",
+      "pinyin": "wū",
+      "lessonId": "lesson-09",
+      "audioRef": "daily-wu1",
+      "description": "乌鸦是一只黑色的鸟，听乌鸦的乌。",
+      "prerequisiteKnowledgeIds": ["rule-yw"],
+      "audioKind": "daily"
+    },
+    "v2-rain": {
+      "name": "雨",
+      "pinyin": "yǔ",
+      "lessonId": "lesson-09",
+      "audioRef": "daily-yu3",
+      "description": "雨点落下来，雨伞挡住了雨。",
+      "prerequisiteKnowledgeIds": ["rule-yw"],
+      "audioKind": "daily"
+    },
+    "v2-jade": {
+      "name": "玉",
+      "pinyin": "yù",
+      "lessonId": "lesson-09",
+      "audioRef": "daily-yu4",
+      "description": "一个绿色的玉环，中间有圆孔。",
+      "prerequisiteKnowledgeIds": ["rule-yw"],
+      "audioKind": "daily"
+    },
+    "v2-tooth": {
+      "name": "牙",
+      "pinyin": "yá",
+      "lessonId": "lesson-09",
+      "audioRef": "daily-ya2",
+      "description": "一颗牙齿，下面有牙根。",
+      "prerequisiteKnowledgeIds": ["rule-yw"],
+      "audioKind": "daily"
+    },
+    "v2-whitecloud": {
+      "name": "白",
+      "pinyin": "bái",
+      "lessonId": "lesson-10",
+      "audioRef": "daily-bai2",
+      "description": "天上飘着一朵白云，听白云的白。",
+      "prerequisiteKnowledgeIds": ["rule-abbreviation"],
+      "audioKind": "daily"
+    },
+    "v2-cabbage": {
+      "name": "菜",
+      "pinyin": "cài",
+      "lessonId": "lesson-10",
+      "audioRef": "daily-cai4",
+      "description": "一棵白菜，叶片围着白色的菜心。",
+      "prerequisiteKnowledgeIds": ["rule-abbreviation"],
+      "audioKind": "daily"
+    },
+    "v2-cup": {
+      "name": "杯",
+      "pinyin": "bēi",
+      "lessonId": "lesson-10",
+      "audioRef": "daily-bei1",
+      "description": "水杯有把手，杯口是圆圆的。",
+      "prerequisiteKnowledgeIds": ["rule-abbreviation"],
+      "audioKind": "daily"
+    },
+    "v2-leg": {
+      "name": "腿",
+      "pinyin": "tuǐ",
+      "lessonId": "lesson-10",
+      "audioRef": "daily-tui3",
+      "description": "一条腿连接着脚，可以站立和走路。",
+      "prerequisiteKnowledgeIds": ["rule-abbreviation"],
+      "audioKind": "daily"
+    },
+    "v2-turtle": {
+      "name": "龟",
+      "pinyin": "guī",
+      "lessonId": "lesson-10",
+      "audioRef": "daily-gui1",
+      "description": "乌龟有四只脚，背上有坚硬的龟壳。",
+      "prerequisiteKnowledgeIds": ["rule-abbreviation"],
+      "audioKind": "daily"
+    },
+    "v2-cow": {
+      "name": "牛",
+      "pinyin": "niú",
+      "lessonId": "lesson-11",
+      "audioRef": "daily-niu2",
+      "description": "一头牛，两边有牛角，鼻子大大的。",
+      "prerequisiteKnowledgeIds": ["rule-iu-ui-tone"],
+      "audioKind": "daily"
+    },
+    "v2-dog": {
+      "name": "狗",
+      "pinyin": "gǒu",
+      "lessonId": "lesson-11",
+      "audioRef": "daily-gou3",
+      "description": "小狗的耳朵垂下来，鼻子黑黑的。",
+      "prerequisiteKnowledgeIds": ["rule-iu-ui-tone"],
+      "audioKind": "daily"
+    },
+    "v2-bridge": {
+      "name": "桥",
+      "pinyin": "qiáo",
+      "lessonId": "lesson-11",
+      "audioRef": "daily-qiao2",
+      "description": "一座桥跨过河，桥上有栏杆。",
+      "prerequisiteKnowledgeIds": ["rule-iu-ui-tone"],
+      "audioKind": "daily"
+    },
+    "v2-bean": {
+      "name": "豆",
+      "pinyin": "dòu",
+      "lessonId": "lesson-11",
+      "audioRef": "daily-dou4",
+      "description": "打开豆荚，里面有几颗圆豆子。",
+      "prerequisiteKnowledgeIds": ["rule-iu-ui-tone"],
+      "audioKind": "daily"
+    },
+    "v2-ball": {
+      "name": "球",
+      "pinyin": "qiú",
+      "lessonId": "lesson-11",
+      "audioRef": "daily-qiu2",
+      "description": "一个皮球，表面有不同颜色的花纹。",
+      "prerequisiteKnowledgeIds": ["rule-iu-ui-tone"],
+      "audioKind": "daily"
+    },
+    "v2-snow": {
+      "name": "雪",
+      "pinyin": "xuě",
+      "lessonId": "lesson-12",
+      "audioRef": "daily-xue3",
+      "description": "一片雪花向六个方向伸展。",
+      "prerequisiteKnowledgeIds": ["rule-er"],
+      "audioKind": "daily"
+    },
+    "v2-leaf": {
+      "name": "叶",
+      "pinyin": "yè",
+      "lessonId": "lesson-12",
+      "audioRef": "daily-ye4",
+      "description": "一片绿叶，上面能看见叶脉。",
+      "prerequisiteKnowledgeIds": ["rule-er"],
+      "audioKind": "daily"
+    },
+    "v2-ear": {
+      "name": "耳",
+      "pinyin": "ěr",
+      "lessonId": "lesson-12",
+      "audioRef": "daily-er3",
+      "description": "一只耳朵，外面有弯弯的耳廓。",
+      "prerequisiteKnowledgeIds": ["rule-er"],
+      "audioKind": "daily"
+    },
+    "v2-coconut": {
+      "name": "椰",
+      "pinyin": "yē",
+      "lessonId": "lesson-12",
+      "audioRef": "daily-ye1",
+      "description": "椰子打开了，里面有白色的果肉。",
+      "prerequisiteKnowledgeIds": ["rule-er"],
+      "audioKind": "daily"
+    },
+    "v2-calendar": {
+      "name": "约",
+      "pinyin": "yuē",
+      "lessonId": "lesson-12",
+      "audioRef": "daily-yue1",
+      "description": "日历上画着记号，提醒我们约好的日子。",
+      "prerequisiteKnowledgeIds": ["rule-er"],
+      "audioKind": "daily"
+    },
+    "v2-cloud": {
+      "name": "云",
+      "pinyin": "yún",
+      "lessonId": "lesson-13",
+      "audioRef": "daily-yun2",
+      "description": "一朵云漂浮在空中，边缘圆圆的。",
+      "prerequisiteKnowledgeIds": ["k-final-an"],
+      "audioKind": "daily"
+    },
+    "v2-forest": {
+      "name": "森",
+      "pinyin": "sēn",
+      "lessonId": "lesson-13",
+      "audioRef": "daily-sen1",
+      "description": "许多树长在一起，组成森林。",
+      "prerequisiteKnowledgeIds": ["k-final-an"],
+      "audioKind": "daily"
+    },
+    "v2-door": {
+      "name": "门",
+      "pinyin": "mén",
+      "lessonId": "lesson-13",
+      "audioRef": "daily-men2",
+      "description": "一扇门，中间有可以转动的门把手。",
+      "prerequisiteKnowledgeIds": ["k-final-an"],
+      "audioKind": "daily"
+    },
+    "v2-silkworm": {
+      "name": "蚕",
+      "pinyin": "cán",
+      "lessonId": "lesson-13",
+      "audioRef": "daily-can2",
+      "description": "蚕趴在桑叶上，身体一节一节的。",
+      "prerequisiteKnowledgeIds": ["k-final-an"],
+      "audioKind": "daily"
+    },
+    "v2-round": {
+      "name": "圆",
+      "pinyin": "yuán",
+      "lessonId": "lesson-13",
+      "audioRef": "daily-yuan2",
+      "description": "一张圆形的纸，边缘没有尖角。",
+      "prerequisiteKnowledgeIds": ["k-final-an"],
+      "audioKind": "daily"
+    },
+    "v2-wind": {
+      "name": "风",
+      "pinyin": "fēng",
+      "lessonId": "lesson-14",
+      "audioRef": "daily-feng1",
+      "description": "风吹过来，吹动了树叶。",
+      "prerequisiteKnowledgeIds": ["rule-front-back-nasal"],
+      "audioKind": "daily"
+    },
+    "v2-lamp": {
+      "name": "灯",
+      "pinyin": "dēng",
+      "lessonId": "lesson-14",
+      "audioRef": "daily-deng1",
+      "description": "一盏台灯，有灯罩、灯杆和底座。",
+      "prerequisiteKnowledgeIds": ["rule-front-back-nasal"],
+      "audioKind": "daily"
+    },
+    "v2-clock": {
+      "name": "钟",
+      "pinyin": "zhōng",
+      "lessonId": "lesson-14",
+      "audioRef": "daily-zhong1",
+      "description": "钟面上有两根指针，告诉我们时间。",
+      "prerequisiteKnowledgeIds": ["rule-front-back-nasal"],
+      "audioKind": "daily"
+    },
+    "v2-eagle": {
+      "name": "鹰",
+      "pinyin": "yīng",
+      "lessonId": "lesson-14",
+      "audioRef": "daily-ying1",
+      "description": "老鹰张开翅膀，有弯弯的尖嘴。",
+      "prerequisiteKnowledgeIds": ["rule-front-back-nasal"],
+      "audioKind": "daily"
+    },
+    "v2-bear": {
+      "name": "熊",
+      "pinyin": "xióng",
+      "lessonId": "lesson-14",
+      "audioRef": "daily-xiong2",
+      "description": "小熊有圆耳朵，鼻子大大的。",
+      "prerequisiteKnowledgeIds": ["rule-front-back-nasal"],
+      "audioKind": "daily"
     }
   },
   "error": "图片还没有加载好，先不要选答案。点圆箭头重试，也可以先跳过，或者回到学习路线。图片没有显示出来，不算你答错。"

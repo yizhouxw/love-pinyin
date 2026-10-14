@@ -11,11 +11,16 @@ const questions = curriculum.exercises.filter(
   (q) => q.pictureId || q.options.some((o) => o.pictureId),
 );
 describe('WORD-01 picture and meaning contracts', () => {
-  it('has twelve authored objects and two different activities per current lesson', () => {
+  it('has six authored pictures per lesson and preserves original question activities', () => {
     expect(validateIllustrations(book, curriculum, narration, svg)).toEqual([]);
-    expect(Object.keys(book.items)).toHaveLength(12);
+    expect(Object.keys(book.items)).toHaveLength(84);
     expect(questions).toHaveLength(24);
+    for (const lesson of curriculum.lessons)
+      expect(Object.values(book.items).filter((item) => item.lessonId === lesson.id)).toHaveLength(
+        6,
+      );
     for (const [id, item] of Object.entries(book.items)) {
+      if (!id.startsWith('v1-')) continue;
       const pair = questions.filter((q) => q.lessonId === item.lessonId);
       expect(pair).toHaveLength(2);
       expect(pair[0].type).toBe('listen-choice');

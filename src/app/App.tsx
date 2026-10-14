@@ -10,6 +10,8 @@ import {
   resolveGuidance,
   saveGuidancePreference,
 } from '../platform/guidance-preference';
+import { PlaybackGapControl } from './playback-gap-control';
+import playback from '../../content/playback.json';
 import { DailyReadingPage } from './daily-reading';
 import { Picture, WordCards } from './illustrations';
 import type { IllustrationCatalog } from '../domain/illustrations';
@@ -26,7 +28,7 @@ type Bootstrap = {
   device?: { label: string; isParent: boolean };
   profile?: {
     roundsSinceBreak?: number;
-    settings?: { reducedMotion?: boolean; soundEnabled?: boolean };
+    settings?: { reducedMotion?: boolean; soundEnabled?: boolean; playbackGapSeconds?: number };
     [key: string]: unknown;
   };
 };
@@ -71,7 +73,7 @@ type Progress = {
   clockSkewDetected?: boolean;
   pendingClockAttempts?: number;
   attemptCount?: number;
-  settings: { reducedMotion: boolean; soundEnabled: boolean };
+  settings: { reducedMotion: boolean; soundEnabled: boolean; playbackGapSeconds?: number };
   mastery: {
     knowledgeId: string;
     status: string;
@@ -1192,6 +1194,7 @@ function LearningApp() {
     return (
       <main className="home-page">
         <DailyReadingPage
+          gapSeconds={progress?.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
           guidanceEnabled={guidanceEnabled}
           onGuidanceChange={changeGuidance}
           onBack={() => {
@@ -1861,6 +1864,23 @@ function GuestPanel({
       >
         应用到访客练习
       </button>
+      <PlaybackGapControl
+        key={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
+        seconds={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
+        disabled={busy}
+        onSave={(playbackGapSeconds) =>
+          void act(async () => {
+            await api('/household/settings', {
+              method: 'PUT',
+              body: JSON.stringify({
+                soundEnabled: progress.settings.soundEnabled !== false,
+                playbackGapSeconds,
+              }),
+            });
+            await refresh();
+          })
+        }
+      />
       <p>减少动态效果</p>
       <ReducedMotionControl
         checked={Boolean(progress.settings.reducedMotion)}
@@ -2078,6 +2098,23 @@ function ParentPanel({
           开启自动朗读
         </label>
       </div>
+      <PlaybackGapControl
+        key={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
+        seconds={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
+        disabled={!isParent || busy}
+        onSave={(playbackGapSeconds) =>
+          void act(async () => {
+            await api('/household/settings', {
+              method: 'PUT',
+              body: JSON.stringify({
+                soundEnabled: progress.settings.soundEnabled !== false,
+                playbackGapSeconds,
+              }),
+            });
+            await refresh();
+          })
+        }
+      />
       <section className="parent-progress" aria-labelledby="parent-progress-title">
         <h3 id="parent-progress-title">按知识点查看进度</h3>
         <p className="parent-progress-note">

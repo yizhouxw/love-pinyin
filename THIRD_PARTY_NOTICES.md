@@ -34,3 +34,5 @@ pypinyin==0.55.0，MIT，官方https://pypi.org/project/pypinyin/0.55.0/ 与 htt
 旧Tingting生成录音未进入Git；现行中文声音由本地Qwen3-TTS-12Hz-1.7B-CustomVoice生成，模型Apache-2.0，官方模型卡https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice；mlx-community的bf16转换、固定revision、逐文件SHA和参数在content/voice-build.json，许可原文在resources/licenses/Qwen3-TTS-Apache-2.0.txt。本项目提供的原创脚本与生成音频可按Apache-2.0使用，课程录音/PDF仍排除。音频不含真实儿童或克隆用户人声。
 
 维护组mlx-audio==0.5.8来自官方PyPI/Blaizzy/mlx-audio（MIT），mlx==0.32.3/mlx-metal==0.32.3（MIT）提供本地Apple Silicon推理；transformers==5.19.0（Apache-2.0）仅加载本地分词器，所有传递依赖精确版本/轮子SHA由uv.lock固定，许可证元数据见Python依赖清单。普通启动不安装或运行TTS维护组，不提交原生库或模型权重。此前Kokoro/sherpa-onnx已从维护组和发布素材移除。
+
+SPEC-012新增Qwen3-ForcedAligner-0.6B，Apache-2.0；官方Qwen/Qwen3-ForcedAligner-0.6B，mlx-community固定8bit转换的revision/SHA在content/reading-alignment-build.json，许可原文resources/licenses/Qwen3-ForcedAligner-Apache-2.0.txt。仅维护时本地对齐原创脚本与合成示范，输出time轴不含儿童声音/信息；权重不入Git，不作为儿童发音评测器。72张新增SVG为项目原创MIT资产，不使用外部插图、平台emoji或教材扫描。

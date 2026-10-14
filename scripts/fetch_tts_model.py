@@ -1,5 +1,6 @@
 """Explicitly install pinned Qwen3-TTS files for maintainers, not audio playback."""
 
+import argparse
 import hashlib
 import json
 import shutil
@@ -20,9 +21,9 @@ def verify_files(model: Path, config: dict):
                 raise ValueError(f"TTS model digest mismatch: {name}")
 
 
-def install():
-    config = json.loads((ROOT / "content" / "voice-build.json").read_text())
-    destination = ROOT / "models" / "qwen3-tts"
+def install(config_path: Path | None = None, destination: Path | None = None):
+    config = json.loads((config_path or ROOT / "content" / "voice-build.json").read_text())
+    destination = destination or ROOT / "models" / "qwen3-tts"
     model = destination / config["directory"]
     if model.is_dir():
         verify_files(model, config)
@@ -68,4 +69,8 @@ def install():
 
 
 if __name__ == "__main__":
-    print(install())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", type=Path)
+    parser.add_argument("--model-dir", type=Path)
+    args = parser.parse_args()
+    print(install(args.config, args.model_dir))

@@ -19,7 +19,7 @@ test('VOICE-09: Qwen Chinese voices all decode through the real local API', asyn
     }[];
   };
   const narration = manifest.assets.filter((asset) => asset.purpose === 'chinese-instruction');
-  expect(narration).toHaveLength(1270);
+  expect(narration).toHaveLength(1556);
   expect(narration.every((asset) => asset.sourceType === 'local-open-tts')).toBe(true);
   expect(narration.every((asset) => asset.voice === 'Qwen3-TTS-12Hz-1.7B-CustomVoice')).toBe(true);
   expect(narration.every((asset) => asset.speaker === 'Serena')).toBe(true);
@@ -27,7 +27,7 @@ test('VOICE-09: Qwen Chinese voices all decode through the real local API', asyn
     narration.every((asset) => asset.modelRevision === '52f4770fd9726457eae3d3b6aa92047a25a10776'),
   ).toBe(true);
   const ids = [...new Map(narration.map((asset) => [asset.file, asset.id])).values()];
-  expect(ids).toHaveLength(436);
+  expect(ids).toHaveLength(722);
   await page.goto(appUrl);
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
   const decoded = await page.evaluate(async (ids) => {
@@ -44,7 +44,7 @@ test('VOICE-09: Qwen Chinese voices all decode through the real local API', asyn
       await context.close();
     }
   }, ids);
-  expect(decoded).toBe(436);
+  expect(decoded).toBe(722);
   const intro = page.waitForResponse(
     (response) => response.url().endsWith('/voice/daily-ui-intro') && response.ok(),
   );

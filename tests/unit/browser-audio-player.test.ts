@@ -100,3 +100,41 @@ describe('BrowserAudioPlayer', () => {
     expect(FakeAudio.instances[0]!.paused).toBe(true);
   });
 });
+
+it('notifies actual playback position only after playing and releases updates on abort', async () => {
+  vi.stubGlobal('Audio', FakeAudio);
+  let frame: FrameRequestCallback | undefined;
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    frame = callback;
+    return 1;
+  });
+  vi.stubGlobal('cancelAnimationFrame', () => {
+    frame = undefined;
+  });
+  const player = new BrowserAudioPlayer();
+  const controller = new AbortController();
+  const started = vi.fn();
+  const times: number[] = [];
+  const result = player.playPrivate('daily-word-example', controller.signal, {
+    onStart: started,
+    onTime: (time) => times.push(time),
+  });
+  const rejected = expect(result).rejects.toMatchObject({ name: 'AbortError' });
+  const media = FakeAudio.instances[0]! as FakeAudio & { currentTime: number };
+  media.currentTime = 0.3;
+  expect(started).not.toHaveBeenCalled();
+  expect(times).toEqual([]);
+  media.dispatchEvent(new Event('playing'));
+  expect(started).toHaveBeenCalledOnce();
+  expect(times).toEqual([0.3]);
+  media.currentTime = 0.8;
+  const tick = frame!;
+  frame = undefined;
+  tick(0);
+  expect(times).toEqual([0.3, 0.8]);
+  controller.abort();
+  await rejected;
+  expect(frame).toBeUndefined();
+  media.dispatchEvent(new Event('playing'));
+  expect(times).toEqual([0.3, 0.8]);
+});

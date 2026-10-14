@@ -9,7 +9,7 @@ from pathlib import Path
 
 from fastapi import HTTPException
 
-from server import learning_audio, source_audio
+from server import learning_audio, reading_timings, source_audio
 from server.audio_assets import _verified_file, file_audio_response
 
 CONTENT = Path(__file__).resolve().parents[1] / "content" / "daily-reading.json"
@@ -46,6 +46,10 @@ def load() -> dict:
     return data
 
 
+def word_examples() -> dict:
+    return json.loads((CONTENT.parent / "daily-word-examples.json").read_text())["items"]
+
+
 def scripts() -> dict[str, str]:
     data = load()
     result = {f"daily-ui-{key}": text for key, text in data["ui"].items()}
@@ -55,6 +59,7 @@ def scripts() -> dict[str, str]:
             for item in section["items"]:
                 if item["narrationId"]:
                     result[item["narrationId"]] = item["spokenText"]
+    result.update({item["id"]: item["spokenText"] for item in word_examples().values()})
     return result
 
 
@@ -88,11 +93,18 @@ def status() -> dict:
                 ready.add(asset["id"])
         except HTTPException:
             pass
+    examples = word_examples()
     voices = learning_audio.expected_assets()
     manifest = learning_audio.read_manifest()
+    try:
+        timelines = reading_timings.read()
+    except (OSError, ValueError):
+        timelines = {}
     for day in data["days"]:
         for section in day["sections"]:
             for item in section["items"]:
+                if "组词" in section["title"]:
+                    item["wordExample"] = examples[item["display"]]
                 if item["narrationId"]:
                     try:
                         asset_id = item["narrationId"]
@@ -102,6 +114,12 @@ def status() -> dict:
                         handle, size = _verified_file(path, digest)
                         handle.close()
                         item["available"] = size > 0
+                        try:
+                            item["timings"] = reading_timings.checked(
+                                item, manifest[asset_id], timelines.get(asset_id, {})
+                            )
+                        except ValueError:
+                            item["timings"] = []
                     except HTTPException:
                         item["available"] = False
                 else:

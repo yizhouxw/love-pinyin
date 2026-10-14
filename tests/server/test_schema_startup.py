@@ -73,7 +73,7 @@ def test_unknown_schema_stops_real_server_and_compatible_snapshot_recovers(monke
     # This is version-safety fault injection, not a historical-release compatibility claim.
     with closing(sqlite3.connect(database)) as db:
         db.executescript("""
-            INSERT INTO schema_migrations VALUES(6,'2026-10-06');
+            INSERT INTO schema_migrations VALUES(7,'2026-10-06');
             CREATE TABLE future_only(value TEXT NOT NULL);
             INSERT INTO future_only VALUES('private-future-value');
         """)

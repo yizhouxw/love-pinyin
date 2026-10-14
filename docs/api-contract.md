@@ -70,10 +70,12 @@
 
 ## 实际 SQLite 存储
 
-`server/storage.py` 维护迁移1–5及下列表：`schema_migrations`、`household`、`pairing_codes`、`devices`、`exercise_instances`、`attempts`、`request_receipts`、`review_plans`、`sessions`、`skipped_instances`、`assessment_summaries`。家庭设置在household中，没有独立profiles/settings表；assessment_summaries仅为历史兼容，首版不创建发音评测结果。
+`server/storage.py` 维护迁移1–6及下列表：`schema_migrations`、`household`、`pairing_codes`、`devices`、`exercise_instances`、`attempts`、`request_receipts`、`review_plans`、`sessions`、`skipped_instances`、`assessment_summaries`。家庭设置在household中，没有独立profiles/settings表；assessment_summaries仅为历史兼容，首版不创建发音评测结果。
 
 外键、实例唯一约束及事务保证一致性。每日同题去重在写事务内查询，服务端进度可从有效事件重建。未知迁移版本在改journal模式和执行DDL前拒绝，不能自动清库。具体字段与约束以迁移代码为准。
 
 ## 每日跟读（SPEC-008）
 
 GET /api/v1/daily-reading（配对）及/api/v1/guest/daily-reading（访客）返回14份days、sections、items、源页码、逐条available和assessment返回本地识别可用性、mode=asr-syllable-match和toneAssessed=false。item.audioIds对应GET /daily-audio/{asset_id}，支持Range并校验固定归档摘要；未登记/缺失/停用/损坏返回404。item.narrationId通过既有voice端点读取本机中文词句朗读。不接收文件路径、拼音文本或录音。没有专业评分端点；SPEC-009新增POST /daily-reading/{item_id}/recognize及guest对应路径，仅接16kHz单声道PCM16 WAV（最多30秒/960044字节），在Mac内存识别后返回matched/different/uncertain/unavailable、原转写与其拼音。不落盘，配对端点要求CSRF；访客同源检查。
+
+SPEC-012新增`settings.playbackGapSeconds`：数字0.1～5、步长0.1秒，默认1。PUT `/household/settings`可选传入，省略时保留。SQLite迁移6使用整十分之一秒存储；v5备份可选携带此字段，旧备份缺字段恢复为1秒。访客临时备份同样支持。daily-reading的组词条目附`wordExample`（id、examples含text/pinyin、spokenText）；有完整中文音频的条目附`timings`（逐音节start/end秒），仅当音频及中文脚本摘要一致时提供，非儿童读音分析。

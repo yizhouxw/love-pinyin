@@ -11,6 +11,24 @@ export function validateIllustrations(book, curriculum, narration, readSvg) {
   check(chinese.test(book.intro) && chinese.test(book.error), 'pictures Mandarin intro and error');
   const items = book.items ?? {};
   const lessons = new Map(curriculum.lessons.map((l) => [l.id, l]));
+  const daily = JSON.parse(readFileSync('content/daily-reading.json', 'utf8'));
+  const dailyAssets = new Map(daily.assets.map((a) => [a.id, a]));
+  const dailySoundKey = (pinyin) => {
+    let value = pinyin.normalize('NFD');
+    let tone = '';
+    for (const [mark, number] of [
+      ['\u0304', '1'],
+      ['\u0301', '2'],
+      ['\u030c', '3'],
+      ['\u0300', '4'],
+    ]) {
+      if (value.includes(mark)) {
+        value = value.replace(mark, '');
+        tone = number;
+      }
+    }
+    return 'daily-' + value.normalize('NFC').replaceAll('ü', 'v') + tone;
+  };
   const audio = new Map(curriculum.audioRequirements.map((a) => [a.id, a]));
   const knowledge = new Map(curriculum.knowledgeItems.map((k) => [k.id, k]));
   for (const [id, item] of Object.entries(items)) {
@@ -19,8 +37,11 @@ export function validateIllustrations(book, curriculum, narration, readSvg) {
     check(item.pinyin === item.pinyin.normalize('NFC'), `pictures NFC: ${id}`);
     check(lessons.has(item.lessonId), `pictures lesson: ${id}`);
     check(
-      audio.get(item.audioRef)?.kind === 'syllable' &&
-        audio.get(item.audioRef)?.transcript === item.pinyin,
+      item.audioKind === 'daily'
+        ? dailyAssets.has(item.audioRef) && item.audioRef === dailySoundKey(item.pinyin)
+        : ['syllable', ...(lessons.get(item.lessonId)?.order <= 2 ? ['final'] : [])].includes(
+            audio.get(item.audioRef)?.kind,
+          ) && audio.get(item.audioRef)?.transcript === item.pinyin,
       `pictures standard target: ${id}`,
     );
     check(
@@ -63,6 +84,10 @@ export function validateIllustrations(book, curriculum, narration, readSvg) {
         errors.push(`pictures missing SVG: ${id}`);
       }
     }
+  }
+  for (const lesson of curriculum.lessons) {
+    const count = Object.values(items).filter((item) => item.lessonId === lesson.id).length;
+    check(count >= 5 && count <= 8, `pictures lesson coverage: ${lesson.id}`);
   }
   for (const q of curriculum.exercises) {
     const pictures = q.options.filter((o) => o.pictureId);

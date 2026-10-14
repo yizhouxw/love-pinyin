@@ -3,7 +3,7 @@
 import argparse
 import re
 
-from server import daily_reading, learning_audio
+from server import daily_reading, learning_audio, reading_timings
 
 
 def validate(release: bool = False) -> dict:
@@ -15,6 +15,12 @@ def validate(release: bool = False) -> dict:
     items = [i for s in sections for i in s["items"]]
     if len(items) != 840 or len({s["id"] for s in sections}) != len(sections):
         raise ValueError("Daily source coverage changed without a reviewed content update")
+    examples = daily_reading.word_examples()
+    for section in sections:
+        if "组词" in section["title"]:
+            for item in section["items"]:
+                if item["display"] not in examples:
+                    raise ValueError(f"Missing word examples: {item['id']}")
     for item in items:
         if item["missingSyllables"] and not item["narrationId"]:
             raise ValueError(f"No usable demonstration for {item['id']}")
@@ -26,6 +32,13 @@ def validate(release: bool = False) -> dict:
 
         validate_model(MODEL_PATH)
         status = daily_reading.status()
+        timelines = reading_timings.read()
+        manifest = learning_audio.read_manifest()
+        for item in items:
+            if item["narrationId"]:
+                reading_timings.checked(
+                    item, manifest[item["narrationId"]], timelines[item["narrationId"]]
+                )
         missing = [
             i["id"]
             for d in status["days"]

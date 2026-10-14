@@ -1,0 +1,4 @@
+{
+  "version": 1,
+  "gap": { "minSeconds": 0.1, "maxSeconds": 5, "stepSeconds": 0.1, "defaultSeconds": 1 }
+}

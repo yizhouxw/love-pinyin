@@ -34,9 +34,10 @@ def test_migration_adds_motion_and_rest_fields_to_an_existing_household(monkeypa
         "last_observed_at",
         "clock_skew_detected",
     } <= columns
+    assert household["playback_gap_tenths"] == 10
     assert household["reduced_motion"] == 0
     assert household["rounds_since_break"] == 0
-    assert version == 5
+    assert version == 6
     with storage.connect() as db:
         columns = {row["name"] for row in db.execute("PRAGMA table_info(sessions)")}
     assert "review_knowledge_id" in columns
@@ -99,7 +100,7 @@ def test_future_schema_is_rejected_before_any_database_change(monkeypatch, tmp_p
         owner.executescript("""
             CREATE TABLE schema_migrations(version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL);
             INSERT INTO schema_migrations VALUES(1,'2026-01-01');
-            INSERT INTO schema_migrations VALUES(6,'2026-01-01');
+            INSERT INTO schema_migrations VALUES(7,'2026-01-01');
             CREATE TABLE future_records(value TEXT NOT NULL);
             INSERT INTO future_records VALUES('private test household');
         """)

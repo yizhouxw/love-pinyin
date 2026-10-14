@@ -66,3 +66,7 @@ Kokoro-82M-v1.1-zh，Apache-2.0，官方hexgrad模型卡与k2-fsa/sherpa-onnx官
 Kokoro/sherpa-onnx维护依赖已移除；使用[MLX-Audio 0.5.8](https://pypi.org/project/mlx-audio/0.5.8/)（[官方源码](https://github.com/Blaizzy/mlx-audio)，MIT），仅macOS arm64 voice-build组。锁文件固定mlx/metal 0.32.3（Apple MLX，MIT）、transformers 5.19.0（Hugging Face，Apache-2.0）及其全部传递依赖/轮子摘要；实装CPython3.12成功，Metal本地推理生成样例成功。许可元数据见python-dependency-inventory.json，安装包保留原许可。
 
 [Qwen3-TTS-12Hz-1.7B-CustomVoice](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice)采用Apache-2.0；[mlx-community bf16转换](https://huggingface.co/mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-bf16)固定revision52f4770fd9726457eae3d3b6aa92047a25a10776。主权重3833402589字节SHA3a791fb8250fc32ab0259b679d834159d3c8516af62f033ff2b9f42913e3fab6；语音分词器682293092字节SHA836b7b357f5ea43e889936a3709af68dfe3751881acefe4ecf0dbd30ba571258。其余文件SHA/尺寸在content/voice-build.json。固定Serena/Chinese/教学语气，模型仅维护者显式下载，应用无模型推理依赖。无新增npm包、个人声纹、远程音频服务或模型训练。
+
+## SPEC-012 READ-04（2026-10-14）
+
+新增维护阶段[Qwen3-ForcedAligner-0.6B](https://huggingface.co/Qwen/Qwen3-ForcedAligner-0.6B)（Apache-2.0）用于已知中文脚本和预生成示范音频的逐字时间对齐。使用[mlx-community 8bit转换](https://huggingface.co/mlx-community/Qwen3-ForcedAligner-0.6B-8bit)，固定revision0e1a68e91d815300c7c9754b2a7639378b23db15；主权重1271924386字节SHAbe19ef8ac4326d032e7673342930b14c2df30bd68c1632493b0f563e30829f91。全部文件尺寸/SHA固定content/reading-alignment-build.json，许可resources/licenses/Qwen3-ForcedAligner-Apache-2.0.txt。复用已锁定MLX-Audio 0.5.8维护组，未增加npm/uv包；Apple Silicon实际离线加载、42段示范对齐成功。80ms分辨率，短音共用边界时采用锚定起点的40ms高亮窗口，不均分整句总时长。输出时间轴随Git提供，普通服务不下载或加载模型，也不分析儿童录音。

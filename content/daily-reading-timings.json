@@ -1,0 +1,1027 @@
+{
+  "version": 1,
+  "modelRevision": "0e1a68e91d815300c7c9754b2a7639378b23db15",
+  "resolutionSeconds": 0.08,
+  "items": {
+    "daily-word-day-03-s3-i1": {
+      "sha256": "be777e10b0d64ddac48503fa0da1cda7bc2372a1abc104f6e2ace5a93a697a24",
+      "textSha256": "d45ce71dd359d0e71e08dcfc2946f92804659f6141180460e366871c95f0bca9",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 1.04
+        }
+      ]
+    },
+    "daily-word-day-03-s3-i2": {
+      "sha256": "ce62a6d09a82a98cb54b4235c2f503ae7f8ced1aff8c35769f00b789b56002da",
+      "textSha256": "962dee8d181d451a47d6f373e475c2fb5fbd3db84982ed00a98d36b919b05f5f",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.8
+        },
+        {
+          "start": 0.8,
+          "end": 1.92
+        }
+      ]
+    },
+    "daily-word-day-03-s3-i7": {
+      "sha256": "186903233292459f72eb21b0c5e1127421c74fce105d08edd3285c65c45cc858",
+      "textSha256": "062a2931da683a9897c5a0b597113b1e9fd0d5bfb63e2a5d7c88b724f7f55c02",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.96
+        }
+      ]
+    },
+    "daily-word-day-03-s3-i9": {
+      "sha256": "7439b4becf05987b2e77977d29fd248f2468bb692245b73a1bb5751830e0c022",
+      "textSha256": "ed618202665c437e57b2d2d95993c746e8b68e717a606a38efbb54329113917d",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.24
+        },
+        {
+          "start": 0.24,
+          "end": 0.64
+        }
+      ]
+    },
+    "daily-word-day-03-s3-i10": {
+      "sha256": "6a98cbec63fd73c592bc8ee19662072bae2f15976ef3b144753df141af9468e7",
+      "textSha256": "a2c135e7e08908003a3d4de778063b8a7ccee4f259eb05fab9a4ae65ae64cffb",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.16
+        },
+        {
+          "start": 0.16,
+          "end": 0.48
+        }
+      ]
+    },
+    "daily-word-day-04-s4-i3": {
+      "sha256": "ba587701cb266ee75e57d913198091de5dfc0a0badbe18cf8c0f86dfcec795b2",
+      "textSha256": "cf0af76ceb03b3ad85d9591fc6f0f547779e49866b4bce44e9ebe4380bad30d5",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.88
+        }
+      ]
+    },
+    "daily-word-day-04-s4-i11": {
+      "sha256": "9f8c1e816199fdfb108c31c1677e9b3aa4961fbd58a31af0fdc907b352c35dbe",
+      "textSha256": "3a28422f1f71d7f5d30038e3ec6d31a3069baf91d1371ea3fc34bf22fe56cec3",
+      "timings": [
+        {
+          "start": 0.16,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 1.28
+        }
+      ]
+    },
+    "daily-word-day-04-s4-i12": {
+      "sha256": "3b3d478553c6fa31b8bcb388507e37cc049361174cd2545cfbfe96a496cd9fb8",
+      "textSha256": "77a2f6224fc7c2d2f56f9b0090d693b8f64d66e892d4cc2d468aa8ab9a695c29",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.64
+        }
+      ]
+    },
+    "daily-word-day-04-s4-i14": {
+      "sha256": "b022e5f2ac2e7bad2382d793d8544a54853cc79aaa9138c1e57a520bad3b4766",
+      "textSha256": "1cf9f76e181da84d9b149e0bdb717676d5e449501cc858ea3d09386e88d837a4",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.8
+        }
+      ]
+    },
+    "daily-word-day-05-s4-i1": {
+      "sha256": "1649153ebb9fc9c527074e916c87f47a4dcce68e346146e69ad0026fba88f749",
+      "textSha256": "6cf70b7c4fa3c4b4627dc02645cd03d58897b7c85ca5230b14435938e94e2acf",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.24
+        },
+        {
+          "start": 0.24,
+          "end": 0.8
+        }
+      ]
+    },
+    "daily-word-day-05-s4-i2": {
+      "sha256": "ba587701cb266ee75e57d913198091de5dfc0a0badbe18cf8c0f86dfcec795b2",
+      "textSha256": "cf0af76ceb03b3ad85d9591fc6f0f547779e49866b4bce44e9ebe4380bad30d5",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.88
+        }
+      ]
+    },
+    "daily-word-day-05-s5-i1": {
+      "sha256": "7887823607edddd8798d481e5f5fa651a86462549facf2684762aeaa1cc674a2",
+      "textSha256": "dbcd874971ea7bf4cf02c1cdd281032936f71cf91246baf5b36cc5f60aab2bbf",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.16
+        },
+        {
+          "start": 0.16,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 0.8
+        }
+      ]
+    },
+    "daily-word-day-06-s5-i16": {
+      "sha256": "893e2d137d33a7453bca985814e23efac20a6b32bb7024aa9fc5fb44e8bee5e8",
+      "textSha256": "dc863ae7b6223e22219119adf2102082e583c01d6d63c321ba41b51c9c9338df",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.32
+        },
+        {
+          "start": 0.88,
+          "end": 0.96
+        },
+        {
+          "start": 0.96,
+          "end": 1.52
+        }
+      ]
+    },
+    "daily-word-day-06-s6-i1": {
+      "sha256": "f1216a7c3c108c2713e038cbd5a8585a65b780aaa2d5fbb3ad751162e6567883",
+      "textSha256": "67a21db8e1c302c7f8b10496dafe312eeffb2d5fcc2de179ea685d6d285da7f0",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.24
+        },
+        {
+          "start": 0.24,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 0.8
+        },
+        {
+          "start": 0.8,
+          "end": 1.2
+        },
+        {
+          "start": 1.28,
+          "end": 1.44
+        },
+        {
+          "start": 1.44,
+          "end": 1.52
+        },
+        {
+          "start": 1.52,
+          "end": 1.68
+        },
+        {
+          "start": 1.68,
+          "end": 1.84
+        },
+        {
+          "start": 1.84,
+          "end": 2.24
+        }
+      ]
+    },
+    "daily-word-day-06-s6-i2": {
+      "sha256": "312f628b2779dd14b1844eb5cf57dad1b1a91c5cc3b4961ed5adc4f15ac3475d",
+      "textSha256": "3cb181bd2a00b6ba720ccbf9741adbf2f6ef1c0a9d77dcb262d528c1690b53a9",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.24
+        },
+        {
+          "start": 0.24,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 1.12
+        },
+        {
+          "start": 1.36,
+          "end": 1.52
+        },
+        {
+          "start": 1.52,
+          "end": 1.6
+        },
+        {
+          "start": 1.6,
+          "end": 2.0
+        },
+        {
+          "start": 2.0,
+          "end": 2.16
+        },
+        {
+          "start": 2.16,
+          "end": 2.4
+        },
+        {
+          "start": 3.12,
+          "end": 3.36
+        },
+        {
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "start": 3.52,
+          "end": 3.68
+        },
+        {
+          "start": 3.68,
+          "end": 3.84
+        },
+        {
+          "start": 3.84,
+          "end": 4.0
+        },
+        {
+          "start": 4.0,
+          "end": 4.16
+        },
+        {
+          "start": 4.16,
+          "end": 4.4
+        },
+        {
+          "start": 4.4,
+          "end": 4.64
+        }
+      ]
+    },
+    "daily-word-day-07-s5-i6": {
+      "sha256": "28cde6e0ce6eeca745b69dde82d9214d9fe35c8a1cb6cfe4410c2934c5a2715c",
+      "textSha256": "79fc4aeeba8ca1abc0a616361cf0f5a2d4553ec59387ad0238c86c2dca5e964b",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 1.28
+        }
+      ]
+    },
+    "daily-word-day-07-s5-i7": {
+      "sha256": "af9b59c2d89f131a82ddbba58353924a1433fde0cce15c6704ffb7eb7dbe0b68",
+      "textSha256": "6aff5d988eae735a60077c63911934db447d31b89d5badfd347632878732d519",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.88
+        }
+      ]
+    },
+    "daily-word-day-07-s5-i14": {
+      "sha256": "cd05ff829936e2c4eeeac2ab36b4a595d2c2ffa388b36ab700f13c23ac8f0c4d",
+      "textSha256": "a38cb7b8b5d8c7ca5e0148f59c2e584f8182be26d7a7ef1dbdb81948d821a987",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.96
+        },
+        {
+          "start": 0.96,
+          "end": 1.6
+        }
+      ]
+    },
+    "daily-word-day-07-s5-i17": {
+      "sha256": "b625ba16a44de5fc18324356c6854fd4fbf6c1da97cdf2f49e9946a913023e48",
+      "textSha256": "ea3a456491382f60c0d7c307046b3ffd18e75cfa01a9809e102ae3c1942b4829",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 1.2
+        }
+      ]
+    },
+    "daily-word-day-07-s6-i1": {
+      "sha256": "1fbfdb52efc9d991f468bfa07276744a4c79886f38579c3c4a31df1b4667734d",
+      "textSha256": "d44c8c21ee1aa4d937f4b20ccd1077f8cfdd50e20b1f0c4de2d72b004bd1f5e1",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.64
+        },
+        {
+          "start": 1.2,
+          "end": 1.36
+        },
+        {
+          "start": 1.36,
+          "end": 1.52
+        },
+        {
+          "start": 1.52,
+          "end": 1.76
+        },
+        {
+          "start": 1.76,
+          "end": 2.08
+        },
+        {
+          "start": 2.32,
+          "end": 2.48
+        },
+        {
+          "start": 2.48,
+          "end": 2.64
+        },
+        {
+          "start": 2.64,
+          "end": 2.88
+        },
+        {
+          "start": 2.88,
+          "end": 3.2
+        },
+        {
+          "start": 3.2,
+          "end": 3.52
+        },
+        {
+          "start": 4.16,
+          "end": 4.32
+        },
+        {
+          "start": 4.32,
+          "end": 4.4
+        },
+        {
+          "start": 4.4,
+          "end": 4.72
+        },
+        {
+          "start": 4.72,
+          "end": 4.96
+        },
+        {
+          "start": 4.96,
+          "end": 5.2
+        },
+        {
+          "start": 5.52,
+          "end": 5.68
+        },
+        {
+          "start": 5.68,
+          "end": 5.84
+        },
+        {
+          "start": 5.84,
+          "end": 6.08
+        },
+        {
+          "start": 6.08,
+          "end": 6.48
+        },
+        {
+          "start": 6.72,
+          "end": 6.88
+        },
+        {
+          "start": 6.88,
+          "end": 7.04
+        },
+        {
+          "start": 7.04,
+          "end": 7.2
+        },
+        {
+          "start": 7.2,
+          "end": 7.6
+        }
+      ]
+    },
+    "daily-word-day-08-s5-i6": {
+      "sha256": "21ef0c6108b9a067f0ca40a269e9cdd5b81a2ff986634c1ca205b130526f6eb3",
+      "textSha256": "8e3039eac77018f0346235fcf05f9781b45ea91d11530d56afeb1dc4036a6c8f",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.64
+        }
+      ]
+    },
+    "daily-word-day-08-s5-i7": {
+      "sha256": "88406814a53f8a7712d68820fcd5254ae8d60dad97377eb09bb65c15635a07f1",
+      "textSha256": "3e587e9a1742d5b4fe1e5e0bf3265ea4f1c025c43b9da59f86db4bee11148074",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.56
+        }
+      ]
+    },
+    "daily-word-day-08-s5-i8": {
+      "sha256": "7bc9d3aabcd013712af4cdb68a390c4327234bcd3ce14c4c59782e50b6b4ada0",
+      "textSha256": "e7c20034f075c68a78d4be84092ccc847fa677fc5e1fea3c8cd9b29d7d6b3156",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.72
+        },
+        {
+          "start": 0.72,
+          "end": 1.36
+        }
+      ]
+    },
+    "daily-word-day-08-s5-i10": {
+      "sha256": "cb843844e4c303a1ed96b026be41337aadbd0fb59a8153d257ce109d92c972ef",
+      "textSha256": "4cfbc3082a9982cfbfffe4edbf46bd8e95f7f0d9614aaf055facd6b72338ff6b",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 1.36
+        }
+      ]
+    },
+    "daily-word-day-08-s5-i19": {
+      "sha256": "ea4f2c7a91ef461c9cf61f7d81cc764794b80f790477ca96f139793e5161a4bf",
+      "textSha256": "306de547695f668d45baef6ae78381945d71d5ae193f6cec9737780881f3669b",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.8
+        }
+      ]
+    },
+    "daily-word-day-10-s5-i6": {
+      "sha256": "e7003569ac312a486a60d03e2cf0b1901b443dc02ce736c26f6d2f38cbfa36af",
+      "textSha256": "dd663fa55681eed77d0282766da4b249754e3df4f0e06be3c53a251b07599759",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.8
+        }
+      ]
+    },
+    "daily-word-day-10-s5-i9": {
+      "sha256": "470886dad0815ac39c98ee20273b2b46e0faf79a022f9b5d22994d076177884f",
+      "textSha256": "b50dde9bb88540babe4221532384bbfe7228a3c28110a41343c581c8348cc541",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.24
+        },
+        {
+          "start": 0.24,
+          "end": 0.56
+        }
+      ]
+    },
+    "daily-word-day-10-s5-i11": {
+      "sha256": "a45b2f537b1cfcdf60eab7ecb254d0c49ce58233bf6376f40bc144dd2543e9f8",
+      "textSha256": "cbb4c198e88c338da0a433d59c24a7e3185c38cd7a5089dff62d0106975d2276",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.96
+        }
+      ]
+    },
+    "daily-word-day-10-s5-i17": {
+      "sha256": "8ea982bc36bebcf4e76ece9c3e92039a6213fb8a254c2016ffbe3205029b1eb4",
+      "textSha256": "797d828e8c3167e910452521d71d11d40f3c3f68cc0a4d7ee16ff966e40e9af8",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.56,
+          "end": 0.8
+        }
+      ]
+    },
+    "daily-word-day-10-s5-i18": {
+      "sha256": "bcfe1859e22b5049357bfd6ecb853ec550c361950710dfb4885de6af43697bd5",
+      "textSha256": "95f9e8e79208082d83e61a3fa658c3647b2d942be0ab38bf0225170dbfb4f6ab",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 1.04
+        }
+      ]
+    },
+    "daily-word-day-10-s6-i1": {
+      "sha256": "1487f8e06ecd4e06058b4f6bb365f01eba391d69ba2527bdbbfaab8b8ffe0e2b",
+      "textSha256": "2bd1de83937ce00de8ebe22cdec1cf34a0b3a961f9520131ea492654a381d540",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.24
+        },
+        {
+          "start": 0.24,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 0.88
+        },
+        {
+          "start": 0.88,
+          "end": 1.2
+        }
+      ]
+    },
+    "daily-word-day-10-s6-i2": {
+      "sha256": "5911b76492bb8e3bc9903dd8cde2e557524ab979a6253ec25d69c6518c1e62fb",
+      "textSha256": "bdc00f78d21bfdfa46818fb8f459ea579c746dca54caea899ed89bdc7aecd894",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.24
+        },
+        {
+          "start": 0.24,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 0.72
+        },
+        {
+          "start": 0.72,
+          "end": 0.88
+        },
+        {
+          "start": 0.88,
+          "end": 1.2
+        }
+      ]
+    },
+    "daily-word-day-10-s6-i3": {
+      "sha256": "b93c16e758c8816e6d94aa15c98992f30937bf9759adb3c6d3ba7b7dbc90dd22",
+      "textSha256": "3f9a19191e7197478ede5e7148eabe87672c0723f925b9b492afaf1d973ce4d6",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.16
+        },
+        {
+          "start": 0.16,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 0.72
+        },
+        {
+          "start": 0.72,
+          "end": 0.88
+        },
+        {
+          "start": 0.88,
+          "end": 1.04
+        },
+        {
+          "start": 1.04,
+          "end": 1.44
+        }
+      ]
+    },
+    "daily-word-day-10-s6-i4": {
+      "sha256": "94e9c10d82586255cfaad5a6d19c7dbefd6ebd063e83bfc331f99450e232bc73",
+      "textSha256": "8cb8c55d519af6aa5338b3161cc323665ef3a04f5800e7764684d46fff3776a9",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 0.8
+        },
+        {
+          "start": 0.88,
+          "end": 1.12
+        },
+        {
+          "start": 1.12,
+          "end": 1.28
+        },
+        {
+          "start": 1.28,
+          "end": 1.44
+        },
+        {
+          "start": 1.44,
+          "end": 1.6
+        },
+        {
+          "start": 1.6,
+          "end": 2.08
+        }
+      ]
+    },
+    "daily-word-day-11-s5-i13": {
+      "sha256": "6652971a10c6e43a4c205dd76e18720fd60cde4240a602b14925b20dc31869e1",
+      "textSha256": "5ca1fa47766852b19864ea3c038d635f7915948fd3420d655ca02687dba77e44",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.72
+        }
+      ]
+    },
+    "daily-word-day-11-s6-i9": {
+      "sha256": "6c6f1685ab0da924249871916dc5321fa55ffa7bd07e8b83ff2189746936e90f",
+      "textSha256": "0192859750dcdf81a6bf2f2e87ac1bf72ede57e0178fb36f0a0845004aa864ed",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 0.8
+        },
+        {
+          "start": 0.8,
+          "end": 1.04
+        },
+        {
+          "start": 1.04,
+          "end": 1.2
+        },
+        {
+          "start": 1.2,
+          "end": 1.36
+        },
+        {
+          "start": 1.36,
+          "end": 1.52
+        },
+        {
+          "start": 1.52,
+          "end": 1.92
+        }
+      ]
+    },
+    "daily-word-day-11-s6-i10": {
+      "sha256": "c296c51298737fadf8de4ba9a641fd3e276872a1136a6a6df0d9113aaf47ef42",
+      "textSha256": "354a3dcc116e0574e898d225f3100b61bc24925b10ae2698460c6616e40e385f",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.24
+        },
+        {
+          "start": 0.24,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 0.8
+        },
+        {
+          "start": 0.8,
+          "end": 0.96
+        },
+        {
+          "start": 0.96,
+          "end": 1.12
+        },
+        {
+          "start": 1.12,
+          "end": 1.28
+        },
+        {
+          "start": 1.28,
+          "end": 1.52
+        },
+        {
+          "start": 1.52,
+          "end": 1.68
+        },
+        {
+          "start": 1.68,
+          "end": 1.84
+        },
+        {
+          "start": 1.84,
+          "end": 2.24
+        }
+      ]
+    },
+    "daily-word-day-12-s6-i8": {
+      "sha256": "5fffc00aef360e872f37a1872bbad2feefa98cc05f8f3887b0b74565c316ac26",
+      "textSha256": "86d7bf2d358bd82c5d5674d8ce6d91000d14cd8c99823e355b702a3bbee9cd41",
+      "timings": [
+        {
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.8
+        }
+      ]
+    },
+    "daily-word-day-12-s6-i11": {
+      "sha256": "afc4255e2af9403867b8dd24018bc0030fd66d353cc1396d8b7cc0084d54466f",
+      "textSha256": "9231b93fd67f48d7cb959b7928c32787492fe2a15a51c744d39f4ea54657352a",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.56,
+          "end": 0.72
+        }
+      ]
+    },
+    "daily-word-day-12-s7-i8": {
+      "sha256": "eb1c3d268120ea50973d575c9963ffdfb979e30fd67a6ea080e10831295fe6e5",
+      "textSha256": "4b37e4e7635626ae4a196c8589591a31d2e8fda2398eb1a3748a0646968aac65",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 0.88
+        },
+        {
+          "start": 0.88,
+          "end": 1.12
+        },
+        {
+          "start": 1.12,
+          "end": 1.44
+        },
+        {
+          "start": 1.76,
+          "end": 2.0
+        },
+        {
+          "start": 2.0,
+          "end": 2.08
+        },
+        {
+          "start": 2.08,
+          "end": 2.4
+        },
+        {
+          "start": 2.4,
+          "end": 2.56
+        },
+        {
+          "start": 2.56,
+          "end": 2.72
+        },
+        {
+          "start": 2.72,
+          "end": 2.96
+        },
+        {
+          "start": 2.96,
+          "end": 3.36
+        }
+      ]
+    },
+    "daily-word-day-12-s7-i9": {
+      "sha256": "6bfb02c55e10fe8e402d78691857451ba3d28c34a3b2e67642ac380adebf133a",
+      "textSha256": "0aeb32adfd759d974e530845dc197f772d2088caa0bcb8e14949cb381ea0d2c7",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 0.88
+        },
+        {
+          "start": 0.88,
+          "end": 1.04
+        },
+        {
+          "start": 1.04,
+          "end": 1.44
+        },
+        {
+          "start": 1.68,
+          "end": 1.84
+        },
+        {
+          "start": 1.84,
+          "end": 1.92
+        },
+        {
+          "start": 1.92,
+          "end": 2.08
+        },
+        {
+          "start": 2.08,
+          "end": 2.24
+        },
+        {
+          "start": 2.24,
+          "end": 2.4
+        },
+        {
+          "start": 2.4,
+          "end": 2.64
+        },
+        {
+          "start": 2.64,
+          "end": 2.8
+        }
+      ]
+    },
+    "daily-word-day-13-s6-i9": {
+      "sha256": "2b023196309e6b4b3f4a06bcaf95a706f1be760469eef878b70fe7d94342ed2c",
+      "textSha256": "ee9ce792c80d08465d74bc4a810720705051e16e63f61ef9c60e34466a7a3828",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.64
+        }
+      ]
+    }
+  }
+}

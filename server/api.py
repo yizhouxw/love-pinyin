@@ -27,6 +27,7 @@ from server.domain import (
     plan_practice,
 )
 from server.learning_audio import learning_audio_response, learning_audio_status, narration_scripts
+from server.playback_settings import GAP, gap_tenths
 from server.storage import connect, now_iso, public_profile, transaction
 
 router = APIRouter(prefix="/api/v1")
@@ -70,7 +71,7 @@ def _get_device(raw: str | None) -> dict:
     with connect() as db:
         row = db.execute(
             """SELECT d.*,h.id AS profile_id,h.revision,h.content_version,
-                      h.selected_lesson_id,h.sound_enabled,h.reduced_motion,h.rounds_since_break,
+                      h.selected_lesson_id,h.sound_enabled,h.reduced_motion,h.playback_gap_tenths,h.rounds_since_break,
                       h.last_observed_at,h.clock_skew_detected
                FROM devices d JOIN household h ON h.id=d.household_id
                WHERE d.token_hash=? AND d.revoked_at IS NULL""",
@@ -471,6 +472,14 @@ class Settings(BaseModel):
     model_config = ConfigDict(extra="forbid")
     soundEnabled: bool
     reducedMotion: bool | None = None
+    playbackGapSeconds: float | None = Field(
+        default=None,
+        strict=True,
+        ge=GAP["minSeconds"],
+        le=GAP["maxSeconds"],
+        multiple_of=GAP["stepSeconds"],
+        allow_inf_nan=False,
+    )
 
 
 @router.put("/household/settings")
@@ -478,10 +487,15 @@ def settings(body: Settings, device: dict = Depends(parent)) -> dict:
     with transaction() as db:
         db.execute(
             """UPDATE household SET sound_enabled=?,
-               reduced_motion=COALESCE(?,reduced_motion),revision=revision+1 WHERE id=?""",
+               reduced_motion=COALESCE(?,reduced_motion),
+               playback_gap_tenths=COALESCE(?,playback_gap_tenths),
+               revision=revision+1 WHERE id=?""",
             (
                 int(body.soundEnabled),
                 int(body.reducedMotion) if body.reducedMotion is not None else None,
+                gap_tenths(body.playbackGapSeconds)
+                if body.playbackGapSeconds is not None
+                else None,
                 device["household_id"],
             ),
         )
@@ -726,10 +740,21 @@ def _validate_backup(value: object) -> dict:
     settings_value = profile["settings"]
     _require(
         isinstance(settings_value, dict)
-        and set(settings_value) == {"soundEnabled", "reducedMotion"},
+        and set(settings_value)
+        in (
+            {"soundEnabled", "reducedMotion"},
+            {"soundEnabled", "reducedMotion", "playbackGapSeconds"},
+        ),
         "BACKUP_PROFILE_INVALID",
     )
-    _require(all(type(item) is bool for item in settings_value.values()), "BACKUP_PROFILE_INVALID")
+    _require(
+        all(type(settings_value[key]) is bool for key in ("soundEnabled", "reducedMotion")),
+        "BACKUP_PROFILE_INVALID",
+    )
+    try:
+        gap_tenths(settings_value.get("playbackGapSeconds", GAP["defaultSeconds"]))
+    except ValueError:
+        _require(False, "BACKUP_PROFILE_INVALID")
 
     arrays = (
         "attempts",
@@ -1279,11 +1304,15 @@ def import_profile(body: ImportConfirm, device: dict = Depends(parent)) -> dict:
         _restore_backup(db, household_id, device["id"], backup)
         row = db.execute(
             """UPDATE household SET selected_lesson_id=?,sound_enabled=?,reduced_motion=?,
-               rounds_since_break=?,revision=revision+1 WHERE id=? RETURNING *""",
+               playback_gap_tenths=?,rounds_since_break=?,
+               revision=revision+1 WHERE id=? RETURNING *""",
             (
                 backup["profile"]["selectedLessonId"],
                 int(backup["profile"]["settings"]["soundEnabled"]),
                 int(backup["profile"]["settings"]["reducedMotion"]),
+                gap_tenths(
+                    backup["profile"]["settings"].get("playbackGapSeconds", GAP["defaultSeconds"])
+                ),
                 backup["profile"]["roundsSinceBreak"],
                 household_id,
             ),
@@ -1391,8 +1420,9 @@ def reset_profile(body: DeleteData, response: Response, device: dict = Depends(p
         )
         db.execute(
             """UPDATE household SET selected_lesson_id='lesson-01',sound_enabled=1,
-               reduced_motion=0,rounds_since_break=0,revision=revision+1 WHERE id=?""",
-            (household_id,),
+               reduced_motion=0,playback_gap_tenths=?,rounds_since_break=0,
+               revision=revision+1 WHERE id=?""",
+            (round(GAP["defaultSeconds"] * 10), household_id),
         )
     with _import_previews_lock:
         for token, preview in list(_import_previews.items()):
@@ -2101,6 +2131,7 @@ def progress(device: dict = Depends(paired)) -> dict:
         "settings": {
             "soundEnabled": bool(device["sound_enabled"]),
             "reducedMotion": bool(device["reduced_motion"]),
+            "playbackGapSeconds": device["playback_gap_tenths"] / 10,
         },
         "mastery": list(mastery.values()),
         "reviewRecommendations": recommendations,

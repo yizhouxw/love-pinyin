@@ -6,10 +6,11 @@ import curriculum from '../../content/curriculum.json' with { type: 'json' };
 
 test.use({ selectedPinyinSource: true });
 
-test('WORD-01: all twelve real picture cards speak, decode and leave no practice events', async ({
+test('WORD-01: all 84 real picture cards speak, decode and leave no practice events', async ({
   page,
   appUrl,
 }) => {
+  test.setTimeout(300000);
   const external: string[] = [];
   page.on('request', (r) => {
     if (r.url().startsWith('http') && new URL(r.url()).origin !== appUrl) external.push(r.url());
@@ -29,7 +30,10 @@ test('WORD-01: all twelve real picture cards speak, decode and leave no practice
       await page.unroute('**/illustrations/v1-rice.svg*');
       await page.getByRole('button', { name: '↻ 重试图片' }).press('Enter');
     }
-    const card = page.getByRole('region', { name: '生活里的拼音' });
+    const card = page
+      .getByRole('region', { name: '生活里的拼音' })
+      .locator('.word-card')
+      .filter({ has: page.getByRole('img', { name: item.description, exact: true }) });
     const img = card.getByRole('img');
     await expect(img).toHaveAttribute('alt', item.description);
     await expect
@@ -41,7 +45,12 @@ test('WORD-01: all twelve real picture cards speak, decode and leave no practice
     await spoken;
     await expect(card.getByRole('button', { name: '停止听图片说明', exact: true })).toBeVisible();
     const standard = page.waitForResponse(
-      (r) => r.url().endsWith(`/audio/${item.audioRef}`) && r.ok(),
+      (r) =>
+        r
+          .url()
+          .endsWith(
+            `/${'audioKind' in item && item.audioKind === 'daily' ? 'daily-audio' : 'audio'}/${item.audioRef}`,
+          ) && r.ok(),
     );
     await card.getByRole('button', { name: '听这个拼音', exact: true }).click();
     await standard;

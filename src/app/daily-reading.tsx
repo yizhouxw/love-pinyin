@@ -6,11 +6,12 @@ import type {
   DailySection,
   ReadingMark,
 } from '../domain/daily-reading';
-import { sectionSummary } from '../domain/daily-reading';
+import { highlightedSyllable, sectionSummary } from '../domain/daily-reading';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { BrowserReadingRecorder } from '../platform/audio/browser-reading-recorder';
 import { isGuest } from '../platform/guest';
 import { recognizeReading, type RecognitionResult } from '../platform/audio/reading-recognition';
+import { waitForPlaybackGap } from '../platform/audio/playback-gap';
 import { GuidanceSwitch } from './guidance-switch';
 import recognitionContent from '../../content/reading-recognition.json';
 
@@ -23,10 +24,12 @@ async function readDaily(): Promise<DailyReading> {
 export function DailyReadingPage({
   onBack,
   guidanceEnabled,
+  gapSeconds,
   onGuidanceChange,
 }: {
   onBack: () => void;
   guidanceEnabled: boolean;
+  gapSeconds: number;
   onGuidanceChange: (enabled: boolean) => void;
 }) {
   const [data, setData] = useState<DailyReading | null>(null);
@@ -131,6 +134,7 @@ export function DailyReadingPage({
             <ReadingSession
               key={section.id}
               day={day}
+              gapSeconds={gapSeconds}
               guidanceEnabled={guidanceEnabled}
               onGuidanceChange={onGuidanceChange}
               section={section}
@@ -154,6 +158,7 @@ export function DailyReadingPage({
 function ReadingSession({
   day,
   guidanceEnabled,
+  gapSeconds,
   onGuidanceChange,
   section,
   marks,
@@ -161,6 +166,7 @@ function ReadingSession({
 }: {
   day: DailyDay;
   guidanceEnabled: boolean;
+  gapSeconds: number;
   onGuidanceChange: (enabled: boolean) => void;
   section: DailySection;
   marks: Record<string, ReadingMark>;
@@ -176,6 +182,9 @@ function ReadingSession({
   const [recordError, setRecordError] = useState('');
   const [recordUrl, setRecordUrl] = useState<string | null>(null);
   const [adultOpen, setAdultOpen] = useState(false);
+  const [exampleOpen, setExampleOpen] = useState(false);
+  const [examplesPlaying, setExamplesPlaying] = useState(false);
+  const [exampleFailure, setExampleFailure] = useState(false);
   const [recognizing, setRecognizing] = useState(false);
   const [recognition, setRecognition] = useState<RecognitionResult | null>(null);
   const controller = useRef<AbortController | null>(null);
@@ -190,6 +199,7 @@ function ReadingSession({
     controller.current = null;
     audioPlayer.stop();
     setHighlight(-1);
+    setExamplesPlaying(false);
     setPhase('ready');
     setRecognizing(false);
   }, []);
@@ -240,11 +250,14 @@ function ReadingSession({
       throw new Error('NOT_PREPARED');
     if (target.narrationId) {
       setHighlight(-1);
-      await playPrivate(target.narrationId, signal);
+      await audioPlayer.playPrivate(target.narrationId, signal, {
+        onTime: (seconds) => setHighlight(highlightedSyllable(target.timings ?? [], seconds)),
+      });
     } else {
       for (const [position, id] of target.audioIds.entries()) {
-        setHighlight(position);
-        await audioPlayer.playDaily(id, signal);
+        await audioPlayer.playDaily(id, signal, { onStart: () => setHighlight(position) });
+        setHighlight(-1);
+        if (position < target.audioIds.length - 1) await waitForPlaybackGap(gapSeconds, signal);
       }
     }
     setHighlight(-1);
@@ -261,8 +274,12 @@ function ReadingSession({
       if (all) {
         for (let cursor = startIndex; cursor < section.items.length; cursor += 1) {
           const target = section.items[cursor]!;
+          setExampleOpen(false);
+          setExampleFailure(false);
           setIndex(cursor);
           await demo(target, active.signal);
+          if (cursor < section.items.length - 1)
+            await waitForPlaybackGap(gapSeconds, active.signal);
         }
         setPhase('finished');
         if (guidance.current) await playPrivate('daily-ui-done', active.signal);
@@ -273,6 +290,7 @@ function ReadingSession({
       }
     } catch {
       if (!active.signal.aborted) {
+        setHighlight(-1);
         setFailure('示范声音还没响起来。可以重试；仍然没有声音，请家长检查 Mac 上的每日练习音频。');
         setPhase('ready');
       }
@@ -284,7 +302,30 @@ function ReadingSession({
     clearCapture();
     setFailure('');
     setAdultOpen(false);
+    setExampleOpen(false);
+    setExampleFailure(false);
     setIndex(cursor);
+  }
+  async function playExamples() {
+    if (!item.wordExample) return;
+    stop();
+    setExampleOpen(true);
+    setExampleFailure(false);
+    setExamplesPlaying(true);
+    setPhase('playing');
+    const active = new AbortController();
+    controller.current = active;
+    try {
+      await playPrivate(item.wordExample.id, active.signal);
+    } catch {
+      if (!active.signal.aborted) setExampleFailure(true);
+    } finally {
+      if (controller.current === active) {
+        controller.current = null;
+        setExamplesPlaying(false);
+        setPhase('ready');
+      }
+    }
   }
   function next(mark: boolean) {
     if (mark && !marks[item.id]) onMark(item.id, 'practiced');
@@ -384,7 +425,11 @@ function ReadingSession({
           onClick={() => void play()}
         >
           {item.syllables.map((syllable, position) => (
-            <span key={position} className={highlight === position ? 'daily-highlight' : ''}>
+            <span
+              key={position}
+              className={highlight === position ? 'daily-highlight' : ''}
+              aria-current={highlight === position ? 'true' : undefined}
+            >
               {syllable}
             </span>
           ))}
@@ -395,6 +440,46 @@ function ReadingSession({
         </p>
         {item.audioNotes.length > 0 && (
           <p className="daily-audio-note">{item.audioNotes.join('；')}</p>
+        )}
+        {item.wordExample && (
+          <div className="daily-word-examples">
+            <button
+              className="quiet"
+              aria-expanded={exampleOpen}
+              aria-controls={`${item.id}-examples`}
+              disabled={recording !== 'idle' || recognizing}
+              onClick={() => {
+                if (exampleOpen) {
+                  if (examplesPlaying) stop();
+                  setExampleOpen(false);
+                } else void playExamples();
+              }}
+            >
+              {' '}
+              {exampleOpen ? '收起组词样例' : '展开组词样例'}{' '}
+            </button>
+            {exampleOpen && (
+              <div id={`${item.id}-examples`}>
+                <p>可以这样组词，也可以想到别的词语。</p>
+                <div className="daily-example-words">
+                  {item.wordExample.examples.map((example) => (
+                    <div key={example.text}>
+                      <strong>{example.text}</strong>
+                      <span>{example.pinyin}</span>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  className="quiet"
+                  disabled={recording !== 'idle' || recognizing}
+                  onClick={() => void playExamples()}
+                >
+                  再听组词样例
+                </button>
+                {exampleFailure && <p role="alert">组词声音没有响起来，请点“再听组词样例”重试。</p>}
+              </div>
+            )}
+          </div>
         )}
         <p role="status" aria-live="polite">
           {recording === 'requesting'

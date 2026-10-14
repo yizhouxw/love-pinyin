@@ -9,10 +9,12 @@ from contextvars import ContextVar
 from datetime import UTC, datetime
 from pathlib import Path
 
+from server.playback_settings import DEFAULT_TENTHS
+
 DATA_DIR = Path(os.environ.get("LOVE_PINYIN_DATA_DIR", "private/data")).expanduser().resolve()
 DATABASE_PATH = DATA_DIR / "love-pinyin.sqlite3"
 # SQLite migration versions, independent of the portable JSON backup format.
-SUPPORTED_SCHEMA_VERSIONS = frozenset({1, 2, 3, 4, 5})
+SUPPORTED_SCHEMA_VERSIONS = frozenset({1, 2, 3, 4, 5, 6})
 _request_database: ContextVar[sqlite3.Connection | None] = ContextVar(
     "request_database", default=None
 )
@@ -179,6 +181,11 @@ def migrate() -> None:
                 db.execute(
                     "ALTER TABLE household ADD COLUMN reduced_motion INTEGER NOT NULL DEFAULT 0"
                 )
+            if "playback_gap_tenths" not in columns:
+                db.execute(
+                    "ALTER TABLE household ADD COLUMN playback_gap_tenths "
+                    f"INTEGER NOT NULL DEFAULT {DEFAULT_TENTHS}"
+                )
             if "rounds_since_break" not in columns:
                 db.execute(
                     "ALTER TABLE household ADD COLUMN rounds_since_break INTEGER NOT NULL DEFAULT 0"
@@ -206,6 +213,10 @@ def migrate() -> None:
             db.execute(
                 """INSERT OR IGNORE INTO schema_migrations(version,applied_at)
                    VALUES(5,CURRENT_TIMESTAMP)"""
+            )
+            db.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version,applied_at) "
+                "VALUES(6,CURRENT_TIMESTAMP)"
             )
             db.execute("COMMIT")
         except Exception:
@@ -243,6 +254,7 @@ def public_profile(row: sqlite3.Row) -> dict:
         "settings": {
             "soundEnabled": bool(row["sound_enabled"]),
             "reducedMotion": bool(row["reduced_motion"]),
+            "playbackGapSeconds": row["playback_gap_tenths"] / 10,
         },
         "roundsSinceBreak": row["rounds_since_break"],
     }

@@ -61,7 +61,7 @@ npm run lan-service:status
 - 前台开发运行或用户级 LaunchAgent 都不需要 root。Mac需保持开机和网络可达；系统睡眠会使客户端显示服务器不可达。不要为了测试全局永久关闭用户电源管理。
 - 升级或日常维护时运行 `npm run backup:local`。命令通过 SQLite online backup API 读取一致快照（包含已提交 WAL 内容），校验 `integrity_check` 与迁移表后原子写入 `private/backups/`，目录权限为 `0700`、文件权限为 `0600`，最多保留最近 7 份。它不会创建缺失数据库；首版没有浏览器录音。需要每日备份时，可用 macOS LaunchAgent 在维护者选定的时刻执行该命令；本仓库不擅自安装或加载任务。
 - **数据库恢复：**先停止本项目服务；选择一份备份并检查文件名/日期，先把备份复制到同目录的 `love-pinyin.sqlite3.restore`，设为 `0600` 并运行 `sqlite3 private/data/love-pinyin.sqlite3.restore 'PRAGMA integrity_check;'` 确认结果为 `ok`，并核对 `schema_migrations` 与将要启动的应用兼容。候选检查失败时立即停止，现有数据库保持原样。检查成功后，把当前数据库及同名 `-wal`、`-shm` sidecar（若存在）一并移入权限为 `0700` 的留档目录，再在同一文件系统内将 `.restore` 原子改名为 `love-pinyin.sqlite3`。启动前确认没有旧的 WAL/SHM sidecar 留在正式文件名下，再用将要运行的应用版本启动，让其按迁移规则继续。若检查失败，恢复留档文件及 sidecar 并查明原因。备份含设备配对哈希和学习记录，必须像数据库一样保护，不能提交 Git 或放入公共同步目录。
-- 版本升级前备份数据库，再构建新版：`npm ci`、`uv sync --locked`（依赖锁有变化时）、`npm run build`。应用只向前迁移；启动时若schema_migrations包含当前程序未知的版本，会在切换journal模式或迁移结构前报Unsupported database schema并停止，不启动网页/API。当前支持的SQLite迁移版本为1至5，与家庭JSON备份格式版本独立。不要删除迁移标记来绕过拒绝，也不要拿旧代码直接打开新版数据库。若需回滚程序，先检查该版本是否兼容当前 schema；不兼容时停止服务并同时恢复对应的升级前数据库备份。
+- 版本升级前备份数据库，再构建新版：`npm ci`、`uv sync --locked`（依赖锁有变化时）、`npm run build`。应用只向前迁移；启动时若schema_migrations包含当前程序未知的版本，会在切换journal模式或迁移结构前报Unsupported database schema并停止，不启动网页/API。当前支持的SQLite迁移版本为1至6，与家庭JSON备份格式版本独立。不要删除迁移标记来绕过拒绝，也不要拿旧代码直接打开新版数据库。若需回滚程序，先检查该版本是否兼容当前 schema；不兼容时停止服务并同时恢复对应的升级前数据库备份。
 - 题实例排列从ADR-0013起使用`op1_`标识的v1算法。升级后旧实例不重新排列，新实例的备份恢复依赖对应算法；回滚兼容性除数据库schema外，还须检查该版本是否保留已使用的排列算法。不能仅凭schema相同就认定新备份在旧程序中会恢复相同布局。
 - 家长页的家庭 JSON 导出是便携式学习数据备份，可在同版或支持的旧版 schema 间预览、迁移和恢复；SQLite 运维备份另含完整家庭服务状态。两者都不包含录音内容。
 - 卸载时先停止服务，再按家长意愿分别保留或删除 `private/data/`、`private/backups/`；证书及其私钥按维护者自己的证书管理方式处理。不要把备份、家庭数据库或私钥混进公开仓库。

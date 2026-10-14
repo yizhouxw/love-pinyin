@@ -13695,6 +13695,24 @@
       "filename": "zuo4.mp3",
       "sha256": "67025f0312b7691032621c3efc6b50ee7dc6a60543ede6ceb1617313b0da2a50",
       "bytes": 18190
+    },
+    {
+      "id": "daily-ya2",
+      "filename": "ya2.mp3",
+      "sha256": "7c7cc68e36786302aaa04bc8fe12735ee6d01c30908a8250c54dff745fd5f594",
+      "bytes": 15907
+    },
+    {
+      "id": "daily-sen1",
+      "filename": "sen1.mp3",
+      "sha256": "9e08a42715b98e6cb58331690d03dcea1c76aa0dfb42619f8a52e70d0a8d49b8",
+      "bytes": 21952
+    },
+    {
+      "id": "daily-can2",
+      "filename": "can2.mp3",
+      "sha256": "3a5f050a567e42dc3a9434de15c2ff9fee83a9cba19d6e48b90bb59b6d039365",
+      "bytes": 17614
     }
   ]
 }

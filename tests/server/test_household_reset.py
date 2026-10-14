@@ -150,4 +150,5 @@ def test_reset_clears_settings_and_revokes_every_device_and_pending_code(paired_
     assert parent.get("/api/v1/bootstrap").json()["profile"]["settings"] == {
         "soundEnabled": True,
         "reducedMotion": False,
+        "playbackGapSeconds": 1,
     }

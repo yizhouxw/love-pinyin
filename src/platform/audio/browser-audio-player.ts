@@ -2,6 +2,7 @@ import type { AudioPlayer } from '../../domain/contracts';
 import { learningAssetUrl } from '../guest';
 
 type ActivePlayback = { stop: () => void };
+export type PlaybackObserver = { onStart?: () => void; onTime?: (seconds: number) => void };
 
 function aborted(): DOMException {
   return new DOMException('Audio playback stopped.', 'AbortError');
@@ -16,13 +17,13 @@ export class BrowserAudioPlayer implements AudioPlayer {
     return this.playFrom('audio', audioId, signal);
   }
 
-  playDaily(audioId: string, signal?: AbortSignal): Promise<void> {
-    return this.playFrom('daily-audio', audioId, signal);
+  playDaily(audioId: string, signal?: AbortSignal, observer?: PlaybackObserver): Promise<void> {
+    return this.playFrom('daily-audio', audioId, signal, observer);
   }
 
   /** Private narration and family course recordings share the same playback lifetime. */
-  playPrivate(audioId: string, signal?: AbortSignal): Promise<void> {
-    return this.playFrom('voice', audioId, signal);
+  playPrivate(audioId: string, signal?: AbortSignal, observer?: PlaybackObserver): Promise<void> {
+    return this.playFrom('voice', audioId, signal, observer);
   }
 
   /** Native controls keep pause/seek support for long courses while sharing the singleton. */
@@ -55,6 +56,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
     kind: 'audio' | 'voice' | 'daily-audio',
     audioId: string,
     signal?: AbortSignal,
+    observer?: PlaybackObserver,
   ): Promise<void> {
     this.stop();
     if (typeof document !== 'undefined' && document.hidden) return Promise.reject(aborted());
@@ -70,9 +72,21 @@ export class BrowserAudioPlayer implements AudioPlayer {
 
     return new Promise((resolve, reject) => {
       let settled = false;
+      let frame: number | undefined;
+      const notifyTime = () => {
+        if (settled) return;
+        observer?.onTime?.(audio.currentTime);
+        frame = requestAnimationFrame(notifyTime);
+      };
+      const onPlaying = () => {
+        observer?.onStart?.();
+        if (observer?.onTime && frame === undefined) notifyTime();
+      };
       const finish = (error?: Error) => {
         if (settled) return;
         settled = true;
+        if (frame !== undefined) cancelAnimationFrame(frame);
+        audio.removeEventListener('playing', onPlaying);
         audio.removeEventListener('ended', onEnded);
         audio.removeEventListener('error', onError);
         signal?.removeEventListener('abort', onAbort);
@@ -90,6 +104,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
 
       this.active = playback;
       audio.addEventListener('ended', onEnded, { once: true });
+      audio.addEventListener('playing', onPlaying);
       audio.addEventListener('error', onError, { once: true });
       signal?.addEventListener('abort', onAbort, { once: true });
       try {

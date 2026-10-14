@@ -41,14 +41,15 @@
     "licenses:python": "uv run --locked --group assessment-poc python scripts/python-licenses.py",
     "test:e2e:local": "node scripts/e2e-local.mjs",
     "test:e2e:live": "npm run build && playwright test --config playwright.live.config.ts",
-    "prepare:voice": "uv run --locked --group voice-build python -m scripts.fetch_tts_model && uv run --locked --group voice-build python -m scripts.build_open_voice",
+    "prepare:voice": "uv run --locked --group voice-build python -m scripts.fetch_tts_model && uv run --locked --group voice-build python -m scripts.build_open_voice && npm run prepare:reading-timing",
     "start": "./run.sh",
     "test:e2e:product": "npm run build && playwright test --config playwright.product.config.ts",
     "prepare:pinyin": "uv run --locked python -m scripts.prepare_pinyin_source",
     "snapshot:content": "node scripts/snapshot-content.mjs",
     "test:e2e:soak": "npm run build && playwright test --config playwright.soak.config.ts",
     "prepare:daily": "uv run --locked python -m scripts.prepare_daily_reading",
-    "prepare:all": "./run.sh --prepare-only"
+    "prepare:all": "./run.sh --prepare-only",
+    "prepare:reading-timing": "uv run --locked --group voice-build python -m scripts.fetch_tts_model --config content/reading-alignment-build.json --model-dir models/qwen3-aligner && uv run --locked --group voice-build python -m scripts.build_reading_timings"
   },
   "dependencies": {
     "react": "19.3.0",

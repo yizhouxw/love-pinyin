@@ -10,8 +10,10 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from server import api, storage
 from server.content import load_curriculum
+from server.playback_settings import GAP, gap_tenths
 
 router = APIRouter(prefix="/api/v1/guest")
+
 MAX_BYTES = 1_048_576
 
 
@@ -90,11 +92,14 @@ def execute(operation: GuestOperation) -> dict:
                 profile = backup["profile"]
                 db.execute(
                     """UPDATE household SET selected_lesson_id=?,sound_enabled=?,reduced_motion=?,
-                       rounds_since_break=?,revision=? WHERE id=?""",
+                       playback_gap_tenths=?,rounds_since_break=?,revision=? WHERE id=?""",
                     (
                         profile["selectedLessonId"],
                         int(profile["settings"]["soundEnabled"]),
                         int(profile["settings"]["reducedMotion"]),
+                        gap_tenths(
+                            profile["settings"].get("playbackGapSeconds", GAP["defaultSeconds"])
+                        ),
                         profile["roundsSinceBreak"],
                         profile["revision"],
                         household_id,

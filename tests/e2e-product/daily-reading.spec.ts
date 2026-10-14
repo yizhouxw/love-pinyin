@@ -57,7 +57,7 @@ test('DAILY-01/02: all PDF demonstrations decode and the real reading page follo
     },
     { assets: reading.assets.map((a) => a.id), voices },
   );
-  expect(decoded).toHaveLength(597 + 42);
+  expect(decoded).toHaveLength(600 + 42);
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   const current = page.getByLabel('当前跟读内容');
   await expect(current.getByLabel('ā', { exact: true })).toBeVisible();

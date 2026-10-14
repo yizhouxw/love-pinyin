@@ -36,8 +36,16 @@ export function WordCards({
   lessonId: string;
 }) {
   const voice = useLearningVoice(`pictures-${lessonId}`);
-  const [failed, setFailed] = useState(false);
+  const [imageFailures, setImageFailures] = useState<{
+    lesson: string;
+    ids: Set<string>;
+    retry: number;
+  }>({ lesson: lessonId, ids: new Set(), retry: 0 });
   const [retry, setRetry] = useState(0);
+  const failed =
+    imageFailures.lesson === lessonId &&
+    imageFailures.retry === retry &&
+    imageFailures.ids.size > 0;
   const items = Object.entries(catalog.items).filter(([, item]) => item.lessonId === lessonId);
   if (!items.length) return null;
   return (
@@ -46,34 +54,53 @@ export function WordCards({
         <h3>生活里的拼音</h3>
         <VoiceButton id="picture-intro" voice={voice} label="听看图玩法" />
       </div>
-      {items.map(([id, item]) => (
-        <div key={id} className="word-card">
-          <figure>
-            <Picture
-              key={`${id}-${retry}`}
-              id={id}
-              catalog={catalog}
-              retry={retry}
-              onStatus={(ready) => setFailed(!ready)}
-            />
-            <figcaption>
-              <span>{item.pinyin}</span>
-              <small>{item.name}</small>
-            </figcaption>
-          </figure>
-          <div>
-            <VoiceButton id={item.audioRef} kind="standard" voice={voice} label="听这个拼音" />
-            <VoiceButton id={`picture-${id}`} voice={voice} label="听图片说明" />
+      <div className="word-card-grid">
+        {items.map(([id, item]) => (
+          <div key={id} className="word-card">
+            <figure>
+              <Picture
+                key={`${id}-${retry}`}
+                id={id}
+                catalog={catalog}
+                retry={retry}
+                onStatus={(ready) =>
+                  setImageFailures((previous) => {
+                    const ids = new Set(
+                      previous.lesson === lessonId && previous.retry === retry ? previous.ids : [],
+                    );
+                    if (ready) ids.delete(id);
+                    else ids.add(id);
+                    return { lesson: lessonId, ids, retry };
+                  })
+                }
+              />
+              <figcaption>
+                <span>{item.pinyin}</span>
+                <small>{item.name}</small>
+                {item.associationNote && (
+                  <small className="word-association-note">{item.associationNote}</small>
+                )}
+              </figcaption>
+            </figure>
+            <div>
+              <VoiceButton
+                id={item.audioRef}
+                kind={item.audioKind ?? 'standard'}
+                voice={voice}
+                label="听这个拼音"
+              />
+              <VoiceButton id={`picture-${id}`} voice={voice} label="听图片说明" />
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
       {failed && (
         <div className="picture-failure" role="alert">
           <p>图片暂时没加载好，可以重试。</p>
           <button
             className="quiet"
             onClick={() => {
-              setFailed(false);
+              setImageFailures({ lesson: lessonId, ids: new Set(), retry: retry + 1 });
               setRetry((n) => n + 1);
             }}
           >

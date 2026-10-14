@@ -19,7 +19,7 @@ export function useLearningVoice(scope: string | null) {
   // A previous exercise's playback cannot unlock a new instance of the same question.
   const completedIds = completed.scope === scope ? completed.ids : new Set<string>();
   const [failedIds, setFailedIds] = useState<ReadonlySet<string>>(() => new Set());
-  const failedKind = useRef<'private' | 'standard'>('private');
+  const failedKind = useRef<'private' | 'standard' | 'daily'>('private');
   const active = useRef<AbortController | null>(null);
   const release = useCallback(() => {
     active.current?.abort();
@@ -31,7 +31,7 @@ export function useLearningVoice(scope: string | null) {
     setFailureId(null);
   }, [release]);
   const playAsset = useCallback(
-    (id: string, kind: 'private' | 'standard') => {
+    (id: string, kind: 'private' | 'standard' | 'daily') => {
       release();
       if (document.hidden) return;
       const controller = new AbortController();
@@ -46,7 +46,9 @@ export function useLearningVoice(scope: string | null) {
       const playback =
         kind === 'standard'
           ? audioPlayer.play(id, controller.signal)
-          : audioPlayer.playPrivate(id, controller.signal);
+          : kind === 'daily'
+            ? audioPlayer.playDaily(id, controller.signal)
+            : audioPlayer.playPrivate(id, controller.signal);
       void playback
         .then(() => {
           if (active.current === controller && !controller.signal.aborted) {
@@ -80,6 +82,7 @@ export function useLearningVoice(scope: string | null) {
     [release, scope],
   );
   const play = useCallback((id: string) => playAsset(id, 'private'), [playAsset]);
+  const playDaily = useCallback((id: string) => playAsset(id, 'daily'), [playAsset]);
   const playStandard = useCallback((id: string) => playAsset(id, 'standard'), [playAsset]);
   const retry = () => {
     if (failureId) playAsset(failureId, failedKind.current);
@@ -94,7 +97,17 @@ export function useLearningVoice(scope: string | null) {
       release();
     };
   }, [release, stop, scope]);
-  return { playingId, failureId, completedIds, failedIds, play, playStandard, retry, stop };
+  return {
+    playingId,
+    failureId,
+    completedIds,
+    failedIds,
+    play,
+    playStandard,
+    playDaily,
+    retry,
+    stop,
+  };
 }
 
 export type LearningVoice = ReturnType<typeof useLearningVoice>;
@@ -110,7 +123,7 @@ export function VoiceButton({
   voice: LearningVoice;
   label?: string;
   className?: string;
-  kind?: 'private' | 'standard';
+  kind?: 'private' | 'standard' | 'daily';
 }) {
   const playing = voice.playingId === id;
   const failed = voice.failedIds.has(id);
@@ -122,7 +135,13 @@ export function VoiceButton({
       aria-pressed={playing}
       aria-description={failed ? '这段声音没有播放成功，点这里重试。' : undefined}
       onClick={() =>
-        playing ? voice.stop() : kind === 'standard' ? voice.playStandard(id) : voice.play(id)
+        playing
+          ? voice.stop()
+          : kind === 'standard'
+            ? voice.playStandard(id)
+            : kind === 'daily'
+              ? voice.playDaily(id)
+              : voice.play(id)
       }
     >
       <span aria-hidden="true">{playing ? '■' : voice.failedIds.has(id) ? '↻' : '🔊'}</span>

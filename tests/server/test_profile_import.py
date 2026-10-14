@@ -72,6 +72,7 @@ def test_preview_rejects_unknown_versions_without_mutating_profile(paired_client
 def test_preview_explicitly_migrates_schema_v2_backups(paired_client):
     backup = paired_client.get("/api/v1/profiles/export").json()
     backup["schemaVersion"] = 2
+    backup["profile"]["settings"].pop("playbackGapSeconds")
     backup["profile"].pop("roundsSinceBreak")
     for instance in backup["exerciseInstances"]:
         instance.pop("position")

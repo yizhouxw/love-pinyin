@@ -29,7 +29,12 @@ export interface ProgressSnapshot {
   clockSkewDetected: boolean;
   pendingClockAttempts: number;
   attempts: Attempt[];
-  settings: { soundEnabled: boolean; reducedMotion: boolean; sessionMinutes: number };
+  settings: {
+    soundEnabled: boolean;
+    reducedMotion: boolean;
+    sessionMinutes: number;
+    playbackGapSeconds?: number;
+  };
 }
 
 export interface AudioPlayer {
