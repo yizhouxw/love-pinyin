@@ -92,9 +92,9 @@ macOS 开发者 clone 后，在项目目录执行：
 
 标准音直接信任[cmguo/PinYinSound](https://github.com/cmguo/PinYinSound)，自动同步上游但按`content/pinyin-source.json`的commit和逐文件摘要导入，不把上游HEAD更新直接变为教材声音。源码、课程JSON、原创SVG、13份课程MP3、每日PDF、全部中文引导WAV与白名单manifest都在仓库。课程录音与PDF保留非MIT说明。中文引导由本地开源 **Qwen3-TTS-12Hz-1.7B-CustomVoice / MLX** 重新生成，已附许可。日常运行直接播放，不调用TTS或外部语音服务。
 
-维护者如修改中文脚本，可运行 `npm run prepare:voice` 在Apple Silicon Mac上下载校验固定Qwen3-TTS模型（约4.5GB）并离线重生成，再提交音频和manifest；模型大文件不入Git。固定参数和摘要见 `content/voice-build.json`。旧Mac声音准备工具仅保留兼容测试，不再是启动依赖。
+维护者如修改中文脚本，可运行 `npm run prepare:voice` 在Apple Silicon Mac上下载校验固定Qwen3-TTS模型（约4.5GB）并离线重生成，同时准备约1.3GB固定对齐模型重建字音时间轴，再提交音频、时间轴和manifest；模型大文件不入Git。固定参数和摘要见 `content/voice-build.json`。旧Mac声音准备工具仅保留兼容测试，不再是启动依赖。
 
-数据库、儿童跟读、备份、上游Git缓存和模型留在忽略目录；家长页可下载JSON备份，`npm run backup:local`生成SQLite运维备份，默认保留最近7份。
+儿童跟读仅在浏览器和家庭Mac内存处理，不落盘。数据库、运维备份、上游Git缓存和模型留在忽略目录；家长页可下载JSON备份，`npm run backup:local`生成SQLite运维备份，默认保留最近7份。
 
 ## iPad / 手机与家庭局域网
 
@@ -114,12 +114,12 @@ macOS 开发者 clone 后，在项目目录执行：
 | `npm run verify:server`    | Python lint、格式、领域与 API 测试            |
 | `npm run test:e2e`         | 六个浏览器/视口项目；含测试替身，不是真机验收 |
 | `npm run test:e2e:live`    | 真实 Mac API/SQLite 的桌面数据与恢复流程      |
-| `npm run test:e2e:product` | 真实声音、完整游戏与播放故障；需要私有音频    |
+| `npm run test:e2e:product` | 真实声音、完整游戏与播放故障；先完成资源准备  |
 | `npm run test:e2e:soak`    | 独立长时真实练习与媒体资源观测                |
 | `npm run verify:all`       | 工程检查、本机视口项目和真实服务 GUI          |
 | `npm run validate:release` | 内容覆盖、课程依据与本机实际资源门禁          |
 
-本机 macOS 27 / Playwright 1.63.0 的 Firefox 限制只影响 `test:e2e:local` 与 `verify:all` 的本机选择；Linux CI 保留六个视口项目。CI不包含私有声音和完整家庭交付验收，详见[测试说明](docs/engineering/testing.md)。
+本机 macOS 27 / Playwright 1.63.0 的 Firefox 限制只影响 `test:e2e:local` 与 `verify:all` 的本机选择；Linux CI 保留六个视口项目。CI包含仓库内声音，但不准备PinYinSound和模型，也不执行live/product/soak及完整家庭交付验收，详见[测试说明](docs/engineering/testing.md)。
 
 ## 文档与许可
 
@@ -128,14 +128,14 @@ macOS 开发者 clone 后，在项目目录执行：
 - [架构](docs/architecture.md)、[API](docs/api-contract.md)、[技术选型](docs/research/technology.md)、[声音与素材](docs/research/audio-and-assets.md)
 - [贡献约定](CONTRIBUTING.md)、[开发流程](docs/engineering/workflow.md)、[隐私边界](docs/engineering/privacy.md)
 
-代码、文档与原创题目采用 [MIT](LICENSE)。教材、外部录音、Mac 生成声音与第三方依赖不因此取得 MIT 再分发许可，见[第三方说明](THIRD_PARTY_NOTICES.md)。仓库已提交至 [yizhouxw/love-pinyin](https://github.com/yizhouxw/love-pinyin)，目前为私有仓库，默认分支 `main`；尚未公开发行素材包。
+代码、文档与原创题目采用 [MIT](LICENSE)。教材、外部录音、Qwen生成声音、Andika字体与第三方依赖按各自许可处理，不因代码MIT而改变，见[第三方说明](THIRD_PARTY_NOTICES.md)。仓库已提交至 [yizhouxw/love-pinyin](https://github.com/yizhouxw/love-pinyin)，目前为私有仓库，默认分支 `main`；尚未公开发行素材包。
 
 ## 天天练拼音
 
-首页“进入天天练拼音”可选择14份练习、分节逐条示范或连播。“语音引导”继承家长自动朗读设置；首页、课程练习导航及天天练当前内容区均有快捷开关，在浏览器记住选择，家庭设置变更优先。关闭后跳过操作说明，点击拼音或本节条目立即听示范，录音和识别仍可使用。点“录下我的跟读”才请求麦克风；录音只留当前页面内存，停止后发送家庭Mac内存做本地识别匹配；换条/退出/后台清除，不落盘。需要localhost或受信任HTTPS。可直接不录音跟读，家长标记只留本次页面，退出清除，不计入客观题成绩。
+首页“进入天天练拼音”可选择14份练习、分节逐条示范或连播。“语音引导”继承家长自动朗读设置；首页、课程练习导航及天天练当前内容区均有快捷开关，在浏览器记住选择，家庭设置变更优先。关闭后跳过操作说明，点击拼音或本节条目立即听示范，录音和识别仍可使用。点“录下我的跟读”才请求麦克风；录音只留当前页面内存，停止后发送家庭Mac内存做本地识别匹配；换条/退出/后台清除，不落盘。录音有120秒安全停止上限，本地识别只接受不超过30秒的片段、模型推理超时45秒；过长或听不清不判错。需要localhost或受信任HTTPS。可直接不录音跟读，家长标记只留本次页面，退出清除，不计入客观题成绩。
 
 每日标准音与原课程共享固定来源；run.sh自动导入840条示范所需资源。42条轻声词句以本地Qwen3-TTS中文朗读提供，并与拼音标准音区分。停止录音后本机Whisper识别、核对音节；听不清拒判，不判断四声或专业发音准确度。模型首次显式启动下载，应用处理录音时不下载、不访问外网。详见[SPEC-009](docs/specs/SPEC-009-asr-reading-match.md)、[一键安装](docs/specs/SPEC-010-one-command-setup.md)与[开源中文声音](docs/specs/SPEC-011-open-chinese-voice.md)。
 
-2026-10-14新增跟读细节：家长管理（或访客设置）可保存连播间隔，范围0.1～5秒、精度0.1秒、默认1秒。间隔用于分段标准音及两条示范之间，完整中文句子保留自然语流。“读音节并组词”各条提供默认折叠的汉字/拼音样例，展开自动朗读；换条收起。读句子按实际音频进度逐音高亮，完整中文示范使用与WAV摘要绑定的本地字音时间轴。生活里的拼音扩展为每课6张，共84张原创SVG；前两课为标明用途的单韵母记音图。
+跟读设置：家长管理（或访客设置）可保存连播间隔，范围0.1～5秒、精度0.1秒、默认1秒。间隔用于分段标准音及两条示范之间，完整中文句子保留自然语流。“读音节并组词”各条提供默认折叠的汉字/拼音样例，展开自动朗读；换条收起。读句子按实际音频进度逐音高亮，完整中文示范使用与WAV摘要绑定的本地字音时间轴。生活里的拼音扩展为每课6张，共84张原创SVG；前两课为标明用途的单韵母记音图。
 
-维护者`npm run prepare:voice`现在同时生成并校验字音时间轴；单独重建可用`npm run prepare:reading-timing`，首次额外安装约1.3GB对齐模型。运行端只需仓库内素材。实现与验收见[SPEC-012](docs/specs/SPEC-012-reading-enrichment.md)。
+字音时间轴可单独用`npm run prepare:reading-timing`重建；普通播放只读取仓库内素材，模型准备仅发生在显式维护命令中。实现与验收见[SPEC-012](docs/specs/SPEC-012-reading-enrichment.md)。
