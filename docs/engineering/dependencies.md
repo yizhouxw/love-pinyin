@@ -70,3 +70,7 @@ Kokoro/sherpa-onnx维护依赖已移除；使用[MLX-Audio 0.5.8](https://pypi.o
 ## SPEC-012 READ-04（2026-10-14）
 
 新增维护阶段[Qwen3-ForcedAligner-0.6B](https://huggingface.co/Qwen/Qwen3-ForcedAligner-0.6B)（Apache-2.0）用于已知中文脚本和预生成示范音频的逐字时间对齐。使用[mlx-community 8bit转换](https://huggingface.co/mlx-community/Qwen3-ForcedAligner-0.6B-8bit)，固定revision0e1a68e91d815300c7c9754b2a7639378b23db15；主权重1271924386字节SHAbe19ef8ac4326d032e7673342930b14c2df30bd68c1632493b0f563e30829f91。全部文件尺寸/SHA固定content/reading-alignment-build.json，许可resources/licenses/Qwen3-ForcedAligner-Apache-2.0.txt。复用已锁定MLX-Audio 0.5.8维护组，未增加npm/uv包；Apple Silicon实际离线加载、42段示范对齐成功。80ms分辨率，短音共用边界时采用锚定起点的40ms高亮窗口，不均分整句总时长。输出时间轴随Git提供，普通服务不下载或加载模型，也不分析儿童录音。
+
+## 拼音字形 FONT-01（2026-10-15）
+
+字体资产SIL Andika 7.000来自[官方固定发行](https://github.com/silnrsi/font-andika/releases/tag/v7.000)，OFL-1.1允许随应用分发，保留public/fonts/andika/OFL.txt。归档SHA-256为88ba6ea41ef4a8e5214b090df8fa2983be1babe4843efaa99cdb6078b0e2c070，与GitHub发行资产digest一致；Regular/Bold未修改WOFF2及文件摘要登记content/pinyin-font.json。文件由Mac同源服务提供，不使用CDN或系统字体作为拼音字形的必要依赖。官方[字形设计说明](https://software.sil.org/andika/design/)确认默认单层a/g与清晰变音符号；实际字形/声调须浏览器目视复核。没有新增npm/uv软件包。

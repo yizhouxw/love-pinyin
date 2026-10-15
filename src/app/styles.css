@@ -1,5 +1,25 @@
+/* Original fixed-release SIL Andika webfonts: single-storey a/g and tone marks. */
+@font-face {
+  font-family: 'Andika Pinyin';
+  src: url('/fonts/andika/Andika-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0020-007E, U+00A0-024F, U+0300-036F, U+1E00-1EFF;
+}
+@font-face {
+  font-family: 'Andika Pinyin';
+  src: url('/fonts/andika/Andika-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0020-007E, U+00A0-024F, U+0300-036F, U+1E00-1EFF;
+}
+
 :root {
+  --pinyin-font: 'Andika Pinyin', ui-rounded, system-ui, sans-serif;
   font-family:
+    'Andika Pinyin',
     ui-rounded,
     'SF Pro Rounded',
     system-ui,
@@ -2115,7 +2135,7 @@ input[type='file']::file-selector-button {
   justify-content: center;
   gap: 0.3em;
   padding: 1.5rem 0.2rem;
-  font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+  font-family: var(--pinyin-font);
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   line-height: 1.8;
   overflow-wrap: anywhere;
@@ -2294,5 +2314,5 @@ input[type='file']::file-selector-button {
 
 .word-card figcaption span,
 .daily-example-words span {
-  font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+  font-family: var(--pinyin-font);
 }

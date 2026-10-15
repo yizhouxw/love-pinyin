@@ -7,7 +7,7 @@
 - npm依赖声明见[自动依赖清单](docs/engineering/dependency-inventory.json)，按上游许可保留版权与notice。
 - Python依赖、各轮子来源及校验哈希见`uv.lock`；主要许可和原生依赖注意事项见[依赖记录](docs/engineering/dependencies.md)。
 - 本地转写研究额外依赖组 `audio-asr` 锁定 `pywhispercpp==1.5.1`（MIT）；Whisper multilingual small 权重为独立 MIT 资产，固定 revision/SHA 与用途限制见 [ADR 0003](docs/adr/0003-local-asr-transcription.md)。权重只在显式安装后存在于 Git 忽略目录，不随本仓库发布。
-- 系统字体由操作系统提供，未打包字体文件；教学单层a/g与声调使用content/writing.json中的原创SVG轨迹。
+- 拼音文字使用随包SIL Andika 7.000（OFL-1.1），Regular/Bold原始WOFF2及许可在public/fonts/andika，来源与摘要见content/pinyin-font.json。默认单层a/g，保留原Unicode拼音字符；中文仍使用系统字体。教学笔顺与占格由content/writing.json原创SVG提供，字体不替代书写轨迹。
 - 标准音固定采用cmguo/PinYinSound，当前205个目标由183份私有MP3提供。归档来源与摘要见content/pinyin-source.json；其中licenseStatus仍为unknown，不把产品直接信任决定写成MIT授权，不提交这些声音文件。
 - `content/assessment-manifest.json`仅保留历史研究登记，当前为空；首版无评分模型或评测依赖，不作为发布门禁。
 

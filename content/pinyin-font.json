@@ -1,0 +1,26 @@
+{
+  "family": "Andika",
+  "version": "7.000",
+  "license": "OFL-1.1",
+  "source": "https://github.com/silnrsi/font-andika/releases/download/v7.000/Andika-7.000.zip",
+  "archiveSha256": "88ba6ea41ef4a8e5214b090df8fa2983be1babe4843efaa99cdb6078b0e2c070",
+  "designSource": "https://software.sil.org/andika/design/",
+  "modified": false,
+  "files": [
+    {
+      "file": "public/fonts/andika/Andika-Regular.woff2",
+      "sha256": "bd46cba17fb1ee30023f88376810cee1787c918d34933e0d761485375e2c1bcb",
+      "bytes": 295740
+    },
+    {
+      "file": "public/fonts/andika/Andika-Bold.woff2",
+      "sha256": "d42a45070e8e85ed4122a56c826fd3e894ba5ea205fcda6c6bcd000efabff208",
+      "bytes": 299540
+    },
+    {
+      "file": "public/fonts/andika/OFL.txt",
+      "sha256": "fd0f044f061aa463fa1675a71fa0c229a067e2062c321c89e5f20965883f23b2",
+      "bytes": 4501
+    }
+  ]
+}
