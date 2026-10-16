@@ -96,6 +96,10 @@ macOS 开发者 clone 后，在项目目录执行：
 
 儿童跟读仅在浏览器和家庭Mac内存处理，不落盘。数据库、运维备份、上游Git缓存和模型留在忽略目录；家长页可下载JSON备份，`npm run backup:local`生成SQLite运维备份，默认保留最近7份。
 
+## Docker 打包运行
+
+在仓库根目录执行 `docker compose up -d --build`，打开 <http://localhost:8000>。首次构建联网准备固定资源；镜像包含全部标准音、课程录音、中文引导和 Whisper，运行时无需另行下载。家庭进度保存到独立命名卷。家长配对码命令、离线镜像搬运及验收见[Docker 部署说明](docs/engineering/docker.md)。
+
 ## iPad / 手机与家庭局域网
 
 默认入口只监听本机。其他设备按[部署说明](docs/engineering/local-deployment.md)准备受信任 HTTPS，设置 `LOVE_PINYIN_BIND_IP`、`LOVE_PINYIN_TLS_CERT`、`LOVE_PINYIN_TLS_KEY`，运行 `npm run doctor:lan` 后再 `npm run serve:lan`。启动器只绑定指定的本机 LAN IPv4，检查证书有效期、IP SAN与密钥匹配；不会自动安装根证书、改防火墙或启用登录启动。

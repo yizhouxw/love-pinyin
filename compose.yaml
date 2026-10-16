@@ -1,0 +1,19 @@
+services:
+  app:
+    image: love-pinyin:local
+    build: .
+    ports:
+      - '127.0.0.1:${LOVE_PINYIN_PORT:-8000}:8000'
+    volumes:
+      - household:/data
+    restart: unless-stopped
+    stop_grace_period: 60s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
+volumes:
+  household:

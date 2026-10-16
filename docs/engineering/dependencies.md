@@ -74,3 +74,9 @@ Kokoro/sherpa-onnx维护依赖已移除；使用[MLX-Audio 0.5.8](https://pypi.o
 ## 拼音字形 FONT-01（2026-10-15）
 
 字体资产SIL Andika 7.000来自[官方固定发行](https://github.com/silnrsi/font-andika/releases/tag/v7.000)，OFL-1.1允许随应用分发，保留public/fonts/andika/OFL.txt。归档SHA-256为88ba6ea41ef4a8e5214b090df8fa2983be1babe4843efaa99cdb6078b0e2c070，与GitHub发行资产digest一致；Regular/Bold未修改WOFF2及文件摘要登记content/pinyin-font.json。文件由Mac同源服务提供，不使用CDN或系统字体作为拼音字形的必要依赖。官方[字形设计说明](https://software.sil.org/andika/design/)确认默认单层a/g与清晰变音符号；实际字形/声调须浏览器目视复核。没有新增npm/uv软件包。
+
+## SPEC-013 Docker 构建（2026-10-16）
+
+无新增 npm/uv 包。Node 官方镜像24.18.1-bookworm-slim（Node MIT，Debian组件各自许可）、Python 官方镜像3.12.12-slim-bookworm（Python PSF-2.0）与 Astral uv 0.12.5（MIT/Apache-2.0）均按多架构manifest SHA-256固定在Dockerfile；npm11.16.0复用现有固定版本。官方来源分别为 https://github.com/nodejs/docker-node 、https://github.com/docker-library/python 、https://github.com/astral-sh/uv 。
+
+Debian bookworm/security 软件包固定到 snapshot.debian.org 的20261015T000000Z快照（官方 https://snapshot.debian.org/），构建阶段安装 curl（curl许可）、FFmpeg（Debian构建GPL-2.0-or-later及其组件许可）以支持固定资源下载和音频检查；Python仅安装锁定的二进制轮子。运行镜像仅另含libgomp1（GCC运行库例外），各包许可保留在/usr/share/doc。具体实装与架构记录在SPEC-013，镜像内`dpkg-query -W`可查看精确版本。Whisper权重固定来源/摘要沿用scripts/asr_model.py，不纳入Git。

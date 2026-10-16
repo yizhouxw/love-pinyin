@@ -7,6 +7,7 @@ import math
 import os
 import struct
 import subprocess
+import sys
 import tempfile
 import urllib.request
 import wave
@@ -28,8 +29,8 @@ def atomic_json(path: Path, data: dict):
 
 
 def check_recording(path: Path, output: Path) -> dict:
-    subprocess.run(
-        [
+    if sys.platform == "darwin":
+        command = [
             "/usr/bin/afconvert",
             "-f",
             "WAVE",
@@ -39,11 +40,25 @@ def check_recording(path: Path, output: Path) -> dict:
             "1",
             str(path),
             str(output),
-        ],
-        check=True,
-        capture_output=True,
-        timeout=30,
-    )
+        ]
+    else:
+        command = [
+            "ffmpeg",
+            "-nostdin",
+            "-v",
+            "error",
+            "-y",
+            "-i",
+            str(path),
+            "-ac",
+            "1",
+            "-ar",
+            "16000",
+            "-c:a",
+            "pcm_s16le",
+            str(output),
+        ]
+    subprocess.run(command, check=True, capture_output=True, timeout=30)
     with wave.open(str(output)) as audio:
         seconds = audio.getnframes() / audio.getframerate()
         if not 0.1 <= seconds <= 10 or audio.getsampwidth() != 2 or audio.getnchannels() != 1:

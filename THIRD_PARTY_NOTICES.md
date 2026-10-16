@@ -36,3 +36,7 @@ pypinyin==0.55.0，MIT，官方https://pypi.org/project/pypinyin/0.55.0/ 与 htt
 维护组mlx-audio==0.5.8来自官方PyPI/Blaizzy/mlx-audio（MIT），mlx==0.32.3/mlx-metal==0.32.3（MIT）提供本地Apple Silicon推理；transformers==5.19.0（Apache-2.0）仅加载本地分词器，所有传递依赖精确版本/轮子SHA由uv.lock固定，许可证元数据见Python依赖清单。普通启动不安装或运行TTS维护组，不提交原生库或模型权重。此前Kokoro/sherpa-onnx已从维护组和发布素材移除。
 
 SPEC-012新增Qwen3-ForcedAligner-0.6B，Apache-2.0；官方Qwen/Qwen3-ForcedAligner-0.6B，mlx-community固定8bit转换的revision/SHA在content/reading-alignment-build.json，许可原文resources/licenses/Qwen3-ForcedAligner-Apache-2.0.txt。仅维护时本地对齐原创脚本与合成示范，输出time轴不含儿童声音/信息；权重不入Git，不作为儿童发音评测器。72张新增SVG为项目原创MIT资产，不使用外部插图、平台emoji或教材扫描。
+
+## SPEC-013 私有 Docker 镜像
+
+镜像在构建期装入固定 PinYinSound 音频与 Whisper small，以便运行时完全使用本地资源。此打包不改变 PinYinSound 的 unknown 许可、课程/PDF的独立来源及其公开分发边界，不自动发布到公共镜像仓库。Whisper MIT 许可全文随包保存于 resources/licenses/Whisper-MIT.txt，来源为 OpenAI whisper v20250625 的 LICENSE（https://github.com/openai/whisper/blob/v20250625/LICENSE）。基础镜像、Debian构建工具和运行库的固定版本/官方来源见 docs/engineering/dependencies.md，OS组件许可保留于镜像/usr/share/doc。
