@@ -70,3 +70,55 @@ def test_git_sync_refuses_unknown_origin_and_local_changes(tmp_path, monkeypatch
     command(repo, "remote", "set-url", "origin", "https://example.invalid/untrusted.git")
     with pytest.raises(ValueError, match="unexpected Git origin"):
         setup.sync(repo)
+
+
+def test_complete_audio_reused_without_git_cache_or_network(tmp_path, monkeypatch):
+    repo, pinned = repository(tmp_path, monkeypatch)
+    clip = tmp_path / "daily.mp3"
+    clip.write_bytes(b"daily-fixture")
+    monkeypatch.setattr(setup.source_audio, "installed", lambda: True)
+    monkeypatch.setattr(setup.daily_reading, "load", lambda: {"assets": [{"id": "daily"}]})
+    monkeypatch.setattr(
+        setup.daily_reading,
+        "registered",
+        lambda _: (clip, hashlib.sha256(b"daily-fixture").hexdigest()),
+    )
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("Complete local audio must not invoke Git, network or import")
+
+    monkeypatch.setattr(setup, "git", forbidden)
+    monkeypatch.setattr(setup.subprocess, "run", forbidden)
+    monkeypatch.setattr(setup, "prepare", forbidden)
+    monkeypatch.setattr(setup, "prepare_daily", forbidden)
+    assert setup.sync(repo.parent / "missing-cache") == {"commit": pinned, "reused": True}
+
+
+@pytest.mark.parametrize("damage", ["daily", "course"])
+def test_damaged_audio_repaired_from_local_pin_without_pull(tmp_path, monkeypatch, damage):
+    repo, pinned = repository(tmp_path, monkeypatch)
+    monkeypatch.setattr(setup.source_audio, "installed", lambda: True)
+    if damage == "daily":
+        clip = tmp_path / "daily.mp3"
+        clip.write_bytes(b"corrupt")
+        monkeypatch.setattr(setup.daily_reading, "load", lambda: {"assets": [{"id": "daily"}]})
+        monkeypatch.setattr(setup.daily_reading, "registered", lambda _: (clip, "0" * 64))
+    else:
+        catalog = setup.source_audio.catalog()
+        catalog["assets"] = [{"id": "course"}]
+        monkeypatch.setattr(
+            setup, "load_curriculum", lambda: {"audioRequirements": catalog["assets"]}
+        )
+        monkeypatch.setattr(setup.source_audio, "available", lambda _: False)
+    original_git = setup.git
+
+    def local_git(path, *args):
+        assert args[0] not in {"pull", "fetch", "clone"}
+        return original_git(path, *args)
+
+    monkeypatch.setattr(setup, "git", local_git)
+    imports = []
+    monkeypatch.setattr(setup, "prepare", lambda *a, **kw: {"commit": pinned})
+    monkeypatch.setattr(setup, "prepare_daily", lambda *a, **kw: imports.append(True))
+    assert setup.sync(repo)["commit"] == pinned
+    assert imports == [True]

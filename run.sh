@@ -117,7 +117,7 @@ fi
 printf '\nInstalling locked dependencies…\n'
 npm ci --prefer-offline --no-audit --no-fund
 uv sync --locked
-printf '\nSynchronizing standard pinyin recordings…\n'
+printf '\nChecking local standard pinyin recordings (download only if missing)…\n'
 uv run --locked python -m scripts.sync_standard_audio
 printf '\nChecking bundled narration and lessons…\n'
 uv run --locked python -m scripts.check_bundled_resources

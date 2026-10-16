@@ -25,21 +25,6 @@ def git(repo: Path, *args: str) -> str:
 
 def sync(repo: Path) -> dict:
     catalog = source_audio.catalog()
-    if not repo.exists():
-        repo.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(
-            [GIT, "clone", catalog["repository"] + ".git", str(repo)], check=True, timeout=180
-        )
-    if git(repo, "remote", "get-url", "origin").removesuffix(".git") != catalog["repository"]:
-        raise ValueError("Cached standard audio has an unexpected Git origin")
-    if git(repo, "status", "--porcelain"):
-        raise ValueError("Cached standard audio has local changes; refusing to overwrite them")
-    try:
-        git(repo, "pull", "--ff-only")
-    except subprocess.SubprocessError:
-        git(repo, "cat-file", "-e", catalog["commit"] + "^{commit}")
-        print("Upstream sync unavailable; using the existing pinned commit", flush=True)
-    git(repo, "cat-file", "-e", catalog["commit"] + "^{commit}")
     targets = {a["id"]: a for a in load_curriculum()["audioRequirements"]}
     ready = source_audio.installed() and all(
         source_audio.available(targets[a["id"]]) for a in catalog["assets"]
@@ -54,6 +39,20 @@ def sync(repo: Path) -> dict:
             ready = False
     if ready:
         return {"commit": catalog["commit"], "reused": True}
+    if not repo.exists():
+        repo.parent.mkdir(parents=True, exist_ok=True)
+        subprocess.run(
+            [GIT, "clone", catalog["repository"] + ".git", str(repo)], check=True, timeout=180
+        )
+    if git(repo, "remote", "get-url", "origin").removesuffix(".git") != catalog["repository"]:
+        raise ValueError("Cached standard audio has an unexpected Git origin")
+    if git(repo, "status", "--porcelain"):
+        raise ValueError("Cached standard audio has local changes; refusing to overwrite them")
+    try:
+        git(repo, "cat-file", "-e", catalog["commit"] + "^{commit}")
+    except subprocess.CalledProcessError:
+        git(repo, "pull", "--ff-only")
+    git(repo, "cat-file", "-e", catalog["commit"] + "^{commit}")
     with tempfile.TemporaryDirectory(prefix="pinyin-git-") as temporary:
         archive = Path(temporary) / "source.zip"
         git(
