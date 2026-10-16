@@ -90,6 +90,18 @@ macOS 开发者 clone 后，在项目目录执行：
 
 打开 `http://127.0.0.1:8000`，可先访客体验或生成家长配对码。Ctrl+C停止。默认端口占用可用 `LOVE_PINYIN_PORT=8001 ./run.sh`。`./run.sh --prepare-only`只安装准备，不启动；`npm start`调用同一脚本。重复启动检查并复用资源；上游联网更新失败且已有固定版本时可继续，新安装失败明确退出。不要同时运行两份准备脚本。
 
+启动与管理（均按 `LOVE_PINYIN_PORT` 选择端口，默认8000）：
+
+```sh
+./run.sh start    # 与 ./run.sh 相同，前台运行
+./run.sh status   # 查看状态
+./run.sh stop     # 停止；也兼容 ./run.sh top
+./run.sh restart  # 停止后重新准备并前台启动
+LOVE_PINYIN_PORT=8001 ./run.sh status
+```
+
+`stop/status` 不安装或下载资源；不会停止其他项目占用的端口。`status` 运行中返回0、未运行返回3、端口冲突返回1；`stop` 未运行也成功。停止最多等待10秒，不强制杀进程。
+
 标准音直接信任[cmguo/PinYinSound](https://github.com/cmguo/PinYinSound)，自动同步上游但按`content/pinyin-source.json`的commit和逐文件摘要导入，不把上游HEAD更新直接变为教材声音。源码、课程JSON、原创SVG、13份课程MP3、每日PDF、全部中文引导WAV与白名单manifest都在仓库。课程录音与PDF保留非MIT说明。中文引导由本地开源 **Qwen3-TTS-12Hz-1.7B-CustomVoice / MLX** 重新生成，已附许可。日常运行直接播放，不调用TTS或外部语音服务。
 
 维护者如修改中文脚本，可运行 `npm run prepare:voice` 在Apple Silicon Mac上下载校验固定Qwen3-TTS模型（约4.5GB）并离线重生成，同时准备约1.3GB固定对齐模型重建字音时间轴，再提交音频、时间轴和manifest；模型大文件不入Git。固定参数和摘要见 `content/voice-build.json`。旧Mac声音准备工具仅保留兼容测试，不再是启动依赖。
