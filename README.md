@@ -100,6 +100,8 @@ macOS 开发者 clone 后，在项目目录执行：
 
 在仓库根目录执行 `docker compose up -d --build`，打开 <http://localhost:8000>。首次构建联网准备固定资源；镜像包含全部标准音、课程录音、中文引导和 Whisper，运行时无需另行下载。家庭进度保存到独立命名卷。家长配对码命令、离线镜像搬运及验收见[Docker 部署说明](docs/engineering/docker.md)。
 
+Windows Intel/AMD电脑使用Docker Desktop / WSL 2的Linux容器：`docker compose -f compose.yaml -f compose.amd64.yaml up -d --build`。应用、原生识别依赖与Whisper均按amd64/CPU运行；**已配置支持，Windows/amd64构建与模型推理尚未验证**。最低建议宿主4个逻辑CPU、8GB内存，Docker/WSL可用4GiB；运行预留10GB磁盘，构建预留20GB。以上是未压测的部署起点，推荐16GB宿主内存，详见[Windows操作与机器规格](docs/engineering/docker.md)。
+
 ## iPad / 手机与家庭局域网
 
 默认入口只监听本机。其他设备按[部署说明](docs/engineering/local-deployment.md)准备受信任 HTTPS，设置 `LOVE_PINYIN_BIND_IP`、`LOVE_PINYIN_TLS_CERT`、`LOVE_PINYIN_TLS_KEY`，运行 `npm run doctor:lan` 后再 `npm run serve:lan`。启动器只绑定指定的本机 LAN IPv4，检查证书有效期、IP SAN与密钥匹配；不会自动安装根证书、改防火墙或启用登录启动。

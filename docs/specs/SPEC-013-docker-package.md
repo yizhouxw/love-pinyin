@@ -7,6 +7,9 @@
 - DOCKER-03：SQLite 使用独立 /data 卷，重建容器后保留配对与进度；资源放在 /app 下，不被数据卷遮蔽。默认宿主仅发布 127.0.0.1:8000；容器内可通过 loopback 命令取得家长配对码，不放宽本地管理接口。提供健康检查与正常停止。
 - DOCKER-04：真实构建并运行镜像，用无外网网络验证网页、全部音频、模型初始化、访客学习、家长配对和数据重建恢复；检查损坏资源失败边界。工程与发布检查记录实际结果；未执行的架构或移动真机/LAN验收明确保留。
 
+- DOCKER-05：增加Windows x86-64宿主的Docker Desktop / WSL 2 Linux容器入口，显式构建并运行linux/amd64镜像；沿用锁定的Linux x86-64 Python/NumPy/pywhispercpp轮子与固定Whisper small GGML权重，容器强制CPU识别，不依赖Apple Metal/MLX、CUDA或宿主Python。提供PowerShell构建、运行、配对和离线搬运命令；按用户要求本轮不做Windows/amd64构建、推理或设备验证，标记“已配置支持，未验证”。不生成windows/amd64原生Windows容器。
+- DOCKER-06：文档给出运行与构建的CPU、宿主/容器内存及可用磁盘起始要求，区分项目保守估算、上游要求和实际测量；不把未压测配置称性能保证。说明识别超时、单任务串行与TTS维护模型的适用边界。
+
 实现和操作见[Docker 部署](../engineering/docker.md)、[ADR-0021](../adr/0021-self-contained-docker.md)。验收结果在本文件追加，不以配置文件存在代替容器运行证据。
 
 ## 2026-10-16 验收记录
@@ -18,3 +21,11 @@ DOCKER-01～04在本机Docker Engine29.6.2（Docker Desktop）/ linux/arm64软�
 工程验证`npm run verify:all`通过（66项前端/工具测试、323项服务端测试、30项浏览器视口测试、24项真实服务GUI测试）；新增构建下载损坏/超限/断网边界3项与平台解码5项回归通过，最终`verify:server`覆盖326项。`npm run validate:release`通过。证据为本机忽略目录的docker-build-complete.log、docker-build-verified.log、docker-smoke-complete.log、docker-corrupt-resource.log、docker-verify-all.log、docker-server-final.log和docker-release.log。
 
 剩余门禁：linux/amd64未实际构建运行；真实移动设备、家庭可信HTTPS/LAN、真实断WAN与家庭试用仍按SPEC-006继续，不以Docker隔离网络或桌面自动化替代。未推送镜像或公开发行素材。
+
+## Windows/amd64 与规格补充（2026-10-16）
+
+DOCKER-05已增加配置：compose.amd64.yaml固定linux/amd64构建/运行并使用独立amd64镜像标签；Docker镜像显式禁用识别GPU后端。固定Whisper权重跨CPU架构复用，原生推理库由uv.lock中的Linux x86-64轮子提供；不将macOS二进制复制到Windows。DOCKER-06的规格与PowerShell操作见Docker部署文档。
+
+按用户明确要求，本轮不进行Windows/amd64镜像构建、模型加载/推理或Windows真机验证；CPU/内存/磁盘配置是保守部署起点，未做最低配置压测。此前arm64验收是1106639版本的历史证据，不能扩展为本次版本或Windows验收。未新增或升级npm/uv依赖。
+
+本轮仅执行Prettier、改动Python文件的Ruff格式/lint与Compose合并配置静态检查，确认构建/运行平台均为linux/amd64、标签为love-pinyin:amd64；没有重新构建镜像、加载模型、执行推理或运行工程/GUI测试。机器规格中的Docker/Whisper上游参考已在部署文档附官方来源，项目资源预算明确为未压测估算。

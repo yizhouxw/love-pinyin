@@ -3,6 +3,7 @@
 import io
 import json
 import math
+import os
 import re
 import threading
 import time
@@ -160,6 +161,9 @@ def recognize(item_id: str, payload: bytes) -> dict:
                 params = config()
                 _MODEL = Model(
                     str(MODEL_PATH.resolve()),
+                    context_params={"use_gpu": False}
+                    if os.environ.get("LOVE_PINYIN_ASR_CPU_ONLY") == "1"
+                    else None,
                     language=params["language"],
                     initial_prompt=params["initialPrompt"],
                     no_context=params["noContext"],

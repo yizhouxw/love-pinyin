@@ -1,0 +1,10 @@
+# Windows x86-64 hosts: Docker Desktop with WSL 2 and Linux containers.
+# Configured support only; Windows/amd64 build and inference are not yet verified.
+services:
+  app:
+    image: love-pinyin:amd64
+    platform: linux/amd64
+    build:
+      context: .
+      platforms:
+        - linux/amd64

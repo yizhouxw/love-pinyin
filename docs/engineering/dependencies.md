@@ -80,3 +80,5 @@ Kokoro/sherpa-onnx维护依赖已移除；使用[MLX-Audio 0.5.8](https://pypi.o
 无新增 npm/uv 包。Node 官方镜像24.18.1-bookworm-slim（Node MIT，Debian组件各自许可）、Python 官方镜像3.12.12-slim-bookworm（Python PSF-2.0）与 Astral uv 0.12.5（MIT/Apache-2.0）均按多架构manifest SHA-256固定在Dockerfile；npm11.16.0复用现有固定版本。官方来源分别为 https://github.com/nodejs/docker-node 、https://github.com/docker-library/python 、https://github.com/astral-sh/uv 。
 
 Debian bookworm/security 软件包固定到 snapshot.debian.org 的20261015T000000Z快照（官方 https://snapshot.debian.org/），构建阶段安装 curl（curl许可）、FFmpeg（Debian构建GPL-2.0-or-later及其组件许可）以支持固定资源下载和音频检查；Python仅安装锁定的二进制轮子。运行镜像仅另含libgomp1（GCC运行库例外），各包许可保留在/usr/share/doc。具体实装与架构记录在SPEC-013，镜像内`dpkg-query -W`可查看精确版本。Whisper权重固定来源/摘要沿用scripts/asr_model.py，不纳入Git。
+
+DOCKER-05的Windows x86-64宿主运行Linux amd64容器，不新增Windows原生包或更换模型。uv.lock已锁定pywhispercpp1.5.1的CPython3.12 manylinux_2_27/2_28_x86_64轮子（SHA-256 973eafb3c27f4bc67f5e13f92491f91cee4ae0dd2d50c1b19c610f34c9ded9d8）及NumPy2.5.3对应Linux x86-64轮子；来源均为官方PyPI，许可证分别MIT与BSD-3-Clause。Docker内CPU后端通过已锁定pywhispercpp的context_params.use_gpu=false选择，固定Whisper small权重摘要不变。Windows/amd64轮子实装、模型初始化与推理按用户要求本次未验证；此前arm64实装不作为Windows证据。

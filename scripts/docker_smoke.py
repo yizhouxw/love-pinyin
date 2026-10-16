@@ -46,7 +46,8 @@ else:
         assert request('/api/v1/guest/daily-audio/' + asset['id'])
     validate_model(MODEL_PATH)
     from pywhispercpp.model import Model
-    Model(str(MODEL_PATH), print_progress=False, print_realtime=False)
+    Model(str(MODEL_PATH), context_params={"use_gpu": False},
+        print_progress=False, print_realtime=False)
     code = request('/api/v1/local/pairing-code', {})['code']
     request('/api/v1/pair', {'code': code, 'label': 'Docker smoke'})
     profile = request('/api/v1/bootstrap')['profile']

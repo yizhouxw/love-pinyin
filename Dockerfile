@@ -42,7 +42,8 @@ RUN uv run --no-sync python -m scripts.prepare_docker_resources \
 FROM base AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     PATH="/app/.venv/bin:$PATH" LOVE_PINYIN_DATA_DIR=/data \
-    LOVE_PINYIN_SOURCE_AUDIO_DIR=/app/private/pinyinsound
+    LOVE_PINYIN_SOURCE_AUDIO_DIR=/app/private/pinyinsound \
+    LOVE_PINYIN_ASR_CPU_ONLY=1
 WORKDIR /app
 COPY --from=prepared /app/.venv ./.venv
 COPY --from=prepared /app/server ./server
