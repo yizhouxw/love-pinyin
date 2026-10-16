@@ -40,3 +40,15 @@
 DAILY-04 本机验证（2026-10-13）：verify:all 与 validate:release 通过；Chromium/WebKit 的直接发音、连播切条、刷新记忆、恢复引导专项各通过，关闭引导后的真实 MediaRecorder/本地识别流程亦分别通过。日志 private/guidance-verify.log、private/guidance-release.log、private/guidance-direct.log；录音识别证据见 private/guidance-product.log 中 ASR-04 两项（该轮 DAILY-04 测试预期 ID 已在后续专项修正并通过）。测试证明本机浏览器功能，不替代真机麦克风验收。
 
 DAILY-05 本机验证：verify:all、validate:release通过；Chromium/WebKit真实配对后家长关闭→天天练跳过说明、就近快捷开关同步/记忆、恢复引导、说明中关闭与录音准备继续均通过；关闭引导后的本地ASR流程两浏览器通过。记录见private/shared-guidance-verify.log、shared-guidance-release.log、shared-guidance-family.log、shared-guidance-asr.log；截图private/shared-guidance-product-desktop-chromium.png。真机/儿童麦克风验收范围不变。决策见[ADR-0016](../adr/0016-shared-guidance-preference.md)。
+
+## DAILY-06：天天练短音频缓冲与资源准备
+
+2026-10-16用户确认iPad天天练拼音/句子仍卡顿、加载失败。覆盖当前逐片网络流式播放的不足，不改变语音引导、教学间隔、高亮时间轴或学习规则。
+
+- 当前一份练习按API白名单构建去重声音清单，低并发2后台准备；点击当前片段提升优先级并保留一个前台槽，总并发最多3。优先本节说明和当前/下一条，再当天其余资源；不等整份完成才允许开始，不预取14份。
+- 拼音、句子、小节说明/组词等短声音完整下载后从Blob播放，当前天编码缓存最多16MiB、128项、单项最多4MiB；不批量解码PCM。共享进行中的同资源请求，重播缓存片段不发网络请求。只保留许可学习声音，不缓存录音或家庭进度，不使用service worker。
+- 天天练共享一个HTMLAudioElement，在用户操作时启动短静音以保持媒体激活，静音不触发示范完成/高亮。每个真实片段仍以playing/currentTime/ended通知，不把下载就绪当播放完成。长课程/录音回放保留原生控件与互斥。
+- 下载10秒超时，仅网络中断/超时/5xx最多重试一次；404/鉴权/取消/解码/手势拒绝分开报告。播放开始后不自动从头重播，加载/停滞有界；换条停止旧音，退出/切份/后台取消预取与释放Blob URL/编码池，后台回来不自动出声。
+- 显示真实准备进度、当前下载/正在播放状态与失败重试；这些状态不计进度。测试请求去重/上限、截断重试、断网重播、取消旧响应、用户激活拒绝、后台恢复、互斥与高亮，最终需用户iPad验证，不宣称WebKit即真机。
+
+DAILY-06本机验证：verify:all通过74项前端/工具、341后端、30视口及34真实服务GUI；validate:release通过。Chromium/WebKit的18项产品回归通过，覆盖全部642个示范解码、缓存后阻断音频请求、截断/首次失败重试、模拟页面可见性恢复、引导开关、间隔/组词/句子高亮。模拟可见性不是实际iPad后台验证。证据：private/daily06-verify-all.log、daily06-release.log、daily06-buffered-product.log、daily06-guidance-product.log、daily06-reference-product.log。新版已构建至本机运行服务，iPad听感与真实网络中断恢复仍待用户实测。

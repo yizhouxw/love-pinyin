@@ -22,6 +22,10 @@ class FakeAudio extends EventTarget {
     this.paused = true;
   }
 
+  getAttribute(name: string): string | null {
+    return name === 'src' ? this.src : null;
+  }
+
   removeAttribute(name: string): void {
     if (name === 'src') this.src = '';
   }
@@ -115,7 +119,7 @@ it('notifies actual playback position only after playing and releases updates on
   const controller = new AbortController();
   const started = vi.fn();
   const times: number[] = [];
-  const result = player.playPrivate('daily-word-example', controller.signal, {
+  const result = player.playPrivate('ui-word-example', controller.signal, {
     onStart: started,
     onTime: (time) => times.push(time),
   });
@@ -137,4 +141,82 @@ it('notifies actual playback position only after playing and releases updates on
   expect(frame).toBeUndefined();
   media.dispatchEvent(new Event('playing'));
   expect(times).toEqual([0.3, 0.8]);
+});
+
+it('buffers the complete daily clip before playing, ignores primer events, reuses the element and replays without a request', async () => {
+  const attributes = new Map<string, string>();
+  class ReadingAudio extends FakeAudio {
+    currentTime = 0;
+    setAttribute(name: string, value: string) {
+      attributes.set(name, value);
+    }
+    override getAttribute(name: string) {
+      return name === 'src' ? this.src : (attributes.get(name) ?? null);
+    }
+    override removeAttribute(name: string) {
+      attributes.delete(name);
+      super.removeAttribute(name);
+    }
+  }
+  vi.stubGlobal('Audio', ReadingAudio);
+  vi.stubGlobal('document', { hidden: false });
+  let deliver!: (response: Response) => void;
+  const fetcher = vi.fn(
+    () =>
+      new Promise<Response>((resolve) => {
+        deliver = resolve;
+      }),
+  );
+  vi.stubGlobal('fetch', fetcher);
+  const created = vi.spyOn(URL, 'createObjectURL');
+  const revoked = vi.spyOn(URL, 'revokeObjectURL');
+  const player = new BrowserAudioPlayer();
+  const started = vi.fn();
+  const first = player.playDaily('daily-a1', undefined, { onStart: started });
+  const media = FakeAudio.instances[0]! as ReadingAudio;
+  media.dispatchEvent(new Event('playing'));
+  media.dispatchEvent(new Event('ended'));
+  expect(started).not.toHaveBeenCalled();
+  expect(attributes.has('data-learning-source')).toBe(false);
+  deliver(new Response('complete encoded fixture', { headers: { 'Content-Type': 'audio/mpeg' } }));
+  await vi.waitFor(() =>
+    expect(attributes.get('data-learning-source')).toBe('/api/v1/daily-audio/daily-a1'),
+  );
+  media.dispatchEvent(new Event('playing'));
+  expect(started).toHaveBeenCalledOnce();
+  media.dispatchEvent(new Event('ended'));
+  await first;
+  expect(media.src).toBe('');
+  const replay = player.playDaily('daily-a1');
+  await vi.waitFor(() => expect(attributes.has('data-learning-source')).toBe(true));
+  expect(FakeAudio.instances).toHaveLength(1);
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  const stopped = expect(replay).rejects.toMatchObject({ name: 'AbortError' });
+  player.releaseReading();
+  await stopped;
+  expect(media.src).toBe('');
+  expect(revoked.mock.calls.map((call) => call[0]).sort()).toEqual(
+    created.mock.results.map((result) => result.value as string).sort(),
+  );
+  created.mockRestore();
+  revoked.mockRestore();
+});
+
+it('reports a daily media gesture rejection without pretending the demonstration completed', async () => {
+  class DeniedAudio extends FakeAudio {
+    override play(): Promise<void> {
+      return Promise.reject(new DOMException('tap required', 'NotAllowedError'));
+    }
+  }
+  vi.stubGlobal('Audio', DeniedAudio);
+  vi.stubGlobal('document', { hidden: false });
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('fixture')));
+  const player = new BrowserAudioPlayer();
+  const started = vi.fn();
+  await expect(player.playDaily('daily-a1', undefined, { onStart: started })).rejects.toThrow(
+    'AUDIO_GESTURE_REQUIRED',
+  );
+  expect(started).not.toHaveBeenCalled();
+  expect(FakeAudio.instances[0]!.src).toBe('');
+  player.releaseReading();
 });

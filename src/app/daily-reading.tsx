@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type {
   DailyDay,
   DailyItem,
@@ -12,6 +12,7 @@ import { BrowserReadingRecorder } from '../platform/audio/browser-reading-record
 import { isGuest } from '../platform/guest';
 import { recognizeReading, type RecognitionResult } from '../platform/audio/reading-recognition';
 import { waitForPlaybackGap } from '../platform/audio/playback-gap';
+import { dayResources, itemResources } from '../platform/audio/reading-resources';
 import { GuidanceSwitch } from './guidance-switch';
 import recognitionContent from '../../content/reading-recognition.json';
 
@@ -32,6 +33,10 @@ export function DailyReadingPage({
   gapSeconds: number;
   onGuidanceChange: (enabled: boolean) => void;
 }) {
+  const preparation = useSyncExternalStore(
+    audioPlayer.readingPool.subscribe,
+    audioPlayer.readingPool.status,
+  );
   const [data, setData] = useState<DailyReading | null>(null);
   const [error, setError] = useState(false);
   const [dayId, setDayId] = useState('day-01');
@@ -54,11 +59,25 @@ export function DailyReadingPage({
       });
     return () => {
       active = false;
-      audioPlayer.stop();
+      audioPlayer.releaseReading();
     };
   }, []);
   const day = data?.days.find((value) => value.id === dayId);
   const section = day?.sections.find((value) => value.id === sectionId);
+  useEffect(() => {
+    if (!day || !data) return;
+    const prepare = () => audioPlayer.prepareReading(dayResources(day, data.ui ?? {}));
+    prepare();
+    const visibility = () => {
+      if (document.hidden) audioPlayer.releaseReading();
+      else prepare();
+    };
+    document.addEventListener('visibilitychange', visibility);
+    return () => {
+      document.removeEventListener('visibilitychange', visibility);
+      audioPlayer.releaseReading();
+    };
+  }, [day, data]);
   return (
     <section className="daily-page" aria-label="天天练拼音">
       <button className="quiet" onClick={onBack}>
@@ -85,6 +104,28 @@ export function DailyReadingPage({
         </div>
       )}
       {!data && !error && <p role="status">正在读取每日练习…</p>}
+      {data && day && (
+        <div className="reading-preparation" aria-label="声音准备">
+          <p aria-live="polite">
+            本份声音：{preparation.ready} / {preparation.total} 已准备好。
+            {preparation.total === 0
+              ? '正在准备声音清单…'
+              : preparation.ready === preparation.total
+                ? '本份声音已就绪。'
+                : preparation.failed > 0
+                  ? '仍有声音待准备或重试，可以先开始。'
+                  : '正在分批准备，可以先开始。'}
+          </p>
+          {preparation.failed > 0 && (
+            <p>
+              {preparation.failed} 段声音暂未准备好。
+              <button className="quiet" onClick={() => audioPlayer.readingPool.retry()}>
+                重试准备声音
+              </button>
+            </p>
+          )}
+        </div>
+      )}
       {data && day && (
         <>
           <nav className="daily-days" aria-label="选择每日练习">
@@ -175,6 +216,8 @@ function ReadingSession({
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<'ready' | 'playing' | 'follow' | 'finished'>('ready');
   const [highlight, setHighlight] = useState(-1);
+  const [audioStage, setAudioStage] = useState<'loading' | 'playing'>('loading');
+  const [instructionPlaying, setInstructionPlaying] = useState(false);
   const [failure, setFailure] = useState('');
   const [recording, setRecording] = useState<'idle' | 'requesting' | 'recording' | 'stopping'>(
     'idle',
@@ -191,6 +234,12 @@ function ReadingSession({
   const recorder = useRef(new BrowserReadingRecorder());
   const replay = useRef<HTMLAudioElement | null>(null);
   const item = section.items[index]!;
+  useEffect(() => {
+    audioPlayer.prioritizeReading([
+      { kind: 'voice', id: `daily-instruction-${section.id}` },
+      ...section.items.slice(index, index + 2).flatMap(itemResources),
+    ]);
+  }, [section, index]);
   const previousGuidance = useRef(guidanceEnabled);
   const guidance = useRef(guidanceEnabled);
   guidance.current = guidanceEnabled;
@@ -244,18 +293,26 @@ function ReadingSession({
     return audioPlayer.registerExternalMedia(media);
   }, [recordUrl]);
 
-  const playPrivate = (id: string, signal: AbortSignal) => audioPlayer.playPrivate(id, signal);
+  const playPrivate = (id: string, signal: AbortSignal) => {
+    setInstructionPlaying(id.startsWith('daily-instruction-'));
+    return audioPlayer.playPrivate(id, signal, { onState: setAudioStage });
+  };
   async function demo(target: DailyItem, signal: AbortSignal) {
+    setInstructionPlaying(false);
     if (!target.narrationId && (target.missingSyllables.length || !target.audioIds.length))
       throw new Error('NOT_PREPARED');
     if (target.narrationId) {
       setHighlight(-1);
       await audioPlayer.playPrivate(target.narrationId, signal, {
+        onState: setAudioStage,
         onTime: (seconds) => setHighlight(highlightedSyllable(target.timings ?? [], seconds)),
       });
     } else {
       for (const [position, id] of target.audioIds.entries()) {
-        await audioPlayer.playDaily(id, signal, { onStart: () => setHighlight(position) });
+        await audioPlayer.playDaily(id, signal, {
+          onStart: () => setHighlight(position),
+          onState: setAudioStage,
+        });
         setHighlight(-1);
         if (position < target.audioIds.length - 1) await waitForPlaybackGap(gapSeconds, signal);
       }
@@ -288,10 +345,10 @@ function ReadingSession({
         if (guidance.current) await playPrivate('daily-ui-follow', active.signal);
         setPhase('follow');
       }
-    } catch {
+    } catch (error) {
       if (!active.signal.aborted) {
         setHighlight(-1);
-        setFailure('示范声音还没响起来。可以重试；仍然没有声音，请家长检查 Mac 上的每日练习音频。');
+        setFailure(readingAudioFailure(error));
         setPhase('ready');
       }
     }
@@ -489,7 +546,11 @@ function ReadingSession({
               : recording === 'stopping'
                 ? '正在结束录音…'
                 : phase === 'playing'
-                  ? '仔细听一听…'
+                  ? audioStage === 'loading'
+                    ? '正在准备这段声音，请稍等…'
+                    : instructionPlaying
+                      ? '正在听本节说明…'
+                      : '仔细听一听…'
                   : phase === 'follow'
                     ? '轮到你读啦，读完点下一条。'
                     : phase === 'finished'
@@ -645,4 +706,15 @@ function ReadingSession({
       </aside>
     </div>
   );
+}
+
+function readingAudioFailure(error: unknown): string {
+  const code = error instanceof Error ? error.message : '';
+  if (code === 'AUDIO_GESTURE_REQUIRED')
+    return 'iPad 需要你再点一下播放按钮才能出声，请点“重试示范”。';
+  if (code === 'AUDIO_DECODE_FAILED') return '这段声音暂时无法解码，请重试；仍然失败时请家长检查。';
+  if (code === 'AUDIO_TIMEOUT' || code === 'AUDIO_NETWORK' || code === 'AUDIO_STALLED')
+    return '这段声音下载或播放中断了，请点“重试示范”。已经准备好的声音可以继续播放。';
+  if (code.startsWith('AUDIO_HTTP_')) return '这段声音暂时不可用，请重新连接家庭 Mac 后重试。';
+  return '示范声音还没响起来，请重试。仍然失败时请家长检查 Mac 上的每日练习音频。';
 }

@@ -40,6 +40,8 @@ flowchart LR
 
 ## 音频与网络
 
+DAILY-06按[ADR-0025](adr/0025-buffered-daily-audio.md)为天天练短声音增加有界编码Blob池：2后台下载槽、最多1额外前台槽、请求去重与当前条优先，完整下载后复用同一媒体元素播放；当天资源上限16MiB/128项，单项4MiB。下载失败只在出声前有限重试；播放中断明确提示，不自动重播已出声片段。切份、退出及后台清池，课程长音频仍走原生Range。
+
 标准音直接采用固定 cmguo/PinYinSound；中文题目/导航由准备阶段生成；课程录音由家长提供。运行时按登记ID和摘要读本机文件，不接受任意路径、远程URL或动态合成文本。首版不请求麦克风，不写入新发音评分。
 
 默认只监听 loopback。家庭访问需显式 LAN IPv4 与可信 HTTPS。会话 Cookie 为 HttpOnly、SameSite=Strict，HTTPS 时加 Secure；本机 HTTP 开发不加 Secure。写操作校验 CSRF及已提供的 Origin，不配置通配 CORS。当前安全头与缺口见[隐私边界](engineering/privacy.md)。

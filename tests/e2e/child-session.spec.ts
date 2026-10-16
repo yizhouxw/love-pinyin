@@ -38,6 +38,10 @@ test.beforeEach(async ({ page }) => {
         this.paused = true;
       }
 
+      getAttribute(name: string) {
+        return name === 'src' ? this.src : null;
+      }
+
       removeAttribute(name: string) {
         if (name === 'src') this.src = '';
       }

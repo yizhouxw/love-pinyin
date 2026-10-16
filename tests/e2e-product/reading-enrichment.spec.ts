@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
+import { observeReadingMedia, playedReading } from '../support/media-log';
 
 test.use({ selectedPinyinSource: true });
 
@@ -54,7 +55,7 @@ test('READ-01: real consecutive audio observes the gap and stopping cancels the 
     (window as unknown as { readingEvents: AudioEvent[] }).readingEvents = events;
     const play = HTMLMediaElement.prototype.play;
     HTMLMediaElement.prototype.play = function () {
-      const source = this.src;
+      const source = this.getAttribute('data-learning-source') || this.src;
       this.addEventListener(
         'playing',
         () => events.push({ source, type: 'start', time: performance.now() }),
@@ -106,15 +107,17 @@ test('READ-03/04: folded examples speak on opening, and Chinese sentences highli
   page,
   appUrl,
 }) => {
+  await observeReadingMedia(page);
   await guest(page, appUrl);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '第 3 份', exact: true }).click();
   await page.getByRole('button', { name: /^读音节并组词/ }).click();
   const reader = page.getByLabel('当前跟读内容');
   await expect(reader.getByText('八个', { exact: true })).toHaveCount(0);
-  const voice = page.waitForResponse((r) => r.url().endsWith('/voice/daily-example-ba1') && r.ok());
   await reader.getByRole('button', { name: '展开组词样例', exact: true }).click();
-  await voice;
+  await expect
+    .poll(async () => (await playedReading(page, 'voice')).includes('daily-example-ba1'))
+    .toBe(true);
   await expect(reader.getByText('八个', { exact: true })).toBeVisible();
   await expect(reader.getByText('八月', { exact: true })).toBeVisible();
   await reader.getByRole('button', { name: '收起组词样例', exact: true }).click();

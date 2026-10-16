@@ -26,6 +26,7 @@ export type DailyDay = {
   sections: DailySection[];
 };
 export type DailyReading = {
+  ui: Record<string, string>;
   version: number;
   source: { filename: string; sha256: string; pages: number; practiceCount: number };
   days: DailyDay[];
