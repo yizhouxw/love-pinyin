@@ -27,7 +27,7 @@ docker compose down
 ## 只运行已有镜像
 
 ```sh
-docker build -t love-pinyin:local .
+docker build -f deploy/docker/Dockerfile -t love-pinyin:local .
 docker run --pull=never -d --name love-pinyin -p 127.0.0.1:8000:8000 \
   --mount type=volume,src=love-pinyin-data,dst=/data love-pinyin:local
 ```
@@ -44,7 +44,7 @@ docker run --pull=never -d --name love-pinyin -p 127.0.0.1:8000:8000 \
   --mount type=volume,src=love-pinyin-data,dst=/data love-pinyin:local
 ```
 
-tar 包括全部音频、字体、前端和 Whisper，不包括家庭数据。默认构建宿主架构；Apple Silicon 是 linux/arm64，Intel/AMD 是 linux/amd64。跨架构需单独 `docker buildx build --platform linux/amd64 --load -t love-pinyin:local .`，不可把尚未运行的架构称已验收。
+tar 包括全部音频、字体、前端和 Whisper，不包括家庭数据。默认构建宿主架构；Apple Silicon 是 linux/arm64，Intel/AMD 是 linux/amd64。跨架构需单独 `docker buildx build -f deploy/docker/Dockerfile --platform linux/amd64 --load -t love-pinyin:local .`，不可把尚未运行的架构称已验收。
 
 默认仅供本机访问。家庭 LAN 仍需可信 HTTPS 与设备信任，参见[本地部署](local-deployment.md)。可在宿主已有的 HTTPS 反向代理后接本机8000端口，保留原始 Host 并转发到同源入口；不要把 HTTP LAN 麦克风视为可用。容器不自动安装证书或开放宿主防火墙。
 
@@ -67,7 +67,7 @@ Windows上的部署入口是Docker Desktop + WSL 2的 **Linux容器**，目标�
 先按[Docker官方Windows安装要求](https://docs.docker.com/desktop/setup/install/windows-install/)安装支持当前Windows版本的Docker Desktop与WSL 2，启用BIOS/UEFI硬件虚拟化、WSL 2后端，并选择Linux containers。宿主不需要安装Node、Python、FFmpeg、CUDA或模型。仓库应已解压/检出到本机；在仓库根目录的PowerShell执行：
 
 ```powershell
-docker compose -f compose.yaml -f compose.amd64.yaml up -d --build
+docker compose -f compose.yaml -f deploy/docker/compose.amd64.yaml up -d --build
 ```
 
 覆盖文件同时固定构建和运行平台为`linux/amd64`，镜像标签为`love-pinyin:amd64`，避免误用Apple Silicon的arm64本地镜像。打开 <http://localhost:8000>。家长配对码使用PowerShell here-string传入容器，无需执行Bash脚本：
@@ -77,15 +77,15 @@ docker compose -f compose.yaml -f compose.amd64.yaml up -d --build
 import urllib.request
 request = urllib.request.Request('http://127.0.0.1:8000/api/v1/local/pairing-code', data=b'', method='POST')
 print(urllib.request.urlopen(request).read().decode())
-'@ | docker compose -f compose.yaml -f compose.amd64.yaml exec -T app python -
+'@ | docker compose -f compose.yaml -f deploy/docker/compose.amd64.yaml exec -T app python -
 ```
 
 返回code填入页面。端口冲突时先设置`$env:LOVE_PINYIN_PORT = '8001'`，再执行上述启动命令，改为访问localhost:8001。查看状态、日志和停止时持续使用同一组文件，数据卷仍保留：
 
 ```powershell
-docker compose -f compose.yaml -f compose.amd64.yaml ps
-docker compose -f compose.yaml -f compose.amd64.yaml logs --tail=50 app
-docker compose -f compose.yaml -f compose.amd64.yaml down
+docker compose -f compose.yaml -f deploy/docker/compose.amd64.yaml ps
+docker compose -f compose.yaml -f deploy/docker/compose.amd64.yaml logs --tail=50 app
+docker compose -f compose.yaml -f deploy/docker/compose.amd64.yaml down
 ```
 
 ### Windows直接使用docker run
@@ -93,7 +93,7 @@ docker compose -f compose.yaml -f compose.amd64.yaml down
 不使用Compose时，先构建或通过`docker load`导入`love-pinyin:amd64`，再在PowerShell执行以下命令。行尾反引号是PowerShell续行符，后面不要加空格；本方式同样未在Windows/amd64验证。
 
 ```powershell
-docker buildx build --platform linux/amd64 --load -t love-pinyin:amd64 .
+docker buildx build -f deploy/docker/Dockerfile --platform linux/amd64 --load -t love-pinyin:amd64 .
 docker run --pull=never -d --name love-pinyin --platform linux/amd64 `
   -p 127.0.0.1:8000:8000 `
   --mount type=volume,src=love-pinyin-data,dst=/data `
@@ -134,11 +134,11 @@ Qwen TTS/对齐模型仅供维护者在Apple Silicon预生成素材，容器已�
 离线交付Windows机器时，必须在联网的构建机器准备amd64镜像，再保存；可以在Apple Silicon跨架构构建，但速度与兼容性仍未验证，不要重命名arm64镜像冒充amd64：
 
 ```powershell
-docker buildx build --platform linux/amd64 --load -t love-pinyin:amd64 .
+docker buildx build -f deploy/docker/Dockerfile --platform linux/amd64 --load -t love-pinyin:amd64 .
 docker save -o love-pinyin-amd64.tar love-pinyin:amd64
-# 复制tar及两个compose文件到离线Windows机器，然后执行：
+# 复制tar、compose.yaml及deploy/docker/compose.amd64.yaml到离线Windows机器，保留目录层级，然后执行：
 docker load -i love-pinyin-amd64.tar
-docker compose -f compose.yaml -f compose.amd64.yaml up -d --no-build --pull never
+docker compose -f compose.yaml -f deploy/docker/compose.amd64.yaml up -d --no-build --pull never
 ```
 
 离线启动不会构建或拉取镜像，音频和Whisper均从包内读取。Docker Desktop/WSL 2本身应已安装完毕；上述打包不包含它们的离线安装程序。命名卷保存在Docker的Linux环境，保留/data的Linux权限，避免将SQLite目录直接绑定到NTFS路径。跨机器家庭进度仍用家长JSON备份恢复。

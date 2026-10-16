@@ -1,8 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests/e2e-soak',
-  outputDir: './test-results/soak',
+  testDir: '../tests/e2e-soak',
+  outputDir: '../test-results/soak',
   workers: 2,
   timeout: 30 * 60_000,
   forbidOnly: !!process.env.CI,

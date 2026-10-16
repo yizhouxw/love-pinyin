@@ -24,7 +24,7 @@ DOCKER-01～04在本机Docker Engine29.6.2（Docker Desktop）/ linux/arm64软�
 
 ## Windows/amd64 与规格补充（2026-10-16）
 
-DOCKER-05已增加配置：compose.amd64.yaml固定linux/amd64构建/运行并使用独立amd64镜像标签；Docker镜像显式禁用识别GPU后端。固定Whisper权重跨CPU架构复用，原生推理库由uv.lock中的Linux x86-64轮子提供；不将macOS二进制复制到Windows。DOCKER-06的规格与PowerShell操作见Docker部署文档。
+DOCKER-05已增加配置：`deploy/docker/compose.amd64.yaml`固定linux/amd64构建/运行并使用独立amd64镜像标签；Docker镜像显式禁用识别GPU后端。固定Whisper权重跨CPU架构复用，原生推理库由uv.lock中的Linux x86-64轮子提供；不将macOS二进制复制到Windows。DOCKER-06的规格与PowerShell操作见Docker部署文档。
 
 按用户明确要求，本轮不进行Windows/amd64镜像构建、模型加载/推理或Windows真机验证；CPU/内存/磁盘配置是保守部署起点，未做最低配置压测。此前arm64验收是1106639版本的历史证据，不能扩展为本次版本或Windows验收。未新增或升级npm/uv依赖。
 

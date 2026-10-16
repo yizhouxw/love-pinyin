@@ -1,7 +1,9 @@
 services:
   app:
     image: love-pinyin:local
-    build: .
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
     ports:
       - '127.0.0.1:${LOVE_PINYIN_PORT:-8000}:8000'
     volumes:

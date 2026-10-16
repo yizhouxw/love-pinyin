@@ -77,7 +77,7 @@ Kokoro/sherpa-onnx维护依赖已移除；使用[MLX-Audio 0.5.8](https://pypi.o
 
 ## SPEC-013 Docker 构建（2026-10-16）
 
-无新增 npm/uv 包。Node 官方镜像24.18.1-bookworm-slim（Node MIT，Debian组件各自许可）、Python 官方镜像3.12.12-slim-bookworm（Python PSF-2.0）与 Astral uv 0.12.5（MIT/Apache-2.0）均按多架构manifest SHA-256固定在Dockerfile；npm11.16.0复用现有固定版本。官方来源分别为 https://github.com/nodejs/docker-node 、https://github.com/docker-library/python 、https://github.com/astral-sh/uv 。
+无新增 npm/uv 包。Node 官方镜像24.18.1-bookworm-slim（Node MIT，Debian组件各自许可）、Python 官方镜像3.12.12-slim-bookworm（Python PSF-2.0）与 Astral uv 0.12.5（MIT/Apache-2.0）均按多架构manifest SHA-256固定在`deploy/docker/Dockerfile`；npm11.16.0复用现有固定版本。官方来源分别为 https://github.com/nodejs/docker-node 、https://github.com/docker-library/python 、https://github.com/astral-sh/uv 。
 
 Debian bookworm/security 软件包固定到 snapshot.debian.org 的20261015T000000Z快照（官方 https://snapshot.debian.org/），构建阶段安装 curl（curl许可）、FFmpeg（Debian构建GPL-2.0-or-later及其组件许可）以支持固定资源下载和音频检查；Python仅安装锁定的二进制轮子。运行镜像仅另含libgomp1（GCC运行库例外），各包许可保留在/usr/share/doc。具体实装与架构记录在SPEC-013，镜像内`dpkg-query -W`可查看精确版本。Whisper权重固定来源/摘要沿用scripts/asr_model.py，不纳入Git。
 

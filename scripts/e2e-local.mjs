@@ -21,7 +21,13 @@ if (knownLocalIssue) {
 }
 const result = spawnSync(
   process.execPath,
-  ['node_modules/@playwright/test/cli.js', 'test', ...projects.map((p) => `--project=${p}`)],
+  [
+    'node_modules/@playwright/test/cli.js',
+    'test',
+    '--config',
+    'config/playwright.config.ts',
+    ...projects.map((p) => `--project=${p}`),
+  ],
   { stdio: 'inherit' },
 );
 if (result.error) console.error(result.error.message);

@@ -100,13 +100,29 @@ macOS 开发者 clone 后，在项目目录执行：
 
 在仓库根目录执行 `docker compose up -d --build`，打开 <http://localhost:8000>。首次构建联网准备固定资源；镜像包含全部标准音、课程录音、中文引导和 Whisper，运行时无需另行下载。家庭进度保存到独立命名卷。家长配对码命令、离线镜像搬运及验收见[Docker 部署说明](docs/engineering/docker.md)。
 
-Windows Intel/AMD电脑使用Docker Desktop / WSL 2的Linux容器：`docker compose -f compose.yaml -f compose.amd64.yaml up -d --build`。应用、原生识别依赖与Whisper均按amd64/CPU运行；**已配置支持，Windows/amd64构建与模型推理尚未验证**。最低建议宿主4个逻辑CPU、8GB内存，Docker/WSL可用4GiB；运行预留10GB磁盘，构建预留20GB。以上是未压测的部署起点，推荐16GB宿主内存，详见[Windows操作与机器规格](docs/engineering/docker.md)。
+Windows Intel/AMD电脑使用Docker Desktop / WSL 2的Linux容器：`docker compose -f compose.yaml -f deploy/docker/compose.amd64.yaml up -d --build`。应用、原生识别依赖与Whisper均按amd64/CPU运行；**已配置支持，Windows/amd64构建与模型推理尚未验证**。最低建议宿主4个逻辑CPU、8GB内存，Docker/WSL可用4GiB；运行预留10GB磁盘，构建预留20GB。以上是未压测的部署起点，推荐16GB宿主内存，详见[Windows操作与机器规格](docs/engineering/docker.md)。
 
 ## iPad / 手机与家庭局域网
 
 默认入口只监听本机。其他设备按[部署说明](docs/engineering/local-deployment.md)准备受信任 HTTPS，设置 `LOVE_PINYIN_BIND_IP`、`LOVE_PINYIN_TLS_CERT`、`LOVE_PINYIN_TLS_KEY`，运行 `npm run doctor:lan` 后再 `npm run serve:lan`。启动器只绑定指定的本机 LAN IPv4，检查证书有效期、IP SAN与密钥匹配；不会自动安装根证书、改防火墙或启用登录启动。
 
 这里的“离线”指断互联网、家庭 LAN 仍连通。Mac 停机或 LAN 断开时无法保存新进度，页面提供重试/恢复，不承诺浏览器独立离线学习。
+
+## 项目目录
+
+| 目录 / 文件                             | 职责                                       |
+| --------------------------------------- | ------------------------------------------ |
+| `src/`、`server/`                       | React 前端与 Python API、存储和本地识别    |
+| `content/`、`schemas/`                  | 教学内容、资源清单与数据结构约束           |
+| `public/`、`resources/`                 | 网页静态资源、课程素材与独立许可           |
+| `config/`                               | 构建、lint、单元测试与各类 Playwright 配置 |
+| `deploy/docker/`                        | Dockerfile 与 amd64 Compose 覆盖配置       |
+| `scripts/`、`tools/`                    | 安装、校验、素材维护、运维与研究工具       |
+| `tests/`                                | 前端、服务端与浏览器测试                   |
+| `docs/`、`research/`                    | 产品、SPEC、ADR、部署验收文档与研究资料    |
+| `run.sh`、`run.command`、`compose.yaml` | 根目录的一键启动与默认 Docker 入口         |
+
+根目录保留依赖清单/锁文件、`tsconfig.json`、格式配置及版本文件，供工具自动发现。开发和验证通过下列 npm 命令加载 `config/`，无需切换目录。本地 `private/`、`models/`、依赖、构建与测试产物由 Git 忽略，不属于源码目录。
 
 ## 开发与验证
 

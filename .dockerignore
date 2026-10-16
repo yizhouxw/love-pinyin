@@ -1,13 +1,16 @@
 # Allowlist: no private data, caches, certificates, local models or unrelated PDFs.
 *
-!Dockerfile
+!deploy/
+!deploy/docker/
+!deploy/docker/Dockerfile
 !package.json
 !package-lock.json
 !pyproject.toml
 !uv.lock
 !index.html
 !tsconfig.json
-!vite.config.ts
+!config/
+!config/**
 !src/
 !src/**
 !public/

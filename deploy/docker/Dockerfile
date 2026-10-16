@@ -2,7 +2,8 @@ FROM node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install --global npm@11.16.0 && npm ci
-COPY tsconfig.json vite.config.ts index.html ./
+COPY tsconfig.json index.html ./
+COPY config ./config
 COPY src ./src
 COPY public ./public
 COPY content ./content
