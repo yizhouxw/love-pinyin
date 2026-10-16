@@ -82,3 +82,5 @@ GET /api/v1/daily-reading（配对）及/api/v1/guest/daily-reading（访客）�
 SPEC-012新增`settings.playbackGapSeconds`：数字0.1～5、步长0.1秒，默认1。PUT `/household/settings`可选传入，省略时保留。SQLite迁移6使用整十分之一秒存储；v5备份可选携带此字段，旧备份缺字段恢复为1秒。访客临时备份同样支持。daily-reading的组词条目附`wordExample`（id、examples含text/pinyin、spokenText）；有完整中文音频的条目附`timings`（逐音节start/end秒），仅当音频及中文脚本摘要一致时提供，非儿童读音分析。
 
 DEVICE-01：POST `/pair`可带可选`model`（最多80字符）；GET `/devices`返回`model`、`pairingCode`、`lastConnectedAt`，缺失历史数据为null。已用配对码不是可重用邀请，不返回会话令牌。认证请求可附`X-LP-Device-Model`用于旧设备首次补全类型提示，不覆盖已有型号；连接时间只使用服务端时钟。
+
+ACCESS-03：家长API与`/local/pairing-code`仅接受来源127.0.0.1且Host hostname为127.0.0.1的请求；否则返回403 `PARENT_LOCAL_REQUIRED`。家庭/访客bootstrap的`isLocalHost`表示这一严格入口条件。远程bootstrap的`device.isParent`固定false，即使旧Cookie对应历史家长角色；新远程配对也仅学习角色。远程访客PUT课程/设置同样拒绝。提供的Uvicorn启动命令禁用代理头，不信任转发头授予管理权限。

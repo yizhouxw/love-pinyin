@@ -142,7 +142,7 @@ test('ACCESS-02: guest mode stays visible and local pairing management connects 
   expect(code).toMatch(/[A-Z2-9]{8}/);
 });
 
-test('ACCESS-02: local paired learning device can generate a code from parent management', async ({
+test('ACCESS-02: second local paired device can generate a code from parent management', async ({
   page,
   appUrl,
   browser,
@@ -157,7 +157,7 @@ test('ACCESS-02: local paired learning device can generate a code from parent ma
     await child.goto(appUrl);
     await child.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
     await child.getByRole('button', { name: '连接家庭' }).click();
-    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('学习设备');
+    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('家长设备');
     await child.getByRole('button', { name: '家长管理' }).click();
     await child.getByRole('button', { name: '我是家长，继续' }).click();
     await child.getByRole('button', { name: '生成配对码', exact: true }).click();

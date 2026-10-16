@@ -785,7 +785,7 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
             ) : (
               <p>
                 请在服务器 Mac 上打开 <strong>http://127.0.0.1:8000</strong>，点击“在 Mac
-                上生成家长配对码”； 或在已连接设备的“家长管理”中生成配对码，再回到这里输入。
+                上生成家长配对码”； 或在服务器 Mac 本机的“家长管理”中生成配对码，再回到这里输入。
               </p>
             )}
           </div>
@@ -1247,18 +1247,20 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
           <span className="brand-mark">拼</span>
           <span>爱拼音</span>
         </div>
-        <button
-          className="parent-button"
-          onClick={() => {
-            if (parentOpen) setParentOpen(false);
-            else setParentGateOpen(true);
-          }}
-        >
-          {parentOpen ? '返回学习' : '家长管理'}
-        </button>
+        {boot.isLocalHost && (
+          <button
+            className="parent-button"
+            onClick={() => {
+              if (parentOpen) setParentOpen(false);
+              else setParentGateOpen(true);
+            }}
+          >
+            {parentOpen ? '返回学习' : '家长管理'}
+          </button>
+        )}
       </header>
       <AdultConfirmDialog
-        open={parentGateOpen}
+        open={Boolean(boot.isLocalHost && parentGateOpen)}
         onConfirm={() => {
           setParentGateOpen(false);
           setParentOpen(true);
@@ -1877,7 +1879,7 @@ function PairingManagement() {
     const timer = window.setTimeout(() => setExpired(true), Math.max(0, expiresAt - Date.now()));
     return () => window.clearTimeout(timer);
   }, [expiresAt]);
-  const canGenerate = Boolean(access?.isLocalHost || access?.device?.isParent);
+  const canGenerate = Boolean(access?.isLocalHost);
   async function generate() {
     setBusy(true);
     setError('');
@@ -1938,7 +1940,7 @@ function PairingManagement() {
         </>
       ) : (
         <>
-          <p>请在服务器 Mac 的本机入口生成配对码，或由已配对的家长设备生成。</p>
+          <p>请在服务器 Mac 的本机入口生成配对码，或由服务器 Mac 的本机家长入口生成。</p>
           <button className="quiet" onClick={() => setShowHelp(true)}>
             如何在 Mac 上生成配对码
           </button>

@@ -124,6 +124,7 @@ function main() {
     '--ssl-keyfile',
     config.key,
     '--no-access-log',
+    '--no-proxy-headers',
   ];
   const server = spawn('uv', args, { stdio: 'inherit' });
   let stopping = false;

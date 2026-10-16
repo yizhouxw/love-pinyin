@@ -11,7 +11,7 @@ def test_parent_can_list_and_revoke_secondary_device_without_exposing_tokens(pai
     with TestClient(
         parent.app,
         base_url="http://127.0.0.1",
-        client=("127.0.0.1", 50001),
+        client=("192.168.1.30", 50001),
     ) as child:
         paired = child.post(
             "/api/v1/pair", json={"code": code_response.json()["code"], "label": "平板"}
@@ -28,7 +28,7 @@ def test_parent_can_list_and_revoke_secondary_device_without_exposing_tokens(pai
 
         denied = child.get("/api/v1/devices")
         assert denied.status_code == 403
-        assert denied.json()["detail"]["code"] == "PARENT_AUTH_REQUIRED"
+        assert denied.json()["detail"]["code"] == "PARENT_LOCAL_REQUIRED"
 
         self_revoke = parent.delete(
             f"/api/v1/devices/{next(item['id'] for item in devices if item['current'])}",
@@ -57,7 +57,7 @@ def test_pairing_capability_distinguishes_loopback_from_remote_even_when_paired(
     ) as remote:
         assert remote.get("/api/v1/bootstrap").json()["isLocalHost"] is False
         assert remote.post("/api/v1/local/pairing-code").status_code == 403
-        assert remote.post("/api/v1/pairing-codes").status_code == 401
+        assert remote.post("/api/v1/pairing-codes").status_code == 403
         code = paired_client.post("/api/v1/local/pairing-code").json()["code"]
         assert remote.post("/api/v1/pair", json={"code": code, "label": "iPad"}).status_code == 200
         state = remote.get("/api/v1/bootstrap").json()
@@ -85,7 +85,9 @@ def test_device_model_used_code_and_server_connection_time(paired_client, monkey
 
     parent = paired_client
     code = parent.post("/api/v1/local/pairing-code").json()["code"]
-    with TestClient(parent.app, base_url="http://127.0.0.1", client=("127.0.0.1", 50003)) as child:
+    with TestClient(
+        parent.app, base_url="http://127.0.0.1", client=("192.168.1.30", 50003)
+    ) as child:
         moment = "2026-10-16T04:05:06.000+00:00"
         monkeypatch.setattr(api, "now_iso", lambda: moment)
         response = child.post("/api/v1/pair", json={"code": code, "model": "iPad Air 5"})
@@ -161,3 +163,79 @@ def test_device_model_used_code_and_server_connection_time(paired_client, monkey
             ).status_code
             == 404
         )
+
+
+def test_parent_management_requires_exact_local_entry_even_for_legacy_parent_cookie(paired_client):
+    from server import storage
+
+    cookies = dict(paired_client.cookies)
+    with storage.connect() as db:
+        original = dict(db.execute("SELECT * FROM household").fetchone())
+    # A valid legacy parent cookie, Host spoofing and forwarding headers do not grant LAN access.
+    for address, base in [
+        ("192.168.1.30", "http://127.0.0.1"),
+        ("127.0.0.1", "http://localhost"),
+        ("127.0.0.1", "http://192.168.1.2"),
+        ("::1", "http://127.0.0.1"),
+    ]:
+        with TestClient(
+            paired_client.app, base_url=base, client=(address, 50505), cookies=cookies
+        ) as remote:
+            state = remote.get("/api/v1/bootstrap").json()
+            assert state["paired"] is True
+            assert state["isLocalHost"] is False
+            assert state["device"]["isParent"] is False
+            assert remote.get("/api/v1/profiles/progress").status_code == 200
+            headers = {
+                "X-LP-CSRF": cookies["lp_csrf"],
+                "X-Forwarded-For": "127.0.0.1",
+                "X-Forwarded-Host": "127.0.0.1",
+            }
+            for path in ["/api/v1/devices", "/api/v1/profiles/export"]:
+                assert remote.get(path, headers=headers).status_code == 403
+            for method, path, body in [
+                ("POST", "/api/v1/local/pairing-code", {}),
+                ("POST", "/api/v1/pairing-codes", {}),
+                (
+                    "PUT",
+                    "/api/v1/household/current-lesson",
+                    {"lessonId": "lesson-02", "expectedRevision": original["revision"]},
+                ),
+                ("PUT", "/api/v1/household/settings", {"soundEnabled": False}),
+                ("PUT", "/api/v1/devices/unknown", {"model": "iPad"}),
+                ("DELETE", "/api/v1/profiles/reset", {"confirmation": "重置家庭档案"}),
+                ("POST", "/api/v1/profiles/import-preview", {}),
+            ]:
+                response = remote.request(method, path, json=body, headers=headers)
+                assert response.status_code == 403, (path, response.text)
+                assert response.json()["detail"]["code"] == "PARENT_LOCAL_REQUIRED"
+            guest = remote.post("/api/v1/guest/operate", json={"path": "/bootstrap"}).json()
+            assert guest["result"]["isLocalHost"] is False
+            assert (
+                remote.post(
+                    "/api/v1/guest/operate",
+                    json={
+                        "path": "/household/settings",
+                        "method": "PUT",
+                        "body": {"soundEnabled": False},
+                    },
+                ).status_code
+                == 403
+            )
+    with storage.connect() as db:
+        after = dict(db.execute("SELECT * FROM household").fetchone())
+        # Reading ordinary learning progress legitimately observes the server clock.
+        after.pop("last_observed_at")
+        original.pop("last_observed_at")
+        assert after == original
+
+
+def test_first_remote_pairing_cannot_claim_parent_and_later_local_pair_can(test_client):
+    code = test_client.post("/api/v1/local/pairing-code").json()["code"]
+    with TestClient(
+        test_client.app, base_url="https://192.168.1.2", client=("192.168.1.30", 50004)
+    ) as remote:
+        paired = remote.post("/api/v1/pair", json={"code": code}).json()
+        assert paired["isParent"] is False
+    code = test_client.post("/api/v1/local/pairing-code").json()["code"]
+    assert test_client.post("/api/v1/pair", json={"code": code}).json()["isParent"] is True

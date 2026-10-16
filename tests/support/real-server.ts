@@ -80,6 +80,7 @@ with storage.transaction() as db:
           '--port',
           url ? new URL(url).port : '0',
           '--no-access-log',
+          '--no-proxy-headers',
         ],
         {
           env: {

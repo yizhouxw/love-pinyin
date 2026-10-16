@@ -55,6 +55,19 @@ def _is_local(request: Request) -> bool:
         return False
 
 
+def _is_parent_entry(request: Request) -> bool:
+    return bool(
+        request.client
+        and request.client.host == "127.0.0.1"
+        and request.url.hostname == "127.0.0.1"
+    )
+
+
+def _require_parent_entry(request: Request) -> None:
+    if not _is_parent_entry(request):
+        raise HTTPException(403, detail={"code": "PARENT_LOCAL_REQUIRED"})
+
+
 def _check_origin(request: Request) -> None:
     origin = request.headers.get("origin")
     host = request.headers.get("host", "").lower()
@@ -148,11 +161,13 @@ def mutable(
     return device
 
 
-def parent(device: dict = Depends(mutable)) -> dict:
+def parent(_local: None = Depends(_require_parent_entry), device: dict = Depends(mutable)) -> dict:
     return _require_parent(device)
 
 
-def parent_read(device: dict = Depends(paired)) -> dict:
+def parent_read(
+    _local: None = Depends(_require_parent_entry), device: dict = Depends(paired)
+) -> dict:
     return _require_parent(device)
 
 
@@ -207,8 +222,7 @@ def _create_pairing_code() -> dict:
 
 @local_router.post("/pairing-code")
 def local_pairing_code(request: Request) -> dict:
-    if not _is_local(request):
-        raise HTTPException(403, detail={"code": "LOCAL_HOST_REQUIRED"})
+    _require_parent_entry(request)
     return _create_pairing_code()
 
 
@@ -248,12 +262,7 @@ def pair(body: PairInput, request: Request, response: Response) -> dict:
         household = db.execute("SELECT * FROM household ORDER BY created_at LIMIT 1").fetchone()
         if not household:
             raise HTTPException(503, detail={"code": "HOUSEHOLD_NOT_READY"})
-        already_parent = bool(
-            db.execute(
-                "SELECT 1 FROM devices WHERE household_id=? AND is_parent=1 AND revoked_at IS NULL",
-                (household["id"],),
-            ).fetchone()
-        )
+        is_parent = _is_parent_entry(request)
         session_value = secrets.token_urlsafe(36)
         csrf = secrets.token_urlsafe(24)
         device_id = secrets.token_urlsafe(14)
@@ -267,7 +276,7 @@ def pair(body: PairInput, request: Request, response: Response) -> dict:
                 _hash(session_value),
                 _hash(csrf),
                 body.label.strip(),
-                int(not already_parent),
+                int(is_parent),
                 now_iso(),
                 body.model.strip() or None,
                 body.code,
@@ -291,7 +300,7 @@ def pair(body: PairInput, request: Request, response: Response) -> dict:
         )
     with _failures_lock:
         _failures[address].clear()
-    return {"paired": True, "isParent": not already_parent, "deviceId": device_id}
+    return {"paired": True, "isParent": is_parent, "deviceId": device_id}
 
 
 @router.delete("/session", status_code=204)
@@ -402,7 +411,7 @@ def bootstrap(request: Request, lp_session: str | None = Cookie(default=None)) -
             raise
         return {
             "paired": False,
-            "isLocalHost": _is_local(request),
+            "isLocalHost": _is_parent_entry(request),
             "contentVersion": load_curriculum()["contentVersion"],
         }
     with connect() as db:
@@ -411,11 +420,11 @@ def bootstrap(request: Request, lp_session: str | None = Cookie(default=None)) -
         ).fetchone()[0]
     return {
         "paired": True,
-        "isLocalHost": _is_local(request),
+        "isLocalHost": _is_parent_entry(request),
         "device": {
             "id": device["id"],
             "label": device["label"],
-            "isParent": bool(device["is_parent"]),
+            "isParent": bool(device["is_parent"]) and _is_parent_entry(request),
         },
         "profile": public_profile(device),
         "attemptCount": count,

@@ -131,4 +131,4 @@ fi
 printf '\nOpen http://127.0.0.1:%s (Ctrl+C stops the service)\n' "$app_port"
 rmdir "$setup_lock"
 trap - EXIT INT TERM
-exec uv run --locked uvicorn server.main:app --host 127.0.0.1 --port "$app_port" --no-access-log
+exec uv run --locked uvicorn server.main:app --host 127.0.0.1 --port "$app_port" --no-access-log --no-proxy-headers

@@ -73,7 +73,7 @@ def test_reset_clears_settings_and_revokes_every_device_and_pending_code(paired_
     with TestClient(
         parent.app,
         base_url="http://127.0.0.1",
-        client=("127.0.0.1", 50002),
+        client=("192.168.1.30", 50002),
     ) as tablet:
         paired = tablet.post("/api/v1/pair", json={"code": invite, "label": "平板"})
         assert paired.status_code == 200
@@ -85,7 +85,7 @@ def test_reset_clears_settings_and_revokes_every_device_and_pending_code(paired_
             headers=csrf(tablet),
         )
         assert denied.status_code == 403
-        assert denied.json()["detail"]["code"] == "PARENT_AUTH_REQUIRED"
+        assert denied.json()["detail"]["code"] == "PARENT_LOCAL_REQUIRED"
 
         wrong_confirmation = parent.request(
             "DELETE",

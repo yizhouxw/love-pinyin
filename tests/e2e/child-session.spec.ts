@@ -110,6 +110,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
           paired && !reset
             ? {
                 paired: true,
+                isLocalHost: true,
                 device: { label: '测试设备', isParent: true },
                 profile: {
                   id: 'profile-e2e',
@@ -749,6 +750,7 @@ test('旧课程版本的当前课提示家长重选并保留学习路线', async
       await route.fulfill({
         json: {
           paired: true,
+          isLocalHost: true,
           device: { label: '测试设备', isParent: true },
           profile: { id: 'profile-old-curriculum', selectedLessonId, revision },
           attemptCount: 1,
@@ -875,6 +877,7 @@ test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) 
       await route.fulfill({
         json: {
           paired: true,
+          isLocalHost: true,
           device: { label: '孩子平板', isParent: false },
           profile: {
             id: 'review-profile',
@@ -1004,6 +1007,7 @@ test('家长校时后可明确保留待校时练习为不计分记录', async ({
       await route.fulfill({
         json: {
           paired: true,
+          isLocalHost: true,
           device: { label: '家长设备', isParent: true },
           profile: {
             id: 'clock-profile',

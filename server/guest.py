@@ -125,7 +125,15 @@ async def operate(request: Request):
     try:
         value = json.loads(raw, object_pairs_hook=api._unique_json_object)
         operation = GuestOperation.model_validate(value)
-        return JSONResponse(await run_in_threadpool(execute, operation))
+        if operation.method == "PUT" and operation.path in {
+            "/household/current-lesson",
+            "/household/settings",
+        }:
+            api._require_parent_entry(request)
+        payload = await run_in_threadpool(execute, operation)
+        if operation.path == "/bootstrap":
+            payload["result"]["isLocalHost"] = api._is_parent_entry(request)
+        return JSONResponse(payload)
     except (ValidationError, ValueError, TypeError, KeyError) as error:
         raise HTTPException(422, detail={"code": "GUEST_CACHE_INVALID"}) from error
 

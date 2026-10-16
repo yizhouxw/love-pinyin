@@ -38,7 +38,7 @@ test('DEVICE-01: real paired devices show editable model, consumed code, connect
     await child.getByLabel('家长配对码', { exact: true }).fill(invitation);
     await child.getByLabel('设备型号（可修改）').fill('iPad Air 5');
     await child.getByRole('button', { name: '连接家庭' }).click();
-    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('学习设备');
+    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('家长设备');
     await page.getByRole('button', { name: '刷新设备列表' }).click();
     await expect(rows).toHaveCount(2);
     const ipad = rows.filter({ hasText: '设备型号：iPad Air 5' });
