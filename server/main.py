@@ -1,5 +1,6 @@
 """Single-process B/S application for the private Mac Studio server."""
 
+import re
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -11,6 +12,7 @@ from server.api import local_router, router
 from server.content import load_curriculum
 from server.guest import router as guest_router
 from server.storage import ensure_household, migrate
+from server.text_compression import TextCompressionMiddleware
 
 
 @asynccontextmanager
@@ -29,13 +31,27 @@ app = FastAPI(
 )
 
 
+app.add_middleware(TextCompressionMiddleware)
+
+
 @app.middleware("http")
 async def security_headers(request, call_next):
     response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["Permissions-Policy"] = "microphone=(self), camera=(), geolocation=()"
-    if not request.url.path.startswith("/assets/"):
+    path = request.url.path
+    if response.status_code == 200 and re.fullmatch(
+        r"/assets/[^/]+-[A-Za-z0-9_-]{8,}\.(?:js|css)", path
+    ):
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    elif (
+        response.status_code in {200, 304}
+        and path.startswith("/fonts/")
+        and response.headers.get("Content-Type", "").startswith("font/")
+    ):
+        response.headers["Cache-Control"] = "public, max-age=86400"
+    else:
         response.headers["Cache-Control"] = "no-store"
     return response
 

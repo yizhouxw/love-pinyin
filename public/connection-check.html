@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>爱拼音 · 连接检测</title>
+    <style>
+      body {
+        font:
+          18px/1.6 system-ui,
+          sans-serif;
+        max-width: 760px;
+        margin: 30px auto;
+        padding: 20px;
+        color: #253a31;
+        background: #f4f7ed;
+      }
+      button {
+        font: inherit;
+        min-height: 48px;
+        padding: 8px 20px;
+        margin: 8px;
+      }
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        padding: 20px;
+        background: white;
+        border-radius: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>连接检测</h1>
+    <p>保持 Safari 在前台，点一次检测。结果仅显示在本页，可复制给维护者分析；不会读取学习记录。</p>
+    <button id="start" type="button">开始检测</button>
+    <button id="copy" type="button" disabled>复制结果</button>
+    <pre id="result" role="status">等待检测</pre>
+    <p><a href="/">返回爱拼音</a></p>
+    <script>
+      const start = document.querySelector('#start');
+      const copy = document.querySelector('#copy');
+      const result = document.querySelector('#result');
+      start.addEventListener('click', async () => {
+        start.disabled = true;
+        copy.disabled = true;
+        copy.textContent = '复制结果';
+        result.textContent = `地址：${location.origin}\n`;
+        const append = (value) => {
+          result.textContent += value + '\n';
+        };
+        try {
+          for (let i = 0; i < 4; i++) {
+            const url = `/api/v1/health?probe=${crypto.randomUUID()}`;
+            const before = performance.now();
+            const response = await fetch(url, {
+              cache: 'no-store',
+              signal: AbortSignal.timeout(20000),
+            });
+            if (!response.ok) throw new Error(`健康检查 HTTP ${response.status}`);
+            await response.text();
+            const entry = performance.getEntriesByName(new URL(url, location).href).at(-1);
+            append(
+              `请求${i + 1}：${Math.round(performance.now() - before)}ms` +
+                (entry
+                  ? `；连接 ${Math.round(entry.connectEnd - entry.connectStart)}ms，TLS ${entry.secureConnectionStart > 0 ? Math.round(entry.connectEnd - entry.secureConnectionStart) : 0}ms，等待响应 ${Math.round(entry.responseStart - entry.requestStart)}ms`
+                  : ''),
+            );
+          }
+          const html = await fetch('/', {
+            cache: 'no-store',
+            signal: AbortSignal.timeout(20000),
+          }).then((r) => r.text());
+          const source = new DOMParser()
+            .parseFromString(html, 'text/html')
+            .querySelector('script[type="module"][src]')
+            ?.getAttribute('src');
+          if (!source) throw new Error('未找到页面脚本');
+          const url = new URL(source, location.origin);
+          if (url.origin !== location.origin || !url.pathname.startsWith('/assets/'))
+            throw new Error('页面脚本地址无效');
+          url.searchParams.set('probe', crypto.randomUUID());
+          const before = performance.now();
+          const response = await fetch(url, {
+            cache: 'no-store',
+            signal: AbortSignal.timeout(30000),
+          });
+          if (!response.ok) throw new Error(`脚本 HTTP ${response.status}`);
+          const body = await response.arrayBuffer();
+          const elapsed = performance.now() - before;
+          const entry = performance.getEntriesByName(url.href).at(-1);
+          const encoded =
+            entry?.encodedBodySize ||
+            Number(response.headers.get('Content-Length')) ||
+            body.byteLength;
+          append(
+            `脚本下载：${Math.round(elapsed)}ms；传输 ${encoded} 字节；解压后 ${body.byteLength} 字节；${response.headers.get('Content-Encoding') || '无压缩'}`,
+          );
+          append(
+            `本次有效下载速度：${Math.round(((encoded / Math.max(elapsed, 1)) * 1000) / 1024)} KiB/s（含等待时间）`,
+          );
+          append('检测完成');
+        } catch (error) {
+          append(`检测失败：${error.message}`);
+        } finally {
+          start.disabled = false;
+          copy.disabled = false;
+        }
+      });
+      copy.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(result.textContent);
+          copy.textContent = '已复制';
+        } catch {
+          const selection = getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(result);
+          selection.removeAllRanges();
+          selection.addRange(range);
+          copy.textContent = '已选中，请长按复制';
+        }
+      });
+    </script>
+  </body>
+</html>
