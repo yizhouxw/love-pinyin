@@ -28,7 +28,7 @@ docker compose down
 
 ```sh
 docker build -t love-pinyin:local .
-docker run -d --name love-pinyin -p 127.0.0.1:8000:8000 \
+docker run --pull=never -d --name love-pinyin -p 127.0.0.1:8000:8000 \
   --mount type=volume,src=love-pinyin-data,dst=/data love-pinyin:local
 ```
 
@@ -40,7 +40,7 @@ docker run -d --name love-pinyin -p 127.0.0.1:8000:8000 \
 docker save -o love-pinyin-image.tar love-pinyin:local
 # 将 tar 复制到目标机器后：
 docker load -i love-pinyin-image.tar
-docker run -d --name love-pinyin -p 127.0.0.1:8000:8000 \
+docker run --pull=never -d --name love-pinyin -p 127.0.0.1:8000:8000 \
   --mount type=volume,src=love-pinyin-data,dst=/data love-pinyin:local
 ```
 
@@ -87,6 +87,45 @@ docker compose -f compose.yaml -f compose.amd64.yaml ps
 docker compose -f compose.yaml -f compose.amd64.yaml logs --tail=50 app
 docker compose -f compose.yaml -f compose.amd64.yaml down
 ```
+
+### Windows直接使用docker run
+
+不使用Compose时，先构建或通过`docker load`导入`love-pinyin:amd64`，再在PowerShell执行以下命令。行尾反引号是PowerShell续行符，后面不要加空格；本方式同样未在Windows/amd64验证。
+
+```powershell
+docker buildx build --platform linux/amd64 --load -t love-pinyin:amd64 .
+docker run --pull=never -d --name love-pinyin --platform linux/amd64 `
+  -p 127.0.0.1:8000:8000 `
+  --mount type=volume,src=love-pinyin-data,dst=/data `
+  --restart unless-stopped --read-only --tmpfs /tmp `
+  --cap-drop=ALL --security-opt=no-new-privileges:true `
+  love-pinyin:amd64
+```
+
+已有完整镜像时跳过build命令；`--pull=never`确保镜像缺失时直接报错，不尝试联网拉取。打开 <http://localhost:8000>，全部音频与识别权重从镜像读取。更换端口直接将`-p`改为`127.0.0.1:8001:8000`；`LOVE_PINYIN_PORT`只用于Compose端口替换，不会改变这条docker run命令。
+
+取得家长配对码：
+
+```powershell
+@'
+import urllib.request
+request = urllib.request.Request('http://127.0.0.1:8000/api/v1/local/pairing-code', data=b'', method='POST')
+print(urllib.request.urlopen(request).read().decode())
+'@ | docker exec -i love-pinyin python -
+```
+
+查看日志、停止、再次启动或删除容器：
+
+```powershell
+docker logs --tail=50 love-pinyin
+docker stop --timeout 60 love-pinyin
+docker start love-pinyin
+# 删除/升级前先停止，再删除容器；不会删除命名卷：
+docker stop --timeout 60 love-pinyin
+docker rm love-pinyin
+```
+
+删除后重新执行同一条docker run命令，复用`love-pinyin-data`，配对和家庭进度仍在。不要删除该卷。Compose默认使用项目名限定的household卷，与本例的`love-pinyin-data`是两个不同档案；切换方式时用家长JSON备份恢复，或明确指定原卷名，不会自动合并数据。离线机器只需已安装Docker Desktop/WSL 2、导入amd64镜像后执行docker run，不需要源代码或Compose文件。
 
 本地识别也在amd64镜像内运行：`uv sync --locked`选择锁文件中的CPython 3.12 Linux x86-64 NumPy及`pywhispercpp==1.5.1`轮子；Whisper small的`ggml-small.bin`是跨架构权重数据，沿用scripts/asr_model.py中的固定大小和SHA-256，无需Windows专用权重。Docker显式设置`LOVE_PINYIN_ASR_CPU_ONLY=1`，通过`context_params.use_gpu=false`使用CPU，不需要Metal、MLX、NVIDIA显卡或GPU透传。上游提供[基础CPU轮子](https://github.com/absadiki/pywhispercpp)；Windows/amd64上的实际轮子兼容性、CPU指令集兼容性及推理耗时仍未验证。缺模型、模型损坏、资源不足或识别超时不会转用云服务，也不判孩子读错。
 

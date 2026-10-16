@@ -29,3 +29,5 @@ DOCKER-05已增加配置：compose.amd64.yaml固定linux/amd64构建/运行并�
 按用户明确要求，本轮不进行Windows/amd64镜像构建、模型加载/推理或Windows真机验证；CPU/内存/磁盘配置是保守部署起点，未做最低配置压测。此前arm64验收是1106639版本的历史证据，不能扩展为本次版本或Windows验收。未新增或升级npm/uv依赖。
 
 本轮仅执行Prettier、改动Python文件的Ruff格式/lint与Compose合并配置静态检查，确认构建/运行平台均为linux/amd64、标签为love-pinyin:amd64；没有重新构建镜像、加载模型、执行推理或运行工程/GUI测试。机器规格中的Docker/Whisper上游参考已在部署文档附官方来源，项目资源预算明确为未压测估算。
+
+DOCKER-01/05文档补充：Windows PowerShell的docker run明确包含linux/amd64、amd64镜像标签、禁止拉取、持久卷与只读运行参数；提供docker exec配对码、停止/重启/删除重建及端口调整说明，并区分Compose卷和直接运行卷。通用docker run示例同样禁止隐式拉取。本次仅检查文档格式与差异，Windows/amd64命令仍未实际运行。
