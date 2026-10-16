@@ -8,7 +8,7 @@ import threading
 import time
 from collections import defaultdict, deque
 from datetime import UTC, date, datetime, timedelta
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
@@ -65,7 +65,7 @@ def _check_origin(request: Request) -> None:
         raise HTTPException(403, detail={"code": "ORIGIN_REJECTED"})
 
 
-def _get_device(raw: str | None) -> dict:
+def _get_device(raw: str | None, request: Request) -> dict:
     if not raw:
         raise HTTPException(401, detail={"code": "PAIRING_REQUIRED"})
     with connect() as db:
@@ -82,11 +82,21 @@ def _get_device(raw: str | None) -> dict:
     created = datetime.fromisoformat(row["created_at"])
     if created + timedelta(days=30) <= datetime.now(UTC):
         raise HTTPException(401, detail={"code": "SESSION_EXPIRED"})
-    return dict(row)
+    observed_at = now_iso()
+    suggested_model = unquote(request.headers.get("x-lp-device-model", "")[:1000]).strip()[:80]
+    if any(ord(char) < 32 or ord(char) == 127 for char in suggested_model):
+        suggested_model = ""
+    with transaction() as db:
+        db.execute(
+            "UPDATE devices SET last_connected_at=?,model=COALESCE(NULLIF(model,''),NULLIF(?,'')) "
+            "WHERE id=? AND revoked_at IS NULL",
+            (observed_at, suggested_model, row["id"]),
+        )
+    return {**dict(row), "last_connected_at": observed_at}
 
 
-def paired(lp_session: str | None = Cookie(default=None)) -> dict:
-    return _get_device(lp_session)
+def paired(request: Request, lp_session: str | None = Cookie(default=None)) -> dict:
+    return _get_device(lp_session, request)
 
 
 def _observe_clock(device: dict) -> bool:
@@ -125,7 +135,7 @@ def mutable(
     x_lp_csrf: str | None = Header(default=None),
 ) -> dict:
     _check_origin(request)
-    device = _get_device(lp_session)
+    device = _get_device(lp_session, request)
     if not lp_csrf:
         raise HTTPException(403, detail={"code": "CSRF_COOKIE_MISSING"})
     if not x_lp_csrf:
@@ -211,6 +221,7 @@ class PairInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
     code: str = Field(min_length=8, max_length=12, pattern=r"^[0-9A-Z]+$")
     label: str = Field(default="家庭设备", min_length=1, max_length=30)
+    model: str = Field(default="", max_length=80, pattern=r"^[^\x00-\x1f\x7f]*$")
 
 
 @router.post("/pair")
@@ -247,8 +258,9 @@ def pair(body: PairInput, request: Request, response: Response) -> dict:
         csrf = secrets.token_urlsafe(24)
         device_id = secrets.token_urlsafe(14)
         db.execute(
-            """INSERT INTO devices(id,household_id,token_hash,csrf_hash,label,is_parent,created_at)
-               VALUES(?,?,?,?,?,?,?)""",
+            """INSERT INTO devices(id,household_id,token_hash,csrf_hash,label,is_parent,
+                                  created_at,model,pairing_code,last_connected_at)
+               VALUES(?,?,?,?,?,?,?,?,?,?)""",
             (
                 device_id,
                 household["id"],
@@ -256,6 +268,9 @@ def pair(body: PairInput, request: Request, response: Response) -> dict:
                 _hash(csrf),
                 body.label.strip(),
                 int(not already_parent),
+                now_iso(),
+                body.model.strip() or None,
+                body.code,
                 now_iso(),
             ),
         )
@@ -293,7 +308,7 @@ def unpair(request: Request, device: dict = Depends(mutable)) -> Response:
 def list_devices(device: dict = Depends(parent_read)) -> dict:
     with connect() as db:
         rows = db.execute(
-            """SELECT id,label,created_at FROM devices
+            """SELECT id,label,created_at,model,pairing_code,last_connected_at FROM devices
                WHERE household_id=? AND revoked_at IS NULL ORDER BY created_at,id""",
             (device["household_id"],),
         ).fetchall()
@@ -303,11 +318,33 @@ def list_devices(device: dict = Depends(parent_read)) -> dict:
                 "id": row["id"],
                 "label": row["label"],
                 "createdAt": row["created_at"],
+                "model": row["model"],
+                "pairingCode": row["pairing_code"],
+                "lastConnectedAt": row["last_connected_at"],
                 "current": row["id"] == device["id"],
             }
             for row in rows
         ]
     }
+
+
+class DeviceModelInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+    model: str = Field(min_length=1, max_length=80, pattern=r"^[^\x00-\x1f\x7f]+$")
+
+
+@router.put("/devices/{device_id}")
+def update_device_model(
+    device_id: str, body: DeviceModelInput, device: dict = Depends(parent)
+) -> dict:
+    with transaction() as db:
+        updated = db.execute(
+            "UPDATE devices SET model=? WHERE id=? AND household_id=? AND revoked_at IS NULL",
+            (body.model, device_id, device["household_id"]),
+        )
+        if not updated.rowcount:
+            raise HTTPException(404, detail={"code": "DEVICE_NOT_FOUND"})
+    return {"updated": True}
 
 
 @router.delete("/devices/{device_id}")
@@ -359,7 +396,7 @@ def capabilities() -> dict:
 @router.get("/bootstrap")
 def bootstrap(request: Request, lp_session: str | None = Cookie(default=None)) -> dict:
     try:
-        device = _get_device(lp_session)
+        device = _get_device(lp_session, request)
     except HTTPException as error:
         if error.status_code != 401:
             raise
@@ -581,6 +618,9 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
                 },
                 "engineVersion": row["engine_version"],
                 "createdAt": row["created_at"],
+                "model": row["model"],
+                "pairingCode": row["pairing_code"],
+                "lastConnectedAt": row["last_connected_at"],
             }
             for row in assessments
         ],

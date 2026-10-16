@@ -59,3 +59,5 @@ content/daily-reading.json保存用户PDF的14份练习和固定音频白名单�
 按ADR-0017/0019，课程MP3、PDF及Qwen3-TTS生成的中文WAV/manifest存于resources并随当前仓库提供；应用默认读取resources/audio，支持环境变量显式配置私人资源。run.sh负责显式联网安装，普通播放与识别不下载资源。
 
 SPEC-012按ADR-0020扩充：家庭/访客设置保存整数精度的连播间隔，适配器用AbortSignal取消等待；播放器提供真实开始与currentTime通知。content/daily-word-examples.json集中组词；content/daily-reading-timings.json绑定示范WAV和脚本摘要，服务校验后提供时间轴。维护用Qwen ForcedAligner离线生成，浏览器/运行服务不加载对齐模型。学习图片新增daily音频白名单引用，仍是同一固定PinYinSound标准来源。
+
+设备元数据按[ADR-0022](adr/0022-device-connection-metadata.md)保存在SQLite迁移7的devices列：型号只用于显示，已用配对码不作为后续身份，last_connected_at由有效家庭认证请求用服务器时钟更新。访客临时计算不写这些记录。

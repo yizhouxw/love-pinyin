@@ -92,7 +92,7 @@ shutil.copyfile(backup, staged)
 os.chmod(staged, 0o600)
 with sqlite3.connect(f'file:{staged}?mode=ro', uri=True) as db:
     assert db.execute('PRAGMA integrity_check').fetchone()[0] == 'ok'
-    assert db.execute('SELECT max(version) FROM schema_migrations').fetchone()[0] == 6
+    assert db.execute('SELECT max(version) FROM schema_migrations').fetchone()[0] == 7
 archive = root / 'before-restore'
 archive.mkdir(mode=0o700)
 for suffix in ('', '-wal', '-shm'):

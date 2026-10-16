@@ -3,6 +3,8 @@ import { pinyinTone, splitPinyinCandidate } from '../domain/pinyin-presentation'
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import narrationData from '../../content/narration.json';
 import { useLearningVoice, VoiceButton, VoiceFailure, type LearningAudio } from './learning-voice';
+import { suggestedDeviceModel } from '../platform/device-info';
+import { CopyCode } from './copy-code';
 import './styles.css';
 import { GuidanceSwitch } from './guidance-switch';
 import {
@@ -269,6 +271,8 @@ function formatAttemptTime(value: string) {
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    second: '2-digit',
+    hourCycle: 'h23',
   }).format(date);
 }
 
@@ -287,6 +291,7 @@ async function api(path: string, options: RequestInit = {}): Promise<Json> {
 // Pairing manages the real household even while learning in a temporary guest session.
 async function householdApi(path: string, options: RequestInit = {}): Promise<Json> {
   const headers = new Headers(options.headers);
+  headers.set('X-LP-Device-Model', encodeURIComponent(suggestedDeviceModel()));
   if (options.body) headers.set('Content-Type', 'application/json');
   const csrf = document.cookie
     .split('; ')
@@ -412,6 +417,7 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
   const [session, setSession] = useState<Session | null>(null);
   const [code, setCode] = useState('');
   const [pairCode, setPairCode] = useState('');
+  const [deviceModel, setDeviceModel] = useState(suggestedDeviceModel);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [hint, setHint] = useState<Hint | null>(null);
@@ -724,13 +730,21 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
               void act(async () => {
                 await api('/pair', {
                   method: 'POST',
-                  body: JSON.stringify({ code, label: '学习设备' }),
+                  body: JSON.stringify({ code, label: '学习设备', model: deviceModel }),
                 });
                 setCode('');
                 await refresh();
               });
             }}
           >
+            <label htmlFor="pair-device-model">设备型号（可修改）</label>
+            <input
+              id="pair-device-model"
+              value={deviceModel}
+              maxLength={80}
+              onChange={(event) => setDeviceModel(event.target.value)}
+              placeholder="例如：iPad Air 5"
+            />
             <label htmlFor="pair-code">家长配对码</label>
             <div className="pair-input">
               <input
@@ -761,10 +775,11 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
                   在 Mac 上生成家长配对码
                 </button>
                 {pairCode && (
-                  <p className="pair-code">
+                  <div className="pair-code">
                     {pairCode}
+                    <CopyCode key={pairCode} code={pairCode} label="新生成的配对码" />
                     <small>5 分钟内一次有效</small>
-                  </p>
+                  </div>
                 )}
               </>
             ) : (
@@ -1833,6 +1848,7 @@ function LessonDetail({
 function PairingManagement() {
   const [access, setAccess] = useState<Bootstrap | null>(null);
   const [code, setCode] = useState('');
+  const [deviceModel, setDeviceModel] = useState(suggestedDeviceModel);
   const [generated, setGenerated] = useState('');
   const [expiresAt, setExpiresAt] = useState(0);
   const [expired, setExpired] = useState(false);
@@ -1886,7 +1902,11 @@ function PairingManagement() {
     try {
       await householdApi('/pair', {
         method: 'POST',
-        body: JSON.stringify({ code: code.trim().toUpperCase(), label: '学习设备' }),
+        body: JSON.stringify({
+          code: code.trim().toUpperCase(),
+          label: '学习设备',
+          model: deviceModel,
+        }),
       });
       leaveGuest();
     } catch (cause) {
@@ -1947,10 +1967,11 @@ function PairingManagement() {
         </>
       )}
       {generated && (
-        <p className="pair-code" role="status">
+        <div className="pair-code">
           {generated}
-          <small>{expired ? '已过期，请重新生成' : '5 分钟内一次有效'}</small>
-        </p>
+          <CopyCode key={generated} code={generated} label="新生成的配对码" />
+          <small role="status">{expired ? '已过期，请重新生成' : '5 分钟内一次有效'}</small>
+        </div>
       )}
       {guest && (
         <>
@@ -1960,6 +1981,14 @@ function PairingManagement() {
               void connect();
             }}
           >
+            <label htmlFor="managed-device-model">设备型号（可修改）</label>
+            <input
+              id="managed-device-model"
+              value={deviceModel}
+              maxLength={80}
+              onChange={(event) => setDeviceModel(event.target.value)}
+              placeholder="例如：iPad Air 5"
+            />
             <label htmlFor="managed-pair-code">家长配对码</label>
             <div className="pair-input">
               <input
@@ -2096,6 +2125,7 @@ function ParentPanel({
   const [importConfirmation, setImportConfirmation] = useState('');
   const [importComplete, setImportComplete] = useState(false);
   const [devices, setDevices] = useState<Json[]>([]);
+  const [deviceModels, setDeviceModels] = useState<Record<string, string>>({});
   const [revokeDeviceId, setRevokeDeviceId] = useState('');
   const [deviceError, setDeviceError] = useState('');
   const [clockResolutionConfirm, setClockResolutionConfirm] = useState('');
@@ -2542,6 +2572,9 @@ function ParentPanel({
         <div className="device-management">
           <div>
             <strong>已连接设备</strong>
+            <button className="quiet" disabled={busy} onClick={() => void act(reloadDevices)}>
+              刷新设备列表
+            </button>
             <p>撤销后，该设备下次连接时需要重新配对；学习记录会保留。</p>
           </div>
           <ul className="device-list">
@@ -2550,9 +2583,62 @@ function ParentPanel({
                 <div>
                   <strong>{device.label}</strong>
                   <small>
-                    {device.current ? '本机家长设备' : '家庭设备'} ·{' '}
-                    {new Date(device.createdAt).toLocaleDateString('zh-CN')}
+                    {device.current ? '本机家长设备' : '家庭设备'} · 配对时间：
+                    {formatAttemptTime(device.createdAt)}
                   </small>
+                  <p>设备型号：{device.model || '尚未记录，可填写具体型号'}</p>
+                  <p>
+                    最后连接服务：
+                    {device.lastConnectedAt
+                      ? formatAttemptTime(device.lastConnectedAt)
+                      : '尚未记录'}
+                  </p>
+                  {device.pairingCode ? (
+                    <>
+                      <small>配对码（已使用，不能再次配对）</small>
+                      <CopyCode
+                        key={device.pairingCode}
+                        code={device.pairingCode}
+                        label={`${device.label}的已用配对码`}
+                      />
+                    </>
+                  ) : (
+                    <p>配对码：历史记录未保存</p>
+                  )}
+                  <details>
+                    <summary>修改设备型号</summary>
+                    <label>
+                      设备型号
+                      <input
+                        value={deviceModels[device.id] ?? device.model ?? ''}
+                        maxLength={80}
+                        placeholder="例如：iPad Air 5"
+                        onChange={(event) =>
+                          setDeviceModels((current) => ({
+                            ...current,
+                            [device.id]: event.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                    <button
+                      className="quiet"
+                      disabled={busy || !(deviceModels[device.id] ?? device.model ?? '').trim()}
+                      onClick={() =>
+                        void act(async () => {
+                          await api(`/devices/${device.id}`, {
+                            method: 'PUT',
+                            body: JSON.stringify({
+                              model: deviceModels[device.id] ?? device.model,
+                            }),
+                          });
+                          await reloadDevices();
+                        })
+                      }
+                    >
+                      保存设备型号
+                    </button>
+                  </details>
                 </div>
                 {!device.current &&
                   (revokeDeviceId === device.id ? (

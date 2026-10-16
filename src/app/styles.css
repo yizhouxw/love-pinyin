@@ -2333,3 +2333,49 @@ input[type='file']::file-selector-button {
 .daily-example-words span {
   font-family: var(--pinyin-font);
 }
+
+.copy-code {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 16px;
+  letter-spacing: normal;
+}
+.copy-code input {
+  width: 12ch;
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px;
+  font: inherit;
+}
+.copy-code small {
+  flex-basis: 100%;
+}
+.device-list li {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.device-list li > div:first-child {
+  min-width: 0;
+  flex: 1 1 240px;
+  overflow-wrap: anywhere;
+}
+.device-list p {
+  margin: 4px 0;
+}
+.device-list details input {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+#pair-device-model,
+#managed-device-model {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+  margin: 8px 0 16px;
+}
