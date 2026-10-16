@@ -48,3 +48,31 @@ def test_parent_can_list_and_revoke_secondary_device_without_exposing_tokens(pai
         assert [item["id"] for item in parent.get("/api/v1/devices").json()["devices"]] == [
             item["id"] for item in devices if item["current"]
         ]
+
+
+def test_pairing_capability_distinguishes_loopback_from_remote_even_when_paired(paired_client):
+    assert paired_client.get("/api/v1/bootstrap").json()["isLocalHost"] is True
+    with TestClient(
+        paired_client.app, base_url="https://192.168.1.2", client=("192.168.1.30", 50002)
+    ) as remote:
+        assert remote.get("/api/v1/bootstrap").json()["isLocalHost"] is False
+        assert remote.post("/api/v1/local/pairing-code").status_code == 403
+        assert remote.post("/api/v1/pairing-codes").status_code == 401
+        code = paired_client.post("/api/v1/local/pairing-code").json()["code"]
+        assert remote.post("/api/v1/pair", json={"code": code, "label": "iPad"}).status_code == 200
+        state = remote.get("/api/v1/bootstrap").json()
+        assert state["paired"] is True
+        assert state["device"]["isParent"] is False
+        assert state["isLocalHost"] is False
+        assert (
+            remote.post(
+                "/api/v1/local/pairing-code", headers={"X-Forwarded-For": "127.0.0.1"}
+            ).status_code
+            == 403
+        )
+        assert (
+            remote.post(
+                "/api/v1/pairing-codes", headers={"X-LP-CSRF": remote.cookies.get("lp_csrf")}
+            ).status_code
+            == 403
+        )

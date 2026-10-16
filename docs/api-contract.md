@@ -16,45 +16,45 @@
 
 “公开”表示不需要家庭配对，并不表示适合开放公网。“家长”由服务端角色校验，“写入”遵守相应CSRF/来源规则。
 
-| 方法   | 路径（省略 `/api/v1`）                        | 行为及访问范围                                                                |
-| ------ | --------------------------------------------- | ----------------------------------------------------------------------------- |
-| POST   | `/local/pairing-code`                         | 仅loopback生成首次配对码                                                      |
-| POST   | `/pairing-codes`                              | 家长生成新设备配对码                                                          |
-| POST   | `/pair`                                       | 以配对码换取Cookie                                                            |
-| DELETE | `/session`                                    | 取消本设备会话                                                                |
-| GET    | `/devices`                                    | 家长查看设备，不返回令牌                                                      |
-| DELETE | `/devices/{device_id}`                        | 家长撤销次设备，不可撤销当前家长设备                                          |
-| GET    | `/health`                                     | 公开；服务状态、contentVersion、storage                                       |
-| GET    | `/capabilities`                               | 公开；标准音及中文声音/课程录音就绪情况                                       |
-| GET    | `/bootstrap`                                  | 未配对/失效Cookie返回200 paired=false；有效会话返回家庭入口信息               |
-| GET    | `/curriculum`                                 | 配对；课程、知识点、题目、书写/图片和实际音频状态；移除答案、提示与旧审核字段 |
-| GET    | `/audio/{asset_id}`                           | 配对；PinYinSound标准音                                                       |
-| GET    | `/learning-audio`                             | 配对；中文声音和课程录音可用性映射                                            |
-| GET    | `/voice/{asset_id}`                           | 配对；登记的中文声音或课程录音                                                |
-| PUT    | `/household/current-lesson`                   | 家长；选课及revision冲突检查                                                  |
-| PUT    | `/household/settings`                         | 家长；soundEnabled、reducedMotion                                             |
-| GET    | `/profiles/export`                            | 家长；家庭JSON备份                                                            |
-| POST   | `/profiles/import-preview`                    | 家长；校验备份，生成5分钟预览token，不写学习数据                              |
-| POST   | `/profiles/import`                            | 家长；确认后单事务全量替换                                                    |
-| DELETE | `/profiles/data`                              | 家长确认；清学习记录，保留设置与配对                                          |
-| POST   | `/profiles/clock-pending/resolve`             | 家长确认；时钟恢复后删除待校时记录或保留为不计分                              |
-| DELETE | `/profiles/reset`                             | 家长确认；清数据/设置，撤销全部设备并清配对码                                 |
-| POST   | `/reviews/{knowledge_id}/sessions`            | 配对；选定知识点的独立两题复习                                                |
-| POST   | `/sessions`                                   | 配对；当前课最多六题，冻结题单与选项顺序                                      |
-| GET    | `/sessions/current`                           | 配对；当前未结束会话及已答/跳过状态                                           |
-| POST   | `/sessions/{session_id}/finish`               | 配对；结束会话，全部题目已答/跳过才计完整轮次                                 |
-| POST   | `/rest/complete`                              | 配对；完成休息，允许继续练习                                                  |
-| POST   | `/instances/{instance_id}/hint`               | 配对；标记提示已使用并返回提示，不单独生成作答                                |
-| POST   | `/instances/{instance_id}/skip`               | 配对；幂等跳过，不计作答/掌握度                                               |
-| POST   | `/instances/{instance_id}/answer`             | 配对；保存首次作答并返回反馈                                                  |
-| GET    | `/attempts/{request_id}`                      | 配对；查询待确认请求回执                                                      |
-| GET    | `/profiles/progress`                          | 配对；掌握状态、复习、设置、revision及完成轮次                                |
-| GET    | `/profiles/knowledge/{knowledge_id}/attempts` | 配对；知识点记录，限定家庭/知识点的cursor分页，最多50条                       |
-| POST   | `/guest/operate`                              | 公开；白名单操作与临时快照，返回result/state                                  |
-| GET    | `/guest/curriculum`                           | 公开；教学内容，无家庭档案                                                    |
-| GET    | `/guest/learning-audio`                       | 公开；已安装教学声音状态                                                      |
-| GET    | `/guest/audio/{asset_id}`                     | 公开；已安装标准音                                                            |
-| GET    | `/guest/voice/{asset_id}`                     | 公开；已安装中文声音及课程录音                                                |
+| 方法   | 路径（省略 `/api/v1`）                        | 行为及访问范围                                                                   |
+| ------ | --------------------------------------------- | -------------------------------------------------------------------------------- |
+| POST   | `/local/pairing-code`                         | 仅loopback生成首次配对码                                                         |
+| POST   | `/pairing-codes`                              | 家长生成新设备配对码                                                             |
+| POST   | `/pair`                                       | 以配对码换取Cookie                                                               |
+| DELETE | `/session`                                    | 取消本设备会话                                                                   |
+| GET    | `/devices`                                    | 家长查看设备，不返回令牌                                                         |
+| DELETE | `/devices/{device_id}`                        | 家长撤销次设备，不可撤销当前家长设备                                             |
+| GET    | `/health`                                     | 公开；服务状态、contentVersion、storage                                          |
+| GET    | `/capabilities`                               | 公开；标准音及中文声音/课程录音就绪情况                                          |
+| GET    | `/bootstrap`                                  | 未配对/失效Cookie返回200 paired=false；有效会话返回家庭入口信息；均含isLocalHost |
+| GET    | `/curriculum`                                 | 配对；课程、知识点、题目、书写/图片和实际音频状态；移除答案、提示与旧审核字段    |
+| GET    | `/audio/{asset_id}`                           | 配对；PinYinSound标准音                                                          |
+| GET    | `/learning-audio`                             | 配对；中文声音和课程录音可用性映射                                               |
+| GET    | `/voice/{asset_id}`                           | 配对；登记的中文声音或课程录音                                                   |
+| PUT    | `/household/current-lesson`                   | 家长；选课及revision冲突检查                                                     |
+| PUT    | `/household/settings`                         | 家长；soundEnabled、reducedMotion                                                |
+| GET    | `/profiles/export`                            | 家长；家庭JSON备份                                                               |
+| POST   | `/profiles/import-preview`                    | 家长；校验备份，生成5分钟预览token，不写学习数据                                 |
+| POST   | `/profiles/import`                            | 家长；确认后单事务全量替换                                                       |
+| DELETE | `/profiles/data`                              | 家长确认；清学习记录，保留设置与配对                                             |
+| POST   | `/profiles/clock-pending/resolve`             | 家长确认；时钟恢复后删除待校时记录或保留为不计分                                 |
+| DELETE | `/profiles/reset`                             | 家长确认；清数据/设置，撤销全部设备并清配对码                                    |
+| POST   | `/reviews/{knowledge_id}/sessions`            | 配对；选定知识点的独立两题复习                                                   |
+| POST   | `/sessions`                                   | 配对；当前课最多六题，冻结题单与选项顺序                                         |
+| GET    | `/sessions/current`                           | 配对；当前未结束会话及已答/跳过状态                                              |
+| POST   | `/sessions/{session_id}/finish`               | 配对；结束会话，全部题目已答/跳过才计完整轮次                                    |
+| POST   | `/rest/complete`                              | 配对；完成休息，允许继续练习                                                     |
+| POST   | `/instances/{instance_id}/hint`               | 配对；标记提示已使用并返回提示，不单独生成作答                                   |
+| POST   | `/instances/{instance_id}/skip`               | 配对；幂等跳过，不计作答/掌握度                                                  |
+| POST   | `/instances/{instance_id}/answer`             | 配对；保存首次作答并返回反馈                                                     |
+| GET    | `/attempts/{request_id}`                      | 配对；查询待确认请求回执                                                         |
+| GET    | `/profiles/progress`                          | 配对；掌握状态、复习、设置、revision及完成轮次                                   |
+| GET    | `/profiles/knowledge/{knowledge_id}/attempts` | 配对；知识点记录，限定家庭/知识点的cursor分页，最多50条                          |
+| POST   | `/guest/operate`                              | 公开；白名单操作与临时快照，返回result/state                                     |
+| GET    | `/guest/curriculum`                           | 公开；教学内容，无家庭档案                                                       |
+| GET    | `/guest/learning-audio`                       | 公开；已安装教学声音状态                                                         |
+| GET    | `/guest/audio/{asset_id}`                     | 公开；已安装标准音                                                               |
+| GET    | `/guest/voice/{asset_id}`                     | 公开；已安装中文声音及课程录音                                                   |
 
 `learning-audio` 的形状为 `{narration: Record<audioId, boolean>, lessons: Record<lessonId, {audioId,title,available,sourceType}>}`。课程音频需求附 `available` 及可用时的 `standardSource`。标准音唯一来源是固定cmguo/PinYinSound；没有审核状态或备用审音来源。
 

@@ -374,6 +374,7 @@ def bootstrap(request: Request, lp_session: str | None = Cookie(default=None)) -
         ).fetchone()[0]
     return {
         "paired": True,
+        "isLocalHost": _is_local(request),
         "device": {
             "id": device["id"],
             "label": device["label"],

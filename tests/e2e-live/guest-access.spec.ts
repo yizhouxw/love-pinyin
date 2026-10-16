@@ -74,7 +74,10 @@ with connect() as db:
   await expect(page.getByLabel('当前学习课', { exact: true })).toHaveValue('lesson-02');
   await expect(page.getByText(/1 次临时练习记录/)).toBeVisible();
   expect(household()).toBe(before);
-  await page.getByRole('button', { name: '清除并退出访客' }).click();
+  await page
+    .getByLabel('访客模式', { exact: true })
+    .getByRole('button', { name: '清除并退出访客' })
+    .click();
   await expect(page.getByRole('button', { name: '访客体验' })).toBeVisible();
   expect(await page.evaluate(() => sessionStorage.getItem('lp.guest.v1'))).toBeNull();
   await page.getByRole('button', { name: '访客体验' }).click();
@@ -97,4 +100,71 @@ test('ACCESS-01: expired pairing cookie still shows generation and generated cod
   await expect(page.getByLabel('家长配对码')).toHaveValue(/^[A-Z2-9]{8}$/);
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
+});
+
+test('ACCESS-02: guest mode stays visible and local pairing management connects the real household', async ({
+  page,
+  appUrl,
+  context,
+}) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto(appUrl);
+  await page.getByRole('button', { name: '访客体验' }).click();
+  const banner = page.getByLabel('访客模式', { exact: true });
+  await expect(banner).toContainText('当前：访客模式');
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await page.getByRole('button', { name: '我是家长，继续' }).click();
+  const management = page.getByRole('region', { name: '配对码管理' });
+  await expect(management.getByRole('button', { name: '清除并退出访客' })).toBeVisible();
+  await management.getByLabel('家长配对码').fill('ZZZZZZZZ');
+  const before = await page.evaluate(() => sessionStorage.getItem('lp.guest.v1'));
+  await management.getByRole('button', { name: '连接家庭' }).click();
+  await expect(management.getByRole('alert')).toContainText('已过期');
+  expect(await page.evaluate(() => sessionStorage.getItem('lp.guest.v1'))).toBe(before);
+  await management.getByRole('button', { name: '生成配对码', exact: true }).click();
+  await expect(management.getByLabel('家长配对码')).toHaveValue(/^[A-Z2-9]{8}$/);
+  await expect(management.getByRole('status')).toContainText('5 分钟内一次有效');
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect(banner.getByRole('button', { name: '清除并退出访客' })).toBeInViewport();
+  await page.screenshot({
+    path: test.info().outputPath('guest-pairing-ipad-viewport.png'),
+    fullPage: true,
+  });
+  await management.getByRole('button', { name: '连接家庭' }).click();
+  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('家长设备');
+  await expect(page.getByLabel('访客模式', { exact: true })).toHaveCount(0);
+  expect(await page.evaluate(() => sessionStorage.getItem('lp.guest.v1'))).toBeNull();
+  expect((await context.cookies()).some((cookie) => cookie.name === 'lp_session')).toBe(true);
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByRole('button', { name: '生成配对码', exact: true }).click();
+  const code = await management.locator('.pair-code').innerText();
+  expect(code).toMatch(/[A-Z2-9]{8}/);
+});
+
+test('ACCESS-02: local paired learning device can generate a code from parent management', async ({
+  page,
+  appUrl,
+  browser,
+}) => {
+  await page.goto(appUrl);
+  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '连接家庭' }).click();
+  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('家长设备');
+  const childContext = await browser.newContext();
+  try {
+    const child = await childContext.newPage();
+    await child.goto(appUrl);
+    await child.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+    await child.getByRole('button', { name: '连接家庭' }).click();
+    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('学习设备');
+    await child.getByRole('button', { name: '家长管理' }).click();
+    await child.getByRole('button', { name: '我是家长，继续' }).click();
+    await child.getByRole('button', { name: '生成配对码', exact: true }).click();
+    await expect(
+      child.getByRole('region', { name: '配对码管理' }).getByRole('status'),
+    ).toContainText('5 分钟内一次有效');
+  } finally {
+    await childContext.close();
+  }
 });

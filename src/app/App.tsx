@@ -281,6 +281,11 @@ async function api(path: string, options: RequestInit = {}): Promise<Json> {
       throw error;
     }
   }
+  return householdApi(path, options);
+}
+
+// Pairing manages the real household even while learning in a temporary guest session.
+async function householdApi(path: string, options: RequestInit = {}): Promise<Json> {
   const headers = new Headers(options.headers);
   if (options.body) headers.set('Content-Type', 'application/json');
   const csrf = document.cookie
@@ -363,23 +368,37 @@ async function replayPendingAnswer(session: Session | null): Promise<boolean> {
 }
 
 export function App() {
+  const [household, setHousehold] = useState<Bootstrap | null>(null);
   return (
     <>
       {isGuest() && (
         <aside className="guest-banner" aria-label="访客模式">
-          <span>访客模式 · 进度仅缓存在当前标签页，刷新可继续，不保存到家庭档案。</span>
+          <span>
+            <strong>当前：访客模式</strong> · 临时进度，不保存到家庭档案。
+          </span>
           <button className="quiet" onClick={leaveGuest}>
             清除并退出访客
           </button>
         </aside>
       )}
-      <LearningApp />
+      {!isGuest() && household?.paired && (
+        <aside className="guest-banner family-banner" aria-label="家庭模式">
+          <span>
+            <strong>当前：家庭模式 · {household.device?.isParent ? '家长设备' : '学习设备'}</strong>{' '}
+            · 进度保存到家庭 Mac。
+          </span>
+        </aside>
+      )}
+      <LearningApp onBootstrap={setHousehold} />
     </>
   );
 }
 
-function LearningApp() {
+function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void }) {
   const [boot, setBoot] = useState<Bootstrap | null>(null);
+  useEffect(() => {
+    if (boot && !boot.guest) onBootstrap(boot);
+  }, [boot, onBootstrap]);
   const [curriculum, setCurriculum] = useState<Curriculum | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [guidancePreference, setGuidancePreference] = useState(readGuidancePreference);
@@ -1352,6 +1371,7 @@ function LearningApp() {
               时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度；请家长检查服务器时间。
             </div>
           )}
+          {parentOpen && <PairingManagement />}
           {parentOpen ? (
             boot.guest ? (
               <GuestPanel
@@ -1810,6 +1830,159 @@ function LessonDetail({
   );
 }
 
+function PairingManagement() {
+  const [access, setAccess] = useState<Bootstrap | null>(null);
+  const [code, setCode] = useState('');
+  const [generated, setGenerated] = useState('');
+  const [expiresAt, setExpiresAt] = useState(0);
+  const [expired, setExpired] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [showHelp, setShowHelp] = useState(false);
+  const guest = isGuest();
+  const loadAccess = useCallback(async () => {
+    setAccess((await householdApi('/bootstrap')) as Bootstrap);
+  }, []);
+  useEffect(() => {
+    let cancelled = false;
+    void householdApi('/bootstrap')
+      .then((value) => {
+        if (!cancelled) setAccess(value as Bootstrap);
+      })
+      .catch(() => {
+        if (!cancelled) setError('无法读取配对状态，请检查 Mac 服务后重试。');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  useEffect(() => {
+    if (!expiresAt) return;
+    const timer = window.setTimeout(() => setExpired(true), Math.max(0, expiresAt - Date.now()));
+    return () => window.clearTimeout(timer);
+  }, [expiresAt]);
+  const canGenerate = Boolean(access?.isLocalHost || access?.device?.isParent);
+  async function generate() {
+    setBusy(true);
+    setError('');
+    try {
+      const result = await householdApi(
+        access?.isLocalHost ? '/local/pairing-code' : '/pairing-codes',
+        { method: 'POST' },
+      );
+      setGenerated(result.code);
+      setCode(result.code);
+      setExpired(false);
+      setExpiresAt(Date.now() + result.expiresInSeconds * 1000);
+    } catch {
+      setError('配对码生成失败，请检查连接并重试；远程生成需要有效的家长权限。');
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function connect() {
+    setBusy(true);
+    setError('');
+    try {
+      await householdApi('/pair', {
+        method: 'POST',
+        body: JSON.stringify({ code: code.trim().toUpperCase(), label: '学习设备' }),
+      });
+      leaveGuest();
+    } catch (cause) {
+      setError(
+        cause instanceof Error && cause.message === 'PAIRING_CODE_INVALID'
+          ? '配对码无效、已使用或已过期，请重新生成。访客记录仍然保留。'
+          : '连接家庭失败，请检查 Mac 连接后重试。访客记录仍然保留。',
+      );
+      setBusy(false);
+    }
+  }
+  return (
+    <section className="parent-panel pairing-management" aria-label="配对码管理">
+      <h2>配对码管理</h2>
+      <p>
+        当前：
+        {guest
+          ? '访客模式'
+          : access?.device?.isParent
+            ? '家庭模式 · 家长设备'
+            : '家庭模式 · 学习设备'}
+      </p>
+      {canGenerate ? (
+        <>
+          <p>生成一次性配对码，在 iPad 或另一台家庭设备上输入即可连接家庭。</p>
+          <button className="quiet" disabled={busy} onClick={() => void generate()}>
+            生成配对码
+          </button>
+        </>
+      ) : (
+        <>
+          <p>请在服务器 Mac 的本机入口生成配对码，或由已配对的家长设备生成。</p>
+          <button className="quiet" onClick={() => setShowHelp(true)}>
+            如何在 Mac 上生成配对码
+          </button>
+          {showHelp && (
+            <p>
+              在服务器 Mac 打开{' '}
+              <a href="http://127.0.0.1:8000/" target="_blank" rel="noreferrer">
+                http://127.0.0.1:8000/
+              </a>
+              ，进入家长管理的“配对码管理”；未连接时可直接点“在 Mac 上生成家长配对码”。iPad 上的
+              127.0.0.1 指向 iPad，请在 Mac 上操作。
+            </p>
+          )}
+          {!access && (
+            <button
+              className="quiet"
+              onClick={() =>
+                void loadAccess()
+                  .then(() => setError(''))
+                  .catch(() => setError('无法读取配对状态，请检查 Mac 服务后重试。'))
+              }
+            >
+              重新检查配对权限
+            </button>
+          )}
+        </>
+      )}
+      {generated && (
+        <p className="pair-code" role="status">
+          {generated}
+          <small>{expired ? '已过期，请重新生成' : '5 分钟内一次有效'}</small>
+        </p>
+      )}
+      {guest && (
+        <>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              void connect();
+            }}
+          >
+            <label htmlFor="managed-pair-code">家长配对码</label>
+            <div className="pair-input">
+              <input
+                id="managed-pair-code"
+                value={code}
+                onChange={(event) => setCode(event.target.value.toUpperCase())}
+                maxLength={12}
+                autoComplete="one-time-code"
+              />
+              <button disabled={busy || code.trim().length < 8}>连接家庭</button>
+            </div>
+          </form>
+          <p>连接成功后进入家庭档案，清除本次访客记录，不会将临时进度合并到家庭。</p>
+          <button className="quiet" disabled={busy} onClick={leaveGuest}>
+            清除并退出访客
+          </button>
+        </>
+      )}
+      {error && <p role="alert">{error}</p>}
+    </section>
+  );
+}
+
 function GuestPanel({
   curriculum,
   progress,
@@ -1922,7 +2095,6 @@ function ParentPanel({
   const [importFileName, setImportFileName] = useState('');
   const [importConfirmation, setImportConfirmation] = useState('');
   const [importComplete, setImportComplete] = useState(false);
-  const [newDeviceCode, setNewDeviceCode] = useState('');
   const [devices, setDevices] = useState<Json[]>([]);
   const [revokeDeviceId, setRevokeDeviceId] = useState('');
   const [deviceError, setDeviceError] = useState('');
@@ -2365,32 +2537,6 @@ function ParentPanel({
             })
           }
         />
-      </div>
-      <div className="parent-setting">
-        <div>
-          <strong>连接另一台家庭设备</strong>
-          <p>生成一次性配对码，在家庭网络内的浏览器输入。</p>
-        </div>
-        <div>
-          <button
-            className="quiet"
-            disabled={!boot.device?.isParent}
-            onClick={() =>
-              void act(async () => {
-                const result = await api('/pairing-codes', { method: 'POST' });
-                setNewDeviceCode(result.code);
-              })
-            }
-          >
-            生成配对码
-          </button>
-          {newDeviceCode && (
-            <p className="pair-code">
-              {newDeviceCode}
-              <small>5 分钟内一次有效</small>
-            </p>
-          )}
-        </div>
       </div>
       {isParent && (
         <div className="device-management">

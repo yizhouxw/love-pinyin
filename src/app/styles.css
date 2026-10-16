@@ -1579,6 +1579,9 @@ footer {
 }
 
 .guest-banner {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1588,6 +1591,20 @@ footer {
   background: #fff3d6;
   color: #563e1d;
   font-size: 14px;
+}
+
+.family-banner {
+  background: var(--mint);
+  color: var(--green);
+}
+
+.pairing-management {
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+
+.pairing-management .quiet {
+  margin: 8px 12px 8px 0;
 }
 
 .guest-banner button {
