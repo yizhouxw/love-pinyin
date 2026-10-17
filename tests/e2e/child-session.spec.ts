@@ -540,7 +540,9 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByRole('heading', { name: 'b 和 ā 连起来是哪一个音节？' })).toBeVisible();
   await expect(page.locator('.adult-hint')).toHaveCount(0);
   await expect(page.getByText(/暂时没有标准音频/)).toHaveCount(0);
-  await expect(page.getByRole('status')).toContainText('本课目前准备了 2 道可用练习');
+  await expect(page.getByRole('status').filter({ hasText: '本课目前准备了' })).toContainText(
+    '本课目前准备了 2 道可用练习',
+  );
   await expect(page.getByText('拼读组合站')).toBeVisible();
   await expect(page.getByLabel('完整拼读候选')).toBeVisible();
   const baOption = page.getByRole('button', { name: 'A 拼读候选 bā' });

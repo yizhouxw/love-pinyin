@@ -574,16 +574,33 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
   const standardHeard = !question?.audioRef || voice.completedIds.has(question.audioRef);
   const currentVoiceFailed = Boolean(
     question &&
-    [...voice.failedIds].some(
-      (id) =>
-        id === `prompt-${question.id}` ||
-        id.startsWith(`option-${question.id}-`) ||
-        id === question.audioRef,
-    ),
+    [...voice.failedIds].some((id) => id === `prompt-${question.id}` || id === question.audioRef),
   );
   const answerNeedsAudio = Boolean(
     question && (!promptHeard || currentVoiceFailed || !standardHeard),
   );
+  const answerUnavailableReason =
+    answer && (answer.correct || corrected)
+      ? '这题已经完成，点“继续”进入下一题。'
+      : busy
+        ? '正在连接家庭 Mac、保存练习，请稍等。'
+        : picturesPending
+          ? picturesFailed
+            ? '答案暂时不能选：图片未加载好，请点“重试图片”。'
+            : '答案暂时不能选：正在准备图片，请稍等。'
+          : currentVoiceFailed
+            ? voice.failedIds.has(`prompt-${question?.id}`)
+              ? '答案暂时不能选：题目声音未播放成功，请重新点“听题目”，也可以先跳过。'
+              : '答案暂时不能选：拼音声音未播放成功，请重新点“听拼音”，也可以先跳过。'
+            : !promptHeard
+              ? voice.playingId === `prompt-${question?.id}`
+                ? '正在准备或播放题目声音，听完后再选；停止后可点“听题目”重听。'
+                : '答案暂时不能选：请先点“听题目”，完整听一遍。关闭语音引导后，需要手动听题。'
+              : !standardHeard
+                ? voice.playingId === question?.audioRef
+                  ? '正在准备或播放拼音声音，听完即可选择答案。'
+                  : '题目已听完：请再点“听拼音”，完整听一遍后即可选择答案。'
+                : null;
   const autoVoiceId =
     !boot?.paired || parentOpen || parentGateOpen || lessonViewId
       ? null
@@ -958,11 +975,9 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
               />
             )}
           </div>
-          {answerNeedsAudio && !answer && (
-            <p className="listen-before-answer" role="status">
-              🔊 先听一听，再选卡片
-            </p>
-          )}
+          <p id="answer-availability" className="listen-before-answer" role="status">
+            {answerUnavailableReason ?? '可以选择答案了。'}
+          </p>
           <VoiceFailure voice={voice} />
           {picturesPending && (
             <div className="picture-failure" role="status">
@@ -982,6 +997,7 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
               <div className="option-with-voice" key={option.id}>
                 <button
                   data-option-id={option.id}
+                  aria-describedby="answer-availability"
                   className={`option game-option ${question.type} ${hint?.answer.optionId === option.id && !answer ? 'hinted' : ''} ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
                   disabled={
                     Boolean(answer && (answer.correct || corrected)) ||
@@ -1046,6 +1062,7 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
                       ref={blendConfirm}
                       className="blend-confirm"
                       aria-label="确认拼读"
+                      aria-describedby="answer-availability"
                       disabled={
                         busy ||
                         answerNeedsAudio ||

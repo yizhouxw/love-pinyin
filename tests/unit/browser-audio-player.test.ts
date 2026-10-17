@@ -35,10 +35,35 @@ class FakeAudio extends EventTarget {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.useRealTimers();
   FakeAudio.instances = [];
 });
 
 describe('BrowserAudioPlayer', () => {
+  it('bounds initial loading and playback stalls, releasing timers and the active source', async () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('Audio', FakeAudio);
+    const player = new BrowserAudioPlayer();
+    const loading = expect(player.play('audio-final-a')).rejects.toThrow('AUDIO_TIMEOUT');
+    await vi.advanceTimersByTimeAsync(30000);
+    await loading;
+    expect(FakeAudio.instances[0]!.src).toBe('');
+    const stalled = expect(player.playPrivate('prompt-question')).rejects.toThrow('AUDIO_STALLED');
+    const audio = FakeAudio.instances[1]! as FakeAudio & { currentTime: number };
+    audio.currentTime = 0;
+    audio.dispatchEvent(new Event('playing'));
+    await vi.advanceTimersByTimeAsync(10000);
+    audio.currentTime = 1;
+    audio.dispatchEvent(new Event('timeupdate'));
+    await vi.advanceTimersByTimeAsync(10000);
+    expect(audio.src).not.toBe('');
+    // Repeated timeupdate at the same position must not hide a stall.
+    audio.dispatchEvent(new Event('timeupdate'));
+    await vi.advanceTimersByTimeAsync(5000);
+    await stalled;
+    expect(audio.src).toBe('');
+    expect(vi.getTimerCount()).toBe(0);
+  });
   it('uses an encoded same-origin allowlist URL and stops the prior sound before replay', async () => {
     vi.stubGlobal('Audio', FakeAudio);
     const player = new BrowserAudioPlayer();

@@ -107,12 +107,19 @@ test('VOICE-05: actual narration and course audio decode, replay and separate fr
     await page.getByRole('button', { name: '先跳过这题' }).click();
     await expect(page.locator('.play-nav strong')).not.toHaveText(previousStep);
   }
+  await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
   await page.getByRole('button', { name: '听选项 A', exact: true }).click();
   await expect(page.getByRole('button', { name: '停止听选项 A', exact: true })).toBeVisible();
   expect(answerRequests).toEqual([]);
   await expect.poll(() => voiceRequests.some((url) => url.includes('/voice/option-'))).toBe(true);
 
   await expect(page.getByRole('button', { name: '听选项 A', exact: true })).toBeVisible();
+  await page.route('**/api/v1/voice/option-*', (route) => route.abort('failed'));
+  await page.getByRole('button', { name: '听选项 A', exact: true }).click();
+  await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
+  await expect(page.locator('.game-option').first()).toBeEnabled();
+  expect(answerRequests).toEqual([]);
+  await page.unroute('**/api/v1/voice/option-*');
   // Inject a failure for the question recording, not an unrelated in-flight option.
   await page.route('**/api/v1/voice/prompt-*', (route) => route.abort('failed'));
   await page.getByRole('button', { name: '听题目', exact: true }).click();

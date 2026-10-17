@@ -38,11 +38,7 @@ export function useLearningVoice(scope: string | null) {
       active.current = controller;
       setFailureId(null);
       setPlayingId(id);
-      setCompleted((previous) => {
-        const next = new Set(previous.scope === scope ? previous.ids : []);
-        next.delete(id);
-        return { scope, ids: next };
-      });
+      // Cancelling a replay does not undo a previously completed listen in this task.
       const playback =
         kind === 'standard'
           ? audioPlayer.play(id, controller.signal)

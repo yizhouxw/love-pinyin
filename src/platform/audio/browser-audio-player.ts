@@ -96,20 +96,35 @@ export class BrowserAudioPlayer implements AudioPlayer {
     return new Promise((resolve, reject) => {
       let settled = false;
       let frame: number | undefined;
+      let watchdog: ReturnType<typeof setTimeout> | undefined;
+      let lastTime = 0;
+      const watchProgress = () => {
+        clearTimeout(watchdog);
+        watchdog = setTimeout(() => finish(new Error('AUDIO_STALLED')), 15000);
+      };
+      const onProgress = () => {
+        if (audio.currentTime > lastTime) {
+          lastTime = audio.currentTime;
+          watchProgress();
+        }
+      };
       const notifyTime = () => {
         if (settled) return;
         observer?.onTime?.(audio.currentTime);
         frame = requestAnimationFrame(notifyTime);
       };
       const onPlaying = () => {
+        watchProgress();
         observer?.onStart?.();
         if (observer?.onTime && frame === undefined) notifyTime();
       };
       const finish = (error?: Error) => {
         if (settled) return;
         settled = true;
+        clearTimeout(watchdog);
         if (frame !== undefined) cancelAnimationFrame(frame);
         audio.removeEventListener('playing', onPlaying);
+        audio.removeEventListener('timeupdate', onProgress);
         audio.removeEventListener('ended', onEnded);
         audio.removeEventListener('error', onError);
         signal?.removeEventListener('abort', onAbort);
@@ -128,8 +143,10 @@ export class BrowserAudioPlayer implements AudioPlayer {
       this.active = playback;
       audio.addEventListener('ended', onEnded, { once: true });
       audio.addEventListener('playing', onPlaying);
+      audio.addEventListener('timeupdate', onProgress);
       audio.addEventListener('error', onError, { once: true });
       signal?.addEventListener('abort', onAbort, { once: true });
+      watchdog = setTimeout(() => finish(new Error('AUDIO_TIMEOUT')), 30000);
       try {
         void audio.play().catch(() => finish(new Error('AUDIO_UNAVAILABLE')));
       } catch {
