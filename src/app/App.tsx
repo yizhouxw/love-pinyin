@@ -570,15 +570,9 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
   }, [blendPreview, task?.instanceId]);
   const corrected = Boolean(task && correctedInstance === task.instanceId);
   const questionVoice = question ? narration.exercises[question.id] : undefined;
-  const promptHeard = Boolean(question && voice.completedIds.has(`prompt-${question.id}`));
   const standardHeard = !question?.audioRef || voice.completedIds.has(question.audioRef);
-  const currentVoiceFailed = Boolean(
-    question &&
-    [...voice.failedIds].some((id) => id === `prompt-${question.id}` || id === question.audioRef),
-  );
-  const answerNeedsAudio = Boolean(
-    question && (!promptHeard || currentVoiceFailed || !standardHeard),
-  );
+  const currentVoiceFailed = Boolean(question?.audioRef && voice.failedIds.has(question.audioRef));
+  const answerNeedsAudio = Boolean(question && (currentVoiceFailed || !standardHeard));
   const answerUnavailableReason =
     answer && (answer.correct || corrected)
       ? '这题已经完成，点“继续”进入下一题。'
@@ -589,18 +583,12 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
             ? '答案暂时不能选：图片未加载好，请点“重试图片”。'
             : '答案暂时不能选：正在准备图片，请稍等。'
           : currentVoiceFailed
-            ? voice.failedIds.has(`prompt-${question?.id}`)
-              ? '答案暂时不能选：题目声音未播放成功，请重新点“听题目”，也可以先跳过。'
-              : '答案暂时不能选：拼音声音未播放成功，请重新点“听拼音”，也可以先跳过。'
-            : !promptHeard
-              ? voice.playingId === `prompt-${question?.id}`
-                ? '正在准备或播放题目声音，听完后再选；停止后可点“听题目”重听。'
-                : '答案暂时不能选：请先点“听题目”，完整听一遍。关闭语音引导后，需要手动听题。'
-              : !standardHeard
-                ? voice.playingId === question?.audioRef
-                  ? '正在准备或播放拼音声音，听完即可选择答案。'
-                  : '题目已听完：请再点“听拼音”，完整听一遍后即可选择答案。'
-                : null;
+            ? '答案暂时不能选：拼音声音未播放成功，请重新点“听拼音”，也可以先跳过。'
+            : !standardHeard
+              ? voice.playingId === question?.audioRef
+                ? '正在准备或播放拼音声音，听完即可选择答案。'
+                : '答案暂时不能选：请点“听拼音”，完整听一遍后即可选择答案。'
+              : null;
   const autoVoiceId =
     !boot?.paired || parentOpen || parentGateOpen || lessonViewId
       ? null
@@ -975,6 +963,7 @@ function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) => void 
               />
             )}
           </div>
+          <p className="listen-before-answer">听题目是辅助，可以按需使用。</p>
           <p id="answer-availability" className="listen-before-answer" role="status">
             {answerUnavailableReason ?? '可以选择答案了。'}
           </p>

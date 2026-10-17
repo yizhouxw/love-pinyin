@@ -28,10 +28,14 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   const created = page.waitForResponse(
     (r) => r.url().endsWith('/reviews/k-initial-b/sessions') && r.request().method() === 'POST',
   );
+  await page.route('**/api/v1/voice/prompt-*', (route) => route.abort('failed'));
   await page.getByRole('region', { name: '今日推荐复习' }).getByRole('button').click();
   const session = await (await created).json();
   const question = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;
   expect(question.type).toBe('blend-choice');
+  expect(question.audioRef).toBeUndefined();
+  await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
+  await page.unroute('**/api/v1/voice/prompt-*');
   const correctIndex = question.options.findIndex((o) => o.id === question.answer.optionId);
   const wrongIndex = question.options.findIndex((o) => o.id !== question.answer.optionId);
   const options = page.locator('.game-option');
@@ -39,6 +43,7 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   const undo = page.getByRole('button', { name: '撤销拼读选择', exact: true });
   await expect(options.first()).toBeEnabled({ timeout: 20000 });
   await optionById(page, question.options[wrongIndex]!.id).press('Enter');
+  await expect(confirm).toBeEnabled();
   await expect(confirm).toBeFocused();
   await expect(confirm).toBeInViewport();
   await expect(page.getByLabel('当前拼读预览')).toContainText(question.options[wrongIndex]!.label);

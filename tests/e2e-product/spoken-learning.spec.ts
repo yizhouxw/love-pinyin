@@ -124,7 +124,7 @@ test('VOICE-05: actual narration and course audio decode, replay and separate fr
   await page.route('**/api/v1/voice/prompt-*', (route) => route.abort('failed'));
   await page.getByRole('button', { name: '听题目', exact: true }).click();
   await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
-  await expect(page.locator('.game-option').first()).toBeDisabled();
+  await expect(page.locator('.game-option').first()).toBeEnabled();
   expect(answerRequests).toEqual([]);
   await page.unroute('**/api/v1/voice/prompt-*');
   await page.getByRole('button', { name: '↻ 重试声音' }).click();
@@ -144,7 +144,7 @@ test('VOICE-05: actual narration and course audio decode, replay and separate fr
   expect(errors).toEqual([]);
 });
 
-test('VOICE-05: unknown resource status cannot unlock silent answers; exit stops hint', async ({
+test('ANSWER-READY-02: missing narration status and failed optional prompt do not block visual answers; exit stops hint', async ({
   page,
   appUrl,
 }) => {
@@ -162,8 +162,8 @@ test('VOICE-05: unknown resource status cannot unlock silent answers; exit stops
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '开始今天的练习' }).click();
   await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
-  for (const option of await page.locator('.game-option').all())
-    await expect(option).toBeDisabled();
+  await expect(page.getByRole('button', { name: '听拼音', exact: true })).toHaveCount(0);
+  for (const option of await page.locator('.game-option').all()) await expect(option).toBeEnabled();
   expect(answerRequests).toEqual([]);
   await page.unroute('**/api/v1/voice/prompt-*');
   await page.getByRole('button', { name: '↻ 重试声音' }).click();
