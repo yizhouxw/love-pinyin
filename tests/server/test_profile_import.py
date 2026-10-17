@@ -2,8 +2,9 @@ import json
 
 import pytest
 
-from server import api
+from server import profile_backup
 from server.content import map_by_id
+from server.routes import profiles
 
 
 def preview(client, payload):
@@ -19,9 +20,9 @@ def preview(client, payload):
 
 @pytest.fixture(autouse=True)
 def clean_preview_tokens():
-    api._import_previews.clear()
+    profiles._import_previews.clear()
     yield
-    api._import_previews.clear()
+    profiles._import_previews.clear()
 
 
 def confirm(client, result, revision=None, sha256=None):
@@ -259,13 +260,13 @@ def test_failed_restore_rolls_back_existing_data(paired_client, monkeypatch):
     )
     before = client.get("/api/v1/profiles/export").json()
     preview_result = preview(client, before).json()
-    restore = api._restore_backup
+    restore = profile_backup._restore_backup
 
     def fail_after_write(db, household_id, device_id, payload):
         restore(db, household_id, device_id, payload)
         raise RuntimeError("injected restore failure")
 
-    monkeypatch.setattr(api, "_restore_backup", fail_after_write)
+    monkeypatch.setattr(profiles, "_restore_backup", fail_after_write)
     with pytest.raises(RuntimeError, match="injected restore failure"):
         confirm(client, preview_result)
 

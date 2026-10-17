@@ -3,8 +3,9 @@ from datetime import date, timedelta
 
 import pytest
 
-from server import api, content, storage
+from server import content, learning_state, profile_backup, storage
 from server.content_history import archived_exercises, revision_index
+from server.routes import resources, sessions
 from tests.server.test_guest_access import operate, snapshot
 from tests.server.test_profile_import import confirm, preview
 
@@ -26,9 +27,10 @@ def historical_backup(client, monkeypatch, legacy_ids=True):
     with monkeypatch.context() as patch:
         if legacy_ids:
             # Reproduce IDs produced by the historical application, before ordering v1.
-            patch.setattr(api, "OPTION_ORDER_V1_PREFIX", "")
+            patch.setattr(sessions, "OPTION_ORDER_V1_PREFIX", "")
         patch.setattr(content, "load_curriculum", lambda: older)
-        patch.setattr(api, "load_curriculum", lambda: older)
+        for module in (learning_state, profile_backup, resources, sessions):
+            patch.setattr(module, "load_curriculum", lambda: older)
         household = storage.ensure_household(OLD)
         with storage.transaction() as db:
             db.execute("UPDATE household SET selected_lesson_id='lesson-14'")

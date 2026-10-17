@@ -5,7 +5,7 @@ import pytest
 from fastapi import HTTPException
 from pypinyin import Style, lazy_pinyin
 
-from server import api, daily_reading, playback_settings, reading_timings
+from server import daily_reading, playback_settings, profile_backup, reading_timings
 from tests.server.test_profile_import import confirm, preview
 
 
@@ -61,7 +61,7 @@ def test_gap_backup_round_trip_and_missing_legacy_field_default(paired_client):
         damaged = copy.deepcopy(backup)
         damaged["profile"]["settings"]["playbackGapSeconds"] = invalid
         with pytest.raises(HTTPException):
-            api._validate_backup(damaged)
+            profile_backup._validate_backup(damaged)
 
 
 def test_all_word_building_items_have_tone_matching_examples_and_chinese_scripts():

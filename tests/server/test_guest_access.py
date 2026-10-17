@@ -4,9 +4,10 @@ from concurrent.futures import ThreadPoolExecutor
 
 from fastapi.testclient import TestClient
 
-from server import api, storage
+from server import storage
 from server.guest import GuestOperation, execute
 from server.main import app
+from server.routes import resources
 
 
 def snapshot():
@@ -129,7 +130,7 @@ def test_guest_rejects_family_operations_and_invalid_state(test_client):
 
 
 def test_guest_real_audio_uses_same_validated_source(test_client, install_standard):
-    target = api.load_curriculum()["audioRequirements"][0]
+    target = resources.load_curriculum()["audioRequirements"][0]
     install_standard(target)
     response = test_client.get(
         f"/api/v1/guest/audio/{target['id']}", headers={"Range": "bytes=0-3"}

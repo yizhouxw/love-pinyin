@@ -5,9 +5,12 @@ from threading import Barrier
 
 from fastapi.testclient import TestClient
 
-from server import api, storage
+from server import api_dependencies, storage
 from server.content import map_by_id
 from server.main import app
+from server.routes import attempts as attempts_routes
+from server.routes import progress as progress_routes
+from server.routes import sessions
 
 
 def test_same_exercise_credit_is_atomic_per_shanghai_day_across_devices(paired_client, monkeypatch):
@@ -33,7 +36,10 @@ def test_same_exercise_credit_is_atomic_per_shanghai_day_across_devices(paired_c
             def now(cls, tz=None):
                 return cls.value if tz is None else cls.value.astimezone(tz)
 
-        monkeypatch.setattr(api, "datetime", ControlledDateTime)
+        monkeypatch.setattr(api_dependencies, "datetime", ControlledDateTime)
+        monkeypatch.setattr(sessions, "datetime", ControlledDateTime)
+        monkeypatch.setattr(attempts_routes, "datetime", ControlledDateTime)
+        monkeypatch.setattr(progress_routes, "datetime", ControlledDateTime)
 
         def headers(client):
             return {"X-LP-CSRF": client.cookies.get("lp_csrf")}

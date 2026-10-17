@@ -33,7 +33,8 @@ test('RECOVERY-01: real server restart preserves saved work and replays one pend
     await fetch(`${appUrl}/api/v1/health`);
   }).rejects.toThrow();
   await choice.press('Enter');
-  await expect(page.getByRole('alert')).toContainText('本次操作结果未确认');
+  // A stopped server can fail both narration and the answer request at once.
+  await expect(page.getByRole('alert').filter({ hasText: '本次操作结果未确认' })).toBeVisible();
   await expect(page.locator('.feedback')).toHaveCount(0);
   expect(answers).toHaveLength(2);
 

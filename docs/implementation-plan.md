@@ -31,3 +31,5 @@
 2026-10-16新增[SPEC-013](specs/SPEC-013-docker-package.md)：单Docker镜像自带全部声音和Whisper模型，构建阶段准备校验，运行时不下载资源；数据卷独立持久化，按ADR-0021验证隔离网络运行。
 
 SPEC-013的DOCKER-05/06补充Windows x86-64宿主的linux/amd64部署及CPU Whisper依赖，列出运行/构建机器规格；按用户要求先增加支持并注明Windows/amd64与最低规格未验证，不执行该平台构建或推理验收。
+
+2026-10-17新增[SPEC-015](specs/SPEC-015-maintainability.md)：按ADR-0026拆分大型前端、API与样式模块，保持产品行为和数据格式；按MAINT-01～03记录工程与真实服务回归。

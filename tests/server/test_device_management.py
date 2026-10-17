@@ -1,5 +1,8 @@
 from fastapi.testclient import TestClient
 
+from server import api_dependencies
+from server.routes import pairing
+
 
 def test_parent_can_list_and_revoke_secondary_device_without_exposing_tokens(paired_client):
     parent = paired_client
@@ -81,7 +84,7 @@ def test_pairing_capability_distinguishes_loopback_from_remote_even_when_paired(
 def test_device_model_used_code_and_server_connection_time(paired_client, monkeypatch):
     from urllib.parse import quote
 
-    from server import api, storage
+    from server import storage
 
     parent = paired_client
     code = parent.post("/api/v1/local/pairing-code").json()["code"]
@@ -89,7 +92,8 @@ def test_device_model_used_code_and_server_connection_time(paired_client, monkey
         parent.app, base_url="http://127.0.0.1", client=("192.168.1.30", 50003)
     ) as child:
         moment = "2026-10-16T04:05:06.000+00:00"
-        monkeypatch.setattr(api, "now_iso", lambda: moment)
+        monkeypatch.setattr(pairing, "now_iso", lambda: moment)
+        monkeypatch.setattr(api_dependencies, "now_iso", lambda: moment)
         response = child.post("/api/v1/pair", json={"code": code, "model": "iPad Air 5"})
         assert response.status_code == 200
         child_id = response.json()["deviceId"]

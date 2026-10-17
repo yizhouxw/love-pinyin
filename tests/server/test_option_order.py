@@ -6,9 +6,10 @@ from datetime import date, timedelta
 
 import pytest
 
-from server import api, storage
+from server import storage
 from server.content import map_by_id
 from server.domain import order_options
+from server.routes import sessions
 
 
 def post(client, path, body=None):
@@ -62,7 +63,7 @@ def test_family_refresh_and_backup_restore_keep_order_and_option_id_score(
     client = paired_client
     with monkeypatch.context() as patch:
         if legacy:
-            patch.setattr(api, "OPTION_ORDER_V1_PREFIX", "")
+            patch.setattr(sessions, "OPTION_ORDER_V1_PREFIX", "")
         session = post(client, "/sessions")
     tasks = session["tasks"]
     authored = map_by_id("exercises")

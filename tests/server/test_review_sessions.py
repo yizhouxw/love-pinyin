@@ -3,8 +3,11 @@ from datetime import UTC, date, datetime, timedelta
 
 import pytest
 
-from server import api, storage
+from server import api_dependencies, storage
 from server.content import load_curriculum, map_by_id
+from server.routes import attempts as attempts_routes
+from server.routes import progress as progress_routes
+from server.routes import sessions
 
 
 def _set_due_plan(client, knowledge_id="k-tone-4", due=None):
@@ -74,7 +77,7 @@ def test_review_session_refuses_early_and_single_question_content(paired_client,
     candidates = [q["id"] for q in content["exercises"] if q["primaryKnowledgeId"] == "k-tone-4"]
     for lesson in content["lessons"]:
         lesson["exerciseIds"] = [qid for qid in lesson["exerciseIds"] if qid not in candidates[1:]]
-    monkeypatch.setattr(api, "load_curriculum", lambda: content)
+    monkeypatch.setattr(sessions, "load_curriculum", lambda: content)
     insufficient = paired_client.post(
         "/api/v1/reviews/k-tone-4/sessions", json={}, headers=_headers(paired_client)
     )
@@ -123,7 +126,11 @@ def test_passing_two_question_review_advances_stage_from_shanghai_completion_day
             value = datetime(2026, 9, 27, 0, 30, tzinfo=UTC)
             return value.astimezone(tz) if tz else value.replace(tzinfo=None)
 
-    monkeypatch.setattr(api, "datetime", FrozenDateTime)
+    monkeypatch.setattr(api_dependencies, "datetime", FrozenDateTime)
+    monkeypatch.setattr(sessions, "datetime", FrozenDateTime)
+    monkeypatch.setattr(attempts_routes, "datetime", FrozenDateTime)
+    monkeypatch.setattr(progress_routes, "datetime", FrozenDateTime)
+
     household_id = paired_client.get("/api/v1/bootstrap").json()["profile"]["id"]
     questions = [
         question

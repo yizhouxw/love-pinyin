@@ -1,0 +1,167 @@
+/* Original data-driven teaching strokes; never a platform font for handwriting. */
+.writing-workshop {
+  margin-block: 24px;
+  padding: clamp(12px, 3vw, 24px);
+  background: #fff9ee;
+  border: 2px solid #e6d8bd;
+  border-radius: 22px;
+  min-width: 0;
+}
+.writing-heading,
+.writing-controls,
+.writing-targets,
+.writing-placement {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.writing-heading h3 {
+  margin: 0;
+  flex: 1 1 190px;
+}
+.writing-targets button {
+  min-width: 56px;
+  min-height: 52px;
+  font-size: 1.4rem;
+}
+.writing-targets button[aria-pressed='true'] {
+  background: #d6efe7;
+  outline: 3px solid #277563;
+}
+.writing-stage {
+  background: #fffefa;
+  border-radius: 16px;
+  margin-block: 18px;
+  overflow: hidden;
+}
+.writing-diagram {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+  min-height: 160px;
+}
+.writing-grid-middle {
+  stroke: #7b9cba;
+  stroke-width: 1.8;
+}
+.writing-grid-outer {
+  stroke: #a3b5c8;
+  stroke-width: 1;
+}
+.writing-stroke {
+  fill: none;
+  stroke: #25463f;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.writing-stroke.active {
+  stroke: #b8462b;
+  stroke-width: 6;
+}
+.writing-stroke.future {
+  stroke: #c6d2cf;
+  stroke-dasharray: 3 4;
+}
+.writing-direction circle {
+  fill: #13798b;
+  stroke: #fff;
+  stroke-width: 1;
+}
+.writing-direction path {
+  stroke: #13798b;
+  stroke-width: 2;
+  fill: none;
+}
+.writing-direction text {
+  font-size: 13px;
+  fill: #13798b;
+  font-weight: 800;
+}
+.writing-controls button {
+  min-height: 50px;
+  flex: 1 1 120px;
+}
+.writing-controls .start-button {
+  width: auto;
+  margin: 0;
+  font-size: 1rem;
+}
+.writing-instruction {
+  margin-block: 18px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #fff;
+}
+.writing-instruction p {
+  line-height: 1.8;
+}
+.writing-paper {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px dashed #acbcaf;
+  border-radius: 12px;
+}
+.writing-paper > span {
+  font-size: 2rem;
+}
+.writing-option {
+  width: 100%;
+  min-width: 0;
+  height: 210px;
+  min-height: 0;
+}
+.game-option:has(.writing-option) {
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+}
+
+.word-cards {
+  margin-block: 24px;
+  padding: 20px;
+  border: 2px solid #d2e5d9;
+  border-radius: 22px;
+  background: #f3faf4;
+}
+.word-heading,
+.word-card,
+.word-card > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.word-card figure {
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  text-align: center;
+}
+.word-card figcaption span {
+  display: block;
+  font-size: 2rem;
+}
+.word-card figcaption small {
+  font-size: 1rem;
+}
+.word-picture {
+  display: block;
+  width: min(240px, 100%);
+  height: auto;
+  object-fit: contain;
+}
+.word-question-picture {
+  display: flex;
+  justify-content: center;
+  margin: 16px;
+}
+.game-option:has(.word-picture) {
+  padding: 12px;
+}
+.game-option .word-picture {
+  width: min(180px, 100%);
+}

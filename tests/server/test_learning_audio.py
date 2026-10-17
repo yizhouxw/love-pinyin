@@ -6,7 +6,8 @@ from copy import deepcopy
 import pytest
 
 from scripts import prepare_learning_audio
-from server import api, daily_reading, learning_audio, reading_recognition
+from server import daily_reading, learning_audio, reading_recognition
+from server.routes import resources
 
 
 def write_json(path, value):
@@ -191,13 +192,13 @@ def test_preparer_refuses_latin_or_pinyin_before_synthesizing(private_audio, mon
 def test_trusted_source_enables_listening_without_review(
     paired_client, monkeypatch, install_standard
 ):
-    content = deepcopy(api.load_curriculum())
+    content = deepcopy(resources.load_curriculum())
     first_question = next(item for item in content["exercises"] if item["id"] == "q-01-01")
     asset = next(
         item for item in content["audioRequirements"] if item["id"] == first_question["audioRef"]
     )
     standard_file = install_standard(asset)
-    monkeypatch.setattr(api, "load_curriculum", lambda: content)
+    monkeypatch.setattr(resources, "load_curriculum", lambda: content)
     response = paired_client.post(
         "/api/v1/sessions", json={}, headers={"X-LP-CSRF": paired_client.cookies.get("lp_csrf")}
     )

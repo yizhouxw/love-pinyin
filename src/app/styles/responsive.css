@@ -1,0 +1,147 @@
+@media (max-width: 760px) {
+  .garden-card {
+    gap: 12px;
+    padding: 18px;
+  }
+  .lesson-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .knowledge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .feature-row {
+    grid-template-columns: 1fr;
+  }
+  .feature-row > div {
+    padding: 13px;
+  }
+  .hero-orbit {
+    width: 80px;
+    height: 80px;
+    font-size: 38px;
+    top: 20px;
+    right: 20px;
+  }
+  .hero-card {
+    margin-top: 36px;
+  }
+  .welcome {
+    padding: 38px 2px 26px;
+  }
+  .welcome-art {
+    font-size: 54px;
+    padding: 7px;
+  }
+}
+@media (max-width: 500px) {
+  .start-actions {
+    grid-template-columns: 1fr;
+  }
+  .course-audio-icon {
+    display: none;
+  }
+  main {
+    width: min(100% - 24px, 1060px);
+  }
+  .pair-page {
+    width: min(100% - 24px, 1060px);
+  }
+  .hero-card {
+    padding: 40px 22px 24px;
+    border-radius: 24px;
+  }
+  .hero-card h1 {
+    font-size: 43px;
+    max-width: 280px;
+  }
+  .hero-orbit {
+    opacity: 0.72;
+  }
+  .pair-input {
+    flex-direction: column;
+  }
+  .pair-input button {
+    width: 100%;
+  }
+  .welcome {
+    align-items: flex-start;
+  }
+  .welcome-art {
+    font-size: 42px;
+  }
+  .journey-title h2,
+  .section-heading h2 {
+    font-size: 21px;
+  }
+  .journey-card,
+  .map-card,
+  .parent-panel {
+    padding: 20px;
+    border-radius: 23px;
+  }
+  .lesson-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .knowledge-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lesson-tile {
+    min-height: 92px;
+    padding: 10px;
+  }
+  .question-card {
+    padding: 30px 18px;
+    border-radius: 24px;
+  }
+  .options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .option {
+    font-size: 19px;
+    min-height: 83px;
+  }
+  .parent-setting {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .danger-setting input {
+    max-width: none;
+    width: 100%;
+  }
+  .garden-card {
+    align-items: flex-start;
+  }
+  .garden-pot {
+    flex-basis: 96px;
+    min-height: 116px;
+  }
+  .garden-copy p {
+    font-size: 12px;
+  }
+  .inline-control {
+    width: 100%;
+  }
+  .inline-control select {
+    flex: 1;
+    max-width: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+:root[data-reduced-motion='true'] *,
+:root[data-reduced-motion='true'] *::before,
+:root[data-reduced-motion='true'] *::after {
+  scroll-behavior: auto !important;
+  animation: none !important;
+  transition: none !important;
+}

@@ -1,8 +1,8 @@
 from datetime import UTC, date, datetime, timedelta
 
-from server import api, storage
-from server.api import _review_recommendations
+from server import learning_state, storage
 from server.domain import business_date
+from server.learning_state import _review_recommendations
 
 
 def _curriculum():
@@ -121,13 +121,13 @@ def test_listening_review_recommendation_tracks_actual_standard_audio_once_per_r
     curriculum["audioRequirements"] = [target]
     standard_file = install_standard(target)
     checks = []
-    original = api._available_standard_audio
+    original = learning_state._available_standard_audio
 
     def count_check(content):
         checks.append(1)
         return original(content)
 
-    monkeypatch.setattr(api, "_available_standard_audio", count_check)
+    monkeypatch.setattr(learning_state, "_available_standard_audio", count_check)
     plan = [{"knowledge_id": "k-a", "due_date": "2026-09-26"}]
     today = date(2026, 9, 26)
     ready = _review_recommendations(curriculum, "lesson-01", plan, set(), today)

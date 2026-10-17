@@ -1,0 +1,54 @@
+/* Keep course switching ahead of the welcome and decorative home content. */
+.lesson-navigation {
+  padding: 18px 22px;
+}
+.lesson-navigation .section-heading {
+  margin-bottom: 12px;
+}
+.lesson-navigation .section-heading h2 {
+  font-size: 20px;
+}
+.lesson-navigation .lesson-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+.lesson-navigation .lesson-tile {
+  min-height: 92px;
+  min-width: 0;
+  padding: 10px;
+}
+.lesson-navigation .lesson-tile strong {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1000px) {
+  .lesson-navigation .lesson-grid {
+    display: flex;
+    overflow-x: auto;
+    padding: 3px 3px 12px;
+    scroll-padding-inline: 3px;
+    scroll-snap-type: x proximity;
+  }
+  .lesson-navigation .lesson-tile {
+    flex: 0 0 150px;
+    scroll-snap-align: start;
+  }
+}
+@media (max-width: 480px) {
+  .lesson-navigation {
+    padding: 16px;
+  }
+  .lesson-navigation .section-heading {
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .lesson-navigation .map-count {
+    flex-shrink: 0;
+  }
+}
+
+.lesson-navigation + .welcome {
+  padding-top: 20px;
+}
+.lesson-navigation + .welcome h1 {
+  font-size: clamp(28px, 4vw, 36px);
+}

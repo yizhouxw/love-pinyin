@@ -2,7 +2,7 @@ import hashlib
 
 import pytest
 
-from server import api
+from server.routes import resources
 
 
 @pytest.fixture
@@ -16,7 +16,7 @@ def registered_audio(monkeypatch, paired_client, install_standard):
         "sha256": hashlib.sha256(payload).hexdigest(),
     }
     asset_file = install_standard(asset, payload)
-    monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [asset]})
+    monkeypatch.setattr(resources, "load_curriculum", lambda: {"audioRequirements": [asset]})
     return paired_client, asset, asset_file, payload
 
 
@@ -65,14 +65,14 @@ def test_audio_route_ignores_old_review_fields_but_rejects_unknown_and_corrupt_a
     assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 200
 
     changed = {**asset, "reviewStatus": "needs-teacher-review"}
-    monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [changed]})
+    monkeypatch.setattr(resources, "load_curriculum", lambda: {"audioRequirements": [changed]})
     assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 200
 
     unlicensed = {**asset, "rightsEvidence": ""}
-    monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [unlicensed]})
+    monkeypatch.setattr(resources, "load_curriculum", lambda: {"audioRequirements": [unlicensed]})
     assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 200
 
-    monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [asset]})
+    monkeypatch.setattr(resources, "load_curriculum", lambda: {"audioRequirements": [asset]})
     asset_file.write_bytes(b"changed after manifest approval")
     assert client.get(f"/api/v1/audio/{asset['id']}").status_code == 404
 
@@ -87,7 +87,7 @@ def test_legacy_paths_cannot_override_pinned_source(registered_audio, monkeypatc
         "status": "approved",
         "reviewStatus": "approved",
     }
-    monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [malicious]})
+    monkeypatch.setattr(resources, "load_curriculum", lambda: {"audioRequirements": [malicious]})
     assert client.get(f"/api/v1/audio/{asset['id']}").content == payload
     path.unlink()
     path.symlink_to(outside)

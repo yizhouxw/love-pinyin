@@ -12,23 +12,38 @@ flowchart LR
 
 ## 实际模块
 
-| 路径                                          | 当前职责                                             |
-| --------------------------------------------- | ---------------------------------------------------- |
-| `src/app/App.tsx`                             | 页面、React状态导航、API调用辅助函数和游戏交互       |
-| `src/app/learning-voice.tsx`                  | 中文声音引导与播放状态                               |
-| `src/app/writing.tsx`、`illustrations.tsx`    | 书写观察与生活图片卡                                 |
-| `src/domain/`                                 | 契约、拼音呈现、书写与图片数据类型/纯函数            |
-| `src/platform/audio/browser-audio-player.ts`  | 浏览器音频适配器                                     |
-| `src/platform/guest.ts`                       | 访客临时状态与请求串行化                             |
-| `server/api.py`、`main.py`                    | 路由、认证、请求事务及同源服务入口                   |
-| `server/domain.py`、`storage.py`              | 确定性进度/选题规则、SQLite与迁移                    |
-| `server/content.py`、`content_history.py`     | 当前课程及不可覆盖的历史内容                         |
-| `server/source_audio.py`、`learning_audio.py` | 标准音与中文声音/课程录音清单、完整性及读取          |
-| `server/guest.py`、`backup.py`                | 请求级访客内存库、SQLite运维备份                     |
-| `content/`、`schemas/`                        | 课程、答案、教学规则、资源映射及格式约束             |
-| `private/`（忽略）                            | 上游标准音缓存、模型、家庭数据库、备份及本机测试证据 |
+| 路径                                                                    | 当前职责                                                                                       |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `src/app/App.tsx`                                                       | 学习状态、导航、当前题交互与页面编排                                                           |
+| `src/app/lesson-detail.tsx`、`lesson-navigation.tsx`                    | 课程资料、路线与知识卡                                                                         |
+| `src/app/parent-panel.tsx`、`guest-panel.tsx`、`knowledge-progress.tsx` | 家庭/访客设置与逐知识点历史                                                                    |
+| `src/app/pairing-page.tsx`、`pairing-management.tsx`                    | 初次配对与已有会话的配对管理                                                                   |
+| `src/app/session-summary.tsx`、`management-controls.tsx`、`notice.tsx`  | 会话小结、家长确认及连接错误                                                                   |
+| `src/platform/api-client.ts`、`pending-answer.ts`                       | 家庭/访客请求适配、待确认作答存储与重放                                                        |
+| `src/domain/learning-api.ts`                                            | 学习API数据与内容类型；`app/settings-types.ts`定义设置页属性                                   |
+| `src/app/styles.css`、`styles/`                                         | 保持级联顺序的样式入口与功能样式文件                                                           |
+| `src/app/learning-voice.tsx`                                            | 中文声音引导与播放状态                                                                         |
+| `src/app/writing.tsx`、`illustrations.tsx`                              | 书写观察与生活图片卡                                                                           |
+| `src/domain/`                                                           | 契约、拼音呈现、书写与图片数据类型/纯函数                                                      |
+| `src/platform/audio/browser-audio-player.ts`                            | 浏览器音频适配器                                                                               |
+| `src/platform/guest.ts`                                                 | 访客临时状态与请求串行化                                                                       |
+| `server/api.py`、`main.py`                                              | 路由组装与同源服务入口                                                                         |
+| `server/routes/`                                                        | pairing设备配对、resources课程声音、profiles家庭资料、sessions会话、attempts作答、progress进度 |
+| `server/api_dependencies.py`                                            | 认证、同源/CSRF、家长入口与时钟观察依赖                                                        |
+| `server/learning_state.py`                                              | 公共题目投影、可用题筛选、复习推荐和掌握度查询                                                 |
+| `server/profile_backup.py`                                              | 备份校验、历史格式迁移、事务内恢复和数据清理                                                   |
+| `server/domain.py`、`storage.py`                                        | 确定性进度/选题规则、SQLite与迁移                                                              |
+| `server/content.py`、`content_history.py`                               | 当前课程及不可覆盖的历史内容                                                                   |
+| `server/source_audio.py`、`learning_audio.py`                           | 标准音与中文声音/课程录音清单、完整性及读取                                                    |
+| `server/guest.py`、`backup.py`                                          | 请求级访客内存库、SQLite运维备份                                                               |
+| `content/`、`schemas/`                                                  | 课程、答案、教学规则、资源映射及格式约束                                                       |
+| `private/`（忽略）                                                      | 上游标准音缓存、模型、家庭数据库、备份及本机测试证据                                           |
 
-当前没有 hash 路由、独立 `src/services/` 或 `src/features/` 模块；API 辅助函数仍在 App 内。进度计算在服务端纯函数中，不由 React 重复实现。详细路由和表见[API契约](api-contract.md)。
+按[ADR-0026](adr/0026-feature-modules.md)组织模块：页面不导入App，共享类型不依赖React；platform负责浏览器副作用。服务端路由依赖认证与学习/备份辅助模块，这些底层模块不反向导入路由。访客直接调用同样的业务函数，在请求级内存数据库内运行。进度计算仍在服务端纯函数中，不由React重复实现。详细路由和表见[API契约](api-contract.md)。
+
+维护时先按功能定位：课程资料与练习选择看lesson模块，家长记录看knowledge-progress，通信和重连看platform，家庭导入看profiles与profile_backup。新增接口放入所属routes模块并由api组装，不向聚合入口回填业务逻辑。测试在实际所属模块注入故障或时钟。
+
+样式入口按base、home、exercise、parent、responsive、blend-and-guest、teaching、lesson-navigation、controls、daily-reading、reading-enrichment、device-management顺序导入。前四组保存原基础规则，后续组含响应式和后加覆盖；修改规则应搜索同选择器的后续声明，新增样式放所属文件，避免随意调整导入顺序改变外观。
 
 ## 状态与一致性
 

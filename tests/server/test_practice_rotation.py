@@ -3,9 +3,9 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from server import api
 from server.content import load_curriculum
 from server.domain import PracticeCompletion, plan_practice
+from server.routes import sessions
 
 BASE = datetime(2026, 10, 5, tzinfo=UTC)
 
@@ -166,7 +166,7 @@ def test_resumed_lesson_keeps_frozen_identity_across_content_update(
     from server import content
 
     monkeypatch.setattr(content, "load_curriculum", lambda: newer)
-    monkeypatch.setattr(api, "load_curriculum", lambda: newer)
+    monkeypatch.setattr(sessions, "load_curriculum", lambda: newer)
     after_update = client.get("/api/v1/sessions/current").json()
     assert after_update["contentVersion"] == original["contentVersion"]
     assert after_update["tasks"] == original["tasks"]

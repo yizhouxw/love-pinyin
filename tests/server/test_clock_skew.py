@@ -2,8 +2,11 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from server import api, storage
+from server import api_dependencies, storage
 from server.content import map_by_id
+from server.routes import attempts as attempts_routes
+from server.routes import progress as progress_routes
+from server.routes import sessions
 
 
 def _headers(client):
@@ -23,7 +26,11 @@ def test_clock_rollback_records_uncredited_attempt_until_parent_resolves(
         def now(cls, tz=None):
             return cls.value if tz is None else cls.value.astimezone(tz)
 
-    monkeypatch.setattr(api, "datetime", ControlledDateTime)
+    monkeypatch.setattr(api_dependencies, "datetime", ControlledDateTime)
+    monkeypatch.setattr(sessions, "datetime", ControlledDateTime)
+    monkeypatch.setattr(attempts_routes, "datetime", ControlledDateTime)
+    monkeypatch.setattr(progress_routes, "datetime", ControlledDateTime)
+
     household_id = paired_client.get("/api/v1/bootstrap").json()["profile"]["id"]
     with storage.transaction() as db:
         db.execute(

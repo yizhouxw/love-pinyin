@@ -1,0 +1,79 @@
+.blend-workbench {
+  margin-top: 18px;
+  padding: 16px;
+  border: 2px dashed var(--line);
+  border-radius: 20px;
+  background: var(--surface, #fffdf5);
+}
+.blend-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+  font-size: 48px;
+  overflow-wrap: anywhere;
+}
+.blend-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.blend-controls button {
+  flex: 1 1 160px;
+  min-height: 48px;
+  min-width: 0;
+  white-space: normal;
+}
+.blend-empty {
+  margin-bottom: 0;
+}
+.game-option[aria-pressed='true'] {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+}
+
+.guest-banner {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 20px;
+  background: #fff3d6;
+  color: #563e1d;
+  font-size: 14px;
+}
+
+.family-banner {
+  background: var(--mint);
+  color: var(--green);
+}
+
+.pairing-management {
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+
+.pairing-management .quiet {
+  margin: 8px 12px 8px 0;
+}
+
+.guest-banner button {
+  min-height: 44px;
+}
+
+.guest-settings select {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin: 8px 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: var(--card);
+}

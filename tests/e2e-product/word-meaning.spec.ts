@@ -1,6 +1,7 @@
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
+import { clearReadingMedia, observeReadingMedia } from '../support/media-log';
 import illustrations from '../../content/illustrations.json' with { type: 'json' };
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
 
@@ -11,6 +12,7 @@ test('WORD-01: all 84 real picture cards speak, decode and leave no practice eve
   appUrl,
 }) => {
   test.setTimeout(300000);
+  await observeReadingMedia(page);
   const external: string[] = [];
   page.on('request', (r) => {
     if (r.url().startsWith('http') && new URL(r.url()).origin !== appUrl) external.push(r.url());
@@ -44,16 +46,21 @@ test('WORD-01: all 84 real picture cards speak, decode and leave no practice eve
     await card.getByRole('button', { name: '听图片说明', exact: true }).click();
     await spoken;
     await expect(card.getByRole('button', { name: '停止听图片说明', exact: true })).toBeVisible();
-    const standard = page.waitForResponse(
-      (r) =>
-        r
-          .url()
-          .endsWith(
-            `/${'audioKind' in item && item.audioKind === 'daily' ? 'daily-audio' : 'audio'}/${item.audioRef}`,
-          ) && r.ok(),
-    );
+    const standardSource = `/${'audioKind' in item && item.audioKind === 'daily' ? 'daily-audio' : 'audio'}/${item.audioRef}`;
+    await clearReadingMedia(page);
     await card.getByRole('button', { name: '听这个拼音', exact: true }).click();
-    await standard;
+    // Reused daily clips can play from the Blob pool without another HTTP request.
+    await expect
+      .poll(() =>
+        page.evaluate(
+          (source) =>
+            window.readingMediaEvents.some(
+              (event) => event.type === 'start' && event.source.endsWith(source),
+            ),
+          standardSource,
+        ),
+      )
+      .toBe(true);
     await expect(card.getByRole('button', { name: '听图片说明', exact: true })).toBeVisible();
     await card.screenshot({ path: test.info().outputPath(`${id}.png`) });
     await page.getByRole('button', { name: '返回学习路线' }).click();

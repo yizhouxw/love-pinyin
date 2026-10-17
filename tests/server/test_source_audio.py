@@ -6,8 +6,9 @@ from copy import deepcopy
 import pytest
 
 from scripts import prepare_pinyin_source
-from server import api, source_audio
+from server import learning_state, source_audio
 from server.content import load_curriculum
+from server.routes import resources
 from server.source_audio import target_signature
 
 
@@ -112,7 +113,7 @@ def test_invalid_source_fails_closed_per_asset(selected_source, paired_client, t
         path.symlink_to(outside)
     assert not source_audio.available(target)
     assert paired_client.get(f"/api/v1/audio/{row['id']}").status_code == 404
-    assert row["id"] not in api._available_standard_audio(load_curriculum())
+    assert row["id"] not in learning_state._available_standard_audio(load_curriculum())
 
 
 @pytest.mark.parametrize("change", ["archive", "mapping", "decode"])
@@ -147,6 +148,6 @@ def test_legacy_approval_cannot_enable_uninstalled_source(
         "rightsEvidence": "old",
         "reviewEvidence": "old",
     }
-    monkeypatch.setattr(api, "load_curriculum", lambda: {"audioRequirements": [legacy]})
+    monkeypatch.setattr(resources, "load_curriculum", lambda: {"audioRequirements": [legacy]})
     (source_audio.SOURCE_DIR / "installation.json").write_text('{"enabled":false}')
     assert paired_client.get(f"/api/v1/audio/{target['id']}").status_code == 404

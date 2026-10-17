@@ -1,0 +1,236 @@
+/* Original fixed-release SIL Andika webfonts: single-storey a/g and tone marks. */
+@font-face {
+  font-family: 'Andika Pinyin';
+  src: url('/fonts/andika/Andika-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0020-007E, U+00A0-024F, U+0300-036F, U+1E00-1EFF;
+}
+@font-face {
+  font-family: 'Andika Pinyin';
+  src: url('/fonts/andika/Andika-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0020-007E, U+00A0-024F, U+0300-036F, U+1E00-1EFF;
+}
+
+:root {
+  --pinyin-font: 'Andika Pinyin', ui-rounded, system-ui, sans-serif;
+  font-family:
+    'Andika Pinyin',
+    ui-rounded,
+    'SF Pro Rounded',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+  color: #253a31;
+  background: #f4f7ed;
+  font-synthesis: none;
+  line-height: 1.55;
+  font-weight: 450;
+  --green: #285946;
+  --mint: #e4f2d6;
+  --peach: #fff0df;
+  --ink: #253a31;
+  --muted: #738177;
+  --card: #fffefa;
+  --line: #e5e9db;
+  --control-gap: 12px;
+  --group-gap: 18px;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(ellipse at 7% 3%, #e5f2d9 0, transparent 33%),
+    radial-gradient(ellipse at 96% 35%, #fff2dc 0, transparent 28%), #f4f7ed;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button {
+  min-height: 48px;
+  max-width: 100%;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #e49d54;
+  outline-offset: 3px;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+main {
+  width: min(100% - 32px, 1060px);
+  margin: 0 auto;
+}
+.loading {
+  padding: 20vh 0;
+  text-align: center;
+  color: var(--muted);
+}
+.pair-page {
+  max-width: 740px;
+  padding: 28px 0 60px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--green);
+}
+.brand-mark {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px 14px 14px 5px;
+  background: #dff1cb;
+  color: #32634b;
+  font-size: 21px;
+}
+.hero-card,
+.journey-card,
+.map-card,
+.parent-panel,
+.question-card {
+  background: var(--card);
+  border: 1px solid #e8ebdf;
+  border-radius: 30px;
+  box-shadow: 0 14px 40px #3953310b;
+}
+.hero-card {
+  position: relative;
+  overflow: hidden;
+  margin: 56px auto 0;
+  padding: 54px clamp(25px, 8vw, 70px);
+  max-width: 680px;
+}
+.hero-card h1,
+.welcome h1 {
+  font-size: clamp(38px, 7vw, 60px);
+  letter-spacing: -0.045em;
+  line-height: 1.13;
+  margin: 12px 0 18px;
+}
+.hero-card > p:not(.eyebrow) {
+  max-width: 460px;
+  color: var(--muted);
+}
+.hero-orbit {
+  position: absolute;
+  right: 7%;
+  top: 38px;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  background: #ffedcf;
+  display: grid;
+  place-items: center;
+  font-size: 56px;
+  color: #945e38;
+  transform: rotate(8deg);
+}
+.eyebrow {
+  display: block;
+  color: #77917e;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.hero-card form {
+  margin-top: 30px;
+  max-width: 440px;
+}
+.hero-card label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.pair-input {
+  display: flex;
+  gap: 9px;
+}
+.pair-input input,
+.danger-setting input {
+  min-width: 0;
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #dbe3d7;
+  border-radius: 13px;
+  letter-spacing: 0.12em;
+}
+.pair-input button,
+.guest-start,
+.start-button,
+.next-button,
+.blend-confirm {
+  border: 0;
+  border-radius: 14px;
+  background: var(--green);
+  color: #fff;
+  padding: 12px 20px;
+  font-weight: 750;
+  min-height: 50px;
+}
+.local-pair {
+  margin-top: 16px;
+}
+.quiet {
+  background: #eff5ea;
+  color: var(--green);
+  border: 1px solid #dbe8d4;
+  border-radius: 12px;
+  padding: 10px 15px;
+  min-height: 44px;
+  font-weight: 700;
+}
+.pair-code {
+  font-size: 30px;
+  letter-spacing: 0.22em;
+  font-weight: 800;
+  color: var(--green);
+}
+.pair-code small {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0;
+  color: var(--muted);
+  font-weight: 500;
+}
+.privacy-note {
+  margin-top: 30px;
+  padding: 14px;
+  border-radius: 13px;
+  background: #f4f7ef;
+  color: #637467;
+  font-size: 13px;
+}
+.error-notice {
+  padding: 12px 15px;
+  border-radius: 12px;
+  background: #fff0eb;
+  color: #9a4836;
+}
+.error-notice p {
+  margin: 0;
+}
+.error-notice button {
+  margin-top: 10px;
+}

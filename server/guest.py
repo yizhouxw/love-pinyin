@@ -8,9 +8,10 @@ from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from server import api, storage
+from server import api_dependencies, profile_backup, storage
 from server.content import load_curriculum
 from server.playback_settings import GAP, gap_tenths
+from server.routes import attempts, profiles, progress, resources, sessions
 
 router = APIRouter(prefix="/api/v1/guest")
 
@@ -38,40 +39,40 @@ def dispatch(operation: GuestOperation, device: dict):
                 "profile": storage.public_profile(row),
             }
         if path == "/profiles/progress":
-            return api.progress(device)
+            return progress.progress(device)
         if path == "/sessions/current":
-            return api.current_session(device)
+            return sessions.current_session(device)
     if method == "PUT":
         if path == "/household/current-lesson":
-            return api.select_lesson(api.LessonChoice.model_validate(body), device)
+            return profiles.select_lesson(profiles.LessonChoice.model_validate(body), device)
         if path == "/household/settings":
-            return api.settings(api.Settings.model_validate(body), device)
+            return profiles.settings(profiles.Settings.model_validate(body), device)
     if method == "POST":
         if path == "/sessions":
-            return api.start_session(api.StartSession.model_validate(body), device)
+            return sessions.start_session(sessions.StartSession.model_validate(body), device)
         if path == "/rest/complete":
-            return api.complete_rest(device)
+            return sessions.complete_rest(device)
         match = re.fullmatch(r"/sessions/([\w-]+)/finish", path)
         if match:
-            return api.finish_session(match[1], device)
+            return sessions.finish_session(match[1], device)
         match = re.fullmatch(r"/reviews/([\w-]+)/sessions", path)
         if match:
-            return api.start_review_session(match[1], device)
+            return sessions.start_review_session(match[1], device)
         match = re.fullmatch(r"/instances/([\w-]+)/(hint|skip|answer)", path)
         if match:
             instance_id, action = match.groups()
             if action == "hint":
-                return api.mark_hint(instance_id, device)
+                return attempts.mark_hint(instance_id, device)
             if action == "skip":
-                return api.skip_instance(instance_id, device)
-            answer = api.SubmitAnswer.model_validate(body)
+                return attempts.skip_instance(instance_id, device)
+            answer = attempts.SubmitAnswer.model_validate(body)
             # Backup restoration intentionally drops credentials/request receipts.
             # An already-cached answer still cannot be counted a second time.
-            session = api.current_session(device)
+            session = sessions.current_session(device)
             previous = session and session["results"].get(instance_id)
             if previous and previous.get("answerOptionId") == answer.answerOptionId:
                 return previous
-            return api.submit_answer(instance_id, answer, device)
+            return attempts.submit_answer(instance_id, answer, device)
     raise HTTPException(404, detail={"code": "GUEST_OPERATION_UNAVAILABLE"})
 
 
@@ -87,8 +88,8 @@ def execute(operation: GuestOperation) -> dict:
                 (household_id, storage.now_iso()),
             )
             if operation.state is not None:
-                backup = api._validate_backup(operation.state)
-                api._restore_backup(db, household_id, "guest", backup)
+                backup = profile_backup._validate_backup(operation.state)
+                profile_backup._restore_backup(db, household_id, "guest", backup)
                 profile = backup["profile"]
                 db.execute(
                     """UPDATE household SET selected_lesson_id=?,sound_enabled=?,reduced_motion=?,
@@ -108,7 +109,7 @@ def execute(operation: GuestOperation) -> dict:
             row = db.execute("SELECT * FROM household").fetchone()
         device = {**dict(row), "household_id": household_id, "id": "guest", "is_parent": 1}
         result = dispatch(operation, device)
-        state = api.export_profile(device)
+        state = profiles.export_profile(device)
         if len(json.dumps(state, ensure_ascii=False).encode()) > MAX_BYTES - 4096:
             raise HTTPException(413, detail={"code": "GUEST_CACHE_FULL"})
         return {"result": result, "state": state}
@@ -116,23 +117,23 @@ def execute(operation: GuestOperation) -> dict:
 
 @router.post("/operate")
 async def operate(request: Request):
-    api._check_origin(request)
+    api_dependencies._check_origin(request)
     raw = bytearray()
     async for chunk in request.stream():
         raw.extend(chunk)
         if len(raw) > MAX_BYTES:
             raise HTTPException(413, detail={"code": "GUEST_CACHE_FULL"})
     try:
-        value = json.loads(raw, object_pairs_hook=api._unique_json_object)
+        value = json.loads(raw, object_pairs_hook=profile_backup._unique_json_object)
         operation = GuestOperation.model_validate(value)
         if operation.method == "PUT" and operation.path in {
             "/household/current-lesson",
             "/household/settings",
         }:
-            api._require_parent_entry(request)
+            api_dependencies._require_parent_entry(request)
         payload = await run_in_threadpool(execute, operation)
         if operation.path == "/bootstrap":
-            payload["result"]["isLocalHost"] = api._is_parent_entry(request)
+            payload["result"]["isLocalHost"] = api_dependencies._is_parent_entry(request)
         return JSONResponse(payload)
     except (ValidationError, ValueError, TypeError, KeyError) as error:
         raise HTTPException(422, detail={"code": "GUEST_CACHE_INVALID"}) from error
@@ -140,38 +141,38 @@ async def operate(request: Request):
 
 @router.get("/curriculum")
 def curriculum():
-    return api.curriculum({})
+    return resources.curriculum({})
 
 
 @router.get("/learning-audio")
 def learning_audio():
-    return api.get_learning_audio({})
+    return resources.get_learning_audio({})
 
 
 @router.get("/audio/{asset_id}")
 def audio(asset_id: str, range_header: str | None = Header(default=None, alias="Range")):
-    return api.get_audio_asset(asset_id, range_header, {})
+    return resources.get_audio_asset(asset_id, range_header, {})
 
 
 @router.get("/voice/{asset_id}")
 def voice(asset_id: str, range_header: str | None = Header(default=None, alias="Range")):
-    return api.get_learning_voice(asset_id, range_header, {})
+    return resources.get_learning_voice(asset_id, range_header, {})
 
 
 @router.get("/daily-reading")
 def daily_reading():
-    return api.get_daily_reading({})
+    return resources.get_daily_reading({})
 
 
 @router.get("/daily-audio/{asset_id}")
 def daily_audio(asset_id: str, range_header: str | None = Header(default=None, alias="Range")):
-    return api.get_daily_audio(asset_id, range_header, {})
+    return resources.get_daily_audio(asset_id, range_header, {})
 
 
 @router.post("/daily-reading/{item_id}/recognize")
 async def recognize_daily_reading(item_id: str, request: Request):
     from server.reading_recognition import recognize, request_audio
 
-    api._check_origin(request)
+    api_dependencies._check_origin(request)
     payload = await request_audio(request, item_id)
     return await run_in_threadpool(recognize, item_id, payload)

@@ -66,7 +66,9 @@ test('BANK-07: spoken rules, independent option audio, blend confirmation and re
         if ('visualCue' in script)
           await expect(page.getByLabel('观察目标')).toContainText(script.visualCue!);
         else await expect(page.getByLabel('观察目标')).toHaveCount(0);
-        await expect(page.locator('.game-option').first()).toBeDisabled();
+        // ANSWER-READY-02: only standard audio gates answers; prompt narration is optional.
+        if (q.audioRef) await expect(page.locator('.game-option').first()).toBeDisabled();
+        else await expect(page.locator('.game-option').first()).toBeEnabled();
         await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
         await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
           timeout: 20000,

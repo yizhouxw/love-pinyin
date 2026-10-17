@@ -136,6 +136,8 @@ Windows Intel/AMD电脑使用Docker Desktop / WSL 2的Linux容器：`docker comp
 | `docs/`、`research/`                    | 产品、SPEC、ADR、部署验收文档与研究资料    |
 | `run.sh`、`run.command`、`compose.yaml` | 根目录的一键启动与默认 Docker 入口         |
 
+模块定位、依赖方向及样式级联顺序见[架构模块导览](docs/architecture.md#实际模块)。前端页面按功能拆分，API请求与答题恢复在platform；服务端api仅组装routes，共享认证、学习查询和备份校验独立维护。
+
 根目录保留依赖清单/锁文件、`tsconfig.json`、格式配置及版本文件，供工具自动发现。开发和验证通过下列 npm 命令加载 `config/`，无需切换目录。本地 `private/`、`models/`、依赖、构建与测试产物由 Git 忽略，不属于源码目录。
 
 ## 开发与验证
