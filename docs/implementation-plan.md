@@ -33,3 +33,5 @@
 SPEC-013的DOCKER-05/06补充Windows x86-64宿主的linux/amd64部署及CPU Whisper依赖，列出运行/构建机器规格；按用户要求先增加支持并注明Windows/amd64与最低规格未验证，不执行该平台构建或推理验收。
 
 2026-10-17新增[SPEC-015](specs/SPEC-015-maintainability.md)：按ADR-0026拆分大型前端、API与样式模块，保持产品行为和数据格式；按MAINT-01～03记录工程与真实服务回归。
+
+2026-10-17补充SPEC-010 SETUP-05：按ADR-0027统一run.sh与lovepinyin的本机HTTP/家庭HTTPS生命周期；既有证书配置保存在本机私有文件，启动补齐缺失入口，停止/重启/状态管理两端。软件与实际Mac后台重启验证见SPEC-010，不代替iPad、登录启动或整机恢复验收。

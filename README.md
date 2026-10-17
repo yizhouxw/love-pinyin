@@ -92,17 +92,19 @@ macOS 开发者 clone 后，在项目目录执行：
 
 打开 `http://127.0.0.1:8000`，可先访客体验或生成家长配对码。Ctrl+C停止。默认端口占用可用 `LOVE_PINYIN_PORT=8001 ./run.sh`。`./run.sh --prepare-only`只安装准备，不启动；`npm start`调用同一脚本。重复启动检查并复用资源，音频完整时不访问上游Git；本地缓存已有固定版本时可离线修复，新安装联网失败明确退出。不要同时运行两份准备脚本。
 
-启动与管理（均按 `LOVE_PINYIN_PORT` 选择端口，默认8000）：
+启动与管理（HTTP使用 `LOVE_PINYIN_PORT`，默认8000；已配置HTTPS时同时管理 `LOVE_PINYIN_HTTPS_PORT`，默认8443）：
 
 ```sh
 ./run.sh start    # 与 ./run.sh 相同，前台运行
-./run.sh status   # 查看状态
-./run.sh stop     # 停止；也兼容 ./run.sh top
+./run.sh status   # 分别查看HTTP与已配置的HTTPS状态
+./run.sh stop     # 停止两个入口；也兼容 ./run.sh top
 ./run.sh restart  # 停止后重新准备并前台启动
 LOVE_PINYIN_PORT=8001 ./run.sh status
 ```
 
-`stop/status` 不安装或下载资源；不会停止其他项目占用的端口。`status` 运行中返回0、未运行返回3、端口冲突返回1；`stop` 未运行也成功。停止最多等待10秒，不强制杀进程。
+`stop/status` 不安装或下载资源；先检查全部目标端口，不停止其他项目占用的进程。`status` 仅在所有已配置入口运行时返回0，缺少任一入口返回3，端口冲突返回1；`stop` 未运行也成功。停止最多等待10秒，不强制杀进程。`start`会补齐缺失入口；`restart`先检查HTTPS配置再停止两个入口。前台Ctrl+C清理本次启动的进程。
+
+本机的 `lovepinyin`（或 `lovepy`）委托仓库的 `scripts/lovepinyin.sh`，支持 `start`（默认）、`status`、`stop`、`restart`，使用同一套双入口配置。它在后台运行，等所有入口就绪后打开本机页面；日志路径在启动时显示。其他Mac也可直接运行 `./scripts/lovepinyin.sh`。
 
 标准音直接信任[cmguo/PinYinSound](https://github.com/cmguo/PinYinSound)，自动同步上游但按`content/pinyin-source.json`的commit和逐文件摘要导入，不把上游HEAD更新直接变为教材声音。源码、课程JSON、原创SVG、13份课程MP3、每日PDF、全部中文引导WAV与白名单manifest都在仓库。课程录音与PDF保留非MIT说明。中文引导由本地开源 **Qwen3-TTS-12Hz-1.7B-CustomVoice / MLX** 重新生成，已附许可。日常运行直接播放，不调用TTS或外部语音服务。
 
@@ -118,7 +120,9 @@ Windows Intel/AMD电脑使用Docker Desktop / WSL 2的Linux容器：`docker comp
 
 ## iPad / 手机与家庭局域网
 
-默认入口只监听本机。其他设备按[部署说明](docs/engineering/local-deployment.md)准备受信任 HTTPS，设置 `LOVE_PINYIN_BIND_IP`、`LOVE_PINYIN_TLS_CERT`、`LOVE_PINYIN_TLS_KEY`，运行 `npm run doctor:lan` 后再 `npm run serve:lan`。启动器只绑定指定的本机 LAN IPv4，检查证书有效期、IP SAN与密钥匹配；不会自动安装根证书、改防火墙或启用登录启动。
+按[部署说明](docs/engineering/local-deployment.md)准备受信任HTTPS后，将 [config/server.env.example](config/server.env.example) 复制为 `private/server.env`，填写实际 `LOVE_PINYIN_BIND_IP`、`LOVE_PINYIN_TLS_CERT`、`LOVE_PINYIN_TLS_KEY`。之后 `./run.sh`、双击 `run.command`、`npm start` 或 `lovepinyin` 都同时启动本机HTTP和iPad使用的HTTPS，无需另开LAN服务。
+
+HTTP默认8000，HTTPS默认8443，可独立配置。`private/server.env`使用不加引号的 `KEY=value` 字面值；路径相对仓库根目录，也可使用绝对路径，环境变量优先。证书、密钥、IP缺一项或预检失败时明确报错；全无HTTPS配置的新安装保留本机入口并显示配置提示。启动器仅绑定指定本机LAN IPv4，检查证书有效期、IP SAN与密钥匹配，不安装根证书、改防火墙或启用登录启动。原 `serve:lan`/`doctor:lan` 为独立维护入口，仍使用显式环境变量。
 
 这里的“离线”指断互联网、家庭 LAN 仍连通。Mac 停机或 LAN 断开时无法保存新进度，页面提供重试/恢复，不承诺浏览器独立离线学习。
 

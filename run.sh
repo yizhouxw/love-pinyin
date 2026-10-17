@@ -10,58 +10,37 @@ case "$action" in
   *) echo "Usage: ./run.sh [start|stop|restart|status|--prepare-only]" >&2; exit 1 ;;
 esac
 [[ $# -le 1 ]] || { echo "Expected at most one command." >&2; exit 1; }
-app_port="${LOVE_PINYIN_PORT:-8000}"
-[[ "$app_port" =~ ^[1-9][0-9]{0,4}$ ]] && ((app_port > 0 && app_port < 65536)) || { echo "Invalid LOVE_PINYIN_PORT" >&2; exit 1; }
-# Discover the listener instead of trusting a stale PID file. Both project and
-# application must match before any signal is sent.
-find_service() {
-  service_pid=""
-  local pid command_line process_cwd
-  for pid in $(lsof -nP -t -iTCP:"$app_port" -sTCP:LISTEN 2>/dev/null | sort -u); do
-    command_line="$(ps -p "$pid" -o command= 2>/dev/null || true)"
-    process_cwd="$(lsof -a -p "$pid" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p')"
-    if [[ "$process_cwd" != "$PWD" || ! "$command_line" =~ (^|[[:space:]/])uvicorn[[:space:]]server.main:app[[:space:]] || " $command_line " != *" --port $app_port "* ]]; then
-      echo "Port $app_port is occupied by another service; refusing to manage it." >&2
-      return 1
-    fi
-    service_pid="$pid"
-  done
-}
-stop_service() {
-  find_service || return 1
-  if [[ -z "$service_pid" ]]; then
-    echo "Love Pinyin is not running on port $app_port."
-    return 0
-  fi
-  local stopped_pid="$service_pid" attempt
-  kill -TERM "$stopped_pid" || return 1
-  for ((attempt=0; attempt<100; attempt++)); do
-    if ! kill -0 "$stopped_pid" 2>/dev/null || [[ "$(ps -p "$stopped_pid" -o stat= 2>/dev/null || true)" == *Z* ]]; then
-      echo "Love Pinyin stopped on port $app_port."
-      return 0
-    fi
-    sleep 0.1
-  done
-  echo "Service has not exited after 10 seconds; restart cancelled." >&2
-  return 1
-}
+export PATH="$PWD/private/runtime/npm/node_modules/.bin:$PWD/private/runtime/node/bin:$PWD/private/runtime/uv:$PATH"
+source scripts/service-config.sh
+source scripts/service-lifecycle.sh
+load_service_config
 case "$action" in
-  status)
-    find_service || exit 1
-    if [[ -n "$service_pid" ]]; then
-      echo "Love Pinyin is running (PID $service_pid): http://127.0.0.1:$app_port"
-      exit 0
-    fi
-    echo "Love Pinyin is not running on port $app_port."
-    exit 3 ;;
-  stop|top) stop_service; exit $? ;;
-  restart) stop_service ;;
+  status) show_service_status; exit $? ;;
+  stop|top) stop_services; exit $? ;;
+  restart)
+    # A bad certificate must not take the working local service down.
+    check_service_tls
+    stop_services ;;
 esac
 if [[ "$action" != --prepare-only ]]; then
-  find_service || exit 1
-  if [[ -n "$service_pid" ]]; then
-    echo "Love Pinyin is already running (PID $service_pid): http://127.0.0.1:$app_port"
+  discover_services
+  if [[ "$lan_enabled" == 1 ]] && command -v node >/dev/null; then check_service_tls; fi
+  if [[ -n "$https_pid" && "$https_host" != "$LOVE_PINYIN_BIND_IP" ]]; then
+    echo "HTTPS is running on a different address; use restart to apply the new configuration." >&2
+    exit 1
+  fi
+  if all_services_running; then
+    echo "Love Pinyin is already running."
+    show_service_status
+    echo "Love Pinyin is ready."
     exit 0
+  fi
+  if [[ -n "$http_pid$https_pid" ]]; then
+    check_service_tls
+    [[ -x .venv/bin/uvicorn && -f dist/index.html ]] || { echo "Existing service has no prepared runtime/build; stop it and run ./run.sh again." >&2; exit 1; }
+    echo "Starting the missing Love Pinyin endpoint."
+    start_services
+    exit $?
   fi
 fi
 git_binary="${LOVE_PINYIN_GIT_BIN:-$(command -v git || true)}"
@@ -114,6 +93,7 @@ if ! command -v uv >/dev/null || [[ "$(uv --version)" != 'uv 0.12.5'* ]]; then
   mkdir -p "$runtime_root/uv"
   tar -xzf "$runtime_root/$uv_file" -C "$runtime_root/uv" --strip-components=1
 fi
+if [[ "$action" != --prepare-only ]]; then check_service_tls; fi
 printf '\nInstalling locked dependencies…\n'
 npm ci --prefer-offline --no-audit --no-fund
 uv sync --locked
@@ -128,7 +108,6 @@ npm run validate:release
 if [[ "${1:-}" == --prepare-only ]]; then
   echo "All resources are ready."; exit 0
 fi
-printf '\nOpen http://127.0.0.1:%s (Ctrl+C stops the service)\n' "$app_port"
 rmdir "$setup_lock"
 trap - EXIT INT TERM
-exec uv run --locked uvicorn server.main:app --host 127.0.0.1 --port "$app_port" --no-access-log --no-proxy-headers
+start_services
