@@ -51,4 +51,4 @@ DAILY-05 本机验证：verify:all、validate:release通过；Chromium/WebKit真
 - 下载10秒超时，仅网络中断/超时/5xx最多重试一次；404/鉴权/取消/解码/手势拒绝分开报告。播放开始后不自动从头重播，加载/停滞有界；换条停止旧音，退出/切份/后台取消预取与释放Blob URL/编码池，后台回来不自动出声。
 - 显示真实准备进度、当前下载/正在播放状态与失败重试；这些状态不计进度。测试请求去重/上限、截断重试、断网重播、取消旧响应、用户激活拒绝、后台恢复、互斥与高亮，最终需用户iPad验证，不宣称WebKit即真机。
 
-DAILY-06本机验证：verify:all通过74项前端/工具、341后端、30视口及34真实服务GUI；validate:release通过。Chromium/WebKit的18项产品回归通过，覆盖全部642个示范解码、缓存后阻断音频请求、截断/首次失败重试、模拟页面可见性恢复、引导开关、间隔/组词/句子高亮。模拟可见性不是实际iPad后台验证。证据：private/daily06-verify-all.log、daily06-release.log、daily06-buffered-product.log、daily06-guidance-product.log、daily06-reference-product.log。新版已构建至本机运行服务，iPad听感与真实网络中断恢复仍待用户实测。
+DAILY-06本机验证：verify:all通过74项前端/工具、341后端、30视口及34真实服务GUI；validate:release通过。Chromium/WebKit的18项产品回归通过，覆盖全部642个示范解码、缓存后阻断音频请求、截断/首次失败重试、模拟页面可见性恢复、引导开关、间隔/组词/句子高亮。模拟可见性不是实际iPad后台验证。证据：private/daily06-verify-all.log、daily06-release.log、daily06-buffered-product.log、daily06-guidance-product.log、daily06-reference-product.log。新版已构建至本机运行服务。2026-10-17用户按刷新、等待“本份声音已就绪”后复听和连续播放的复测要求反馈：“播放顺畅，未再失败”。这关闭本次已报告的iPad天天练播放卡顿/加载失败问题；未记录设备型号、iPadOS版本、具体条目或测试时长，不扩展为全部内容、长时播放、真实网络中断或后台恢复验收。
