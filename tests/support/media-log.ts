@@ -27,7 +27,8 @@ export async function observeReadingMedia(page: Page) {
               if (calls.get(this) === call)
                 window.readingMediaEvents.push({ source, type, time: performance.now() });
             },
-            { once: true },
+            // Capture completion before the player advances the reused element to its next clip.
+            { once: true, capture: true },
           );
         }
       }

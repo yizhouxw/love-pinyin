@@ -314,7 +314,6 @@ function ReadingSession({
           onState: setAudioStage,
         });
         setHighlight(-1);
-        if (position < target.audioIds.length - 1) await waitForPlaybackGap(gapSeconds, signal);
       }
     }
     setHighlight(-1);

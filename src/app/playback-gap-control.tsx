@@ -22,7 +22,9 @@ export function PlaybackGapControl({
     <div className="parent-setting">
       <div>
         <strong>连播间隔</strong>
-        <p>两个读音或两条示范之间的等待时间。默认1秒，可设置0.1～5秒，每次调节0.1秒。</p>
+        <p>
+          连播不同词语或条目之间的等待时间，同一条内部音节接续播放。默认1秒，可设置0.1～5秒，每次调节0.1秒。
+        </p>
       </div>
       <div className="playback-gap-control">
         <label>

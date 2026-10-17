@@ -103,6 +103,52 @@ test('READ-01: real consecutive audio observes the gap and stopping cancels the 
   await expect(page.getByLabel('连播间隔（秒）')).toHaveValue('0.1');
 });
 
+test('READ-01: word syllables run together, with the configured gap only between words', async ({
+  page,
+  appUrl,
+}) => {
+  await observeReadingMedia(page);
+  await guest(page, appUrl);
+  await page.getByRole('button', { name: '家长管理' }).click();
+  await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByLabel('连播间隔（秒）').fill('3');
+  await page.getByRole('button', { name: '保存间隔' }).click();
+  await expect(page.getByText('当前间隔：3.0秒')).toBeVisible();
+  await page.getByRole('button', { name: '返回学习', exact: true }).click();
+  await page.getByRole('button', { name: '进入天天练拼音' }).click();
+  await page.getByRole('button', { name: '第 4 份', exact: true }).click();
+  await page.getByRole('button', { name: /^拼读词语/ }).click();
+  const reader = page.getByLabel('当前跟读内容');
+  await expect(page.getByText(/本份声音已就绪/)).toBeVisible();
+  const events = () =>
+    page.evaluate(() =>
+      window.readingMediaEvents.filter((event) => event.source.includes('/daily-audio/')),
+    );
+  // A large setting exposes any accidental wait inside dà dì, including single replay.
+  await reader.locator('.daily-target').click();
+  await expect.poll(async () => (await events()).filter((e) => e.type === 'end').length).toBe(2);
+  let observed = await events();
+  expect(observed[2]!.time - observed[1]!.time).toBeLessThan(1500);
+  await page.evaluate(() => {
+    window.readingMediaEvents = [];
+  });
+  await reader.getByRole('button', { name: '连播本节', exact: false }).click();
+  await expect
+    .poll(async () => (await events()).filter((e) => e.type === 'end').length, { timeout: 15000 })
+    .toBe(4);
+  observed = await events();
+  expect(observed.filter((e) => e.type === 'start').map((e) => e.source.split('/').at(-1))).toEqual(
+    ['daily-da4', 'daily-di4', 'daily-di4', 'daily-tu2'],
+  );
+  expect(observed[2]!.time - observed[1]!.time).toBeLessThan(1500);
+  expect(observed[4]!.time - observed[3]!.time).toBeGreaterThanOrEqual(2950);
+  expect(observed[6]!.time - observed[5]!.time).toBeLessThan(1500);
+  await reader.getByRole('button', { name: '停止示范', exact: false }).click();
+  await page.waitForTimeout(3250);
+  expect((await events()).filter((e) => e.type === 'start')).toHaveLength(4);
+  await expect(reader.locator('.daily-highlight')).toHaveCount(0);
+});
+
 test('READ-03/04: folded examples speak on opening, and Chinese sentences highlight actual syllables', async ({
   page,
   appUrl,
