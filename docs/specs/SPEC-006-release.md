@@ -163,3 +163,9 @@ Mac当时同时有有线192.168.1.2与Wi-Fi192.168.110.70，连接客户端的TC
 回归覆盖gzip协商/JSON一致性、缓存边界及错误、完整音频和0–1字节/无效Range不压缩。浏览器用真实服务验证检测页只访问本源、显示四次延迟与压缩字节且不读家庭记录。证据位于忽略目录`private/ipad-transfer-before.json`、`ipad-transfer-after.json`、`lan-perf01-verify-all.log`和`lan-perf01-release.log`；网络采样不含应用正文或录音。
 
 最终`npm run verify:all`通过：67项前端/工具、341项服务端、30项本机视口、34项真实API/SQLite GUI；`npm run validate:release`通过。Chromium/WebKit均完成连接检测页，保留既有本机Firefox例外。Mac Wi-Fi由用户手动关闭；没有自动修改网络设置。
+
+## DOCS-03：README同步最新实现（2026-10-18）
+
+核对当前源码、npm命令、内容与资源清单以及SPEC-007/008/010/012/015的既有验收记录，更新README的每日目录分组、多列和当前条跟随，补齐设备管理信息及iPad播放问题复测结论，明确2026-10-15截图早于近期界面调整。保留双入口启动、仅127.0.0.1家长管理、内存录音与本地ASR边界，以及完整移动真机、家庭LAN和家庭试用未关闭项。
+
+DOCS-03完成记录：`npm run format:check`、41个本地Markdown链接及锚点、`git diff --check`通过；`npm run validate:release`通过（14课、83知识点、476题；14份840条每日材料、600个标准音白名单）。仅改README与本验收记录，无新增依赖或应用行为变更；未重跑verify:all、GUI或真机验收，不将既有工程、GUI或iPad反馈宣称为本次重新执行。
