@@ -15,6 +15,7 @@ import { waitForPlaybackGap } from '../platform/audio/playback-gap';
 import { dayResources, itemResources } from '../platform/audio/reading-resources';
 import { GuidanceSwitch } from './guidance-switch';
 import recognitionContent from '../../content/reading-recognition.json';
+import navigationContent from '../../content/daily-reading-navigation.json';
 
 async function readDaily(): Promise<DailyReading> {
   const response = await fetch(`/api/v1/${isGuest() ? 'guest/' : ''}daily-reading`);
@@ -233,7 +234,23 @@ function ReadingSession({
   const controller = useRef<AbortController | null>(null);
   const recorder = useRef(new BrowserReadingRecorder());
   const replay = useRef<HTMLAudioElement | null>(null);
+  const listRef = useRef<HTMLElement | null>(null);
   const item = section.items[index]!;
+  const groups =
+    (
+      navigationContent as Record<string, { family: string; compact: boolean; itemIds: string[] }[]>
+    )[section.id] ?? [];
+  useEffect(() => {
+    const list = listRef.current;
+    const current = list?.querySelector<HTMLElement>('[aria-current="step"]');
+    if (!list || !current) return;
+    const bounds = list.getBoundingClientRect();
+    const target = current.getBoundingClientRect();
+    const top = bounds.top + list.clientTop + 8;
+    const bottom = bounds.top + list.clientTop + list.clientHeight - 8;
+    if (target.top < top) list.scrollTop += target.top - top;
+    else if (target.bottom > bottom) list.scrollTop += target.bottom - bottom;
+  }, [item.id]);
   useEffect(() => {
     audioPlayer.prioritizeReading([
       { kind: 'voice', id: `daily-instruction-${section.id}` },
@@ -675,32 +692,47 @@ function ReadingSession({
           </div>
         )}
       </section>
-      <aside className="daily-list" aria-label={`第${day.number}份本节内容`}>
+      <aside ref={listRef} className="daily-list" aria-label={`第${day.number}份本节内容`}>
         <h3>本节内容</h3>
-        {section.items.map((value, position) => (
-          <button
-            key={value.id}
-            className="quiet"
-            aria-current={position === index ? 'step' : undefined}
-            onClick={() => {
-              select(position);
-              if (!guidanceEnabled) void play(false, position);
-            }}
-          >
-            <span>{position + 1}</span>
-            <strong>{value.display}</strong>
-            <small>
-              {marks[value.id] === 'fluent'
-                ? '家长：熟练'
-                : marks[value.id] === 'again'
-                  ? '家长：再练'
-                  : marks[value.id]
-                    ? '练过'
-                    : value.available
-                      ? ''
-                      : '缺少声音'}
-            </small>
-          </button>
+        {groups.map((group) => (
+          <div className="daily-nav-group" key={group.itemIds[0]}>
+            <p className="daily-nav-heading">
+              {group.family} · 第{' '}
+              {section.items.findIndex((value) => value.id === group.itemIds[0]) + 1}–
+              {section.items.findIndex((value) => value.id === group.itemIds.at(-1)) + 1} 条
+            </p>
+            <div className={group.compact ? 'daily-nav-grid' : 'daily-nav-phrases'}>
+              {group.itemIds.map((id) => {
+                const position = section.items.findIndex((value) => value.id === id);
+                const value = section.items[position]!;
+                return (
+                  <button
+                    key={value.id}
+                    className="quiet"
+                    aria-current={position === index ? 'step' : undefined}
+                    onClick={() => {
+                      select(position);
+                      if (!guidanceEnabled) void play(false, position);
+                    }}
+                  >
+                    <span>{position + 1}</span>
+                    <strong>{value.display}</strong>
+                    <small>
+                      {marks[value.id] === 'fluent'
+                        ? '家长：熟练'
+                        : marks[value.id] === 'again'
+                          ? '家长：再练'
+                          : marks[value.id]
+                            ? '练过'
+                            : value.available
+                              ? ''
+                              : '缺少声音'}
+                    </small>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         ))}
       </aside>
     </div>

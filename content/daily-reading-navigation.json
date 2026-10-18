@@ -1,0 +1,1611 @@
+{
+  "day-01-section-1": [
+    {
+      "family": "a",
+      "compact": true,
+      "itemIds": ["day-01-s1-i1", "day-01-s1-i2", "day-01-s1-i3", "day-01-s1-i4", "day-01-s1-i5"]
+    },
+    {
+      "family": "o / e",
+      "compact": true,
+      "itemIds": ["day-01-s1-i6", "day-01-s1-i7"]
+    },
+    {
+      "family": "o",
+      "compact": true,
+      "itemIds": ["day-01-s1-i8", "day-01-s1-i9", "day-01-s1-i10", "day-01-s1-i11", "day-01-s1-i12"]
+    },
+    {
+      "family": "a",
+      "compact": true,
+      "itemIds": ["day-01-s1-i13", "day-01-s1-i14"]
+    },
+    {
+      "family": "e",
+      "compact": true,
+      "itemIds": [
+        "day-01-s1-i15",
+        "day-01-s1-i16",
+        "day-01-s1-i17",
+        "day-01-s1-i18",
+        "day-01-s1-i19",
+        "day-01-s1-i20"
+      ]
+    },
+    {
+      "family": "o / e / a",
+      "compact": true,
+      "itemIds": ["day-01-s1-i21", "day-01-s1-i22", "day-01-s1-i23", "day-01-s1-i24"]
+    }
+  ],
+  "day-02-section-1": [
+    {
+      "family": "i",
+      "compact": true,
+      "itemIds": ["day-02-s1-i1", "day-02-s1-i2", "day-02-s1-i3", "day-02-s1-i4", "day-02-s1-i5"]
+    },
+    {
+      "family": "u / ü / i",
+      "compact": true,
+      "itemIds": ["day-02-s1-i6", "day-02-s1-i7", "day-02-s1-i8"]
+    },
+    {
+      "family": "u",
+      "compact": true,
+      "itemIds": [
+        "day-02-s1-i9",
+        "day-02-s1-i10",
+        "day-02-s1-i11",
+        "day-02-s1-i12",
+        "day-02-s1-i13"
+      ]
+    },
+    {
+      "family": "ü / i",
+      "compact": true,
+      "itemIds": ["day-02-s1-i14", "day-02-s1-i15"]
+    },
+    {
+      "family": "ü",
+      "compact": true,
+      "itemIds": [
+        "day-02-s1-i16",
+        "day-02-s1-i17",
+        "day-02-s1-i18",
+        "day-02-s1-i19",
+        "day-02-s1-i20",
+        "day-02-s1-i21"
+      ]
+    },
+    {
+      "family": "i / u",
+      "compact": true,
+      "itemIds": ["day-02-s1-i22", "day-02-s1-i23", "day-02-s1-i24"]
+    }
+  ],
+  "day-03-section-1": [
+    {
+      "family": "b / p / m / f",
+      "compact": true,
+      "itemIds": ["day-03-s1-i1", "day-03-s1-i2", "day-03-s1-i3", "day-03-s1-i4"]
+    }
+  ],
+  "day-03-section-2": [
+    {
+      "family": "b / p / m",
+      "compact": true,
+      "itemIds": [
+        "day-03-s2-i1",
+        "day-03-s2-i2",
+        "day-03-s2-i3",
+        "day-03-s2-i4",
+        "day-03-s2-i5",
+        "day-03-s2-i6",
+        "day-03-s2-i7",
+        "day-03-s2-i8"
+      ]
+    },
+    {
+      "family": "m / f / p / b",
+      "compact": true,
+      "itemIds": [
+        "day-03-s2-i9",
+        "day-03-s2-i10",
+        "day-03-s2-i11",
+        "day-03-s2-i12",
+        "day-03-s2-i13",
+        "day-03-s2-i14",
+        "day-03-s2-i15",
+        "day-03-s2-i16"
+      ]
+    },
+    {
+      "family": "m / b / p",
+      "compact": true,
+      "itemIds": ["day-03-s2-i17", "day-03-s2-i18", "day-03-s2-i19", "day-03-s2-i20"]
+    }
+  ],
+  "day-03-section-3": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-03-s3-i1",
+        "day-03-s3-i2",
+        "day-03-s3-i3",
+        "day-03-s3-i4",
+        "day-03-s3-i5",
+        "day-03-s3-i6",
+        "day-03-s3-i7",
+        "day-03-s3-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-03-s3-i9", "day-03-s3-i10"]
+    }
+  ],
+  "day-04-section-1": [
+    {
+      "family": "d / t / n / l",
+      "compact": true,
+      "itemIds": ["day-04-s1-i1", "day-04-s1-i2", "day-04-s1-i3", "day-04-s1-i4"]
+    }
+  ],
+  "day-04-section-2": [
+    {
+      "family": "d",
+      "compact": true,
+      "itemIds": ["day-04-s2-i1", "day-04-s2-i2", "day-04-s2-i3", "day-04-s2-i4"]
+    },
+    {
+      "family": "t",
+      "compact": true,
+      "itemIds": ["day-04-s2-i5", "day-04-s2-i6", "day-04-s2-i7", "day-04-s2-i8"]
+    },
+    {
+      "family": "n",
+      "compact": true,
+      "itemIds": [
+        "day-04-s2-i9",
+        "day-04-s2-i10",
+        "day-04-s2-i11",
+        "day-04-s2-i12",
+        "day-04-s2-i13"
+      ]
+    },
+    {
+      "family": "l",
+      "compact": true,
+      "itemIds": [
+        "day-04-s2-i14",
+        "day-04-s2-i15",
+        "day-04-s2-i16",
+        "day-04-s2-i17",
+        "day-04-s2-i18"
+      ]
+    }
+  ],
+  "day-04-section-3": [
+    {
+      "family": "t / n / d / l",
+      "compact": true,
+      "itemIds": [
+        "day-04-s3-i1",
+        "day-04-s3-i2",
+        "day-04-s3-i3",
+        "day-04-s3-i4",
+        "day-04-s3-i5",
+        "day-04-s3-i6",
+        "day-04-s3-i7",
+        "day-04-s3-i8"
+      ]
+    },
+    {
+      "family": "l / n / t",
+      "compact": true,
+      "itemIds": ["day-04-s3-i9", "day-04-s3-i10", "day-04-s3-i11", "day-04-s3-i12"]
+    },
+    {
+      "family": "d",
+      "compact": true,
+      "itemIds": [
+        "day-04-s3-i13",
+        "day-04-s3-i14",
+        "day-04-s3-i15",
+        "day-04-s3-i16",
+        "day-04-s3-i17",
+        "day-04-s3-i18"
+      ]
+    },
+    {
+      "family": "t / n / l",
+      "compact": true,
+      "itemIds": [
+        "day-04-s3-i19",
+        "day-04-s3-i20",
+        "day-04-s3-i21",
+        "day-04-s3-i22",
+        "day-04-s3-i23",
+        "day-04-s3-i24"
+      ]
+    }
+  ],
+  "day-04-section-4": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-04-s4-i1",
+        "day-04-s4-i2",
+        "day-04-s4-i3",
+        "day-04-s4-i4",
+        "day-04-s4-i5",
+        "day-04-s4-i6",
+        "day-04-s4-i7",
+        "day-04-s4-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-04-s4-i9",
+        "day-04-s4-i10",
+        "day-04-s4-i11",
+        "day-04-s4-i12",
+        "day-04-s4-i13",
+        "day-04-s4-i14",
+        "day-04-s4-i15",
+        "day-04-s4-i16"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-04-s4-i17",
+        "day-04-s4-i18",
+        "day-04-s4-i19",
+        "day-04-s4-i20",
+        "day-04-s4-i21",
+        "day-04-s4-i22",
+        "day-04-s4-i23",
+        "day-04-s4-i24"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-04-s4-i25"]
+    }
+  ],
+  "day-05-section-1": [
+    {
+      "family": "g / k / h",
+      "compact": true,
+      "itemIds": ["day-05-s1-i1", "day-05-s1-i2", "day-05-s1-i3"]
+    }
+  ],
+  "day-05-section-2": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-05-s2-i1", "day-05-s2-i2", "day-05-s2-i3"]
+    }
+  ],
+  "day-05-section-3": [
+    {
+      "family": "g",
+      "compact": true,
+      "itemIds": ["day-05-s3-i1", "day-05-s3-i2"]
+    },
+    {
+      "family": "k",
+      "compact": true,
+      "itemIds": ["day-05-s3-i3", "day-05-s3-i4", "day-05-s3-i5"]
+    },
+    {
+      "family": "h",
+      "compact": true,
+      "itemIds": ["day-05-s3-i6", "day-05-s3-i7", "day-05-s3-i8"]
+    },
+    {
+      "family": "g / k / h",
+      "compact": true,
+      "itemIds": [
+        "day-05-s3-i9",
+        "day-05-s3-i10",
+        "day-05-s3-i11",
+        "day-05-s3-i12",
+        "day-05-s3-i13",
+        "day-05-s3-i14",
+        "day-05-s3-i15",
+        "day-05-s3-i16"
+      ]
+    },
+    {
+      "family": "h / k / g",
+      "compact": true,
+      "itemIds": [
+        "day-05-s3-i17",
+        "day-05-s3-i18",
+        "day-05-s3-i19",
+        "day-05-s3-i20",
+        "day-05-s3-i21",
+        "day-05-s3-i22",
+        "day-05-s3-i23",
+        "day-05-s3-i24"
+      ]
+    },
+    {
+      "family": "g / k / h",
+      "compact": true,
+      "itemIds": [
+        "day-05-s3-i25",
+        "day-05-s3-i26",
+        "day-05-s3-i27",
+        "day-05-s3-i28",
+        "day-05-s3-i29",
+        "day-05-s3-i30",
+        "day-05-s3-i31",
+        "day-05-s3-i32"
+      ]
+    },
+    {
+      "family": "h / g",
+      "compact": true,
+      "itemIds": ["day-05-s3-i33", "day-05-s3-i34"]
+    },
+    {
+      "family": "h",
+      "compact": true,
+      "itemIds": ["day-05-s3-i35", "day-05-s3-i36", "day-05-s3-i37"]
+    },
+    {
+      "family": "g",
+      "compact": true,
+      "itemIds": ["day-05-s3-i38"]
+    }
+  ],
+  "day-05-section-4": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-05-s4-i1",
+        "day-05-s4-i2",
+        "day-05-s4-i3",
+        "day-05-s4-i4",
+        "day-05-s4-i5",
+        "day-05-s4-i6",
+        "day-05-s4-i7",
+        "day-05-s4-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-05-s4-i9", "day-05-s4-i10", "day-05-s4-i11", "day-05-s4-i12"]
+    }
+  ],
+  "day-05-section-5": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-05-s5-i1", "day-05-s5-i2"]
+    }
+  ],
+  "day-06-section-1": [
+    {
+      "family": "j / q / x",
+      "compact": true,
+      "itemIds": ["day-06-s1-i1", "day-06-s1-i2", "day-06-s1-i3"]
+    }
+  ],
+  "day-06-section-2": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-06-s2-i1", "day-06-s2-i2", "day-06-s2-i3"]
+    }
+  ],
+  "day-06-section-3": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-06-s3-i1",
+        "day-06-s3-i2",
+        "day-06-s3-i3",
+        "day-06-s3-i4",
+        "day-06-s3-i5",
+        "day-06-s3-i6",
+        "day-06-s3-i7",
+        "day-06-s3-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-06-s3-i9"]
+    }
+  ],
+  "day-06-section-4": [
+    {
+      "family": "j / q / x",
+      "compact": true,
+      "itemIds": [
+        "day-06-s4-i1",
+        "day-06-s4-i2",
+        "day-06-s4-i3",
+        "day-06-s4-i4",
+        "day-06-s4-i5",
+        "day-06-s4-i6",
+        "day-06-s4-i7",
+        "day-06-s4-i8"
+      ]
+    },
+    {
+      "family": "x / j / q",
+      "compact": true,
+      "itemIds": [
+        "day-06-s4-i9",
+        "day-06-s4-i10",
+        "day-06-s4-i11",
+        "day-06-s4-i12",
+        "day-06-s4-i13",
+        "day-06-s4-i14",
+        "day-06-s4-i15",
+        "day-06-s4-i16"
+      ]
+    },
+    {
+      "family": "q / j / x",
+      "compact": true,
+      "itemIds": [
+        "day-06-s4-i17",
+        "day-06-s4-i18",
+        "day-06-s4-i19",
+        "day-06-s4-i20",
+        "day-06-s4-i21",
+        "day-06-s4-i22",
+        "day-06-s4-i23",
+        "day-06-s4-i24"
+      ]
+    },
+    {
+      "family": "x / q / j",
+      "compact": true,
+      "itemIds": [
+        "day-06-s4-i25",
+        "day-06-s4-i26",
+        "day-06-s4-i27",
+        "day-06-s4-i28",
+        "day-06-s4-i29"
+      ]
+    }
+  ],
+  "day-06-section-5": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-06-s5-i1",
+        "day-06-s5-i2",
+        "day-06-s5-i3",
+        "day-06-s5-i4",
+        "day-06-s5-i5",
+        "day-06-s5-i6",
+        "day-06-s5-i7",
+        "day-06-s5-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-06-s5-i9",
+        "day-06-s5-i10",
+        "day-06-s5-i11",
+        "day-06-s5-i12",
+        "day-06-s5-i13",
+        "day-06-s5-i14",
+        "day-06-s5-i15",
+        "day-06-s5-i16"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-06-s5-i17"]
+    }
+  ],
+  "day-06-section-6": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-06-s6-i1", "day-06-s6-i2"]
+    }
+  ],
+  "day-07-section-1": [
+    {
+      "family": "z / c / s",
+      "compact": true,
+      "itemIds": [
+        "day-07-s1-i1",
+        "day-07-s1-i2",
+        "day-07-s1-i3",
+        "day-07-s1-i4",
+        "day-07-s1-i5",
+        "day-07-s1-i6"
+      ]
+    }
+  ],
+  "day-07-section-2": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-07-s2-i1",
+        "day-07-s2-i2",
+        "day-07-s2-i3",
+        "day-07-s2-i4",
+        "day-07-s2-i5",
+        "day-07-s2-i6",
+        "day-07-s2-i7",
+        "day-07-s2-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-07-s2-i9", "day-07-s2-i10", "day-07-s2-i11"]
+    }
+  ],
+  "day-07-section-3": [
+    {
+      "family": "z",
+      "compact": true,
+      "itemIds": ["day-07-s3-i1", "day-07-s3-i2", "day-07-s3-i3", "day-07-s3-i4", "day-07-s3-i5"]
+    },
+    {
+      "family": "c / s",
+      "compact": true,
+      "itemIds": ["day-07-s3-i6", "day-07-s3-i7"]
+    },
+    {
+      "family": "z",
+      "compact": true,
+      "itemIds": ["day-07-s3-i8", "day-07-s3-i9", "day-07-s3-i10", "day-07-s3-i11", "day-07-s3-i12"]
+    },
+    {
+      "family": "c",
+      "compact": true,
+      "itemIds": ["day-07-s3-i13", "day-07-s3-i14", "day-07-s3-i15", "day-07-s3-i16"]
+    },
+    {
+      "family": "s / c / z",
+      "compact": true,
+      "itemIds": ["day-07-s3-i17", "day-07-s3-i18", "day-07-s3-i19", "day-07-s3-i20"]
+    },
+    {
+      "family": "c",
+      "compact": true,
+      "itemIds": ["day-07-s3-i21", "day-07-s3-i22", "day-07-s3-i23", "day-07-s3-i24"]
+    },
+    {
+      "family": "s",
+      "compact": true,
+      "itemIds": ["day-07-s3-i25", "day-07-s3-i26", "day-07-s3-i27", "day-07-s3-i28"]
+    },
+    {
+      "family": "z / c / s",
+      "compact": true,
+      "itemIds": ["day-07-s3-i29", "day-07-s3-i30", "day-07-s3-i31", "day-07-s3-i32"]
+    },
+    {
+      "family": "s",
+      "compact": true,
+      "itemIds": ["day-07-s3-i33", "day-07-s3-i34", "day-07-s3-i35", "day-07-s3-i36"]
+    }
+  ],
+  "day-07-section-4": [
+    {
+      "family": "z / c / s",
+      "compact": true,
+      "itemIds": [
+        "day-07-s4-i1",
+        "day-07-s4-i2",
+        "day-07-s4-i3",
+        "day-07-s4-i4",
+        "day-07-s4-i5",
+        "day-07-s4-i6",
+        "day-07-s4-i7",
+        "day-07-s4-i8"
+      ]
+    },
+    {
+      "family": "s / z / c",
+      "compact": true,
+      "itemIds": [
+        "day-07-s4-i9",
+        "day-07-s4-i10",
+        "day-07-s4-i11",
+        "day-07-s4-i12",
+        "day-07-s4-i13"
+      ]
+    },
+    {
+      "family": "s",
+      "compact": true,
+      "itemIds": ["day-07-s4-i14", "day-07-s4-i15", "day-07-s4-i16", "day-07-s4-i17"]
+    },
+    {
+      "family": "c / s / z",
+      "compact": true,
+      "itemIds": [
+        "day-07-s4-i18",
+        "day-07-s4-i19",
+        "day-07-s4-i20",
+        "day-07-s4-i21",
+        "day-07-s4-i22",
+        "day-07-s4-i23",
+        "day-07-s4-i24",
+        "day-07-s4-i25"
+      ]
+    }
+  ],
+  "day-07-section-5": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-07-s5-i1",
+        "day-07-s5-i2",
+        "day-07-s5-i3",
+        "day-07-s5-i4",
+        "day-07-s5-i5",
+        "day-07-s5-i6",
+        "day-07-s5-i7",
+        "day-07-s5-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-07-s5-i9",
+        "day-07-s5-i10",
+        "day-07-s5-i11",
+        "day-07-s5-i12",
+        "day-07-s5-i13",
+        "day-07-s5-i14",
+        "day-07-s5-i15",
+        "day-07-s5-i16"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-07-s5-i17", "day-07-s5-i18"]
+    }
+  ],
+  "day-07-section-6": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-07-s6-i1"]
+    }
+  ],
+  "day-08-section-1": [
+    {
+      "family": "zh / ch / sh / r",
+      "compact": true,
+      "itemIds": [
+        "day-08-s1-i1",
+        "day-08-s1-i2",
+        "day-08-s1-i3",
+        "day-08-s1-i4",
+        "day-08-s1-i5",
+        "day-08-s1-i6",
+        "day-08-s1-i7",
+        "day-08-s1-i8"
+      ]
+    }
+  ],
+  "day-08-section-2": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-08-s2-i1", "day-08-s2-i2", "day-08-s2-i3"]
+    }
+  ],
+  "day-08-section-3": [
+    {
+      "family": "zh / ch / sh / r",
+      "compact": true,
+      "itemIds": [
+        "day-08-s3-i1",
+        "day-08-s3-i2",
+        "day-08-s3-i3",
+        "day-08-s3-i4",
+        "day-08-s3-i5",
+        "day-08-s3-i6",
+        "day-08-s3-i7",
+        "day-08-s3-i8"
+      ]
+    },
+    {
+      "family": "sh / r / zh / ch",
+      "compact": true,
+      "itemIds": [
+        "day-08-s3-i9",
+        "day-08-s3-i10",
+        "day-08-s3-i11",
+        "day-08-s3-i12",
+        "day-08-s3-i13",
+        "day-08-s3-i14",
+        "day-08-s3-i15",
+        "day-08-s3-i16"
+      ]
+    },
+    {
+      "family": "zh / ch / sh",
+      "compact": true,
+      "itemIds": ["day-08-s3-i17", "day-08-s3-i18", "day-08-s3-i19"]
+    }
+  ],
+  "day-08-section-4": [
+    {
+      "family": "zh / ch / sh",
+      "compact": true,
+      "itemIds": [
+        "day-08-s4-i1",
+        "day-08-s4-i2",
+        "day-08-s4-i3",
+        "day-08-s4-i4",
+        "day-08-s4-i5",
+        "day-08-s4-i6",
+        "day-08-s4-i7",
+        "day-08-s4-i8"
+      ]
+    },
+    {
+      "family": "sh / r / zh / ch",
+      "compact": true,
+      "itemIds": [
+        "day-08-s4-i9",
+        "day-08-s4-i10",
+        "day-08-s4-i11",
+        "day-08-s4-i12",
+        "day-08-s4-i13",
+        "day-08-s4-i14",
+        "day-08-s4-i15",
+        "day-08-s4-i16"
+      ]
+    },
+    {
+      "family": "sh / zh / r",
+      "compact": true,
+      "itemIds": ["day-08-s4-i17", "day-08-s4-i18", "day-08-s4-i19", "day-08-s4-i20"]
+    }
+  ],
+  "day-08-section-5": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-08-s5-i1",
+        "day-08-s5-i2",
+        "day-08-s5-i3",
+        "day-08-s5-i4",
+        "day-08-s5-i5",
+        "day-08-s5-i6",
+        "day-08-s5-i7",
+        "day-08-s5-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-08-s5-i9",
+        "day-08-s5-i10",
+        "day-08-s5-i11",
+        "day-08-s5-i12",
+        "day-08-s5-i13",
+        "day-08-s5-i14",
+        "day-08-s5-i15",
+        "day-08-s5-i16"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-08-s5-i17", "day-08-s5-i18", "day-08-s5-i19", "day-08-s5-i20"]
+    }
+  ],
+  "day-09-section-1": [
+    {
+      "family": "y / w",
+      "compact": true,
+      "itemIds": ["day-09-s1-i1", "day-09-s1-i2"]
+    }
+  ],
+  "day-09-section-2": [
+    {
+      "family": "y",
+      "compact": true,
+      "itemIds": [
+        "day-09-s2-i1",
+        "day-09-s2-i2",
+        "day-09-s2-i3",
+        "day-09-s2-i4",
+        "day-09-s2-i5",
+        "day-09-s2-i6"
+      ]
+    },
+    {
+      "family": "w / y",
+      "compact": true,
+      "itemIds": ["day-09-s2-i7", "day-09-s2-i8"]
+    },
+    {
+      "family": "w",
+      "compact": true,
+      "itemIds": [
+        "day-09-s2-i9",
+        "day-09-s2-i10",
+        "day-09-s2-i11",
+        "day-09-s2-i12",
+        "day-09-s2-i13"
+      ]
+    },
+    {
+      "family": "y / w",
+      "compact": true,
+      "itemIds": ["day-09-s2-i14", "day-09-s2-i15"]
+    },
+    {
+      "family": "y",
+      "compact": true,
+      "itemIds": [
+        "day-09-s2-i16",
+        "day-09-s2-i17",
+        "day-09-s2-i18",
+        "day-09-s2-i19",
+        "day-09-s2-i20",
+        "day-09-s2-i21",
+        "day-09-s2-i22",
+        "day-09-s2-i23"
+      ]
+    },
+    {
+      "family": "w",
+      "compact": true,
+      "itemIds": ["day-09-s2-i24"]
+    }
+  ],
+  "day-09-section-3": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-09-s3-i1", "day-09-s3-i2", "day-09-s3-i3", "day-09-s3-i4"]
+    }
+  ],
+  "day-10-section-1": [
+    {
+      "family": "a / e / u",
+      "compact": true,
+      "itemIds": ["day-10-s1-i1", "day-10-s1-i2", "day-10-s1-i3"]
+    }
+  ],
+  "day-10-section-2": [
+    {
+      "family": "a / e / u",
+      "compact": true,
+      "itemIds": [
+        "day-10-s2-i1",
+        "day-10-s2-i2",
+        "day-10-s2-i3",
+        "day-10-s2-i4",
+        "day-10-s2-i5",
+        "day-10-s2-i6",
+        "day-10-s2-i7",
+        "day-10-s2-i8"
+      ]
+    },
+    {
+      "family": "a / u / e",
+      "compact": true,
+      "itemIds": ["day-10-s2-i9", "day-10-s2-i10", "day-10-s2-i11", "day-10-s2-i12"]
+    }
+  ],
+  "day-10-section-3": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-10-s3-i1", "day-10-s3-i2", "day-10-s3-i3"]
+    }
+  ],
+  "day-10-section-4": [
+    {
+      "family": "b / m / t / l / d / n / c",
+      "compact": true,
+      "itemIds": [
+        "day-10-s4-i1",
+        "day-10-s4-i2",
+        "day-10-s4-i3",
+        "day-10-s4-i4",
+        "day-10-s4-i5",
+        "day-10-s4-i6",
+        "day-10-s4-i7",
+        "day-10-s4-i8"
+      ]
+    },
+    {
+      "family": "p / m / f / g / h / w / k",
+      "compact": true,
+      "itemIds": [
+        "day-10-s4-i9",
+        "day-10-s4-i10",
+        "day-10-s4-i11",
+        "day-10-s4-i12",
+        "day-10-s4-i13",
+        "day-10-s4-i14",
+        "day-10-s4-i15",
+        "day-10-s4-i16"
+      ]
+    },
+    {
+      "family": "h / t / zh / ch / sh",
+      "compact": true,
+      "itemIds": [
+        "day-10-s4-i17",
+        "day-10-s4-i18",
+        "day-10-s4-i19",
+        "day-10-s4-i20",
+        "day-10-s4-i21"
+      ]
+    }
+  ],
+  "day-10-section-5": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-10-s5-i1",
+        "day-10-s5-i2",
+        "day-10-s5-i3",
+        "day-10-s5-i4",
+        "day-10-s5-i5",
+        "day-10-s5-i6",
+        "day-10-s5-i7",
+        "day-10-s5-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-10-s5-i9",
+        "day-10-s5-i10",
+        "day-10-s5-i11",
+        "day-10-s5-i12",
+        "day-10-s5-i13",
+        "day-10-s5-i14",
+        "day-10-s5-i15",
+        "day-10-s5-i16"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-10-s5-i17", "day-10-s5-i18", "day-10-s5-i19", "day-10-s5-i20"]
+    }
+  ],
+  "day-10-section-6": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-10-s6-i1", "day-10-s6-i2", "day-10-s6-i3", "day-10-s6-i4"]
+    }
+  ],
+  "day-11-section-1": [
+    {
+      "family": "a / o / i",
+      "compact": true,
+      "itemIds": ["day-11-s1-i1", "day-11-s1-i2", "day-11-s1-i3"]
+    }
+  ],
+  "day-11-section-2": [
+    {
+      "family": "a / o / i",
+      "compact": true,
+      "itemIds": [
+        "day-11-s2-i1",
+        "day-11-s2-i2",
+        "day-11-s2-i3",
+        "day-11-s2-i4",
+        "day-11-s2-i5",
+        "day-11-s2-i6",
+        "day-11-s2-i7",
+        "day-11-s2-i8"
+      ]
+    },
+    {
+      "family": "i / a / o",
+      "compact": true,
+      "itemIds": ["day-11-s2-i9", "day-11-s2-i10", "day-11-s2-i11", "day-11-s2-i12"]
+    }
+  ],
+  "day-11-section-3": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-11-s3-i1",
+        "day-11-s3-i2",
+        "day-11-s3-i3",
+        "day-11-s3-i4",
+        "day-11-s3-i5",
+        "day-11-s3-i6"
+      ]
+    }
+  ],
+  "day-11-section-4": [
+    {
+      "family": "t / b / j / y / l / ch / h",
+      "compact": true,
+      "itemIds": [
+        "day-11-s4-i1",
+        "day-11-s4-i2",
+        "day-11-s4-i3",
+        "day-11-s4-i4",
+        "day-11-s4-i5",
+        "day-11-s4-i6",
+        "day-11-s4-i7",
+        "day-11-s4-i8"
+      ]
+    },
+    {
+      "family": "q / g / d / x / l / sh / n",
+      "compact": true,
+      "itemIds": [
+        "day-11-s4-i9",
+        "day-11-s4-i10",
+        "day-11-s4-i11",
+        "day-11-s4-i12",
+        "day-11-s4-i13",
+        "day-11-s4-i14",
+        "day-11-s4-i15",
+        "day-11-s4-i16"
+      ]
+    }
+  ],
+  "day-11-section-5": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-11-s5-i1",
+        "day-11-s5-i2",
+        "day-11-s5-i3",
+        "day-11-s5-i4",
+        "day-11-s5-i5",
+        "day-11-s5-i6",
+        "day-11-s5-i7",
+        "day-11-s5-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-11-s5-i9",
+        "day-11-s5-i10",
+        "day-11-s5-i11",
+        "day-11-s5-i12",
+        "day-11-s5-i13",
+        "day-11-s5-i14",
+        "day-11-s5-i15",
+        "day-11-s5-i16"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-11-s5-i17", "day-11-s5-i18", "day-11-s5-i19", "day-11-s5-i20"]
+    }
+  ],
+  "day-11-section-6": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-11-s6-i1"]
+    },
+    {
+      "family": "sh",
+      "compact": true,
+      "itemIds": ["day-11-s6-i2"]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-11-s6-i3",
+        "day-11-s6-i4",
+        "day-11-s6-i5",
+        "day-11-s6-i6",
+        "day-11-s6-i7",
+        "day-11-s6-i8",
+        "day-11-s6-i9",
+        "day-11-s6-i10"
+      ]
+    }
+  ],
+  "day-12-section-1": [
+    {
+      "family": "i / ü / e / y",
+      "compact": true,
+      "itemIds": ["day-12-s1-i1", "day-12-s1-i2", "day-12-s1-i3", "day-12-s1-i4", "day-12-s1-i5"]
+    }
+  ],
+  "day-12-section-2": [
+    {
+      "family": "i / ü / e",
+      "compact": true,
+      "itemIds": [
+        "day-12-s2-i1",
+        "day-12-s2-i2",
+        "day-12-s2-i3",
+        "day-12-s2-i4",
+        "day-12-s2-i5",
+        "day-12-s2-i6",
+        "day-12-s2-i7",
+        "day-12-s2-i8"
+      ]
+    },
+    {
+      "family": "i / ü / e",
+      "compact": true,
+      "itemIds": ["day-12-s2-i9", "day-12-s2-i10", "day-12-s2-i11", "day-12-s2-i12"]
+    },
+    {
+      "family": "y",
+      "compact": true,
+      "itemIds": [
+        "day-12-s2-i13",
+        "day-12-s2-i14",
+        "day-12-s2-i15",
+        "day-12-s2-i16",
+        "day-12-s2-i17",
+        "day-12-s2-i18",
+        "day-12-s2-i19",
+        "day-12-s2-i20"
+      ]
+    }
+  ],
+  "day-12-section-3": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-12-s3-i1", "day-12-s3-i2", "day-12-s3-i3", "day-12-s3-i4", "day-12-s3-i5"]
+    }
+  ],
+  "day-12-section-4": [
+    {
+      "family": "y / e / n / l",
+      "compact": true,
+      "itemIds": [
+        "day-12-s4-i1",
+        "day-12-s4-i2",
+        "day-12-s4-i3",
+        "day-12-s4-i4",
+        "day-12-s4-i5",
+        "day-12-s4-i6",
+        "day-12-s4-i7",
+        "day-12-s4-i8"
+      ]
+    },
+    {
+      "family": "e / y",
+      "compact": true,
+      "itemIds": ["day-12-s4-i9", "day-12-s4-i10"]
+    }
+  ],
+  "day-12-section-5": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-12-s5-i1", "day-12-s5-i2", "day-12-s5-i3"]
+    }
+  ],
+  "day-12-section-6": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-12-s6-i1",
+        "day-12-s6-i2",
+        "day-12-s6-i3",
+        "day-12-s6-i4",
+        "day-12-s6-i5",
+        "day-12-s6-i6",
+        "day-12-s6-i7",
+        "day-12-s6-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-12-s6-i9",
+        "day-12-s6-i10",
+        "day-12-s6-i11",
+        "day-12-s6-i12",
+        "day-12-s6-i13",
+        "day-12-s6-i14",
+        "day-12-s6-i15",
+        "day-12-s6-i16"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-12-s6-i17", "day-12-s6-i18"]
+    }
+  ],
+  "day-12-section-7": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-12-s7-i1",
+        "day-12-s7-i2",
+        "day-12-s7-i3",
+        "day-12-s7-i4",
+        "day-12-s7-i5",
+        "day-12-s7-i6",
+        "day-12-s7-i7",
+        "day-12-s7-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-12-s7-i9"]
+    }
+  ],
+  "day-13-section-1": [
+    {
+      "family": "a / e / i / u / ü",
+      "compact": true,
+      "itemIds": ["day-13-s1-i1", "day-13-s1-i2", "day-13-s1-i3", "day-13-s1-i4", "day-13-s1-i5"]
+    },
+    {
+      "family": "y",
+      "compact": true,
+      "itemIds": ["day-13-s1-i6", "day-13-s1-i7", "day-13-s1-i8"]
+    }
+  ],
+  "day-13-section-2": [
+    {
+      "family": "u / ü / a / e",
+      "compact": true,
+      "itemIds": [
+        "day-13-s2-i1",
+        "day-13-s2-i2",
+        "day-13-s2-i3",
+        "day-13-s2-i4",
+        "day-13-s2-i5",
+        "day-13-s2-i6",
+        "day-13-s2-i7",
+        "day-13-s2-i8"
+      ]
+    },
+    {
+      "family": "i / a / o / u / ü / e",
+      "compact": true,
+      "itemIds": [
+        "day-13-s2-i9",
+        "day-13-s2-i10",
+        "day-13-s2-i11",
+        "day-13-s2-i12",
+        "day-13-s2-i13",
+        "day-13-s2-i14",
+        "day-13-s2-i15",
+        "day-13-s2-i16"
+      ]
+    },
+    {
+      "family": "e",
+      "compact": true,
+      "itemIds": ["day-13-s2-i17"]
+    }
+  ],
+  "day-13-section-3": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-13-s3-i1", "day-13-s3-i2", "day-13-s3-i3", "day-13-s3-i4"]
+    }
+  ],
+  "day-13-section-4": [
+    {
+      "family": "y",
+      "compact": true,
+      "itemIds": [
+        "day-13-s4-i1",
+        "day-13-s4-i2",
+        "day-13-s4-i3",
+        "day-13-s4-i4",
+        "day-13-s4-i5",
+        "day-13-s4-i6",
+        "day-13-s4-i7",
+        "day-13-s4-i8"
+      ]
+    },
+    {
+      "family": "y",
+      "compact": true,
+      "itemIds": ["day-13-s4-i9", "day-13-s4-i10"]
+    }
+  ],
+  "day-13-section-5": [
+    {
+      "family": "b / d / x / f / zh / k / r",
+      "compact": true,
+      "itemIds": [
+        "day-13-s5-i1",
+        "day-13-s5-i2",
+        "day-13-s5-i3",
+        "day-13-s5-i4",
+        "day-13-s5-i5",
+        "day-13-s5-i6",
+        "day-13-s5-i7",
+        "day-13-s5-i8"
+      ]
+    },
+    {
+      "family": "p / m / q / j / g / ch / x",
+      "compact": true,
+      "itemIds": [
+        "day-13-s5-i9",
+        "day-13-s5-i10",
+        "day-13-s5-i11",
+        "day-13-s5-i12",
+        "day-13-s5-i13",
+        "day-13-s5-i14",
+        "day-13-s5-i15",
+        "day-13-s5-i16"
+      ]
+    },
+    {
+      "family": "b / q / p / t / d / n / j",
+      "compact": true,
+      "itemIds": [
+        "day-13-s5-i17",
+        "day-13-s5-i18",
+        "day-13-s5-i19",
+        "day-13-s5-i20",
+        "day-13-s5-i21",
+        "day-13-s5-i22",
+        "day-13-s5-i23",
+        "day-13-s5-i24"
+      ]
+    },
+    {
+      "family": "sh / zh / ch / k / h / x",
+      "compact": true,
+      "itemIds": [
+        "day-13-s5-i25",
+        "day-13-s5-i26",
+        "day-13-s5-i27",
+        "day-13-s5-i28",
+        "day-13-s5-i29",
+        "day-13-s5-i30",
+        "day-13-s5-i31"
+      ]
+    }
+  ],
+  "day-13-section-6": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-13-s6-i1",
+        "day-13-s6-i2",
+        "day-13-s6-i3",
+        "day-13-s6-i4",
+        "day-13-s6-i5",
+        "day-13-s6-i6",
+        "day-13-s6-i7",
+        "day-13-s6-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-13-s6-i9",
+        "day-13-s6-i10",
+        "day-13-s6-i11",
+        "day-13-s6-i12",
+        "day-13-s6-i13",
+        "day-13-s6-i14"
+      ]
+    }
+  ],
+  "day-13-section-7": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-13-s7-i1",
+        "day-13-s7-i2",
+        "day-13-s7-i3",
+        "day-13-s7-i4",
+        "day-13-s7-i5",
+        "day-13-s7-i6",
+        "day-13-s7-i7"
+      ]
+    }
+  ],
+  "day-14-section-1": [
+    {
+      "family": "a / e / i / o / y",
+      "compact": true,
+      "itemIds": ["day-14-s1-i1", "day-14-s1-i2", "day-14-s1-i3", "day-14-s1-i4", "day-14-s1-i5"]
+    }
+  ],
+  "day-14-section-2": [
+    {
+      "family": "a / e / i / o",
+      "compact": true,
+      "itemIds": [
+        "day-14-s2-i1",
+        "day-14-s2-i2",
+        "day-14-s2-i3",
+        "day-14-s2-i4",
+        "day-14-s2-i5",
+        "day-14-s2-i6",
+        "day-14-s2-i7",
+        "day-14-s2-i8"
+      ]
+    },
+    {
+      "family": "a / e / i / o / y",
+      "compact": true,
+      "itemIds": [
+        "day-14-s2-i9",
+        "day-14-s2-i10",
+        "day-14-s2-i11",
+        "day-14-s2-i12",
+        "day-14-s2-i13",
+        "day-14-s2-i14"
+      ]
+    }
+  ],
+  "day-14-section-3": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-14-s3-i1",
+        "day-14-s3-i2",
+        "day-14-s3-i3",
+        "day-14-s3-i4",
+        "day-14-s3-i5",
+        "day-14-s3-i6",
+        "day-14-s3-i7"
+      ]
+    }
+  ],
+  "day-14-section-4": [
+    {
+      "family": "y",
+      "compact": true,
+      "itemIds": ["day-14-s4-i1", "day-14-s4-i2", "day-14-s4-i3", "day-14-s4-i4"]
+    }
+  ],
+  "day-14-section-5": [
+    {
+      "family": "b / m / f / g / zh / sh / ch / x",
+      "compact": true,
+      "itemIds": [
+        "day-14-s5-i1",
+        "day-14-s5-i2",
+        "day-14-s5-i3",
+        "day-14-s5-i4",
+        "day-14-s5-i5",
+        "day-14-s5-i6",
+        "day-14-s5-i7",
+        "day-14-s5-i8"
+      ]
+    },
+    {
+      "family": "d / t / ch / l / zh / m",
+      "compact": true,
+      "itemIds": [
+        "day-14-s5-i9",
+        "day-14-s5-i10",
+        "day-14-s5-i11",
+        "day-14-s5-i12",
+        "day-14-s5-i13",
+        "day-14-s5-i14",
+        "day-14-s5-i15",
+        "day-14-s5-i16"
+      ]
+    },
+    {
+      "family": "s / t / j / q / x",
+      "compact": true,
+      "itemIds": [
+        "day-14-s5-i17",
+        "day-14-s5-i18",
+        "day-14-s5-i19",
+        "day-14-s5-i20",
+        "day-14-s5-i21"
+      ]
+    }
+  ],
+  "day-14-section-6": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-14-s6-i1",
+        "day-14-s6-i2",
+        "day-14-s6-i3",
+        "day-14-s6-i4",
+        "day-14-s6-i5",
+        "day-14-s6-i6",
+        "day-14-s6-i7",
+        "day-14-s6-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-14-s6-i9",
+        "day-14-s6-i10",
+        "day-14-s6-i11",
+        "day-14-s6-i12",
+        "day-14-s6-i13",
+        "day-14-s6-i14",
+        "day-14-s6-i15",
+        "day-14-s6-i16"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-14-s6-i17", "day-14-s6-i18"]
+    }
+  ],
+  "day-14-section-7": [
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": [
+        "day-14-s7-i1",
+        "day-14-s7-i2",
+        "day-14-s7-i3",
+        "day-14-s7-i4",
+        "day-14-s7-i5",
+        "day-14-s7-i6",
+        "day-14-s7-i7",
+        "day-14-s7-i8"
+      ]
+    },
+    {
+      "family": "词句",
+      "compact": false,
+      "itemIds": ["day-14-s7-i9"]
+    }
+  ]
+}

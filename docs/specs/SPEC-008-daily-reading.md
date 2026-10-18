@@ -52,3 +52,13 @@ DAILY-05 本机验证：verify:all、validate:release通过；Chromium/WebKit真
 - 显示真实准备进度、当前下载/正在播放状态与失败重试；这些状态不计进度。测试请求去重/上限、截断重试、断网重播、取消旧响应、用户激活拒绝、后台恢复、互斥与高亮，最终需用户iPad验证，不宣称WebKit即真机。
 
 DAILY-06本机验证：verify:all通过74项前端/工具、341后端、30视口及34真实服务GUI；validate:release通过。Chromium/WebKit的18项产品回归通过，覆盖全部642个示范解码、缓存后阻断音频请求、截断/首次失败重试、模拟页面可见性恢复、引导开关、间隔/组词/句子高亮。模拟可见性不是实际iPad后台验证。证据：private/daily06-verify-all.log、daily06-release.log、daily06-buffered-product.log、daily06-guidance-product.log、daily06-reference-product.log。新版已构建至本机运行服务。2026-10-17用户按刷新、等待“本份声音已就绪”后复听和连续播放的复测要求反馈：“播放顺畅，未再失败”。这关闭本次已报告的iPad天天练播放卡顿/加载失败问题；未记录设备型号、iPadOS版本、具体条目或测试时长，不扩展为全部内容、长时播放、真实网络中断或后台恢复验收。
+
+## DAILY-07：目录跟随与分块多列
+
+2026-10-18用户反馈连播换条后右侧目录未跟随、长小节滚动过长。
+
+- 连播、上一条/下一条、点选及换节后，当前条保持唯一高亮；超出目录可见范围时只滚动目录内部，不滚整页、不移动焦点，采用即时滚动避免动画追赶。
+- 导航分块集中登记在content/daily-reading-navigation.json，保留原条目与播放顺序；相邻同类短音聚在一块，块内自适应多列；词句分段并使用宽列。保留全节序号、跟读/家长标记和点击/键盘操作。
+- 验收：覆盖全部840条的分组无缺失、重复或重排；桌面与窄屏目录布局、连播跨块/不可见条自动跟随、手动切换及换节回归。浏览器验证不替代移动真机验收。无新增依赖。
+
+DAILY-07本机验证（2026-10-18）：verify:all通过（379项后端、30项视口、34项真实服务GUI），最终verify通过90项前端/工具测试；validate:release通过。新增Chromium/WebKit真实声音专项2项通过，覆盖跨块连播后当前项可见、页面不跳动、焦点不被转移、手动上一条、换份及390px窄屏无横向溢出；内容检查覆盖840条无缺失/重复/重排。记录private/daily07-verify.log、daily07-final-engineering.log、daily07-release.log、daily07-product-complete.log。构建已更新，真实移动设备触摸与家庭试用仍待用户验证。
