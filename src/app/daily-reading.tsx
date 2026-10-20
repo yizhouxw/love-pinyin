@@ -14,7 +14,7 @@ import { recognizeReading, type RecognitionResult } from '../platform/audio/read
 import { waitForPlaybackGap } from '../platform/audio/playback-gap';
 import { dayResources, itemResources } from '../platform/audio/reading-resources';
 import { GuidanceSwitch } from './guidance-switch';
-import { PlaybackGapControl } from './playback-gap-control';
+import { QuickGapSettings } from './quick-gap-settings';
 import recognitionContent from '../../content/reading-recognition.json';
 import navigationContent from '../../content/daily-reading-navigation.json';
 
@@ -763,39 +763,6 @@ function ReadingSession({
         ))}
       </aside>
     </div>
-  );
-}
-
-function QuickGapSettings({
-  seconds,
-  item,
-  onSave,
-  disabled = false,
-}: {
-  seconds: number;
-  item?: DailyItem;
-  onSave: (seconds: number) => void;
-  disabled?: boolean;
-}) {
-  return (
-    <details className="daily-gap-settings">
-      <summary tabIndex={0}>间隔设置 · {seconds.toFixed(1)}秒起</summary>
-      <PlaybackGapControl
-        key={seconds}
-        seconds={seconds}
-        disabled={disabled}
-        onSave={onSave}
-        deviceOnly
-        guest={isGuest()}
-      />
-      {disabled && <p>录音或识别结束后可以调整间隔。</p>}
-      {item && (
-        <p>
-          当前条{item.syllables.length}个音节，连播后等待
-          {readingGapSeconds(item, seconds).toFixed(1)}秒。
-        </p>
-      )}
-    </details>
   );
 }
 

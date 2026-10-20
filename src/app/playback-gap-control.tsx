@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useId, useState, type CSSProperties } from 'react';
 import playback from '../../content/playback.json';
+import { readingGapSeconds, type DailyItem } from '../domain/daily-reading';
 
 export function PlaybackGapControl({
   seconds,
@@ -7,14 +8,19 @@ export function PlaybackGapControl({
   onSave,
   deviceOnly = false,
   guest = false,
+  item,
+  onCancel,
 }: {
   seconds: number;
   disabled: boolean;
   onSave: (seconds: number) => void;
   deviceOnly?: boolean;
   guest?: boolean;
+  item?: DailyItem;
+  onCancel?: () => void;
 }) {
   const [draft, setDraft] = useState(String(seconds));
+  const errorId = useId();
   const value = Number(draft);
   const valid =
     draft !== '' &&
@@ -22,49 +28,138 @@ export function PlaybackGapControl({
     value >= playback.gap.minSeconds &&
     value <= playback.gap.maxSeconds &&
     Math.abs(value * 10 - Math.round(value * 10)) < 1e-8;
+  const preview = valid ? value : seconds;
+  const percent =
+    ((preview - playback.gap.minSeconds) / (playback.gap.maxSeconds - playback.gap.minSeconds)) *
+    100;
+  function adjust(direction: -1 | 1) {
+    const next = Math.round((preview + direction * playback.gap.stepSeconds) * 10) / 10;
+    setDraft(String(Math.max(playback.gap.minSeconds, Math.min(playback.gap.maxSeconds, next))));
+  }
   return (
-    <div className="parent-setting">
-      <div>
-        <strong>{deviceOnly ? '本设备的基础间隔' : '连播基础间隔'}</strong>
-        <p>
-          词句之间按长度等待：基础间隔加上每多一个音节
-          {playback.reading.extraSecondsPerSyllable}秒。词内紧凑接续，不使用此间隔。默认
-          {playback.gap.defaultSeconds}秒，可设置{playback.gap.minSeconds}～
-          {playback.gap.maxSeconds}秒。
-        </p>
-        <p>
+    <div className={deviceOnly ? 'playback-gap-editor' : 'parent-setting playback-setting'}>
+      {!deviceOnly && (
+        <div className="playback-setting-heading">
+          <strong>连播间隔</strong>
+          <p>给孩子留一点时间，听完再跟读。</p>
+        </div>
+      )}
+      <div className="playback-gap-controls">
+        <div className="gap-presets" role="group" aria-label="选择跟读节奏">
+          {playback.gap.presets.map((preset) => (
+            <button
+              key={preset.seconds}
+              type="button"
+              tabIndex={0}
+              disabled={disabled}
+              aria-pressed={valid && value === preset.seconds}
+              aria-label={`${preset.label} ${preset.seconds.toFixed(1)}秒`}
+              onClick={() => setDraft(String(preset.seconds))}
+            >
+              <strong>{preset.label}</strong>
+              <span>{preset.seconds.toFixed(1)}秒</span>
+            </button>
+          ))}
+        </div>
+        <div className="gap-stepper">
+          <button
+            className="gap-step-button"
+            type="button"
+            tabIndex={0}
+            aria-label="减少0.1秒"
+            disabled={disabled || preview <= playback.gap.minSeconds}
+            onClick={() => adjust(-1)}
+          >
+            <span aria-hidden="true">−</span>
+          </button>
+          <label className="gap-number">
+            <span>基础间隔</span>
+            <span className="gap-number-value">
+              <input
+                type="number"
+                aria-label="连播间隔（秒）"
+                aria-invalid={!valid}
+                aria-describedby={!valid ? errorId : undefined}
+                inputMode="decimal"
+                min={playback.gap.minSeconds}
+                max={playback.gap.maxSeconds}
+                step={playback.gap.stepSeconds}
+                value={draft}
+                disabled={disabled}
+                onChange={(event) => setDraft(event.target.value)}
+              />
+              <span>秒</span>
+            </span>
+          </label>
+          <button
+            className="gap-step-button"
+            type="button"
+            tabIndex={0}
+            aria-label="增加0.1秒"
+            disabled={disabled || preview >= playback.gap.maxSeconds}
+            onClick={() => adjust(1)}
+          >
+            <span aria-hidden="true">＋</span>
+          </button>
+        </div>
+        <input
+          className="gap-range"
+          type="range"
+          aria-label="调节基础间隔"
+          aria-valuetext={`${preview.toFixed(1)}秒`}
+          min={playback.gap.minSeconds}
+          max={playback.gap.maxSeconds}
+          step={playback.gap.stepSeconds}
+          value={preview}
+          disabled={disabled}
+          style={{ '--gap-progress': `${percent}%` } as CSSProperties}
+          onChange={(event) => setDraft(event.target.value)}
+        />
+        <div className="gap-range-labels" aria-hidden="true">
+          <span>{playback.gap.minSeconds}秒</span>
+          <span>{playback.gap.maxSeconds}秒</span>
+        </div>
+        {!valid && (
+          <p className="gap-error" id={errorId} role="alert">
+            请输入0.1～5秒，最多一位小数。
+          </p>
+        )}
+        <div className="gap-preview" aria-live="polite">
+          {item ? (
+            <p>
+              这条读完后，留<strong>{readingGapSeconds(item, preview).toFixed(1)}秒</strong>跟读
+            </p>
+          ) : (
+            <p>词句越长，留给你跟读的时间越多。</p>
+          )}
+        </div>
+        <p className="gap-scope">
           {deviceOnly
             ? guest
-              ? '只在当前访客标签页记住，退出访客后清除。保存会停止当前示范，再点连播即可使用新间隔。'
-              : '只在本浏览器记住；家长更改默认间隔后采用新的默认值。保存会停止当前示范，再点连播即可使用新间隔。'
+              ? '仅当前访客标签页生效，退出后清除。'
+              : '仅本浏览器生效，家长更改默认值后同步更新。'
             : guest
-              ? '作为当前访客练习的默认值，退出访客后清除。练习页也可快捷调整。'
-              : '作为学习设备的默认值，学生练习页也可单独调整本设备的间隔。'}
+              ? '作为当前访客的默认间隔，退出后清除。'
+              : '家庭默认间隔，学生可在练习页单独调整。'}
         </p>
-      </div>
-      <div className="playback-gap-control">
-        <label>
-          连播间隔（秒）
-          <input
-            type="number"
-            min={playback.gap.minSeconds}
-            max={playback.gap.maxSeconds}
-            step={playback.gap.stepSeconds}
-            value={draft}
-            disabled={disabled}
-            onChange={(event) => setDraft(event.target.value)}
-          />
-        </label>
-        <button
-          className="quiet"
-          tabIndex={0}
-          disabled={disabled || !valid || value === seconds}
-          onClick={() => onSave(value)}
-        >
-          保存间隔
-        </button>
-        {!valid && <p role="alert">请输入0.1～5秒之间的值，精度为0.1秒。</p>}
-        <small>当前间隔：{seconds.toFixed(1)}秒</small>
+        {disabled && deviceOnly && <p className="gap-scope">录音或识别结束后可以调整。</p>}
+        <div className="gap-editor-actions">
+          {onCancel && (
+            <button type="button" className="quiet" tabIndex={0} onClick={onCancel}>
+              取消
+            </button>
+          )}
+          <button
+            type="button"
+            className="gap-apply"
+            tabIndex={0}
+            disabled={disabled || !valid || value === seconds}
+            onClick={() => onSave(value)}
+          >
+            {deviceOnly ? '应用间隔' : '保存间隔'}
+          </button>
+        </div>
+        {!deviceOnly && <small className="gap-saved">当前间隔：{seconds.toFixed(1)}秒</small>}
       </div>
     </div>
   );

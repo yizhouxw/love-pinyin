@@ -11,18 +11,18 @@ async function guest(page: import('@playwright/test').Page, url: string) {
 }
 
 async function quickGap(container: Locator) {
-  const settings = container.locator('.daily-gap-settings');
-  if (!(await settings.evaluate((element: HTMLDetailsElement) => element.open)))
-    await settings.locator('summary').click();
-  return settings;
+  const dialog = container.getByRole('dialog', { name: '跟读间隔' });
+  if (!(await dialog.isVisible())) await container.locator('.daily-gap-trigger').click();
+  return dialog;
 }
 
 async function saveQuickGap(container: Locator, seconds: string) {
   const settings = await quickGap(container);
   await settings.getByLabel('连播间隔（秒）').fill(seconds);
-  await settings.getByRole('button', { name: '保存间隔', exact: true }).click();
-  await expect(settings.locator('summary')).toHaveText(
-    `间隔设置 · ${Number(seconds).toFixed(1)}秒起`,
+  await settings.getByRole('button', { name: '应用间隔', exact: true }).click();
+  await expect(settings).not.toBeVisible();
+  await expect(container.locator('.daily-gap-trigger')).toHaveAccessibleName(
+    `间隔设置，基础间隔${Number(seconds).toFixed(1)}秒`,
   );
 }
 
@@ -275,27 +275,28 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
   await guest(page, appUrl);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   const daily = page.getByLabel('天天练拼音', { exact: true });
-  let settings = daily.locator('.daily-gap-settings');
-  await settings.locator('summary').focus();
+  await daily.locator('.daily-gap-trigger').focus();
   await page.keyboard.press('Enter');
+  let settings = daily.getByRole('dialog', { name: '跟读间隔' });
   const input = settings.getByLabel('连播间隔（秒）');
   await expect(input).toHaveValue('1');
   await expect(input).toHaveAttribute('min', '0.1');
   await expect(input).toHaveAttribute('max', '5');
   await expect(input).toHaveAttribute('step', '0.1');
   await input.fill('1.25');
-  await expect(settings.getByRole('button', { name: '保存间隔' })).toBeDisabled();
+  await expect(settings.getByRole('alert')).toContainText('最多一位小数');
+  await expect(settings.getByRole('button', { name: '应用间隔' })).toBeDisabled();
   await input.fill('2.5');
-  await input.focus();
-  await page.keyboard.press('Tab');
-  await expect(settings.getByRole('button', { name: '保存间隔' })).toBeFocused();
+  await settings.getByRole('button', { name: '应用间隔' }).focus();
   await page.keyboard.press('Enter');
-  await expect(settings.locator('summary')).toContainText('2.5秒起');
+  await expect(settings).not.toBeVisible();
+  await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName('间隔设置，基础间隔2.5秒');
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   const reader = page.getByLabel('当前跟读内容');
   settings = await quickGap(reader);
   await expect(settings.getByLabel('连播间隔（秒）')).toHaveValue('2.5');
-  await expect(settings).toContainText('当前条1个音节，连播后等待2.5秒。');
+  await expect(settings).toContainText('这条读完后，留2.5秒跟读');
+  await settings.getByRole('button', { name: '关闭间隔设置' }).click();
   await clearReadingMedia(page);
   await reader.getByRole('button', { name: '连播本节', exact: false }).click();
   await expect
@@ -312,19 +313,21 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
   await page.waitForTimeout(2800);
   expect(await playedReading(page, 'daily-audio')).toHaveLength(1);
   await expect(reader.locator('.daily-highlight')).toHaveCount(0);
-  await expect(settings).toContainText('当前条1个音节，连播后等待0.2秒。');
+  settings = await quickGap(reader);
+  await expect(settings).toContainText('这条读完后，留0.2秒跟读');
+  await settings.getByRole('button', { name: '关闭间隔设置' }).click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
   await page.getByRole('button', { name: '第 4 份', exact: true }).click();
-  await expect(daily.locator('.daily-gap-settings summary')).toContainText('0.2秒起');
+  await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName('间隔设置，基础间隔0.2秒');
   await page.getByRole('button', { name: /^拼读词语/ }).click();
   settings = await quickGap(reader);
   await expect(settings.getByLabel('连播间隔（秒）')).toHaveValue('0.2');
-  await expect(settings).toContainText('当前条2个音节，连播后等待0.7秒。');
-  await reader.screenshot({ path: test.info().outputPath('quick-gap-narrow.png') });
+  await expect(settings).toContainText('这条读完后，留0.7秒跟读');
   await settings.getByLabel('连播间隔（秒）').fill('0.3');
-  await expect(settings.getByRole('button', { name: '保存间隔' })).toBeEnabled();
+  await expect(settings.getByRole('button', { name: '应用间隔' })).toBeEnabled();
+  await settings.getByRole('button', { name: '取消', exact: true }).click();
   // Hold the browser permission response to cover the recording-preparation boundary.
   await page.evaluate(() => {
     Object.defineProperty(navigator, 'mediaDevices', {
@@ -340,15 +343,19 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
   });
   await reader.getByRole('button', { name: '录下我的跟读' }).click();
   await expect(reader.getByRole('status')).toContainText('正在准备录音');
+  settings = await quickGap(reader);
   await expect(settings.getByLabel('连播间隔（秒）')).toBeDisabled();
-  await expect(settings.getByRole('button', { name: '保存间隔' })).toBeDisabled();
+  await expect(settings.getByLabel('调节基础间隔')).toBeDisabled();
+  await expect(settings.getByRole('button', { name: '紧凑 0.5秒', exact: true })).toBeDisabled();
+  await expect(settings.getByRole('button', { name: '应用间隔' })).toBeDisabled();
   await page.evaluate(() => {
     (window as unknown as { denyReadingMicrophone: () => void }).denyReadingMicrophone();
   });
-  await expect(reader.getByRole('alert')).toContainText('麦克风没有开启');
   await expect(settings.getByLabel('连播间隔（秒）')).toBeEnabled();
+  await settings.getByRole('button', { name: '关闭间隔设置' }).click();
+  await expect(reader.getByRole('alert')).toContainText('麦克风没有开启');
   await page.reload();
-  await expect(daily.locator('.daily-gap-settings summary')).toContainText('0.2秒起');
+  await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName('间隔设置，基础间隔0.2秒');
   expect(
     await page.evaluate(() => ({
       guest: JSON.parse(sessionStorage.getItem('lp.guest.playback-gap')!),
@@ -360,7 +367,7 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
     .getByRole('button', { name: '清除并退出访客' })
     .click();
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
-  await expect(daily.locator('.daily-gap-settings summary')).toContainText('1.0秒起');
+  await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName('间隔设置，基础间隔1.0秒');
   expect(await page.evaluate(() => sessionStorage.getItem('lp.guest.playback-gap'))).toBeNull();
 });
 
@@ -397,22 +404,28 @@ test('READ-06: a real learning device remembers its own gap without parent write
     await expect(learning.getByRole('button', { name: '家长管理' })).toHaveCount(0);
     await learning.getByRole('button', { name: '进入天天练拼音' }).click();
     const daily = learning.getByLabel('天天练拼音', { exact: true });
-    await expect(daily.locator('.daily-gap-settings summary')).toContainText('2.0秒起');
+    await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
+      '间隔设置，基础间隔2.0秒',
+    );
     await saveQuickGap(daily, '0.4');
     await learning.getByRole('button', { name: '开始第 1 份跟读' }).click();
     await expect(
-      learning.getByLabel('当前跟读内容').locator('.daily-gap-settings summary'),
-    ).toContainText('0.4秒起');
+      learning.getByLabel('当前跟读内容').locator('.daily-gap-trigger'),
+    ).toHaveAccessibleName('间隔设置，基础间隔0.4秒');
     await learning.getByRole('button', { name: '第 4 份', exact: true }).click();
-    await expect(daily.locator('.daily-gap-settings summary')).toContainText('0.4秒起');
+    await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
+      '间隔设置，基础间隔0.4秒',
+    );
     await learning.getByRole('button', { name: /^拼读词语/ }).click();
     await expect(
-      learning.getByLabel('当前跟读内容').locator('.daily-gap-settings summary'),
-    ).toContainText('0.4秒起');
+      learning.getByLabel('当前跟读内容').locator('.daily-gap-trigger'),
+    ).toHaveAccessibleName('间隔设置，基础间隔0.4秒');
     await learning.getByRole('button', { name: '返回小岛', exact: false }).click();
     await learning.reload();
     await learning.getByRole('button', { name: '进入天天练拼音' }).click();
-    await expect(daily.locator('.daily-gap-settings summary')).toContainText('0.4秒起');
+    await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
+      '间隔设置，基础间隔0.4秒',
+    );
     expect(
       await learning.evaluate(() => JSON.parse(localStorage.getItem('love-pinyin.playback-gap')!)),
     ).toEqual({ seconds: 0.4, familyDefault: 2 });
@@ -424,11 +437,139 @@ test('READ-06: a real learning device remembers its own gap without parent write
     await page.getByRole('button', { name: '保存间隔' }).click();
     await expect(page.getByText('当前间隔：3.1秒')).toBeVisible();
     await learning.reload();
-    await expect(daily.locator('.daily-gap-settings summary')).toContainText('3.1秒起');
+    await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
+      '间隔设置，基础间隔3.1秒',
+    );
     await expect((await quickGap(daily)).getByLabel('连播间隔（秒）')).toHaveValue('3.1');
     expect(settingWrites).toEqual([]);
   } finally {
     await learningContext.close();
+  }
+});
+
+test('READ-07: compact controls preview drafts, dismiss safely and fit narrow viewports', async ({
+  page,
+  appUrl,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await guest(page, appUrl);
+  await page.getByRole('button', { name: '进入天天练拼音' }).click();
+  const daily = page.getByLabel('天天练拼音', { exact: true });
+  const trigger = daily.locator('.daily-gap-trigger');
+  await expect(trigger).toHaveAccessibleName('间隔设置，基础间隔1.0秒');
+  await expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+  const triggerBounds = await trigger.boundingBox();
+  expect(triggerBounds!.width).toBeLessThan(240);
+  expect(triggerBounds!.height).toBeGreaterThanOrEqual(44);
+  await daily.screenshot({ path: test.info().outputPath('gap-settings-desktop-entry.png') });
+  const originalOverflow = await page.evaluate(() => ({
+    body: document.body.style.overflow,
+    root: document.documentElement.style.overflow,
+  }));
+  let settings = await quickGap(daily);
+  await expect(settings).toBeVisible();
+  await expect(settings).toContainText('词句越长，留给你跟读的时间越多。');
+  expect(
+    await page.evaluate(() => ({
+      body: document.body.style.overflow,
+      root: document.documentElement.style.overflow,
+    })),
+  ).toEqual({ body: 'hidden', root: 'hidden' });
+  await trigger.focus();
+  expect(await settings.evaluate((dialog) => dialog.contains(document.activeElement))).toBe(true);
+  for (let step = 0; step < 12; step += 1) {
+    await page.keyboard.press('Tab');
+    // Native modals may yield to browser chrome, but no background page control may receive focus.
+    expect(
+      await settings.evaluate(
+        (dialog) =>
+          document.activeElement === document.body || dialog.contains(document.activeElement),
+      ),
+    ).toBe(true);
+  }
+  const input = settings.getByLabel('连播间隔（秒）');
+  const range = settings.getByLabel('调节基础间隔');
+  await settings.getByRole('button', { name: '紧凑 0.5秒', exact: true }).click();
+  await expect(input).toHaveValue('0.5');
+  await expect(settings.getByRole('button', { name: '紧凑 0.5秒', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await settings.getByRole('button', { name: '增加0.1秒', exact: true }).click();
+  await expect(input).toHaveValue('0.6');
+  await settings.getByRole('button', { name: '减少0.1秒', exact: true }).click();
+  await expect(input).toHaveValue('0.5');
+  await range.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(input).toHaveValue('0.6');
+  await page.keyboard.press('Home');
+  await expect(input).toHaveValue('0.1');
+  await expect(settings.getByRole('button', { name: '减少0.1秒', exact: true })).toBeDisabled();
+  await page.keyboard.press('End');
+  await expect(input).toHaveValue('5');
+  await expect(settings.getByRole('button', { name: '增加0.1秒', exact: true })).toBeDisabled();
+  await page.keyboard.press('ArrowLeft');
+  await expect(input).toHaveValue('4.9');
+  await input.fill('0');
+  await expect(input).toHaveAttribute('aria-invalid', 'true');
+  await expect(input).toHaveAccessibleDescription('请输入0.1～5秒，最多一位小数。');
+  await expect(settings.getByRole('alert')).toContainText('0.1～5秒');
+  await expect(settings.getByRole('button', { name: '应用间隔' })).toBeDisabled();
+  await input.fill('5.1');
+  await expect(settings.getByRole('button', { name: '应用间隔' })).toBeDisabled();
+  await input.fill('2.4');
+  await expect(input).toHaveAttribute('aria-invalid', 'false');
+  await settings.getByRole('button', { name: '应用间隔' }).click();
+  await expect(settings).not.toBeVisible();
+  await expect(trigger).toBeFocused();
+  await expect(trigger).toHaveAccessibleName('间隔设置，基础间隔2.4秒');
+  expect(
+    await page.evaluate(() => ({
+      body: document.body.style.overflow,
+      root: document.documentElement.style.overflow,
+    })),
+  ).toEqual(originalOverflow);
+  for (const dismissal of ['取消', '关闭间隔设置', 'Escape', 'backdrop']) {
+    settings = await quickGap(daily);
+    await expect(settings.getByLabel('连播间隔（秒）')).toHaveValue('2.4');
+    await settings.getByRole('button', { name: '从容 2.0秒', exact: true }).click();
+    if (dismissal === 'Escape') await page.keyboard.press('Escape');
+    else if (dismissal === 'backdrop') await page.mouse.click(8, 8);
+    else await settings.getByRole('button', { name: dismissal, exact: true }).click();
+    await expect(settings).not.toBeVisible();
+    await expect(trigger).toBeFocused();
+    await expect(trigger).toHaveAccessibleName('间隔设置，基础间隔2.4秒');
+  }
+  await page.getByRole('button', { name: '第 4 份', exact: true }).click();
+  await page.getByRole('button', { name: /^拼读词语/ }).click();
+  const reader = page.getByLabel('当前跟读内容');
+  settings = await quickGap(reader);
+  await expect(settings).toContainText('这条读完后，留2.9秒跟读');
+  await settings.getByRole('button', { name: '紧凑 0.5秒', exact: true }).click();
+  await expect(settings).toContainText('这条读完后，留1.0秒跟读');
+  await settings.getByRole('button', { name: '增加0.1秒', exact: true }).click();
+  await expect(settings).toContainText('这条读完后，留1.1秒跟读');
+  await settings.getByRole('button', { name: '适中 1.0秒', exact: true }).click();
+  await expect(settings).toContainText('这条读完后，留1.5秒跟读');
+  await page.screenshot({ path: test.info().outputPath('gap-settings-desktop-dialog.png') });
+  await settings.getByRole('button', { name: '应用间隔' }).click();
+  await expect(settings).not.toBeVisible();
+  for (const width of [390, 320]) {
+    await page.setViewportSize({ width, height: 844 });
+    settings = await quickGap(reader);
+    const bounds = await settings.boundingBox();
+    expect(bounds!.x).toBeGreaterThanOrEqual(0);
+    expect(bounds!.y).toBeGreaterThanOrEqual(0);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(844);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+    await expect(settings.getByRole('button', { name: '应用间隔' })).toBeInViewport();
+    if (width === 390)
+      await page.screenshot({ path: test.info().outputPath('gap-settings-390-dialog.png') });
+    await settings.getByRole('button', { name: '关闭间隔设置' }).click();
+    await expect(reader.locator('.daily-gap-trigger')).toBeFocused();
   }
 });
 

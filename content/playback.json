@@ -1,6 +1,16 @@
 {
   "version": 2,
-  "gap": { "minSeconds": 0.1, "maxSeconds": 5, "stepSeconds": 0.1, "defaultSeconds": 1 },
+  "gap": {
+    "minSeconds": 0.1,
+    "maxSeconds": 5,
+    "stepSeconds": 0.1,
+    "defaultSeconds": 1,
+    "presets": [
+      { "label": "紧凑", "seconds": 0.5 },
+      { "label": "适中", "seconds": 1 },
+      { "label": "从容", "seconds": 2 }
+    ]
+  },
   "reading": {
     "extraSecondsPerSyllable": 0.5,
     "wordBoundarySilenceSeconds": 0.1,

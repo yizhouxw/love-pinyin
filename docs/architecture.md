@@ -79,6 +79,8 @@ SPEC-012按ADR-0020扩充：家庭/访客设置保存整数精度的连播间隔
 
 READ-05/06按[ADR-0028](adr/0028-length-aware-reading-rhythm.md)补充：`readingGapSeconds`按刚播放条目的音节数计算条目间等待；`playback-preference`维护学生设备偏好与家庭默认继承。多音节标准音由`reading-word-audio`只解码当前条、保留发音边界并合为临时WAV，仍通过复用的HTML媒体元素出声；高亮读取实际播放位置与合成音节区间。单音和完整中文示范保持原路径，派生声音不落盘或持久缓存。
 
+READ-07的`quick-gap-settings`管理紧凑入口、原生模态卡片与草稿生命周期；`playback-gap-control`共用节奏预设、加减、数值/滑杆和等待预览，分别用于学生卡片与家长默认设置。外观集中于`styles/playback-settings.css`，仅在天天练内调整共享语音开关的外观，不改变播放或持久化适配器。
+
 设备元数据按[ADR-0022](adr/0022-device-connection-metadata.md)保存在SQLite迁移7的devices列：型号只用于显示，已用配对码不作为后续身份，last_connected_at由有效家庭认证请求用服务器时钟更新。访客临时计算不写这些记录。
 
 家长管理按[ADR-0023](adr/0023-loopback-parent-management.md)限定为服务器127.0.0.1入口：来源与Host共同检查，启动时禁用代理头。旧远程家长Cookie保留学习访问，不能调用管理API；家庭与访客界面按服务端入口能力显示家长按钮。
