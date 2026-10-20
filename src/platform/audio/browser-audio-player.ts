@@ -1,11 +1,13 @@
 import type { AudioPlayer } from '../../domain/contracts';
 import { learningAssetUrl } from '../guest';
 import { ReadingAudioPool } from './reading-audio-pool';
+import { combineReadingAudio, readingSegmentAt, type ReadingSegment } from './reading-word-audio';
 
 type ActivePlayback = { stop: () => void };
 export type PlaybackObserver = {
   onStart?: () => void;
   onTime?: (seconds: number) => void;
+  onSegment?: (index: number) => void;
   onState?: (state: 'loading' | 'playing') => void;
 };
 
@@ -40,6 +42,24 @@ export class BrowserAudioPlayer implements AudioPlayer {
 
   playDaily(audioId: string, signal?: AbortSignal, observer?: PlaybackObserver): Promise<void> {
     return this.playFrom('daily-audio', audioId, signal, observer);
+  }
+
+  /** One media load for a whole word/standard sentence, with actual-position syllable updates. */
+  playDailySequence(
+    audioIds: string[],
+    signal?: AbortSignal,
+    observer?: PlaybackObserver,
+  ): Promise<void> {
+    this.stop();
+    if (typeof document !== 'undefined' && document.hidden) return Promise.reject(aborted());
+    if (!audioIds.length || audioIds.some((id) => !id.trim()))
+      return Promise.reject(new Error('AUDIO_ID_INVALID'));
+    if (signal?.aborted) return Promise.reject(aborted());
+    return this.playBufferedReading(
+      audioIds.map((id) => learningAssetUrl('daily-audio', id)),
+      signal,
+      observer,
+    );
   }
 
   /** Private narration and family course recordings share the same playback lifetime. */
@@ -86,7 +106,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
 
     const source = learningAssetUrl(kind, audioId);
     if (kind === 'daily-audio' || (kind === 'voice' && audioId.startsWith('daily-')))
-      return this.playBufferedReading(source, signal, observer);
+      return this.playBufferedReading([source], signal, observer);
     // Reuse the narration element after the child's first tap so iOS can keep its
     // media activation when a subsequent question starts after an API response.
     const audio = kind === 'voice' ? (this.privateMedia ??= new Audio(source)) : new Audio(source);
@@ -156,7 +176,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
   }
 
   private playBufferedReading(
-    source: string,
+    sources: string[],
     signal?: AbortSignal,
     observer?: PlaybackObserver,
   ): Promise<void> {
@@ -168,6 +188,8 @@ export class BrowserAudioPlayer implements AudioPlayer {
       let primeUrl: string | null = null;
       let frame: number | undefined;
       let watchdog: ReturnType<typeof setTimeout> | undefined;
+      let segments: ReadingSegment[] = [];
+      let segment = -1;
       const controller = new AbortController();
       const finish = (error?: Error) => {
         if (settled) return;
@@ -187,6 +209,8 @@ export class BrowserAudioPlayer implements AudioPlayer {
         audio.removeAttribute('src');
         audio.load();
         audio.removeAttribute('data-learning-source');
+        audio.removeAttribute('data-learning-sources');
+        if (observer?.onSegment && segment !== -1) observer.onSegment(-1);
         if (url) URL.revokeObjectURL(url);
         if (primeUrl) URL.revokeObjectURL(primeUrl);
         if (error) reject(error);
@@ -199,13 +223,18 @@ export class BrowserAudioPlayer implements AudioPlayer {
       const notifyTime = () => {
         if (settled) return;
         observer?.onTime?.(audio.currentTime);
+        const current = readingSegmentAt(segments, audio.currentTime);
+        if (observer?.onSegment && current !== segment) {
+          segment = current;
+          observer.onSegment(current);
+        }
         frame = requestAnimationFrame(notifyTime);
       };
       const onPlaying = () => {
         observer?.onState?.('playing');
         observer?.onStart?.();
         armWatchdog();
-        if (observer?.onTime && frame === undefined) notifyTime();
+        if ((observer?.onTime || observer?.onSegment) && frame === undefined) notifyTime();
       };
       const onProgress = () => armWatchdog();
       const onWaiting = () => {
@@ -249,15 +278,24 @@ export class BrowserAudioPlayer implements AudioPlayer {
           activation = Promise.reject(error);
         }
       }
-      void Promise.all([activation, this.readingPool.get(source, true, controller.signal)])
-        .then(([, blob]) => {
+      const prepare = async () => {
+        const blobs = await Promise.all(
+          sources.map((source) => this.readingPool.get(source, true, controller.signal)),
+        );
+        if (sources.length === 1) return { blob: blobs[0]!, segments: [] };
+        return combineReadingAudio(blobs, controller.signal);
+      };
+      void Promise.all([activation, prepare()])
+        .then(([, prepared]) => {
           if (settled) return;
           if (document.hidden || signal?.aborted) {
             finish(aborted());
             return;
           }
-          url = URL.createObjectURL(blob);
-          audio.setAttribute('data-learning-source', source);
+          segments = prepared.segments;
+          url = URL.createObjectURL(prepared.blob);
+          audio.setAttribute('data-learning-source', sources[0]!);
+          audio.setAttribute('data-learning-sources', JSON.stringify(sources));
           audio.src = url;
           audio.addEventListener('playing', onPlaying);
           audio.addEventListener('timeupdate', onProgress);

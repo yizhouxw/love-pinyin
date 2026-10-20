@@ -1,3 +1,5 @@
+import playback from '../../content/playback.json';
+
 export type DailyItem = {
   id: string;
   display: string;
@@ -45,6 +47,12 @@ export function sectionSummary(section: DailySection, marks: Record<string, Read
 }
 
 export type AudioTiming = { start: number; end: number };
+
+/** Leave time to repeat the item just heard, independent of its audio source. */
+export function readingGapSeconds(item: Pick<DailyItem, 'syllables'>, baseSeconds: number): number {
+  const extra = Math.max(0, item.syllables.length - 1) * playback.reading.extraSecondsPerSyllable;
+  return Math.round((baseSeconds + extra) * 10) / 10;
+}
 
 /** Silence between spoken units clears the highlight; never estimates equal durations. */
 export function highlightedSyllable(timings: AudioTiming[], seconds: number): number {

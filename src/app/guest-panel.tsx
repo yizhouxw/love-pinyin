@@ -60,6 +60,7 @@ export function GuestPanel({
         应用到访客练习
       </button>
       <PlaybackGapControl
+        guest
         key={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
         seconds={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
         disabled={busy}

@@ -25,6 +25,7 @@ export function startGuest() {
 
 export function leaveGuest() {
   sessionStorage.removeItem(CACHE_KEY);
+  sessionStorage.removeItem('lp.guest.playback-gap');
   leaving = true;
   for (const key of Object.keys(sessionStorage)) {
     if (key.startsWith('lp.guest.pending-answer.')) sessionStorage.removeItem(key);

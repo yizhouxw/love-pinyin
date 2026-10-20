@@ -18,6 +18,11 @@ import {
 } from '../platform/guidance-preference';
 import { api } from '../platform/api-client';
 import {
+  readPlaybackPreference,
+  resolvePlaybackGap,
+  savePlaybackPreference,
+} from '../platform/playback-preference';
+import {
   clearPendingAnswer,
   idempotencyKey,
   readPendingAnswer,
@@ -76,6 +81,16 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const [curriculum, setCurriculum] = useState<Curriculum | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [guidancePreference, setGuidancePreference] = useState(readGuidancePreference);
+  const [playbackPreference, setPlaybackPreference] = useState(() =>
+    readPlaybackPreference(isGuest()),
+  );
+  const familyGap = progress?.settings.playbackGapSeconds ?? playback.gap.defaultSeconds;
+  const gapSeconds = resolvePlaybackGap(familyGap, playbackPreference);
+  function changePlaybackGap(seconds: number) {
+    const preference = { seconds, familyDefault: familyGap };
+    setPlaybackPreference(preference);
+    savePlaybackPreference(preference, isGuest());
+  }
   const familyGuidance = progress?.settings.soundEnabled !== false;
   const guidanceEnabled = resolveGuidance(familyGuidance, guidancePreference);
   function changeGuidance(enabled: boolean) {
@@ -757,7 +772,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     return (
       <main className="home-page">
         <DailyReadingPage
-          gapSeconds={progress?.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
+          gapSeconds={gapSeconds}
+          onGapChange={changePlaybackGap}
           guidanceEnabled={guidanceEnabled}
           onGuidanceChange={changeGuidance}
           onBack={() => {

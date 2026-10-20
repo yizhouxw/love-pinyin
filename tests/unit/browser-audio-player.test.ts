@@ -245,3 +245,121 @@ it('reports a daily media gesture rejection without pretending the demonstration
   expect(FakeAudio.instances[0]!.src).toBe('');
   player.releaseReading();
 });
+
+it('plays a multi-syllable item from one WAV and reports segments only from actual media time', async () => {
+  const attributes = new Map<string, string>();
+  class ReadingAudio extends FakeAudio {
+    currentTime = 0;
+    setAttribute(name: string, value: string) {
+      attributes.set(name, value);
+    }
+    override removeAttribute(name: string) {
+      attributes.delete(name);
+      super.removeAttribute(name);
+    }
+  }
+  vi.stubGlobal('Audio', ReadingAudio);
+  vi.stubGlobal('document', { hidden: false });
+  const sample = new Float32Array(1000);
+  sample.fill(0.25, 300, 700);
+  const decode = vi.fn().mockResolvedValue({
+    sampleRate: 1000,
+    length: sample.length,
+    numberOfChannels: 1,
+    getChannelData: () => sample,
+  });
+  vi.stubGlobal(
+    'OfflineAudioContext',
+    class {
+      decodeAudioData = decode;
+    },
+  );
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockImplementation(() => Promise.resolve(new Response('mp3'))),
+  );
+  let frame: FrameRequestCallback | undefined;
+  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+    frame = callback;
+    return 1;
+  });
+  vi.stubGlobal('cancelAnimationFrame', () => {
+    frame = undefined;
+  });
+  const player = new BrowserAudioPlayer();
+  const segment = vi.fn();
+  const playing = player.playDailySequence(['daily-da4', 'daily-di4'], undefined, {
+    onSegment: segment,
+  });
+  const media = FakeAudio.instances[0]! as ReadingAudio;
+  media.dispatchEvent(new Event('playing'));
+  media.dispatchEvent(new Event('ended'));
+  expect(segment).not.toHaveBeenCalled();
+  await vi.waitFor(() => expect(attributes.has('data-learning-sources')).toBe(true));
+  expect(JSON.parse(attributes.get('data-learning-sources')!)).toEqual([
+    '/api/v1/daily-audio/daily-da4',
+    '/api/v1/daily-audio/daily-di4',
+  ]);
+  expect(decode).toHaveBeenCalledTimes(2);
+  media.dispatchEvent(new Event('playing'));
+  expect(segment).toHaveBeenLastCalledWith(0);
+  media.currentTime = 0.49;
+  frame!(0);
+  expect(segment).toHaveBeenLastCalledWith(-1);
+  media.currentTime = 0.5;
+  frame!(0);
+  expect(segment).toHaveBeenLastCalledWith(1);
+  media.dispatchEvent(new Event('ended'));
+  await playing;
+  expect(segment).toHaveBeenLastCalledWith(-1);
+  expect(frame).toBeUndefined();
+  expect(FakeAudio.instances).toHaveLength(1);
+  expect(media.src).toBe('');
+  player.releaseReading();
+});
+
+it('does not attach or play an obsolete combined word after cancellation during decoding', async () => {
+  const attributes = new Map<string, string>();
+  class ReadingAudio extends FakeAudio {
+    setAttribute(name: string, value: string) {
+      attributes.set(name, value);
+    }
+    override removeAttribute(name: string) {
+      attributes.delete(name);
+      super.removeAttribute(name);
+    }
+  }
+  vi.stubGlobal('Audio', ReadingAudio);
+  vi.stubGlobal('document', { hidden: false });
+  let finishDecode!: (value: AudioBuffer) => void;
+  const decode = vi.fn(
+    () =>
+      new Promise<AudioBuffer>((resolve) => {
+        finishDecode = resolve;
+      }),
+  );
+  vi.stubGlobal(
+    'OfflineAudioContext',
+    class {
+      decodeAudioData = decode;
+    },
+  );
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockImplementation(() => Promise.resolve(new Response('mp3'))),
+  );
+  const player = new BrowserAudioPlayer();
+  const controller = new AbortController();
+  const playing = player.playDailySequence(['daily-da4', 'daily-di4'], controller.signal);
+  const rejected = expect(playing).rejects.toMatchObject({ name: 'AbortError' });
+  await vi.waitFor(() => expect(decode).toHaveBeenCalledOnce());
+  controller.abort();
+  await rejected;
+  finishDecode({} as AudioBuffer);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  expect(decode).toHaveBeenCalledOnce();
+  expect(attributes.has('data-learning-source')).toBe(false);
+  expect(FakeAudio.instances[0]!.src).toBe('');
+  expect(FakeAudio.instances[0]!.paused).toBe(true);
+  player.releaseReading();
+});

@@ -5,10 +5,14 @@ export function PlaybackGapControl({
   seconds,
   disabled,
   onSave,
+  deviceOnly = false,
+  guest = false,
 }: {
   seconds: number;
   disabled: boolean;
   onSave: (seconds: number) => void;
+  deviceOnly?: boolean;
+  guest?: boolean;
 }) {
   const [draft, setDraft] = useState(String(seconds));
   const value = Number(draft);
@@ -21,9 +25,21 @@ export function PlaybackGapControl({
   return (
     <div className="parent-setting">
       <div>
-        <strong>连播间隔</strong>
+        <strong>{deviceOnly ? '本设备的基础间隔' : '连播基础间隔'}</strong>
         <p>
-          连播不同词语或条目之间的等待时间，同一条内部音节接续播放。默认1秒，可设置0.1～5秒，每次调节0.1秒。
+          词句之间按长度等待：基础间隔加上每多一个音节
+          {playback.reading.extraSecondsPerSyllable}秒。词内紧凑接续，不使用此间隔。默认
+          {playback.gap.defaultSeconds}秒，可设置{playback.gap.minSeconds}～
+          {playback.gap.maxSeconds}秒。
+        </p>
+        <p>
+          {deviceOnly
+            ? guest
+              ? '只在当前访客标签页记住，退出访客后清除。保存会停止当前示范，再点连播即可使用新间隔。'
+              : '只在本浏览器记住；家长更改默认间隔后采用新的默认值。保存会停止当前示范，再点连播即可使用新间隔。'
+            : guest
+              ? '作为当前访客练习的默认值，退出访客后清除。练习页也可快捷调整。'
+              : '作为学习设备的默认值，学生练习页也可单独调整本设备的间隔。'}
         </p>
       </div>
       <div className="playback-gap-control">
@@ -41,6 +57,7 @@ export function PlaybackGapControl({
         </label>
         <button
           className="quiet"
+          tabIndex={0}
           disabled={disabled || !valid || value === seconds}
           onClick={() => onSave(value)}
         >

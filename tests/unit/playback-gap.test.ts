@@ -1,7 +1,26 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import { waitForPlaybackGap } from '../../src/platform/audio/playback-gap';
-import { highlightedSyllable } from '../../src/domain/daily-reading';
+import { highlightedSyllable, readingGapSeconds } from '../../src/domain/daily-reading';
+import reading from '../../content/daily-reading.json';
 afterEach(() => vi.useRealTimers());
+it('leaves progressively more follow-along time for the item just heard', () => {
+  const item = (length: number) => ({ syllables: Array<string>(length).fill('ā') });
+  expect(readingGapSeconds(item(1), 1)).toBe(1);
+  expect(readingGapSeconds(item(2), 1)).toBe(1.5);
+  expect(readingGapSeconds(item(4), 1)).toBe(2.5);
+  expect(readingGapSeconds(item(8), 1)).toBe(4.5);
+  expect(readingGapSeconds(item(4), 0.1)).toBe(1.6);
+  expect(readingGapSeconds(item(8), 5)).toBe(8.5);
+  expect(readingGapSeconds(item(0), 0.1)).toBe(0.1);
+  for (const day of reading.days)
+    for (const section of day.sections)
+      for (const source of section.items) {
+        const gap = readingGapSeconds(source, 0.1);
+        expect(gap).toBeGreaterThanOrEqual(0.1);
+        expect(gap * 10).toBeCloseTo(Math.round(gap * 10));
+        expect(readingGapSeconds(source, 5) - gap).toBeCloseTo(4.9);
+      }
+});
 it('waits the selected interval and cancels a pending next sound immediately', async () => {
   vi.useFakeTimers();
   const controller = new AbortController();

@@ -34,6 +34,33 @@
 .playback-gap-control small {
   flex-basis: 100%;
 }
+.daily-quick-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  margin-block: 16px;
+}
+.daily-gap-settings {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 12px 16px;
+  border: 1px solid #c5dfce;
+  border-radius: 14px;
+  background: #f3faf4;
+}
+.daily-gap-settings summary {
+  min-height: 28px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.daily-gap-settings .parent-setting {
+  display: block;
+  padding-block: 12px;
+}
+.daily-gap-settings .playback-gap-control label {
+  flex-wrap: wrap;
+}
 .daily-word-examples {
   margin-block: 20px;
   padding: 16px;

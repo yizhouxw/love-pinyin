@@ -79,7 +79,7 @@
 
 GET /api/v1/daily-reading（配对）及/api/v1/guest/daily-reading（访客）返回14份days、sections、items、源页码、逐条available和assessment返回本地识别可用性、mode=asr-syllable-match和toneAssessed=false。item.audioIds对应GET /daily-audio/{asset_id}，支持Range并校验固定归档摘要；未登记/缺失/停用/损坏返回404。item.narrationId通过既有voice端点读取本机中文词句朗读。不接收文件路径、拼音文本或录音。没有专业评分端点；SPEC-009新增POST /daily-reading/{item_id}/recognize及guest对应路径，仅接16kHz单声道PCM16 WAV（最多30秒/960044字节），在Mac内存识别后返回matched/different/uncertain/unavailable、原转写与其拼音。不落盘，配对端点要求CSRF；访客同源检查。
 
-SPEC-012新增`settings.playbackGapSeconds`：数字0.1～5、步长0.1秒，默认1。PUT `/household/settings`可选传入，省略时保留。SQLite迁移6使用整十分之一秒存储；v5备份可选携带此字段，旧备份缺字段恢复为1秒。访客临时备份同样支持。daily-reading的组词条目附`wordExample`（id、examples含text/pinyin、spokenText）；有完整中文音频的条目附`timings`（逐音节start/end秒），仅当音频及中文脚本摘要一致时提供，非儿童读音分析。
+SPEC-012新增`settings.playbackGapSeconds`：基础间隔数字0.1～5、步长0.1秒，默认1。PUT `/household/settings`可选传入，省略时保留。SQLite迁移6使用整十分之一秒存储；v5备份可选携带此字段，旧备份缺字段恢复为1秒。访客临时备份同样支持。READ-05在基础间隔上按刚播放条目每多一个音节增加0.5秒跟读等待，末条不等待；READ-06学生快捷设置仅保存在当前浏览器，不调用家庭设置接口，不改变备份中的家庭默认值。daily-reading的组词条目附`wordExample`（id、examples含text/pinyin、spokenText）；有完整中文音频的条目附`timings`（逐音节start/end秒），仅当音频及中文脚本摘要一致时提供，非儿童读音分析。
 
 DEVICE-01：POST `/pair`可带可选`model`（最多80字符）；GET `/devices`返回`model`、`pairingCode`、`lastConnectedAt`，缺失历史数据为null。已用配对码不是可重用邀请，不返回会话令牌。认证请求可附`X-LP-Device-Model`用于旧设备首次补全类型提示，不覆盖已有型号；连接时间只使用服务端时钟。
 

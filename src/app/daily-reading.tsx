@@ -6,7 +6,7 @@ import type {
   DailySection,
   ReadingMark,
 } from '../domain/daily-reading';
-import { highlightedSyllable, sectionSummary } from '../domain/daily-reading';
+import { highlightedSyllable, readingGapSeconds, sectionSummary } from '../domain/daily-reading';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { BrowserReadingRecorder } from '../platform/audio/browser-reading-recorder';
 import { isGuest } from '../platform/guest';
@@ -14,6 +14,7 @@ import { recognizeReading, type RecognitionResult } from '../platform/audio/read
 import { waitForPlaybackGap } from '../platform/audio/playback-gap';
 import { dayResources, itemResources } from '../platform/audio/reading-resources';
 import { GuidanceSwitch } from './guidance-switch';
+import { PlaybackGapControl } from './playback-gap-control';
 import recognitionContent from '../../content/reading-recognition.json';
 import navigationContent from '../../content/daily-reading-navigation.json';
 
@@ -28,11 +29,13 @@ export function DailyReadingPage({
   guidanceEnabled,
   gapSeconds,
   onGuidanceChange,
+  onGapChange,
 }: {
   onBack: () => void;
   guidanceEnabled: boolean;
   gapSeconds: number;
   onGuidanceChange: (enabled: boolean) => void;
+  onGapChange: (seconds: number) => void;
 }) {
   const preparation = useSyncExternalStore(
     audioPlayer.readingPool.subscribe,
@@ -94,7 +97,12 @@ export function DailyReadingPage({
           ā
         </span>
       </div>
-      {!section && <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />}
+      {!section && (
+        <div className="daily-quick-settings">
+          <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+          <QuickGapSettings seconds={gapSeconds} onSave={onGapChange} />
+        </div>
+      )}
       <p className="daily-privacy">
         停止录音后，电脑自动识别并匹配音节。录音只发送家庭
         Mac，在内存中处理，不保存。识别匹配不判四声准确度。本次练习标记退出后清除。
@@ -179,6 +187,7 @@ export function DailyReadingPage({
               gapSeconds={gapSeconds}
               guidanceEnabled={guidanceEnabled}
               onGuidanceChange={onGuidanceChange}
+              onGapChange={onGapChange}
               section={section}
               marks={marks}
               onMark={(id, mark) => setMarks((previous) => ({ ...previous, [id]: mark }))}
@@ -202,6 +211,7 @@ function ReadingSession({
   guidanceEnabled,
   gapSeconds,
   onGuidanceChange,
+  onGapChange,
   section,
   marks,
   onMark,
@@ -210,6 +220,7 @@ function ReadingSession({
   guidanceEnabled: boolean;
   gapSeconds: number;
   onGuidanceChange: (enabled: boolean) => void;
+  onGapChange: (seconds: number) => void;
   section: DailySection;
   marks: Record<string, ReadingMark>;
   onMark: (id: string, mark: ReadingMark) => void;
@@ -324,6 +335,11 @@ function ReadingSession({
         onState: setAudioStage,
         onTime: (seconds) => setHighlight(highlightedSyllable(target.timings ?? [], seconds)),
       });
+    } else if (target.audioIds.length > 1) {
+      await audioPlayer.playDailySequence(target.audioIds, signal, {
+        onSegment: setHighlight,
+        onState: setAudioStage,
+      });
     } else {
       for (const [position, id] of target.audioIds.entries()) {
         await audioPlayer.playDaily(id, signal, {
@@ -352,7 +368,7 @@ function ReadingSession({
           setIndex(cursor);
           await demo(target, active.signal);
           if (cursor < section.items.length - 1)
-            await waitForPlaybackGap(gapSeconds, active.signal);
+            await waitForPlaybackGap(readingGapSeconds(target, gapSeconds), active.signal);
         }
         setPhase('finished');
         if (guidance.current) await playPrivate('daily-ui-done', active.signal);
@@ -489,7 +505,18 @@ function ReadingSession({
             第 {index + 1} / {section.items.length} 条
           </strong>
         </div>
-        <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+        <div className="daily-quick-settings">
+          <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+          <QuickGapSettings
+            seconds={gapSeconds}
+            item={item}
+            disabled={recording !== 'idle' || recognizing}
+            onSave={(seconds) => {
+              stop();
+              onGapChange(seconds);
+            }}
+          />
+        </div>
         <p>{section.instruction}</p>
         <button
           className="quiet daily-target"
@@ -736,6 +763,39 @@ function ReadingSession({
         ))}
       </aside>
     </div>
+  );
+}
+
+function QuickGapSettings({
+  seconds,
+  item,
+  onSave,
+  disabled = false,
+}: {
+  seconds: number;
+  item?: DailyItem;
+  onSave: (seconds: number) => void;
+  disabled?: boolean;
+}) {
+  return (
+    <details className="daily-gap-settings">
+      <summary tabIndex={0}>间隔设置 · {seconds.toFixed(1)}秒起</summary>
+      <PlaybackGapControl
+        key={seconds}
+        seconds={seconds}
+        disabled={disabled}
+        onSave={onSave}
+        deviceOnly
+        guest={isGuest()}
+      />
+      {disabled && <p>录音或识别结束后可以调整间隔。</p>}
+      {item && (
+        <p>
+          当前条{item.syllables.length}个音节，连播后等待
+          {readingGapSeconds(item, seconds).toFixed(1)}秒。
+        </p>
+      )}
+    </details>
   );
 }
 
