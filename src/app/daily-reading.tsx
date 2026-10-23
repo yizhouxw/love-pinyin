@@ -6,7 +6,13 @@ import type {
   DailySection,
   ReadingMark,
 } from '../domain/daily-reading';
-import { highlightedSyllable, readingGapSeconds, sectionSummary } from '../domain/daily-reading';
+import {
+  highlightedSyllable,
+  readingGapSeconds,
+  readingCharacters,
+  readingHanzi,
+  sectionSummary,
+} from '../domain/daily-reading';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { BrowserReadingRecorder } from '../platform/audio/browser-reading-recorder';
 import { isGuest } from '../platform/guest';
@@ -519,19 +525,23 @@ function ReadingSession({
         </div>
         <p>{section.instruction}</p>
         <button
-          className="quiet daily-target"
+          className={`quiet daily-target${item.syllables.length > 6 ? ' daily-target-sentence' : ''}`}
           aria-label={item.display}
           disabled={recording !== 'idle'}
           onClick={() => void play()}
         >
           {item.syllables.map((syllable, position) => (
-            <span
-              key={position}
-              className={highlight === position ? 'daily-highlight' : ''}
-              aria-current={highlight === position ? 'true' : undefined}
-            >
-              {syllable}
-            </span>
+            <ruby key={position}>
+              <span
+                className={highlight === position ? 'daily-highlight' : ''}
+                aria-current={highlight === position ? 'true' : undefined}
+              >
+                {syllable}
+              </span>
+              {readingCharacters(item.id)[position] && (
+                <rt>{readingCharacters(item.id)[position]}</rt>
+              )}
+            </ruby>
           ))}
         </button>
         {item.original !== item.display && <p className="daily-original">原稿：{item.original}</p>}
@@ -743,7 +753,12 @@ function ReadingSession({
                     }}
                   >
                     <span>{position + 1}</span>
-                    <strong>{value.display}</strong>
+                    <strong>
+                      {value.display}
+                      {readingHanzi(value.id) && (
+                        <small className="daily-nav-hanzi">{readingHanzi(value.id)}</small>
+                      )}
+                    </strong>
                     <small>
                       {marks[value.id] === 'fluent'
                         ? '家长：熟练'

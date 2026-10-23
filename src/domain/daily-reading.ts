@@ -1,3 +1,4 @@
+import hanziContent from '../../content/daily-reading-hanzi.json';
 import playback from '../../content/playback.json';
 
 export type DailyItem = {
@@ -57,4 +58,14 @@ export function readingGapSeconds(item: Pick<DailyItem, 'syllables'>, baseSecond
 /** Silence between spoken units clears the highlight; never estimates equal durations. */
 export function highlightedSyllable(timings: AudioTiming[], seconds: number): number {
   return timings.findIndex((timing) => seconds >= timing.start && seconds < timing.end);
+}
+
+/** Each character travels with its syllable when a long sentence wraps. */
+export function readingCharacters(id: string): string[] {
+  const text = (hanziContent as Record<string, string>)[id];
+  return text?.match(/\p{Script=Han}[^\p{Script=Han}]*/gu) ?? [];
+}
+
+export function readingHanzi(id: string): string | undefined {
+  return (hanziContent as Record<string, string>)[id];
 }

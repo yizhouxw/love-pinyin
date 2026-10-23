@@ -262,3 +262,38 @@
   font-family: var(--pinyin-font);
   font-size: 1.2rem;
 }
+
+.daily-target ruby {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  break-inside: avoid;
+  line-height: 1.5;
+  padding-block: 0.1em;
+}
+.daily-target rt {
+  display: block;
+  font-family: system-ui, sans-serif;
+  font-size: 0.36em;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #627469;
+}
+.daily-list .daily-nav-hanzi {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #627469;
+}
+.daily-target-sentence {
+  font-size: clamp(1.65rem, 3.5vw, 2.7rem);
+  column-gap: 0.25em;
+  row-gap: 0.45em;
+  padding: 1.1rem 0.4rem;
+}
+.daily-target-sentence rt {
+  font-size: 0.42em;
+}
