@@ -59,6 +59,7 @@ export function DailyReadingPage({
   }, [sectionId, stopHelpVoice]);
   const [marks, setMarks] = useState<Record<string, ReadingMark>>({});
   const materialChoices = useRef<HTMLElement | null>(null);
+  const sectionTabs = useRef<HTMLDivElement | null>(null);
   const load = useCallback(() => {
     setError(false);
     void readDaily()
@@ -81,8 +82,35 @@ export function DailyReadingPage({
   }, []);
   const day = data?.days.find((value) => value.id === dayId);
   const section = day?.sections.find((value) => value.id === sectionId);
+  const sectionIndex = day?.sections.findIndex((value) => value.id === sectionId) ?? -1;
+  function chooseSection(id: string) {
+    if (id === sectionId) return;
+    audioPlayer.stop();
+    setSectionId(id);
+  }
+  function chooseMaterials() {
+    audioPlayer.stop();
+    setSectionId(null);
+    requestAnimationFrame(() =>
+      materialChoices.current?.querySelector<HTMLButtonElement>('[aria-pressed="true"]')?.focus(),
+    );
+  }
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
+    const tabs = sectionTabs.current;
+    const current = tabs?.querySelector<HTMLButtonElement>('[aria-current="step"]');
+    if (!tabs || !current) return;
+    const keepVisible = () => {
+      const bounds = tabs.getBoundingClientRect();
+      const target = current.getBoundingClientRect();
+      if (target.left < bounds.left + 4) tabs.scrollLeft += target.left - bounds.left - 4;
+      else if (target.right > bounds.right - 4) tabs.scrollLeft += target.right - bounds.right + 4;
+    };
+    keepVisible();
+    current.focus({ preventScroll: true });
+    const resize = new ResizeObserver(keepVisible);
+    resize.observe(tabs);
+    return () => resize.disconnect();
   }, [sectionId]);
   useEffect(() => {
     if (!day || !data) return;
@@ -189,10 +217,7 @@ export function DailyReadingPage({
                       key={value.id}
                       className="quiet"
                       aria-pressed={sectionId === value.id}
-                      onClick={() => {
-                        audioPlayer.stop();
-                        setSectionId(value.id);
-                      }}
+                      onClick={() => chooseSection(value.id)}
                     >
                       <strong>{value.title}</strong>
                       <small>
@@ -205,25 +230,57 @@ export function DailyReadingPage({
             </>
           )}
           {section && (
-            <div className="daily-session-heading">
-              <span>
-                第 {day.number} 份 · {section.title}
-              </span>
-              <button
-                className="quiet"
-                onClick={() => {
-                  audioPlayer.stop();
-                  setSectionId(null);
-                  requestAnimationFrame(() =>
-                    materialChoices.current
-                      ?.querySelector<HTMLButtonElement>('[aria-pressed="true"]')
-                      ?.focus(),
-                  );
-                }}
-              >
-                换练习
-              </button>
-            </div>
+            <>
+              <div className="daily-session-heading">
+                <span>
+                  第 {day.number} 份 · 本份小节 {sectionIndex + 1} / {day.sections.length}
+                </span>
+                <button className="quiet" onClick={chooseMaterials}>
+                  换练习
+                </button>
+              </div>
+              <nav className="daily-section-navigation" aria-label="本份小节">
+                <button
+                  className="quiet daily-section-arrow"
+                  disabled={sectionIndex === 0}
+                  onClick={() => chooseSection(day.sections[sectionIndex - 1]!.id)}
+                  aria-label="上一节"
+                >
+                  <span aria-hidden="true">←</span>
+                  <span>上一节</span>
+                </button>
+                <div className="daily-section-tabs" ref={sectionTabs}>
+                  {day.sections.map((value, position) => {
+                    const summary = sectionSummary(value, marks);
+                    return (
+                      <button
+                        key={value.id}
+                        className="quiet"
+                        aria-current={section.id === value.id ? 'step' : undefined}
+                        aria-label={`第 ${position + 1} 节：${value.title}，练过 ${summary.practiced} / ${summary.total} 条`}
+                        onClick={() => chooseSection(value.id)}
+                      >
+                        <span>
+                          {position + 1}. {value.title}
+                        </span>
+                        <small>
+                          练过 {summary.practiced} / {summary.total} 条
+                        </small>
+                      </button>
+                    );
+                  })}
+                </div>
+                <button
+                  className="quiet daily-section-arrow"
+                  disabled={sectionIndex === day.sections.length - 1}
+                  onClick={() => chooseSection(day.sections[sectionIndex + 1]!.id)}
+                  aria-label="下一节"
+                >
+                  <span aria-hidden="true">→</span>
+                  <span>下一节</span>
+                </button>
+              </nav>
+            </>
           )}
           {section ? (
             <ReadingSession
@@ -234,6 +291,12 @@ export function DailyReadingPage({
               onGuidanceChange={onGuidanceChange}
               onGapChange={onGapChange}
               section={section}
+              onNextSection={
+                sectionIndex < day.sections.length - 1
+                  ? () => chooseSection(day.sections[sectionIndex + 1]!.id)
+                  : undefined
+              }
+              onChooseMaterials={chooseMaterials}
               marks={marks}
               onMark={(id, mark) => setMarks((previous) => ({ ...previous, [id]: mark }))}
             />
@@ -300,6 +363,8 @@ function ReadingSession({
   onGuidanceChange,
   onGapChange,
   section,
+  onNextSection,
+  onChooseMaterials,
   marks,
   onMark,
 }: {
@@ -309,6 +374,8 @@ function ReadingSession({
   onGuidanceChange: (enabled: boolean) => void;
   onGapChange: (seconds: number) => void;
   section: DailySection;
+  onNextSection?: () => void;
+  onChooseMaterials: () => void;
   marks: Record<string, ReadingMark>;
   onMark: (id: string, mark: ReadingMark) => void;
 }) {
@@ -841,7 +908,14 @@ function ReadingSession({
               本次练过 {summary.practiced} / {summary.total} 条；家长标记熟练 {summary.parentFluent}{' '}
               条，再练 {summary.parentAgain} 条。只听示范不算跟读完成。
             </p>
-            <button onClick={() => select(0)}>再读一遍</button>
+            <div className="daily-actions">
+              <button onClick={onNextSection ?? onChooseMaterials}>
+                {onNextSection ? '进入下一节 →' : '返回本份目录'}
+              </button>
+              <button className="quiet" onClick={() => select(0)}>
+                再读一遍
+              </button>
+            </div>
           </div>
         )}
       </section>

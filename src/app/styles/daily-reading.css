@@ -346,6 +346,57 @@
   margin: 0.8rem 0;
   color: #52665d;
 }
+.daily-section-navigation {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+  margin-bottom: 12px;
+}
+.daily-section-tabs {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+  min-width: 0;
+  padding: 4px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+.daily-section-tabs button {
+  flex: 0 0 auto;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  max-width: 100%;
+  min-height: 56px;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.daily-section-tabs button[aria-current='step'] {
+  color: white;
+  background: #326c59;
+  border-color: #326c59;
+}
+.daily-section-tabs small {
+  font-size: 12px;
+  font-weight: normal;
+}
+.daily-section-navigation .daily-section-arrow {
+  flex: 0 0 56px;
+  display: grid;
+  place-content: center;
+  gap: 2px;
+  min-height: 56px;
+  padding: 4px;
+  font-size: 14px;
+}
+.daily-section-arrow > span:first-child {
+  font-size: 20px;
+  line-height: 1;
+}
 .daily-session-heading button,
 .daily-optional-recording summary,
 .daily-preparation-detail summary,
