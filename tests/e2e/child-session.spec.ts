@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { expect, test } from '@playwright/test';
 
 // These routed tests exercise UI logic and viewports, not real audio decoding.
@@ -55,6 +56,8 @@ test.beforeEach(async ({ page }) => {
 async function enterParentArea(page: import('@playwright/test').Page) {
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  for (const section of ['详细学习记录', '显示设置', '已连接设备', '备份与恢复', '删除与重置'])
+    await openSection(page, section);
 }
 
 test('配对后可选择合法拼读候选、跳过并查看练习小结', async ({ page, isMobile }) => {
@@ -480,6 +483,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
+  await openSection(page, '我的拼音花园 · 0 片叶子');
   await page.getByRole('img', { name: '拼音花园已长出 0 片叶子' }).evaluate((garden) => {
     const text = garden.parentElement?.querySelectorAll('h2, p, strong');
     text?.forEach((element) => {
@@ -491,6 +495,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
+  await openSection(page, '我的拼音花园 · 0 片叶子');
   await page.getByRole('img', { name: '拼音花园已长出 0 片叶子' }).evaluate((garden) => {
     garden.parentElement
       ?.querySelectorAll<HTMLElement>('[data-original-font-size]')
@@ -500,16 +505,21 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
       });
   });
   if (originalHomeViewport) await page.setViewportSize(originalHomeViewport);
+  await openSection(page, '查看全部课程');
   const currentLessonTile = page.locator('.lesson-tile').first();
   if (isMobile) await currentLessonTile.tap();
   else await currentLessonTile.press('Enter');
   await expect(page.getByText('第 1 课 · 课程知识卡')).toBeVisible();
+  await openSection(page, '知识与教学提示');
   await expect(page.getByRole('heading', { name: 'ü' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'ü 播放标准音' })).toHaveCount(0);
+  await page.getByRole('button', { name: '练一练', exact: true }).click();
   await expect(page.getByRole('button', { name: '开始本课练习' })).toBeEnabled();
   await page.getByRole('button', { name: '← 返回学习路线' }).click();
+  await openSection(page, '查看全部课程');
   await page.locator('.lesson-tile').nth(1).click();
   await expect(page.getByText('第 2 课 · 课程知识卡')).toBeVisible();
+  await openSection(page, '知识与教学提示');
   const playStandardAudio = page.getByRole('button', { name: 'zhi 播放标准音' });
   await expect(playStandardAudio).toBeEnabled();
   if (isMobile) await playStandardAudio.tap();
@@ -528,8 +538,9 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
     'aria-pressed',
     'false',
   );
+  await page.getByRole('button', { name: '练一练', exact: true }).click();
   await expect(page.getByRole('button', { name: '练习资料尚未准备好' })).toBeDisabled();
-  await expect(page.getByText(/请家长先把当前学习课调整到这里/)).toBeVisible();
+  await expect(page.getByText(/请家长把当前学习课调整到这里/)).toBeVisible();
   await page.getByRole('button', { name: '← 返回学习路线' }).click();
 
   const noOverflow = await page.evaluate(
@@ -609,8 +620,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   expect(answerRequests).toEqual([]);
   if (isMobile) await confirmBlend.tap();
   else await confirmBlend.press('Enter');
-  await expect(page.getByRole('alert')).toContainText('本次操作结果未确认');
-  await expect(page.getByRole('alert')).toContainText('会沿用原请求号，不会重复计分');
+  await expect(page.getByRole('alert')).toContainText('本次操作尚未确认');
+  await expect(page.getByRole('alert')).toContainText('重试不会重复计分');
   await expect(page.getByRole('alert')).toBeVisible();
   await page.getByRole('button', { name: '重新连接并恢复' }).click();
   await expect.poll(() => answerRequests.length).toBe(2);
@@ -624,9 +635,11 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByLabel('本次练习小结')).toContainText('独立答对：1 题');
   await expect(page.getByLabel('本次练习小结')).toContainText('跳过：1 题');
   await page.getByRole('button', { name: '回到小岛' }).click();
-  await expect(page.getByRole('heading', { name: '你好，小小拼音家' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '今天学拼音' })).toBeVisible();
+  await openSection(page, '我的拼音花园 · 1 片叶子');
   await expect(page.getByRole('img', { name: '拼音花园已长出 1 片叶子' })).toBeVisible();
-  await expect(page.getByText('1 片叶子')).toBeVisible();
+  await openSection(page, '查看全部课程');
+  await expect(page.getByRole('img', { name: '拼音花园已长出 1 片叶子' })).toBeVisible();
   await expect(page.locator('.lesson-tile').first()).toContainText('已掌握');
   await expect(page.getByText('到期复习 · 1 项')).toBeVisible();
   await page.getByRole('button', { name: '家长管理' }).click();
@@ -638,6 +651,8 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   const adultConfirm = page.getByRole('button', { name: '我是家长，继续' });
   if (isMobile) await adultConfirm.tap();
   else await adultConfirm.press('Enter');
+  for (const section of ['详细学习记录', '显示设置', '已连接设备', '备份与恢复'])
+    await openSection(page, section);
   await expect(page.getByRole('heading', { name: '按知识点查看进度' })).toBeVisible();
   await expect(page.getByText('录音与自动评分')).toHaveCount(0);
   await expect(page.getByText(/评分服务未通过儿童语音离线验证/)).toHaveCount(0);
@@ -665,7 +680,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   const futureLessonProgress = page.locator('.parent-lesson-progress').nth(1);
   await futureLessonProgress.locator(':scope > summary').click();
   await expect(futureLessonProgress).toContainText('暂无有效练习记录 · 需要练习：字形');
-  await expect(page.getByText('已连接设备')).toBeVisible();
+  await expect(page.locator('summary').filter({ hasText: /^已连接设备$/ })).toBeVisible();
   const reduceMotion = page.getByRole('checkbox', { name: '减少动态效果' });
   await reduceMotion.click();
   await expect(reduceMotion).toBeChecked();
@@ -706,6 +721,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByRole('button', { name: '结束今天的练习' })).toBeFocused();
   await page.getByRole('button', { name: '休息好了，继续学习' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
+  await openSection(page, '我的拼音花园 · 2 片叶子');
   await expect(page.getByRole('img', { name: '拼音花园已长出 2 片叶子' })).toBeVisible();
   await enterParentArea(page);
   const resetButton = page.getByRole('button', { name: '重置家庭档案' });
@@ -729,7 +745,7 @@ test('首次连接家庭 Mac 失败后可在加载页原地重试', async ({ pag
 
   await page.goto('/');
   await expect(page.getByRole('heading', { name: '暂时连不上家庭 Mac Studio' })).toBeVisible();
-  await expect(page.getByRole('alert')).toContainText('暂时无法连接家庭 Mac Studio');
+  await expect(page.getByRole('alert')).toContainText('暂时无法连接家庭 Mac');
   await page.getByRole('button', { name: '重新连接并恢复' }).click();
   await expect(page.getByText('在 Mac 上生成家长配对码')).toBeVisible();
   expect(bootstrapRequests).toBe(2);
@@ -744,7 +760,7 @@ test('已撤销或过期的会话回到配对页面', async ({ page }) => {
   });
   await page.goto('/');
   await expect(page.getByLabel('家长配对码')).toBeVisible();
-  await expect(page.getByRole('heading', { name: /拼音小岛/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '一起学拼音' })).toBeVisible();
 });
 
 test('旧课程版本的当前课提示家长重选并保留学习路线', async ({ page }) => {
@@ -983,7 +999,9 @@ test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) 
   });
 
   await page.goto('/');
+  await openSection(page, '查看全部课程');
   await page.locator('.lesson-tile').first().click();
+  await openSection(page, '知识与教学提示');
   await expect(page.getByRole('heading', { name: 'ā' })).toBeVisible();
   await page.getByRole('button', { name: '开始两题复习' }).click();
   await expect(page.getByText('拼音小岛 · 两题复习')).toBeVisible();
@@ -996,7 +1014,7 @@ test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) 
   await expect(page.getByRole('heading', { name: '今天的探索完成啦！' })).toBeVisible();
   await expect(page.getByLabel('本次练习小结')).toContainText('独立答对：2 题');
   await page.getByRole('button', { name: '回到小岛' }).click();
-  await expect(page.getByRole('heading', { name: '你好，小小拼音家' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '今天学拼音' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '今日推荐复习' })).toBeVisible();
   await page.getByRole('button', { name: '开始复习 →' }).click();
   await expect(page.getByText('拼音小岛 · 两题复习')).toBeVisible();

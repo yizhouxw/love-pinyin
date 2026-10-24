@@ -39,6 +39,7 @@ export function LessonNavigation({
           return (
             <button
               key={lesson.id}
+              data-lesson-id={lesson.id}
               className={`lesson-tile ${lesson.id === currentLesson?.id ? 'selected' : ''} ${future ? 'locked' : ''}`}
               onClick={() => onSelect(lesson.id)}
             >

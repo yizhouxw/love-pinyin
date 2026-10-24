@@ -30,24 +30,22 @@ export function useLearningVoice(scope: string | null) {
     setPlayingId(null);
     setFailureId(null);
   }, [release]);
-  const playAsset = useCallback(
-    (id: string, kind: 'private' | 'standard' | 'daily') => {
+  const playSequence = useCallback(
+    (assets: { id: string; kind: 'private' | 'standard' | 'daily'; optional?: boolean }[]) => {
       release();
       if (document.hidden) return;
       const controller = new AbortController();
       active.current = controller;
       setFailureId(null);
-      setPlayingId(id);
-      // Cancelling a replay does not undo a previously completed listen in this task.
-      const playback =
-        kind === 'standard'
-          ? audioPlayer.play(id, controller.signal)
-          : kind === 'daily'
-            ? audioPlayer.playDaily(id, controller.signal)
-            : audioPlayer.playPrivate(id, controller.signal);
-      void playback
-        .then(() => {
-          if (active.current === controller && !controller.signal.aborted) {
+      void (async () => {
+        for (const { id, kind, optional } of assets) {
+          if (controller.signal.aborted) break;
+          setPlayingId(id);
+          try {
+            if (kind === 'standard') await audioPlayer.play(id, controller.signal);
+            else if (kind === 'daily') await audioPlayer.playDaily(id, controller.signal);
+            else await audioPlayer.playPrivate(id, controller.signal);
+            if (active.current !== controller || controller.signal.aborted) break;
             setCompleted((previous) => ({
               scope,
               ids: new Set(previous.scope === scope ? previous.ids : []).add(id),
@@ -57,25 +55,31 @@ export function useLearningVoice(scope: string | null) {
               next.delete(id);
               return next;
             });
+          } catch (error) {
+            if (
+              active.current !== controller ||
+              controller.signal.aborted ||
+              (error instanceof Error && error.name === 'AbortError')
+            )
+              break;
+            failedKind.current = kind;
+            setFailureId(id);
+            setFailedIds((previous) => new Set(previous).add(id));
+            if (!optional) break;
           }
-        })
-        .catch((error: unknown) => {
-          if (active.current === controller && !controller.signal.aborted) {
-            if (!(error instanceof Error && error.name === 'AbortError')) {
-              failedKind.current = kind;
-              setFailureId(id);
-              setFailedIds((previous) => new Set(previous).add(id));
-            }
-          }
-        })
-        .finally(() => {
-          if (active.current === controller) {
-            active.current = null;
-            setPlayingId(null);
-          }
-        });
+        }
+      })().finally(() => {
+        if (active.current === controller) {
+          active.current = null;
+          setPlayingId(null);
+        }
+      });
     },
     [release, scope],
+  );
+  const playAsset = useCallback(
+    (id: string, kind: 'private' | 'standard' | 'daily') => playSequence([{ id, kind }]),
+    [playSequence],
   );
   const play = useCallback((id: string) => playAsset(id, 'private'), [playAsset]);
   const playDaily = useCallback((id: string) => playAsset(id, 'daily'), [playAsset]);
@@ -101,6 +105,7 @@ export function useLearningVoice(scope: string | null) {
     play,
     playStandard,
     playDaily,
+    playSequence,
     retry,
     stop,
   };

@@ -1,5 +1,6 @@
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
+import { openSection } from '../support/interaction';
 import { test } from '../support/real-server';
 import writing from '../../content/writing.json' with { type: 'json' };
 import type { WritingCatalog } from '../../src/domain/writing';
@@ -18,7 +19,7 @@ test('WRITE-01: actual handwriting voice, stroke controls, audio exclusivity and
   });
   await page.goto(appUrl);
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
-  await page.getByRole('button', { name: '听本课录音' }).click();
+  await page.getByRole('button', { name: '课堂学习' }).click();
   await page.getByRole('button', { name: '播放课程录音', exact: true }).click();
   await expect
     .poll(() => page.getByLabel('课程录音播放进度').evaluate((e: HTMLAudioElement) => e.paused))
@@ -26,11 +27,10 @@ test('WRITE-01: actual handwriting voice, stroke controls, audio exclusivity and
   const intro = page.waitForResponse(
     (r) => r.url().endsWith('/voice/writing-v1-a-stroke-1') && r.ok(),
   );
-  await page.getByRole('button', { name: '打开书写课堂' }).press('Enter');
+  await page.getByRole('button', { name: '写一写', exact: true }).press('Enter');
+  await page.getByRole('button', { name: '观察 a 的书写', exact: true }).click();
   await intro;
-  await expect
-    .poll(() => page.getByLabel('课程录音播放进度').evaluate((e: HTMLAudioElement) => e.paused))
-    .toBe(true);
+  await expect(page.getByLabel('课程录音播放进度')).toHaveCount(0);
   await page.getByRole('button', { name: '■ 停止演示' }).click();
   await page.getByText('逐笔观察', { exact: true }).click();
   await page.getByRole('button', { name: '看第一笔' }).press('Enter');
@@ -38,9 +38,7 @@ test('WRITE-01: actual handwriting voice, stroke controls, audio exclusivity and
   await expect(page.locator('.writing-stage .active')).toHaveCount(1);
   await expect(page.locator('.writing-stage .future')).toHaveCount(1);
   await expect(page.getByRole('button', { name: '看上一笔' })).toBeDisabled();
-  await expect(page.getByRole('button', { name: '听当前步骤', exact: true })).toBeVisible({
-    timeout: 20000,
-  });
+  await expect(page.getByRole('button', { name: '听当前步骤', exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: '看下一笔' }).press('Enter');
   await expect(page.locator('.writing-instruction')).toContainText('第 2 / 2 笔');
   await expect(page.getByRole('button', { name: '看下一笔' })).toBeDisabled();
@@ -52,13 +50,13 @@ test('WRITE-01: actual handwriting voice, stroke controls, audio exclusivity and
   await expect(page.getByRole('button', { name: '■ 停止演示' })).toBeVisible();
   await page.getByRole('button', { name: '看第一笔' }).click();
   await expect(page.locator('.writing-instruction')).toContainText('先向右写横');
-  await page.route('**/voice/writing-ui-paper', (r) => r.abort('failed'));
-  await page.getByRole('button', { name: '听纸笔练习', exact: true }).click();
-  await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
-  await page.unroute('**/voice/writing-ui-paper');
-  await page.getByRole('button', { name: '↻ 重试声音' }).click();
-  await expect(page.getByRole('button', { name: '停止听纸笔练习' })).toBeVisible();
-  await page.getByRole('button', { name: '停止听纸笔练习' }).click();
+  await page.route('**/voice/writing-v1-e-placement', (r) => r.abort('failed'));
+  await page.getByRole('button', { name: '观察 e 的书写', exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText('声音没有播放成功');
+  await page.unroute('**/voice/writing-v1-e-placement');
+  await page.getByRole('button', { name: '▶ 播放笔顺' }).click();
+  await expect(page.getByRole('button', { name: '■ 停止演示' })).toBeVisible();
+  await page.getByRole('button', { name: '■ 停止演示' }).click();
   // Actual files, not synthetic tones; every step and placement is decoded.
   const ids = ['writing-ui-intro', 'writing-ui-paper', 'writing-ui-full', 'writing-ui-choose'];
   for (const [id, g] of Object.entries(writing.glyphs)) {
@@ -179,8 +177,9 @@ test('WRITE-01: all authored course targets render in order, including single-st
   for (const [lessonId, targets] of Object.entries(writing.lessons)) {
     const plain = targets.filter((t) => !('tone' in t));
     const number = lessonId.split('-')[1];
+    await openSection(page, '查看全部课程');
     await page.getByRole('button', { name: new RegExp(`^${number} `) }).click();
-    await page.getByRole('button', { name: '打开书写课堂' }).click();
+    await page.getByRole('button', { name: '写一写', exact: true }).click();
     await page.getByText('逐笔观察', { exact: true }).click();
     await expect(page.getByRole('group', { name: '选择书写目标' }).getByRole('button')).toHaveCount(
       plain.length,
@@ -229,8 +228,9 @@ test('WRITE-02: all marked targets, real tone narration, dot rules and keyboard 
   const demonstrate = new Set(['ā', 'á', 'ǎ', 'à', 'ī', 'ǚ', 'duì', 'liú', 'xué', 'yún']);
   for (const [lessonId, allTargets] of Object.entries(catalog.lessons)) {
     const targets = allTargets.filter((t) => t.tone);
+    await openSection(page, '查看全部课程');
     await page.getByRole('button', { name: new RegExp(`^${lessonId.split('-')[1]} `) }).click();
-    await page.getByRole('button', { name: '打开书写课堂' }).press('Enter');
+    await page.getByRole('button', { name: '写一写', exact: true }).press('Enter');
     await page.getByText('逐笔观察', { exact: true }).click();
     await page.getByRole('button', { name: '带声调', exact: true }).press('Enter');
     await expect(page.getByRole('group', { name: '选择书写目标' }).getByRole('button')).toHaveCount(
@@ -271,10 +271,6 @@ test('WRITE-02: all marked targets, real tone narration, dot rules and keyboard 
         await expect(page.locator('.writing-instruction')).toContainText(
           catalog.marks[tone.markId]!.stroke.instruction,
         );
-        await expect(
-          page.getByRole('button', { name: '停止听当前步骤', exact: true }),
-        ).toBeVisible();
-        await page.getByRole('button', { name: '停止听当前步骤', exact: true }).click();
         await page
           .locator('.writing-workshop')
           .screenshot({ path: test.info().outputPath(`${target.id}.png`) });
@@ -301,19 +297,20 @@ test('WRITE-02: all marked targets, real tone narration, dot rules and keyboard 
       await ac.close();
     }
   }, ids);
+  await openSection(page, '查看全部课程');
   await page.getByRole('button', { name: /^02 / }).click();
-  await page.getByRole('button', { name: '打开书写课堂' }).click();
+  await page.getByRole('button', { name: '写一写', exact: true }).click();
   await page.getByRole('button', { name: '带声调', exact: true }).click();
   await page.getByRole('button', { name: '观察 ǚ 的书写', exact: true }).click();
   await page.getByText('逐笔观察', { exact: true }).click();
   await page.getByRole('button', { name: '看完整字形' }).click();
   await page.route('**/voice/writing-write-02-v-caron-tone', (r) => r.abort('failed'));
-  await page.getByRole('button', { name: '听标调方法', exact: true }).click();
-  await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
+  await page.getByRole('button', { name: '观察 ǚ 的书写', exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText('声音没有播放成功');
   await page.unroute('**/voice/writing-write-02-v-caron-tone');
-  await page.getByRole('button', { name: '↻ 重试声音' }).press('Enter');
-  await expect(page.getByRole('button', { name: '停止听标调方法', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: '停止听标调方法', exact: true }).click();
+  await page.getByRole('button', { name: '▶ 播放笔顺' }).press('Enter');
+  await expect(page.getByRole('button', { name: '■ 停止演示' })).toBeVisible();
+  await page.getByRole('button', { name: '■ 停止演示' }).click();
   await page.setViewportSize({ width: 320, height: 850 });
   await page.addStyleTag({ content: 'html {font-size:200% !important}' });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(

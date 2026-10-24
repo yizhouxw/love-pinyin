@@ -48,6 +48,8 @@ for (const guest of [false, true]) {
     await expect.poll(order).toEqual(first.exercise.options.map((o) => o.id));
     await page.reload();
     await expect.poll(order).toEqual(first.exercise.options.map((o) => o.id));
+    if (await page.getByText('听题目说明', { exact: true }).isVisible())
+      await page.getByText('听题目说明', { exact: true }).click();
     await page.getByRole('button', { name: '听题目', exact: true }).click();
     const authored = curriculum.exercises.find((q) => q.id === first.exercise.id)!;
     const wrong = authored.options.find((o) => o.id !== authored.answer.optionId)!;

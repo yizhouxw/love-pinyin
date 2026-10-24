@@ -4,6 +4,7 @@ import type { Lesson } from '../domain/learning-api';
 import { api } from '../platform/api-client';
 import { ReducedMotionControl } from './management-controls';
 import { PlaybackGapControl } from './playback-gap-control';
+import { ReleaseHistory } from './release-history';
 
 export function GuestPanel({
   curriculum,
@@ -59,41 +60,45 @@ export function GuestPanel({
       >
         应用到访客练习
       </button>
-      <PlaybackGapControl
-        guest
-        key={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
-        seconds={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
-        disabled={busy}
-        onSave={(playbackGapSeconds) =>
-          void act(async () => {
-            await api('/household/settings', {
-              method: 'PUT',
-              body: JSON.stringify({
-                soundEnabled: progress.settings.soundEnabled !== false,
-                playbackGapSeconds,
-              }),
-            });
-            await refresh();
-          })
-        }
-      />
-      <p>减少动态效果</p>
-      <ReducedMotionControl
-        checked={Boolean(progress.settings.reducedMotion)}
-        disabled={busy}
-        onChange={(next) =>
-          void act(async () => {
-            await api('/household/settings', {
-              method: 'PUT',
-              body: JSON.stringify({
-                soundEnabled: progress.settings.soundEnabled !== false,
-                reducedMotion: next,
-              }),
-            });
-            await refresh();
-          })
-        }
-      />
+      <details className="parent-section">
+        <summary>声音与显示设置</summary>
+        <PlaybackGapControl
+          guest
+          key={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
+          seconds={progress.settings.playbackGapSeconds ?? playback.gap.defaultSeconds}
+          disabled={busy}
+          onSave={(playbackGapSeconds) =>
+            void act(async () => {
+              await api('/household/settings', {
+                method: 'PUT',
+                body: JSON.stringify({
+                  soundEnabled: progress.settings.soundEnabled !== false,
+                  playbackGapSeconds,
+                }),
+              });
+              await refresh();
+            })
+          }
+        />
+        <p>减少动态效果</p>
+        <ReducedMotionControl
+          checked={Boolean(progress.settings.reducedMotion)}
+          disabled={busy}
+          onChange={(next) =>
+            void act(async () => {
+              await api('/household/settings', {
+                method: 'PUT',
+                body: JSON.stringify({
+                  soundEnabled: progress.settings.soundEnabled !== false,
+                  reducedMotion: next,
+                }),
+              });
+              await refresh();
+            })
+          }
+        />
+      </details>
+      <ReleaseHistory />
     </section>
   );
 }

@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import narration from '../../content/narration.json' with { type: 'json' };
@@ -68,15 +69,14 @@ test('BANK-06: whole syllables connect recorded tones to spelling across taught 
         }
         await expect(page.getByLabel('观察目标')).toHaveCount(0);
         await expect(page.locator('.game-option').first()).toBeDisabled();
+        const audio = page.waitForResponse(
+          (r) => r.url().endsWith(`/audio/${q.audioRef}`) && r.ok(),
+        );
+        await openSection(page, '听题目说明', true);
         await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
         await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
           timeout: 20000,
         });
-        await expect(page.locator('.game-option').first()).toBeDisabled();
-        const audio = page.waitForResponse(
-          (r) => r.url().endsWith(`/audio/${q.audioRef}`) && r.ok(),
-        );
-        await page.getByRole('button', { name: '听拼音', exact: true }).press('Enter');
         await audio;
         await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
         const choice = q.options.findIndex((o) => o.id === q.answer.optionId);
@@ -84,9 +84,12 @@ test('BANK-06: whole syllables connect recorded tones to spelling across taught 
         await expect(page.locator('.feedback')).toContainText('答对啦');
         const hint = narration.exercises[q.id as keyof typeof narration.exercises].hint;
         if (!playedHints.has(hint)) {
-          await page.getByRole('button', { name: '听讲解', exact: true }).click();
-          await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
-          await expect(page.getByRole('button', { name: '听讲解', exact: true })).toBeVisible({
+          await openSection(page, '听讲解');
+          await page.getByRole('button', { name: '重听讲解', exact: true }).click();
+          await expect(
+            page.getByRole('button', { name: '停止重听讲解', exact: true }),
+          ).toBeVisible();
+          await expect(page.getByRole('button', { name: '重听讲解', exact: true })).toBeVisible({
             timeout: 20000,
           });
           playedHints.add(hint);

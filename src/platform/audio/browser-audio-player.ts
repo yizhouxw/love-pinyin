@@ -107,9 +107,9 @@ export class BrowserAudioPlayer implements AudioPlayer {
     const source = learningAssetUrl(kind, audioId);
     if (kind === 'daily-audio' || (kind === 'voice' && audioId.startsWith('daily-')))
       return this.playBufferedReading([source], signal, observer);
-    // Reuse the narration element after the child's first tap so iOS can keep its
-    // media activation when a subsequent question starts after an API response.
-    const audio = kind === 'voice' ? (this.privateMedia ??= new Audio(source)) : new Audio(source);
+    // Narration and standard demonstrations share the activated learning element.
+    // A queued standard sample can follow its prompt after the original tap.
+    const audio = (this.privateMedia ??= new Audio(source));
     if (audio.getAttribute('src') !== source) audio.src = source;
     audio.preload = 'auto';
 

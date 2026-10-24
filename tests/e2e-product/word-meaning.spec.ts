@@ -1,4 +1,5 @@
 import { optionById } from '../support/options';
+import { openSection } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { clearReadingMedia, observeReadingMedia } from '../support/media-log';
@@ -22,9 +23,16 @@ test('WORD-01: all 84 real picture cards speak, decode and leave no practice eve
   // Inject before the first image load: WebKit may reuse its decoded image cache on later visits.
   await page.route('**/illustrations/v1-rice.svg*', (r) => r.abort('failed'));
   for (const [id, item] of Object.entries(illustrations.items)) {
+    await openSection(page, '查看全部课程');
     await page
       .getByRole('button', { name: new RegExp(`^${item.lessonId.split('-')[1]} `) })
       .click();
+    const position = Object.entries(illustrations.items)
+      .filter(([, card]) => card.lessonId === item.lessonId)
+      .findIndex(([key]) => key === id);
+    for (let n = 0; n < position; n++)
+      await page.getByRole('button', { name: '下一张 →', exact: true }).click();
+    await expect(page.locator('.word-card')).toHaveCount(1);
     if (id === 'v1-rice') {
       await expect(page.getByRole('button', { name: '↻ 重试图片' })).toBeVisible();
       await page.getByRole('button', { name: '听图片提示', exact: true }).click();
@@ -93,6 +101,7 @@ test('WORD-01: all 84 real picture cards speak, decode and leave no practice eve
     expect(item.duration).toBeGreaterThan(0.1);
     expect(item.audible).toBe(true);
   }
+  await openSection(page, '查看全部课程');
   await page.getByRole('button', { name: /^03 / }).click();
   await page.setViewportSize({ width: 320, height: 850 });
   await page.addStyleTag({ content: 'html {font-size:200% !important}' });
@@ -157,11 +166,6 @@ test('WORD-01: picture choices and contextual blending rotate, retry audio and p
           await page.getByRole('button', { name: '↷ 先跳过这题' }).click();
           continue;
         }
-        await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
-        await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
-          timeout: 20000,
-        });
-        await page.getByRole('button', { name: '听拼音', exact: true }).press('Enter');
         if (number === 3 && q.id.endsWith('150')) {
           await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible({
             timeout: 20000,

@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
@@ -60,23 +61,23 @@ test('BANK-04: real course rotation reaches b, q and sh syllable listening with 
         }
         await expect(page.getByLabel('观察目标')).toHaveCount(0);
         await expect(page.locator('.game-option').first()).toBeDisabled();
+        const audio = page.waitForResponse(
+          (r) => r.url().endsWith(`/audio/${q.audioRef}`) && r.ok(),
+        );
+        await openSection(page, '听题目说明', true);
         await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
         await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
           timeout: 20000,
         });
-        await expect(page.locator('.game-option').first()).toBeDisabled();
-        const audio = page.waitForResponse(
-          (r) => r.url().endsWith(`/audio/${q.audioRef}`) && r.ok(),
-        );
-        await page.getByRole('button', { name: '听拼音', exact: true }).press('Enter');
         await audio;
         await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
         const choice = q.options.findIndex((o) => o.id === q.answer.optionId);
         await optionById(page, q.options[choice]!.id).press('Enter');
         await expect(page.locator('.feedback')).toContainText('答对啦');
-        await page.getByRole('button', { name: '听讲解', exact: true }).click();
-        await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
-        await expect(page.getByRole('button', { name: '听讲解', exact: true })).toBeVisible({
+        await openSection(page, '听讲解');
+        await page.getByRole('button', { name: '重听讲解', exact: true }).click();
+        await expect(page.getByRole('button', { name: '停止重听讲解', exact: true })).toBeVisible();
+        await expect(page.getByRole('button', { name: '重听讲解', exact: true })).toBeVisible({
           timeout: 20000,
         });
         if (initial === 'sh' && q === wanted[1])

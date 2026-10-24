@@ -61,64 +61,67 @@ export function PlaybackGapControl({
             </button>
           ))}
         </div>
-        <div className="gap-stepper">
-          <button
-            className="gap-step-button"
-            type="button"
-            tabIndex={0}
-            aria-label="减少0.1秒"
-            disabled={disabled || preview <= playback.gap.minSeconds}
-            onClick={() => adjust(-1)}
-          >
-            <span aria-hidden="true">−</span>
-          </button>
-          <label className="gap-number">
-            <span>基础间隔</span>
-            <span className="gap-number-value">
-              <input
-                type="number"
-                aria-label="连播间隔（秒）"
-                aria-invalid={!valid}
-                aria-describedby={!valid ? errorId : undefined}
-                inputMode="decimal"
-                min={playback.gap.minSeconds}
-                max={playback.gap.maxSeconds}
-                step={playback.gap.stepSeconds}
-                value={draft}
-                disabled={disabled}
-                onChange={(event) => setDraft(event.target.value)}
-              />
-              <span>秒</span>
-            </span>
-          </label>
-          <button
-            className="gap-step-button"
-            type="button"
-            tabIndex={0}
-            aria-label="增加0.1秒"
-            disabled={disabled || preview >= playback.gap.maxSeconds}
-            onClick={() => adjust(1)}
-          >
-            <span aria-hidden="true">＋</span>
-          </button>
-        </div>
-        <input
-          className="gap-range"
-          type="range"
-          aria-label="调节基础间隔"
-          aria-valuetext={`${preview.toFixed(1)}秒`}
-          min={playback.gap.minSeconds}
-          max={playback.gap.maxSeconds}
-          step={playback.gap.stepSeconds}
-          value={preview}
-          disabled={disabled}
-          style={{ '--gap-progress': `${percent}%` } as CSSProperties}
-          onChange={(event) => setDraft(event.target.value)}
-        />
-        <div className="gap-range-labels" aria-hidden="true">
-          <span>{playback.gap.minSeconds}秒</span>
-          <span>{playback.gap.maxSeconds}秒</span>
-        </div>
+        <details className="gap-fine-tuning">
+          <summary>精细调整（当前 {preview.toFixed(1)} 秒）</summary>
+          <div className="gap-stepper">
+            <button
+              className="gap-step-button"
+              type="button"
+              tabIndex={0}
+              aria-label="减少0.1秒"
+              disabled={disabled || preview <= playback.gap.minSeconds}
+              onClick={() => adjust(-1)}
+            >
+              <span aria-hidden="true">−</span>
+            </button>
+            <label className="gap-number">
+              <span>基础间隔</span>
+              <span className="gap-number-value">
+                <input
+                  type="number"
+                  aria-label="连播间隔（秒）"
+                  aria-invalid={!valid}
+                  aria-describedby={!valid ? errorId : undefined}
+                  inputMode="decimal"
+                  min={playback.gap.minSeconds}
+                  max={playback.gap.maxSeconds}
+                  step={playback.gap.stepSeconds}
+                  value={draft}
+                  disabled={disabled}
+                  onChange={(event) => setDraft(event.target.value)}
+                />
+                <span>秒</span>
+              </span>
+            </label>
+            <button
+              className="gap-step-button"
+              type="button"
+              tabIndex={0}
+              aria-label="增加0.1秒"
+              disabled={disabled || preview >= playback.gap.maxSeconds}
+              onClick={() => adjust(1)}
+            >
+              <span aria-hidden="true">＋</span>
+            </button>
+          </div>
+          <input
+            className="gap-range"
+            type="range"
+            aria-label="调节基础间隔"
+            aria-valuetext={`${preview.toFixed(1)}秒`}
+            min={playback.gap.minSeconds}
+            max={playback.gap.maxSeconds}
+            step={playback.gap.stepSeconds}
+            value={preview}
+            disabled={disabled}
+            style={{ '--gap-progress': `${percent}%` } as CSSProperties}
+            onChange={(event) => setDraft(event.target.value)}
+          />
+          <div className="gap-range-labels" aria-hidden="true">
+            <span>{playback.gap.minSeconds}秒</span>
+            <span>{playback.gap.maxSeconds}秒</span>
+          </div>
+        </details>
         {!valid && (
           <p className="gap-error" id={errorId} role="alert">
             请输入0.1～5秒，最多一位小数。

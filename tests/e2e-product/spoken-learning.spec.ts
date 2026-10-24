@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { optionById } from '../support/options';
 import { readFile } from 'node:fs/promises';
 import { expect } from '@playwright/test';
@@ -70,7 +71,7 @@ test('VOICE-05: actual narration and course audio decode, replay and separate fr
     expect(asset.peak, asset.id).toBeGreaterThan(0.001);
   }
 
-  await page.getByRole('button', { name: '听本课录音' }).click();
+  await page.getByRole('button', { name: '课堂学习' }).click();
   const courseAudio = page.locator('.family-course-audio audio');
   await expect(courseAudio).toHaveAttribute('controls', '');
   await page.getByRole('button', { name: '播放课程录音', exact: true }).click();
@@ -92,9 +93,13 @@ test('VOICE-05: actual narration and course audio decode, replay and separate fr
 
   voiceRequests.length = 0;
   await page.getByRole('button', { name: '开始今天的练习' }).click();
+  await openSection(page, '听题目说明', true);
   await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
+  await openSection(page, '听题目说明', true);
   await page.getByRole('button', { name: '停止听题目', exact: true }).click();
+  await openSection(page, '听题目说明', true);
   await page.getByRole('button', { name: '听题目', exact: true }).click();
+  await openSection(page, '听题目说明', true);
   await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
   await expect.poll(() => voiceRequests.some((url) => url.includes('/voice/prompt-'))).toBe(true);
   expect(answerRequests).toEqual([]);
@@ -122,12 +127,14 @@ test('VOICE-05: actual narration and course audio decode, replay and separate fr
   await page.unroute('**/api/v1/voice/option-*');
   // Inject a failure for the question recording, not an unrelated in-flight option.
   await page.route('**/api/v1/voice/prompt-*', (route) => route.abort('failed'));
+  await openSection(page, '听题目说明', true);
   await page.getByRole('button', { name: '听题目', exact: true }).click();
   await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
   await expect(page.locator('.game-option').first()).toBeEnabled();
   expect(answerRequests).toEqual([]);
   await page.unroute('**/api/v1/voice/prompt-*');
   await page.getByRole('button', { name: '↻ 重试声音' }).click();
+  await openSection(page, '听题目说明', true);
   await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
   await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 15_000 });
   // The instruction says “above”; the visible pinyin must match that spatial cue.
@@ -140,7 +147,7 @@ test('VOICE-05: actual narration and course audio decode, replay and separate fr
   await page.getByRole('button', { name: '退出练习' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  await expect(page.getByText(/· 0 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 0 次作答/)).toBeVisible();
   expect(errors).toEqual([]);
 });
 
@@ -174,6 +181,7 @@ test('ANSWER-READY-02: missing narration status and failed optional prompt do no
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
   await page.getByRole('button', { name: '开始今天的练习' }).click();
   // A retained hint used to auto-play on the next session instead of its question.
+  await openSection(page, '听题目说明', true);
   await expect(page.getByRole('button', { name: '停止听题目' })).toBeVisible();
   await expect(page.locator('.hint-box')).toHaveCount(0);
   await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 15_000 });
@@ -211,10 +219,14 @@ test('FEEDBACK-01: spoken correction retries without another answer or hint cred
   await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
   await page.unroute('**/api/v1/voice/hint-*');
   await page.getByRole('button', { name: '↻ 重试声音' }).click();
-  await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: '停止听讲解', exact: true }).click();
-  await page.getByRole('button', { name: '听讲解', exact: true }).press('Enter');
-  await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
+  await openSection(page, '听讲解');
+  await expect(page.getByRole('button', { name: '停止重听讲解', exact: true })).toBeVisible();
+  await openSection(page, '听讲解');
+  await page.getByRole('button', { name: '停止重听讲解', exact: true }).click();
+  await openSection(page, '听讲解');
+  await page.getByRole('button', { name: '重听讲解', exact: true }).press('Enter');
+  await openSection(page, '听讲解');
+  await expect(page.getByRole('button', { name: '停止重听讲解', exact: true })).toBeVisible();
   await expect(choices.first()).toBeEnabled();
   await optionById(page, correctionQuestion.answer.optionId).press('Enter');
   await expect(page.locator('.feedback')).toContainText('找到正确答案啦');
@@ -223,14 +235,16 @@ test('FEEDBACK-01: spoken correction retries without another answer or hint cred
   await page.getByRole('button', { name: '退出练习' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 1 次作答/)).toBeVisible();
   const downloadPromise = page.waitForEvent('download');
+  await openSection(page, '备份与恢复');
   await page.getByRole('button', { name: '导出家庭数据' }).click();
   const download = await downloadPromise;
   const file = await download.path();
   expect(file).toBeTruthy();
   const saved = JSON.parse(await readFile(file!, 'utf8'));
   const backup = page.getByLabel('导出的 JSON 数据');
+  await openSection(page, '技术详情：查看 JSON');
   await expect(backup).toBeVisible();
   expect(JSON.parse(await backup.inputValue())).toEqual(saved);
   expect(saved.attempts).toHaveLength(1);
@@ -281,9 +295,12 @@ test('BANK-01: the former two-question nasal lesson completes six spoken tasks',
       await page.getByRole('button', { name: '确认拼读', exact: true }).click();
     await expect(page.getByText('答对啦！', { exact: true })).toBeVisible();
     if (index === 0) {
-      await page.getByRole('button', { name: '听讲解', exact: true }).click();
-      await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
-      await page.getByRole('button', { name: '停止听讲解', exact: true }).click();
+      await openSection(page, '听讲解');
+      await page.getByRole('button', { name: '重听讲解', exact: true }).click();
+      await openSection(page, '听讲解');
+      await expect(page.getByRole('button', { name: '停止重听讲解', exact: true })).toBeVisible();
+      await openSection(page, '听讲解');
+      await page.getByRole('button', { name: '停止重听讲解', exact: true }).click();
     }
     await page.getByRole('button', { name: '继续 →', exact: true }).click();
   }
@@ -351,12 +368,14 @@ test('HINT-VOICE-01: specific hint speaks, retries and replays without independe
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
   const downloadPromise = page.waitForEvent('download');
+  await openSection(page, '备份与恢复');
   await page.getByRole('button', { name: '导出家庭数据' }).click();
   const download = await downloadPromise;
   const file = await download.path();
   expect(file).toBeTruthy();
   const saved = JSON.parse(await readFile(file!, 'utf8'));
   const backup = page.getByLabel('导出的 JSON 数据');
+  await openSection(page, '技术详情：查看 JSON');
   await expect(backup).toBeVisible();
   expect(JSON.parse(await backup.inputValue())).toEqual(saved);
   expect(saved.attempts).toHaveLength(1);

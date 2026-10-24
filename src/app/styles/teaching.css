@@ -165,3 +165,155 @@
 .game-option .word-picture {
   width: min(180px, 100%);
 }
+
+/* SPEC-016: one activity and one picture at a time. */
+.lesson-activities,
+.picture-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-block: 16px;
+}
+.lesson-activities button {
+  flex: 1 1 80px;
+  min-height: 48px;
+}
+.lesson-activities button[aria-pressed='true'] {
+  background: #d6efe7;
+  outline: 2px solid #277563;
+}
+.lesson-knowledge {
+  margin-block: 20px;
+}
+.lesson-knowledge > summary {
+  min-height: 48px;
+  padding: 12px;
+  cursor: pointer;
+}
+.word-cards .word-card-grid {
+  display: block;
+}
+.word-cards .word-card {
+  justify-content: center;
+}
+.picture-navigation {
+  justify-content: space-between;
+}
+.picture-navigation button {
+  min-height: 48px;
+}
+.writing-workshop {
+  margin-top: 16px;
+}
+.writing-heading {
+  margin-bottom: 16px;
+}
+.writing-instruction {
+  min-height: 110px;
+}
+.writing-controls,
+.writing-targets {
+  margin-block: 12px;
+}
+.writing-heading .guidance-switch {
+  min-height: 48px;
+}
+@media (max-width: 480px) {
+  .word-cards {
+    padding: 12px;
+  }
+  .picture-navigation {
+    gap: 6px;
+  }
+  .picture-navigation button {
+    padding-inline: 10px;
+  }
+  .writing-controls button {
+    flex-basis: 80px;
+  }
+}
+
+.lesson-activities button {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-inline: 8px;
+}
+.writing-heading {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.writing-heading h3 {
+  grid-column: 1 / -1;
+  font-size: 18px;
+}
+.writing-heading .guidance-switch {
+  min-width: 0;
+  padding: 6px 8px;
+  gap: 6px;
+  font-size: 13px;
+}
+.writing-targets[aria-label='选择书写类型'] {
+  gap: 8px;
+}
+.writing-targets[aria-label='选择书写类型'] button {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-inline: 6px;
+  font-size: 15px;
+}
+@media (max-width: 480px) {
+  .writing-workshop {
+    padding: 12px;
+    border-width: 1px;
+  }
+  .writing-heading .guidance-switch {
+    font-size: 12px;
+    padding-inline: 6px;
+  }
+  .writing-targets {
+    margin-block: 8px;
+    padding-block: 4px;
+  }
+  .writing-workshop > p {
+    font-size: 14px;
+    margin-block: 8px;
+  }
+  .writing-controls {
+    margin-block: 8px;
+    gap: 8px;
+  }
+  .writing-controls button {
+    padding-inline: 8px;
+    font-size: 14px;
+    flex: 1 1 0;
+  }
+  .lesson-detail > .eyebrow {
+    margin-block: 8px;
+  }
+  .lesson-back {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .writing-workshop .writing-heading {
+    margin-bottom: 8px;
+  }
+  .writing-workshop .writing-targets {
+    margin-block: 8px;
+    padding-block: 4px;
+  }
+  .writing-workshop .writing-controls {
+    margin-block: 8px;
+  }
+  .writing-workshop .writing-controls .start-button {
+    flex-grow: 1.6;
+    font-size: 14px;
+  }
+  .writing-workshop .writing-diagram:not(.writing-option) {
+    height: 180px;
+    min-height: 160px;
+  }
+}

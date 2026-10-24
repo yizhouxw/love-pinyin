@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import narration from '../../content/narration.json' with { type: 'json' };
@@ -69,18 +70,15 @@ test('BANK-07: spoken rules, independent option audio, blend confirmation and re
         // ANSWER-READY-02: only standard audio gates answers; prompt narration is optional.
         if (q.audioRef) await expect(page.locator('.game-option').first()).toBeDisabled();
         else await expect(page.locator('.game-option').first()).toBeEnabled();
+        const audio = q.audioRef
+          ? page.waitForResponse((r) => r.url().endsWith(`/audio/${q.audioRef}`) && r.ok())
+          : Promise.resolve();
+        await openSection(page, '听题目说明', true);
         await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
         await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
           timeout: 20000,
         });
-        if (q.audioRef) {
-          await expect(page.locator('.game-option').first()).toBeDisabled();
-          const audio = page.waitForResponse(
-            (r) => r.url().endsWith(`/audio/${q.audioRef}`) && r.ok(),
-          );
-          await page.getByRole('button', { name: '听拼音', exact: true }).press('Enter');
-          await audio;
-        }
+        await audio;
         await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
         const before = submitted.length;
         if (q.id === 'q-02-120') {
@@ -112,9 +110,12 @@ test('BANK-07: spoken rules, independent option audio, blend confirmation and re
           !playedHints.has(hint) &&
           (q.audioRef || q.id === 'q-02-120' || q.type === 'blend-choice')
         ) {
-          await page.getByRole('button', { name: '听讲解', exact: true }).click();
-          await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
-          await expect(page.getByRole('button', { name: '听讲解', exact: true })).toBeVisible({
+          await openSection(page, '听讲解');
+          await page.getByRole('button', { name: '重听讲解', exact: true }).click();
+          await expect(
+            page.getByRole('button', { name: '停止重听讲解', exact: true }),
+          ).toBeVisible();
+          await expect(page.getByRole('button', { name: '重听讲解', exact: true })).toBeVisible({
             timeout: 20000,
           });
           playedHints.add(hint);

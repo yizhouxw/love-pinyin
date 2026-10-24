@@ -344,3 +344,13 @@
     gap: 6px;
   }
 }
+
+.gap-fine-tuning > summary {
+  cursor: pointer;
+  min-height: 48px;
+  padding-block: 12px;
+}
+.gap-fine-tuning[open] {
+  display: grid;
+  gap: 12px;
+}

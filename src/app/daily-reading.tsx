@@ -20,6 +20,7 @@ import { recognizeReading, type RecognitionResult } from '../platform/audio/read
 import { waitForPlaybackGap } from '../platform/audio/playback-gap';
 import { dayResources, itemResources } from '../platform/audio/reading-resources';
 import { GuidanceSwitch } from './guidance-switch';
+import { useLearningVoice, VoiceButton, VoiceFailure } from './learning-voice';
 import { QuickGapSettings } from './quick-gap-settings';
 import recognitionContent from '../../content/reading-recognition.json';
 import navigationContent from '../../content/daily-reading-navigation.json';
@@ -51,7 +52,13 @@ export function DailyReadingPage({
   const [error, setError] = useState(false);
   const [dayId, setDayId] = useState('day-01');
   const [sectionId, setSectionId] = useState<string | null>(null);
+  const helpVoice = useLearningVoice(sectionId ?? 'daily-materials');
+  const stopHelpVoice = helpVoice.stop;
+  useEffect(() => {
+    stopHelpVoice();
+  }, [sectionId, stopHelpVoice]);
   const [marks, setMarks] = useState<Record<string, ReadingMark>>({});
+  const materialChoices = useRef<HTMLElement | null>(null);
   const load = useCallback(() => {
     setError(false);
     void readDaily()
@@ -75,6 +82,9 @@ export function DailyReadingPage({
   const day = data?.days.find((value) => value.id === dayId);
   const section = day?.sections.find((value) => value.id === sectionId);
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [sectionId]);
+  useEffect(() => {
     if (!day || !data) return;
     const prepare = () => audioPlayer.prepareReading(dayResources(day, data.ui ?? {}));
     prepare();
@@ -93,33 +103,38 @@ export function DailyReadingPage({
       <button className="quiet" onClick={onBack}>
         ← 返回小岛
       </button>
-      <div className="daily-heading">
-        <div>
-          <p className="eyebrow">学校练习 · 每天读一点</p>
-          <h1>天天练拼音</h1>
-          <p>先听一遍，再自己读。每一步都可以慢慢来。</p>
+      {!section && (
+        <div className="daily-heading">
+          <div>
+            <p className="eyebrow">学校练习 · 每天读一点</p>
+            <h1>天天练拼音</h1>
+            <p>先听一遍，再自己读。每一步都可以慢慢来。</p>
+          </div>
+          <span className="daily-emblem" aria-hidden="true">
+            ā
+          </span>
         </div>
-        <span className="daily-emblem" aria-hidden="true">
-          ā
-        </span>
-      </div>
+      )}
       {!section && (
         <div className="daily-quick-settings">
           <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
           <QuickGapSettings seconds={gapSeconds} onSave={onGapChange} />
         </div>
       )}
-      <p className="daily-privacy">
-        停止录音后，电脑自动识别并匹配音节。录音只发送家庭
-        Mac，在内存中处理，不保存。识别匹配不判四声准确度。本次练习标记退出后清除。
-      </p>
+      {!section && (
+        <details className="daily-parent">
+          <summary>跟读怎么玩</summary>
+          <VoiceButton id="daily-ui-intro" voice={helpVoice} label="听每日跟读说明" />
+          <VoiceFailure voice={helpVoice} />
+        </details>
+      )}
       {error && (
         <div role="alert">
           暂时连不上每日练习。请检查家庭 Mac。<button onClick={load}>重新连接</button>
         </div>
       )}
       {!data && !error && <p role="status">正在读取每日练习…</p>}
-      {data && day && (
+      {data && day && !section && (
         <div className="reading-preparation" aria-label="声音准备">
           <p aria-live="polite">
             本份声音：{preparation.ready} / {preparation.total} 已准备好。
@@ -143,48 +158,73 @@ export function DailyReadingPage({
       )}
       {data && day && (
         <>
-          <nav className="daily-days" aria-label="选择每日练习">
-            {data.days.map((value) => (
+          {!section && (
+            <>
+              <nav ref={materialChoices} className="daily-days" aria-label="选择每日练习">
+                {data.days.map((value) => (
+                  <button
+                    key={value.id}
+                    className="quiet"
+                    aria-pressed={dayId === value.id}
+                    onClick={() => {
+                      audioPlayer.stop();
+                      setDayId(value.id);
+                      setSectionId(null);
+                    }}
+                  >
+                    第 {value.number} 份
+                  </button>
+                ))}
+              </nav>
+              <div className="daily-section-heading">
+                <h2>
+                  第 {day.number} 份 · {day.title}
+                </h2>
+              </div>
+              <nav className="daily-sections" aria-label="选择练习小节">
+                {day.sections.map((value) => {
+                  const summary = sectionSummary(value, marks);
+                  return (
+                    <button
+                      key={value.id}
+                      className="quiet"
+                      aria-pressed={sectionId === value.id}
+                      onClick={() => {
+                        audioPlayer.stop();
+                        setSectionId(value.id);
+                      }}
+                    >
+                      <strong>{value.title}</strong>
+                      <small>
+                        练过 {summary.practiced} / {summary.total} 条
+                      </small>
+                    </button>
+                  );
+                })}
+              </nav>
+            </>
+          )}
+          {section && (
+            <div className="daily-session-heading">
+              <span>
+                第 {day.number} 份 · {section.title}
+              </span>
               <button
-                key={value.id}
                 className="quiet"
-                aria-pressed={dayId === value.id}
                 onClick={() => {
                   audioPlayer.stop();
-                  setDayId(value.id);
                   setSectionId(null);
+                  requestAnimationFrame(() =>
+                    materialChoices.current
+                      ?.querySelector<HTMLButtonElement>('[aria-pressed="true"]')
+                      ?.focus(),
+                  );
                 }}
               >
-                第 {value.number} 份
+                换练习
               </button>
-            ))}
-          </nav>
-          <div className="daily-section-heading">
-            <h2>
-              第 {day.number} 份 · {day.title}
-            </h2>
-          </div>
-          <nav className="daily-sections" aria-label="选择练习小节">
-            {day.sections.map((value) => {
-              const summary = sectionSummary(value, marks);
-              return (
-                <button
-                  key={value.id}
-                  className="quiet"
-                  aria-pressed={sectionId === value.id}
-                  onClick={() => {
-                    audioPlayer.stop();
-                    setSectionId(value.id);
-                  }}
-                >
-                  <strong>{value.title}</strong>
-                  <small>
-                    练过 {summary.practiced} / {summary.total} 条
-                  </small>
-                </button>
-              );
-            })}
-          </nav>
+            </div>
+          )}
           {section ? (
             <ReadingSession
               key={section.id}
@@ -203,6 +243,27 @@ export function DailyReadingPage({
               <button onClick={() => setSectionId(day.sections[0]?.id ?? null)}>
                 开始第 {day.number} 份跟读
               </button>
+            </div>
+          )}
+          {section && (
+            <div className="reading-preparation daily-preparation-detail" aria-label="声音准备">
+              <p>
+                {preparation.total > 0 && preparation.ready === preparation.total
+                  ? '本份声音已就绪。'
+                  : '正在准备声音，可以先开始。'}
+              </p>
+              {preparation.failed > 0 && (
+                <button className="quiet" onClick={() => audioPlayer.readingPool.retry()}>
+                  重试准备声音
+                </button>
+              )}
+              <details>
+                <summary>声音与练习记录</summary>
+                <p>
+                  本份声音：{preparation.ready} / {preparation.total}{' '}
+                  已准备好。只在当前页面缓存；换份、退出或后台后清除。本次跟读标记退出清除，不计课程成绩。
+                </p>
+              </details>
             </div>
           )}
         </>
@@ -264,6 +325,7 @@ function ReadingSession({
   const [recordError, setRecordError] = useState('');
   const [recordUrl, setRecordUrl] = useState<string | null>(null);
   const [adultOpen, setAdultOpen] = useState(false);
+  const [recordOpen, setRecordOpen] = useState(false);
   const [exampleOpen, setExampleOpen] = useState(false);
   const [examplesPlaying, setExamplesPlaying] = useState(false);
   const [exampleFailure, setExampleFailure] = useState(false);
@@ -570,7 +632,70 @@ function ReadingSession({
             </ruby>
           ))}
         </button>
-        {waiting && <FollowWait key={waiting.id} seconds={waiting.seconds} />}
+
+        <div className="daily-status-strip">
+          {waiting ? (
+            <FollowWait key={waiting.id} seconds={waiting.seconds} />
+          ) : (
+            <>
+              <p role="status" aria-live="polite">
+                {recording === 'requesting'
+                  ? '正在准备录音，请允许麦克风…'
+                  : recording === 'recording'
+                    ? '正在录音，读完点停止。'
+                    : recording === 'stopping'
+                      ? '正在结束录音…'
+                      : phase === 'playing'
+                        ? waiting
+                          ? '轮到你读啦，可以随时停止。'
+                          : audioStage === 'loading'
+                            ? '正在准备这段声音，请稍等…'
+                            : instructionPlaying
+                              ? '正在听本节说明…'
+                              : '仔细听一听…'
+                        : phase === 'follow'
+                          ? '轮到你读啦，读完点下一条。'
+                          : phase === 'finished'
+                            ? '这一节结束啦，可以休息，也可以再读一遍。'
+                            : '点开始跟读，先听示范。'}
+              </p>
+              <div className="daily-static-track" aria-hidden="true" />
+            </>
+          )}
+        </div>
+        {failure && (
+          <div className="voice-failure" role="alert">
+            {failure}
+            <button onClick={() => void play()}>重试示范</button>
+          </div>
+        )}
+        <div className="daily-actions">
+          {phase === 'playing' ? (
+            <button onClick={stop}>■ 停止示范</button>
+          ) : (
+            <button disabled={recording !== 'idle'} onClick={() => void play()}>
+              {phase === 'ready' ? '🔊 开始跟读' : '🔊 再听示范'}
+            </button>
+          )}
+          <button
+            className="quiet"
+            disabled={recording !== 'idle' || phase === 'playing'}
+            onClick={() => void play(true)}
+          >
+            ▶ 连播本节
+          </button>
+        </div>
+        <div className="daily-next">
+          <button className="quiet" disabled={index === 0} onClick={() => select(index - 1)}>
+            ← 上一条
+          </button>
+          <button onClick={() => next(true)}>
+            读过了，{index + 1 === section.items.length ? '完成本节' : '下一条 →'}
+          </button>
+          <button className="quiet" onClick={() => next(false)}>
+            先跳过
+          </button>
+        </div>
         <p className="daily-source-kind">
           {item.narrationId ? '中文词句朗读 · 普通话示范' : '拼音标准音 · 逐音节示范'}
         </p>
@@ -617,112 +742,75 @@ function ReadingSession({
             )}
           </div>
         )}
-        <p role="status" aria-live="polite">
-          {recording === 'requesting'
-            ? '正在准备录音，请允许麦克风…'
-            : recording === 'recording'
-              ? '正在录音，读完点停止。'
-              : recording === 'stopping'
-                ? '正在结束录音…'
-                : phase === 'playing'
-                  ? waiting
-                    ? '轮到你读啦，可以随时停止。'
-                    : audioStage === 'loading'
-                      ? '正在准备这段声音，请稍等…'
-                      : instructionPlaying
-                        ? '正在听本节说明…'
-                        : '仔细听一听…'
-                  : phase === 'follow'
-                    ? '轮到你读啦，读完点下一条。'
-                    : phase === 'finished'
-                      ? '这一节结束啦，可以休息，也可以再读一遍。'
-                      : '点开始跟读，先听示范。'}
-        </p>
-        {failure && (
-          <div className="voice-failure" role="alert">
-            {failure}
-            <button onClick={() => void play()}>重试示范</button>
-          </div>
-        )}
-        <div className="daily-actions">
-          {phase === 'playing' ? (
-            <button onClick={stop}>■ 停止示范</button>
-          ) : (
-            <button disabled={recording !== 'idle'} onClick={() => void play()}>
-              {phase === 'ready' ? '🔊 开始跟读' : '🔊 再听示范'}
-            </button>
-          )}
-          <button
-            className="quiet"
-            disabled={recording !== 'idle' || phase === 'playing'}
-            onClick={() => void play(true)}
-          >
-            ▶ 连播本节
-          </button>
-          {recording === 'recording' ? (
-            <button
-              onClick={() => {
-                setRecording('stopping');
-                recorder.current.stop();
-              }}
-            >
-              ■ 停止录音
-            </button>
-          ) : (
-            <button
-              className="quiet"
-              disabled={recording !== 'idle' || phase === 'playing'}
-              onClick={() => void record()}
-            >
-              🎙 {recordUrl ? '重新录音' : '录下我的跟读'}
-            </button>
-          )}
-        </div>
-        <p className="daily-privacy">
-          也可以不录音，直接跟读。停止录音后自动判定；识别每次最多三十秒，录音两分钟自动停止，没有作答倒计时。
-        </p>
-        {recordError && <p role="alert">{recordError}</p>}
-        {recordUrl && (
-          <div className="daily-recording">
-            <strong>我的跟读 · 听回放比较</strong>
-            <audio ref={replay} src={recordUrl} controls aria-label="回放我的跟读" />
-            <button className="quiet" onClick={clearCapture}>
-              清除这段录音
-            </button>
-            <p>录音完成不代表识别匹配。电脑仅核对识别出的音节，不判四声准确度。</p>
-            <button className="quiet" disabled={recognizing} onClick={() => void judge(recordUrl)}>
-              重新识别这段跟读
-            </button>
-            {recognizing && <p role="status">电脑正在识别你的跟读…</p>}
-            {recognition && (
-              <div
-                className={`daily-recognition daily-recognition-${recognition.status}`}
-                role="status"
+        <details
+          className="daily-optional-recording"
+          open={recordOpen}
+          onToggle={(event) => {
+            setRecordOpen(event.currentTarget.open);
+            if (!event.currentTarget.open) clearCapture();
+          }}
+        >
+          <summary>录音比较（可选）</summary>
+          <div className="daily-record-actions">
+            {recording === 'recording' ? (
+              <button
+                onClick={() => {
+                  setRecording('stopping');
+                  recorder.current.stop();
+                }}
               >
-                <strong>{recognitionContent.ui[recognition.status]}</strong>
-                {recognition.transcript && <p>识别文字：{recognition.transcript}</p>}
-                {recognition.recognizedPinyin && (
-                  <p>识别文字的拼音：{recognition.recognizedPinyin}</p>
-                )}
-                {recognition.reason === 'READING_TOO_LONG' && (
-                  <p>这段超过三十秒，请分条录音再试。</p>
-                )}
-                <small>仅识别匹配，不是发音分数；字典标调不代表录音的实际声调。</small>
-              </div>
+                ■ 停止录音
+              </button>
+            ) : (
+              <button
+                className="quiet"
+                disabled={recording !== 'idle' || phase === 'playing'}
+                onClick={() => void record()}
+              >
+                🎙 {recordUrl ? '重新录音' : '录下我的跟读'}
+              </button>
             )}
           </div>
-        )}
-        <div className="daily-next">
-          <button className="quiet" disabled={index === 0} onClick={() => select(index - 1)}>
-            ← 上一条
-          </button>
-          <button onClick={() => next(true)}>
-            读过了，{index + 1 === section.items.length ? '完成本节' : '下一条 →'}
-          </button>
-          <button className="quiet" onClick={() => next(false)}>
-            先跳过
-          </button>
-        </div>
+          <p className="daily-privacy">
+            录音仅在浏览器和家庭 Mac
+            内存处理，不保存；换条、退出或后台会清除。识别只匹配音节，不判四声。每次识别最多三十秒，录音两分钟自动停止。
+          </p>
+          {recordError && <p role="alert">{recordError}</p>}
+          {recordUrl && (
+            <div className="daily-recording">
+              <strong>我的跟读 · 听回放比较</strong>
+              <audio ref={replay} src={recordUrl} controls aria-label="回放我的跟读" />
+              <button className="quiet" onClick={clearCapture}>
+                清除这段录音
+              </button>
+              <p>录音完成不代表识别匹配。电脑仅核对识别出的音节，不判四声准确度。</p>
+              <button
+                className="quiet"
+                disabled={recognizing}
+                onClick={() => void judge(recordUrl)}
+              >
+                重新识别这段跟读
+              </button>
+              {recognizing && <p role="status">电脑正在识别你的跟读…</p>}
+              {recognition && (
+                <div
+                  className={`daily-recognition daily-recognition-${recognition.status}`}
+                  role="status"
+                >
+                  <strong>{recognitionContent.ui[recognition.status]}</strong>
+                  {recognition.transcript && <p>识别文字：{recognition.transcript}</p>}
+                  {recognition.recognizedPinyin && (
+                    <p>识别文字的拼音：{recognition.recognizedPinyin}</p>
+                  )}
+                  {recognition.reason === 'READING_TOO_LONG' && (
+                    <p>这段超过三十秒，请分条录音再试。</p>
+                  )}
+                  <small>仅识别匹配，不是发音分数；字典标调不代表录音的实际声调。</small>
+                </div>
+              )}
+            </div>
+          )}
+        </details>
         <details
           open={adultOpen}
           onToggle={(event) => setAdultOpen(event.currentTarget.open)}
@@ -777,7 +865,7 @@ function ReadingSession({
                     aria-current={position === index ? 'step' : undefined}
                     onClick={() => {
                       select(position);
-                      if (!guidanceEnabled) void play(false, position);
+                      void play(false, position);
                     }}
                   >
                     <span>{position + 1}</span>

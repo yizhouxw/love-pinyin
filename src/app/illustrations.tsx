@@ -42,11 +42,12 @@ export function WordCards({
     retry: number;
   }>({ lesson: lessonId, ids: new Set(), retry: 0 });
   const [retry, setRetry] = useState(0);
+  const [index, setIndex] = useState(0);
+  const items = Object.entries(catalog.items).filter(([, item]) => item.lessonId === lessonId);
   const failed =
     imageFailures.lesson === lessonId &&
     imageFailures.retry === retry &&
-    imageFailures.ids.size > 0;
-  const items = Object.entries(catalog.items).filter(([, item]) => item.lessonId === lessonId);
+    imageFailures.ids.has(items[index]?.[0] ?? '');
   if (!items.length) return null;
   return (
     <section className="word-cards" aria-label="生活里的拼音">
@@ -54,8 +55,33 @@ export function WordCards({
         <h3>生活里的拼音</h3>
         <VoiceButton id="picture-intro" voice={voice} label="听看图玩法" />
       </div>
+      <div className="picture-navigation" role="group" aria-label="浏览生活图片">
+        <button
+          className="quiet"
+          disabled={index === 0}
+          onClick={() => {
+            voice.stop();
+            setIndex(index - 1);
+          }}
+        >
+          ← 上一张
+        </button>
+        <span aria-live="polite">
+          {index + 1} / {items.length}
+        </span>
+        <button
+          className="quiet"
+          disabled={index === items.length - 1}
+          onClick={() => {
+            voice.stop();
+            setIndex(index + 1);
+          }}
+        >
+          下一张 →
+        </button>
+      </div>
       <div className="word-card-grid">
-        {items.map(([id, item]) => (
+        {items.slice(index, index + 1).map(([id, item]) => (
           <div key={id} className="word-card">
             <figure>
               <Picture

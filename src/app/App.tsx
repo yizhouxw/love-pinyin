@@ -44,6 +44,7 @@ import { PairingManagement } from './pairing-management';
 import { PairingPage } from './pairing-page';
 import { ParentPanel } from './parent-panel';
 import { SessionSummary } from './session-summary';
+import { ReleaseHistory } from './release-history';
 import './styles.css';
 
 export function App() {
@@ -53,7 +54,7 @@ export function App() {
       {isGuest() && (
         <aside className="guest-banner" aria-label="访客模式">
           <span>
-            <strong>当前：访客模式</strong> · 临时进度，不保存到家庭档案。
+            <strong>访客体验</strong> · 本次进度暂存
           </span>
           <button className="quiet" onClick={leaveGuest}>
             清除并退出访客
@@ -63,8 +64,7 @@ export function App() {
       {!isGuest() && household?.paired && (
         <aside className="guest-banner family-banner" aria-label="家庭模式">
           <span>
-            <strong>当前：家庭模式 · {household.device?.isParent ? '家长设备' : '学习设备'}</strong>{' '}
-            · 进度保存到家庭 Mac。
+            <strong>家庭学习</strong> · 进度已连接家庭 Mac
           </span>
         </aside>
       )}
@@ -121,6 +121,27 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const [parentGateOpen, setParentGateOpen] = useState(false);
   const [lessonChoice, setLessonChoice] = useState('');
   const [lessonViewId, setLessonViewId] = useState<string | null>(null);
+  const lessonFromCatalogue = useRef(false);
+  const previousLessonView = useRef<string | null>(null);
+  function openLesson(id: string, fromCatalogue = false) {
+    lessonFromCatalogue.current = fromCatalogue;
+    setLessonViewId(id);
+  }
+  useEffect(() => {
+    if (lessonViewId) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      document.getElementById(`lesson-heading-${lessonViewId}`)?.focus({ preventScroll: true });
+    } else if (previousLessonView.current) {
+      if (lessonFromCatalogue.current) {
+        const catalogue = document.querySelector<HTMLDetailsElement>('.course-browser');
+        if (catalogue) catalogue.open = true;
+        document
+          .querySelector<HTMLButtonElement>(`[data-lesson-id="${previousLessonView.current}"]`)
+          ?.focus();
+      } else document.querySelector<HTMLButtonElement>('.listen-lesson-button')?.focus();
+    }
+    previousLessonView.current = lessonViewId;
+  }, [lessonViewId]);
   const [learningAudio, setLearningAudio] = useState<LearningAudio | null>(null);
   const voiceStarted = useRef(false);
 
@@ -219,7 +240,6 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     ),
   );
   const mastery = progress?.mastery ?? [];
-  const mastered = mastery.filter((item) => item.status === 'mastered').length;
   const masteryById = new Map(mastery.map((item) => [item.knowledgeId, item]));
   const active = session;
   const taskIndex = active
@@ -227,7 +247,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     : -1;
   const task = active && taskIndex >= 0 ? active.tasks[taskIndex] : null;
   const voice = useLearningVoice(task?.instanceId ?? null);
-  const { play: playVoice, stop: stopVoice } = voice;
+  const { play: playVoice, playSequence, stop: stopVoice } = voice;
   const question = task?.exercise;
   const pictureIds = [
     ...new Set(
@@ -249,6 +269,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   useEffect(() => {
     if (blendPreview) blendConfirm.current?.focus();
   }, [blendPreview, task?.instanceId]);
+  useEffect(() => {
+    if (task?.instanceId) window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [task?.instanceId]);
   const corrected = Boolean(task && correctedInstance === task.instanceId);
   const questionVoice = question ? narration.exercises[question.id] : undefined;
   const standardHeard = !question?.audioRef || voice.completedIds.has(question.audioRef);
@@ -262,13 +285,13 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         : picturesPending
           ? picturesFailed
             ? '答案暂时不能选：图片未加载好，请点“重试图片”。'
-            : '答案暂时不能选：正在准备图片，请稍等。'
+            : '正在准备图片，请稍等。'
           : currentVoiceFailed
             ? '答案暂时不能选：拼音声音未播放成功，请重新点“听拼音”，也可以先跳过。'
             : !standardHeard
               ? voice.playingId === question?.audioRef
-                ? '正在准备或播放拼音声音，听完即可选择答案。'
-                : '答案暂时不能选：请点“听拼音”，完整听一遍后即可选择答案。'
+                ? '请听一听，听完就能选。'
+                : '点“听拼音”，听完就能选。'
               : null;
   const autoVoiceId =
     !boot?.paired || parentOpen || parentGateOpen || lessonViewId
@@ -287,12 +310,20 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 ? `prompt-${question.id}`
                 : null;
 
+  const autoStandardId = question && !answer && !hint ? question.audioRef : undefined;
   useEffect(() => {
-    if (autoVoiceId && voiceStarted.current && guidanceEnabled) playVoice(autoVoiceId);
+    if (autoVoiceId && voiceStarted.current && autoStandardId) {
+      playSequence([
+        ...(guidanceEnabled ? [{ id: autoVoiceId, kind: 'private' as const, optional: true }] : []),
+        { id: autoStandardId, kind: 'standard' },
+      ]);
+    } else if (autoVoiceId && voiceStarted.current && guidanceEnabled) playVoice(autoVoiceId);
     else stopVoice();
     return stopVoice;
   }, [
     autoVoiceId,
+    autoStandardId,
+    playSequence,
     playVoice,
     stopVoice,
     guidanceEnabled,
@@ -451,7 +482,6 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         }}
       >
         <nav className="play-nav">
-          <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
           <button
             className="icon-button"
             aria-label="退出练习"
@@ -476,6 +506,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               第 {taskIndex + 1} / {active.tasks.length} 关
             </strong>
           </div>
+          <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
           <span className="progress-dots">
             {active.tasks.map((_: Json, i: number) => (
               <i key={i} className={i < taskIndex ? 'done' : i === taskIndex ? 'now' : ''} />
@@ -488,9 +519,6 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           </p>
         )}
         <section className="question-card">
-          <div className="mascot" aria-hidden="true">
-            🦊
-          </div>
           <p className="eyebrow">
             {question.pictureId || question.options.some((o) => o.pictureId)
               ? '生活拼音站'
@@ -522,23 +550,29 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           )}
           <h1>{questionVoice?.text ?? question.prompt}</h1>
           <div className="question-audio-actions" role="group" aria-label="听题与示范音">
-            <VoiceButton
-              id={`prompt-${question.id}`}
-              voice={voice}
-              label="听题目"
-              className="listen-question"
-            />
-            {question.audioRef && (
+            {question.audioRef ? (
+              <>
+                <VoiceButton
+                  id={question.audioRef}
+                  kind="standard"
+                  voice={voice}
+                  label="听拼音"
+                  className="listen-question"
+                />
+                <details className="question-help">
+                  <summary>听题目说明</summary>
+                  <VoiceButton id={`prompt-${question.id}`} voice={voice} label="听题目" />
+                </details>
+              </>
+            ) : (
               <VoiceButton
-                id={question.audioRef}
-                kind="standard"
+                id={`prompt-${question.id}`}
                 voice={voice}
-                label="听拼音"
+                label="听题目"
                 className="listen-question"
               />
             )}
           </div>
-          <p className="listen-before-answer">听题目是辅助，可以按需使用。</p>
           <p id="answer-availability" className="listen-before-answer" role="status">
             {answerUnavailableReason ?? '可以选择答案了。'}
           </p>
@@ -657,91 +691,91 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               )}
             </section>
           )}
-          {answer && (
-            <div className={`feedback ${answer.correct ? 'good' : 'try-again'}`} role="status">
-              <strong>
-                {answer.correct
-                  ? '答对啦！'
-                  : corrected
-                    ? '找到正确答案啦！'
-                    : '没关系，看看亮起来的卡片，再选一次。'}
-              </strong>
-              <span>
-                {answer.clockPending
-                  ? '此练习已保存为待校时记录，不计入掌握度。'
-                  : answer.mastery.status === 'mastered'
-                    ? '这个知识点已掌握 ✨'
-                    : '完成后继续下一关吧。'}
-              </span>
-              <VoiceButton
-                id={`ui-${answer.correct || corrected ? 'correct' : 'incorrect'}`}
-                voice={voice}
-                label="听结果"
-              />
-              {answer.explanation && answer.explanationAudioId && (
-                <div className="answer-explanation">
-                  <p>{answer.explanation}</p>
-                  <VoiceButton id={answer.explanationAudioId} voice={voice} label="听讲解" />
-                </div>
-              )}
-            </div>
-          )}
-          {!answer && (
-            <div className="exercise-actions">
+          <div className="exercise-response">
+            {answer && (
+              <div className={`feedback ${answer.correct ? 'good' : 'try-again'}`} role="status">
+                <strong>
+                  {answer.correct
+                    ? '答对啦！'
+                    : corrected
+                      ? '找到正确答案啦！'
+                      : '没关系，看看亮起来的卡片，再选一次。'}
+                </strong>
+                <span>
+                  {answer.clockPending
+                    ? '此练习已保存为待校时记录，不计入掌握度。'
+                    : answer.mastery.status === 'mastered'
+                      ? '这个知识点已掌握 ✨'
+                      : '完成后继续下一关吧。'}
+                </span>
+                {answer.explanation && answer.explanationAudioId && (
+                  <details className="answer-explanation">
+                    <summary>听讲解</summary>
+                    <p>{answer.explanation}</p>
+                    <VoiceButton id={answer.explanationAudioId} voice={voice} label="重听讲解" />
+                  </details>
+                )}
+              </div>
+            )}
+            {!answer && (
+              <div className="exercise-actions">
+                <button
+                  className="quiet hint-button"
+                  disabled={busy}
+                  onClick={() =>
+                    void act(async () =>
+                      setHint(
+                        (await api(`/instances/${task.instanceId}/hint`, {
+                          method: 'POST',
+                        })) as Hint,
+                      ),
+                    )
+                  }
+                >
+                  💡 给我一点提示
+                </button>
+                <button
+                  className="quiet skip-button"
+                  disabled={busy}
+                  onClick={() =>
+                    void act(async () => {
+                      stopVoice();
+                      await api(`/instances/${task.instanceId}/skip`, { method: 'POST' });
+                      const nextSession = (await api('/sessions/current')) as Session;
+                      setHint(null);
+                      setBlendDraft(null);
+                      setSession(nextSession);
+                    })
+                  }
+                >
+                  ↷ 先跳过这题
+                </button>
+              </div>
+            )}
+            {hint && !answer && (
+              <div className="hint-box">
+                <span>{hint.explanation}</span>
+                <VoiceButton id={`hint-${question.id}`} voice={voice} label="听提示" />
+              </div>
+            )}
+            {answer && (
               <button
-                className="quiet hint-button"
-                disabled={busy}
-                onClick={() =>
-                  void act(async () =>
-                    setHint(
-                      (await api(`/instances/${task.instanceId}/hint`, { method: 'POST' })) as Hint,
-                    ),
-                  )
-                }
-              >
-                💡 给我一点提示
-              </button>
-              <button
-                className="quiet skip-button"
+                className="next-button"
                 disabled={busy}
                 onClick={() =>
                   void act(async () => {
                     stopVoice();
-                    await api(`/instances/${task.instanceId}/skip`, { method: 'POST' });
                     const nextSession = (await api('/sessions/current')) as Session;
+                    setAnswer(null);
                     setHint(null);
-                    setBlendDraft(null);
                     setSession(nextSession);
                   })
                 }
               >
-                ↷ 先跳过这题
+                继续 →
               </button>
-            </div>
-          )}
-          {hint && !answer && (
-            <div className="hint-box">
-              <span>{hint.explanation}</span>
-              <VoiceButton id={`hint-${question.id}`} voice={voice} label="听提示" />
-            </div>
-          )}
-          {answer && (
-            <button
-              className="next-button"
-              disabled={busy}
-              onClick={() =>
-                void act(async () => {
-                  stopVoice();
-                  const nextSession = (await api('/sessions/current')) as Session;
-                  setAnswer(null);
-                  setHint(null);
-                  setSession(nextSession);
-                })
-              }
-            >
-              继续 →
-            </button>
-          )}
+            )}
+          </div>
         </section>
         <Notice error={error} onReconnect={() => void act(refresh)} />
       </main>
@@ -781,13 +815,16 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             setDailyOpen(false);
           }}
         />
+        <ReleaseHistory contentVersion={curriculum?.contentVersion} />
       </main>
     );
 
   return (
     <main className="home-page">
       <header className="topbar">
-        <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
+        {(!lessonViewId || parentOpen) && (
+          <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
+        )}
         <div className="brand">
           <span className="brand-mark">拼</span>
           <span>爱拼音</span>
@@ -814,48 +851,32 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       />
       {progress && curriculum && (
         <>
-          {!parentOpen && !lessonViewId && (
-            <LessonNavigation
-              lessons={lessons}
-              currentLesson={currentLesson}
-              masteryById={masteryById}
-              onSelect={setLessonViewId}
-            />
-          )}
           {(!lessonViewId || parentOpen) && (
-            <section className="welcome">
+            <section className={`welcome ${parentOpen ? 'parent-welcome' : 'learning-welcome'}`}>
               <div>
                 <p className="eyebrow">
-                  {parentOpen ? (boot.guest ? '访客学习空间' : '家庭学习空间') : '今天也来探险吧'}
+                  {parentOpen ? (boot.guest ? '访客学习空间' : '家庭学习空间') : '每天一点，慢慢学'}
                 </p>
-                <h1>
-                  {parentOpen ? (
-                    '家长管理'
-                  ) : (
-                    <>
-                      你好，小小拼音家
-                      <br />
-                      <span>准备好出发了吗？</span>
-                    </>
-                  )}
-                </h1>
-                <p>
-                  {parentOpen
-                    ? `${boot.device?.label} · ${boot.guest ? '临时学习设置' : '家庭学习设置'}`
-                    : currentLesson
+                <h1>{parentOpen ? '家长管理' : <>今天学拼音</>}</h1>
+                {parentOpen ? (
+                  <p>
+                    {boot.device?.label} · {boot.guest ? '临时学习设置' : '家庭学习设置'}
+                  </p>
+                ) : (
+                  <h2 className="current-course">
+                    {currentLesson
                       ? `第 ${currentLesson.order} 课 · ${currentLesson.title}`
-                      : '请家长选择当前课'}
-                </p>
+                      : '请选择当前课'}
+                  </h2>
+                )}
                 {!parentOpen && (
                   <>
+                    {!currentLesson && (
+                      <p className="current-course-help">
+                        保存的当前课不在此课程版本中。已有学习记录会保留，请家长重新选择学校正在学习的课程。
+                      </p>
+                    )}
                     <div className="start-actions">
-                      <button
-                        className="listen-lesson-button"
-                        disabled={!currentLesson || busy}
-                        onClick={() => currentLesson && setLessonViewId(currentLesson.id)}
-                      >
-                        <span aria-hidden="true">🎧</span> 听本课录音
-                      </button>
                       <button
                         className="start-button"
                         disabled={busy || !currentLesson || !canPracticeCurrent}
@@ -872,14 +893,21 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                             : '课程资料准备中'}{' '}
                         <span aria-hidden="true">▶</span>
                       </button>
+                      <button
+                        className="listen-lesson-button"
+                        disabled={!currentLesson || busy}
+                        onClick={() => currentLesson && openLesson(currentLesson.id)}
+                      >
+                        课堂学习 <span aria-hidden="true">→</span>
+                      </button>
                     </div>
-                    <VoiceButton id="ui-welcome" voice={voice} label="听怎么玩" />
+                    <details className="home-help">
+                      <summary>第一次玩？听听玩法</summary>
+                      <VoiceButton id="ui-welcome" voice={voice} label="听怎么玩" />
+                    </details>
                     <VoiceFailure voice={voice} />
                   </>
                 )}
-              </div>
-              <div className="welcome-art" aria-hidden="true">
-                🌱
               </div>
             </section>
           )}
@@ -889,7 +917,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度；请家长检查服务器时间。
             </div>
           )}
-          {parentOpen && <PairingManagement />}
+          {parentOpen && !/^(BACKUP_|IMPORT_)/.test(error) && (
+            <Notice error={error} onReconnect={() => void act(refresh)} />
+          )}
           {parentOpen ? (
             boot.guest ? (
               <GuestPanel
@@ -904,6 +934,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             ) : (
               <ParentPanel
                 boot={boot}
+                error={error}
                 curriculum={curriculum}
                 progress={progress}
                 lessonChoice={lessonChoice}
@@ -927,6 +958,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               illustrations={curriculum?.illustrations}
               writingCatalog={curriculum?.writing}
               soundEnabled={guidanceEnabled}
+              onGuidanceChange={changeGuidance}
               masteryById={masteryById}
               busy={busy}
               withinCurrentRange={Boolean(
@@ -968,10 +1000,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             <>
               <section className="daily-entry">
                 <div>
-                  <span className="eyebrow">学校每日练习</span>
+                  <span className="eyebrow">每天读一点</span>
                   <h2>天天练拼音</h2>
-                  <p>14 份练习 · 听示范，跟着读，也可以录音回放。</p>
-                  <VoiceButton id="daily-ui-intro" voice={voice} label="听每日跟读说明" />
+                  <p>听一听，跟着读。</p>
                 </div>
                 <button
                   onClick={() => {
@@ -983,79 +1014,22 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                   进入天天练拼音 →
                 </button>
               </section>
-              <section className="journey-card">
-                <div className="journey-title">
-                  <div>
-                    <span className="eyebrow">当前学习</span>
-                    <h2>
-                      {currentLesson
-                        ? `第 ${currentLesson.order} 课 · ${currentLesson.title}`
-                        : '请选择当前课'}
-                    </h2>
-                  </div>
-                  <div className="streak">
-                    ✦{' '}
-                    <span>
-                      {mastered}
-                      <small>已掌握知识点</small>
-                    </span>
-                  </div>
-                </div>
-                <p>
-                  {currentLesson?.objectives?.[0] ??
-                    '保存的当前课不在此课程版本中。已有学习记录会保留，请家长重新选择学校正在学习的课程。'}
-                </p>
-                <div className="journey-bottom">
-                  <div className="lesson-progress">
-                    <span
-                      style={{
-                        width: currentLesson
-                          ? `${Math.max(6, Math.round((currentLesson.order / lessons.length) * 100))}%`
-                          : '0%',
-                      }}
-                    />
-                  </div>
-                  <span>
-                    {currentLesson
-                      ? `课程 ${currentLesson.order} / ${lessons.length}`
-                      : `共 ${lessons.length} 课 · 当前课待选择`}
-                  </span>
-                </div>
-                {!currentLesson ? (
-                  <p className="session-note">学习路线仍可浏览，选择当前课后即可继续练习。</p>
-                ) : !canPracticeCurrent ? (
-                  <p className="session-note">当前课尚无可用视觉练习，不会创建空会话。</p>
-                ) : null}
-                <p className="session-note">
-                  建议陪伴练习约 {currentLesson?.suggestedSessionMinutes ?? 5} 分钟 · 可随时休息
-                </p>
-              </section>
-              {!parentOpen && (
-                <section className="garden-card" aria-labelledby="garden-title">
-                  <div className="garden-copy">
-                    <span className="eyebrow">拼音花园</span>
-                    <h2 id="garden-title">每完成一轮，花园多一片叶子</h2>
-                    <p>这里记录认真参与的每一轮。答错、休息或提前结束都不会失去已经长出的叶子。</p>
-                  </div>
-                  <div
-                    className="garden-pot"
-                    role="img"
-                    aria-label={`拼音花园已长出 ${progress.completedSessions} 片叶子`}
-                  >
-                    <div className="garden-stem" aria-hidden="true">
-                      {Array.from(
-                        { length: Math.min(progress.completedSessions, 8) },
-                        (_, index) => (
-                          <span className="garden-leaf" key={index} />
-                        ),
-                      )}
-                    </div>
-                    <div className="garden-soil" aria-hidden="true" />
-                    <div className="garden-planter" aria-hidden="true" />
-                    <strong>{progress.completedSessions} 片叶子</strong>
-                  </div>
-                </section>
-              )}
+              <details className="course-browser">
+                <summary>查看全部课程</summary>
+                <LessonNavigation
+                  lessons={lessons}
+                  currentLesson={currentLesson}
+                  masteryById={masteryById}
+                  onSelect={(id) => openLesson(id, true)}
+                />
+              </details>
+              <details className="home-progress-note">
+                <summary>我的拼音花园 · {progress.completedSessions} 片叶子</summary>
+                <span role="img" aria-label={`拼音花园已长出 ${progress.completedSessions} 片叶子`}>
+                  🌱 {progress.completedSessions} 片叶子
+                </span>
+                <p>每完成一轮长出一片叶子。可以随时休息。</p>
+              </details>
               {(progress.reviewRecommendations ?? []).length > 0 && (
                 <section className="map-card review-recommendations" aria-label="今日推荐复习">
                   <div className="section-heading">
@@ -1095,10 +1069,20 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               )}
             </>
           )}
-          <footer>课程次序按统编人教版一年级上册整理，家长可根据学校教学进度选课。</footer>
+          {parentOpen && (
+            <details className="management-section">
+              <summary>连接其他设备</summary>
+              <PairingManagement />
+            </details>
+          )}
+          {!parentOpen && (
+            <footer>
+              <ReleaseHistory contentVersion={curriculum?.contentVersion} />
+            </footer>
+          )}
         </>
       )}
-      <Notice error={error} onReconnect={() => void act(refresh)} />
+      {!parentOpen && <Notice error={error} onReconnect={() => void act(refresh)} />}
     </main>
   );
 }

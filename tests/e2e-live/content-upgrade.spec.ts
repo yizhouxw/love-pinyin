@@ -22,12 +22,15 @@ test('DATA-01: legacy content backup restores through parent UI and continues le
   await page.getByRole('button', { name: '退出练习' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 1 次作答/)).toBeVisible();
+  await page.getByText('显示设置', { exact: true }).click();
   const reducedMotion = page.getByRole('checkbox', { name: '减少动态效果' });
   await reducedMotion.click();
   await expect(reducedMotion).toBeChecked();
   const downloadEvent = page.waitForEvent('download');
+  await page.getByText('备份与恢复', { exact: true }).click();
   await page.getByRole('button', { name: '导出家庭数据' }).click();
+  await page.getByText('技术详情：查看 JSON', { exact: true }).click();
   const download = await downloadEvent;
   expect(download.suggestedFilename()).toMatch(/\.json$/);
   const downloadedPath = await download.path();
@@ -60,15 +63,16 @@ test('DATA-01: legacy content backup restores through parent UI and continues le
     buffer: Buffer.from('{broken'),
   });
   await expect(page.getByRole('alert')).toBeVisible();
-  await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 1 次作答/)).toBeVisible();
 
+  await page.getByText('删除与重置', { exact: true }).click();
   const remove = page.getByRole('button', { name: '删除记录', exact: true });
   await expect(remove).toBeDisabled();
   await page.getByLabel('确认删除文字').fill('取消');
   await expect(remove).toBeDisabled();
   await page.getByLabel('确认删除文字').fill('删除我的学习记录');
   await remove.click();
-  await expect(page.getByText(/· 0 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 0 次作答/)).toBeVisible();
 
   await fileInput.setInputFiles({
     name: 'family.json',
@@ -83,12 +87,14 @@ test('DATA-01: legacy content backup restores through parent UI and continues le
   await restore.click();
   await expect(page.getByText('家庭数据已恢复。', { exact: true })).toBeVisible();
   await expect(reducedMotion).toBeChecked();
-  await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 1 次作答/)).toBeVisible();
   await page.reload();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 1 次作答/)).toBeVisible();
+  await page.getByText('备份与恢复', { exact: true }).click();
   await page.getByRole('button', { name: '导出家庭数据' }).click();
+  await page.getByText('技术详情：查看 JSON', { exact: true }).click();
   await expect(exported).toBeVisible();
   const restored = JSON.parse(await exported.inputValue());
   expect(restored.attempts).toEqual(original.attempts);
@@ -129,6 +135,8 @@ test('DATA-01: old guest tab upgrades and keeps saved answers after reload', asy
   });
   await page.reload();
   await expect(page.locator('.play-nav strong')).toHaveText('第 2 / 6 关');
+  if (await page.getByText('听题目说明', { exact: true }).isVisible())
+    await page.getByText('听题目说明', { exact: true }).click();
   await page.getByRole('button', { name: '听题目', exact: true }).click();
   await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 15000 });
   await page.locator('.game-option').first().press('Enter');

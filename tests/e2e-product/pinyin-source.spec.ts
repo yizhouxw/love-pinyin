@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
@@ -51,7 +52,8 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
     expect(result.seconds, result.id).toBeLessThan(10);
     expect(result.peak, result.id).toBeGreaterThan(0.01);
   }
-  await page.getByRole('button', { name: '听本课录音' }).click();
+  await page.getByRole('button', { name: '课堂学习' }).click();
+  await openSection(page, '知识与教学提示');
   await page.getByRole('button', { name: 'a 播放标准音', exact: true }).click();
   await expect(page.getByRole('button', { name: 'a 停止播放', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'a 停止播放', exact: true }).click();
@@ -73,12 +75,16 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
     await expect(page.locator('.play-nav strong')).toHaveText(`第 ${index + 1} / 6 关`);
     if (question.audioRef) {
       await expect(page.locator('.game-option').first()).toBeDisabled();
-      // Finish actual instruction before testing the separate pronunciation recording.
+      // Let the queued prompt finish, then interrupt the first standard sample before it ends.
+      await openSection(page, '听题目说明', true);
       await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
       await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
         timeout: 20000,
       });
       if (index === 0) {
+        await expect(page.getByRole('button', { name: '停止听拼音', exact: true })).toBeVisible();
+        await page.getByRole('button', { name: '停止听拼音', exact: true }).click();
+        await expect(page.locator('.game-option').first()).toBeDisabled();
         await page.route(`**/api/v1/audio/${question.audioRef}`, (route) => route.abort('failed'));
         await page.getByRole('button', { name: '听拼音', exact: true }).click();
         await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
@@ -86,7 +92,7 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
         expect(answers).toEqual([]);
         await page.unroute(`**/api/v1/audio/${question.audioRef}`);
         await page.getByRole('button', { name: '↻ 重试声音' }).click();
-      } else await page.getByRole('button', { name: '听拼音', exact: true }).click();
+      }
     }
     await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
     if (index === 0)
@@ -102,6 +108,7 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
   await page.getByRole('button', { name: '回到小岛' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await openSection(page, '声音与播放设置');
   await expect(page.getByLabel('学习音频准备状态')).toContainText(
     `${source.assets.length} 项可播放`,
   );

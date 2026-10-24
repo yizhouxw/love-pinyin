@@ -16,4 +16,4 @@
 
 先做对应模块真实服务/真实声音回归，再运行npm run verify:all、npm run validate:release与完整test:e2e:product；保留桌面/390/320px的首页、课程、书写、天天练、游戏、家长、版本截图并目视核对。补语音关闭/重新开启、自动顺序、取消/后台、录音拒绝/不可用、错误码翻译、导出恢复、版本历史与焦点回退的有意义回归。已有测试按新的用户路径调整，不能删除原有业务边界。真实移动设备、受信任HTTPS、家庭LAN与儿童/家长试用独立记录，不以浏览器模拟冒称完成。
 
-状态：implementing。
+状态：software-verified。UX-01～08与VERSION-01已实现，完成工程、发布、本机真实服务/声音及桌面/窄屏验收；证据、初次失败及修复闭环见[交互整改验收](../engineering/simple-experience-acceptance.md)。真实移动设备、家庭LAN与儿童/家长试用仍单独验收。

@@ -111,9 +111,10 @@ test('ACCESS-02: guest mode stays visible and local pairing management connects 
   await page.goto(appUrl);
   await page.getByRole('button', { name: '访客体验' }).click();
   const banner = page.getByLabel('访客模式', { exact: true });
-  await expect(banner).toContainText('当前：访客模式');
+  await expect(banner).toContainText('访客体验 · 本次进度暂存');
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByText('连接其他设备', { exact: true }).click();
   const management = page.getByRole('region', { name: '配对码管理' });
   await expect(management.getByRole('button', { name: '清除并退出访客' })).toBeVisible();
   await management.getByLabel('家长配对码').fill('ZZZZZZZZ');
@@ -131,12 +132,17 @@ test('ACCESS-02: guest mode stays visible and local pairing management connects 
     fullPage: true,
   });
   await management.getByRole('button', { name: '连接家庭' }).click();
-  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('家长设备');
+  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭 Mac');
+  expect(
+    (await (await page.request.get(new URL('/api/v1/bootstrap', page.url()).href)).json()).device
+      .isParent,
+  ).toBe(true);
   await expect(page.getByLabel('访客模式', { exact: true })).toHaveCount(0);
   expect(await page.evaluate(() => sessionStorage.getItem('lp.guest.v1'))).toBeNull();
   expect((await context.cookies()).some((cookie) => cookie.name === 'lp_session')).toBe(true);
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByText('连接其他设备', { exact: true }).click();
   await page.getByRole('button', { name: '生成配对码', exact: true }).click();
   const code = await management.locator('.pair-code').innerText();
   expect(code).toMatch(/[A-Z2-9]{8}/);
@@ -150,16 +156,25 @@ test('ACCESS-02: second local paired device can generate a code from parent mana
   await page.goto(appUrl);
   await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
-  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('家长设备');
+  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭 Mac');
+  expect(
+    (await (await page.request.get(new URL('/api/v1/bootstrap', page.url()).href)).json()).device
+      .isParent,
+  ).toBe(true);
   const childContext = await browser.newContext();
   try {
     const child = await childContext.newPage();
     await child.goto(appUrl);
     await child.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
     await child.getByRole('button', { name: '连接家庭' }).click();
-    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('家长设备');
+    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭 Mac');
+    expect(
+      (await (await child.request.get(new URL('/api/v1/bootstrap', child.url()).href)).json())
+        .device.isParent,
+    ).toBe(true);
     await child.getByRole('button', { name: '家长管理' }).click();
     await child.getByRole('button', { name: '我是家长，继续' }).click();
+    await child.getByText('连接其他设备', { exact: true }).click();
     await child.getByRole('button', { name: '生成配对码', exact: true }).click();
     await expect(
       child.getByRole('region', { name: '配对码管理' }).getByRole('status'),

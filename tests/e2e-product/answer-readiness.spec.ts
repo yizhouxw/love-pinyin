@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
@@ -35,13 +36,13 @@ for (const guidance of [false, true]) {
     expect(first.audioRef).toBeTruthy();
     const option = page.locator('.game-option').first();
     const status = page.locator('#answer-availability');
-    await expect(status).toContainText('请点“听拼音”');
+    await page.getByRole('button', { name: '停止听拼音', exact: true }).click();
+    await expect(status).toContainText('点“听拼音”');
     await expect(option).toBeDisabled();
     await expect(option).toHaveAttribute('aria-describedby', 'answer-availability');
-    if (await page.getByRole('button', { name: '停止听题目', exact: true }).count())
-      await page.getByRole('button', { name: '停止听题目', exact: true }).click();
     // A failed optional prompt cannot replace the real standard-audio requirement.
     await page.route('**/api/v1/voice/prompt-*', (route) => route.abort('failed'));
+    await openSection(page, '听题目说明', true);
     await page.getByRole('button', { name: '听题目', exact: true }).click();
     await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
     await expect(option).toBeDisabled();
@@ -53,12 +54,15 @@ for (const guidance of [false, true]) {
     await expect(option).toBeEnabled({ timeout: 20000 });
     await expect(status).toHaveText('可以选择答案了。');
     // Even a failed prompt replay cannot relock a fully heard standard sample.
+    await openSection(page, '听题目说明', true);
     await page.getByRole('button', { name: '听题目', exact: true }).click();
     await expect(page.getByRole('button', { name: '↻ 重试声音' })).toBeVisible();
     await expect(option).toBeEnabled();
     await page.unroute('**/api/v1/voice/prompt-*');
     // Optional narration remains available but never controls answer availability.
+    await openSection(page, '听题目说明', true);
     await page.getByRole('button', { name: '听题目', exact: true }).click();
+    await openSection(page, '听题目说明', true);
     await page.getByRole('button', { name: '停止听题目', exact: true }).click();
     await expect(option).toBeEnabled();
     await page.getByRole('button', { name: '听拼音', exact: true }).click();
@@ -71,7 +75,7 @@ for (const guidance of [false, true]) {
     await expect(status).toContainText('这题已经完成');
     await page.getByRole('button', { name: '继续 →', exact: true }).click();
     await expect(option).toBeDisabled();
-    await expect(status).toContainText('听拼音');
+    await expect(status).toContainText(/听拼音|请听一听/);
     expect(answers).toHaveLength(1);
     const visualIndex = session.tasks.findIndex(
       (task: { exercise: { audioRef?: string } }, index: number) =>

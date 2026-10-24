@@ -40,3 +40,64 @@
 .daily-example-words span {
   font-family: var(--pinyin-font);
 }
+
+.daily-status-strip {
+  min-height: 6rem;
+  padding: 0.7rem 0.9rem;
+  margin: 0.5rem 0 0.8rem;
+  color: #255d66;
+  background: #edf7f5;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.daily-status-strip > p {
+  margin: 0;
+  font-weight: 600;
+}
+.daily-status-strip .daily-follow-wait {
+  display: contents;
+}
+.daily-status-strip .daily-follow-wait > div {
+  line-height: 1.5;
+}
+.daily-status-strip progress,
+.daily-static-track {
+  flex-shrink: 0;
+  height: 8px;
+  width: 100%;
+  margin: 0.5rem 0 0;
+  border-radius: 8px;
+  background: #d4e8e4;
+}
+.daily-word-examples {
+  margin-block: 0.8rem;
+  padding: 0.6rem;
+}
+
+/* The longest ordinary prompt reserves room at every text size. */
+.daily-status-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1fr 8px;
+  row-gap: 0.5rem;
+}
+.daily-status-strip::before {
+  content: '这一节结束啦，可以休息，也可以再读一遍。';
+  visibility: hidden;
+  grid-area: 1 / 1;
+  font-weight: 600;
+}
+.daily-status-strip > p,
+.daily-status-strip .daily-follow-wait > div {
+  grid-area: 1 / 1;
+  align-self: start;
+}
+.daily-status-strip progress,
+.daily-status-strip .daily-static-track {
+  grid-area: 2 / 1;
+  margin: 0;
+}

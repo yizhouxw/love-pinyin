@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
@@ -45,15 +46,14 @@ test('TONE-01: course rotation reaches all twelve recorded tones with spoken fee
       await expect(page.getByLabel('观察目标')).toHaveCount(0);
       await expect(page.locator('.feedback')).toHaveCount(0);
       await expect(page.locator('.game-option').first()).toBeDisabled();
+      const audio = page.waitForResponse(
+        (r) => r.url().endsWith(`/audio/${question.audioRef}`) && r.ok(),
+      );
+      await openSection(page, '听题目说明', true);
       await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
       await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
         timeout: 20000,
       });
-      await expect(page.locator('.game-option').first()).toBeDisabled();
-      const audio = page.waitForResponse(
-        (r) => r.url().endsWith(`/audio/${question.audioRef}`) && r.ok(),
-      );
-      await page.getByRole('button', { name: '听拼音', exact: true }).press('Enter');
       await audio;
       await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
       heard.push(question.audioRef!);
@@ -61,8 +61,9 @@ test('TONE-01: course rotation reaches all twelve recorded tones with spoken fee
       if (!wrongId) {
         wrongId = question.id;
         await optionById(page, question.options[(choice + 1) % 4]!.id).click();
-        await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
-        await expect(page.getByRole('button', { name: '听讲解', exact: true })).toBeVisible({
+        await openSection(page, '听讲解');
+        await expect(page.getByRole('button', { name: '停止重听讲解', exact: true })).toBeVisible();
+        await expect(page.getByRole('button', { name: '重听讲解', exact: true })).toBeVisible({
           timeout: 20000,
         });
         expect(submitted).toHaveLength(1);
@@ -110,12 +111,12 @@ test('TONE-01: course rotation reaches all twelve recorded tones with spoken fee
         await page.getByRole('button', { name: '↷ 先跳过这题' }).click();
         continue;
       }
+      await expect(page.locator('.game-option').first()).toBeDisabled();
+      await openSection(page, '听题目说明', true);
       await expect(page.getByRole('button', { name: '停止听题目', exact: true })).toBeVisible();
       await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
         timeout: 20000,
       });
-      await expect(page.locator('.game-option').first()).toBeDisabled();
-      await page.getByRole('button', { name: '听拼音', exact: true }).press('Enter');
       await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 20000 });
       await page.getByRole('button', { name: '退出练习' }).click();
       expect(submitted).toHaveLength(12);

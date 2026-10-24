@@ -5,6 +5,7 @@ import { suggestedDeviceModel } from '../platform/device-info';
 import { startGuest } from '../platform/guest';
 import { CopyCode } from './copy-code';
 import { Notice } from './notice';
+import { ReleaseHistory } from './release-history';
 
 export function PairingPage({
   boot,
@@ -33,11 +34,7 @@ export function PairingPage({
           ā
         </div>
         <p className="eyebrow">陪孩子慢慢学 · 每次几分钟</p>
-        <h1>
-          拼音小岛
-          <br />
-          等你来探索
-        </h1>
+        <h1>一起学拼音</h1>
         <p>在这台 Mac Studio 上运行的家庭学习空间。配对后，学习记录只保存在这台电脑里。</p>
         <form
           onSubmit={(event) => {
@@ -52,14 +49,6 @@ export function PairingPage({
             });
           }}
         >
-          <label htmlFor="pair-device-model">设备型号（可修改）</label>
-          <input
-            id="pair-device-model"
-            value={deviceModel}
-            maxLength={80}
-            onChange={(event) => setDeviceModel(event.target.value)}
-            placeholder="例如：iPad Air 5"
-          />
           <label htmlFor="pair-code">家长配对码</label>
           <div className="pair-input">
             <input
@@ -71,6 +60,18 @@ export function PairingPage({
             />
             <button disabled={busy || code.length < 8}>连接家庭</button>
           </div>
+          <details>
+            <summary>设备详情（可选）</summary>
+            <label htmlFor="pair-device-model">设备型号（可修改）</label>
+            <input
+              id="pair-device-model"
+              value={deviceModel}
+              maxLength={80}
+              onChange={(event) => setDeviceModel(event.target.value)}
+              placeholder="例如：iPad Air 5"
+            />
+          </details>
+          <Notice error={error} onReconnect={() => void act(refresh)} />
         </form>
         <div className="local-pair">
           <h2>没有配对码？</h2>
@@ -126,7 +127,7 @@ export function PairingPage({
           🔒 课程练习不使用麦克风。每日跟读可自愿录音，电脑本地识别，不保存。
         </p>
       </section>
-      <Notice error={error} onReconnect={() => void act(refresh)} />
+      <ReleaseHistory />
     </main>
   );
 }

@@ -77,3 +77,19 @@
   padding: 8px 12px;
   background: var(--card);
 }
+
+.guest-banner {
+  position: sticky;
+  min-height: 38px;
+  padding: 6px 16px;
+  gap: 8px;
+  font-size: 12px;
+}
+.guest-banner button {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.family-banner {
+  position: static;
+  min-height: 32px;
+}

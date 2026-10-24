@@ -22,12 +22,19 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
   await page.getByRole('button', { name: '退出练习' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 1 次作答/)).toBeVisible();
+  await page.getByText('显示设置', { exact: true }).click();
   const reducedMotion = page.getByRole('checkbox', { name: '减少动态效果' });
   await reducedMotion.click();
   await expect(reducedMotion).toBeChecked();
   const downloadEvent = page.waitForEvent('download');
+  await page.getByText('备份与恢复', { exact: true }).click();
   await page.getByRole('button', { name: '导出家庭数据' }).click();
+  await expect(
+    page.getByText('已生成家庭备份并开始下载，请在浏览器下载中确认文件已保存。', { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel('导出的 JSON 数据')).not.toBeVisible();
+  await page.getByText('技术详情：查看 JSON', { exact: true }).click();
   const download = await downloadEvent;
   expect(download.suggestedFilename()).toMatch(/\.json$/);
   const downloadedPath = await download.path();
@@ -49,15 +56,16 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
     buffer: Buffer.from('{broken'),
   });
   await expect(page.getByRole('alert')).toBeVisible();
-  await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 1 次作答/)).toBeVisible();
 
+  await page.getByText('删除与重置', { exact: true }).click();
   const remove = page.getByRole('button', { name: '删除记录', exact: true });
   await expect(remove).toBeDisabled();
   await page.getByLabel('确认删除文字').fill('取消');
   await expect(remove).toBeDisabled();
   await page.getByLabel('确认删除文字').fill('删除我的学习记录');
   await remove.click();
-  await expect(page.getByText(/· 0 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 0 次作答/)).toBeVisible();
 
   await fileInput.setInputFiles({
     name: 'family.json',
@@ -71,12 +79,18 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
   await restore.click();
   await expect(page.getByText('家庭数据已恢复。', { exact: true })).toBeVisible();
   await expect(reducedMotion).toBeChecked();
-  await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 1 次作答/)).toBeVisible();
   await page.reload();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  await expect(page.getByText(/· 1 次练习记录/)).toBeVisible();
+  await expect(page.getByText(/· 1 次作答/)).toBeVisible();
+  await page.getByText('备份与恢复', { exact: true }).click();
   await page.getByRole('button', { name: '导出家庭数据' }).click();
+  await expect(
+    page.getByText('已生成家庭备份并开始下载，请在浏览器下载中确认文件已保存。', { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel('导出的 JSON 数据')).not.toBeVisible();
+  await page.getByText('技术详情：查看 JSON', { exact: true }).click();
   await expect(exported).toBeVisible();
   const restored = JSON.parse(await exported.inputValue());
   expect(restored.attempts).toEqual(original.attempts);

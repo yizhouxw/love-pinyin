@@ -7,6 +7,7 @@ test('DEVICE-01: real paired devices show editable model, consumed code, connect
   browser,
 }) => {
   await page.goto(appUrl);
+  await page.getByText('设备详情（可选）', { exact: true }).click();
   await page.getByLabel('设备型号（可修改）').fill('Mac Studio 家长电脑');
   await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
   await expect(page.getByLabel('家长配对码', { exact: true })).toHaveValue(/^[A-Z2-9]{8}$/);
@@ -14,6 +15,10 @@ test('DEVICE-01: real paired devices show editable model, consumed code, connect
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page
+    .locator('.parent-section > summary')
+    .filter({ hasText: /^已连接设备$/ })
+    .click();
   const rows = page.locator('.device-list li');
   await expect(rows).toHaveCount(1);
   await expect(rows.first()).toContainText('设备型号：Mac Studio 家长电脑');
@@ -26,6 +31,7 @@ test('DEVICE-01: real paired devices show editable model, consumed code, connect
   await rows.first().getByLabel('设备型号', { exact: true }).fill('Mac Studio M2 Max');
   await rows.first().getByRole('button', { name: '保存设备型号' }).click();
   await expect(rows.first()).toContainText('设备型号：Mac Studio M2 Max');
+  await page.getByText('连接其他设备', { exact: true }).click();
   await page.getByRole('button', { name: '生成配对码', exact: true }).click();
   const invitation = await page
     .getByRole('region', { name: '配对码管理' })
@@ -36,9 +42,14 @@ test('DEVICE-01: real paired devices show editable model, consumed code, connect
     const child = await childContext.newPage();
     await child.goto(appUrl);
     await child.getByLabel('家长配对码', { exact: true }).fill(invitation);
+    await child.getByText('设备详情（可选）', { exact: true }).click();
     await child.getByLabel('设备型号（可修改）').fill('iPad Air 5');
     await child.getByRole('button', { name: '连接家庭' }).click();
-    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('家长设备');
+    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭 Mac');
+    expect(
+      (await (await child.request.get(new URL('/api/v1/bootstrap', child.url()).href)).json())
+        .device.isParent,
+    ).toBe(true);
     await page.getByRole('button', { name: '刷新设备列表' }).click();
     await expect(rows).toHaveCount(2);
     const ipad = rows.filter({ hasText: '设备型号：iPad Air 5' });
@@ -82,6 +93,10 @@ test('DEVICE-01: real paired devices show editable model, consumed code, connect
     await page.reload();
     await page.getByRole('button', { name: '家长管理' }).click();
     await page.getByRole('button', { name: '我是家长，继续' }).click();
+    await page
+      .locator('.parent-section > summary')
+      .filter({ hasText: /^已连接设备$/ })
+      .click();
     await expect(rows.filter({ hasText: 'Mac Studio M2 Max' })).toHaveCount(1);
   } finally {
     await childContext.close();

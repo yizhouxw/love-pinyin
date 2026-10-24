@@ -28,6 +28,15 @@ test('VOICE-09: Qwen Chinese voices all decode through the real local API', asyn
   ).toBe(true);
   const ids = [...new Map(narration.map((asset) => [asset.file, asset.id])).values()];
   expect(ids).toHaveLength(722);
+  await page.addInitScript(() => {
+    const play = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function () {
+      const source = this.getAttribute('data-learning-source') || this.src;
+      if (source.includes('/voice/daily-ui-intro'))
+        (window as Window & { dailyIntroMedia?: HTMLMediaElement }).dailyIntroMedia = this;
+      return play.call(this);
+    };
+  });
   await page.goto(appUrl);
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
   const decoded = await page.evaluate(async (ids) => {
@@ -45,12 +54,27 @@ test('VOICE-09: Qwen Chinese voices all decode through the real local API', asyn
     }
   }, ids);
   expect(decoded).toBe(722);
-  const intro = page.waitForResponse(
-    (response) => response.url().endsWith('/voice/daily-ui-intro') && response.ok(),
-  );
-  await page.getByRole('button', { name: '听每日跟读说明', exact: true }).click();
-  await intro;
-  await expect(page.getByRole('button', { name: '停止听每日跟读说明', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
-  await expect(page.getByRole('heading', { name: '天天练拼音', exact: true })).toBeVisible();
+  await page.getByText('跟读怎么玩', { exact: true }).click();
+  await page.getByRole('button', { name: '听每日跟读说明', exact: true }).click();
+  await expect(page.getByRole('button', { name: '停止听每日跟读说明', exact: true })).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => (window as Window & { dailyIntroMedia?: HTMLMediaElement }).dailyIntroMedia?.paused,
+      ),
+    )
+    .toBe(false);
+  await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
+  await expect(page.getByLabel('当前跟读内容')).toBeVisible();
+  await expect(page.getByRole('button', { name: '停止听每日跟读说明', exact: true })).toHaveCount(
+    0,
+  );
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => (window as Window & { dailyIntroMedia?: HTMLMediaElement }).dailyIntroMedia?.paused,
+      ),
+    )
+    .toBe(true);
 });

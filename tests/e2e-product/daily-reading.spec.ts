@@ -71,6 +71,8 @@ test('DAILY-01/02: all PDF demonstrations decode and the real reading page follo
   await expect(current.getByLabel('á', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: '连播本节' }).click();
   await expect(page.getByRole('button', { name: '停止示范' })).toBeVisible();
+  if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
+    await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 3 份', exact: true }).click();
   await page.getByRole('button', { name: '读词语', exact: false }).click();
   await expect(current).toContainText('中文词句朗读 · 普通话示范');
@@ -104,6 +106,11 @@ test('DAILY-03: microphone refusal stays separate from learning marks and permit
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
+  if (
+    !(await page.getByRole('button', { name: '录下我的跟读', exact: false }).isVisible()) &&
+    !(await page.getByRole('button', { name: '重新录音', exact: false }).isVisible())
+  )
+    await page.getByText('录音比较（可选）', { exact: true }).click();
   await page.getByRole('button', { name: '录下我的跟读' }).click();
   await expect(page.getByRole('alert')).toContainText('麦克风没有开启', { timeout: 25000 });
   await expect(page.getByLabel('回放我的跟读')).toHaveCount(0);
@@ -168,6 +175,11 @@ test('ASR-04: native browser recording of permitted reference audio reaches loca
     await page.evaluate((value) => {
       (window as unknown as { referenceId: string }).referenceId = value;
     }, id);
+    if (
+      !(await page.getByRole('button', { name: '录下我的跟读', exact: false }).isVisible()) &&
+      !(await page.getByRole('button', { name: '重新录音', exact: false }).isVisible())
+    )
+      await page.getByText('录音比较（可选）', { exact: true }).click();
     await page.getByRole('button', { name: /^(🎙 )?(录下我的跟读|重新录音)$/ }).click();
     await expect(page.getByRole('button', { name: '停止录音' })).toBeVisible({ timeout: 20000 });
     // Wait for the actual MediaRecorder payload, including the complete source syllable.
@@ -233,6 +245,11 @@ test('DAILY-04: guidance can be skipped, remembered and restored while target au
       value: { getUserMedia: () => Promise.reject(new DOMException('denied', 'NotAllowedError')) },
     }),
   );
+  if (
+    !(await page.getByRole('button', { name: '录下我的跟读', exact: false }).isVisible()) &&
+    !(await page.getByRole('button', { name: '重新录音', exact: false }).isVisible())
+  )
+    await page.getByText('录音比较（可选）', { exact: true }).click();
   await page.getByRole('button', { name: '录下我的跟读' }).click();
   await expect(page.getByRole('alert')).toContainText('麦克风没有开启');
   expect(await voices()).toEqual([]);
@@ -271,6 +288,7 @@ test('DAILY-05: parent opt-out reaches daily practice and nearby shortcuts share
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByText('声音与播放设置', { exact: true }).click();
   await page.getByRole('checkbox', { name: '自动朗读题目', exact: true }).click();
   await expect(page.getByRole('checkbox', { name: '自动朗读题目', exact: true })).not.toBeChecked();
   await expect(page.getByRole('checkbox', { name: '自动朗读题目', exact: true })).toBeEnabled();
@@ -297,6 +315,11 @@ test('DAILY-05: parent opt-out reaches daily practice and nearby shortcuts share
     });
   });
   await shortcut.check();
+  if (
+    !(await page.getByRole('button', { name: '录下我的跟读', exact: false }).isVisible()) &&
+    !(await page.getByRole('button', { name: '重新录音', exact: false }).isVisible())
+  )
+    await page.getByText('录音比较（可选）', { exact: true }).click();
   await page.getByRole('button', { name: '录下我的跟读' }).click();
   await shortcut.uncheck();
   await expect(reader.getByRole('alert')).toContainText('麦克风没有开启');
@@ -310,6 +333,7 @@ test('DAILY-05: parent opt-out reaches daily practice and nearby shortcuts share
   await expect(shortcut).not.toBeChecked();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByText('声音与播放设置', { exact: true }).click();
   await page.getByRole('checkbox', { name: '自动朗读题目', exact: true }).click();
   await expect(page.getByRole('checkbox', { name: '自动朗读题目', exact: true })).toBeChecked();
   await expect(page.getByRole('checkbox', { name: '自动朗读题目', exact: true })).toBeEnabled();
@@ -317,4 +341,36 @@ test('DAILY-05: parent opt-out reaches daily practice and nearby shortcuts share
   await expect(shortcut).toBeChecked();
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await expect(shortcut).toBeChecked();
+});
+
+test('UX-04/05: practice keeps material choices and recording out of the main flow', async ({
+  page,
+  appUrl,
+}) => {
+  await observeReadingMedia(page);
+  await page.goto(appUrl);
+  await page.getByRole('button', { name: '访客体验', exact: true }).click();
+  await page.getByRole('button', { name: '进入天天练拼音' }).click();
+  await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
+  const reader = page.getByLabel('当前跟读内容');
+  await expect(page.getByRole('navigation', { name: '选择每日练习' })).toHaveCount(0);
+  await expect(reader.getByRole('button', { name: '录下我的跟读' })).not.toBeVisible();
+  const strip = reader.locator('.daily-status-strip');
+  const before = await strip.boundingBox();
+  await page.getByLabel('第1份本节内容').getByRole('button').nth(1).click();
+  await expect
+    .poll(async () => (await playedReading(page, 'daily-audio')).includes('daily-a2'), {
+      timeout: 25000,
+    })
+    .toBe(true);
+  await expect(reader.getByRole('status')).toContainText('轮到你读啦', { timeout: 25000 });
+  expect((await strip.boundingBox())?.height).toBe(before?.height);
+  await reader.getByRole('button', { name: '连播本节' }).click();
+  await expect(reader.getByRole('button', { name: '停止示范' })).toBeVisible();
+  await reader.getByRole('button', { name: '停止示范' }).click();
+  expect((await strip.boundingBox())?.height).toBe(before?.height);
+  await reader.getByText('录音比较（可选）', { exact: true }).click();
+  await expect(reader.getByRole('button', { name: '录下我的跟读' })).toBeVisible();
+  await page.getByRole('button', { name: '换练习', exact: true }).click();
+  await expect(page.getByRole('navigation', { name: '选择每日练习' })).toBeVisible();
 });

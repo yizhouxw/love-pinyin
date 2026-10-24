@@ -423,3 +423,130 @@
   margin-top: 18px;
   min-width: 180px;
 }
+
+/* SPEC-016: compact task, stable response and a single obvious next action. */
+.play-page {
+  padding-top: 16px;
+}
+.play-nav {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.play-nav .icon-button {
+  flex: 0 0 48px;
+}
+.play-nav > div {
+  min-width: 90px;
+}
+.play-nav .guidance-switch {
+  flex: 0 0 auto;
+}
+.question-card {
+  margin-top: 18px;
+  padding: 28px;
+}
+.question-card > .eyebrow {
+  margin-top: 0;
+}
+.question-card h1 {
+  font-size: clamp(25px, 4vw, 34px);
+}
+.question-audio-actions {
+  align-items: center;
+  min-height: 62px;
+}
+.question-audio-actions .voice-button {
+  min-height: 52px;
+  padding: 10px 18px;
+  font-size: 17px;
+}
+.question-audio-actions .voice-button > span {
+  font-size: 22px;
+}
+.question-help summary {
+  min-height: 48px;
+  padding: 10px;
+  color: #526b5a;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+.question-help[open] {
+  padding-bottom: 8px;
+}
+.question-card #answer-availability {
+  min-height: 44px;
+  margin: 8px auto;
+  max-width: 44ch;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #45634d;
+}
+.question-card .options {
+  margin-top: 16px;
+}
+.exercise-response {
+  min-height: 188px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 10px;
+}
+.exercise-response .feedback {
+  margin: 0;
+  width: 100%;
+  padding: 12px 16px;
+  gap: 8px;
+}
+.exercise-response .next-button {
+  margin-top: 12px;
+  width: min(100%, 420px);
+}
+.answer-explanation {
+  border: 0;
+  padding: 0;
+}
+.answer-explanation summary {
+  min-height: 48px;
+  padding-block: 10px;
+}
+.blend-workbench .voice-button {
+  min-height: 48px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+.blend-workbench .voice-button > span {
+  font-size: 20px;
+}
+.blend-preview {
+  font-size: 38px;
+  margin-block: 10px;
+}
+@media (max-width: 500px) {
+  .question-card {
+    padding: 22px 16px;
+  }
+  .play-nav .progress-dots {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+  .play-nav small {
+    font-size: 12px;
+  }
+  .play-nav > .guidance-switch {
+    font-size: 12px;
+    padding-inline: 8px;
+  }
+  .question-card h1 {
+    font-size: 25px;
+    line-height: 1.35;
+  }
+  .question-audio-actions {
+    margin-block: 12px;
+    gap: 8px;
+  }
+  .question-card .options {
+    margin-top: 12px;
+  }
+}

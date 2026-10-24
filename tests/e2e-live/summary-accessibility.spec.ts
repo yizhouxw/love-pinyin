@@ -64,7 +64,7 @@ test('SUMMARY-01B: real server failure on finish is visible and retry credits on
   const back = page.getByRole('button', { name: '回到小岛', exact: true });
   await serverControl.stop();
   await back.press('Enter');
-  await expect(page.locator('.error-notice[role=alert]')).toContainText('本次操作结果未确认');
+  await expect(page.locator('.error-notice[role=alert]')).toContainText('本次操作尚未确认');
   await expect(page.getByLabel('本次练习小结')).toContainText('跳过：6 题');
   await expect(back).toBeEnabled();
   await serverControl.start();

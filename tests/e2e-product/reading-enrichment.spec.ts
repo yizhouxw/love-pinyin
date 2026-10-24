@@ -10,9 +10,22 @@ async function guest(page: import('@playwright/test').Page, url: string) {
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
 }
 
+async function parentSound(page: import('@playwright/test').Page) {
+  const sound = page.getByText(/^声音与(?:播放|显示)设置$/);
+  await expect(sound).toBeVisible();
+  const details = sound.locator('..');
+  if ((await details.getAttribute('open')) === null) await sound.press('Enter');
+  const fine = page.getByText(/^精细调整/);
+  await expect(fine).toBeVisible();
+  if (!(await page.getByLabel('连播间隔（秒）').isVisible())) await fine.press('Enter');
+  await expect(page.getByLabel('连播间隔（秒）')).toBeVisible();
+}
+
 async function quickGap(container: Locator) {
   const dialog = container.getByRole('dialog', { name: '跟读间隔' });
   if (!(await dialog.isVisible())) await container.locator('.daily-gap-trigger').click();
+  if (!(await dialog.getByLabel('连播间隔（秒）').isVisible()))
+    await dialog.getByText(/^精细调整/).click();
   return dialog;
 }
 
@@ -38,6 +51,7 @@ test('READ-01: family interval is saved, bounded, restored and retained across o
   const open = async () => {
     await page.getByRole('button', { name: '家长管理' }).click();
     await page.getByRole('button', { name: '我是家长，继续' }).click();
+    await parentSound(page);
   };
   await open();
   const gap = page.getByLabel('连播间隔（秒）');
@@ -110,12 +124,14 @@ test('READ-01: real consecutive audio observes the gap and stopping cancels the 
   await page.getByRole('button', { name: '返回小岛', exact: false }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await parentSound(page);
   await page.getByLabel('连播间隔（秒）').fill('0.1');
   await page.getByRole('button', { name: '保存间隔' }).click();
   await expect(page.getByText('当前间隔：0.1秒')).toBeVisible();
   await page.reload();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await parentSound(page);
   await expect(page.getByLabel('连播间隔（秒）')).toHaveValue('0.1');
 });
 
@@ -141,11 +157,14 @@ test('READ-05: real word syllables share one compact clip and word waits include
   await guest(page, appUrl);
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await parentSound(page);
   await page.getByLabel('连播间隔（秒）').fill('3');
   await page.getByRole('button', { name: '保存间隔' }).click();
   await expect(page.getByText('当前间隔：3.0秒')).toBeVisible();
   await page.getByRole('button', { name: '返回学习', exact: true }).click();
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
+  if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
+    await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 4 份', exact: true }).click();
   await page.getByRole('button', { name: /^拼读词语/ }).click();
   const reader = page.getByLabel('当前跟读内容');
@@ -252,11 +271,15 @@ test('READ-05: short and long real Chinese sentences wait for their spoken sylla
     await expect(reader.locator('.daily-highlight')).toHaveCount(0);
   };
 
+  if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
+    await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 5 份', exact: true }).click();
   await page.getByRole('button', { name: /^拼读句子/ }).click();
   await expect(page.getByText(/本份声音已就绪/)).toBeVisible();
   // dì di kū le: four displayed syllables, despite only three standard-audio IDs.
   await sentenceWait('daily-word-day-05-s5-i1', 1600);
+  if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
+    await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 10 份', exact: true }).click();
   await page.getByRole('button', { name: /^读句子/ }).click();
   await expect(page.getByText(/本份声音已就绪/)).toBeVisible();
@@ -278,6 +301,7 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
   await daily.locator('.daily-gap-trigger').focus();
   await page.keyboard.press('Enter');
   let settings = daily.getByRole('dialog', { name: '跟读间隔' });
+  await settings.getByText(/^精细调整/).click();
   const input = settings.getByLabel('连播间隔（秒）');
   await expect(input).toHaveValue('1');
   await expect(input).toHaveAttribute('min', '0.1');
@@ -319,6 +343,8 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
+  if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
+    await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 4 份', exact: true }).click();
   await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName('间隔设置，基础间隔0.2秒');
   await page.getByRole('button', { name: /^拼读词语/ }).click();
@@ -341,6 +367,11 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
       },
     });
   });
+  if (
+    !(await reader.getByRole('button', { name: '录下我的跟读', exact: false }).isVisible()) &&
+    !(await reader.getByRole('button', { name: '重新录音', exact: false }).isVisible())
+  )
+    await reader.getByText('录音比较（可选）', { exact: true }).click();
   await reader.getByRole('button', { name: '录下我的跟读' }).click();
   await expect(reader.getByRole('status')).toContainText('正在准备录音');
   settings = await quickGap(reader);
@@ -381,9 +412,14 @@ test('READ-06: a real learning device remembers its own gap without parent write
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await parentSound(page);
   await page.getByLabel('连播间隔（秒）').fill('2');
   await page.getByRole('button', { name: '保存间隔' }).click();
   await expect(page.getByText('当前间隔：2.0秒')).toBeVisible();
+  await page
+    .locator('summary')
+    .filter({ hasText: /^连接其他设备$/ })
+    .click();
   await page.getByRole('button', { name: '生成配对码', exact: true }).click();
   const code = await page
     .getByRole('region', { name: '配对码管理' })
@@ -400,7 +436,13 @@ test('READ-06: a real learning device remembers its own gap without parent write
     await learning.goto(appUrl.replace('127.0.0.1', 'localhost'));
     await learning.getByLabel('家长配对码', { exact: true }).fill(code);
     await learning.getByRole('button', { name: '连接家庭' }).click();
-    await expect(learning.getByLabel('家庭模式', { exact: true })).toContainText('学习设备');
+    await expect(learning.getByLabel('家庭模式', { exact: true })).toContainText(
+      '进度已连接家庭 Mac',
+    );
+    expect(
+      (await (await learning.request.get(new URL('/api/v1/bootstrap', learning.url()).href)).json())
+        .device.isParent,
+    ).toBe(false);
     await expect(learning.getByRole('button', { name: '家长管理' })).toHaveCount(0);
     await learning.getByRole('button', { name: '进入天天练拼音' }).click();
     const daily = learning.getByLabel('天天练拼音', { exact: true });
@@ -412,6 +454,8 @@ test('READ-06: a real learning device remembers its own gap without parent write
     await expect(
       learning.getByLabel('当前跟读内容').locator('.daily-gap-trigger'),
     ).toHaveAccessibleName('间隔设置，基础间隔0.4秒');
+    if (await learning.getByRole('button', { name: '换练习', exact: true }).isVisible())
+      await learning.getByRole('button', { name: '换练习', exact: true }).click();
     await learning.getByRole('button', { name: '第 4 份', exact: true }).click();
     await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
       '间隔设置，基础间隔0.4秒',
@@ -433,6 +477,7 @@ test('READ-06: a real learning device remembers its own gap without parent write
     const backup = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
     expect(backup.profile.settings.playbackGapSeconds).toBe(2);
 
+    await parentSound(page);
     await page.getByLabel('连播间隔（秒）').fill('3.1');
     await page.getByRole('button', { name: '保存间隔' }).click();
     await expect(page.getByText('当前间隔：3.1秒')).toBeVisible();
@@ -540,6 +585,8 @@ test('READ-07: compact controls preview drafts, dismiss safely and fit narrow vi
     await expect(trigger).toBeFocused();
     await expect(trigger).toHaveAccessibleName('间隔设置，基础间隔2.4秒');
   }
+  if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
+    await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 4 份', exact: true }).click();
   await page.getByRole('button', { name: /^拼读词语/ }).click();
   const reader = page.getByLabel('当前跟读内容');
@@ -580,6 +627,8 @@ test('READ-03/04: folded examples speak on opening, and Chinese sentences highli
   await observeReadingMedia(page);
   await guest(page, appUrl);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
+  if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
+    await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 3 份', exact: true }).click();
   await page.getByRole('button', { name: /^读音节并组词/ }).click();
   const reader = page.getByLabel('当前跟读内容');
@@ -596,6 +645,8 @@ test('READ-03/04: folded examples speak on opening, and Chinese sentences highli
   await reader.getByRole('button', { name: '先跳过', exact: true }).click();
   await expect(reader.getByRole('button', { name: '展开组词样例', exact: true })).toBeVisible();
   await expect(reader.getByText('八个', { exact: true })).toHaveCount(0);
+  if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
+    await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 5 份', exact: true }).click();
   await page.getByRole('button', { name: /^拼读句子/ }).click();
   await page.evaluate(() => {

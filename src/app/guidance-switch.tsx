@@ -1,8 +1,10 @@
 export function GuidanceSwitch({
   enabled,
   onChange,
+  label = '语音引导',
 }: {
   enabled: boolean;
+  label?: string;
   onChange: (enabled: boolean) => void;
 }) {
   return (
@@ -13,7 +15,9 @@ export function GuidanceSwitch({
         checked={enabled}
         onChange={(event) => onChange(event.currentTarget.checked)}
       />
-      <span>语音引导：{enabled ? '开' : '关'}</span>
+      <span>
+        {label}：{enabled ? '开' : '关'}
+      </span>
     </label>
   );
 }

@@ -34,7 +34,7 @@ test('RECOVERY-01: real server restart preserves saved work and replays one pend
   }).rejects.toThrow();
   await choice.press('Enter');
   // A stopped server can fail both narration and the answer request at once.
-  await expect(page.getByRole('alert').filter({ hasText: '本次操作结果未确认' })).toBeVisible();
+  await expect(page.getByRole('alert').filter({ hasText: '本次操作尚未确认' })).toBeVisible();
   await expect(page.locator('.feedback')).toHaveCount(0);
   expect(answers).toHaveLength(2);
 
@@ -46,7 +46,9 @@ test('RECOVERY-01: real server restart preserves saved work and replays one pend
   await page.getByRole('button', { name: '退出练习' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByText('备份与恢复', { exact: true }).click();
   await page.getByRole('button', { name: '导出家庭数据' }).click();
+  await page.getByText('技术详情：查看 JSON', { exact: true }).click();
   const backup = JSON.parse(await page.getByLabel('导出的 JSON 数据').inputValue());
   expect(backup.attempts).toHaveLength(2);
   expect(backup.attempts.find((row: { id: string }) => row.id === saved.attempts[0].id)).toEqual(
@@ -58,7 +60,9 @@ test('RECOVERY-01: real server restart preserves saved work and replays one pend
   await page.reload();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
+  await page.getByText('备份与恢复', { exact: true }).click();
   await page.getByRole('button', { name: '导出家庭数据' }).click();
+  await page.getByText('技术详情：查看 JSON', { exact: true }).click();
   const reloaded = JSON.parse(await page.getByLabel('导出的 JSON 数据').inputValue());
   expect(reloaded.attempts).toEqual(backup.attempts);
   expect(answers).toHaveLength(3);

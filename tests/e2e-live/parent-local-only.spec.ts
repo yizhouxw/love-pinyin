@@ -21,7 +21,13 @@ test('ACCESS-03: non-127 host cannot open parent management even with an existin
     const remote = await remoteContext.newPage();
     await remote.goto(remoteUrl);
     await expect(remote.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
-    await expect(remote.getByLabel('家庭模式', { exact: true })).toContainText('学习设备');
+    await expect(remote.getByLabel('家庭模式', { exact: true })).toContainText(
+      '进度已连接家庭 Mac',
+    );
+    expect(
+      (await (await remote.request.get(new URL('/api/v1/bootstrap', remote.url()).href)).json())
+        .device.isParent,
+    ).toBe(false);
     await expect(remote.getByRole('button', { name: '家长管理' })).toHaveCount(0);
     await expect(remote.getByRole('dialog')).toHaveCount(0);
     await expect(remote.getByRole('region', { name: '配对码管理' })).toHaveCount(0);

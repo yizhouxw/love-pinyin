@@ -49,7 +49,7 @@ describe('BrowserAudioPlayer', () => {
     await loading;
     expect(FakeAudio.instances[0]!.src).toBe('');
     const stalled = expect(player.playPrivate('prompt-question')).rejects.toThrow('AUDIO_STALLED');
-    const audio = FakeAudio.instances[1]! as FakeAudio & { currentTime: number };
+    const audio = FakeAudio.instances[0]! as FakeAudio & { currentTime: number };
     audio.currentTime = 0;
     audio.dispatchEvent(new Event('playing'));
     await vi.advanceTimersByTimeAsync(10000);
@@ -72,12 +72,14 @@ describe('BrowserAudioPlayer', () => {
     const firstAudio = FakeAudio.instances[0]!;
     const firstSource = firstAudio.src;
     const second = player.play('audio-final-o');
-    const secondAudio = FakeAudio.instances[1]!;
+    const secondAudio = FakeAudio.instances[0]!;
 
     expect(new URL(firstSource, 'https://family.local').origin).toBe('https://family.local');
     expect(firstSource).toBe('/api/v1/audio/audio-final-a');
-    expect(firstAudio.paused).toBe(true);
-    expect(firstAudio.src).toBe('');
+    await firstStopped;
+    expect(secondAudio).toBe(firstAudio);
+    expect(FakeAudio.instances).toHaveLength(1);
+    expect(secondAudio.src).toBe('/api/v1/audio/audio-final-o');
     expect(secondAudio.paused).toBe(false);
 
     secondAudio.dispatchEvent(new Event('ended'));

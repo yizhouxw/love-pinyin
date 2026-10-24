@@ -15,6 +15,7 @@ test('READ-08: word and long sentence characters sit below pinyin and wrap on na
   await page.getByRole('button', { name: /^读词语/ }).click();
   const target = page.locator('.daily-target');
   await expect(target.locator('rt')).toHaveText(['紫', '色']);
+  await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: /^读句子/ }).click();
   await expect(target.locator('rt')).toHaveCount(24);
   for (const width of [1280, 390, 320]) {

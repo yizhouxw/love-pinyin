@@ -106,6 +106,7 @@ export type AttemptHistoryPage = {
 };
 
 export type Curriculum = {
+  contentVersion?: string;
   illustrations?: IllustrationCatalog;
   writing?: WritingCatalog;
   lessons: Lesson[];

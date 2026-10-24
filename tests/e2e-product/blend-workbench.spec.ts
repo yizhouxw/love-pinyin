@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
@@ -60,6 +61,7 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   await expect(page.locator('.session-size-note')).toHaveCount(0);
   await expect(page.locator('.draft-banner')).toHaveCount(0);
   expect(submitted).toEqual([]);
+  await openSection(page, '听题目说明', true);
   await page.getByRole('button', { name: '听题目', exact: true }).click();
   await expect(options.first()).toBeEnabled({ timeout: 20000 });
   await optionById(page, question.options[wrongIndex]!.id).press('Enter');
@@ -67,16 +69,17 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   const answerPattern = `**/instances/${session.tasks[0].instanceId}/answer`;
   await page.route(answerPattern, (route) => route.abort('failed'));
   await confirm.press('Enter');
-  await expect(page.getByRole('alert')).toContainText('本次操作结果未确认');
+  await expect(page.getByRole('alert')).toContainText('本次操作尚未确认');
   await expect(page.getByLabel('当前拼读预览')).toContainText(question.options[wrongIndex]!.label);
   expect(submitted).toHaveLength(1);
   await page.unroute(answerPattern);
   await confirm.press('Enter');
   await expect(page.locator('.feedback')).toContainText('没关系');
-  await expect(page.locator('.answer-explanation')).toHaveText(
+  await expect(page.locator('.answer-explanation')).toContainText(
     new RegExp(narration.exercises[question.id as keyof typeof narration.exercises].hint),
   );
-  await expect(page.getByRole('button', { name: '停止听讲解', exact: true })).toBeVisible();
+  await openSection(page, '听讲解');
+  await expect(page.getByRole('button', { name: '停止重听讲解', exact: true })).toBeVisible();
   await expect
     .poll(() => voices.some((url) => url.endsWith(`/voice/hint-${question.id}`)))
     .toBe(true);

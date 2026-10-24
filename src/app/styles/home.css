@@ -500,3 +500,152 @@ footer {
   color: #89948b;
   font-size: 12px;
 }
+
+/* SPEC-016: the current task comes before the full course catalogue. */
+.home-page .learning-welcome {
+  margin: 24px 0 18px;
+  padding: clamp(22px, 4vw, 36px);
+  border: 1px solid #d9e5d5;
+  border-radius: 24px;
+  background: #fffefa;
+}
+.learning-welcome > div {
+  width: 100%;
+}
+.learning-welcome h1 {
+  font-size: clamp(28px, 4vw, 38px);
+  margin: 8px 0;
+}
+.learning-welcome .current-course {
+  color: #436454;
+  font-size: 20px;
+  font-weight: 700;
+}
+.learning-welcome .start-actions {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 12px;
+  margin: 22px 0 12px;
+}
+.learning-welcome .start-actions button {
+  margin: 0;
+  min-height: 56px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  font-size: 17px;
+}
+.learning-welcome .listen-lesson-button {
+  border: 1px solid #abc7b5;
+  border-radius: 14px;
+  color: var(--green);
+  background: #f0f7ef;
+}
+.home-help summary {
+  color: #526c59;
+  font-size: 14px;
+  cursor: pointer;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+.home-help .voice-button {
+  margin-top: 8px;
+}
+.course-browser {
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fffefa;
+  margin-block: 18px;
+}
+.course-browser > summary {
+  min-height: 48px;
+  padding-block: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--green);
+}
+.course-browser .lesson-navigation {
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  padding: 12px 0;
+}
+.home-progress-note {
+  color: #526c59;
+  font-size: 14px;
+  margin: 16px 4px;
+}
+.home-progress-note summary {
+  min-height: 48px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.home-page .parent-welcome {
+  padding: 12px 0;
+}
+.parent-welcome h1 {
+  font-size: 28px;
+  margin-block: 6px;
+}
+.topbar {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.topbar .brand {
+  order: 0;
+  margin-right: auto;
+}
+.topbar > .guidance-switch {
+  order: 1;
+}
+.topbar > .parent-button {
+  order: 2;
+}
+.home-page .daily-entry {
+  padding: 20px 24px;
+  margin-block: 18px;
+  border-radius: 20px;
+}
+.home-page .daily-entry h2 {
+  font-size: 24px;
+}
+.home-page .daily-entry p {
+  margin: 6px 0 0;
+}
+@media (max-width: 500px) {
+  .home-page .learning-welcome {
+    margin-top: 18px;
+    padding: 20px;
+  }
+  .learning-welcome .start-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .topbar .brand {
+    font-size: 16px;
+    gap: 6px;
+  }
+  .topbar .brand-mark {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+  .topbar > .guidance-switch {
+    padding-inline: 8px;
+    font-size: 13px;
+    gap: 6px;
+  }
+  .parent-button {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  .home-page .daily-entry {
+    padding: 18px 20px;
+  }
+}

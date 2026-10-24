@@ -196,3 +196,69 @@ input[type='file']::file-selector-button {
 .question-audio-actions .listen-question {
   margin: 0;
 }
+
+/* One visual language for spoken guidance throughout learning. */
+.guidance-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  max-width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #cadbcd;
+  border-radius: 24px;
+  background: #fffefa;
+  color: #365c47;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.guidance-switch input {
+  appearance: none;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 18px;
+  margin: 0;
+  border-radius: 12px;
+  background: #84968b;
+  position: relative;
+  cursor: pointer;
+}
+.guidance-switch input::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+}
+.guidance-switch input:checked {
+  background: #346c58;
+}
+.guidance-switch input:checked::after {
+  left: 15px;
+}
+summary {
+  cursor: pointer;
+}
+.management-section {
+  margin-block: 16px;
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+}
+.management-section > summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  color: var(--green);
+}
+
+body:has(dialog[open]) {
+  overflow: hidden;
+}
