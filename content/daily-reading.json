@@ -301,7 +301,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         }
       ]
     },
@@ -580,7 +581,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         }
       ]
     },
@@ -639,7 +641,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-03-section-2",
@@ -866,7 +869,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-03-section-3",
@@ -983,7 +987,8 @@
               "narrationId": "daily-word-day-03-s3-i10",
               "spokenText": "伯伯"
             }
-          ]
+          ],
+          "kind": "words"
         }
       ]
     },
@@ -1042,7 +1047,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-04-section-2",
@@ -1247,7 +1253,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-04-section-3",
@@ -1518,7 +1525,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-04-section-4",
@@ -1800,7 +1808,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "words"
         }
       ]
     },
@@ -1848,7 +1857,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-05-section-2",
@@ -1888,7 +1898,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "comparison"
         },
         {
           "id": "day-05-section-3",
@@ -2313,7 +2324,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-05-section-4",
@@ -2452,7 +2464,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "words"
         },
         {
           "id": "day-05-section-5",
@@ -2481,7 +2494,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "sentences"
         }
       ]
     },
@@ -2529,7 +2543,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-06-section-2",
@@ -2569,7 +2584,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "comparison"
         },
         {
           "id": "day-06-section-3",
@@ -2675,7 +2691,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "spelling"
         },
         {
           "id": "day-06-section-4",
@@ -3001,7 +3018,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-06-section-5",
@@ -3195,7 +3213,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "words"
         },
         {
           "id": "day-06-section-6",
@@ -3265,7 +3284,8 @@
               "narrationId": "daily-word-day-06-s6-i2",
               "spokenText": "爸爸下棋，妈妈洗衣服，哥哥和弟弟搭积木。"
             }
-          ]
+          ],
+          "kind": "sentences"
         }
       ]
     },
@@ -3346,7 +3366,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-07-section-2",
@@ -3474,7 +3495,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "comparison"
         },
         {
           "id": "day-07-section-3",
@@ -3877,7 +3899,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-07-section-4",
@@ -4159,7 +4182,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-07-section-5",
@@ -4364,7 +4388,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "words"
         },
         {
           "id": "day-07-section-6",
@@ -4427,7 +4452,8 @@
               "narrationId": "daily-word-day-07-s6-i1",
               "spokenText": "上午，爸爸拖地，妈妈洗衣服，哥哥擦玻璃，弟弟画画，我做贺卡。"
             }
-          ]
+          ],
+          "kind": "sentences"
         }
       ]
     },
@@ -4530,7 +4556,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-08-section-2",
@@ -4570,7 +4597,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "comparison"
         },
         {
           "id": "day-08-section-3",
@@ -4786,7 +4814,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-08-section-4",
@@ -5013,7 +5042,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-08-section-5",
@@ -5240,7 +5270,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "words"
         }
       ]
     },
@@ -5277,7 +5308,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-09-section-2",
@@ -5548,7 +5580,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-09-section-3",
@@ -5599,7 +5632,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "words"
         }
       ]
     },
@@ -5647,7 +5681,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-10-section-2",
@@ -5786,7 +5821,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-10-section-3",
@@ -5826,7 +5862,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "comparison"
         },
         {
           "id": "day-10-section-4",
@@ -6064,7 +6101,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-10-section-5",
@@ -6291,7 +6329,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "words"
         },
         {
           "id": "day-10-section-6",
@@ -6359,7 +6398,8 @@
               "narrationId": "daily-word-day-10-s6-i4",
               "spokenText": "妈妈的手上拿着果皮。"
             }
-          ]
+          ],
+          "kind": "sentences"
         }
       ]
     },
@@ -6407,7 +6447,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-11-section-2",
@@ -6546,7 +6587,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-11-section-3",
@@ -6623,7 +6665,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "comparison"
         },
         {
           "id": "day-11-section-4",
@@ -6806,7 +6849,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-11-section-5",
@@ -7032,14 +7076,7 @@
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
-            }
-          ]
-        },
-        {
-          "id": "day-11-section-6",
-          "title": "读词句",
-          "instruction": "先听示范，再跟着读。读完后点下一条。",
-          "items": [
+            },
             {
               "id": "day-11-s6-i1",
               "display": "xiǎo qiáo",
@@ -7116,7 +7153,15 @@
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
-            },
+            }
+          ],
+          "kind": "words"
+        },
+        {
+          "id": "day-11-section-6",
+          "title": "读句子",
+          "instruction": "先听示范，再跟着读。读完后点下一条。",
+          "items": [
             {
               "id": "day-11-s6-i8",
               "display": "miāo miāo miāo，xiǎo māo jiào。",
@@ -7187,7 +7232,8 @@
               "narrationId": "daily-word-day-11-s6-i10",
               "spokenText": "牛妈妈驮着牛宝宝做游戏。"
             }
-          ]
+          ],
+          "kind": "sentences"
         }
       ]
     },
@@ -7257,7 +7303,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-12-section-2",
@@ -7484,7 +7531,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-12-section-3",
@@ -7546,7 +7594,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "comparison"
         },
         {
           "id": "day-12-section-4",
@@ -7663,7 +7712,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-12-section-5",
@@ -7703,7 +7753,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "spelling"
         },
         {
           "id": "day-12-section-6",
@@ -7907,14 +7958,7 @@
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
-            }
-          ]
-        },
-        {
-          "id": "day-12-section-7",
-          "title": "读词句",
-          "instruction": "先听示范，再跟着读。读完后点下一条。",
-          "items": [
+            },
             {
               "id": "day-12-s7-i1",
               "display": "kāi huā",
@@ -7980,7 +8024,15 @@
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
-            },
+            }
+          ],
+          "kind": "words"
+        },
+        {
+          "id": "day-12-section-7",
+          "title": "读句子",
+          "instruction": "先听示范，再跟着读。读完后点下一条。",
+          "items": [
             {
               "id": "day-12-s7-i7",
               "display": "xǐ què zhī tóu jiào，xǐ shì jiù lái dào。",
@@ -8075,7 +8127,8 @@
               "narrationId": "daily-word-day-12-s7-i9",
               "spokenText": "爷爷坐着摇摇椅，戴着耳机睡着了。"
             }
-          ]
+          ],
+          "kind": "sentences"
         }
       ]
     },
@@ -8178,7 +8231,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-13-section-2",
@@ -8372,7 +8426,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-13-section-3",
@@ -8423,7 +8478,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "comparison"
         },
         {
           "id": "day-13-section-4",
@@ -8540,7 +8596,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-13-section-5",
@@ -8888,7 +8945,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-13-section-6",
@@ -9048,14 +9106,7 @@
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
-            }
-          ]
-        },
-        {
-          "id": "day-13-section-7",
-          "title": "读词句",
-          "instruction": "先听示范，再跟着读。读完后点下一条。",
-          "items": [
+            },
             {
               "id": "day-13-s7-i1",
               "display": "lán tiān",
@@ -9099,7 +9150,15 @@
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
-            },
+            }
+          ],
+          "kind": "words"
+        },
+        {
+          "id": "day-13-section-7",
+          "title": "读句子",
+          "instruction": "先听示范，再跟着读。读完后点下一条。",
+          "items": [
             {
               "id": "day-13-s7-i5",
               "display": "wǒ měi tiān dōu qù pá shān。",
@@ -9160,7 +9219,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "sentences"
         }
       ]
     },
@@ -9230,7 +9290,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-14-section-2",
@@ -9391,7 +9452,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-14-section-3",
@@ -9475,7 +9537,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "comparison"
         },
         {
           "id": "day-14-section-4",
@@ -9526,7 +9589,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-14-section-5",
@@ -9764,7 +9828,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "phonics"
         },
         {
           "id": "day-14-section-6",
@@ -9968,14 +10033,7 @@
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
-            }
-          ]
-        },
-        {
-          "id": "day-14-section-7",
-          "title": "读词句",
-          "instruction": "先听示范，再跟着读。读完后点下一条。",
-          "items": [
+            },
             {
               "id": "day-14-s7-i1",
               "display": "huǒ chē",
@@ -10041,7 +10099,15 @@
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
-            },
+            }
+          ],
+          "kind": "words"
+        },
+        {
+          "id": "day-14-section-7",
+          "title": "读句子",
+          "instruction": "先听示范，再跟着读。读完后点下一条。",
+          "items": [
             {
               "id": "day-14-s7-i7",
               "display": "wǒ men shàng xué qù。",
@@ -10108,7 +10174,8 @@
               "narrationId": null,
               "spokenText": null
             }
-          ]
+          ],
+          "kind": "sentences"
         }
       ]
     }

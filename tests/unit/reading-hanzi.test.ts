@@ -7,7 +7,7 @@ import { readingCharacters, readingHanzi, type DailyReading } from '../../src/do
 it('pairs every word and sentence syllable with a character, preserving spoken text and punctuation', () => {
   const annotated = (content as unknown as DailyReading).days.flatMap((day) =>
     day.sections
-      .filter((section) => /词语|句子/.test(section.title))
+      .filter((section) => section.kind === 'words' || section.kind === 'sentences')
       .flatMap((section) => section.items),
   );
   expect(Object.keys(hanzi)).toHaveLength(annotated.length);

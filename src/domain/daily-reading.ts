@@ -17,6 +17,7 @@ export type DailyItem = {
 };
 export type DailySection = {
   id: string;
+  kind: 'phonics' | 'comparison' | 'spelling' | 'words' | 'sentences';
   title: string;
   instruction: string;
   items: DailyItem[];

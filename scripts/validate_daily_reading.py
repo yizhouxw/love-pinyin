@@ -1,6 +1,7 @@
 """Validate faithful daily content and optional real local resource readiness."""
 
 import argparse
+import json
 import re
 
 from server import daily_reading, learning_audio, reading_timings
@@ -8,8 +9,57 @@ from server.audio_assets import _verified_file
 from server.content import load_writing
 
 
+def validate_categories(data: dict, navigation: dict, hanzi: dict) -> None:
+    """Check authored categories, never infer words or sentences from syllable length."""
+    sections = [section for day in data["days"] for section in day["sections"]]
+    labels = {
+        "comparison": "辨音对比",
+        "spelling": "拼读组合",
+        "words": "词语",
+        "sentences": "句子",
+    }
+    if list(navigation) != [section["id"] for section in sections]:
+        raise ValueError("Daily navigation sections do not match content")
+    annotated = set()
+    for section in sections:
+        kind = section.get("kind")
+        if kind not in {"phonics", *labels}:
+            raise ValueError(f"Invalid daily category: {section['id']}")
+        groups = navigation[section["id"]]
+        if [key for group in groups for key in group["itemIds"]] != [
+            item["id"] for item in section["items"]
+        ]:
+            raise ValueError(f"Daily navigation item order: {section['id']}")
+        if kind in labels and any(
+            group["family"] != labels[kind] or group["compact"] for group in groups
+        ):
+            raise ValueError(f"Daily navigation category: {section['id']}")
+        if kind in {"words", "sentences"}:
+            if labels[kind] not in section["title"]:
+                raise ValueError(f"Daily category title: {section['id']}")
+            for item in section["items"]:
+                annotated.add(item["id"])
+                text = hanzi.get(item["id"], "")
+                if len(re.findall(r"[\u3400-\u9fff]", text)) != len(item["syllables"]):
+                    raise ValueError(f"Daily character coverage: {item['id']}")
+                if item["spokenText"] and item["spokenText"] != text:
+                    raise ValueError(f"Daily character narration: {item['id']}")
+                # Authored classification plus punctuation guard catches the reported mixing.
+                for value in [item["display"], text]:
+                    terminal = bool(re.search(r"[。！？.!?]$", value))
+                    if terminal != (kind == "sentences"):
+                        raise ValueError(f"Daily word/sentence category: {item['id']}")
+    if set(hanzi) != annotated:
+        raise ValueError("Daily character annotations do not match words and sentences")
+
+
 def validate(release: bool = False) -> dict:
     data = daily_reading.load()
+    validate_categories(
+        data,
+        json.loads((daily_reading.CONTENT.parent / "daily-reading-navigation.json").read_text()),
+        json.loads((daily_reading.CONTENT.parent / "daily-reading-hanzi.json").read_text()),
+    )
     scripts = daily_reading.scripts()
     if any(re.search(r"[A-Za-z\u00c0-\u024f]", text) for text in scripts.values()):
         raise ValueError("Daily narration must not synthesize pinyin text")

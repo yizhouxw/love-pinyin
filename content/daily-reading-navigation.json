@@ -127,7 +127,7 @@
   ],
   "day-03-section-3": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-03-s3-i1",
@@ -141,7 +141,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": ["day-03-s3-i9", "day-03-s3-i10"]
     }
@@ -234,7 +234,7 @@
   ],
   "day-04-section-4": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-04-s4-i1",
@@ -248,7 +248,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-04-s4-i9",
@@ -262,7 +262,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-04-s4-i17",
@@ -276,7 +276,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": ["day-04-s4-i25"]
     }
@@ -290,7 +290,7 @@
   ],
   "day-05-section-2": [
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": ["day-05-s2-i1", "day-05-s2-i2", "day-05-s2-i3"]
     }
@@ -371,7 +371,7 @@
   ],
   "day-05-section-4": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-05-s4-i1",
@@ -385,14 +385,14 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": ["day-05-s4-i9", "day-05-s4-i10", "day-05-s4-i11", "day-05-s4-i12"]
     }
   ],
   "day-05-section-5": [
     {
-      "family": "词句",
+      "family": "句子",
       "compact": false,
       "itemIds": ["day-05-s5-i1", "day-05-s5-i2"]
     }
@@ -406,14 +406,14 @@
   ],
   "day-06-section-2": [
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": ["day-06-s2-i1", "day-06-s2-i2", "day-06-s2-i3"]
     }
   ],
   "day-06-section-3": [
     {
-      "family": "词句",
+      "family": "拼读组合",
       "compact": false,
       "itemIds": [
         "day-06-s3-i1",
@@ -427,7 +427,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "拼读组合",
       "compact": false,
       "itemIds": ["day-06-s3-i9"]
     }
@@ -489,7 +489,7 @@
   ],
   "day-06-section-5": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-06-s5-i1",
@@ -503,7 +503,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-06-s5-i9",
@@ -517,14 +517,14 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": ["day-06-s5-i17"]
     }
   ],
   "day-06-section-6": [
     {
-      "family": "词句",
+      "family": "句子",
       "compact": false,
       "itemIds": ["day-06-s6-i1", "day-06-s6-i2"]
     }
@@ -545,7 +545,7 @@
   ],
   "day-07-section-2": [
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": [
         "day-07-s2-i1",
@@ -559,7 +559,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": ["day-07-s2-i9", "day-07-s2-i10", "day-07-s2-i11"]
     }
@@ -659,7 +659,7 @@
   ],
   "day-07-section-5": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-07-s5-i1",
@@ -673,7 +673,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-07-s5-i9",
@@ -687,14 +687,14 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": ["day-07-s5-i17", "day-07-s5-i18"]
     }
   ],
   "day-07-section-6": [
     {
-      "family": "词句",
+      "family": "句子",
       "compact": false,
       "itemIds": ["day-07-s6-i1"]
     }
@@ -717,7 +717,7 @@
   ],
   "day-08-section-2": [
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": ["day-08-s2-i1", "day-08-s2-i2", "day-08-s2-i3"]
     }
@@ -794,7 +794,7 @@
   ],
   "day-08-section-5": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-08-s5-i1",
@@ -808,7 +808,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-08-s5-i9",
@@ -822,7 +822,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": ["day-08-s5-i17", "day-08-s5-i18", "day-08-s5-i19", "day-08-s5-i20"]
     }
@@ -890,7 +890,7 @@
   ],
   "day-09-section-3": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": ["day-09-s3-i1", "day-09-s3-i2", "day-09-s3-i3", "day-09-s3-i4"]
     }
@@ -925,7 +925,7 @@
   ],
   "day-10-section-3": [
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": ["day-10-s3-i1", "day-10-s3-i2", "day-10-s3-i3"]
     }
@@ -973,7 +973,7 @@
   ],
   "day-10-section-5": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-10-s5-i1",
@@ -987,7 +987,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-10-s5-i9",
@@ -1001,14 +1001,14 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": ["day-10-s5-i17", "day-10-s5-i18", "day-10-s5-i19", "day-10-s5-i20"]
     }
   ],
   "day-10-section-6": [
     {
-      "family": "词句",
+      "family": "句子",
       "compact": false,
       "itemIds": ["day-10-s6-i1", "day-10-s6-i2", "day-10-s6-i3", "day-10-s6-i4"]
     }
@@ -1043,7 +1043,7 @@
   ],
   "day-11-section-3": [
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": [
         "day-11-s3-i1",
@@ -1087,7 +1087,7 @@
   ],
   "day-11-section-5": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-11-s5-i1",
@@ -1101,7 +1101,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-11-s5-i9",
@@ -1115,35 +1115,30 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
-      "itemIds": ["day-11-s5-i17", "day-11-s5-i18", "day-11-s5-i19", "day-11-s5-i20"]
+      "itemIds": [
+        "day-11-s5-i17",
+        "day-11-s5-i18",
+        "day-11-s5-i19",
+        "day-11-s5-i20",
+        "day-11-s6-i1",
+        "day-11-s6-i2",
+        "day-11-s6-i3",
+        "day-11-s6-i4"
+      ]
+    },
+    {
+      "family": "词语",
+      "compact": false,
+      "itemIds": ["day-11-s6-i5", "day-11-s6-i6", "day-11-s6-i7"]
     }
   ],
   "day-11-section-6": [
     {
-      "family": "词句",
+      "family": "句子",
       "compact": false,
-      "itemIds": ["day-11-s6-i1"]
-    },
-    {
-      "family": "sh",
-      "compact": true,
-      "itemIds": ["day-11-s6-i2"]
-    },
-    {
-      "family": "词句",
-      "compact": false,
-      "itemIds": [
-        "day-11-s6-i3",
-        "day-11-s6-i4",
-        "day-11-s6-i5",
-        "day-11-s6-i6",
-        "day-11-s6-i7",
-        "day-11-s6-i8",
-        "day-11-s6-i9",
-        "day-11-s6-i10"
-      ]
+      "itemIds": ["day-11-s6-i8", "day-11-s6-i9", "day-11-s6-i10"]
     }
   ],
   "day-12-section-1": [
@@ -1190,7 +1185,7 @@
   ],
   "day-12-section-3": [
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": ["day-12-s3-i1", "day-12-s3-i2", "day-12-s3-i3", "day-12-s3-i4", "day-12-s3-i5"]
     }
@@ -1218,14 +1213,14 @@
   ],
   "day-12-section-5": [
     {
-      "family": "词句",
+      "family": "拼读组合",
       "compact": false,
       "itemIds": ["day-12-s5-i1", "day-12-s5-i2", "day-12-s5-i3"]
     }
   ],
   "day-12-section-6": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-12-s6-i1",
@@ -1239,7 +1234,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-12-s6-i9",
@@ -1253,30 +1248,25 @@
       ]
     },
     {
-      "family": "词句",
-      "compact": false,
-      "itemIds": ["day-12-s6-i17", "day-12-s6-i18"]
-    }
-  ],
-  "day-12-section-7": [
-    {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
+        "day-12-s6-i17",
+        "day-12-s6-i18",
         "day-12-s7-i1",
         "day-12-s7-i2",
         "day-12-s7-i3",
         "day-12-s7-i4",
         "day-12-s7-i5",
-        "day-12-s7-i6",
-        "day-12-s7-i7",
-        "day-12-s7-i8"
+        "day-12-s7-i6"
       ]
-    },
+    }
+  ],
+  "day-12-section-7": [
     {
-      "family": "词句",
+      "family": "句子",
       "compact": false,
-      "itemIds": ["day-12-s7-i9"]
+      "itemIds": ["day-12-s7-i7", "day-12-s7-i8", "day-12-s7-i9"]
     }
   ],
   "day-13-section-1": [
@@ -1328,7 +1318,7 @@
   ],
   "day-13-section-3": [
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": ["day-13-s3-i1", "day-13-s3-i2", "day-13-s3-i3", "day-13-s3-i4"]
     }
@@ -1413,7 +1403,7 @@
   ],
   "day-13-section-6": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-13-s6-i1",
@@ -1427,7 +1417,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-13-s6-i9",
@@ -1435,23 +1425,22 @@
         "day-13-s6-i11",
         "day-13-s6-i12",
         "day-13-s6-i13",
-        "day-13-s6-i14"
+        "day-13-s6-i14",
+        "day-13-s7-i1",
+        "day-13-s7-i2"
       ]
+    },
+    {
+      "family": "词语",
+      "compact": false,
+      "itemIds": ["day-13-s7-i3", "day-13-s7-i4"]
     }
   ],
   "day-13-section-7": [
     {
-      "family": "词句",
+      "family": "句子",
       "compact": false,
-      "itemIds": [
-        "day-13-s7-i1",
-        "day-13-s7-i2",
-        "day-13-s7-i3",
-        "day-13-s7-i4",
-        "day-13-s7-i5",
-        "day-13-s7-i6",
-        "day-13-s7-i7"
-      ]
+      "itemIds": ["day-13-s7-i5", "day-13-s7-i6", "day-13-s7-i7"]
     }
   ],
   "day-14-section-1": [
@@ -1491,7 +1480,7 @@
   ],
   "day-14-section-3": [
     {
-      "family": "词句",
+      "family": "辨音对比",
       "compact": false,
       "itemIds": [
         "day-14-s3-i1",
@@ -1554,7 +1543,7 @@
   ],
   "day-14-section-6": [
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-14-s6-i1",
@@ -1568,7 +1557,7 @@
       ]
     },
     {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
         "day-14-s6-i9",
@@ -1582,30 +1571,25 @@
       ]
     },
     {
-      "family": "词句",
-      "compact": false,
-      "itemIds": ["day-14-s6-i17", "day-14-s6-i18"]
-    }
-  ],
-  "day-14-section-7": [
-    {
-      "family": "词句",
+      "family": "词语",
       "compact": false,
       "itemIds": [
+        "day-14-s6-i17",
+        "day-14-s6-i18",
         "day-14-s7-i1",
         "day-14-s7-i2",
         "day-14-s7-i3",
         "day-14-s7-i4",
         "day-14-s7-i5",
-        "day-14-s7-i6",
-        "day-14-s7-i7",
-        "day-14-s7-i8"
+        "day-14-s7-i6"
       ]
-    },
+    }
+  ],
+  "day-14-section-7": [
     {
-      "family": "词句",
+      "family": "句子",
       "compact": false,
-      "itemIds": ["day-14-s7-i9"]
+      "itemIds": ["day-14-s7-i7", "day-14-s7-i8", "day-14-s7-i9"]
     }
   ]
 }
