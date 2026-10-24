@@ -163,7 +163,6 @@ export function DailyReadingPage({
             <h2>
               第 {day.number} 份 · {day.title}
             </h2>
-            <small>源 PDF 第 {day.sourcePage} 页</small>
           </div>
           <nav className="daily-sections" aria-label="选择练习小节">
             {day.sections.map((value) => {
@@ -212,6 +211,27 @@ export function DailyReadingPage({
   );
 }
 
+function FollowWait({ seconds }: { seconds: number }) {
+  const [remaining, setRemaining] = useState(seconds);
+  useEffect(() => {
+    const end = performance.now() + seconds * 1000;
+    const timer = window.setInterval(
+      () => setRemaining(Math.max(0, (end - performance.now()) / 1000)),
+      100,
+    );
+    return () => window.clearInterval(timer);
+  }, [seconds]);
+  return (
+    <div className="daily-follow-wait" role="status" aria-label="请跟读">
+      <div>
+        <span>请跟读</span>
+        <span aria-hidden="true">{remaining.toFixed(1)} 秒</span>
+      </div>
+      <progress max={seconds} value={remaining} aria-label="跟读剩余时间" />
+    </div>
+  );
+}
+
 function ReadingSession({
   day,
   guidanceEnabled,
@@ -233,6 +253,7 @@ function ReadingSession({
 }) {
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<'ready' | 'playing' | 'follow' | 'finished'>('ready');
+  const [waiting, setWaiting] = useState<{ seconds: number; id: string } | null>(null);
   const [highlight, setHighlight] = useState(-1);
   const [audioStage, setAudioStage] = useState<'loading' | 'playing'>('loading');
   const [instructionPlaying, setInstructionPlaying] = useState(false);
@@ -284,6 +305,7 @@ function ReadingSession({
     setHighlight(-1);
     setExamplesPlaying(false);
     setPhase('ready');
+    setWaiting(null);
     setRecognizing(false);
   }, []);
   useEffect(() => {
@@ -373,8 +395,12 @@ function ReadingSession({
           setExampleFailure(false);
           setIndex(cursor);
           await demo(target, active.signal);
-          if (cursor < section.items.length - 1)
-            await waitForPlaybackGap(readingGapSeconds(target, gapSeconds), active.signal);
+          if (cursor < section.items.length - 1) {
+            const seconds = readingGapSeconds(target, gapSeconds);
+            setWaiting({ seconds, id: target.id });
+            await waitForPlaybackGap(seconds, active.signal);
+            setWaiting(null);
+          }
         }
         setPhase('finished');
         if (guidance.current) await playPrivate('daily-ui-done', active.signal);
@@ -544,7 +570,7 @@ function ReadingSession({
             </ruby>
           ))}
         </button>
-        {item.original !== item.display && <p className="daily-original">原稿：{item.original}</p>}
+        {waiting && <FollowWait key={waiting.id} seconds={waiting.seconds} />}
         <p className="daily-source-kind">
           {item.narrationId ? '中文词句朗读 · 普通话示范' : '拼音标准音 · 逐音节示范'}
         </p>
@@ -599,11 +625,13 @@ function ReadingSession({
               : recording === 'stopping'
                 ? '正在结束录音…'
                 : phase === 'playing'
-                  ? audioStage === 'loading'
-                    ? '正在准备这段声音，请稍等…'
-                    : instructionPlaying
-                      ? '正在听本节说明…'
-                      : '仔细听一听…'
+                  ? waiting
+                    ? '轮到你读啦，可以随时停止。'
+                    : audioStage === 'loading'
+                      ? '正在准备这段声音，请稍等…'
+                      : instructionPlaying
+                        ? '正在听本节说明…'
+                        : '仔细听一听…'
                   : phase === 'follow'
                     ? '轮到你读啦，读完点下一条。'
                     : phase === 'finished'

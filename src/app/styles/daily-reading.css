@@ -297,3 +297,42 @@
 .daily-target-sentence rt {
   font-size: 0.42em;
 }
+
+.daily-follow-wait {
+  margin: 0.5rem 0 1rem;
+  padding: 0.6rem 0.9rem;
+  color: #255d66;
+  background: #edf7f5;
+  border-radius: 12px;
+}
+.daily-follow-wait > div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.daily-follow-wait progress {
+  display: block;
+  width: 100%;
+  height: 8px;
+  margin-top: 0.5rem;
+  accent-color: #23878a;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.daily-follow-wait progress::-webkit-progress-bar {
+  background: #d4e8e4;
+}
+.daily-follow-wait progress::-webkit-progress-value {
+  background: #23878a;
+  transition: width 100ms linear;
+}
+.daily-follow-wait progress::-moz-progress-bar {
+  background: #23878a;
+}
+@media (prefers-reduced-motion: reduce) {
+  .daily-follow-wait progress::-webkit-progress-value {
+    transition: none;
+  }
+}
