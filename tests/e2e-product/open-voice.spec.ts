@@ -19,7 +19,7 @@ test('VOICE-09: Qwen Chinese voices all decode through the real local API', asyn
     }[];
   };
   const narration = manifest.assets.filter((asset) => asset.purpose === 'chinese-instruction');
-  expect(narration).toHaveLength(1556);
+  expect(narration).toHaveLength(1560);
   expect(narration.every((asset) => asset.sourceType === 'local-open-tts')).toBe(true);
   expect(narration.every((asset) => asset.voice === 'Qwen3-TTS-12Hz-1.7B-CustomVoice')).toBe(true);
   expect(narration.every((asset) => asset.speaker === 'Serena')).toBe(true);
@@ -27,7 +27,7 @@ test('VOICE-09: Qwen Chinese voices all decode through the real local API', asyn
     narration.every((asset) => asset.modelRevision === '52f4770fd9726457eae3d3b6aa92047a25a10776'),
   ).toBe(true);
   const ids = [...new Map(narration.map((asset) => [asset.file, asset.id])).values()];
-  expect(ids).toHaveLength(722);
+  expect(ids).toHaveLength(726);
   await page.addInitScript(() => {
     const play = HTMLMediaElement.prototype.play;
     HTMLMediaElement.prototype.play = function () {
@@ -53,7 +53,7 @@ test('VOICE-09: Qwen Chinese voices all decode through the real local API', asyn
       await context.close();
     }
   }, ids);
-  expect(decoded).toBe(722);
+  expect(decoded).toBe(726);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByText('跟读怎么玩', { exact: true }).click();
   await page.getByRole('button', { name: '听每日跟读说明', exact: true }).click();

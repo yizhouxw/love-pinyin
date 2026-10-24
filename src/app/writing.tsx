@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import {
   writingSteps,
+  writingIntroduction,
   type WritingCatalog,
   type WritingOption,
   type WritingTarget,
@@ -27,7 +28,7 @@ export function WritingDiagram({
 }) {
   const marker = useId();
   const width = glyphIds.length * catalog.grid.letterWidth + 40;
-  const steps = writingSteps({ id: 'diagram', label: '', glyphIds, tone }, catalog);
+  const steps = writingSteps({ glyphIds, tone }, catalog);
   return (
     <svg
       className={`writing-diagram ${option ? 'writing-option' : ''}`}
@@ -169,6 +170,12 @@ export function WritingWorkshop({
         const sequence = writingSteps(current, catalog);
         setStep(null);
         if (soundEnabled) {
+          for (const clip of writingIntroduction(current, catalog)) {
+            if (clip.kind === 'daily-audio')
+              await audioPlayer.playDaily(clip.id, controller.signal);
+            else if (clip.kind === 'audio') await audioPlayer.play(clip.id, controller.signal);
+            else await audioPlayer.playPrivate(clip.id, controller.signal);
+          }
           const guidance = current.tone
             ? [`writing-${current.id}-tone`]
             : [...new Set(current.glyphIds)].map((id) => `writing-${id}-placement`);

@@ -4,6 +4,8 @@ import argparse
 import re
 
 from server import daily_reading, learning_audio, reading_timings
+from server.audio_assets import _verified_file
+from server.content import load_writing
 
 
 def validate(release: bool = False) -> dict:
@@ -48,6 +50,15 @@ def validate(release: bool = False) -> dict:
         ]
         available = learning_audio.available_assets()
         missing += [key for key in scripts if not available.get(key)]
+        # Writing also uses a few pinned clips that do not occur in the PDF items.
+        writing = load_writing()
+        targets = [t for group in writing["lessons"].values() for t in group]
+        for entry in [*writing["glyphs"].values(), *targets]:
+            clip = entry["pronunciation"]
+            if clip["kind"] == "daily-audio":
+                path, digest = daily_reading.registered(clip["id"])
+                handle, _ = _verified_file(path, digest)
+                handle.close()
         if missing:
             raise ValueError(f"Daily reading resources not ready: {missing}")
     return {

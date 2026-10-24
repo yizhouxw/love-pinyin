@@ -4,8 +4,10 @@ export type WritingStroke = {
   guide: string;
   instruction: string;
 };
+export type WritingPronunciation = { kind: 'audio' | 'daily-audio'; id: string };
 export type WritingGlyph = {
   symbol: string;
+  pronunciation: WritingPronunciation;
   lessonId: string;
   sourcePage: number;
   placement: string;
@@ -15,6 +17,7 @@ export type WritingGlyph = {
 export type WritingTarget = {
   id: string;
   label: string;
+  pronunciation: WritingPronunciation;
   glyphIds: string[];
   tone?: { markId: string; glyphIndex: number; offsetY: number; omitStrokeIndices: number[] };
   note?: string;
@@ -29,8 +32,28 @@ export type WritingCatalog = {
 };
 export type WritingOption = { glyphId: string; offsetY: number; description: string };
 
+/** Standard recordings name the target and written letters; TTS only supplies Chinese prose. */
+export function writingIntroduction(target: WritingTarget, catalog: WritingCatalog) {
+  const clips: { kind: 'voice' | 'daily-audio' | 'audio'; id: string }[] = [
+    { kind: 'voice', id: 'writing-ui-start' },
+    target.pronunciation,
+  ];
+  if (target.glyphIds.length > 1) {
+    clips.push({ kind: 'voice', id: 'writing-ui-composition' });
+    target.glyphIds.forEach((id, index) => {
+      if (index) clips.push({ kind: 'voice', id: 'writing-ui-and' });
+      clips.push(catalog.glyphs[id]!.pronunciation);
+    });
+    clips.push({ kind: 'voice', id: 'writing-ui-joined' });
+  }
+  return clips;
+}
+
 /** Presentation only: the authored catalog owns glyph order, strokes and geometry. */
-export function writingSteps(target: WritingTarget, catalog: WritingCatalog) {
+export function writingSteps(
+  target: Pick<WritingTarget, 'glyphIds' | 'tone'>,
+  catalog: WritingCatalog,
+) {
   const steps = target.glyphIds.flatMap((id, glyphIndex) =>
     catalog.glyphs[id]!.strokes.flatMap((stroke, strokeIndex) =>
       target.tone?.glyphIndex === glyphIndex && target.tone.omitStrokeIndices.includes(strokeIndex)

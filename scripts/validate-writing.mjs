@@ -3,6 +3,8 @@ import { pathToFileURL } from 'node:url';
 
 const chinese = /^[\p{Script=Han}\s，。！？、；：…“”‘’（）《》「」『』—·]+$/u;
 const safePath = /^M[\d\s.,MLCQ-]+$/;
+const dailyAssets = JSON.parse(readFileSync('content/daily-reading.json', 'utf8')).assets;
+const standardAssets = JSON.parse(readFileSync('content/pinyin-source.json', 'utf8')).assets;
 export function validateWriting(writing, curriculum) {
   const errors = [];
   const reject = (condition, message) => {
@@ -32,9 +34,39 @@ export function validateWriting(writing, curriculum) {
       typeof s === 'string' && chinese.test(s) && s.length <= 300,
       `writing Mandarin: ${location}`,
     );
-  for (const key of ['intro', 'paper', 'full', 'choose', 'tones', 'plain'])
+  const pronunciation = (clip, label, location) => {
+    const decomposition = label.normalize('NFD');
+    const marks = ['\u0304', '\u0301', '\u030c', '\u0300'];
+    const tone = marks.findIndex((mark) => decomposition.includes(mark)) + 1;
+    const base = decomposition
+      .replace(/[\u0300\u0301\u0304\u030c]/gu, '')
+      .normalize('NFC')
+      .replaceAll('ü', 'v');
+    reject(
+      clip?.kind === 'audio'
+        ? standardAssets.some((a) => a.id === clip.id) &&
+            curriculum.audioRequirements.some((a) => a.id === clip.id && a.transcript === label)
+        : clip?.kind === 'daily-audio' &&
+            dailyAssets.some((a) => a.id === clip.id && a.filename === `${base}${tone || ''}.mp3`),
+      `writing pronunciation: ${location}`,
+    );
+  };
+  for (const key of [
+    'intro',
+    'paper',
+    'full',
+    'choose',
+    'tones',
+    'plain',
+    'start',
+    'composition',
+    'and',
+    'joined',
+  ])
     text(writing.ui?.[key], key);
   const marks = writing.marks ?? {};
+  for (const [id, glyph] of Object.entries(glyphs))
+    pronunciation(glyph.pronunciation, glyph.symbol, id);
   reject(
     Object.keys(marks).length === 4 &&
       new Set(Object.values(marks).map((m) => m.combining)).size === 4,
@@ -100,6 +132,7 @@ export function validateWriting(writing, curriculum) {
     const targets = writing.lessons?.[lesson.id] ?? [];
     reject(targets.length > 0, `writing missing lesson: ${lesson.id}`);
     for (const t of targets) {
+      pronunciation(t.pronunciation, t.label, t.id);
       reject(!targetIds.has(t.id), `writing duplicate target: ${t.id}`);
       targetIds.add(t.id);
       const chars = t.glyphIds.map((id) => glyphs[id]?.symbol);

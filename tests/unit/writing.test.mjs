@@ -1,11 +1,58 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { validateWriting } from '../../scripts/validate-writing.mjs';
-import { writingSteps } from '../../src/domain/writing';
+import { writingSteps, writingIntroduction } from '../../src/domain/writing';
 import { validateCurriculum } from '../../scripts/content-validation.mjs';
 const load = (p) => JSON.parse(readFileSync(p, 'utf8'));
 const writing = load('content/writing.json');
 const curriculum = load('content/curriculum.json');
+
+describe('WRITE-04 target identity and written composition', () => {
+  const targets = Object.values(writing.lessons).flat();
+  it('names every target first and keeps each written letter in order, including repeats', () => {
+    for (const target of targets) {
+      const introduction = writingIntroduction(target, writing);
+      expect(introduction.slice(0, 2)).toEqual([
+        { kind: 'voice', id: 'writing-ui-start' },
+        target.pronunciation,
+      ]);
+      expect(introduction.filter((clip) => clip.kind !== 'voice')).toEqual([
+        target.pronunciation,
+        ...(target.glyphIds.length > 1
+          ? target.glyphIds.map((id) => writing.glyphs[id].pronunciation)
+          : []),
+      ]);
+    }
+    expect(
+      writingIntroduction(
+        targets.find((t) => t.label === 'ao'),
+        writing,
+      ),
+    ).toEqual([
+      { kind: 'voice', id: 'writing-ui-start' },
+      { kind: 'audio', id: 'audio-final-ao' },
+      { kind: 'voice', id: 'writing-ui-composition' },
+      { kind: 'audio', id: 'audio-final-a' },
+      { kind: 'voice', id: 'writing-ui-and' },
+      { kind: 'audio', id: 'audio-final-o' },
+      { kind: 'voice', id: 'writing-ui-joined' },
+    ]);
+  });
+  it('rejects missing references, wrong targets and wrong tones', () => {
+    for (const replacement of [
+      undefined,
+      { kind: 'audio', id: 'audio-final-o' },
+      { kind: 'daily-audio', id: 'daily-a2' },
+    ]) {
+      const bad = structuredClone(writing);
+      bad.lessons['lesson-01'][0].pronunciation = replacement;
+      expect(validateWriting(bad, curriculum).join('\n')).toContain('writing pronunciation');
+    }
+    const bad = structuredClone(writing);
+    bad.glyphs['v1-a'].pronunciation = { kind: 'voice', id: 'writing-ui-start' };
+    expect(validateWriting(bad, curriculum).join('\n')).toContain('writing pronunciation: v1-a');
+  });
+});
 
 describe('WRITE-01 authored handwriting', () => {
   it('covers 26 basic glyphs, authored stroke counts and 14 lesson paths', () => {

@@ -13713,6 +13713,18 @@
       "filename": "can2.mp3",
       "sha256": "3a5f050a567e42dc3a9434de15c2ff9fee83a9cba19d6e48b90bb59b6d039365",
       "bytes": 17614
+    },
+    {
+      "id": "daily-shi3",
+      "filename": "shi3.mp3",
+      "sha256": "21bdd0d0fd3a24e264dee877ecd08673f6ea7aaf2581ca9db04296c574860243",
+      "bytes": 9326
+    },
+    {
+      "id": "daily-tui1",
+      "filename": "tui1.mp3",
+      "sha256": "309ea6260abad5f5136f32d90c4c0bd0a946b233df9b388586f4e9624fc04fee",
+      "bytes": 16532
     }
   ]
 }
