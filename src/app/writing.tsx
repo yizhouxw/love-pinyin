@@ -1,10 +1,12 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   writingSteps,
   type WritingCatalog,
   type WritingOption,
   type WritingTarget,
 } from '../domain/writing';
+import { audioPlayer } from '../platform/audio/browser-audio-player';
+import { waitForPlaybackGap } from '../platform/audio/playback-gap';
 import { useLearningVoice, VoiceButton, VoiceFailure } from './learning-voice';
 
 export function WritingDiagram({
@@ -118,33 +120,96 @@ export function WritingWorkshop({
   const target = targets.find((t) => t.id === selected) ?? targets[0];
   const [step, setStep] = useState<number | null>(null);
   const voice = useLearningVoice(`writing-${lessonId}`);
+  const queue = useRef<AbortController | null>(null);
+  const continuous = useRef(false);
+  const [running, setRunning] = useState(false);
+  const [autoNext, setAutoNext] = useState(false);
+  const [playFailure, setPlayFailure] = useState(false);
+  function stopSequence() {
+    queue.current?.abort();
+    queue.current = null;
+    setRunning(false);
+  }
+  useEffect(() => {
+    const stop = () => {
+      if (document.hidden) {
+        queue.current?.abort();
+        setRunning(false);
+      }
+    };
+    document.addEventListener('visibilitychange', stop);
+    return () => {
+      queue.current?.abort();
+      document.removeEventListener('visibilitychange', stop);
+    };
+  }, [lessonId]);
+  async function demonstrate(next: WritingTarget, choices = targets) {
+    stopSequence();
+    voice.stop();
+    const controller = new AbortController();
+    queue.current = controller;
+    setRunning(true);
+    setPlayFailure(false);
+    try {
+      for (
+        let cursor = choices.findIndex((t) => t.id === next.id);
+        cursor < choices.length;
+        cursor++
+      ) {
+        const current = choices[cursor]!;
+        setSelected(current.id);
+        const sequence = writingSteps(current, catalog);
+        for (const [position, item] of sequence.entries()) {
+          controller.signal.throwIfAborted();
+          setStep(position);
+          if (soundEnabled) await audioPlayer.playPrivate(item.audioId, controller.signal);
+          await waitForPlaybackGap(soundEnabled ? 0.35 : 1.2, controller.signal);
+        }
+        setStep(null);
+        if (!continuous.current || cursor === choices.length - 1) break;
+        await waitForPlaybackGap(1, controller.signal);
+      }
+    } catch (error) {
+      if (!controller.signal.aborted && !(error instanceof Error && error.name === 'AbortError'))
+        setPlayFailure(true);
+    } finally {
+      if (queue.current === controller) {
+        queue.current = null;
+        setRunning(false);
+      }
+    }
+  }
   if (!target) return null;
   const steps = writingSteps(target, catalog);
   const active = step === null ? null : steps[step]!;
   const activeGlyph = active ? catalog.glyphs[active.glyphId]! : null;
   function selectTarget(next: WritingTarget) {
-    voice.stop();
-    setSelected(next.id);
-    setStep(null);
-    if (soundEnabled)
-      voice.play(next.tone ? `writing-${next.id}-tone` : `writing-${next.glyphIds[0]}-placement`);
+    void demonstrate(next);
   }
   function showStep(next: number | null) {
+    stopSequence();
     voice.stop();
     setStep(next);
     if (soundEnabled) voice.play(next === null ? 'writing-ui-full' : steps[next]!.audioId);
   }
   return (
-    <section className="writing-workshop" aria-label="书写小课堂">
+    <section
+      className="writing-workshop"
+      aria-label="书写小课堂"
+      onClickCapture={(event) => {
+        if ((event.target as HTMLElement).closest('.voice-button')) stopSequence();
+      }}
+    >
       <div className="writing-heading">
         <h3>✎ 看一笔，写一笔</h3>
         <button
           className="quiet"
           aria-expanded={opened}
           onClick={() => {
+            stopSequence();
             voice.stop();
             setOpened(!opened);
-            if (!opened && soundEnabled) voice.play('writing-ui-intro');
+            if (!opened) void demonstrate(target);
           }}
         >
           {opened ? '收起书写' : '打开书写课堂'}
@@ -160,23 +225,20 @@ export function WritingWorkshop({
                 className="quiet"
                 aria-pressed={toneGroup === tones}
                 onClick={() => {
+                  stopSequence();
                   voice.stop();
                   setToneGroup(tones);
                   setStep(null);
                   setSelected(allTargets.find((t) => Boolean(t.tone) === tones)?.id);
-                  if (soundEnabled) voice.play(tones ? 'writing-ui-tones' : 'writing-ui-plain');
+                  const choices = allTargets.filter((t) => Boolean(t.tone) === tones);
+                  if (choices[0]) void demonstrate(choices[0], choices);
                 }}
               >
                 {tones ? '带声调' : '字母和组合'}
               </button>
             ))}
           </div>
-          <p>{toneGroup ? catalog.ui.tones : catalog.ui.choose}</p>
-          <VoiceButton
-            id={toneGroup ? 'writing-ui-tones' : 'writing-ui-plain'}
-            voice={voice}
-            label="听选择方法"
-          />
+          <p>点选后自动演示完整笔顺；打开连读，接着看下一个。</p>
           <div className="writing-targets" role="group" aria-label="选择书写目标">
             {targets.map((t) => (
               <button
@@ -198,30 +260,66 @@ export function WritingWorkshop({
               step={step}
             />
           </div>
-          <div className="writing-controls" role="group" aria-label="逐笔操作">
-            <button className="quiet" onClick={() => showStep(0)} aria-label="看第一笔">
-              ↤ 第一笔
-            </button>
+          <div className="writing-controls" role="group" aria-label="笔顺播放">
             <button
               className="quiet"
-              disabled={step === null || step === 0}
-              onClick={() => showStep(step! - 1)}
-              aria-label="看上一笔"
+              disabled={targets.indexOf(target) === 0}
+              onClick={() => selectTarget(targets[targets.indexOf(target) - 1]!)}
             >
-              ← 上一笔
+              ← 上一个
             </button>
             <button
               className="start-button"
-              disabled={step === steps.length - 1}
-              onClick={() => showStep(step === null ? 0 : step + 1)}
-              aria-label="看下一笔"
+              onClick={() => (running ? stopSequence() : void demonstrate(target))}
             >
-              下一笔 →
+              {running ? '■ 停止演示' : '▶ 重播笔顺'}
             </button>
-            <button className="quiet" onClick={() => showStep(null)}>
-              看完整字形
+            <button
+              className="quiet"
+              aria-pressed={autoNext}
+              onClick={() => {
+                continuous.current = !autoNext;
+                setAutoNext(!autoNext);
+              }}
+            >
+              连读{autoNext ? '：开' : '：关'}
+            </button>
+            <button
+              className="quiet"
+              disabled={targets.indexOf(target) === targets.length - 1}
+              onClick={() => selectTarget(targets[targets.indexOf(target) + 1]!)}
+            >
+              下一个 →
             </button>
           </div>
+          {playFailure && <p role="alert">声音没有播放成功，请点“重播笔顺”重试。</p>}
+          <details>
+            <summary>逐笔观察</summary>
+            <div className="writing-controls" role="group" aria-label="逐笔操作">
+              <button className="quiet" onClick={() => showStep(0)} aria-label="看第一笔">
+                ↤ 第一笔
+              </button>
+              <button
+                className="quiet"
+                disabled={step === null || step === 0}
+                onClick={() => showStep(step! - 1)}
+                aria-label="看上一笔"
+              >
+                ← 上一笔
+              </button>
+              <button
+                className="start-button"
+                disabled={step === steps.length - 1}
+                onClick={() => showStep(step === null ? 0 : step + 1)}
+                aria-label="看下一笔"
+              >
+                下一笔 →
+              </button>
+              <button className="quiet" onClick={() => showStep(null)}>
+                看完整字形
+              </button>
+            </div>
+          </details>
           <div className="writing-instruction" aria-live="polite">
             <strong>
               {active ? `第 ${step! + 1} / ${steps.length} 笔` : `${steps.length} 笔 · 完整字形`}
