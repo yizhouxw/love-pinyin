@@ -122,3 +122,43 @@ describe('current-item standard audio composition', () => {
     expect(decode).toHaveBeenCalledTimes(2);
   });
 });
+
+describe('DAILY-11 character pauses', () => {
+  it('preserves every original sample and inserts exactly 400ms per boundary, with silence unhighlighted', async () => {
+    const { spaceCharacterSamples } = await import('../../src/platform/audio/reading-word-audio');
+    const original = Float32Array.from({ length: 1000 }, (_, i) => (i % 10) / 20);
+    const result = spaceCharacterSamples(recording([original]), [
+      { start: 0.1, end: 0.35 },
+      { start: 0.4, end: 0.6 },
+      { start: 0.65, end: 0.95 },
+    ]);
+    const samples = new Int16Array(await result.blob.slice(44).arrayBuffer());
+    expect(samples.length).toBe(1800);
+    const restored = [
+      ...samples.slice(0, 400),
+      ...samples.slice(800, 1050),
+      ...samples.slice(1450),
+    ];
+    expect(restored).toEqual([...original].map((v) => Math.round(v * 32767)));
+    expect([...samples.slice(400, 800), ...samples.slice(1050, 1450)].every((v) => v === 0)).toBe(
+      true,
+    );
+    expect(result.segments[1]!.startSeconds).toBeCloseTo(0.8);
+    expect(readingSegmentAt(result.segments, 0.6)).toBe(-1);
+    expect(readingSegmentAt(result.segments, 0.85)).toBe(1);
+  });
+  it('rejects missing, out of bounds or coincident character onsets', async () => {
+    const { spaceCharacterSamples } = await import('../../src/platform/audio/reading-word-audio');
+    for (const spans of [
+      [],
+      [{ start: 0, end: 2 }],
+      [
+        { start: 0, end: 0.2 },
+        { start: 0, end: 0.3 },
+      ],
+    ])
+      expect(() => spaceCharacterSamples(recording([paddedSpeech()]), spans)).toThrow(
+        'AUDIO_TIMELINE_INVALID',
+      );
+  });
+});

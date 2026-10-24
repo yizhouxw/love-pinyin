@@ -13,6 +13,12 @@ export type DailyItem = {
   spokenText: string | null;
   available: boolean;
   timings?: AudioTiming[];
+  sentenceReading?: {
+    narrationId: string;
+    spokenText: string;
+    available: boolean;
+    timings: AudioTiming[];
+  };
   wordExample?: { id: string; spokenText: string; examples: { text: string; pinyin: string }[] };
 };
 export type DailySection = {

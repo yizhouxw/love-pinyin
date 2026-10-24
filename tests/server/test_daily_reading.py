@@ -34,7 +34,11 @@ def test_status_without_assets_never_fakes_assessment_or_available_audio(
     data = response.json()
     assert data["assessment"]["available"] is False
     standards = [
-        i for d in data["days"] for s in d["sections"] for i in s["items"] if not i["narrationId"]
+        i
+        for d in data["days"]
+        for s in d["sections"]
+        for i in s["items"]
+        if not i["narrationId"] and not i.get("sentenceReading")
     ]
     assert not any(i["available"] for i in standards)
     assert paired_client.get("/api/v1/daily-audio/daily-a1").status_code == 404

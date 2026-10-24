@@ -67,7 +67,13 @@ def generate(
             or hashlib.file_digest(path.open("rb"), "sha256").hexdigest() != digest
         ):
             raise ValueError(f"TTS model digest mismatch: {name}")
-    synthesize = None
+    synthesize = {}
+    sentence_config = {
+        **config,
+        "instruct": json.loads((ROOT / "content/sentence-voice-build.json").read_text())[
+            "instruct"
+        ],
+    }
     scripts = learning_audio.narration_scripts()
     expected = learning_audio.expected_assets()
     output.mkdir(parents=True, exist_ok=True)
@@ -76,18 +82,22 @@ def generate(
     seen = {}
     generated = 0
     for asset_id, text in scripts.items():
+        selected_config = sentence_config if asset_id.startswith("daily-sentence-") else config
         key = learning_audio.text_digest(
-            json.dumps({"config": config, "text": text}, sort_keys=True, ensure_ascii=False)
+            json.dumps(
+                {"config": selected_config, "text": text}, sort_keys=True, ensure_ascii=False
+            )
         )
         if int(key, 16) % shards != shard:
             continue
         relative = f"narration/{key}.wav"
         path = output / relative
-        if text not in seen:
+        if key not in seen:
             if not path.exists():
-                if synthesize is None:
-                    synthesize = create_engine(model, config)
-                samples, rate = synthesize(text)
+                profile = selected_config["instruct"]
+                if profile not in synthesize:
+                    synthesize[profile] = create_engine(model, selected_config)
+                samples, rate = synthesize[profile](text)
                 samples = np.asarray(samples)
                 if (
                     samples.ndim != 1
@@ -108,7 +118,7 @@ def generate(
             with wave.open(str(path)) as handle:
                 seconds = handle.getnframes() / handle.getframerate()
                 sample_rate = handle.getframerate()
-            seen[text] = {
+            seen[key] = {
                 **expected[asset_id],
                 "sourceType": "local-open-tts",
                 "file": relative,
@@ -123,7 +133,7 @@ def generate(
                 "distribution": "redistributable-model-generated",
                 "license": config["license"],
             }
-        assets.append({**seen[text], "id": asset_id})
+        assets.append({**seen[key], "id": asset_id})
         if limit is not None and len(seen) >= limit:
             return {"generated": generated, "sample": str(path)}
     if shards > 1:

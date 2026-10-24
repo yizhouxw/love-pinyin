@@ -50,6 +50,10 @@ def word_examples() -> dict:
     return json.loads((CONTENT.parent / "daily-word-examples.json").read_text())["items"]
 
 
+def sentence_readings() -> dict:
+    return json.loads((CONTENT.parent / "daily-sentence-reading.json").read_text())
+
+
 def scripts() -> dict[str, str]:
     data = load()
     result = {f"daily-ui-{key}": text for key, text in data["ui"].items()}
@@ -60,6 +64,9 @@ def scripts() -> dict[str, str]:
                 if item["narrationId"]:
                     result[item["narrationId"]] = item["spokenText"]
     result.update({item["id"]: item["spokenText"] for item in word_examples().values()})
+    result.update(
+        {item["narrationId"]: item["spokenText"] for item in sentence_readings().values()}
+    )
     return result
 
 
@@ -96,6 +103,7 @@ def status() -> dict:
     examples = word_examples()
     voices = learning_audio.expected_assets()
     manifest = learning_audio.read_manifest()
+    sentences = sentence_readings()
     try:
         timelines = reading_timings.read()
     except (OSError, ValueError):
@@ -103,6 +111,24 @@ def status() -> dict:
     for day in data["days"]:
         for section in day["sections"]:
             for item in section["items"]:
+                if item["id"] in sentences:
+                    sentence = deepcopy(sentences[item["id"]])
+                    sentence["available"] = False
+                    try:
+                        asset_id = sentence["narrationId"]
+                        asset = manifest.get(asset_id, {})
+                        path, _, digest = learning_audio.registered_file(asset, voices[asset_id])
+                        handle, size = _verified_file(path, digest)
+                        handle.close()
+                        sentence["timings"] = reading_timings.checked(
+                            {**item, "spokenText": sentence["spokenText"]},
+                            asset,
+                            timelines.get(asset_id, {}),
+                        )
+                        sentence["available"] = size > 0
+                    except (HTTPException, ValueError):
+                        sentence["timings"] = []
+                    item["sentenceReading"] = sentence
                 if "组词" in section["title"]:
                     item["wordExample"] = examples[item["display"]]
                 if item["narrationId"]:
@@ -126,6 +152,8 @@ def status() -> dict:
                     item["available"] = (
                         not item["missingSyllables"] and set(item["audioIds"]) <= ready
                     )
+                if "sentenceReading" in item:
+                    item["available"] = item["sentenceReading"]["available"]
     data.pop("assets")
     from server.reading_recognition import status as recognition_status
 

@@ -251,7 +251,9 @@ test('READ-05: short and long real Chinese sentences wait for their spoken sylla
     page.evaluate(() =>
       window.readingMediaEvents.filter(
         (event) =>
-          event.source.includes('/daily-audio/') || event.source.includes('/voice/daily-word-'),
+          event.source.includes('/daily-audio/') ||
+          event.source.includes('/voice/daily-word-') ||
+          event.source.includes('/voice/daily-sentence-'),
       ),
     );
   const sentenceWait = async (firstNarration: string, expectedMilliseconds: number) => {

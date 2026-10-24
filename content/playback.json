@@ -6,15 +6,25 @@
     "stepSeconds": 0.1,
     "defaultSeconds": 1,
     "presets": [
-      { "label": "紧凑", "seconds": 0.5 },
-      { "label": "适中", "seconds": 1 },
-      { "label": "从容", "seconds": 2 }
+      {
+        "label": "紧凑",
+        "seconds": 0.5
+      },
+      {
+        "label": "适中",
+        "seconds": 1
+      },
+      {
+        "label": "从容",
+        "seconds": 2
+      }
     ]
   },
   "reading": {
     "extraSecondsPerSyllable": 0.5,
     "wordBoundarySilenceSeconds": 0.1,
     "edgeGuardSeconds": 0.04,
-    "silenceThreshold": 0.0005
+    "silenceThreshold": 0.0005,
+    "characterPauseSeconds": 0.4
   }
 }

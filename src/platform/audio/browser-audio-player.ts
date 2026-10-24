@@ -1,7 +1,12 @@
 import type { AudioPlayer } from '../../domain/contracts';
 import { learningAssetUrl } from '../guest';
 import { ReadingAudioPool } from './reading-audio-pool';
-import { combineReadingAudio, readingSegmentAt, type ReadingSegment } from './reading-word-audio';
+import {
+  combineReadingAudio,
+  spaceReadingCharacters,
+  readingSegmentAt,
+  type ReadingSegment,
+} from './reading-word-audio';
 
 type ActivePlayback = { stop: () => void };
 export type PlaybackObserver = {
@@ -65,6 +70,24 @@ export class BrowserAudioPlayer implements AudioPlayer {
   /** Private narration and family course recordings share the same playback lifetime. */
   playPrivate(audioId: string, signal?: AbortSignal, observer?: PlaybackObserver): Promise<void> {
     return this.playFrom('voice', audioId, signal, observer);
+  }
+
+  playCharacters(
+    audioId: string,
+    timings: { start: number; end: number }[],
+    signal?: AbortSignal,
+    observer?: PlaybackObserver,
+  ) {
+    this.stop();
+    if (!audioId.trim() || !timings.length)
+      return Promise.reject(new Error('AUDIO_TIMELINE_INVALID'));
+    if (signal?.aborted || document.hidden) return Promise.reject(aborted());
+    return this.playBufferedReading(
+      [learningAssetUrl('voice', audioId)],
+      signal,
+      observer,
+      timings,
+    );
   }
 
   /** Native controls keep pause/seek support for long courses while sharing the singleton. */
@@ -179,6 +202,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
     sources: string[],
     signal?: AbortSignal,
     observer?: PlaybackObserver,
+    characterTimings?: { start: number; end: number }[],
   ): Promise<void> {
     const audio = (this.readingMedia ??= new Audio(''));
     audio.preload = 'auto';
@@ -282,6 +306,8 @@ export class BrowserAudioPlayer implements AudioPlayer {
         const blobs = await Promise.all(
           sources.map((source) => this.readingPool.get(source, true, controller.signal)),
         );
+        if (characterTimings)
+          return spaceReadingCharacters(blobs[0]!, characterTimings, controller.signal);
         if (sources.length === 1) return { blob: blobs[0]!, segments: [] };
         return combineReadingAudio(blobs, controller.signal);
       };

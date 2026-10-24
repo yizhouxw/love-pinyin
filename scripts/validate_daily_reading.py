@@ -68,6 +68,13 @@ def validate(release: bool = False) -> dict:
     if len(items) != 840 or len({s["id"] for s in sections}) != len(sections):
         raise ValueError("Daily source coverage changed without a reviewed content update")
     examples = daily_reading.word_examples()
+    sentences = daily_reading.sentence_readings()
+    sentence_items = [i for s in sections if s["kind"] == "sentences" for i in s["items"]]
+    if set(sentences) != {i["id"] for i in sentence_items}:
+        raise ValueError("Sentence recording coverage mismatch")
+    hanzi = json.loads((daily_reading.CONTENT.parent / "daily-reading-hanzi.json").read_text())
+    if any(sentences[i["id"]]["spokenText"] != hanzi[i["id"]] for i in sentence_items):
+        raise ValueError("Sentence text mismatch")
     for section in sections:
         if "组词" in section["title"]:
             for item in section["items"]:
@@ -100,6 +107,15 @@ def validate(release: bool = False) -> dict:
         ]
         available = learning_audio.available_assets()
         missing += [key for key in scripts if not available.get(key)]
+        for item in sentence_items:
+            sentence = sentences[item["id"]]
+            checked = reading_timings.checked(
+                {**item, "spokenText": sentence["spokenText"]},
+                manifest[sentence["narrationId"]],
+                timelines.get(sentence["narrationId"], {}),
+            )
+            if any(a["start"] >= b["start"] for a, b in zip(checked, checked[1:], strict=False)):
+                raise ValueError(f"Sentence character boundaries overlap: {item['id']}")
         # Writing also uses a few pinned clips that do not occur in the PDF items.
         writing = load_writing()
         targets = [t for group in writing["lessons"].values() for t in group]

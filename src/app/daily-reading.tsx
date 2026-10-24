@@ -52,6 +52,7 @@ export function DailyReadingPage({
   const [error, setError] = useState(false);
   const [dayId, setDayId] = useState('day-01');
   const [sectionId, setSectionId] = useState<string | null>(null);
+  const [characterReading, setCharacterReading] = useState(false);
   const helpVoice = useLearningVoice(sectionId ?? 'daily-materials');
   const stopHelpVoice = helpVoice.stop;
   useEffect(() => {
@@ -291,6 +292,8 @@ export function DailyReadingPage({
               onGuidanceChange={onGuidanceChange}
               onGapChange={onGapChange}
               section={section}
+              characterReading={characterReading}
+              onCharacterReadingChange={setCharacterReading}
               onNextSection={
                 sectionIndex < day.sections.length - 1
                   ? () => chooseSection(day.sections[sectionIndex + 1]!.id)
@@ -363,6 +366,8 @@ function ReadingSession({
   onGuidanceChange,
   onGapChange,
   section,
+  characterReading,
+  onCharacterReadingChange,
   onNextSection,
   onChooseMaterials,
   marks,
@@ -374,6 +379,8 @@ function ReadingSession({
   onGuidanceChange: (enabled: boolean) => void;
   onGapChange: (seconds: number) => void;
   section: DailySection;
+  characterReading: boolean;
+  onCharacterReadingChange: (enabled: boolean) => void;
   onNextSection?: () => void;
   onChooseMaterials: () => void;
   marks: Record<string, ReadingMark>;
@@ -484,6 +491,24 @@ function ReadingSession({
   };
   async function demo(target: DailyItem, signal: AbortSignal) {
     setInstructionPlaying(false);
+    if (section.kind === 'sentences') {
+      const sentence = target.sentenceReading;
+      if (!sentence?.available || sentence.timings.length !== target.syllables.length)
+        throw new Error('NOT_PREPARED');
+      if (characterReading) {
+        await audioPlayer.playCharacters(sentence.narrationId, sentence.timings, signal, {
+          onState: setAudioStage,
+          onSegment: setHighlight,
+        });
+      } else {
+        await audioPlayer.playPrivate(sentence.narrationId, signal, {
+          onState: setAudioStage,
+          onTime: (seconds) => setHighlight(highlightedSyllable(sentence.timings, seconds)),
+        });
+      }
+      setHighlight(-1);
+      return;
+    }
     if (!target.narrationId && (target.missingSyllables.length || !target.audioIds.length))
       throw new Error('NOT_PREPARED');
     if (target.narrationId) {
@@ -677,6 +702,21 @@ function ReadingSession({
               onGapChange(seconds);
             }}
           />
+          {section.kind === 'sentences' && (
+            <label className="guidance-switch">
+              <input
+                type="checkbox"
+                checked={characterReading}
+                disabled={recording !== 'idle' || recognizing}
+                onChange={(event) => {
+                  stop();
+                  setFailure('');
+                  onCharacterReadingChange(event.currentTarget.checked);
+                }}
+              />
+              <span>逐字读</span>
+            </label>
+          )}
         </div>
         <p>{section.instruction}</p>
         <button
@@ -764,7 +804,13 @@ function ReadingSession({
           </button>
         </div>
         <p className="daily-source-kind">
-          {item.narrationId ? '中文词句朗读 · 普通话示范' : '拼音标准音 · 逐音节示范'}
+          {section.kind === 'sentences'
+            ? characterReading
+              ? '逐字读 · 字间留停顿'
+              : '整句连读 · 普通话示范'
+            : item.narrationId
+              ? '中文词句朗读 · 普通话示范'
+              : '拼音标准音 · 逐音节示范'}
         </p>
         {item.audioNotes.length > 0 && (
           <p className="daily-audio-note">{item.audioNotes.join('；')}</p>

@@ -2,9 +2,14 @@ import type { DailyDay, DailyItem } from '../../domain/daily-reading';
 export type ReadingResource = { kind: 'voice' | 'daily-audio'; id: string };
 
 export function itemResources(item: DailyItem): ReadingResource[] {
-  return item.narrationId
+  if (item.sentenceReading)
+    return item.sentenceReading.available
+      ? [{ kind: 'voice', id: item.sentenceReading.narrationId }]
+      : [];
+  const original: ReadingResource[] = item.narrationId
     ? [{ kind: 'voice', id: item.narrationId }]
     : item.audioIds.map((id) => ({ kind: 'daily-audio', id }));
+  return original;
 }
 
 export function dayResources(day: DailyDay, ui: Record<string, string>): ReadingResource[] {

@@ -14,6 +14,7 @@ def setup_voice(tmp_path, monkeypatch, silent=False):
     (model / "model.safetensors").write_bytes(b"explicit-test-model-fixture")
     config = {
         "directory": "fixture",
+        "instruct": "test fixture guidance",
         "files": {
             "model.safetensors": hashlib.sha256(
                 (model / "model.safetensors").read_bytes()
@@ -147,3 +148,15 @@ def test_qwen_adapter_passes_chinese_style_and_rejects_truncated_speech(tmp_path
     tokens[0] = 512
     with pytest.raises(ValueError, match="truncated"):
         synthesize("点一下开始。")
+
+
+def test_sentence_voice_profile_does_not_reuse_generic_same_text_audio(tmp_path, monkeypatch):
+    model, texts, calls = setup_voice(tmp_path, monkeypatch)
+    texts["daily-sentence-example"] = texts["ui-one"]
+    result = voice.generate(tmp_path / "audio", model)
+    manifest = json.loads((tmp_path / "audio/manifest.json").read_text())["assets"]
+    files = {item["id"]: item["file"] for item in manifest}
+    assert result["uniqueNarration"] == 2
+    assert len(calls) == 2
+    assert files["ui-one"] == files["ui-two"]
+    assert files["daily-sentence-example"] != files["ui-one"]

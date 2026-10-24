@@ -32,18 +32,25 @@ export async function combineReadingAudio(
 }
 
 /** Preserve speech samples and guarded edges, replacing surplus edge silence with a short join. */
-export function joinReadingSamples(sources: DecodedAudio[]): CombinedReadingAudio {
+export function joinReadingSamples(
+  sources: DecodedAudio[],
+  options: { preserveEdges?: boolean; pauseSeconds?: number } = {},
+): CombinedReadingAudio {
   if (!sources.length) throw new Error('AUDIO_DECODE_FAILED');
   const sampleRate = sources[0]!.sampleRate;
   if (!Number.isFinite(sampleRate) || sampleRate <= 0) throw new Error('AUDIO_DECODE_FAILED');
   const guard = Math.round(playback.reading.edgeGuardSeconds * sampleRate);
-  const boundary = Math.round(playback.reading.wordBoundarySilenceSeconds * sampleRate);
+  const boundary = Math.round(
+    (options.pauseSeconds ?? playback.reading.wordBoundarySilenceSeconds) * sampleRate,
+  );
   const clips = sources.map((source) => {
     if (source.sampleRate !== sampleRate || !source.length || !source.numberOfChannels)
       throw new Error('AUDIO_DECODE_FAILED');
     const channels = Array.from({ length: source.numberOfChannels }, (_, index) =>
       source.getChannelData(index),
     );
+    if (options.preserveEdges)
+      return { channels, start: 0, end: source.length, leading: 0, trailing: 0 };
     // Inspect every channel so a quiet channel cannot hide another channel's speech edge.
     const audible = (index: number) =>
       channels.some((channel) => Math.abs(channel[index]!) >= playback.reading.silenceThreshold);
@@ -106,6 +113,60 @@ export function joinReadingSamples(sources: DecodedAudio[]): CombinedReadingAudi
     frame += joins[index]!;
   }
   return { blob: new Blob([bytes], { type: 'audio/wav' }), segments };
+}
+
+/** Insert pauses at aligned character boundaries without removing any original samples. */
+export function spaceCharacterSamples(
+  source: DecodedAudio,
+  timings: { start: number; end: number }[],
+): CombinedReadingAudio {
+  const duration = source.length / source.sampleRate;
+  if (
+    !timings.length ||
+    timings.some(
+      (t, index) =>
+        !Number.isFinite(t.start) ||
+        !Number.isFinite(t.end) ||
+        t.start < 0 ||
+        t.end <= t.start ||
+        t.end > duration + 0.002 ||
+        (index > 0 && t.start <= timings[index - 1]!.start),
+    )
+  )
+    throw new Error('AUDIO_TIMELINE_INVALID');
+  const starts = [
+    0,
+    ...timings.slice(1).map((t) => Math.round(t.start * source.sampleRate)),
+    source.length,
+  ];
+  const chunks = timings.map((_, index) => ({
+    sampleRate: source.sampleRate,
+    numberOfChannels: source.numberOfChannels,
+    length: starts[index + 1]! - starts[index]!,
+    getChannelData: (channel: number) =>
+      source.getChannelData(channel).subarray(starts[index], starts[index + 1]),
+  }));
+  const pause = playback.reading.characterPauseSeconds;
+  const result = joinReadingSamples(chunks, { preserveEdges: true, pauseSeconds: pause });
+  return {
+    ...result,
+    segments: timings.map((t, index) => ({
+      startSeconds: t.start + index * pause,
+      endSeconds: Math.min(t.end, timings[index + 1]?.start ?? duration) + index * pause,
+    })),
+  };
+}
+
+export async function spaceReadingCharacters(
+  source: Blob,
+  timings: { start: number; end: number }[],
+  signal: AbortSignal,
+) {
+  const decoder = new OfflineAudioContext(1, 1, 24000);
+  if (signal.aborted) throw cancelled();
+  const decoded = await decoder.decodeAudioData(await source.arrayBuffer());
+  if (signal.aborted) throw cancelled();
+  return spaceCharacterSamples(decoded, timings);
 }
 
 export function readingSegmentAt(segments: ReadingSegment[], seconds: number): number {

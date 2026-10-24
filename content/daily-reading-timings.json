@@ -1022,6 +1022,332 @@
           "end": 0.64
         }
       ]
+    },
+    "daily-sentence-day-05-s5-i2": {
+      "sha256": "c48030ffbcf72d9663bde2bec49417e48bc15af949ebda178e6491fc981e9eca",
+      "textSha256": "175fe40d8e20daed5f45202c6e20b6ad6881f04b86c20517dd85c48d5de27c8f",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "start": 0.4,
+          "end": 0.72
+        },
+        {
+          "start": 0.72,
+          "end": 1.12
+        },
+        {
+          "start": 1.12,
+          "end": 1.68
+        }
+      ]
+    },
+    "daily-sentence-day-11-s6-i8": {
+      "sha256": "44f45e4bed7499d17a529cbae5eaec869179b5c042306c655685c194a3f0334d",
+      "textSha256": "0bab505a2fef7f2f8fcde45d1b2f6cf719e5c8063e81e90c54145997728ac1c2",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 1.04
+        },
+        {
+          "start": 1.44,
+          "end": 1.76
+        },
+        {
+          "start": 1.76,
+          "end": 2.0
+        },
+        {
+          "start": 2.0,
+          "end": 2.32
+        }
+      ]
+    },
+    "daily-sentence-day-12-s7-i7": {
+      "sha256": "9da305460730a044acea6b0eb0a71df96232f48668dfcc5ff8cb658190889d2c",
+      "textSha256": "8eb2f289a4a8bda27e6553d36a658ad8653c1f8576a8d2bb26b5835dca991889",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 1.12
+        },
+        {
+          "start": 1.28,
+          "end": 1.44
+        },
+        {
+          "start": 1.44,
+          "end": 1.84
+        },
+        {
+          "start": 1.84,
+          "end": 2.4
+        },
+        {
+          "start": 2.72,
+          "end": 3.12
+        },
+        {
+          "start": 3.12,
+          "end": 3.84
+        },
+        {
+          "start": 3.92,
+          "end": 4.16
+        },
+        {
+          "start": 4.16,
+          "end": 4.48
+        },
+        {
+          "start": 4.56,
+          "end": 4.88
+        }
+      ]
+    },
+    "daily-sentence-day-13-s7-i5": {
+      "sha256": "af36d05ccf8da9f7c8e5cb6f6d39913951f124f6e7bf0bd843def00dd1221372",
+      "textSha256": "87266509a1653f8824b89733b9a04baf16ef06a5995f2c9c1bd72626163008de",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.16
+        },
+        {
+          "start": 0.16,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.72
+        },
+        {
+          "start": 0.72,
+          "end": 0.88
+        },
+        {
+          "start": 0.88,
+          "end": 1.04
+        },
+        {
+          "start": 1.04,
+          "end": 1.28
+        },
+        {
+          "start": 1.28,
+          "end": 1.76
+        }
+      ]
+    },
+    "daily-sentence-day-13-s7-i6": {
+      "sha256": "ba31b390289880fbe4014802a85aef74007fe0d86d341276c4f38a1a6bb5987a",
+      "textSha256": "8194b9819e853b07a8e31f666efdae98d91110b98762b84c13bd8f146c41947d",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.16
+        },
+        {
+          "start": 0.16,
+          "end": 0.32
+        },
+        {
+          "start": 0.32,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 0.8
+        },
+        {
+          "start": 0.8,
+          "end": 1.04
+        },
+        {
+          "start": 1.04,
+          "end": 1.2
+        },
+        {
+          "start": 1.2,
+          "end": 1.36
+        },
+        {
+          "start": 1.36,
+          "end": 1.6
+        },
+        {
+          "start": 1.6,
+          "end": 2.0
+        }
+      ]
+    },
+    "daily-sentence-day-13-s7-i7": {
+      "sha256": "f96184edd72763837d54d10cbc023582ee4d1b81c71035befd81f3ae26babdfc",
+      "textSha256": "9b4bf8fe5cdb021f1781da18133f239d39b33a81399b05d4fd91946b1db547e7",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.8
+        },
+        {
+          "start": 0.8,
+          "end": 1.28
+        },
+        {
+          "start": 1.28,
+          "end": 1.68
+        },
+        {
+          "start": 1.68,
+          "end": 2.24
+        },
+        {
+          "start": 2.24,
+          "end": 2.56
+        },
+        {
+          "start": 2.56,
+          "end": 3.04
+        },
+        {
+          "start": 3.04,
+          "end": 3.52
+        }
+      ]
+    },
+    "daily-sentence-day-14-s7-i7": {
+      "sha256": "beaeff170d93d04dcf2f9e06478673931a19bcb17c6865ec54c7a3d4dc3215ea",
+      "textSha256": "c52f21335e34cdaf937769457c087d3706a3df3b1e87fb4f64d7f4169ce933d5",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.16
+        },
+        {
+          "start": 0.16,
+          "end": 0.56
+        },
+        {
+          "start": 0.56,
+          "end": 0.8
+        },
+        {
+          "start": 0.8,
+          "end": 1.12
+        },
+        {
+          "start": 1.12,
+          "end": 1.6
+        }
+      ]
+    },
+    "daily-sentence-day-14-s7-i8": {
+      "sha256": "020846b8ad96559b32313fbf6327f5500e8e9e4b3f2a5aa69f971ccd5a58fe60",
+      "textSha256": "d539de4a3b3e71b415c772c0fd50b10cd22b90c9a9e03e7479d9a62f7d6a0903",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.24
+        },
+        {
+          "start": 0.24,
+          "end": 0.48
+        },
+        {
+          "start": 0.48,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 0.88
+        },
+        {
+          "start": 0.88,
+          "end": 1.04
+        },
+        {
+          "start": 1.04,
+          "end": 1.12
+        },
+        {
+          "start": 1.12,
+          "end": 1.36
+        },
+        {
+          "start": 1.36,
+          "end": 1.6
+        }
+      ]
+    },
+    "daily-sentence-day-14-s7-i9": {
+      "sha256": "0e19cbc8adf2ed0b1b671723bb24b37adb5a27f5e67ad8aeb885ea69722787aa",
+      "textSha256": "fddf0aa9d1d4d011f7cb3be4b21cfec45f981e610cf2bda4356df9a72b110c55",
+      "timings": [
+        {
+          "start": 0.08,
+          "end": 0.64
+        },
+        {
+          "start": 0.64,
+          "end": 1.44
+        },
+        {
+          "start": 1.76,
+          "end": 2.32
+        },
+        {
+          "start": 2.32,
+          "end": 2.72
+        },
+        {
+          "start": 2.72,
+          "end": 3.52
+        },
+        {
+          "start": 4.24,
+          "end": 4.8
+        },
+        {
+          "start": 4.8,
+          "end": 5.36
+        },
+        {
+          "start": 5.36,
+          "end": 6.08
+        },
+        {
+          "start": 6.56,
+          "end": 7.12
+        },
+        {
+          "start": 7.12,
+          "end": 7.68
+        },
+        {
+          "start": 7.68,
+          "end": 8.24
+        }
+      ]
     }
   }
 }
