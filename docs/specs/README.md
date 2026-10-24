@@ -45,3 +45,5 @@
 推荐状态：`planned → implementing → software-verified → externally-verified → accepted`。003标准音直接信任cmguo/PinYinSound，按TRUST-01取消审核流程；006仍须真实设备与内容覆盖验证。发音评测如未来重启，另行建立 SPEC 与验收。
 
 当前数量统一见[STATUS](../STATUS.md)与内容/资源清单；各SPEC有日期或版本的完成记录是历史证据，不表示最新HEAD已重复执行全部测试。需求演进以008/009的每日录音边界、010/011的资源规则、012的内容扩充为准，原课程与客观题算法不变。
+
+新增 [016 简洁家庭体验](SPEC-016-simple-family-experience.md)：按全产品评审重排儿童/家长任务、统一播放与稳定布局，并展示产品版本和变更历史。

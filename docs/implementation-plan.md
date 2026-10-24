@@ -39,3 +39,5 @@ SPEC-013的DOCKER-05/06补充Windows x86-64宿主的linux/amd64部署及CPU Whis
 2026-10-17新增[SPEC-015](specs/SPEC-015-maintainability.md)：按ADR-0026拆分大型前端、API与样式模块，保持产品行为和数据格式；按MAINT-01～03记录工程与真实服务回归。
 
 2026-10-17补充SPEC-010 SETUP-05：按ADR-0027统一run.sh与lovepinyin的本机HTTP/家庭HTTPS生命周期；既有证书配置保存在本机私有文件，启动补齐缺失入口，停止/重启/状态管理两端。软件与实际Mac后台重启验证见SPEC-010，不代替iPad、登录启动或整机恢复验收。
+
+2026-10-24新增[SPEC-016](specs/SPEC-016-simple-family-experience.md)：按ADR-0029完成全产品交互简化，UX-01～08覆盖首页、听写练课程、书写有声演示、天天练稳定提示与可选录音、游戏、家长和错误状态；VERSION-01增加产品版本及变更历史。先按验收切片实现，再执行完整工程、发布与真实服务/声音验收，真机仍独立记录。
