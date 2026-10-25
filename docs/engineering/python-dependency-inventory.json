@@ -79,7 +79,7 @@
     },
     {
       "name": "fastapi",
-      "version": "0.141.1",
+      "version": "0.143.0",
       "licenseExpression": "MIT",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
@@ -304,6 +304,14 @@
       ]
     },
     {
+      "name": "opentelemetry-api",
+      "version": "1.45.1",
+      "licenseExpression": "Apache-2.0",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
       "name": "packaging",
       "version": "26.3",
       "licenseExpression": "Apache-2.0 OR BSD-2-Clause",
@@ -425,7 +433,7 @@
     },
     {
       "name": "ruff",
-      "version": "0.16.8",
+      "version": "0.17.0",
       "licenseExpression": "MIT",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
@@ -571,7 +579,7 @@
     },
     {
       "name": "uvicorn",
-      "version": "0.53.0",
+      "version": "0.54.0",
       "licenseExpression": "BSD-3-Clause",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],

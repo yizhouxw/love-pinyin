@@ -5,10 +5,10 @@ description = "Local Mac Studio API baseline for Love Pinyin"
 requires-python = ">=3.12,<3.13"
 license = "MIT"
 dependencies = [
-    "fastapi==0.141.1",
+    "fastapi==0.143.0",
     "pypinyin==0.55.0",
     "pywhispercpp==1.5.1",
-    "uvicorn==0.53.0",
+    "uvicorn==0.54.0",
 ]
 
 [dependency-groups]
@@ -23,7 +23,7 @@ audio-asr = [
 dev = [
     "httpx==0.28.1",
     "pytest==9.1.1",
-    "ruff==0.16.8",
+    "ruff==0.17.0",
 ]
 voice-build = [
     "mlx-audio==0.5.8 ; platform_machine == 'arm64' and sys_platform == 'darwin'",

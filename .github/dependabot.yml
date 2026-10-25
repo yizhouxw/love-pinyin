@@ -4,6 +4,12 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    ignore:
+      # Match Node 24 and the TypeScript range supported by typescript-eslint.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:

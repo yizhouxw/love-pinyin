@@ -7,13 +7,13 @@
 | 用途            | 依赖                                    | 许可                              | 结果/选择原因                                                        |
 | --------------- | --------------------------------------- | --------------------------------- | -------------------------------------------------------------------- |
 | UI              | react / react-dom 19.3.0                | MIT                               | 单页交互生态成熟，后续可放入原生壳                                   |
-| 构建            | vite 8.3.1 / plugin-react 6.1.1         | MIT                               | Node24兼容，静态产物由Mac API服务                                    |
+| 构建            | vite 8.3.4 / plugin-react 6.1.1         | MIT                               | Node24兼容，静态产物由Mac API服务                                    |
 | 类型            | typescript 6.0.3                        | Apache-2.0                        | 最新7.0.2超出typescript-eslint 8.70.1的peer范围，因此锁6.0.3         |
-| 格式/lint       | prettier3.9.9 / ESLint10.11.0           | MIT                               | 自动化统一代码风格                                                   |
-| 测试            | Vitest5.0.2 / Playwright1.63.0          | MIT / Apache-2.0                  | 已下载三浏览器运行时；不等同真机                                     |
+| 格式/lint       | prettier3.9.9 / ESLint10.12.0           | MIT                               | 自动化统一代码风格                                                   |
+| 测试            | Vitest5.0.4 / Playwright1.63.0          | MIT / Apache-2.0                  | 已下载三浏览器运行时；不等同真机                                     |
 | 内容Schema      | Ajv8.20.0                               | MIT                               | JSON结构及教学引用门禁                                               |
-| API             | FastAPI0.141.1 / Uvicorn0.53.0          | MIT / BSD-3-Clause                | 实际内容、家庭数据及资源API                                          |
-| 服务端测试/lint | pytest9.1.1 / httpx0.28.1 / ruff0.16.8  | MIT / BSD-3-Clause / MIT          | 锁定在uv dev组                                                       |
+| API             | FastAPI0.143.0 / Uvicorn0.54.0          | MIT / BSD-3-Clause                | 实际内容、家庭数据及资源API                                          |
+| 服务端测试/lint | pytest9.1.1 / httpx0.28.1 / ruff0.17.0  | MIT / BSD-3-Clause / MIT          | 锁定在uv dev组                                                       |
 | 声学研究        | librosa1.0.0 / NumPy2.5.3 / SciPy1.18.1 | ISC / BSD-3-Clause / BSD-3-Clause | `assessment-poc`独立组，仅研究候选；已验证arm64原生轮子及YIN合成信号 |
 | 数据库          | Python标准库sqlite3                     | 随Python/SQLite各自许可           | 单Mac家庭使用，避免数据库运维                                        |
 
@@ -32,6 +32,25 @@ assessment-poc与audio-asr保留为维护研究依赖组，不由默认学习服
 ## 升级流程
 
 查官方release和peer约束 → 固定新版本 → 更新lock和清单 → 工程验证 → 受影响功能与真机 → 单独提交。禁止`npm audit fix --force`和未审查的安装脚本绕过。
+
+### DEPS-01（2026-10-25）
+
+处理Dependabot #1–12：采用Vite8.3.4、Vitest5.0.4、ESLint10.12.0、FastAPI0.143.0、Uvicorn0.54.0、Ruff0.17.0及4个Actions更新；#8的TypeScript7超出typescript-eslint8.70.1的peer范围，#10的Node26类型与Node24运行时不符，关闭这两项并在Dependabot中忽略对应主版本更新。保留TypeScript6.0.3与@types/node24.13.6。
+
+软件包来源为官方[npm registry](https://registry.npmjs.org/)与[PyPI](https://pypi.org/)，固定版本和完整性哈希见package-lock.json/uv.lock；上述npm包、FastAPI、Ruff为MIT，Uvicorn为BSD-3-Clause。另按npm audit修复传递依赖fast-uri3.1.9（BSD-3-Clause）、source-map-js1.2.2（BSD-3-Clause）、zod4.6.6（MIT）；完整依赖/许可由两份自动清单记录。fast-uri/zod的精确版本、tarball和integrity取自官方版本元数据，npm ci校验安装，不引入额外顶层依赖或override。
+
+[FastAPI0.143.0](https://github.com/fastapi/fastapi/releases/tag/0.143.0)新增必需的opentelemetry-api1.45.1（Apache-2.0，官方[PyPI](https://pypi.org/project/opentelemetry-api/1.45.1/)），属于API接口依赖；未安装SDK、exporter或standard extras。server/main.py显式禁用全部遥测信号及环境自动配置，回归测试在宿主启用OTEL环境变量时阻止provider调用和网络连接，并核对无SDK/exporter加载。
+
+CI Actions均为MIT，版本v7.0.0，通过各官方仓库发行tag核对并固定完整commit：
+
+| 来源                                                                                      | 固定commit                                 |
+| ----------------------------------------------------------------------------------------- | ------------------------------------------ |
+| [actions/checkout](https://github.com/actions/checkout/releases/tag/v7.0.0)               | `9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0` |
+| [actions/setup-node](https://github.com/actions/setup-node/releases/tag/v7.0.0)           | `820762786026740c76f36085b0efc47a31fe5020` |
+| [actions/upload-artifact](https://github.com/actions/upload-artifact/releases/tag/v7.0.0) | `bbbca2ddaa5d8feaa63e36b76fdaad77386f024f` |
+| [astral-sh/setup-uv](https://github.com/astral-sh/setup-uv/releases/tag/v7.0.0)           | `eb1897b8dc4b5d5bfe39a428a8f2304605e0983c` |
+
+继续使用GitHub托管ubuntu runner及现有Node/npm/uv固定版本、只读contents权限；上传仍使用默认压缩归档，不开启直接单文件模式。Actions运行结果须以远端CI为准，本机安装与测试不代替云端执行。
 
 一手资料：[Vite要求](https://vite.dev/guide/)、[uv项目与锁文件](https://docs.astral.sh/uv/guides/projects/)、[FastAPI部署](https://fastapi.tiangolo.com/deployment/)、[librosa](https://librosa.org/doc/latest/index.html)、[Playwright](https://playwright.dev/docs/intro)。版本和许可证通过npm/PyPI包元数据及实际安装核对，详见锁文件，不靠搜索片段推定。
 

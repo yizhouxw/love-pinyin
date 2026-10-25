@@ -24,6 +24,20 @@ Mac Studio 提供同源 HTTPS 静态网页与 `/api/v1/` 服务；浏览器必�
 - 代码 MIT 不覆盖第三方字体、音频、图像、模型、模板和样本。每一项都有来源、许可、版本/摘要、再分发结论；缺项不得进入公开发布包。
 - 标准音来自固定版本cmguo/PinYinSound；安装、启用状态、文件摘要、解码和课程目标映射校验通过，不要求人工听审或签名。题库完整性校验通过。
 
+## DEPS-01：自动依赖更新与安全修复（2026-10-25）
+
+逐项核对Dependabot PR #1–12的官方发布记录、锁文件差异和peer约束；将兼容更新直接整合到main，刷新npm/uv锁文件及许可清单。另修复npm audit实际报告的传递依赖漏洞，安装不使用force或忽略peer冲突。GitHub Actions按官方发行commit固定，继续使用最小只读权限。
+
+TypeScript保持6.0.3（typescript-eslint 8.70.1要求>=4.8.4 <6.1.0）；Node运行时保持24.18.1，@types/node保持24.13.6，不采用PR #8/#10的主版本迁移。Dependabot忽略这两个包的主版本更新，安全更新仍按告警处理。
+
+FastAPI升级后显式禁用tracing、metrics、logs、operation_spans和auto_configure；即使宿主设置FASTAPI_OTEL_AUTO_CONFIGURE/OTEL_*也不能自动启用导出器。不安装OpenTelemetry SDK、exporter或FastAPI standard extras。用启用相关环境变量的隔离子进程验证启动和健康请求不会配置遥测或发起网络连接。
+
+验收：npm audit无已知漏洞；npm ci及uv sync --locked成功；npm run verify:all与npm run validate:release通过；记录实际更新版本、许可、PR处理结果及验证范围。GitHub托管CI、移动真机、家庭LAN与Docker重建分别记录，不由本机测试代替。
+
+DEPS-01本机完成记录：采用#1–7、#9、#11–12的10项更新；#8/#10因上述兼容边界不采用。npm audit从6个受影响包（3 high、3 moderate）降至0；npm ci --offline从已校验官方归档的缓存干净安装成功，npm ls --all无peer冲突，uv sync --locked及维护组同步成功。依赖来源、许可和Actions完整commit见[依赖记录](../engineering/dependencies.md#deps-012026-10-25)，两份许可清单已更新。
+
+2026-10-25的verify:all通过131项前端/工具、389项服务端、30项本机浏览器视口、40项真实API/SQLite/声音GUI回归；validate:release通过（14课、83知识项、476题；14份840条每日材料、602个标准音白名单）。新增test_no_telemetry.py验证宿主遥测环境变量不能开启provider或网络连接。证据留在忽略目录private/deps01-verify-all.log、deps01-release.log、deps01-audit.json和deps01-npm-tree.log。保留macOS27 + Playwright1.63既有Firefox例外和上游AnyIO弃用提示；未新增移动真机、家庭LAN故障或Docker镜像重建验收，远端Actions运行不由本机结果推定。
+
 ## 跨端、性能与安全验收
 
 完整执行 [UX 验收矩阵](../product/UX.md)。登记真实设备/浏览器版本并冻结首版支持下限；所有声明支持设备均能配对、听音、完成四类客观题、保存及跨设备读进度。桌面 Firefox/WebKit/Chromium 自动化与手机视口通过不等于 iOS/Android 实机通过。
