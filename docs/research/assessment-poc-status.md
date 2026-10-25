@@ -1,5 +1,7 @@
 # 发音评测研究状态：暂停
 
+2026-10-25 更新：本页记录的旧 PoC 继续暂停。用户新提出的双 TTS 合成训练及 CPU 目标拼音匹配已另立 [SPEC-018](../specs/SPEC-018-target-pronunciation-matcher.md)、[ADR-0034](../adr/0034-target-pronunciation-matcher.md)和[技术方案](target-pronunciation-matcher.md)，当前为方案阶段，尚未生成新训练集、训练权重或验证真实儿童准确性。
+
 按用户后续决定及[ADR-0004](../adr/0004-defer-pronunciation-assessment.md)，首版不录音、不上传儿童语音、不运行ASR或评分。SPEC-000不阻塞当前交付，应用也没有返回503的占位评测接口。
 
 历史研究曾安装独立 `assessment-poc` 依赖组，并以合成正弦验证声学函数可运行；未完成儿童真实样本校准、准确性或设备验收，不能称为可用评分器。素材转写是另一项维护工具，也不能把转写命中当作发音评分。

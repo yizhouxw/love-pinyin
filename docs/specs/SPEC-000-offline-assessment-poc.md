@@ -2,6 +2,8 @@
 
 状态：暂停，已由[ADR-0004](../adr/0004-defer-pronunciation-assessment.md)排除出首版。不属于当前开发或发布前置条件。
 
+2026-10-25 用户明确重启另一条技术路线：双 TTS 合成训练、目标拼音专用匹配、CPU 推理。新需求由 [SPEC-018](SPEC-018-target-pronunciation-matcher.md) 与 [ADR-0034](../adr/0034-target-pronunciation-matcher.md)承接；本历史 SPEC 不恢复为现有课程/游戏的前置门禁，也不表示新模型已通过验证。
+
 历史研究没有产出通过儿童准确性验证的评分器。原课程不录音或评测；每日跟读按SPEC-008/009允许自愿录音并仅发家庭Mac内存作ASR音节匹配，这不代表重启专业发音评测；不以随机分数、ASR文字命中、音量或合成信号实验替代发音能力。
 
 原采音/worker/模板校准任务和候选依赖方案从现行SPEC移除，完整历史可从Git查看。相关研究状态见[PoC记录](../research/assessment-poc-status.md)。重新启动必须由新需求和新SPEC定义真实样本、许可、隐私、算法与设备验收。
