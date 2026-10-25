@@ -1,0 +1,305 @@
+{
+  "version": 1,
+  "seed": 3182026,
+  "repetitions": 3,
+  "personas": [
+    {
+      "id": "voice-00",
+      "split": "train",
+      "instruction": "低龄儿童风格的男声，音色明亮清晰，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-01",
+      "split": "train",
+      "instruction": "低龄儿童风格的男声，音色柔和自然，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-02",
+      "split": "train",
+      "instruction": "低龄儿童风格的女声，音色明亮清晰，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-03",
+      "split": "train",
+      "instruction": "低龄儿童风格的女声，音色柔和自然，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-04",
+      "split": "train",
+      "instruction": "较大儿童风格的男声，音色明亮清晰，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-05",
+      "split": "train",
+      "instruction": "较大儿童风格的男声，音色柔和自然，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-06",
+      "split": "train",
+      "instruction": "较大儿童风格的女声，音色明亮清晰，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-07",
+      "split": "train",
+      "instruction": "较大儿童风格的女声，音色柔和自然，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-08",
+      "split": "train",
+      "instruction": "成年风格的男声，音色明亮清晰，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-09",
+      "split": "train",
+      "instruction": "成年风格的男声，音色柔和自然，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-10",
+      "split": "train",
+      "instruction": "成年风格的女声，音色明亮清晰，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-11",
+      "split": "train",
+      "instruction": "成年风格的女声，音色柔和自然，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-12",
+      "split": "calibration",
+      "instruction": "年长风格的男声，音色明亮清晰，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-13",
+      "split": "calibration",
+      "instruction": "年长风格的男声，音色柔和自然，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-14",
+      "split": "test",
+      "instruction": "年长风格的女声，音色明亮清晰，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-15",
+      "split": "test",
+      "instruction": "年长风格的女声，音色柔和自然，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-16",
+      "split": "train",
+      "instruction": "低龄儿童风格的男声，音色沉稳通透，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-17",
+      "split": "train",
+      "instruction": "低龄儿童风格的女声，音色沉稳通透，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-18",
+      "split": "train",
+      "instruction": "较大儿童风格的男声，音色沉稳通透，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-19",
+      "split": "train",
+      "instruction": "较大儿童风格的女声，音色沉稳通透，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-20",
+      "split": "train",
+      "instruction": "成年风格的男声，音色沉稳通透，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-21",
+      "split": "train",
+      "instruction": "成年风格的女声，音色沉稳通透，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-22",
+      "split": "train",
+      "instruction": "年长风格的男声，音色沉稳通透，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-23",
+      "split": "train",
+      "instruction": "年长风格的女声，音色沉稳通透，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    }
+  ],
+  "featureVersion": "logmel64-pitch4-v1",
+  "maximumSeconds": 8,
+  "maximumEpochs": 160,
+  "batchSize": 32,
+  "learningRate": 0.001,
+  "hiddenSize": 192,
+  "blocks": 10,
+  "expansion": 3,
+  "qualityThresholds": {
+    "minimumRms": 0.002,
+    "maximumClippedFraction": 0.05
+  },
+  "augmentation": {
+    "snrDb": [10, 20, 30],
+    "gainDb": [-6, 6],
+    "reverbSeconds": [0.15, 0.6],
+    "timeStretch": [0.85, 1.15]
+  },
+  "acceptance": {
+    "falsePass": 0.05,
+    "falseRetry": 0.1,
+    "uncertain": 0.2,
+    "p95Milliseconds": 500
+  },
+  "pilotDefinitions": [
+    {
+      "pinyin": "mā",
+      "ttsText": "妈"
+    },
+    {
+      "pinyin": "má",
+      "ttsText": "麻"
+    },
+    {
+      "pinyin": "mǎ",
+      "ttsText": "马"
+    },
+    {
+      "pinyin": "mà",
+      "ttsText": "骂"
+    },
+    {
+      "pinyin": "bā",
+      "ttsText": "八"
+    },
+    {
+      "pinyin": "pā",
+      "ttsText": "趴"
+    },
+    {
+      "pinyin": "bǐ",
+      "ttsText": "笔"
+    },
+    {
+      "pinyin": "pǐ",
+      "ttsText": "痞"
+    },
+    {
+      "pinyin": "dā",
+      "ttsText": "搭"
+    },
+    {
+      "pinyin": "tā",
+      "ttsText": "他"
+    },
+    {
+      "pinyin": "nǐ",
+      "ttsText": "你"
+    },
+    {
+      "pinyin": "lǐ",
+      "ttsText": "里"
+    },
+    {
+      "pinyin": "gē",
+      "ttsText": "哥"
+    },
+    {
+      "pinyin": "kē",
+      "ttsText": "科"
+    },
+    {
+      "pinyin": "hē",
+      "ttsText": "喝"
+    },
+    {
+      "pinyin": "jī",
+      "ttsText": "鸡"
+    },
+    {
+      "pinyin": "qī",
+      "ttsText": "七"
+    },
+    {
+      "pinyin": "xī",
+      "ttsText": "西"
+    },
+    {
+      "pinyin": "zī",
+      "ttsText": "资"
+    },
+    {
+      "pinyin": "cī",
+      "ttsText": "疵"
+    },
+    {
+      "pinyin": "sī",
+      "ttsText": "丝"
+    },
+    {
+      "pinyin": "zhī",
+      "ttsText": "知"
+    },
+    {
+      "pinyin": "chī",
+      "ttsText": "吃"
+    },
+    {
+      "pinyin": "shī",
+      "ttsText": "诗"
+    },
+    {
+      "pinyin": "rì",
+      "ttsText": "日"
+    },
+    {
+      "pinyin": "nǚ",
+      "ttsText": "女"
+    },
+    {
+      "pinyin": "lǜ",
+      "ttsText": "绿"
+    },
+    {
+      "pinyin": "huā",
+      "ttsText": "花"
+    },
+    {
+      "pinyin": "guā",
+      "ttsText": "瓜"
+    },
+    {
+      "pinyin": "duǒ",
+      "ttsText": "朵"
+    },
+    {
+      "pinyin": "tuō",
+      "ttsText": "托"
+    },
+    {
+      "pinyin": "yuè",
+      "ttsText": "月"
+    }
+  ]
+}

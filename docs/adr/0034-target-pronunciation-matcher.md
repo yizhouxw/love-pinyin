@@ -17,6 +17,8 @@
 
 ## 取舍
 
+2026-10-25 实施补充：共享声调头暴露音节/声调相关性的捷径；仅以合成 ma 四声训练相对音高头的校准表现也不足。最终声调分支只输入相对有声 F0 轮廓，使用项目已授权、直接信任的 PinYinSound 标准音作锚；按音节分组划分，排除所有试验目标的音节组，保留独立许可状态。不得称同源留出记录为独立说话人验证。两个 ONNX 均显式 CPU 推理、分别绑定摘要；共享声调头与失败的纯合成轮廓实验保留作对照，新音色测试不参与选择阈值。
+
 全量音节分类器实现简单，但对未见组合和局部错误的解释较弱；纯模板距离受音色与音高变化影响；通用 ASR 加语言模型会倾向把近似语音纠正成目标。选择音素/声调分支以便做近邻对比和拒判，其工程成本高于 ASR 文本比对。合成数据解决起步和覆盖问题，对真实发音错误的泛化仍需独立实验确认。
 
-模型、数据、增强、评估及分阶段验收详见 [SPEC-018](../specs/SPEC-018-target-pronunciation-matcher.md) 和[技术方案](../research/target-pronunciation-matcher.md)。本 ADR 不表示模型已训练、CPU 性能已达标或现有课程已新增录音。
+模型、数据、增强、评估及分阶段验收详见 [SPEC-018](../specs/SPEC-018-target-pronunciation-matcher.md) 和[技术方案](../research/target-pronunciation-matcher.md)。底层实装、CPU 测量及未通过的效果门禁见[实验记录](../research/target-pronunciation-matcher-results.md)；现有应用不接入本模型。

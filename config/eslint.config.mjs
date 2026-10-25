@@ -8,7 +8,8 @@ export default tseslint.config(
     ignores: [
       'dist/**',
       'node_modules/**',
-      '.venv/**',
+      '**/.venv/**',
+      '**/.runtime/**',
       'private/**',
       'playwright-report/**',
       'test-results/**',

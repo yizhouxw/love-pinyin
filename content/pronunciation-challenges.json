@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "cohort": "synthetic-held-out-tone-and-umlaut-substitutions",
+  "purpose": "Off-catalogue tones and u/ü; test only, never training or calibration",
+  "definitions": [
+    {
+      "pinyin": "bà",
+      "ttsText": "爸",
+      "against": "pm-ba1"
+    },
+    {
+      "pinyin": "pà",
+      "ttsText": "怕",
+      "against": "pm-pa1"
+    },
+    {
+      "pinyin": "dà",
+      "ttsText": "大",
+      "against": "pm-da1"
+    },
+    {
+      "pinyin": "tà",
+      "ttsText": "踏",
+      "against": "pm-ta1"
+    },
+    {
+      "pinyin": "gè",
+      "ttsText": "个",
+      "against": "pm-ge1"
+    },
+    {
+      "pinyin": "kè",
+      "ttsText": "课",
+      "against": "pm-ke1"
+    },
+    {
+      "pinyin": "hè",
+      "ttsText": "贺",
+      "against": "pm-he1"
+    },
+    {
+      "pinyin": "jí",
+      "ttsText": "急",
+      "against": "pm-ji1"
+    },
+    {
+      "pinyin": "qí",
+      "ttsText": "旗",
+      "against": "pm-qi1"
+    },
+    {
+      "pinyin": "xí",
+      "ttsText": "习",
+      "against": "pm-xi1"
+    },
+    {
+      "pinyin": "zǐ",
+      "ttsText": "紫",
+      "against": "pm-zi1"
+    },
+    {
+      "pinyin": "cǐ",
+      "ttsText": "此",
+      "against": "pm-ci1"
+    },
+    {
+      "pinyin": "sì",
+      "ttsText": "四",
+      "against": "pm-si1"
+    },
+    {
+      "pinyin": "zhí",
+      "ttsText": "直",
+      "against": "pm-zhi1"
+    },
+    {
+      "pinyin": "chí",
+      "ttsText": "池",
+      "against": "pm-chi1"
+    },
+    {
+      "pinyin": "shí",
+      "ttsText": "十",
+      "against": "pm-shi1"
+    },
+    {
+      "pinyin": "ní",
+      "ttsText": "泥",
+      "against": "pm-ni3"
+    },
+    {
+      "pinyin": "lí",
+      "ttsText": "梨",
+      "against": "pm-li3"
+    },
+    {
+      "pinyin": "nú",
+      "ttsText": "奴",
+      "against": "pm-nv3"
+    },
+    {
+      "pinyin": "lǘ",
+      "ttsText": "驴",
+      "against": "pm-lv4"
+    },
+    {
+      "pinyin": "huà",
+      "ttsText": "画",
+      "against": "pm-hua1"
+    },
+    {
+      "pinyin": "guà",
+      "ttsText": "挂",
+      "against": "pm-gua1"
+    },
+    {
+      "pinyin": "duò",
+      "ttsText": "剁",
+      "against": "pm-duo3"
+    },
+    {
+      "pinyin": "tuó",
+      "ttsText": "驼",
+      "against": "pm-tuo1"
+    },
+    {
+      "pinyin": "yuē",
+      "ttsText": "约",
+      "against": "pm-yue4"
+    }
+  ],
+  "personas": [
+    {
+      "id": "voice-24",
+      "split": "test",
+      "instruction": "低龄儿童风格的男声，音色轻柔清亮，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    },
+    {
+      "id": "voice-25",
+      "split": "test",
+      "instruction": "较大儿童风格的女声，音色自然舒展，标准普通话，平静自然，清楚读出这个字，不要解释。",
+      "referenceText": "今天阳光很好，我们一起读拼音。"
+    }
+  ]
+}

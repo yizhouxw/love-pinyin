@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "generators": {
+    "qwen": {
+      "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-VoiceDesign-bf16",
+      "revision": "7d3824abff87e49756bb0f83fb5411de75d160c4",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "3a00062ef04f72e43a728c4f414799fdc65d8b71bc47bb03099385b7ea79b02b",
+          "bytes": 1068
+        },
+        {
+          "path": "config.json",
+          "sha256": "8a9be83c045ee9ab9d2e6609655f547b9291a070f5acae3428c3ff07a365de40",
+          "bytes": 5232
+        },
+        {
+          "path": "generation_config.json",
+          "sha256": "f1b90b4513f3b34c62851049e2492d7b4c5940daf1276f89c82b8ef04127f3aa",
+          "bytes": 245
+        },
+        {
+          "path": "merges.txt",
+          "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+          "bytes": 1671839
+        },
+        {
+          "path": "model.safetensors",
+          "sha256": "96ae28bec2205ec0b5e0c750bea2b8a5deac4f14d33a8a25a5f753299486b70e",
+          "bytes": 3833402589
+        },
+        {
+          "path": "model.safetensors.index.json",
+          "sha256": "abf019e063dcc595d7aef7c9554d2806ffdc58746a7ac6238cb26177af8d431f",
+          "bytes": 32458
+        },
+        {
+          "path": "preprocessor_config.json",
+          "sha256": "efdde1022ea9d76928bf7a9cd53139138f5ba2e466e837f08f6105ab1af1c119",
+          "bytes": 127
+        },
+        {
+          "path": "speech_tokenizer/config.json",
+          "sha256": "ee65bb901c876664ab8707c487157aa1a6ee57c65969b28fb5ec9dc211e68167",
+          "bytes": 2336
+        },
+        {
+          "path": "speech_tokenizer/configuration.json",
+          "sha256": "6bc26d64eb5024b4d1dab5a52371958b429256d6c9d59787f1f5294a54e0cebd",
+          "bytes": 76
+        },
+        {
+          "path": "speech_tokenizer/model.safetensors",
+          "sha256": "836b7b357f5ea43e889936a3709af68dfe3751881acefe4ecf0dbd30ba571258",
+          "bytes": 682293092
+        },
+        {
+          "path": "speech_tokenizer/preprocessor_config.json",
+          "sha256": "fcb3805e597e786d4067706e602f6688524640f8d3396790e2e09b5942fcbdfb",
+          "bytes": 234
+        },
+        {
+          "path": "tokenizer_config.json",
+          "sha256": "dc3c31c3bdaedd5016382bb3cbe07323026775ad51f5a4fb564505992ae4a670",
+          "bytes": 7344
+        },
+        {
+          "path": "vocab.json",
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+          "bytes": 2776833
+        }
+      ],
+      "license": "Apache-2.0",
+      "upstreamModel": "Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign",
+      "upstreamRevision": "5ecdb67327fd37bb2e042aab12ff7391903235d3",
+      "engine": "mlx-audio",
+      "engineVersion": "0.5.8"
+    },
+    "cosy": {
+      "model": "FunAudioLLM/Fun-CosyVoice3-0.5B-2512",
+      "revision": "29e01c4e8d000f4bcd70751be16fa94bf3d85a18",
+      "files": [
+        {
+          "path": "CosyVoice-BlankEN/config.json",
+          "sha256": "168aa1bd401abc3bc262ba15ba4e499627a8b4e006e9d050b47c22de20660185",
+          "bytes": 659
+        },
+        {
+          "path": "CosyVoice-BlankEN/generation_config.json",
+          "sha256": "e558847a8b4402616f1273797b015104dc266fe4b520056fca88823ba8f8ebe6",
+          "bytes": 242
+        },
+        {
+          "path": "CosyVoice-BlankEN/merges.txt",
+          "sha256": "ac8ff86a72bee70828fbc1119bc4398c6f3a9a6e490d7b0dbe917be025478bd0",
+          "bytes": 1402109
+        },
+        {
+          "path": "CosyVoice-BlankEN/model.safetensors",
+          "sha256": "130282af0dfa9fe5840737cc49a0d339d06075f83c5a315c3372c9a0740d0b96",
+          "bytes": 988097824
+        },
+        {
+          "path": "CosyVoice-BlankEN/tokenizer_config.json",
+          "sha256": "482bd979881423375ca5414e4e0d94cd7c5349dbb17fffd46b4d36d71e62a1bc",
+          "bytes": 1287
+        },
+        {
+          "path": "CosyVoice-BlankEN/vocab.json",
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+          "bytes": 2776833
+        },
+        {
+          "path": "campplus.onnx",
+          "sha256": "a6ac6a63997761ae2997373e2ee1c47040854b4b759ea41ec48e4e42df0f4d73",
+          "bytes": 28303423
+        },
+        {
+          "path": "config.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "bytes": 2
+        },
+        {
+          "path": "configuration.json",
+          "sha256": "c502b6328c67638b401df8dd05de89e9e8d1cff9cd0ada10dfbdbe13556c20de",
+          "bytes": 47
+        },
+        {
+          "path": "cosyvoice3.yaml",
+          "sha256": "f5a6b2c6f05139d0f18861a1fe506f751e787026b77c05f7e8fef9f8a4405965",
+          "bytes": 6934
+        },
+        {
+          "path": "flow.pt",
+          "sha256": "a6fab32a7825e5b0bc855ddd948f8db9370b0a786fbc249caa4595e95b608e4b",
+          "bytes": 1329116148
+        },
+        {
+          "path": "hift.pt",
+          "sha256": "b279d7641eb97ae55b3b540cfba4f953c26492a2df758328a89a4d007ab87a65",
+          "bytes": 83202622
+        },
+        {
+          "path": "llm.pt",
+          "sha256": "69f43bd545131c30e98947fb360ea8b4dc9916d8e83dded7757c7ea4f5a24970",
+          "bytes": 2024669519
+        },
+        {
+          "path": "speech_tokenizer_v3.onnx",
+          "sha256": "23236a74175dbdda47afc66dbadd5bcb41303c467a57c261cb8539ad9db9208d",
+          "bytes": 969451503
+        }
+      ],
+      "license": "Apache-2.0",
+      "engine": "CosyVoice",
+      "engineCommit": "074ca6dc9e80a2f424f1f74b48bdd7d3fea531cc"
+    }
+  },
+  "cosySource": {
+    "repository": "https://github.com/QwenAudio/CosyVoice.git",
+    "commit": "074ca6dc9e80a2f424f1f74b48bdd7d3fea531cc",
+    "license": "Apache-2.0",
+    "matchaRepository": "https://github.com/shivammehta25/Matcha-TTS.git",
+    "matchaCommit": "dd9105b34bf2be2230f4aa1e4769fb586a3c824e",
+    "matchaLicense": "MIT"
+  }
+}

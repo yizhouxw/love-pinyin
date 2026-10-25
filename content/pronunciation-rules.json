@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "apicalRimes": {
+    "z:i": "i-dental",
+    "c:i": "i-dental",
+    "s:i": "i-dental",
+    "zh:i": "i-retroflex",
+    "ch:i": "i-retroflex",
+    "sh:i": "i-retroflex",
+    "r:i": "i-retroflex"
+  },
+  "toneCombiningMarks": {
+    "̄": 1,
+    "́": 2,
+    "̌": 3,
+    "̀": 4
+  },
+  "defaultUnmarkedTone": 0,
+  "nonSyllabicReadingTone": 5,
+  "toneLabels": {
+    "0": "neutral",
+    "1": "first",
+    "2": "second",
+    "3": "third",
+    "4": "fourth",
+    "5": "not-applicable"
+  },
+  "toneMarkExamples": { "ā": 1, "á": 2, "ǎ": 3, "à": 4 }
+}

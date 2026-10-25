@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "contrastTargetIds": ["pm-ma1", "pm-ma2", "pm-ma3", "pm-ma4"],
+  "seed": 3182026,
+  "epochs": 300,
+  "batchSize": 64,
+  "learningRate": 0.002,
+  "hiddenSize": 64,
+  "relativePitchNoiseOctaves": 0.005,
+  "timeWarpExponent": [0.85, 1.15]
+}

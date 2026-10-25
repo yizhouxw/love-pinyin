@@ -22,6 +22,10 @@ jobs:
       - run: uv sync --locked
       - run: npm run verify
       - run: npm run verify:server
+      - run: uv sync --project tools/pinyin-matcher --locked --group dev
+      - run: tools/pinyin-matcher/.venv/bin/python -m pytest tests/matcher -q
+      # Actual matcher weights stay on the family Mac. CI checks boundaries and
+      # content compilation; it does not claim trained-model/child accuracy.
       - run: npm run licenses
       - run: git diff --exit-code -- docs/engineering/dependency-inventory.json
       - run: npx playwright install --with-deps chromium firefox webkit

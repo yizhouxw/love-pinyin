@@ -1,0 +1,633 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "status": "experimental-quality-gates-not-passed",
+  "scope": "underlying Python/CLI only; no application integration",
+  "machine": {
+    "cpu": "Apple M2 Ultra",
+    "physicalCores": 24,
+    "memoryBytes": 68719476736,
+    "architecture": "arm64"
+  },
+  "corpus": {
+    "plannedRoots": 4608,
+    "includedRoots": 4074,
+    "quarantined": 407,
+    "generationFailures": 127,
+    "distinctWaveformHashes": 4074,
+    "bySplit": {
+      "train": 3374,
+      "calibration": 330,
+      "test": 370
+    },
+    "byGenerator": {
+      "qwen": 2070,
+      "cosy": 2004
+    },
+    "voiceFamilies": 24,
+    "trainVoiceFamilies": 20,
+    "calibrationVoiceFamilies": 2,
+    "diagnosticTestVoiceFamilies": 2,
+    "manifestSha256": "d4163d8e3b090ec1219b5bbe2e9c3b3f9dac0499150820d3935c7311e0986e7c"
+  },
+  "model": {
+    "version": "synthetic-pilot-relative-pitch-v1",
+    "acousticSha256": "f3516ad9f833934f2f8875c2145bd8b87edb4d207bc938ac6c4e97881acf2f81",
+    "pitchSha256": "cb1d2ec33fc6ea4a3e7fe279bfec03a8e7939d1152483feb93a1a18cb51805aa",
+    "parameters": 2397186,
+    "coveredTargetIds": [
+      "pm-ba1",
+      "pm-bi3",
+      "pm-chi1",
+      "pm-ci1",
+      "pm-da1",
+      "pm-duo3",
+      "pm-ge1",
+      "pm-gua1",
+      "pm-he1",
+      "pm-hua1",
+      "pm-ji1",
+      "pm-ke1",
+      "pm-li3",
+      "pm-lv4",
+      "pm-ma1",
+      "pm-ma2",
+      "pm-ma3",
+      "pm-ma4",
+      "pm-ni3",
+      "pm-nv3",
+      "pm-pa1",
+      "pm-pi3",
+      "pm-qi1",
+      "pm-ri4",
+      "pm-shi1",
+      "pm-si1",
+      "pm-ta1",
+      "pm-tuo1",
+      "pm-xi1",
+      "pm-yue4",
+      "pm-zhi1",
+      "pm-zi1"
+    ],
+    "catalogSha256": "208ef7d7bd4da7e164c7953afd53224fe10998c9adb31ac954ec96d9dc2f713c",
+    "thresholds": {
+      "minimumScore": -8,
+      "minimumMargin": 3,
+      "minimumCtc": -3,
+      "minimumComponentProbability": 0.35,
+      "maximumFreeCtcAdvantage": 0.01
+    },
+    "toneValidated": false
+  },
+  "closedVocabularyDiagnostic": {
+    "qwenOnly": {
+      "overall": {
+        "samples": 370,
+        "matched": 260,
+        "falseRetry": 19,
+        "uncertain": 91,
+        "unavailable": 0,
+        "candidateTop1Accuracy": 0.8540540540540541,
+        "candidateOnsetAccuracy": 0.9054054054054054,
+        "candidateRimeAccuracy": 0.981081081081081,
+        "candidateToneAccuracy": 0.9432432432432433,
+        "candidateMissing": 0,
+        "falsePassOnHardestFoil": 0.051351351351351354
+      },
+      "byGenerator": {
+        "cosy": {
+          "samples": 181,
+          "matched": 108,
+          "falseRetry": 12,
+          "uncertain": 61,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8011049723756906,
+          "candidateOnsetAccuracy": 0.856353591160221,
+          "candidateRimeAccuracy": 0.9779005524861878,
+          "candidateToneAccuracy": 0.9337016574585635,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.06629834254143646
+        },
+        "qwen": {
+          "samples": 189,
+          "matched": 152,
+          "falseRetry": 7,
+          "uncertain": 30,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.9047619047619048,
+          "candidateOnsetAccuracy": 0.9523809523809523,
+          "candidateRimeAccuracy": 0.9841269841269841,
+          "candidateToneAccuracy": 0.9523809523809523,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.037037037037037035
+        }
+      },
+      "byVoiceFamily": {
+        "voice-14": {
+          "samples": 183,
+          "matched": 134,
+          "falseRetry": 7,
+          "uncertain": 42,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8688524590163934,
+          "candidateOnsetAccuracy": 0.9180327868852459,
+          "candidateRimeAccuracy": 0.9836065573770492,
+          "candidateToneAccuracy": 0.9453551912568307,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.03825136612021858
+        },
+        "voice-15": {
+          "samples": 187,
+          "matched": 126,
+          "falseRetry": 12,
+          "uncertain": 49,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.839572192513369,
+          "candidateOnsetAccuracy": 0.893048128342246,
+          "candidateRimeAccuracy": 0.9786096256684492,
+          "candidateToneAccuracy": 0.9411764705882353,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.06417112299465241
+        }
+      },
+      "modelSha256": "606d0199ddc3c87ec5ae4f84887f45cf30439bb1dadb335d63efbbb8d8a16ee1",
+      "epochs": 160,
+      "bestEpoch": 78
+    },
+    "cosyOnly": {
+      "overall": {
+        "samples": 370,
+        "matched": 194,
+        "falseRetry": 11,
+        "uncertain": 165,
+        "unavailable": 0,
+        "candidateTop1Accuracy": 0.8324324324324325,
+        "candidateOnsetAccuracy": 0.8864864864864865,
+        "candidateRimeAccuracy": 0.9594594594594594,
+        "candidateToneAccuracy": 0.9243243243243243,
+        "candidateMissing": 0,
+        "falsePassOnHardestFoil": 0.02972972972972973
+      },
+      "byGenerator": {
+        "cosy": {
+          "samples": 181,
+          "matched": 149,
+          "falseRetry": 5,
+          "uncertain": 27,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.9060773480662984,
+          "candidateOnsetAccuracy": 0.9502762430939227,
+          "candidateRimeAccuracy": 0.9723756906077348,
+          "candidateToneAccuracy": 0.9502762430939227,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.027624309392265192
+        },
+        "qwen": {
+          "samples": 189,
+          "matched": 45,
+          "falseRetry": 6,
+          "uncertain": 138,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.7619047619047619,
+          "candidateOnsetAccuracy": 0.8253968253968254,
+          "candidateRimeAccuracy": 0.9470899470899471,
+          "candidateToneAccuracy": 0.8994708994708994,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.031746031746031744
+        }
+      },
+      "byVoiceFamily": {
+        "voice-14": {
+          "samples": 183,
+          "matched": 102,
+          "falseRetry": 3,
+          "uncertain": 78,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8688524590163934,
+          "candidateOnsetAccuracy": 0.8852459016393442,
+          "candidateRimeAccuracy": 0.9781420765027322,
+          "candidateToneAccuracy": 0.9562841530054644,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.01639344262295082
+        },
+        "voice-15": {
+          "samples": 187,
+          "matched": 92,
+          "falseRetry": 8,
+          "uncertain": 87,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.7967914438502673,
+          "candidateOnsetAccuracy": 0.8877005347593583,
+          "candidateRimeAccuracy": 0.9411764705882353,
+          "candidateToneAccuracy": 0.893048128342246,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.0427807486631016
+        }
+      },
+      "modelSha256": "c3dab5928958740cd951efb9437663fe59079f40a05fe29e3691c86ee82d6728",
+      "epochs": 160,
+      "bestEpoch": 41
+    },
+    "dualSharedTone": {
+      "overall": {
+        "samples": 370,
+        "matched": 315,
+        "falseRetry": 19,
+        "uncertain": 36,
+        "unavailable": 0,
+        "candidateTop1Accuracy": 0.9054054054054054,
+        "candidateOnsetAccuracy": 0.9486486486486486,
+        "candidateRimeAccuracy": 0.9891891891891892,
+        "candidateToneAccuracy": 0.9594594594594594,
+        "candidateMissing": 0,
+        "falsePassOnHardestFoil": 0.051351351351351354
+      },
+      "byGenerator": {
+        "cosy": {
+          "samples": 181,
+          "matched": 152,
+          "falseRetry": 11,
+          "uncertain": 18,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.9060773480662984,
+          "candidateOnsetAccuracy": 0.9447513812154696,
+          "candidateRimeAccuracy": 0.9834254143646409,
+          "candidateToneAccuracy": 0.9613259668508287,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.06077348066298342
+        },
+        "qwen": {
+          "samples": 189,
+          "matched": 163,
+          "falseRetry": 8,
+          "uncertain": 18,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.9047619047619048,
+          "candidateOnsetAccuracy": 0.9523809523809523,
+          "candidateRimeAccuracy": 0.9947089947089947,
+          "candidateToneAccuracy": 0.9576719576719577,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.042328042328042326
+        }
+      },
+      "byVoiceFamily": {
+        "voice-14": {
+          "samples": 183,
+          "matched": 158,
+          "falseRetry": 6,
+          "uncertain": 19,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.9398907103825137,
+          "candidateOnsetAccuracy": 0.9562841530054644,
+          "candidateRimeAccuracy": 0.994535519125683,
+          "candidateToneAccuracy": 0.9836065573770492,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.03278688524590164
+        },
+        "voice-15": {
+          "samples": 187,
+          "matched": 157,
+          "falseRetry": 13,
+          "uncertain": 17,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8716577540106952,
+          "candidateOnsetAccuracy": 0.9411764705882353,
+          "candidateRimeAccuracy": 0.983957219251337,
+          "candidateToneAccuracy": 0.9358288770053476,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.06951871657754011
+        }
+      },
+      "modelSha256": "f3516ad9f833934f2f8875c2145bd8b87edb4d207bc938ac6c4e97881acf2f81"
+    },
+    "dualNoEnvironmentAugmentation": {
+      "overall": {
+        "samples": 370,
+        "matched": 296,
+        "falseRetry": 13,
+        "uncertain": 61,
+        "unavailable": 0,
+        "candidateTop1Accuracy": 0.9054054054054054,
+        "candidateOnsetAccuracy": 0.9513513513513514,
+        "candidateRimeAccuracy": 0.9891891891891892,
+        "candidateToneAccuracy": 0.9486486486486486,
+        "candidateMissing": 0,
+        "falsePassOnHardestFoil": 0.03513513513513514
+      },
+      "byGenerator": {
+        "cosy": {
+          "samples": 181,
+          "matched": 142,
+          "falseRetry": 9,
+          "uncertain": 30,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8950276243093923,
+          "candidateOnsetAccuracy": 0.9447513812154696,
+          "candidateRimeAccuracy": 0.9834254143646409,
+          "candidateToneAccuracy": 0.9392265193370166,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.049723756906077346
+        },
+        "qwen": {
+          "samples": 189,
+          "matched": 154,
+          "falseRetry": 4,
+          "uncertain": 31,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.9153439153439153,
+          "candidateOnsetAccuracy": 0.9576719576719577,
+          "candidateRimeAccuracy": 0.9947089947089947,
+          "candidateToneAccuracy": 0.9576719576719577,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.021164021164021163
+        }
+      },
+      "byVoiceFamily": {
+        "voice-14": {
+          "samples": 183,
+          "matched": 150,
+          "falseRetry": 4,
+          "uncertain": 29,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.9344262295081968,
+          "candidateOnsetAccuracy": 0.9562841530054644,
+          "candidateRimeAccuracy": 0.994535519125683,
+          "candidateToneAccuracy": 0.9672131147540983,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.02185792349726776
+        },
+        "voice-15": {
+          "samples": 187,
+          "matched": 146,
+          "falseRetry": 9,
+          "uncertain": 32,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8770053475935828,
+          "candidateOnsetAccuracy": 0.946524064171123,
+          "candidateRimeAccuracy": 0.983957219251337,
+          "candidateToneAccuracy": 0.93048128342246,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.0481283422459893
+        }
+      },
+      "modelSha256": "20aa7494043d6e8cbecfc48bd84df5a6f73d09faea652192acfaf95473949249",
+      "epochs": 160,
+      "bestEpoch": 20
+    },
+    "dualIndependentPitch": {
+      "overall": {
+        "samples": 370,
+        "matched": 168,
+        "falseRetry": 21,
+        "uncertain": 181,
+        "unavailable": 0,
+        "candidateTop1Accuracy": 0.8594594594594595,
+        "candidateOnsetAccuracy": 0.9405405405405406,
+        "candidateRimeAccuracy": 0.981081081081081,
+        "candidateToneAccuracy": 0.9135135135135135,
+        "candidateMissing": 0,
+        "falsePassOnHardestFoil": 0.05675675675675676
+      },
+      "byGenerator": {
+        "cosy": {
+          "samples": 181,
+          "matched": 76,
+          "falseRetry": 11,
+          "uncertain": 94,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8674033149171271,
+          "candidateOnsetAccuracy": 0.9337016574585635,
+          "candidateRimeAccuracy": 0.9779005524861878,
+          "candidateToneAccuracy": 0.9226519337016574,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.06077348066298342
+        },
+        "qwen": {
+          "samples": 189,
+          "matched": 92,
+          "falseRetry": 10,
+          "uncertain": 87,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8518518518518519,
+          "candidateOnsetAccuracy": 0.9470899470899471,
+          "candidateRimeAccuracy": 0.9841269841269841,
+          "candidateToneAccuracy": 0.9047619047619048,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.05291005291005291
+        }
+      },
+      "byVoiceFamily": {
+        "voice-14": {
+          "samples": 183,
+          "matched": 78,
+          "falseRetry": 10,
+          "uncertain": 95,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8688524590163934,
+          "candidateOnsetAccuracy": 0.9508196721311475,
+          "candidateRimeAccuracy": 0.9890710382513661,
+          "candidateToneAccuracy": 0.912568306010929,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.0546448087431694
+        },
+        "voice-15": {
+          "samples": 187,
+          "matched": 90,
+          "falseRetry": 11,
+          "uncertain": 86,
+          "unavailable": 0,
+          "candidateTop1Accuracy": 0.8502673796791443,
+          "candidateOnsetAccuracy": 0.93048128342246,
+          "candidateRimeAccuracy": 0.9732620320855615,
+          "candidateToneAccuracy": 0.9144385026737968,
+          "candidateMissing": 0,
+          "falsePassOnHardestFoil": 0.058823529411764705
+        }
+      },
+      "modelSha256": "f3516ad9f833934f2f8875c2145bd8b87edb4d207bc938ac6c4e97881acf2f81",
+      "epochs": 160,
+      "bestEpoch": 42
+    }
+  },
+  "dtwDiagnostic": {
+    "cohort": "synthetic-intended-labels",
+    "split": "test",
+    "method": "training-exemplar-banded-DTW",
+    "samples": 370,
+    "top1Accuracy": 0.4972972972972973,
+    "contentAccuracy": 0.5432432432432432,
+    "toneAccuracy": 0.8486486486486486
+  },
+  "pitchCalibration": {
+    "syntheticMaOnly": {
+      "trainingRoots": 380,
+      "calibrationRoots": 36,
+      "calibrationToneAccuracy": 0.3888888955116272,
+      "bestEpoch": 1
+    },
+    "standardAnchored": {
+      "trainingRoots": 325,
+      "calibrationRoots": 92,
+      "calibrationToneAccuracy": 0.8804348111152649,
+      "bestEpoch": 294,
+      "anchorDatasetSha256": "a520a339d8230187e94bff812e2fddbca6d541cfc0ecb9b5e9d4a6813db04c6e"
+    }
+  },
+  "newSyntheticVoices": {
+    "manifestSha256": "3732252cf604c32e6413da55072d3c75f6993baf5570c9bd6aee7209159a215e",
+    "families": ["voice-24", "voice-25"],
+    "includedRoots": 190,
+    "beforeIndependentPitch": {
+      "environment-0dB": {
+        "samples": 370,
+        "matched": 5,
+        "retry": 6,
+        "uncertain": 359,
+        "unavailable": 0
+      },
+      "environment-10dB": {
+        "samples": 370,
+        "matched": 239,
+        "retry": 30,
+        "uncertain": 101,
+        "unavailable": 0
+      },
+      "environment-20dB": {
+        "samples": 370,
+        "matched": 289,
+        "retry": 20,
+        "uncertain": 61,
+        "unavailable": 0
+      },
+      "extra-syllable": {
+        "samples": 370,
+        "matched": 2,
+        "retry": 0,
+        "uncertain": 368,
+        "unavailable": 0
+      },
+      "new-voice-positive": {
+        "samples": 113,
+        "matched": 92,
+        "retry": 6,
+        "uncertain": 15,
+        "unavailable": 0
+      },
+      "non-speech-noise": {
+        "samples": 20,
+        "matched": 0,
+        "retry": 0,
+        "uncertain": 20,
+        "unavailable": 0
+      },
+      "silence": {
+        "samples": 1,
+        "matched": 0,
+        "retry": 0,
+        "uncertain": 1,
+        "unavailable": 0
+      },
+      "untrained-tone-or-umlaut": {
+        "samples": 77,
+        "matched": 57,
+        "retry": 9,
+        "uncertain": 11,
+        "unavailable": 0
+      }
+    },
+    "afterIndependentPitch": {
+      "environment-0dB": {
+        "samples": 370,
+        "matched": 0,
+        "retry": 0,
+        "uncertain": 370,
+        "unavailable": 0
+      },
+      "environment-10dB": {
+        "samples": 370,
+        "matched": 138,
+        "retry": 20,
+        "uncertain": 212,
+        "unavailable": 0
+      },
+      "environment-20dB": {
+        "samples": 370,
+        "matched": 170,
+        "retry": 15,
+        "uncertain": 185,
+        "unavailable": 0
+      },
+      "extra-syllable": {
+        "samples": 370,
+        "matched": 0,
+        "retry": 0,
+        "uncertain": 370,
+        "unavailable": 0
+      },
+      "new-voice-positive": {
+        "samples": 113,
+        "matched": 46,
+        "retry": 3,
+        "uncertain": 64,
+        "unavailable": 0
+      },
+      "non-speech-noise": {
+        "samples": 20,
+        "matched": 0,
+        "retry": 0,
+        "uncertain": 20,
+        "unavailable": 0
+      },
+      "silence": {
+        "samples": 1,
+        "matched": 0,
+        "retry": 0,
+        "uncertain": 1,
+        "unavailable": 0
+      },
+      "untrained-tone-or-umlaut": {
+        "samples": 77,
+        "matched": 5,
+        "retry": 1,
+        "uncertain": 71,
+        "unavailable": 0
+      }
+    }
+  },
+  "cpuAndSameSourceStandardRecordings": {
+    "cohort": "held-out-PinYinSound-recordings-not-independent-speaker-not-child",
+    "independentSpeakerValidation": false,
+    "cpuProviders": ["CPUExecutionProvider"],
+    "threads": 2,
+    "coldLoadMilliseconds": 48.922125017270446,
+    "p95Milliseconds": 13.042795518413186,
+    "p95RealTimeFactor": 0.01469661015894704,
+    "peakProcessRSSBytes": 190005248,
+    "peakRSSIncreaseBytes": 91340800,
+    "fourSecondRepeatedSpeechP95Milliseconds": 53.95876234397292,
+    "fourSecondRepeatedSpeechP95RealTimeFactor": 0.01348969058599323,
+    "extraSpeechFalsePass": 0,
+    "extraSpeechSamples": 29,
+    "modelBytes": 2730431,
+    "samples": 29,
+    "matched": 14,
+    "retry": 0,
+    "uncertain": 15,
+    "realChildAccuracyEstablished": false
+  },
+  "limitations": [
+    "TTS intended labels are weak labels, not human-verified actual pronunciations",
+    "370 old held-out clips became diagnostic data after architecture changes; not final blind validation",
+    "New synthetic voice styles are not actual children",
+    "Standard tone anchors and benchmark recordings share a source collection; no independent-speaker claim",
+    "No true child or subtle articulation-error validation; quality gates remain failed",
+    "No browser/HTTP/LAN or concurrent application latency is measured"
+  ],
+  "verification": {
+    "matcherTests": 16,
+    "actualArtifactTests": 3,
+    "runtimeWithoutTorchTtsAsr": true,
+    "verifyAllPassed": true,
+    "validateReleasePassed": true
+  }
+}
