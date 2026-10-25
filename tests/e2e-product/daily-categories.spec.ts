@@ -17,7 +17,7 @@ test('DAILY-10: all fourteen materials show accurate categories; comparisons and
     api.days.flatMap((d: { sections: { items: unknown[] }[] }) =>
       d.sections.flatMap((s) => s.items),
     ),
-  ).toHaveLength(840);
+  ).toHaveLength(785);
   for (const day of daily.days) {
     await page.getByRole('button', { name: `第 ${day.number} 份`, exact: true }).click();
     await page.getByRole('button', { name: `开始第 ${day.number} 份跟读`, exact: true }).click();
@@ -52,8 +52,8 @@ test('DAILY-10: reviewed word tails lead to real sentences with character pairs,
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   const reader = page.getByLabel('当前跟读内容', { exact: true });
   for (const [number, wordCount, lastWord, sentence] of [
-    [11, 27, '柳条', '喵喵喵，小猫叫。'],
-    [12, 24, '下雪', '喜鹊枝头叫，喜事就来到。'],
+    [11, 26, '柳条', '喵喵喵，小猫叫。'],
+    [12, 23, '风雪', '喜鹊枝头叫，喜事就来到。'],
     [13, 18, '草原', '我每天都去爬山。'],
     [14, 24, '自行车', '我们上学去。'],
   ] as const) {

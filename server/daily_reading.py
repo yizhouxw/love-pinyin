@@ -9,7 +9,7 @@ from pathlib import Path
 
 from fastapi import HTTPException
 
-from server import learning_audio, reading_timings, source_audio
+from server import daily_pronunciation, learning_audio, reading_timings, source_audio
 from server.audio_assets import _verified_file, file_audio_response
 
 CONTENT = Path(__file__).resolve().parents[1] / "content" / "daily-reading.json"
@@ -23,6 +23,7 @@ def load() -> dict:
     asset_ids = {a["id"] for a in data["assets"]}
     if len(asset_ids) != len(data["assets"]):
         raise ValueError("Duplicate daily audio")
+    asset_ids.update(data.get("derivedAssets", []))
     for a in data["assets"]:
         if (
             not re.fullmatch(r"daily-[a-z0-9]+", a["id"])
@@ -71,6 +72,8 @@ def scripts() -> dict[str, str]:
 
 
 def registered(asset_id: str) -> tuple[Path, str]:
+    if asset_id in load().get("derivedAssets", []):
+        return daily_pronunciation.registered(asset_id)
     asset = next((a for a in load()["assets"] if a["id"] == asset_id), None)
     if asset is None or not source_audio.installed():
         raise HTTPException(404, detail={"code": "DAILY_AUDIO_NOT_FOUND"})
@@ -83,7 +86,9 @@ def registered(asset_id: str) -> tuple[Path, str]:
 
 def audio_response(asset_id: str, range_header: str | None = None):
     path, digest = registered(asset_id)
-    response = file_audio_response(path, "audio/mpeg", digest, range_header)
+    response = file_audio_response(
+        path, "audio/wav" if path.suffix == ".wav" else "audio/mpeg", digest, range_header
+    )
     response.headers["Cache-Control"] = "no-store"
     return response
 
@@ -91,13 +96,13 @@ def audio_response(asset_id: str, range_header: str | None = None):
 def status() -> dict:
     data = deepcopy(load())
     ready = set()
-    for asset in data["assets"]:
+    for asset_id in [*[a["id"] for a in data["assets"]], *data.get("derivedAssets", [])]:
         try:
-            path, digest = registered(asset["id"])
+            path, digest = registered(asset_id)
             handle, size = _verified_file(path, digest)
             handle.close()
             if size:
-                ready.add(asset["id"])
+                ready.add(asset_id)
         except HTTPException:
             pass
     examples = word_examples()

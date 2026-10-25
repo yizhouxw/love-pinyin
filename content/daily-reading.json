@@ -13,7 +13,8 @@
     "原稿第10–14份部分汉字在页面图像中缺失，按PDF文字层恢复并保留出处。",
     "原稿第11份第1项为词语列表，不扩写成猜测的句子。",
     "原稿第13份的页码碎片14未作练习内容导入。",
-    "原稿未标调的孤立音节使用明确标注声调的示范；词句轻声缺逐音节资源时使用本机中文词句朗读，不冒称PinYinSound。"
+    "原稿未标调音统一示范一声，词句轻声保留；缺原音的一声由固定录音本地处理并记录来源，不冒称上游原音。",
+    "按DAILY-12仅删除小节内重复拼音，保留首次位置与ID；原PDF自身含重复，完整来源台账见daily-reading-source.json，换Word/PDF时须重新复核。"
   ],
   "ui": {
     "intro": "这是天天练拼音。选一份练习，点开始，先听示范，再跟着读。",
@@ -82,17 +83,6 @@
               "spokenText": null
             },
             {
-              "id": "day-01-s1-i5",
-              "display": "á",
-              "syllables": ["á"],
-              "original": "á",
-              "audioIds": ["daily-a2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-01-s1-i6",
               "display": "ō",
               "syllables": ["ō"],
@@ -126,28 +116,6 @@
               "spokenText": null
             },
             {
-              "id": "day-01-s1-i9",
-              "display": "ō",
-              "syllables": ["ō"],
-              "original": "ō",
-              "audioIds": ["daily-o1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-01-s1-i10",
-              "display": "ó",
-              "syllables": ["ó"],
-              "original": "ó",
-              "audioIds": ["daily-o2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-01-s1-i11",
               "display": "ǒ",
               "syllables": ["ǒ"],
@@ -164,28 +132,6 @@
               "syllables": ["ò"],
               "original": "ò",
               "audioIds": ["daily-o4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-01-s1-i13",
-              "display": "ǎ",
-              "syllables": ["ǎ"],
-              "original": "ǎ",
-              "audioIds": ["daily-a3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-01-s1-i14",
-              "display": "ā",
-              "syllables": ["ā"],
-              "original": "ā",
-              "audioIds": ["daily-a1"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -214,88 +160,11 @@
               "spokenText": null
             },
             {
-              "id": "day-01-s1-i17",
-              "display": "ē",
-              "syllables": ["ē"],
-              "original": "ē",
-              "audioIds": ["daily-e1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-01-s1-i18",
               "display": "é",
               "syllables": ["é"],
               "original": "é",
               "audioIds": ["daily-e2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-01-s1-i19",
-              "display": "ě",
-              "syllables": ["ě"],
-              "original": "ě",
-              "audioIds": ["daily-e3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-01-s1-i20",
-              "display": "è",
-              "syllables": ["è"],
-              "original": "è",
-              "audioIds": ["daily-e4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-01-s1-i21",
-              "display": "ǒ",
-              "syllables": ["ǒ"],
-              "original": "ǒ",
-              "audioIds": ["daily-o3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-01-s1-i22",
-              "display": "é",
-              "syllables": ["é"],
-              "original": "é",
-              "audioIds": ["daily-e2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-01-s1-i23",
-              "display": "à",
-              "syllables": ["à"],
-              "original": "à",
-              "audioIds": ["daily-a4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-01-s1-i24",
-              "display": "ò",
-              "syllables": ["ò"],
-              "original": "ò",
-              "audioIds": ["daily-o4"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -362,17 +231,6 @@
               "spokenText": null
             },
             {
-              "id": "day-02-s1-i5",
-              "display": "í",
-              "syllables": ["í"],
-              "original": "í",
-              "audioIds": ["daily-i2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-02-s1-i6",
               "display": "ù",
               "syllables": ["ù"],
@@ -389,17 +247,6 @@
               "syllables": ["ǖ"],
               "original": "ǖ",
               "audioIds": ["daily-v1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-02-s1-i8",
-              "display": "ī",
-              "syllables": ["ī"],
-              "original": "ī",
-              "audioIds": ["daily-i1"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -439,44 +286,11 @@
               "spokenText": null
             },
             {
-              "id": "day-02-s1-i12",
-              "display": "ù",
-              "syllables": ["ù"],
-              "original": "ù",
-              "audioIds": ["daily-u4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-02-s1-i13",
-              "display": "ū",
-              "syllables": ["ū"],
-              "original": "ū",
-              "audioIds": ["daily-u1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-02-s1-i14",
               "display": "ǘ",
               "syllables": ["ǘ"],
               "original": "ǘ",
               "audioIds": ["daily-v2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-02-s1-i15",
-              "display": "ǐ",
-              "syllables": ["ǐ"],
-              "original": "ǐ",
-              "audioIds": ["daily-i3"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -494,88 +308,11 @@
               "spokenText": null
             },
             {
-              "id": "day-02-s1-i17",
-              "display": "ǖ",
-              "syllables": ["ǖ"],
-              "original": "ǖ",
-              "audioIds": ["daily-v1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-02-s1-i18",
-              "display": "ǘ",
-              "syllables": ["ǘ"],
-              "original": "ǘ",
-              "audioIds": ["daily-v2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-02-s1-i19",
-              "display": "ǚ",
-              "syllables": ["ǚ"],
-              "original": "ǚ",
-              "audioIds": ["daily-v3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-02-s1-i20",
               "display": "ǜ",
               "syllables": ["ǜ"],
               "original": "ǜ",
               "audioIds": ["daily-v4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-02-s1-i21",
-              "display": "ǜ",
-              "syllables": ["ǜ"],
-              "original": "ǜ",
-              "audioIds": ["daily-v4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-02-s1-i22",
-              "display": "ì",
-              "syllables": ["ì"],
-              "original": "ì",
-              "audioIds": ["daily-i4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-02-s1-i23",
-              "display": "ǔ",
-              "syllables": ["ǔ"],
-              "original": "ǔ",
-              "audioIds": ["daily-u3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-02-s1-i24",
-              "display": "ú",
-              "syllables": ["ú"],
-              "original": "ú",
-              "audioIds": ["daily-u2"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -1071,8 +808,8 @@
               "display": "de",
               "syllables": ["de"],
               "original": "de",
-              "audioIds": ["daily-de"],
-              "audioNotes": [],
+              "audioIds": ["daily-de1"],
+              "audioNotes": ["de原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -1159,8 +896,8 @@
               "display": "ne",
               "syllables": ["ne"],
               "original": "ne",
-              "audioIds": ["daily-ne"],
-              "audioNotes": [],
+              "audioIds": ["daily-ne1"],
+              "audioNotes": ["ne原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -1181,22 +918,30 @@
               "display": "nu",
               "syllables": ["nu"],
               "original": "nu",
-              "audioIds": ["daily-nu2"],
-              "audioNotes": ["nu原稿未标调，示范2声"],
+              "audioIds": ["daily-nu1"],
+              "audioNotes": [
+                "nu原稿未标调，示范一声",
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
+              ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             },
             {
               "id": "day-04-s2-i13",
               "display": "nü",
               "syllables": ["nü"],
               "original": "nü",
-              "audioIds": ["daily-nv3"],
-              "audioNotes": ["nü原稿未标调，示范3声"],
+              "audioIds": ["daily-nv1"],
+              "audioNotes": [
+                "nü原稿未标调，示范一声",
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
+              ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             },
             {
               "id": "day-04-s2-i14",
@@ -1214,8 +959,8 @@
               "display": "le",
               "syllables": ["le"],
               "original": "le",
-              "audioIds": ["daily-le"],
-              "audioNotes": [],
+              "audioIds": ["daily-le1"],
+              "audioNotes": ["le原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -1247,11 +992,15 @@
               "display": "lü",
               "syllables": ["lü"],
               "original": "lü",
-              "audioIds": ["daily-lv2"],
-              "audioNotes": ["lü原稿未标调，示范2声"],
+              "audioIds": ["daily-lv1"],
+              "audioNotes": [
+                "lü原稿未标调，示范一声",
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
+              ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             }
           ],
           "kind": "phonics"
@@ -2567,8 +2316,8 @@
               "display": "j-i",
               "syllables": ["j", "i"],
               "original": "j-i",
-              "audioIds": ["daily-j", "daily-i"],
-              "audioNotes": [],
+              "audioIds": ["daily-j", "daily-i1"],
+              "audioNotes": ["i原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -2597,8 +2346,8 @@
               "display": "j-i-ji",
               "syllables": ["j", "i", "ji"],
               "original": "j-i-ji",
-              "audioIds": ["daily-j", "daily-i", "daily-ji1"],
-              "audioNotes": ["ji原稿未标调，示范一声"],
+              "audioIds": ["daily-j", "daily-i1", "daily-ji1"],
+              "audioNotes": ["i原稿未标调，示范一声", "ji原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -2608,8 +2357,8 @@
               "display": "j-ü-ju",
               "syllables": ["j", "ü", "ju"],
               "original": "j-ü-ju",
-              "audioIds": ["daily-j", "daily-v", "daily-ju1"],
-              "audioNotes": ["ju原稿未标调，示范一声"],
+              "audioIds": ["daily-j", "daily-v1", "daily-ju1"],
+              "audioNotes": ["ü原稿未标调，示范一声", "ju原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -2619,8 +2368,12 @@
               "display": "j-i-a-jia",
               "syllables": ["j", "i", "a", "jia"],
               "original": "j-i-a-jia",
-              "audioIds": ["daily-j", "daily-i", "daily-a", "daily-jia1"],
-              "audioNotes": ["jia原稿未标调，示范一声"],
+              "audioIds": ["daily-j", "daily-i1", "daily-a1", "daily-jia1"],
+              "audioNotes": [
+                "i原稿未标调，示范一声",
+                "a原稿未标调，示范一声",
+                "jia原稿未标调，示范一声"
+              ],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -2630,8 +2383,8 @@
               "display": "q-i-qi",
               "syllables": ["q", "i", "qi"],
               "original": "q-i-qi",
-              "audioIds": ["daily-q", "daily-i", "daily-qi1"],
-              "audioNotes": ["qi原稿未标调，示范一声"],
+              "audioIds": ["daily-q", "daily-i1", "daily-qi1"],
+              "audioNotes": ["i原稿未标调，示范一声", "qi原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -2641,8 +2394,8 @@
               "display": "q-ü-qu",
               "syllables": ["q", "ü", "qu"],
               "original": "q-ü-qu",
-              "audioIds": ["daily-q", "daily-v", "daily-qu1"],
-              "audioNotes": ["qu原稿未标调，示范一声"],
+              "audioIds": ["daily-q", "daily-v1", "daily-qu1"],
+              "audioNotes": ["ü原稿未标调，示范一声", "qu原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -2652,8 +2405,12 @@
               "display": "q-i-a-qia",
               "syllables": ["q", "i", "a", "qia"],
               "original": "q-i-a-qia",
-              "audioIds": ["daily-q", "daily-i", "daily-a", "daily-qia1"],
-              "audioNotes": ["qia原稿未标调，示范一声"],
+              "audioIds": ["daily-q", "daily-i1", "daily-a1", "daily-qia1"],
+              "audioNotes": [
+                "i原稿未标调，示范一声",
+                "a原稿未标调，示范一声",
+                "qia原稿未标调，示范一声"
+              ],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -2663,8 +2420,8 @@
               "display": "x-i-xi",
               "syllables": ["x", "i", "xi"],
               "original": "x-i-xi",
-              "audioIds": ["daily-x", "daily-i", "daily-xi1"],
-              "audioNotes": ["xi原稿未标调，示范一声"],
+              "audioIds": ["daily-x", "daily-i1", "daily-xi1"],
+              "audioNotes": ["i原稿未标调，示范一声", "xi原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -2674,8 +2431,8 @@
               "display": "x-ü-xu",
               "syllables": ["x", "ü", "xu"],
               "original": "x-ü-xu",
-              "audioIds": ["daily-x", "daily-v", "daily-xu1"],
-              "audioNotes": ["xu原稿未标调，示范一声"],
+              "audioIds": ["daily-x", "daily-v1", "daily-xu1"],
+              "audioNotes": ["ü原稿未标调，示范一声", "xu原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -2685,8 +2442,12 @@
               "display": "x-i-a-xia",
               "syllables": ["x", "i", "a", "xia"],
               "original": "x-i-a-xia",
-              "audioIds": ["daily-x", "daily-i", "daily-a", "daily-xia1"],
-              "audioNotes": ["xia原稿未标调，示范一声"],
+              "audioIds": ["daily-x", "daily-i1", "daily-a1", "daily-xia1"],
+              "audioNotes": [
+                "i原稿未标调，示范一声",
+                "a原稿未标调，示范一声",
+                "xia原稿未标调，示范一声"
+              ],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -3467,8 +3228,8 @@
               "display": "i-j",
               "syllables": ["i", "j"],
               "original": "i-j",
-              "audioIds": ["daily-i", "daily-j"],
-              "audioNotes": [],
+              "audioIds": ["daily-i1", "daily-j"],
+              "audioNotes": ["i原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -3548,17 +3309,6 @@
               "spokenText": null
             },
             {
-              "id": "day-07-s3-i5",
-              "display": "zí",
-              "syllables": ["zí"],
-              "original": "zí",
-              "audioIds": ["daily-zi2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-07-s3-i6",
               "display": "cǐ",
               "syllables": ["cǐ"],
@@ -3581,17 +3331,6 @@
               "spokenText": null
             },
             {
-              "id": "day-07-s3-i8",
-              "display": "zī",
-              "syllables": ["zī"],
-              "original": "zī",
-              "audioIds": ["daily-zi1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-07-s3-i9",
               "display": "za",
               "syllables": ["za"],
@@ -3607,11 +3346,15 @@
               "display": "ze",
               "syllables": ["ze"],
               "original": "ze",
-              "audioIds": ["daily-ze2"],
-              "audioNotes": ["ze原稿未标调，示范2声"],
+              "audioIds": ["daily-ze1"],
+              "audioNotes": [
+                "ze原稿未标调，示范一声",
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
+              ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             },
             {
               "id": "day-07-s3-i11",
@@ -3658,17 +3401,6 @@
               "spokenText": null
             },
             {
-              "id": "day-07-s3-i15",
-              "display": "cǐ",
-              "syllables": ["cǐ"],
-              "original": "cǐ",
-              "audioIds": ["daily-ci3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-07-s3-i16",
               "display": "cì",
               "syllables": ["cì"],
@@ -3691,33 +3423,11 @@
               "spokenText": null
             },
             {
-              "id": "day-07-s3-i18",
-              "display": "cī",
-              "syllables": ["cī"],
-              "original": "cī",
-              "audioIds": ["daily-ci1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-07-s3-i19",
               "display": "sí",
               "syllables": ["sí"],
               "original": "sí",
               "audioIds": ["daily-si2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-07-s3-i20",
-              "display": "zǐ",
-              "syllables": ["zǐ"],
-              "original": "zǐ",
-              "audioIds": ["daily-zi3"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -3739,11 +3449,15 @@
               "display": "ce",
               "syllables": ["ce"],
               "original": "ce",
-              "audioIds": ["daily-ce4"],
-              "audioNotes": ["ce原稿未标调，示范4声"],
+              "audioIds": ["daily-ce1"],
+              "audioNotes": [
+                "ce原稿未标调，示范一声",
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
+              ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             },
             {
               "id": "day-07-s3-i23",
@@ -3779,83 +3493,6 @@
               "spokenText": null
             },
             {
-              "id": "day-07-s3-i26",
-              "display": "sí",
-              "syllables": ["sí"],
-              "original": "sí",
-              "audioIds": ["daily-si2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-07-s3-i27",
-              "display": "sǐ",
-              "syllables": ["sǐ"],
-              "original": "sǐ",
-              "audioIds": ["daily-si3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-07-s3-i28",
-              "display": "sì",
-              "syllables": ["sì"],
-              "original": "sì",
-              "audioIds": ["daily-si4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-07-s3-i29",
-              "display": "zì",
-              "syllables": ["zì"],
-              "original": "zì",
-              "audioIds": ["daily-zi4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-07-s3-i30",
-              "display": "cí",
-              "syllables": ["cí"],
-              "original": "cí",
-              "audioIds": ["daily-ci2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-07-s3-i31",
-              "display": "sī",
-              "syllables": ["sī"],
-              "original": "sī",
-              "audioIds": ["daily-si1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-07-s3-i32",
-              "display": "cì",
-              "syllables": ["cì"],
-              "original": "cì",
-              "audioIds": ["daily-ci4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-07-s3-i33",
               "display": "sa",
               "syllables": ["sa"],
@@ -3871,11 +3508,15 @@
               "display": "se",
               "syllables": ["se"],
               "original": "se",
-              "audioIds": ["daily-se4"],
-              "audioNotes": ["se原稿未标调，示范4声"],
+              "audioIds": ["daily-se1"],
+              "audioNotes": [
+                "se原稿未标调，示范一声",
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
+              ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             },
             {
               "id": "day-07-s3-i35",
@@ -3979,17 +3620,6 @@
               "syllables": ["zá"],
               "original": "zá",
               "audioIds": ["daily-za2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-07-s4-i8",
-              "display": "sù",
-              "syllables": ["sù"],
-              "original": "sù",
-              "audioIds": ["daily-su4"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -4356,17 +3986,6 @@
               "spokenText": null
             },
             {
-              "id": "day-07-s5-i16",
-              "display": "cí yǔ",
-              "syllables": ["cí", "yǔ"],
-              "original": "cí yǔ",
-              "audioIds": ["daily-ci2", "daily-yu3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-07-s5-i17",
               "display": "jù zi",
               "syllables": ["jù", "zi"],
@@ -4654,11 +4273,15 @@
               "display": "re",
               "syllables": ["re"],
               "original": "re",
-              "audioIds": ["daily-re3"],
-              "audioNotes": ["re原稿未标调，示范3声"],
+              "audioIds": ["daily-re1"],
+              "audioNotes": [
+                "re原稿未标调，示范一声",
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
+              ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             },
             {
               "id": "day-08-s3-i6",
@@ -4709,11 +4332,15 @@
               "display": "ru",
               "syllables": ["ru"],
               "original": "ru",
-              "audioIds": ["daily-ru2"],
-              "audioNotes": ["ru原稿未标调，示范2声"],
+              "audioIds": ["daily-ru1"],
+              "audioNotes": [
+                "ru原稿未标调，示范一声",
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
+              ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             },
             {
               "id": "day-08-s3-i11",
@@ -4764,11 +4391,15 @@
               "display": "ruo",
               "syllables": ["ruo"],
               "original": "ruo",
-              "audioIds": ["daily-ruo2"],
-              "audioNotes": ["ruo原稿未标调，示范2声"],
+              "audioIds": ["daily-ruo1"],
+              "audioNotes": [
+                "ruo原稿未标调，示范一声",
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
+              ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             },
             {
               "id": "day-08-s3-i16",
@@ -5372,33 +5003,11 @@
               "spokenText": null
             },
             {
-              "id": "day-09-s2-i6",
-              "display": "yī",
-              "syllables": ["yī"],
-              "original": "yī",
-              "audioIds": ["daily-yi1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-09-s2-i7",
               "display": "wǔ",
               "syllables": ["wǔ"],
               "original": "wǔ",
               "audioIds": ["daily-wu3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-09-s2-i8",
-              "display": "yì",
-              "syllables": ["yì"],
-              "original": "yì",
-              "audioIds": ["daily-yi4"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -5427,33 +5036,11 @@
               "spokenText": null
             },
             {
-              "id": "day-09-s2-i11",
-              "display": "wǔ",
-              "syllables": ["wǔ"],
-              "original": "wǔ",
-              "audioIds": ["daily-wu3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-09-s2-i12",
               "display": "wù",
               "syllables": ["wù"],
               "original": "wù",
               "audioIds": ["daily-wu4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-09-s2-i13",
-              "display": "wū",
-              "syllables": ["wū"],
-              "original": "wū",
-              "audioIds": ["daily-wu1"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -5471,28 +5058,6 @@
               "spokenText": null
             },
             {
-              "id": "day-09-s2-i15",
-              "display": "wù",
-              "syllables": ["wù"],
-              "original": "wù",
-              "audioIds": ["daily-wu4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-09-s2-i16",
-              "display": "yí",
-              "syllables": ["yí"],
-              "original": "yí",
-              "audioIds": ["daily-yi2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-09-s2-i17",
               "display": "yū",
               "syllables": ["yū"],
@@ -5504,77 +5069,11 @@
               "spokenText": null
             },
             {
-              "id": "day-09-s2-i18",
-              "display": "yú",
-              "syllables": ["yú"],
-              "original": "yú",
-              "audioIds": ["daily-yu2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-09-s2-i19",
-              "display": "yǔ",
-              "syllables": ["yǔ"],
-              "original": "yǔ",
-              "audioIds": ["daily-yu3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-09-s2-i20",
               "display": "yù",
               "syllables": ["yù"],
               "original": "yù",
               "audioIds": ["daily-yu4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-09-s2-i21",
-              "display": "yù",
-              "syllables": ["yù"],
-              "original": "yù",
-              "audioIds": ["daily-yu4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-09-s2-i22",
-              "display": "yǐ",
-              "syllables": ["yǐ"],
-              "original": "yǐ",
-              "audioIds": ["daily-yi3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-09-s2-i23",
-              "display": "yū",
-              "syllables": ["yū"],
-              "original": "yū",
-              "audioIds": ["daily-yu1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-09-s2-i24",
-              "display": "wú",
-              "syllables": ["wú"],
-              "original": "wú",
-              "audioIds": ["daily-wu2"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -5653,8 +5152,8 @@
               "display": "ai",
               "syllables": ["ai"],
               "original": "ai",
-              "audioIds": ["daily-ai"],
-              "audioNotes": [],
+              "audioIds": ["daily-ai1"],
+              "audioNotes": ["ai原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -5664,8 +5163,8 @@
               "display": "ei",
               "syllables": ["ei"],
               "original": "ei",
-              "audioIds": ["daily-ei"],
-              "audioNotes": [],
+              "audioIds": ["daily-ei1"],
+              "audioNotes": ["ei原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -5675,8 +5174,8 @@
               "display": "ui",
               "syllables": ["ui"],
               "original": "ui",
-              "audioIds": ["daily-ui"],
-              "audioNotes": [],
+              "audioIds": ["daily-ui1"],
+              "audioNotes": ["ui原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -6231,17 +5730,6 @@
               "spokenText": "嘴巴"
             },
             {
-              "id": "day-10-s5-i12",
-              "display": "fēi jī",
-              "syllables": ["fēi", "jī"],
-              "original": "fēi jī",
-              "audioIds": ["daily-fei1", "daily-ji1"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-10-s5-i13",
               "display": "dài shǔ",
               "syllables": ["dài", "shǔ"],
@@ -6419,8 +5907,8 @@
               "display": "ao",
               "syllables": ["ao"],
               "original": "ao",
-              "audioIds": ["daily-ao"],
-              "audioNotes": [],
+              "audioIds": ["daily-ao1"],
+              "audioNotes": ["ao原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -6430,8 +5918,8 @@
               "display": "ou",
               "syllables": ["ou"],
               "original": "ou",
-              "audioIds": ["daily-ou"],
-              "audioNotes": [],
+              "audioIds": ["daily-ou1"],
+              "audioNotes": ["ou原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -6441,8 +5929,8 @@
               "display": "iu",
               "syllables": ["iu"],
               "original": "iu",
-              "audioIds": ["daily-iu"],
-              "audioNotes": [],
+              "audioIds": ["daily-iu1"],
+              "audioNotes": ["iu原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -6611,15 +6099,16 @@
               "display": "zou-zhou",
               "syllables": ["zou", "zhou"],
               "original": "zou-zhou",
-              "audioIds": ["daily-zou3", "daily-zhou1"],
+              "audioIds": ["daily-zou1", "daily-zhou1"],
               "audioNotes": [
+                "zou原稿未标调，示范一声",
                 "zhou原稿未标调，示范一声",
-                "zou原稿未标调，示范3声",
-                "zhou原稿未标调，示范1声"
+                "缺少原始一声录音，使用固定来源录音在本机处理的一声派生示范。"
               ],
               "missingSyllables": [],
               "narrationId": null,
-              "spokenText": null
+              "spokenText": null,
+              "derivedAudio": true
             },
             {
               "id": "day-11-s3-i3",
@@ -7078,17 +6567,6 @@
               "spokenText": null
             },
             {
-              "id": "day-11-s6-i1",
-              "display": "xiǎo qiáo",
-              "syllables": ["xiǎo", "qiáo"],
-              "original": "xiǎo qiáo",
-              "audioIds": ["daily-xiao3", "daily-qiao2"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
               "id": "day-11-s6-i2",
               "display": "shuǐ",
               "syllables": ["shuǐ"],
@@ -7253,8 +6731,8 @@
               "display": "ie",
               "syllables": ["ie"],
               "original": "ie",
-              "audioIds": ["daily-ie"],
-              "audioNotes": [],
+              "audioIds": ["daily-ie1"],
+              "audioNotes": ["ie原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -7264,8 +6742,8 @@
               "display": "üe",
               "syllables": ["üe"],
               "original": "üe",
-              "audioIds": ["daily-ve"],
-              "audioNotes": [],
+              "audioIds": ["daily-ve1"],
+              "audioNotes": ["üe原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -7275,8 +6753,8 @@
               "display": "er",
               "syllables": ["er"],
               "original": "er",
-              "audioIds": ["daily-er"],
-              "audioNotes": [],
+              "audioIds": ["daily-er1"],
+              "audioNotes": ["er原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -7544,8 +7022,8 @@
               "display": "ie-ei",
               "syllables": ["ie", "ei"],
               "original": "ie-ei",
-              "audioIds": ["daily-ie", "daily-ei"],
-              "audioNotes": [],
+              "audioIds": ["daily-ie1", "daily-ei1"],
+              "audioNotes": ["ie原稿未标调，示范一声", "ei原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -7555,8 +7033,8 @@
               "display": "ui-iu",
               "syllables": ["ui", "iu"],
               "original": "ui-iu",
-              "audioIds": ["daily-ui", "daily-iu"],
-              "audioNotes": [],
+              "audioIds": ["daily-ui1", "daily-iu1"],
+              "audioNotes": ["ui原稿未标调，示范一声", "iu原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -7566,8 +7044,8 @@
               "display": "ei-er",
               "syllables": ["ei", "er"],
               "original": "ei-er",
-              "audioIds": ["daily-ei", "daily-er"],
-              "audioNotes": [],
+              "audioIds": ["daily-ei1", "daily-er1"],
+              "audioNotes": ["ei原稿未标调，示范一声", "er原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -7577,8 +7055,8 @@
               "display": "üe-ie",
               "syllables": ["üe", "ie"],
               "original": "üe-ie",
-              "audioIds": ["daily-ve", "daily-ie"],
-              "audioNotes": [],
+              "audioIds": ["daily-ve1", "daily-ie1"],
+              "audioNotes": ["üe原稿未标调，示范一声", "ie原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -8013,17 +7491,6 @@
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
-            },
-            {
-              "id": "day-12-s7-i6",
-              "display": "xià xuě",
-              "syllables": ["xià", "xuě"],
-              "original": "xià xuě",
-              "audioIds": ["daily-xia4", "daily-xue3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
             }
           ],
           "kind": "words"
@@ -8148,8 +7615,8 @@
               "display": "an",
               "syllables": ["an"],
               "original": "an",
-              "audioIds": ["daily-an"],
-              "audioNotes": [],
+              "audioIds": ["daily-an1"],
+              "audioNotes": ["an原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -8159,8 +7626,8 @@
               "display": "en",
               "syllables": ["en"],
               "original": "en",
-              "audioIds": ["daily-en"],
-              "audioNotes": [],
+              "audioIds": ["daily-en1"],
+              "audioNotes": ["en原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -8170,8 +7637,8 @@
               "display": "in",
               "syllables": ["in"],
               "original": "in",
-              "audioIds": ["daily-in"],
-              "audioNotes": [],
+              "audioIds": ["daily-in1"],
+              "audioNotes": ["in原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -8181,8 +7648,8 @@
               "display": "un",
               "syllables": ["un"],
               "original": "un",
-              "audioIds": ["daily-un"],
-              "audioNotes": [],
+              "audioIds": ["daily-un1"],
+              "audioNotes": ["un原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -8192,8 +7659,8 @@
               "display": "ün",
               "syllables": ["ün"],
               "original": "ün",
-              "audioIds": ["daily-vn"],
-              "audioNotes": [],
+              "audioIds": ["daily-vn1"],
+              "audioNotes": ["ün原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -8289,17 +7756,6 @@
               "syllables": ["ǔn"],
               "original": "ǔn",
               "audioIds": ["daily-un3"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-13-s2-i6",
-              "display": "ǚn",
-              "syllables": ["ǚn"],
-              "original": "ǚn",
-              "audioIds": ["daily-vn3"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -9240,8 +8696,8 @@
               "display": "ang",
               "syllables": ["ang"],
               "original": "ang",
-              "audioIds": ["daily-ang"],
-              "audioNotes": [],
+              "audioIds": ["daily-ang1"],
+              "audioNotes": ["ang原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -9251,8 +8707,8 @@
               "display": "eng",
               "syllables": ["eng"],
               "original": "eng",
-              "audioIds": ["daily-eng"],
-              "audioNotes": [],
+              "audioIds": ["daily-eng1"],
+              "audioNotes": ["eng原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -9262,8 +8718,8 @@
               "display": "ing",
               "syllables": ["ing"],
               "original": "ing",
-              "audioIds": ["daily-ing"],
-              "audioNotes": [],
+              "audioIds": ["daily-ing1"],
+              "audioNotes": ["ing原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -9273,8 +8729,8 @@
               "display": "ong",
               "syllables": ["ong"],
               "original": "ong",
-              "audioIds": ["daily-ong"],
-              "audioNotes": [],
+              "audioIds": ["daily-ong1"],
+              "audioNotes": ["ong原稿未标调，示范一声"],
               "missingSyllables": [],
               "narrationId": null,
               "spokenText": null
@@ -9573,17 +9029,6 @@
               "syllables": ["yìng"],
               "original": "yìng",
               "audioIds": ["daily-ying4"],
-              "audioNotes": [],
-              "missingSyllables": [],
-              "narrationId": null,
-              "spokenText": null
-            },
-            {
-              "id": "day-14-s4-i4",
-              "display": "yīng",
-              "syllables": ["yīng"],
-              "original": "yīng",
-              "audioIds": ["daily-ying1"],
               "audioNotes": [],
               "missingSyllables": [],
               "narrationId": null,
@@ -10494,6 +9939,12 @@
       "bytes": 15106
     },
     {
+      "id": "daily-can2",
+      "filename": "can2.mp3",
+      "sha256": "3a5f050a567e42dc3a9434de15c2ff9fee83a9cba19d6e48b90bb59b6d039365",
+      "bytes": 17614
+    },
+    {
       "id": "daily-cao3",
       "filename": "cao3.mp3",
       "sha256": "8802b40ee396a34fb228e72bd0a48095a58d6b65a205bb37b05a65d95ee9f2e2",
@@ -10744,6 +10195,12 @@
       "filename": "de.mp3",
       "sha256": "ad3c9dd38a80fe840f7030a75f7bc53ea172dc61891773c067b2592d3e4545bf",
       "bytes": 11433
+    },
+    {
+      "id": "daily-de1",
+      "filename": "de1.mp3",
+      "sha256": "e7c50ef59ec1cfa4c67b7d5449b90cc616041e6a9f88f06fc947324801e65f34",
+      "bytes": 7497
     },
     {
       "id": "daily-de2",
@@ -11394,6 +10851,12 @@
       "bytes": 6766
     },
     {
+      "id": "daily-in1",
+      "filename": "in1.mp3",
+      "sha256": "10013a2c2bc6ed92403d73bc08882928b7ec6d1423453e0cbee7b0f263594376",
+      "bytes": 6766
+    },
+    {
       "id": "daily-in2",
       "filename": "in2.mp3",
       "sha256": "2916491cf4d552255d83c2ab9721151cd5ebb49d6691c8696f06b9d86fe4ca15",
@@ -11778,6 +11241,12 @@
       "bytes": 11747
     },
     {
+      "id": "daily-le1",
+      "filename": "le1.mp3",
+      "sha256": "a4a8472cbbf51158473751f27df32751fd08c62eb6e6b7552f796cd0e817ffaf",
+      "bytes": 6766
+    },
+    {
       "id": "daily-le4",
       "filename": "le4.mp3",
       "sha256": "a306183819090235fd6542d9f50b2f719505b250ab96ac8d158438a7e9a3818f",
@@ -12090,6 +11559,12 @@
       "bytes": 11747
     },
     {
+      "id": "daily-ne1",
+      "filename": "ne1.mp3",
+      "sha256": "e9f413748e34d6b8a54b645f643bdd3b2929573e5e4b33cee8d171f4d22c34a5",
+      "bytes": 7314
+    },
+    {
       "id": "daily-nei3",
       "filename": "nei3.mp3",
       "sha256": "a1cda4f7ca8202cbfc9839318f375eb231815563ca530dfd14ee7d683dc751c3",
@@ -12200,6 +11675,12 @@
     {
       "id": "daily-ong",
       "filename": "ong.mp3",
+      "sha256": "6c5b7fc25c2f83adc603f2587afc2972929d7583eb111a3caca37c33bef6a56d",
+      "bytes": 6217
+    },
+    {
+      "id": "daily-ong1",
+      "filename": "ong1.mp3",
       "sha256": "6c5b7fc25c2f83adc603f2587afc2972929d7583eb111a3caca37c33bef6a56d",
       "bytes": 6217
     },
@@ -12576,6 +12057,12 @@
       "bytes": 18817
     },
     {
+      "id": "daily-sen1",
+      "filename": "sen1.mp3",
+      "sha256": "9e08a42715b98e6cb58331690d03dcea1c76aa0dfb42619f8a52e70d0a8d49b8",
+      "bytes": 21952
+    },
+    {
       "id": "daily-sh",
       "filename": "sh.mp3",
       "sha256": "d2c7e6e4cd4fc3910416c2676bcbcc28a1cd9d53481891ec5d76cb64c3cf7670",
@@ -12658,6 +12145,12 @@
       "filename": "shi2.mp3",
       "sha256": "920b661827c1e2bd2e24400c9e8573432c61effd22e44c61a6669693b49f820c",
       "bytes": 8229
+    },
+    {
+      "id": "daily-shi3",
+      "filename": "shi3.mp3",
+      "sha256": "21bdd0d0fd3a24e264dee877ecd08673f6ea7aaf2581ca9db04296c574860243",
+      "bytes": 9326
     },
     {
       "id": "daily-shi4",
@@ -12904,6 +12397,12 @@
       "filename": "tu4.mp3",
       "sha256": "d5840b544871f610a55fdd0342fea38a7da42a76dff38644ab118b10ec7fa001",
       "bytes": 13397
+    },
+    {
+      "id": "daily-tui1",
+      "filename": "tui1.mp3",
+      "sha256": "309ea6260abad5f5136f32d90c4c0bd0a946b233df9b388586f4e9624fc04fee",
+      "bytes": 16532
     },
     {
       "id": "daily-tui3",
@@ -13288,6 +12787,12 @@
       "filename": "ya1.mp3",
       "sha256": "5a9d1833628d28b85fc43d4871dd03d517bac8fd494164375a891202c5b2eebc",
       "bytes": 20698
+    },
+    {
+      "id": "daily-ya2",
+      "filename": "ya2.mp3",
+      "sha256": "7c7cc68e36786302aaa04bc8fe12735ee6d01c30908a8250c54dff745fd5f594",
+      "bytes": 15907
     },
     {
       "id": "daily-yang2",
@@ -13762,36 +13267,18 @@
       "filename": "zuo4.mp3",
       "sha256": "67025f0312b7691032621c3efc6b50ee7dc6a60543ede6ceb1617313b0da2a50",
       "bytes": 18190
-    },
-    {
-      "id": "daily-ya2",
-      "filename": "ya2.mp3",
-      "sha256": "7c7cc68e36786302aaa04bc8fe12735ee6d01c30908a8250c54dff745fd5f594",
-      "bytes": 15907
-    },
-    {
-      "id": "daily-sen1",
-      "filename": "sen1.mp3",
-      "sha256": "9e08a42715b98e6cb58331690d03dcea1c76aa0dfb42619f8a52e70d0a8d49b8",
-      "bytes": 21952
-    },
-    {
-      "id": "daily-can2",
-      "filename": "can2.mp3",
-      "sha256": "3a5f050a567e42dc3a9434de15c2ff9fee83a9cba19d6e48b90bb59b6d039365",
-      "bytes": 17614
-    },
-    {
-      "id": "daily-shi3",
-      "filename": "shi3.mp3",
-      "sha256": "21bdd0d0fd3a24e264dee877ecd08673f6ea7aaf2581ca9db04296c574860243",
-      "bytes": 9326
-    },
-    {
-      "id": "daily-tui1",
-      "filename": "tui1.mp3",
-      "sha256": "309ea6260abad5f5136f32d90c4c0bd0a946b233df9b388586f4e9624fc04fee",
-      "bytes": 16532
     }
+  ],
+  "derivedAssets": [
+    "daily-nu1",
+    "daily-nv1",
+    "daily-lv1",
+    "daily-ze1",
+    "daily-ce1",
+    "daily-se1",
+    "daily-re1",
+    "daily-ru1",
+    "daily-ruo1",
+    "daily-zou1"
   ]
 }

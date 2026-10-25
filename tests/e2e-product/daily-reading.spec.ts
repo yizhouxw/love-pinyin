@@ -26,7 +26,7 @@ test('DAILY-01/02: all PDF demonstrations decode and the real reading page follo
   const items = data.days.flatMap((day: { sections: { items: { available: boolean }[] }[] }) =>
     day.sections.flatMap((section) => section.items),
   );
-  expect(items).toHaveLength(840);
+  expect(items).toHaveLength(785);
   expect(items.every((item: { available: boolean }) => item.available)).toBe(true);
   expect(data.assessment.mode).toBe('asr-syllable-match');
   expect(data.assessment.toneAssessed).toBe(false);
@@ -57,9 +57,9 @@ test('DAILY-01/02: all PDF demonstrations decode and the real reading page follo
         await context.close();
       }
     },
-    { assets: reading.assets.map((a) => a.id), voices },
+    { assets: [...reading.assets.map((a) => a.id), ...reading.derivedAssets], voices },
   );
-  expect(decoded).toHaveLength(602 + 42);
+  expect(decoded).toHaveLength(607 + 10 + 42);
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   const current = page.getByLabel('当前跟读内容');
   await expect(current.getByLabel('ā', { exact: true })).toBeVisible();

@@ -26,6 +26,5 @@ it('DAILY-07 groups every source item once in its original playback order', () =
     'day-01-s1-i2',
     'day-01-s1-i3',
     'day-01-s1-i4',
-    'day-01-s1-i5',
   ]);
 });

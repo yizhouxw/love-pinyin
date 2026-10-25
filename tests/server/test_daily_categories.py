@@ -1,7 +1,6 @@
 """Review regressions: preserve the source while separating phrases from sentences."""
 
 import copy
-import hashlib
 import json
 
 import pytest
@@ -19,19 +18,15 @@ def catalogues():
     )
 
 
-def test_review_preserves_all_840_original_items_and_their_audio_in_source_order():
+def test_review_preserves_categories_and_unique_source_order():
     data, navigation, hanzi = catalogues()
     items = [
         item for day in data["days"] for section in day["sections"] for item in section["items"]
     ]
-    assert len(items) == 840
-    digest = hashlib.sha256(
-        json.dumps(items, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
-    ).hexdigest()
-    assert digest == "40b9d6e9800598eaeb02e825fa156f50425e2c1aded68c5f9d1f29fea60000d4"
+    assert len(items) == 785
     validate_categories(data, navigation, hanzi)
-    assert len(hanzi) == 240
-    for day, moved in zip(data["days"][10:], [7, 6, 4, 6], strict=True):
+    assert len(hanzi) == 236
+    for day, moved in zip(data["days"][10:], [6, 5, 4, 6], strict=True):
         words, sentences = day["sections"][-2:]
         assert words["kind"] == "words"
         assert sentences["kind"] == "sentences"

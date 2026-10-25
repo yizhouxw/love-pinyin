@@ -11,6 +11,7 @@ export type DailyItem = {
   missingSyllables: string[];
   narrationId: string | null;
   spokenText: string | null;
+  derivedAudio?: boolean;
   available: boolean;
   timings?: AudioTiming[];
   sentenceReading?: {

@@ -1,0 +1,5465 @@
+{
+  "version": 1,
+  "sourceSha256": "217d1d6eca4b2a66667776720ef3a4f137bd9059a38031852a23e45e5ab1e0f4",
+  "notes": "来源Word未提供；所用PDF自身包含重复。按小节去重，来源变化须重建此台账并复核，不能按旧删除位置判断新版Word漏项。",
+  "sections": [
+    {
+      "id": "day-01-section-1",
+      "items": [
+        {
+          "id": "day-01-s1-i1",
+          "original": "ā",
+          "display": "ā",
+          "syllables": ["ā"]
+        },
+        {
+          "id": "day-01-s1-i2",
+          "original": "á",
+          "display": "á",
+          "syllables": ["á"]
+        },
+        {
+          "id": "day-01-s1-i3",
+          "original": "ǎ",
+          "display": "ǎ",
+          "syllables": ["ǎ"]
+        },
+        {
+          "id": "day-01-s1-i4",
+          "original": "à",
+          "display": "à",
+          "syllables": ["à"]
+        },
+        {
+          "id": "day-01-s1-i5",
+          "original": "á",
+          "display": "á",
+          "syllables": ["á"]
+        },
+        {
+          "id": "day-01-s1-i6",
+          "original": "ō",
+          "display": "ō",
+          "syllables": ["ō"]
+        },
+        {
+          "id": "day-01-s1-i7",
+          "original": "è",
+          "display": "è",
+          "syllables": ["è"]
+        },
+        {
+          "id": "day-01-s1-i8",
+          "original": "ó",
+          "display": "ó",
+          "syllables": ["ó"]
+        },
+        {
+          "id": "day-01-s1-i9",
+          "original": "ō",
+          "display": "ō",
+          "syllables": ["ō"]
+        },
+        {
+          "id": "day-01-s1-i10",
+          "original": "ó",
+          "display": "ó",
+          "syllables": ["ó"]
+        },
+        {
+          "id": "day-01-s1-i11",
+          "original": "ǒ",
+          "display": "ǒ",
+          "syllables": ["ǒ"]
+        },
+        {
+          "id": "day-01-s1-i12",
+          "original": "ò",
+          "display": "ò",
+          "syllables": ["ò"]
+        },
+        {
+          "id": "day-01-s1-i13",
+          "original": "ǎ",
+          "display": "ǎ",
+          "syllables": ["ǎ"]
+        },
+        {
+          "id": "day-01-s1-i14",
+          "original": "ā",
+          "display": "ā",
+          "syllables": ["ā"]
+        },
+        {
+          "id": "day-01-s1-i15",
+          "original": "ē",
+          "display": "ē",
+          "syllables": ["ē"]
+        },
+        {
+          "id": "day-01-s1-i16",
+          "original": "ě",
+          "display": "ě",
+          "syllables": ["ě"]
+        },
+        {
+          "id": "day-01-s1-i17",
+          "original": "ē",
+          "display": "ē",
+          "syllables": ["ē"]
+        },
+        {
+          "id": "day-01-s1-i18",
+          "original": "é",
+          "display": "é",
+          "syllables": ["é"]
+        },
+        {
+          "id": "day-01-s1-i19",
+          "original": "ě",
+          "display": "ě",
+          "syllables": ["ě"]
+        },
+        {
+          "id": "day-01-s1-i20",
+          "original": "è",
+          "display": "è",
+          "syllables": ["è"]
+        },
+        {
+          "id": "day-01-s1-i21",
+          "original": "ǒ",
+          "display": "ǒ",
+          "syllables": ["ǒ"]
+        },
+        {
+          "id": "day-01-s1-i22",
+          "original": "é",
+          "display": "é",
+          "syllables": ["é"]
+        },
+        {
+          "id": "day-01-s1-i23",
+          "original": "à",
+          "display": "à",
+          "syllables": ["à"]
+        },
+        {
+          "id": "day-01-s1-i24",
+          "original": "ò",
+          "display": "ò",
+          "syllables": ["ò"]
+        }
+      ]
+    },
+    {
+      "id": "day-02-section-1",
+      "items": [
+        {
+          "id": "day-02-s1-i1",
+          "original": "ī",
+          "display": "ī",
+          "syllables": ["ī"]
+        },
+        {
+          "id": "day-02-s1-i2",
+          "original": "í",
+          "display": "í",
+          "syllables": ["í"]
+        },
+        {
+          "id": "day-02-s1-i3",
+          "original": "ǐ",
+          "display": "ǐ",
+          "syllables": ["ǐ"]
+        },
+        {
+          "id": "day-02-s1-i4",
+          "original": "ì",
+          "display": "ì",
+          "syllables": ["ì"]
+        },
+        {
+          "id": "day-02-s1-i5",
+          "original": "í",
+          "display": "í",
+          "syllables": ["í"]
+        },
+        {
+          "id": "day-02-s1-i6",
+          "original": "ù",
+          "display": "ù",
+          "syllables": ["ù"]
+        },
+        {
+          "id": "day-02-s1-i7",
+          "original": "ǖ",
+          "display": "ǖ",
+          "syllables": ["ǖ"]
+        },
+        {
+          "id": "day-02-s1-i8",
+          "original": "ī",
+          "display": "ī",
+          "syllables": ["ī"]
+        },
+        {
+          "id": "day-02-s1-i9",
+          "original": "ū",
+          "display": "ū",
+          "syllables": ["ū"]
+        },
+        {
+          "id": "day-02-s1-i10",
+          "original": "ú",
+          "display": "ú",
+          "syllables": ["ú"]
+        },
+        {
+          "id": "day-02-s1-i11",
+          "original": "ǔ",
+          "display": "ǔ",
+          "syllables": ["ǔ"]
+        },
+        {
+          "id": "day-02-s1-i12",
+          "original": "ù",
+          "display": "ù",
+          "syllables": ["ù"]
+        },
+        {
+          "id": "day-02-s1-i13",
+          "original": "ū",
+          "display": "ū",
+          "syllables": ["ū"]
+        },
+        {
+          "id": "day-02-s1-i14",
+          "original": "ǘ",
+          "display": "ǘ",
+          "syllables": ["ǘ"]
+        },
+        {
+          "id": "day-02-s1-i15",
+          "original": "ǐ",
+          "display": "ǐ",
+          "syllables": ["ǐ"]
+        },
+        {
+          "id": "day-02-s1-i16",
+          "original": "ǚ",
+          "display": "ǚ",
+          "syllables": ["ǚ"]
+        },
+        {
+          "id": "day-02-s1-i17",
+          "original": "ǖ",
+          "display": "ǖ",
+          "syllables": ["ǖ"]
+        },
+        {
+          "id": "day-02-s1-i18",
+          "original": "ǘ",
+          "display": "ǘ",
+          "syllables": ["ǘ"]
+        },
+        {
+          "id": "day-02-s1-i19",
+          "original": "ǚ",
+          "display": "ǚ",
+          "syllables": ["ǚ"]
+        },
+        {
+          "id": "day-02-s1-i20",
+          "original": "ǜ",
+          "display": "ǜ",
+          "syllables": ["ǜ"]
+        },
+        {
+          "id": "day-02-s1-i21",
+          "original": "ǜ",
+          "display": "ǜ",
+          "syllables": ["ǜ"]
+        },
+        {
+          "id": "day-02-s1-i22",
+          "original": "ì",
+          "display": "ì",
+          "syllables": ["ì"]
+        },
+        {
+          "id": "day-02-s1-i23",
+          "original": "ǔ",
+          "display": "ǔ",
+          "syllables": ["ǔ"]
+        },
+        {
+          "id": "day-02-s1-i24",
+          "original": "ú",
+          "display": "ú",
+          "syllables": ["ú"]
+        }
+      ]
+    },
+    {
+      "id": "day-03-section-1",
+      "items": [
+        {
+          "id": "day-03-s1-i1",
+          "original": "b",
+          "display": "b",
+          "syllables": ["b"]
+        },
+        {
+          "id": "day-03-s1-i2",
+          "original": "p",
+          "display": "p",
+          "syllables": ["p"]
+        },
+        {
+          "id": "day-03-s1-i3",
+          "original": "m",
+          "display": "m",
+          "syllables": ["m"]
+        },
+        {
+          "id": "day-03-s1-i4",
+          "original": "f",
+          "display": "f",
+          "syllables": ["f"]
+        }
+      ]
+    },
+    {
+      "id": "day-03-section-2",
+      "items": [
+        {
+          "id": "day-03-s2-i1",
+          "original": "bā",
+          "display": "bā",
+          "syllables": ["bā"]
+        },
+        {
+          "id": "day-03-s2-i2",
+          "original": "pá",
+          "display": "pá",
+          "syllables": ["pá"]
+        },
+        {
+          "id": "day-03-s2-i3",
+          "original": "bō",
+          "display": "bō",
+          "syllables": ["bō"]
+        },
+        {
+          "id": "day-03-s2-i4",
+          "original": "pó",
+          "display": "pó",
+          "syllables": ["pó"]
+        },
+        {
+          "id": "day-03-s2-i5",
+          "original": "bǐ",
+          "display": "bǐ",
+          "syllables": ["bǐ"]
+        },
+        {
+          "id": "day-03-s2-i6",
+          "original": "bù",
+          "display": "bù",
+          "syllables": ["bù"]
+        },
+        {
+          "id": "day-03-s2-i7",
+          "original": "pū",
+          "display": "pū",
+          "syllables": ["pū"]
+        },
+        {
+          "id": "day-03-s2-i8",
+          "original": "mǎ",
+          "display": "mǎ",
+          "syllables": ["mǎ"]
+        },
+        {
+          "id": "day-03-s2-i9",
+          "original": "mà",
+          "display": "mà",
+          "syllables": ["mà"]
+        },
+        {
+          "id": "day-03-s2-i10",
+          "original": "fó",
+          "display": "fó",
+          "syllables": ["fó"]
+        },
+        {
+          "id": "day-03-s2-i11",
+          "original": "pí",
+          "display": "pí",
+          "syllables": ["pí"]
+        },
+        {
+          "id": "day-03-s2-i12",
+          "original": "pō",
+          "display": "pō",
+          "syllables": ["pō"]
+        },
+        {
+          "id": "day-03-s2-i13",
+          "original": "mā",
+          "display": "mā",
+          "syllables": ["mā"]
+        },
+        {
+          "id": "day-03-s2-i14",
+          "original": "mǐ",
+          "display": "mǐ",
+          "syllables": ["mǐ"]
+        },
+        {
+          "id": "day-03-s2-i15",
+          "original": "fú",
+          "display": "fú",
+          "syllables": ["fú"]
+        },
+        {
+          "id": "day-03-s2-i16",
+          "original": "bà",
+          "display": "bà",
+          "syllables": ["bà"]
+        },
+        {
+          "id": "day-03-s2-i17",
+          "original": "mù",
+          "display": "mù",
+          "syllables": ["mù"]
+        },
+        {
+          "id": "day-03-s2-i18",
+          "original": "bǎ",
+          "display": "bǎ",
+          "syllables": ["bǎ"]
+        },
+        {
+          "id": "day-03-s2-i19",
+          "original": "pà",
+          "display": "pà",
+          "syllables": ["pà"]
+        },
+        {
+          "id": "day-03-s2-i20",
+          "original": "má",
+          "display": "má",
+          "syllables": ["má"]
+        }
+      ]
+    },
+    {
+      "id": "day-03-section-3",
+      "items": [
+        {
+          "id": "day-03-s3-i1",
+          "original": "bà ba",
+          "display": "bà ba",
+          "syllables": ["bà", "ba"]
+        },
+        {
+          "id": "day-03-s3-i2",
+          "original": "pó po",
+          "display": "pó po",
+          "syllables": ["pó", "po"]
+        },
+        {
+          "id": "day-03-s3-i3",
+          "original": "mā ma",
+          "display": "mā ma",
+          "syllables": ["mā", "ma"]
+        },
+        {
+          "id": "day-03-s3-i4",
+          "original": "mù mǎ",
+          "display": "mù mǎ",
+          "syllables": ["mù", "mǎ"]
+        },
+        {
+          "id": "day-03-s3-i5",
+          "original": "pù bù",
+          "display": "pù bù",
+          "syllables": ["pù", "bù"]
+        },
+        {
+          "id": "day-03-s3-i6",
+          "original": "pí fū",
+          "display": "pí fū",
+          "syllables": ["pí", "fū"]
+        },
+        {
+          "id": "day-03-s3-i7",
+          "original": "mì mi",
+          "display": "mì mi",
+          "syllables": ["mì", "mi"]
+        },
+        {
+          "id": "day-03-s3-i8",
+          "original": "mó mò",
+          "display": "mó mò",
+          "syllables": ["mó", "mò"]
+        },
+        {
+          "id": "day-03-s3-i9",
+          "original": "pí pa",
+          "display": "pí pa",
+          "syllables": ["pí", "pa"]
+        },
+        {
+          "id": "day-03-s3-i10",
+          "original": "bó bo",
+          "display": "bó bo",
+          "syllables": ["bó", "bo"]
+        }
+      ]
+    },
+    {
+      "id": "day-04-section-1",
+      "items": [
+        {
+          "id": "day-04-s1-i1",
+          "original": "d",
+          "display": "d",
+          "syllables": ["d"]
+        },
+        {
+          "id": "day-04-s1-i2",
+          "original": "t",
+          "display": "t",
+          "syllables": ["t"]
+        },
+        {
+          "id": "day-04-s1-i3",
+          "original": "n",
+          "display": "n",
+          "syllables": ["n"]
+        },
+        {
+          "id": "day-04-s1-i4",
+          "original": "l",
+          "display": "l",
+          "syllables": ["l"]
+        }
+      ]
+    },
+    {
+      "id": "day-04-section-2",
+      "items": [
+        {
+          "id": "day-04-s2-i1",
+          "original": "da",
+          "display": "da",
+          "syllables": ["da"]
+        },
+        {
+          "id": "day-04-s2-i2",
+          "original": "de",
+          "display": "de",
+          "syllables": ["de"]
+        },
+        {
+          "id": "day-04-s2-i3",
+          "original": "di",
+          "display": "di",
+          "syllables": ["di"]
+        },
+        {
+          "id": "day-04-s2-i4",
+          "original": "du",
+          "display": "du",
+          "syllables": ["du"]
+        },
+        {
+          "id": "day-04-s2-i5",
+          "original": "ta",
+          "display": "ta",
+          "syllables": ["ta"]
+        },
+        {
+          "id": "day-04-s2-i6",
+          "original": "te",
+          "display": "te",
+          "syllables": ["te"]
+        },
+        {
+          "id": "day-04-s2-i7",
+          "original": "ti",
+          "display": "ti",
+          "syllables": ["ti"]
+        },
+        {
+          "id": "day-04-s2-i8",
+          "original": "tu",
+          "display": "tu",
+          "syllables": ["tu"]
+        },
+        {
+          "id": "day-04-s2-i9",
+          "original": "na",
+          "display": "na",
+          "syllables": ["na"]
+        },
+        {
+          "id": "day-04-s2-i10",
+          "original": "ne",
+          "display": "ne",
+          "syllables": ["ne"]
+        },
+        {
+          "id": "day-04-s2-i11",
+          "original": "ni",
+          "display": "ni",
+          "syllables": ["ni"]
+        },
+        {
+          "id": "day-04-s2-i12",
+          "original": "nu",
+          "display": "nu",
+          "syllables": ["nu"]
+        },
+        {
+          "id": "day-04-s2-i13",
+          "original": "nü",
+          "display": "nü",
+          "syllables": ["nü"]
+        },
+        {
+          "id": "day-04-s2-i14",
+          "original": "la",
+          "display": "la",
+          "syllables": ["la"]
+        },
+        {
+          "id": "day-04-s2-i15",
+          "original": "le",
+          "display": "le",
+          "syllables": ["le"]
+        },
+        {
+          "id": "day-04-s2-i16",
+          "original": "li",
+          "display": "li",
+          "syllables": ["li"]
+        },
+        {
+          "id": "day-04-s2-i17",
+          "original": "lu",
+          "display": "lu",
+          "syllables": ["lu"]
+        },
+        {
+          "id": "day-04-s2-i18",
+          "original": "lü",
+          "display": "lü",
+          "syllables": ["lü"]
+        }
+      ]
+    },
+    {
+      "id": "day-04-section-3",
+      "items": [
+        {
+          "id": "day-04-s3-i1",
+          "original": "tā",
+          "display": "tā",
+          "syllables": ["tā"]
+        },
+        {
+          "id": "day-04-s3-i2",
+          "original": "nǐ",
+          "display": "nǐ",
+          "syllables": ["nǐ"]
+        },
+        {
+          "id": "day-04-s3-i3",
+          "original": "dú",
+          "display": "dú",
+          "syllables": ["dú"]
+        },
+        {
+          "id": "day-04-s3-i4",
+          "original": "dǎ",
+          "display": "dǎ",
+          "syllables": ["dǎ"]
+        },
+        {
+          "id": "day-04-s3-i5",
+          "original": "tù",
+          "display": "tù",
+          "syllables": ["tù"]
+        },
+        {
+          "id": "day-04-s3-i6",
+          "original": "dì",
+          "display": "dì",
+          "syllables": ["dì"]
+        },
+        {
+          "id": "day-04-s3-i7",
+          "original": "ná",
+          "display": "ná",
+          "syllables": ["ná"]
+        },
+        {
+          "id": "day-04-s3-i8",
+          "original": "lǎ",
+          "display": "lǎ",
+          "syllables": ["lǎ"]
+        },
+        {
+          "id": "day-04-s3-i9",
+          "original": "lù",
+          "display": "lù",
+          "syllables": ["lù"]
+        },
+        {
+          "id": "day-04-s3-i10",
+          "original": "nǚ",
+          "display": "nǚ",
+          "syllables": ["nǚ"]
+        },
+        {
+          "id": "day-04-s3-i11",
+          "original": "lí",
+          "display": "lí",
+          "syllables": ["lí"]
+        },
+        {
+          "id": "day-04-s3-i12",
+          "original": "tǐ",
+          "display": "tǐ",
+          "syllables": ["tǐ"]
+        },
+        {
+          "id": "day-04-s3-i13",
+          "original": "dé",
+          "display": "dé",
+          "syllables": ["dé"]
+        },
+        {
+          "id": "day-04-s3-i14",
+          "original": "dā",
+          "display": "dā",
+          "syllables": ["dā"]
+        },
+        {
+          "id": "day-04-s3-i15",
+          "original": "dí",
+          "display": "dí",
+          "syllables": ["dí"]
+        },
+        {
+          "id": "day-04-s3-i16",
+          "original": "dá",
+          "display": "dá",
+          "syllables": ["dá"]
+        },
+        {
+          "id": "day-04-s3-i17",
+          "original": "dī",
+          "display": "dī",
+          "syllables": ["dī"]
+        },
+        {
+          "id": "day-04-s3-i18",
+          "original": "dū",
+          "display": "dū",
+          "syllables": ["dū"]
+        },
+        {
+          "id": "day-04-s3-i19",
+          "original": "tè",
+          "display": "tè",
+          "syllables": ["tè"]
+        },
+        {
+          "id": "day-04-s3-i20",
+          "original": "tǎ",
+          "display": "tǎ",
+          "syllables": ["tǎ"]
+        },
+        {
+          "id": "day-04-s3-i21",
+          "original": "nǔ",
+          "display": "nǔ",
+          "syllables": ["nǔ"]
+        },
+        {
+          "id": "day-04-s3-i22",
+          "original": "ní",
+          "display": "ní",
+          "syllables": ["ní"]
+        },
+        {
+          "id": "day-04-s3-i23",
+          "original": "lā",
+          "display": "lā",
+          "syllables": ["lā"]
+        },
+        {
+          "id": "day-04-s3-i24",
+          "original": "lè",
+          "display": "lè",
+          "syllables": ["lè"]
+        }
+      ]
+    },
+    {
+      "id": "day-04-section-4",
+      "items": [
+        {
+          "id": "day-04-s4-i1",
+          "original": "dà dì",
+          "display": "dà dì",
+          "syllables": ["dà", "dì"]
+        },
+        {
+          "id": "day-04-s4-i2",
+          "original": "dì tú",
+          "display": "dì tú",
+          "syllables": ["dì", "tú"]
+        },
+        {
+          "id": "day-04-s4-i3",
+          "original": "dì di",
+          "display": "dì di",
+          "syllables": ["dì", "di"]
+        },
+        {
+          "id": "day-04-s4-i4",
+          "original": "tí mù",
+          "display": "tí mù",
+          "syllables": ["tí", "mù"]
+        },
+        {
+          "id": "day-04-s4-i5",
+          "original": "tǔ dì",
+          "display": "tǔ dì",
+          "syllables": ["tǔ", "dì"]
+        },
+        {
+          "id": "day-04-s4-i6",
+          "original": "mù tī",
+          "display": "mù tī",
+          "syllables": ["mù", "tī"]
+        },
+        {
+          "id": "day-04-s4-i7",
+          "original": "nǎ lǐ",
+          "display": "nǎ lǐ",
+          "syllables": ["nǎ", "lǐ"]
+        },
+        {
+          "id": "day-04-s4-i8",
+          "original": "nà lǐ",
+          "display": "nà lǐ",
+          "syllables": ["nà", "lǐ"]
+        },
+        {
+          "id": "day-04-s4-i9",
+          "original": "ná lí",
+          "display": "ná lí",
+          "syllables": ["ná", "lí"]
+        },
+        {
+          "id": "day-04-s4-i10",
+          "original": "dà mǐ",
+          "display": "dà mǐ",
+          "syllables": ["dà", "mǐ"]
+        },
+        {
+          "id": "day-04-s4-i11",
+          "original": "yī fu",
+          "display": "yī fu",
+          "syllables": ["yī", "fu"]
+        },
+        {
+          "id": "day-04-s4-i12",
+          "original": "lǎ ba",
+          "display": "lǎ ba",
+          "syllables": ["lǎ", "ba"]
+        },
+        {
+          "id": "day-04-s4-i13",
+          "original": "là bǐ",
+          "display": "là bǐ",
+          "syllables": ["là", "bǐ"]
+        },
+        {
+          "id": "day-04-s4-i14",
+          "original": "bō li",
+          "display": "bō li",
+          "syllables": ["bō", "li"]
+        },
+        {
+          "id": "day-04-s4-i15",
+          "original": "mǎ lù",
+          "display": "mǎ lù",
+          "syllables": ["mǎ", "lù"]
+        },
+        {
+          "id": "day-04-s4-i16",
+          "original": "lǐ fà",
+          "display": "lǐ fà",
+          "syllables": ["lǐ", "fà"]
+        },
+        {
+          "id": "day-04-s4-i17",
+          "original": "mù mǎ",
+          "display": "mù mǎ",
+          "syllables": ["mù", "mǎ"]
+        },
+        {
+          "id": "day-04-s4-i18",
+          "original": "dǎ bǎ",
+          "display": "dǎ bǎ",
+          "syllables": ["dǎ", "bǎ"]
+        },
+        {
+          "id": "day-04-s4-i19",
+          "original": "bú duì",
+          "display": "bú duì",
+          "syllables": ["bú", "duì"]
+        },
+        {
+          "id": "day-04-s4-i20",
+          "original": "dé yì",
+          "display": "dé yì",
+          "syllables": ["dé", "yì"]
+        },
+        {
+          "id": "day-04-s4-i21",
+          "original": "yù mǐ",
+          "display": "yù mǐ",
+          "syllables": ["yù", "mǐ"]
+        },
+        {
+          "id": "day-04-s4-i22",
+          "original": "dù pí",
+          "display": "dù pí",
+          "syllables": ["dù", "pí"]
+        },
+        {
+          "id": "day-04-s4-i23",
+          "original": "lù dì",
+          "display": "lù dì",
+          "syllables": ["lù", "dì"]
+        },
+        {
+          "id": "day-04-s4-i24",
+          "original": "fú wù",
+          "display": "fú wù",
+          "syllables": ["fú", "wù"]
+        },
+        {
+          "id": "day-04-s4-i25",
+          "original": "nǐ wǒ tā",
+          "display": "nǐ wǒ tā",
+          "syllables": ["nǐ", "wǒ", "tā"]
+        }
+      ]
+    },
+    {
+      "id": "day-05-section-1",
+      "items": [
+        {
+          "id": "day-05-s1-i1",
+          "original": "g",
+          "display": "g",
+          "syllables": ["g"]
+        },
+        {
+          "id": "day-05-s1-i2",
+          "original": "k",
+          "display": "k",
+          "syllables": ["k"]
+        },
+        {
+          "id": "day-05-s1-i3",
+          "original": "h",
+          "display": "h",
+          "syllables": ["h"]
+        }
+      ]
+    },
+    {
+      "id": "day-05-section-2",
+      "items": [
+        {
+          "id": "day-05-s2-i1",
+          "original": "b-p-g",
+          "display": "b-p-g",
+          "syllables": ["b", "p", "g"]
+        },
+        {
+          "id": "day-05-s2-i2",
+          "original": "n-h",
+          "display": "n-h",
+          "syllables": ["n", "h"]
+        },
+        {
+          "id": "day-05-s2-i3",
+          "original": "k-g",
+          "display": "k-g",
+          "syllables": ["k", "g"]
+        }
+      ]
+    },
+    {
+      "id": "day-05-section-3",
+      "items": [
+        {
+          "id": "day-05-s3-i1",
+          "original": "gē",
+          "display": "gē",
+          "syllables": ["gē"]
+        },
+        {
+          "id": "day-05-s3-i2",
+          "original": "gù",
+          "display": "gù",
+          "syllables": ["gù"]
+        },
+        {
+          "id": "day-05-s3-i3",
+          "original": "kē",
+          "display": "kē",
+          "syllables": ["kē"]
+        },
+        {
+          "id": "day-05-s3-i4",
+          "original": "kù",
+          "display": "kù",
+          "syllables": ["kù"]
+        },
+        {
+          "id": "day-05-s3-i5",
+          "original": "kǎ",
+          "display": "kǎ",
+          "syllables": ["kǎ"]
+        },
+        {
+          "id": "day-05-s3-i6",
+          "original": "hā",
+          "display": "hā",
+          "syllables": ["hā"]
+        },
+        {
+          "id": "day-05-s3-i7",
+          "original": "hé",
+          "display": "hé",
+          "syllables": ["hé"]
+        },
+        {
+          "id": "day-05-s3-i8",
+          "original": "hú",
+          "display": "hú",
+          "syllables": ["hú"]
+        },
+        {
+          "id": "day-05-s3-i9",
+          "original": "gé",
+          "display": "gé",
+          "syllables": ["gé"]
+        },
+        {
+          "id": "day-05-s3-i10",
+          "original": "gǔ",
+          "display": "gǔ",
+          "syllables": ["gǔ"]
+        },
+        {
+          "id": "day-05-s3-i11",
+          "original": "ké",
+          "display": "ké",
+          "syllables": ["ké"]
+        },
+        {
+          "id": "day-05-s3-i12",
+          "original": "kǔ",
+          "display": "kǔ",
+          "syllables": ["kǔ"]
+        },
+        {
+          "id": "day-05-s3-i13",
+          "original": "hē",
+          "display": "hē",
+          "syllables": ["hē"]
+        },
+        {
+          "id": "day-05-s3-i14",
+          "original": "hù",
+          "display": "hù",
+          "syllables": ["hù"]
+        },
+        {
+          "id": "day-05-s3-i15",
+          "original": "gè",
+          "display": "gè",
+          "syllables": ["gè"]
+        },
+        {
+          "id": "day-05-s3-i16",
+          "original": "kě",
+          "display": "kě",
+          "syllables": ["kě"]
+        },
+        {
+          "id": "day-05-s3-i17",
+          "original": "hè",
+          "display": "hè",
+          "syllables": ["hè"]
+        },
+        {
+          "id": "day-05-s3-i18",
+          "original": "hǔ",
+          "display": "hǔ",
+          "syllables": ["hǔ"]
+        },
+        {
+          "id": "day-05-s3-i19",
+          "original": "kè",
+          "display": "kè",
+          "syllables": ["kè"]
+        },
+        {
+          "id": "day-05-s3-i20",
+          "original": "gū",
+          "display": "gū",
+          "syllables": ["gū"]
+        },
+        {
+          "id": "day-05-s3-i21",
+          "original": "há",
+          "display": "há",
+          "syllables": ["há"]
+        },
+        {
+          "id": "day-05-s3-i22",
+          "original": "kū",
+          "display": "kū",
+          "syllables": ["kū"]
+        },
+        {
+          "id": "day-05-s3-i23",
+          "original": "hū",
+          "display": "hū",
+          "syllables": ["hū"]
+        },
+        {
+          "id": "day-05-s3-i24",
+          "original": "gà",
+          "display": "gà",
+          "syllables": ["gà"]
+        },
+        {
+          "id": "day-05-s3-i25",
+          "original": "guā",
+          "display": "guā",
+          "syllables": ["guā"]
+        },
+        {
+          "id": "day-05-s3-i26",
+          "original": "kuā",
+          "display": "kuā",
+          "syllables": ["kuā"]
+        },
+        {
+          "id": "day-05-s3-i27",
+          "original": "huà",
+          "display": "huà",
+          "syllables": ["huà"]
+        },
+        {
+          "id": "day-05-s3-i28",
+          "original": "guó",
+          "display": "guó",
+          "syllables": ["guó"]
+        },
+        {
+          "id": "day-05-s3-i29",
+          "original": "kuò",
+          "display": "kuò",
+          "syllables": ["kuò"]
+        },
+        {
+          "id": "day-05-s3-i30",
+          "original": "huǒ",
+          "display": "huǒ",
+          "syllables": ["huǒ"]
+        },
+        {
+          "id": "day-05-s3-i31",
+          "original": "guà",
+          "display": "guà",
+          "syllables": ["guà"]
+        },
+        {
+          "id": "day-05-s3-i32",
+          "original": "guō",
+          "display": "guō",
+          "syllables": ["guō"]
+        },
+        {
+          "id": "day-05-s3-i33",
+          "original": "huā",
+          "display": "huā",
+          "syllables": ["huā"]
+        },
+        {
+          "id": "day-05-s3-i34",
+          "original": "guò",
+          "display": "guò",
+          "syllables": ["guò"]
+        },
+        {
+          "id": "day-05-s3-i35",
+          "original": "huó",
+          "display": "huó",
+          "syllables": ["huó"]
+        },
+        {
+          "id": "day-05-s3-i36",
+          "original": "huá",
+          "display": "huá",
+          "syllables": ["huá"]
+        },
+        {
+          "id": "day-05-s3-i37",
+          "original": "huò",
+          "display": "huò",
+          "syllables": ["huò"]
+        },
+        {
+          "id": "day-05-s3-i38",
+          "original": "guǒ",
+          "display": "guǒ",
+          "syllables": ["guǒ"]
+        }
+      ]
+    },
+    {
+      "id": "day-05-section-4",
+      "items": [
+        {
+          "id": "day-05-s4-i1",
+          "original": "gē ge",
+          "display": "gē ge",
+          "syllables": ["gē", "ge"]
+        },
+        {
+          "id": "day-05-s4-i2",
+          "original": "dì di",
+          "display": "dì di",
+          "syllables": ["dì", "di"]
+        },
+        {
+          "id": "day-05-s4-i3",
+          "original": "hé huā",
+          "display": "hé huā",
+          "syllables": ["hé", "huā"]
+        },
+        {
+          "id": "day-05-s4-i4",
+          "original": "kē lì",
+          "display": "kē lì",
+          "syllables": ["kē", "lì"]
+        },
+        {
+          "id": "day-05-s4-i5",
+          "original": "kè kǔ",
+          "display": "kè kǔ",
+          "syllables": ["kè", "kǔ"]
+        },
+        {
+          "id": "day-05-s4-i6",
+          "original": "duǒ bì",
+          "display": "duǒ bì",
+          "syllables": ["duǒ", "bì"]
+        },
+        {
+          "id": "day-05-s4-i7",
+          "original": "dà huǒ",
+          "display": "dà huǒ",
+          "syllables": ["dà", "huǒ"]
+        },
+        {
+          "id": "day-05-s4-i8",
+          "original": "huà huà",
+          "display": "huà huà",
+          "syllables": ["huà", "huà"]
+        },
+        {
+          "id": "day-05-s4-i9",
+          "original": "huā duǒ",
+          "display": "huā duǒ",
+          "syllables": ["huā", "duǒ"]
+        },
+        {
+          "id": "day-05-s4-i10",
+          "original": "guā guǒ",
+          "display": "guā guǒ",
+          "syllables": ["guā", "guǒ"]
+        },
+        {
+          "id": "day-05-s4-i11",
+          "original": "kě yǐ",
+          "display": "kě yǐ",
+          "syllables": ["kě", "yǐ"]
+        },
+        {
+          "id": "day-05-s4-i12",
+          "original": "bù dǎ rén",
+          "display": "bù dǎ rén",
+          "syllables": ["bù", "dǎ", "rén"]
+        }
+      ]
+    },
+    {
+      "id": "day-05-section-5",
+      "items": [
+        {
+          "id": "day-05-s5-i1",
+          "original": "dì di kū le.",
+          "display": "dì di kū le.",
+          "syllables": ["dì", "di", "kū", "le"]
+        },
+        {
+          "id": "day-05-s5-i2",
+          "original": "mā ma tuō dì.",
+          "display": "mā ma tuō dì.",
+          "syllables": ["mā", "ma", "tuō", "dì"]
+        }
+      ]
+    },
+    {
+      "id": "day-06-section-1",
+      "items": [
+        {
+          "id": "day-06-s1-i1",
+          "original": "j",
+          "display": "j",
+          "syllables": ["j"]
+        },
+        {
+          "id": "day-06-s1-i2",
+          "original": "q",
+          "display": "q",
+          "syllables": ["q"]
+        },
+        {
+          "id": "day-06-s1-i3",
+          "original": "x",
+          "display": "x",
+          "syllables": ["x"]
+        }
+      ]
+    },
+    {
+      "id": "day-06-section-2",
+      "items": [
+        {
+          "id": "day-06-s2-i1",
+          "original": "b-d-p-q",
+          "display": "b-d-p-q",
+          "syllables": ["b", "d", "p", "q"]
+        },
+        {
+          "id": "day-06-s2-i2",
+          "original": "j-i",
+          "display": "j-i",
+          "syllables": ["j", "i"]
+        },
+        {
+          "id": "day-06-s2-i3",
+          "original": "x-k",
+          "display": "x-k",
+          "syllables": ["x", "k"]
+        }
+      ]
+    },
+    {
+      "id": "day-06-section-3",
+      "items": [
+        {
+          "id": "day-06-s3-i1",
+          "original": "j-i-ji",
+          "display": "j-i-ji",
+          "syllables": ["j", "i", "ji"]
+        },
+        {
+          "id": "day-06-s3-i2",
+          "original": "j-ü-ju",
+          "display": "j-ü-ju",
+          "syllables": ["j", "ü", "ju"]
+        },
+        {
+          "id": "day-06-s3-i3",
+          "original": "j-i-a-jia",
+          "display": "j-i-a-jia",
+          "syllables": ["j", "i", "a", "jia"]
+        },
+        {
+          "id": "day-06-s3-i4",
+          "original": "q-i-qi",
+          "display": "q-i-qi",
+          "syllables": ["q", "i", "qi"]
+        },
+        {
+          "id": "day-06-s3-i5",
+          "original": "q-ü-qu",
+          "display": "q-ü-qu",
+          "syllables": ["q", "ü", "qu"]
+        },
+        {
+          "id": "day-06-s3-i6",
+          "original": "q-i-a-qia",
+          "display": "q-i-a-qia",
+          "syllables": ["q", "i", "a", "qia"]
+        },
+        {
+          "id": "day-06-s3-i7",
+          "original": "x-i-xi",
+          "display": "x-i-xi",
+          "syllables": ["x", "i", "xi"]
+        },
+        {
+          "id": "day-06-s3-i8",
+          "original": "x-ü-xu",
+          "display": "x-ü-xu",
+          "syllables": ["x", "ü", "xu"]
+        },
+        {
+          "id": "day-06-s3-i9",
+          "original": "x-i-a-xia",
+          "display": "x-i-a-xia",
+          "syllables": ["x", "i", "a", "xia"]
+        }
+      ]
+    },
+    {
+      "id": "day-06-section-4",
+      "items": [
+        {
+          "id": "day-06-s4-i1",
+          "original": "jī",
+          "display": "jī",
+          "syllables": ["jī"]
+        },
+        {
+          "id": "day-06-s4-i2",
+          "original": "qù",
+          "display": "qù",
+          "syllables": ["qù"]
+        },
+        {
+          "id": "day-06-s4-i3",
+          "original": "xì",
+          "display": "xì",
+          "syllables": ["xì"]
+        },
+        {
+          "id": "day-06-s4-i4",
+          "original": "qì",
+          "display": "qì",
+          "syllables": ["qì"]
+        },
+        {
+          "id": "day-06-s4-i5",
+          "original": "jù",
+          "display": "jù",
+          "syllables": ["jù"]
+        },
+        {
+          "id": "day-06-s4-i6",
+          "original": "xí",
+          "display": "xí",
+          "syllables": ["xí"]
+        },
+        {
+          "id": "day-06-s4-i7",
+          "original": "xǔ",
+          "display": "xǔ",
+          "syllables": ["xǔ"]
+        },
+        {
+          "id": "day-06-s4-i8",
+          "original": "qí",
+          "display": "qí",
+          "syllables": ["qí"]
+        },
+        {
+          "id": "day-06-s4-i9",
+          "original": "xī",
+          "display": "xī",
+          "syllables": ["xī"]
+        },
+        {
+          "id": "day-06-s4-i10",
+          "original": "jǔ",
+          "display": "jǔ",
+          "syllables": ["jǔ"]
+        },
+        {
+          "id": "day-06-s4-i11",
+          "original": "jū",
+          "display": "jū",
+          "syllables": ["jū"]
+        },
+        {
+          "id": "day-06-s4-i12",
+          "original": "xū",
+          "display": "xū",
+          "syllables": ["xū"]
+        },
+        {
+          "id": "day-06-s4-i13",
+          "original": "qī",
+          "display": "qī",
+          "syllables": ["qī"]
+        },
+        {
+          "id": "day-06-s4-i14",
+          "original": "xǐ",
+          "display": "xǐ",
+          "syllables": ["xǐ"]
+        },
+        {
+          "id": "day-06-s4-i15",
+          "original": "qǐ",
+          "display": "qǐ",
+          "syllables": ["qǐ"]
+        },
+        {
+          "id": "day-06-s4-i16",
+          "original": "jǐ",
+          "display": "jǐ",
+          "syllables": ["jǐ"]
+        },
+        {
+          "id": "day-06-s4-i17",
+          "original": "qū",
+          "display": "qū",
+          "syllables": ["qū"]
+        },
+        {
+          "id": "day-06-s4-i18",
+          "original": "qú",
+          "display": "qú",
+          "syllables": ["qú"]
+        },
+        {
+          "id": "day-06-s4-i19",
+          "original": "jí",
+          "display": "jí",
+          "syllables": ["jí"]
+        },
+        {
+          "id": "day-06-s4-i20",
+          "original": "jì",
+          "display": "jì",
+          "syllables": ["jì"]
+        },
+        {
+          "id": "day-06-s4-i21",
+          "original": "xù",
+          "display": "xù",
+          "syllables": ["xù"]
+        },
+        {
+          "id": "day-06-s4-i22",
+          "original": "jú",
+          "display": "jú",
+          "syllables": ["jú"]
+        },
+        {
+          "id": "day-06-s4-i23",
+          "original": "jiā",
+          "display": "jiā",
+          "syllables": ["jiā"]
+        },
+        {
+          "id": "day-06-s4-i24",
+          "original": "qià",
+          "display": "qià",
+          "syllables": ["qià"]
+        },
+        {
+          "id": "day-06-s4-i25",
+          "original": "xiā",
+          "display": "xiā",
+          "syllables": ["xiā"]
+        },
+        {
+          "id": "day-06-s4-i26",
+          "original": "xià",
+          "display": "xià",
+          "syllables": ["xià"]
+        },
+        {
+          "id": "day-06-s4-i27",
+          "original": "qiǎ",
+          "display": "qiǎ",
+          "syllables": ["qiǎ"]
+        },
+        {
+          "id": "day-06-s4-i28",
+          "original": "jiǎ",
+          "display": "jiǎ",
+          "syllables": ["jiǎ"]
+        },
+        {
+          "id": "day-06-s4-i29",
+          "original": "jià",
+          "display": "jià",
+          "syllables": ["jià"]
+        }
+      ]
+    },
+    {
+      "id": "day-06-section-5",
+      "items": [
+        {
+          "id": "day-06-s5-i1",
+          "original": "jī qì",
+          "display": "jī qì",
+          "syllables": ["jī", "qì"]
+        },
+        {
+          "id": "day-06-s5-i2",
+          "original": "mǎ xì",
+          "display": "mǎ xì",
+          "syllables": ["mǎ", "xì"]
+        },
+        {
+          "id": "day-06-s5-i3",
+          "original": "hé qì",
+          "display": "hé qì",
+          "syllables": ["hé", "qì"]
+        },
+        {
+          "id": "day-06-s5-i4",
+          "original": "qǐ lì",
+          "display": "qǐ lì",
+          "syllables": ["qǐ", "lì"]
+        },
+        {
+          "id": "day-06-s5-i5",
+          "original": "jǐ gè",
+          "display": "jǐ gè",
+          "syllables": ["jǐ", "gè"]
+        },
+        {
+          "id": "day-06-s5-i6",
+          "original": "dǎ qì",
+          "display": "dǎ qì",
+          "syllables": ["dǎ", "qì"]
+        },
+        {
+          "id": "day-06-s5-i7",
+          "original": "hú xū",
+          "display": "hú xū",
+          "syllables": ["hú", "xū"]
+        },
+        {
+          "id": "day-06-s5-i8",
+          "original": "qí mǎ",
+          "display": "qí mǎ",
+          "syllables": ["qí", "mǎ"]
+        },
+        {
+          "id": "day-06-s5-i9",
+          "original": "xià qù",
+          "display": "xià qù",
+          "syllables": ["xià", "qù"]
+        },
+        {
+          "id": "day-06-s5-i10",
+          "original": "gē qǔ",
+          "display": "gē qǔ",
+          "syllables": ["gē", "qǔ"]
+        },
+        {
+          "id": "day-06-s5-i11",
+          "original": "guó qí",
+          "display": "guó qí",
+          "syllables": ["guó", "qí"]
+        },
+        {
+          "id": "day-06-s5-i12",
+          "original": "jú huā",
+          "display": "jú huā",
+          "syllables": ["jú", "huā"]
+        },
+        {
+          "id": "day-06-s5-i13",
+          "original": "xī guā",
+          "display": "xī guā",
+          "syllables": ["xī", "guā"]
+        },
+        {
+          "id": "day-06-s5-i14",
+          "original": "mǔ jī",
+          "display": "mǔ jī",
+          "syllables": ["mǔ", "jī"]
+        },
+        {
+          "id": "day-06-s5-i15",
+          "original": "dì xià",
+          "display": "dì xià",
+          "syllables": ["dì", "xià"]
+        },
+        {
+          "id": "day-06-s5-i16",
+          "original": "xǐ yī fu",
+          "display": "xǐ yī fu",
+          "syllables": ["xǐ", "yī", "fu"]
+        },
+        {
+          "id": "day-06-s5-i17",
+          "original": "dà jiā",
+          "display": "dà jiā",
+          "syllables": ["dà", "jiā"]
+        }
+      ]
+    },
+    {
+      "id": "day-06-section-6",
+      "items": [
+        {
+          "id": "day-06-s6-i1",
+          "original": "dì di huà tú huà，gē ge jǔ guó qí.",
+          "display": "dì di huà tú huà，gē ge jǔ guó qí.",
+          "syllables": ["dì", "di", "huà", "tú", "huà", "gē", "ge", "jǔ", "guó", "qí"]
+        },
+        {
+          "id": "day-06-s6-i2",
+          "original": "bà ba xià qí，mā ma xǐ yī fu，gē ge hé dì di dā jī mù.",
+          "display": "bà ba xià qí，mā ma xǐ yī fu，gē ge hé dì di dā jī mù.",
+          "syllables": [
+            "bà",
+            "ba",
+            "xià",
+            "qí",
+            "mā",
+            "ma",
+            "xǐ",
+            "yī",
+            "fu",
+            "gē",
+            "ge",
+            "hé",
+            "dì",
+            "di",
+            "dā",
+            "jī",
+            "mù"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "day-07-section-1",
+      "items": [
+        {
+          "id": "day-07-s1-i1",
+          "original": "z",
+          "display": "z",
+          "syllables": ["z"]
+        },
+        {
+          "id": "day-07-s1-i2",
+          "original": "c",
+          "display": "c",
+          "syllables": ["c"]
+        },
+        {
+          "id": "day-07-s1-i3",
+          "original": "s",
+          "display": "s",
+          "syllables": ["s"]
+        },
+        {
+          "id": "day-07-s1-i4",
+          "original": "zi",
+          "display": "zi",
+          "syllables": ["zi"]
+        },
+        {
+          "id": "day-07-s1-i5",
+          "original": "ci",
+          "display": "ci",
+          "syllables": ["ci"]
+        },
+        {
+          "id": "day-07-s1-i6",
+          "original": "si",
+          "display": "si",
+          "syllables": ["si"]
+        }
+      ]
+    },
+    {
+      "id": "day-07-section-2",
+      "items": [
+        {
+          "id": "day-07-s2-i1",
+          "original": "z-zi",
+          "display": "z-zi",
+          "syllables": ["z", "zi"]
+        },
+        {
+          "id": "day-07-s2-i2",
+          "original": "c-ci",
+          "display": "c-ci",
+          "syllables": ["c", "ci"]
+        },
+        {
+          "id": "day-07-s2-i3",
+          "original": "s-si",
+          "display": "s-si",
+          "syllables": ["s", "si"]
+        },
+        {
+          "id": "day-07-s2-i4",
+          "original": "b-d",
+          "display": "b-d",
+          "syllables": ["b", "d"]
+        },
+        {
+          "id": "day-07-s2-i5",
+          "original": "f-t",
+          "display": "f-t",
+          "syllables": ["f", "t"]
+        },
+        {
+          "id": "day-07-s2-i6",
+          "original": "m-n",
+          "display": "m-n",
+          "syllables": ["m", "n"]
+        },
+        {
+          "id": "day-07-s2-i7",
+          "original": "p-q",
+          "display": "p-q",
+          "syllables": ["p", "q"]
+        },
+        {
+          "id": "day-07-s2-i8",
+          "original": "n-l",
+          "display": "n-l",
+          "syllables": ["n", "l"]
+        },
+        {
+          "id": "day-07-s2-i9",
+          "original": "i-j",
+          "display": "i-j",
+          "syllables": ["i", "j"]
+        },
+        {
+          "id": "day-07-s2-i10",
+          "original": "n-h",
+          "display": "n-h",
+          "syllables": ["n", "h"]
+        },
+        {
+          "id": "day-07-s2-i11",
+          "original": "k-g",
+          "display": "k-g",
+          "syllables": ["k", "g"]
+        }
+      ]
+    },
+    {
+      "id": "day-07-section-3",
+      "items": [
+        {
+          "id": "day-07-s3-i1",
+          "original": "zī",
+          "display": "zī",
+          "syllables": ["zī"]
+        },
+        {
+          "id": "day-07-s3-i2",
+          "original": "zí",
+          "display": "zí",
+          "syllables": ["zí"]
+        },
+        {
+          "id": "day-07-s3-i3",
+          "original": "zǐ",
+          "display": "zǐ",
+          "syllables": ["zǐ"]
+        },
+        {
+          "id": "day-07-s3-i4",
+          "original": "zì",
+          "display": "zì",
+          "syllables": ["zì"]
+        },
+        {
+          "id": "day-07-s3-i5",
+          "original": "zí",
+          "display": "zí",
+          "syllables": ["zí"]
+        },
+        {
+          "id": "day-07-s3-i6",
+          "original": "cǐ",
+          "display": "cǐ",
+          "syllables": ["cǐ"]
+        },
+        {
+          "id": "day-07-s3-i7",
+          "original": "sì",
+          "display": "sì",
+          "syllables": ["sì"]
+        },
+        {
+          "id": "day-07-s3-i8",
+          "original": "zī",
+          "display": "zī",
+          "syllables": ["zī"]
+        },
+        {
+          "id": "day-07-s3-i9",
+          "original": "za",
+          "display": "za",
+          "syllables": ["za"]
+        },
+        {
+          "id": "day-07-s3-i10",
+          "original": "ze",
+          "display": "ze",
+          "syllables": ["ze"]
+        },
+        {
+          "id": "day-07-s3-i11",
+          "original": "zu",
+          "display": "zu",
+          "syllables": ["zu"]
+        },
+        {
+          "id": "day-07-s3-i12",
+          "original": "zuo",
+          "display": "zuo",
+          "syllables": ["zuo"]
+        },
+        {
+          "id": "day-07-s3-i13",
+          "original": "cī",
+          "display": "cī",
+          "syllables": ["cī"]
+        },
+        {
+          "id": "day-07-s3-i14",
+          "original": "cí",
+          "display": "cí",
+          "syllables": ["cí"]
+        },
+        {
+          "id": "day-07-s3-i15",
+          "original": "cǐ",
+          "display": "cǐ",
+          "syllables": ["cǐ"]
+        },
+        {
+          "id": "day-07-s3-i16",
+          "original": "cì",
+          "display": "cì",
+          "syllables": ["cì"]
+        },
+        {
+          "id": "day-07-s3-i17",
+          "original": "sǐ",
+          "display": "sǐ",
+          "syllables": ["sǐ"]
+        },
+        {
+          "id": "day-07-s3-i18",
+          "original": "cī",
+          "display": "cī",
+          "syllables": ["cī"]
+        },
+        {
+          "id": "day-07-s3-i19",
+          "original": "sí",
+          "display": "sí",
+          "syllables": ["sí"]
+        },
+        {
+          "id": "day-07-s3-i20",
+          "original": "zǐ",
+          "display": "zǐ",
+          "syllables": ["zǐ"]
+        },
+        {
+          "id": "day-07-s3-i21",
+          "original": "ca",
+          "display": "ca",
+          "syllables": ["ca"]
+        },
+        {
+          "id": "day-07-s3-i22",
+          "original": "ce",
+          "display": "ce",
+          "syllables": ["ce"]
+        },
+        {
+          "id": "day-07-s3-i23",
+          "original": "cu",
+          "display": "cu",
+          "syllables": ["cu"]
+        },
+        {
+          "id": "day-07-s3-i24",
+          "original": "cuo",
+          "display": "cuo",
+          "syllables": ["cuo"]
+        },
+        {
+          "id": "day-07-s3-i25",
+          "original": "sī",
+          "display": "sī",
+          "syllables": ["sī"]
+        },
+        {
+          "id": "day-07-s3-i26",
+          "original": "sí",
+          "display": "sí",
+          "syllables": ["sí"]
+        },
+        {
+          "id": "day-07-s3-i27",
+          "original": "sǐ",
+          "display": "sǐ",
+          "syllables": ["sǐ"]
+        },
+        {
+          "id": "day-07-s3-i28",
+          "original": "sì",
+          "display": "sì",
+          "syllables": ["sì"]
+        },
+        {
+          "id": "day-07-s3-i29",
+          "original": "zì",
+          "display": "zì",
+          "syllables": ["zì"]
+        },
+        {
+          "id": "day-07-s3-i30",
+          "original": "cí",
+          "display": "cí",
+          "syllables": ["cí"]
+        },
+        {
+          "id": "day-07-s3-i31",
+          "original": "sī",
+          "display": "sī",
+          "syllables": ["sī"]
+        },
+        {
+          "id": "day-07-s3-i32",
+          "original": "cì",
+          "display": "cì",
+          "syllables": ["cì"]
+        },
+        {
+          "id": "day-07-s3-i33",
+          "original": "sa",
+          "display": "sa",
+          "syllables": ["sa"]
+        },
+        {
+          "id": "day-07-s3-i34",
+          "original": "se",
+          "display": "se",
+          "syllables": ["se"]
+        },
+        {
+          "id": "day-07-s3-i35",
+          "original": "su",
+          "display": "su",
+          "syllables": ["su"]
+        },
+        {
+          "id": "day-07-s3-i36",
+          "original": "suo",
+          "display": "suo",
+          "syllables": ["suo"]
+        }
+      ]
+    },
+    {
+      "id": "day-07-section-4",
+      "items": [
+        {
+          "id": "day-07-s4-i1",
+          "original": "zǔ",
+          "display": "zǔ",
+          "syllables": ["zǔ"]
+        },
+        {
+          "id": "day-07-s4-i2",
+          "original": "cì",
+          "display": "cì",
+          "syllables": ["cì"]
+        },
+        {
+          "id": "day-07-s4-i3",
+          "original": "zì",
+          "display": "zì",
+          "syllables": ["zì"]
+        },
+        {
+          "id": "day-07-s4-i4",
+          "original": "sù",
+          "display": "sù",
+          "syllables": ["sù"]
+        },
+        {
+          "id": "day-07-s4-i5",
+          "original": "zā",
+          "display": "zā",
+          "syllables": ["zā"]
+        },
+        {
+          "id": "day-07-s4-i6",
+          "original": "cè",
+          "display": "cè",
+          "syllables": ["cè"]
+        },
+        {
+          "id": "day-07-s4-i7",
+          "original": "zá",
+          "display": "zá",
+          "syllables": ["zá"]
+        },
+        {
+          "id": "day-07-s4-i8",
+          "original": "sù",
+          "display": "sù",
+          "syllables": ["sù"]
+        },
+        {
+          "id": "day-07-s4-i9",
+          "original": "sǐ",
+          "display": "sǐ",
+          "syllables": ["sǐ"]
+        },
+        {
+          "id": "day-07-s4-i10",
+          "original": "zū",
+          "display": "zū",
+          "syllables": ["zū"]
+        },
+        {
+          "id": "day-07-s4-i11",
+          "original": "cū",
+          "display": "cū",
+          "syllables": ["cū"]
+        },
+        {
+          "id": "day-07-s4-i12",
+          "original": "zǐ",
+          "display": "zǐ",
+          "syllables": ["zǐ"]
+        },
+        {
+          "id": "day-07-s4-i13",
+          "original": "cā",
+          "display": "cā",
+          "syllables": ["cā"]
+        },
+        {
+          "id": "day-07-s4-i14",
+          "original": "sè",
+          "display": "sè",
+          "syllables": ["sè"]
+        },
+        {
+          "id": "day-07-s4-i15",
+          "original": "sū",
+          "display": "sū",
+          "syllables": ["sū"]
+        },
+        {
+          "id": "day-07-s4-i16",
+          "original": "sú",
+          "display": "sú",
+          "syllables": ["sú"]
+        },
+        {
+          "id": "day-07-s4-i17",
+          "original": "sī",
+          "display": "sī",
+          "syllables": ["sī"]
+        },
+        {
+          "id": "day-07-s4-i18",
+          "original": "cí",
+          "display": "cí",
+          "syllables": ["cí"]
+        },
+        {
+          "id": "day-07-s4-i19",
+          "original": "suǒ",
+          "display": "suǒ",
+          "syllables": ["suǒ"]
+        },
+        {
+          "id": "day-07-s4-i20",
+          "original": "zuǒ",
+          "display": "zuǒ",
+          "syllables": ["zuǒ"]
+        },
+        {
+          "id": "day-07-s4-i21",
+          "original": "zuó",
+          "display": "zuó",
+          "syllables": ["zuó"]
+        },
+        {
+          "id": "day-07-s4-i22",
+          "original": "suō",
+          "display": "suō",
+          "syllables": ["suō"]
+        },
+        {
+          "id": "day-07-s4-i23",
+          "original": "cuò",
+          "display": "cuò",
+          "syllables": ["cuò"]
+        },
+        {
+          "id": "day-07-s4-i24",
+          "original": "cuō",
+          "display": "cuō",
+          "syllables": ["cuō"]
+        },
+        {
+          "id": "day-07-s4-i25",
+          "original": "zuò",
+          "display": "zuò",
+          "syllables": ["zuò"]
+        }
+      ]
+    },
+    {
+      "id": "day-07-section-5",
+      "items": [
+        {
+          "id": "day-07-s5-i1",
+          "original": "zǐ sè",
+          "display": "zǐ sè",
+          "syllables": ["zǐ", "sè"]
+        },
+        {
+          "id": "day-07-s5-i2",
+          "original": "zì jǐ",
+          "display": "zì jǐ",
+          "syllables": ["zì", "jǐ"]
+        },
+        {
+          "id": "day-07-s5-i3",
+          "original": "tǔ sī",
+          "display": "tǔ sī",
+          "syllables": ["tǔ", "sī"]
+        },
+        {
+          "id": "day-07-s5-i4",
+          "original": "cí yǔ",
+          "display": "cí yǔ",
+          "syllables": ["cí", "yǔ"]
+        },
+        {
+          "id": "day-07-s5-i5",
+          "original": "sù dù",
+          "display": "sù dù",
+          "syllables": ["sù", "dù"]
+        },
+        {
+          "id": "day-07-s5-i6",
+          "original": "jià zi",
+          "display": "jià zi",
+          "syllables": ["jià", "zi"]
+        },
+        {
+          "id": "day-07-s5-i7",
+          "original": "pú sa",
+          "display": "pú sa",
+          "syllables": ["pú", "sa"]
+        },
+        {
+          "id": "day-07-s5-i8",
+          "original": "cè suǒ",
+          "display": "cè suǒ",
+          "syllables": ["cè", "suǒ"]
+        },
+        {
+          "id": "day-07-s5-i9",
+          "original": "cū xì",
+          "display": "cū xì",
+          "syllables": ["cū", "xì"]
+        },
+        {
+          "id": "day-07-s5-i10",
+          "original": "cuò wù",
+          "display": "cuò wù",
+          "syllables": ["cuò", "wù"]
+        },
+        {
+          "id": "day-07-s5-i11",
+          "original": "zá jì",
+          "display": "zá jì",
+          "syllables": ["zá", "jì"]
+        },
+        {
+          "id": "day-07-s5-i12",
+          "original": "guā zǐ",
+          "display": "guā zǐ",
+          "syllables": ["guā", "zǐ"]
+        },
+        {
+          "id": "day-07-s5-i13",
+          "original": "zǔ guó",
+          "display": "zǔ guó",
+          "syllables": ["zǔ", "guó"]
+        },
+        {
+          "id": "day-07-s5-i14",
+          "original": "cā bō li",
+          "display": "cā bō li",
+          "syllables": ["cā", "bō", "li"]
+        },
+        {
+          "id": "day-07-s5-i15",
+          "original": "zuò hè kǎ",
+          "display": "zuò hè kǎ",
+          "syllables": ["zuò", "hè", "kǎ"]
+        },
+        {
+          "id": "day-07-s5-i16",
+          "original": "cí yǔ",
+          "display": "cí yǔ",
+          "syllables": ["cí", "yǔ"]
+        },
+        {
+          "id": "day-07-s5-i17",
+          "original": "jù zi",
+          "display": "jù zi",
+          "syllables": ["jù", "zi"]
+        },
+        {
+          "id": "day-07-s5-i18",
+          "original": "dǎ zì",
+          "display": "dǎ zì",
+          "syllables": ["dǎ", "zì"]
+        }
+      ]
+    },
+    {
+      "id": "day-07-section-6",
+      "items": [
+        {
+          "id": "day-07-s6-i1",
+          "original": "上wǔ，爸爸tuō地，妈妈xǐ yī fu，哥哥cā bō li，dì di画画，我zuò hè kǎ。",
+          "display": "shàng wǔ，bà ba tuō dì，mā ma xǐ yī fu，gē ge cā bō li，dì di huà huà，wǒ zuò hè kǎ。",
+          "syllables": [
+            "shàng",
+            "wǔ",
+            "bà",
+            "ba",
+            "tuō",
+            "dì",
+            "mā",
+            "ma",
+            "xǐ",
+            "yī",
+            "fu",
+            "gē",
+            "ge",
+            "cā",
+            "bō",
+            "li",
+            "dì",
+            "di",
+            "huà",
+            "huà",
+            "wǒ",
+            "zuò",
+            "hè",
+            "kǎ"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "day-08-section-1",
+      "items": [
+        {
+          "id": "day-08-s1-i1",
+          "original": "zh",
+          "display": "zh",
+          "syllables": ["zh"]
+        },
+        {
+          "id": "day-08-s1-i2",
+          "original": "ch",
+          "display": "ch",
+          "syllables": ["ch"]
+        },
+        {
+          "id": "day-08-s1-i3",
+          "original": "sh",
+          "display": "sh",
+          "syllables": ["sh"]
+        },
+        {
+          "id": "day-08-s1-i4",
+          "original": "r",
+          "display": "r",
+          "syllables": ["r"]
+        },
+        {
+          "id": "day-08-s1-i5",
+          "original": "zhi",
+          "display": "zhi",
+          "syllables": ["zhi"]
+        },
+        {
+          "id": "day-08-s1-i6",
+          "original": "chi",
+          "display": "chi",
+          "syllables": ["chi"]
+        },
+        {
+          "id": "day-08-s1-i7",
+          "original": "shi",
+          "display": "shi",
+          "syllables": ["shi"]
+        },
+        {
+          "id": "day-08-s1-i8",
+          "original": "ri",
+          "display": "ri",
+          "syllables": ["ri"]
+        }
+      ]
+    },
+    {
+      "id": "day-08-section-2",
+      "items": [
+        {
+          "id": "day-08-s2-i1",
+          "original": "z-zh",
+          "display": "z-zh",
+          "syllables": ["z", "zh"]
+        },
+        {
+          "id": "day-08-s2-i2",
+          "original": "c-ch",
+          "display": "c-ch",
+          "syllables": ["c", "ch"]
+        },
+        {
+          "id": "day-08-s2-i3",
+          "original": "s-sh",
+          "display": "s-sh",
+          "syllables": ["s", "sh"]
+        }
+      ]
+    },
+    {
+      "id": "day-08-section-3",
+      "items": [
+        {
+          "id": "day-08-s3-i1",
+          "original": "zhi",
+          "display": "zhi",
+          "syllables": ["zhi"]
+        },
+        {
+          "id": "day-08-s3-i2",
+          "original": "zha",
+          "display": "zha",
+          "syllables": ["zha"]
+        },
+        {
+          "id": "day-08-s3-i3",
+          "original": "cha",
+          "display": "cha",
+          "syllables": ["cha"]
+        },
+        {
+          "id": "day-08-s3-i4",
+          "original": "sha",
+          "display": "sha",
+          "syllables": ["sha"]
+        },
+        {
+          "id": "day-08-s3-i5",
+          "original": "re",
+          "display": "re",
+          "syllables": ["re"]
+        },
+        {
+          "id": "day-08-s3-i6",
+          "original": "chi",
+          "display": "chi",
+          "syllables": ["chi"]
+        },
+        {
+          "id": "day-08-s3-i7",
+          "original": "zhe",
+          "display": "zhe",
+          "syllables": ["zhe"]
+        },
+        {
+          "id": "day-08-s3-i8",
+          "original": "che",
+          "display": "che",
+          "syllables": ["che"]
+        },
+        {
+          "id": "day-08-s3-i9",
+          "original": "she",
+          "display": "she",
+          "syllables": ["she"]
+        },
+        {
+          "id": "day-08-s3-i10",
+          "original": "ru",
+          "display": "ru",
+          "syllables": ["ru"]
+        },
+        {
+          "id": "day-08-s3-i11",
+          "original": "shi",
+          "display": "shi",
+          "syllables": ["shi"]
+        },
+        {
+          "id": "day-08-s3-i12",
+          "original": "zhu",
+          "display": "zhu",
+          "syllables": ["zhu"]
+        },
+        {
+          "id": "day-08-s3-i13",
+          "original": "chu",
+          "display": "chu",
+          "syllables": ["chu"]
+        },
+        {
+          "id": "day-08-s3-i14",
+          "original": "shu",
+          "display": "shu",
+          "syllables": ["shu"]
+        },
+        {
+          "id": "day-08-s3-i15",
+          "original": "ruo",
+          "display": "ruo",
+          "syllables": ["ruo"]
+        },
+        {
+          "id": "day-08-s3-i16",
+          "original": "ri",
+          "display": "ri",
+          "syllables": ["ri"]
+        },
+        {
+          "id": "day-08-s3-i17",
+          "original": "zhuo",
+          "display": "zhuo",
+          "syllables": ["zhuo"]
+        },
+        {
+          "id": "day-08-s3-i18",
+          "original": "chuo",
+          "display": "chuo",
+          "syllables": ["chuo"]
+        },
+        {
+          "id": "day-08-s3-i19",
+          "original": "shuo",
+          "display": "shuo",
+          "syllables": ["shuo"]
+        }
+      ]
+    },
+    {
+      "id": "day-08-section-4",
+      "items": [
+        {
+          "id": "day-08-s4-i1",
+          "original": "zhà",
+          "display": "zhà",
+          "syllables": ["zhà"]
+        },
+        {
+          "id": "day-08-s4-i2",
+          "original": "zhé",
+          "display": "zhé",
+          "syllables": ["zhé"]
+        },
+        {
+          "id": "day-08-s4-i3",
+          "original": "chě",
+          "display": "chě",
+          "syllables": ["chě"]
+        },
+        {
+          "id": "day-08-s4-i4",
+          "original": "shā",
+          "display": "shā",
+          "syllables": ["shā"]
+        },
+        {
+          "id": "day-08-s4-i5",
+          "original": "zhǔ",
+          "display": "zhǔ",
+          "syllables": ["zhǔ"]
+        },
+        {
+          "id": "day-08-s4-i6",
+          "original": "chū",
+          "display": "chū",
+          "syllables": ["chū"]
+        },
+        {
+          "id": "day-08-s4-i7",
+          "original": "shé",
+          "display": "shé",
+          "syllables": ["shé"]
+        },
+        {
+          "id": "day-08-s4-i8",
+          "original": "chà",
+          "display": "chà",
+          "syllables": ["chà"]
+        },
+        {
+          "id": "day-08-s4-i9",
+          "original": "shǎ",
+          "display": "shǎ",
+          "syllables": ["shǎ"]
+        },
+        {
+          "id": "day-08-s4-i10",
+          "original": "rè",
+          "display": "rè",
+          "syllables": ["rè"]
+        },
+        {
+          "id": "day-08-s4-i11",
+          "original": "shě",
+          "display": "shě",
+          "syllables": ["shě"]
+        },
+        {
+          "id": "day-08-s4-i12",
+          "original": "shǔ",
+          "display": "shǔ",
+          "syllables": ["shǔ"]
+        },
+        {
+          "id": "day-08-s4-i13",
+          "original": "rì",
+          "display": "rì",
+          "syllables": ["rì"]
+        },
+        {
+          "id": "day-08-s4-i14",
+          "original": "rú",
+          "display": "rú",
+          "syllables": ["rú"]
+        },
+        {
+          "id": "day-08-s4-i15",
+          "original": "zhuō",
+          "display": "zhuō",
+          "syllables": ["zhuō"]
+        },
+        {
+          "id": "day-08-s4-i16",
+          "original": "chuō",
+          "display": "chuō",
+          "syllables": ["chuō"]
+        },
+        {
+          "id": "day-08-s4-i17",
+          "original": "shuō",
+          "display": "shuō",
+          "syllables": ["shuō"]
+        },
+        {
+          "id": "day-08-s4-i18",
+          "original": "zhuā",
+          "display": "zhuā",
+          "syllables": ["zhuā"]
+        },
+        {
+          "id": "day-08-s4-i19",
+          "original": "shuā",
+          "display": "shuā",
+          "syllables": ["shuā"]
+        },
+        {
+          "id": "day-08-s4-i20",
+          "original": "ruò",
+          "display": "ruò",
+          "syllables": ["ruò"]
+        }
+      ]
+    },
+    {
+      "id": "day-08-section-5",
+      "items": [
+        {
+          "id": "day-08-s5-i1",
+          "original": "hē chá",
+          "display": "hē chá",
+          "syllables": ["hē", "chá"]
+        },
+        {
+          "id": "day-08-s5-i2",
+          "original": "là zhú",
+          "display": "là zhú",
+          "syllables": ["là", "zhú"]
+        },
+        {
+          "id": "day-08-s5-i3",
+          "original": "shā fā",
+          "display": "shā fā",
+          "syllables": ["shā", "fā"]
+        },
+        {
+          "id": "day-08-s5-i4",
+          "original": "zhī bù",
+          "display": "zhī bù",
+          "syllables": ["zhī", "bù"]
+        },
+        {
+          "id": "day-08-s5-i5",
+          "original": "rì chū",
+          "display": "rì chū",
+          "syllables": ["rì", "chū"]
+        },
+        {
+          "id": "day-08-s5-i6",
+          "original": "zhuǎ zi",
+          "display": "zhuǎ zi",
+          "syllables": ["zhuǎ", "zi"]
+        },
+        {
+          "id": "day-08-s5-i7",
+          "original": "chǐ zi",
+          "display": "chǐ zi",
+          "syllables": ["chǐ", "zi"]
+        },
+        {
+          "id": "day-08-s5-i8",
+          "original": "shī zi",
+          "display": "shī zi",
+          "syllables": ["shī", "zi"]
+        },
+        {
+          "id": "day-08-s5-i9",
+          "original": "shí zǐ",
+          "display": "shí zǐ",
+          "syllables": ["shí", "zǐ"]
+        },
+        {
+          "id": "day-08-s5-i10",
+          "original": "rì zi",
+          "display": "rì zi",
+          "syllables": ["rì", "zi"]
+        },
+        {
+          "id": "day-08-s5-i11",
+          "original": "qì chē",
+          "display": "qì chē",
+          "syllables": ["qì", "chē"]
+        },
+        {
+          "id": "day-08-s5-i12",
+          "original": "dú shū",
+          "display": "dú shū",
+          "syllables": ["dú", "shū"]
+        },
+        {
+          "id": "day-08-s5-i13",
+          "original": "shǔ jià",
+          "display": "shǔ jià",
+          "syllables": ["shǔ", "jià"]
+        },
+        {
+          "id": "day-08-s5-i14",
+          "original": "shuō huà",
+          "display": "shuō huà",
+          "syllables": ["shuō", "huà"]
+        },
+        {
+          "id": "day-08-s5-i15",
+          "original": "huǒ chē",
+          "display": "huǒ chē",
+          "syllables": ["huǒ", "chē"]
+        },
+        {
+          "id": "day-08-s5-i16",
+          "original": "zhī zhū",
+          "display": "zhī zhū",
+          "syllables": ["zhī", "zhū"]
+        },
+        {
+          "id": "day-08-s5-i17",
+          "original": "zhuō zhù",
+          "display": "zhuō zhù",
+          "syllables": ["zhuō", "zhù"]
+        },
+        {
+          "id": "day-08-s5-i18",
+          "original": "rú guǒ",
+          "display": "rú guǒ",
+          "syllables": ["rú", "guǒ"]
+        },
+        {
+          "id": "day-08-s5-i19",
+          "original": "桌zi",
+          "display": "zhuō zi",
+          "syllables": ["zhuō", "zi"]
+        },
+        {
+          "id": "day-08-s5-i20",
+          "original": "zhé纸",
+          "display": "zhé zhǐ",
+          "syllables": ["zhé", "zhǐ"]
+        }
+      ]
+    },
+    {
+      "id": "day-09-section-1",
+      "items": [
+        {
+          "id": "day-09-s1-i1",
+          "original": "y",
+          "display": "y",
+          "syllables": ["y"]
+        },
+        {
+          "id": "day-09-s1-i2",
+          "original": "w",
+          "display": "w",
+          "syllables": ["w"]
+        }
+      ]
+    },
+    {
+      "id": "day-09-section-2",
+      "items": [
+        {
+          "id": "day-09-s2-i1",
+          "original": "yī",
+          "display": "yī",
+          "syllables": ["yī"]
+        },
+        {
+          "id": "day-09-s2-i2",
+          "original": "yí",
+          "display": "yí",
+          "syllables": ["yí"]
+        },
+        {
+          "id": "day-09-s2-i3",
+          "original": "yǐ",
+          "display": "yǐ",
+          "syllables": ["yǐ"]
+        },
+        {
+          "id": "day-09-s2-i4",
+          "original": "yì",
+          "display": "yì",
+          "syllables": ["yì"]
+        },
+        {
+          "id": "day-09-s2-i5",
+          "original": "yú",
+          "display": "yú",
+          "syllables": ["yú"]
+        },
+        {
+          "id": "day-09-s2-i6",
+          "original": "yī",
+          "display": "yī",
+          "syllables": ["yī"]
+        },
+        {
+          "id": "day-09-s2-i7",
+          "original": "wǔ",
+          "display": "wǔ",
+          "syllables": ["wǔ"]
+        },
+        {
+          "id": "day-09-s2-i8",
+          "original": "yì",
+          "display": "yì",
+          "syllables": ["yì"]
+        },
+        {
+          "id": "day-09-s2-i9",
+          "original": "wū",
+          "display": "wū",
+          "syllables": ["wū"]
+        },
+        {
+          "id": "day-09-s2-i10",
+          "original": "wú",
+          "display": "wú",
+          "syllables": ["wú"]
+        },
+        {
+          "id": "day-09-s2-i11",
+          "original": "wǔ",
+          "display": "wǔ",
+          "syllables": ["wǔ"]
+        },
+        {
+          "id": "day-09-s2-i12",
+          "original": "wù",
+          "display": "wù",
+          "syllables": ["wù"]
+        },
+        {
+          "id": "day-09-s2-i13",
+          "original": "wū",
+          "display": "wū",
+          "syllables": ["wū"]
+        },
+        {
+          "id": "day-09-s2-i14",
+          "original": "yǔ",
+          "display": "yǔ",
+          "syllables": ["yǔ"]
+        },
+        {
+          "id": "day-09-s2-i15",
+          "original": "wù",
+          "display": "wù",
+          "syllables": ["wù"]
+        },
+        {
+          "id": "day-09-s2-i16",
+          "original": "yí",
+          "display": "yí",
+          "syllables": ["yí"]
+        },
+        {
+          "id": "day-09-s2-i17",
+          "original": "yū",
+          "display": "yū",
+          "syllables": ["yū"]
+        },
+        {
+          "id": "day-09-s2-i18",
+          "original": "yú",
+          "display": "yú",
+          "syllables": ["yú"]
+        },
+        {
+          "id": "day-09-s2-i19",
+          "original": "yǔ",
+          "display": "yǔ",
+          "syllables": ["yǔ"]
+        },
+        {
+          "id": "day-09-s2-i20",
+          "original": "yù",
+          "display": "yù",
+          "syllables": ["yù"]
+        },
+        {
+          "id": "day-09-s2-i21",
+          "original": "yù",
+          "display": "yù",
+          "syllables": ["yù"]
+        },
+        {
+          "id": "day-09-s2-i22",
+          "original": "yǐ",
+          "display": "yǐ",
+          "syllables": ["yǐ"]
+        },
+        {
+          "id": "day-09-s2-i23",
+          "original": "yū",
+          "display": "yū",
+          "syllables": ["yū"]
+        },
+        {
+          "id": "day-09-s2-i24",
+          "original": "wú",
+          "display": "wú",
+          "syllables": ["wú"]
+        }
+      ]
+    },
+    {
+      "id": "day-09-section-3",
+      "items": [
+        {
+          "id": "day-09-s3-i1",
+          "original": "yǔ yī",
+          "display": "yǔ yī",
+          "syllables": ["yǔ", "yī"]
+        },
+        {
+          "id": "day-09-s3-i2",
+          "original": "ā yí",
+          "display": "ā yí",
+          "syllables": ["ā", "yí"]
+        },
+        {
+          "id": "day-09-s3-i3",
+          "original": "wǔ yī",
+          "display": "wǔ yī",
+          "syllables": ["wǔ", "yī"]
+        },
+        {
+          "id": "day-09-s3-i4",
+          "original": "wū yā",
+          "display": "wū yā",
+          "syllables": ["wū", "yā"]
+        }
+      ]
+    },
+    {
+      "id": "day-10-section-1",
+      "items": [
+        {
+          "id": "day-10-s1-i1",
+          "original": "ai",
+          "display": "ai",
+          "syllables": ["ai"]
+        },
+        {
+          "id": "day-10-s1-i2",
+          "original": "ei",
+          "display": "ei",
+          "syllables": ["ei"]
+        },
+        {
+          "id": "day-10-s1-i3",
+          "original": "ui",
+          "display": "ui",
+          "syllables": ["ui"]
+        }
+      ]
+    },
+    {
+      "id": "day-10-section-2",
+      "items": [
+        {
+          "id": "day-10-s2-i1",
+          "original": "āi",
+          "display": "āi",
+          "syllables": ["āi"]
+        },
+        {
+          "id": "day-10-s2-i2",
+          "original": "éi",
+          "display": "éi",
+          "syllables": ["éi"]
+        },
+        {
+          "id": "day-10-s2-i3",
+          "original": "uì",
+          "display": "uì",
+          "syllables": ["uì"]
+        },
+        {
+          "id": "day-10-s2-i4",
+          "original": "ái",
+          "display": "ái",
+          "syllables": ["ái"]
+        },
+        {
+          "id": "day-10-s2-i5",
+          "original": "ěi",
+          "display": "ěi",
+          "syllables": ["ěi"]
+        },
+        {
+          "id": "day-10-s2-i6",
+          "original": "ǎi",
+          "display": "ǎi",
+          "syllables": ["ǎi"]
+        },
+        {
+          "id": "day-10-s2-i7",
+          "original": "ēi",
+          "display": "ēi",
+          "syllables": ["ēi"]
+        },
+        {
+          "id": "day-10-s2-i8",
+          "original": "uī",
+          "display": "uī",
+          "syllables": ["uī"]
+        },
+        {
+          "id": "day-10-s2-i9",
+          "original": "ài",
+          "display": "ài",
+          "syllables": ["ài"]
+        },
+        {
+          "id": "day-10-s2-i10",
+          "original": "uí",
+          "display": "uí",
+          "syllables": ["uí"]
+        },
+        {
+          "id": "day-10-s2-i11",
+          "original": "èi",
+          "display": "èi",
+          "syllables": ["èi"]
+        },
+        {
+          "id": "day-10-s2-i12",
+          "original": "uǐ",
+          "display": "uǐ",
+          "syllables": ["uǐ"]
+        }
+      ]
+    },
+    {
+      "id": "day-10-section-3",
+      "items": [
+        {
+          "id": "day-10-s3-i1",
+          "original": "lái-léi",
+          "display": "lái-léi",
+          "syllables": ["lái", "léi"]
+        },
+        {
+          "id": "day-10-s3-i2",
+          "original": "nǎi-něi",
+          "display": "nǎi-něi",
+          "syllables": ["nǎi", "něi"]
+        },
+        {
+          "id": "day-10-s3-i3",
+          "original": "bāi-bēi",
+          "display": "bāi-bēi",
+          "syllables": ["bāi", "bēi"]
+        }
+      ]
+    },
+    {
+      "id": "day-10-section-4",
+      "items": [
+        {
+          "id": "day-10-s4-i1",
+          "original": "bái",
+          "display": "bái",
+          "syllables": ["bái"]
+        },
+        {
+          "id": "day-10-s4-i2",
+          "original": "mǎi",
+          "display": "mǎi",
+          "syllables": ["mǎi"]
+        },
+        {
+          "id": "day-10-s4-i3",
+          "original": "tái",
+          "display": "tái",
+          "syllables": ["tái"]
+        },
+        {
+          "id": "day-10-s4-i4",
+          "original": "lái",
+          "display": "lái",
+          "syllables": ["lái"]
+        },
+        {
+          "id": "day-10-s4-i5",
+          "original": "dài",
+          "display": "dài",
+          "syllables": ["dài"]
+        },
+        {
+          "id": "day-10-s4-i6",
+          "original": "nǎi",
+          "display": "nǎi",
+          "syllables": ["nǎi"]
+        },
+        {
+          "id": "day-10-s4-i7",
+          "original": "cài",
+          "display": "cài",
+          "syllables": ["cài"]
+        },
+        {
+          "id": "day-10-s4-i8",
+          "original": "bēi",
+          "display": "bēi",
+          "syllables": ["bēi"]
+        },
+        {
+          "id": "day-10-s4-i9",
+          "original": "péi",
+          "display": "péi",
+          "syllables": ["péi"]
+        },
+        {
+          "id": "day-10-s4-i10",
+          "original": "měi",
+          "display": "měi",
+          "syllables": ["měi"]
+        },
+        {
+          "id": "day-10-s4-i11",
+          "original": "fēi",
+          "display": "fēi",
+          "syllables": ["fēi"]
+        },
+        {
+          "id": "day-10-s4-i12",
+          "original": "gěi",
+          "display": "gěi",
+          "syllables": ["gěi"]
+        },
+        {
+          "id": "day-10-s4-i13",
+          "original": "hēi",
+          "display": "hēi",
+          "syllables": ["hēi"]
+        },
+        {
+          "id": "day-10-s4-i14",
+          "original": "wèi",
+          "display": "wèi",
+          "syllables": ["wèi"]
+        },
+        {
+          "id": "day-10-s4-i15",
+          "original": "guī",
+          "display": "guī",
+          "syllables": ["guī"]
+        },
+        {
+          "id": "day-10-s4-i16",
+          "original": "kuí",
+          "display": "kuí",
+          "syllables": ["kuí"]
+        },
+        {
+          "id": "day-10-s4-i17",
+          "original": "huí",
+          "display": "huí",
+          "syllables": ["huí"]
+        },
+        {
+          "id": "day-10-s4-i18",
+          "original": "tuǐ",
+          "display": "tuǐ",
+          "syllables": ["tuǐ"]
+        },
+        {
+          "id": "day-10-s4-i19",
+          "original": "zhuī",
+          "display": "zhuī",
+          "syllables": ["zhuī"]
+        },
+        {
+          "id": "day-10-s4-i20",
+          "original": "chuī",
+          "display": "chuī",
+          "syllables": ["chuī"]
+        },
+        {
+          "id": "day-10-s4-i21",
+          "original": "shuǐ",
+          "display": "shuǐ",
+          "syllables": ["shuǐ"]
+        }
+      ]
+    },
+    {
+      "id": "day-10-section-5",
+      "items": [
+        {
+          "id": "day-10-s5-i1",
+          "original": "qǐ lái",
+          "display": "qǐ lái",
+          "syllables": ["qǐ", "lái"]
+        },
+        {
+          "id": "day-10-s5-i2",
+          "original": "kāi chē",
+          "display": "kāi chē",
+          "syllables": ["kāi", "chē"]
+        },
+        {
+          "id": "day-10-s5-i3",
+          "original": "pái duì",
+          "display": "pái duì",
+          "syllables": ["pái", "duì"]
+        },
+        {
+          "id": "day-10-s5-i4",
+          "original": "wū guī",
+          "display": "wū guī",
+          "syllables": ["wū", "guī"]
+        },
+        {
+          "id": "day-10-s5-i5",
+          "original": "fēi jī",
+          "display": "fēi jī",
+          "syllables": ["fēi", "jī"]
+        },
+        {
+          "id": "day-10-s5-i6",
+          "original": "mèi mei",
+          "display": "mèi mei",
+          "syllables": ["mèi", "mei"]
+        },
+        {
+          "id": "day-10-s5-i7",
+          "original": "bái cài",
+          "display": "bái cài",
+          "syllables": ["bái", "cài"]
+        },
+        {
+          "id": "day-10-s5-i8",
+          "original": "méi huā",
+          "display": "méi huā",
+          "syllables": ["méi", "huā"]
+        },
+        {
+          "id": "day-10-s5-i9",
+          "original": "nǎi nai",
+          "display": "nǎi nai",
+          "syllables": ["nǎi", "nai"]
+        },
+        {
+          "id": "day-10-s5-i10",
+          "original": "kāi shuǐ",
+          "display": "kāi shuǐ",
+          "syllables": ["kāi", "shuǐ"]
+        },
+        {
+          "id": "day-10-s5-i11",
+          "original": "zuǐ ba",
+          "display": "zuǐ ba",
+          "syllables": ["zuǐ", "ba"]
+        },
+        {
+          "id": "day-10-s5-i12",
+          "original": "fēi jī",
+          "display": "fēi jī",
+          "syllables": ["fēi", "jī"]
+        },
+        {
+          "id": "day-10-s5-i13",
+          "original": "dài shǔ",
+          "display": "dài shǔ",
+          "syllables": ["dài", "shǔ"]
+        },
+        {
+          "id": "day-10-s5-i14",
+          "original": "huǒ chái",
+          "display": "huǒ chái",
+          "syllables": ["huǒ", "chái"]
+        },
+        {
+          "id": "day-10-s5-i15",
+          "original": "zhuī dǎ",
+          "display": "zhuī dǎ",
+          "syllables": ["zhuī", "dǎ"]
+        },
+        {
+          "id": "day-10-s5-i16",
+          "original": "měi lì",
+          "display": "měi lì",
+          "syllables": ["měi", "lì"]
+        },
+        {
+          "id": "day-10-s5-i17",
+          "original": "wěi ba",
+          "display": "wěi ba",
+          "syllables": ["wěi", "ba"]
+        },
+        {
+          "id": "day-10-s5-i18",
+          "original": "bēi zi",
+          "display": "bēi zi",
+          "syllables": ["bēi", "zi"]
+        },
+        {
+          "id": "day-10-s5-i19",
+          "original": "guì huā",
+          "display": "guì huā",
+          "syllables": ["guì", "huā"]
+        },
+        {
+          "id": "day-10-s5-i20",
+          "original": "zì lái shuǐ",
+          "display": "zì lái shuǐ",
+          "syllables": ["zì", "lái", "shuǐ"]
+        }
+      ]
+    },
+    {
+      "id": "day-10-section-6",
+      "items": [
+        {
+          "id": "day-10-s6-i1",
+          "original": "nǎi nai mǎi le白菜。",
+          "display": "nǎi nai mǎi le bái cài。",
+          "syllables": ["nǎi", "nai", "mǎi", "le", "bái", "cài"]
+        },
+        {
+          "id": "day-10-s6-i2",
+          "original": "mèi mei ài chī西瓜。",
+          "display": "mèi mei ài chī xī guā。",
+          "syllables": ["mèi", "mei", "ài", "chī", "xī", "guā"]
+        },
+        {
+          "id": "day-10-s6-i3",
+          "original": "弟弟bēi zhe一gè dà水hú。",
+          "display": "dì di bēi zhe yí gè dà shuǐ hú。",
+          "syllables": ["dì", "di", "bēi", "zhe", "yí", "gè", "dà", "shuǐ", "hú"]
+        },
+        {
+          "id": "day-10-s6-i4",
+          "original": "妈妈de手上ná zhe果pí。",
+          "display": "mā ma de shǒu shàng ná zhe guǒ pí。",
+          "syllables": ["mā", "ma", "de", "shǒu", "shàng", "ná", "zhe", "guǒ", "pí"]
+        }
+      ]
+    },
+    {
+      "id": "day-11-section-1",
+      "items": [
+        {
+          "id": "day-11-s1-i1",
+          "original": "ao",
+          "display": "ao",
+          "syllables": ["ao"]
+        },
+        {
+          "id": "day-11-s1-i2",
+          "original": "ou",
+          "display": "ou",
+          "syllables": ["ou"]
+        },
+        {
+          "id": "day-11-s1-i3",
+          "original": "iu",
+          "display": "iu",
+          "syllables": ["iu"]
+        }
+      ]
+    },
+    {
+      "id": "day-11-section-2",
+      "items": [
+        {
+          "id": "day-11-s2-i1",
+          "original": "āo",
+          "display": "āo",
+          "syllables": ["āo"]
+        },
+        {
+          "id": "day-11-s2-i2",
+          "original": "óu",
+          "display": "óu",
+          "syllables": ["óu"]
+        },
+        {
+          "id": "day-11-s2-i3",
+          "original": "iù",
+          "display": "iù",
+          "syllables": ["iù"]
+        },
+        {
+          "id": "day-11-s2-i4",
+          "original": "áo",
+          "display": "áo",
+          "syllables": ["áo"]
+        },
+        {
+          "id": "day-11-s2-i5",
+          "original": "ǒu",
+          "display": "ǒu",
+          "syllables": ["ǒu"]
+        },
+        {
+          "id": "day-11-s2-i6",
+          "original": "iū",
+          "display": "iū",
+          "syllables": ["iū"]
+        },
+        {
+          "id": "day-11-s2-i7",
+          "original": "òu",
+          "display": "òu",
+          "syllables": ["òu"]
+        },
+        {
+          "id": "day-11-s2-i8",
+          "original": "ǎo",
+          "display": "ǎo",
+          "syllables": ["ǎo"]
+        },
+        {
+          "id": "day-11-s2-i9",
+          "original": "iǔ",
+          "display": "iǔ",
+          "syllables": ["iǔ"]
+        },
+        {
+          "id": "day-11-s2-i10",
+          "original": "ào",
+          "display": "ào",
+          "syllables": ["ào"]
+        },
+        {
+          "id": "day-11-s2-i11",
+          "original": "iú",
+          "display": "iú",
+          "syllables": ["iú"]
+        },
+        {
+          "id": "day-11-s2-i12",
+          "original": "ōu",
+          "display": "ōu",
+          "syllables": ["ōu"]
+        }
+      ]
+    },
+    {
+      "id": "day-11-section-3",
+      "items": [
+        {
+          "id": "day-11-s3-i1",
+          "original": "sao-shao",
+          "display": "sao-shao",
+          "syllables": ["sao", "shao"]
+        },
+        {
+          "id": "day-11-s3-i2",
+          "original": "zou-zhou",
+          "display": "zou-zhou",
+          "syllables": ["zou", "zhou"]
+        },
+        {
+          "id": "day-11-s3-i3",
+          "original": "niu-liu",
+          "display": "niu-liu",
+          "syllables": ["niu", "liu"]
+        },
+        {
+          "id": "day-11-s3-i4",
+          "original": "zao-zhao",
+          "display": "zao-zhao",
+          "syllables": ["zao", "zhao"]
+        },
+        {
+          "id": "day-11-s3-i5",
+          "original": "sou-shou",
+          "display": "sou-shou",
+          "syllables": ["sou", "shou"]
+        },
+        {
+          "id": "day-11-s3-i6",
+          "original": "miu-jiu",
+          "display": "miu-jiu",
+          "syllables": ["miu", "jiu"]
+        }
+      ]
+    },
+    {
+      "id": "day-11-section-4",
+      "items": [
+        {
+          "id": "day-11-s4-i1",
+          "original": "tiáo",
+          "display": "tiáo",
+          "syllables": ["tiáo"]
+        },
+        {
+          "id": "day-11-s4-i2",
+          "original": "bào",
+          "display": "bào",
+          "syllables": ["bào"]
+        },
+        {
+          "id": "day-11-s4-i3",
+          "original": "jiǔ",
+          "display": "jiǔ",
+          "syllables": ["jiǔ"]
+        },
+        {
+          "id": "day-11-s4-i4",
+          "original": "yòu",
+          "display": "yòu",
+          "syllables": ["yòu"]
+        },
+        {
+          "id": "day-11-s4-i5",
+          "original": "liǎo",
+          "display": "liǎo",
+          "syllables": ["liǎo"]
+        },
+        {
+          "id": "day-11-s4-i6",
+          "original": "liú",
+          "display": "liú",
+          "syllables": ["liú"]
+        },
+        {
+          "id": "day-11-s4-i7",
+          "original": "chóu",
+          "display": "chóu",
+          "syllables": ["chóu"]
+        },
+        {
+          "id": "day-11-s4-i8",
+          "original": "hóu",
+          "display": "hóu",
+          "syllables": ["hóu"]
+        },
+        {
+          "id": "day-11-s4-i9",
+          "original": "qiáo",
+          "display": "qiáo",
+          "syllables": ["qiáo"]
+        },
+        {
+          "id": "day-11-s4-i10",
+          "original": "gǒu",
+          "display": "gǒu",
+          "syllables": ["gǒu"]
+        },
+        {
+          "id": "day-11-s4-i11",
+          "original": "dòu",
+          "display": "dòu",
+          "syllables": ["dòu"]
+        },
+        {
+          "id": "day-11-s4-i12",
+          "original": "xiù",
+          "display": "xiù",
+          "syllables": ["xiù"]
+        },
+        {
+          "id": "day-11-s4-i13",
+          "original": "lóu",
+          "display": "lóu",
+          "syllables": ["lóu"]
+        },
+        {
+          "id": "day-11-s4-i14",
+          "original": "shōu",
+          "display": "shōu",
+          "syllables": ["shōu"]
+        },
+        {
+          "id": "day-11-s4-i15",
+          "original": "niú",
+          "display": "niú",
+          "syllables": ["niú"]
+        },
+        {
+          "id": "day-11-s4-i16",
+          "original": "qiú",
+          "display": "qiú",
+          "syllables": ["qiú"]
+        }
+      ]
+    },
+    {
+      "id": "day-11-section-5",
+      "items": [
+        {
+          "id": "day-11-s5-i1",
+          "original": "xiǎo māo",
+          "display": "xiǎo māo",
+          "syllables": ["xiǎo", "māo"]
+        },
+        {
+          "id": "day-11-s5-i2",
+          "original": "duō shǎo",
+          "display": "duō shǎo",
+          "syllables": ["duō", "shǎo"]
+        },
+        {
+          "id": "day-11-s5-i3",
+          "original": "lǐ mào",
+          "display": "lǐ mào",
+          "syllables": ["lǐ", "mào"]
+        },
+        {
+          "id": "day-11-s5-i4",
+          "original": "shuǐ niú",
+          "display": "shuǐ niú",
+          "syllables": ["shuǐ", "niú"]
+        },
+        {
+          "id": "day-11-s5-i5",
+          "original": "yóu piào",
+          "display": "yóu piào",
+          "syllables": ["yóu", "piào"]
+        },
+        {
+          "id": "day-11-s5-i6",
+          "original": "bào zhǐ",
+          "display": "bào zhǐ",
+          "syllables": ["bào", "zhǐ"]
+        },
+        {
+          "id": "day-11-s5-i7",
+          "original": "kǒu shào",
+          "display": "kǒu shào",
+          "syllables": ["kǒu", "shào"]
+        },
+        {
+          "id": "day-11-s5-i8",
+          "original": "xǐ zǎo",
+          "display": "xǐ zǎo",
+          "syllables": ["xǐ", "zǎo"]
+        },
+        {
+          "id": "day-11-s5-i9",
+          "original": "lóu tī",
+          "display": "lóu tī",
+          "syllables": ["lóu", "tī"]
+        },
+        {
+          "id": "day-11-s5-i10",
+          "original": "méi yǒu",
+          "display": "méi yǒu",
+          "syllables": ["méi", "yǒu"]
+        },
+        {
+          "id": "day-11-s5-i11",
+          "original": "zhū ròu",
+          "display": "zhū ròu",
+          "syllables": ["zhū", "ròu"]
+        },
+        {
+          "id": "day-11-s5-i12",
+          "original": "hǎo yǒu",
+          "display": "hǎo yǒu",
+          "syllables": ["hǎo", "yǒu"]
+        },
+        {
+          "id": "day-11-s5-i13",
+          "original": "kòu zi",
+          "display": "kòu zi",
+          "syllables": ["kòu", "zi"]
+        },
+        {
+          "id": "day-11-s5-i14",
+          "original": "yōu xiù",
+          "display": "yōu xiù",
+          "syllables": ["yōu", "xiù"]
+        },
+        {
+          "id": "day-11-s5-i15",
+          "original": "zhāo shǒu",
+          "display": "zhāo shǒu",
+          "syllables": ["zhāo", "shǒu"]
+        },
+        {
+          "id": "day-11-s5-i16",
+          "original": "mù biāo",
+          "display": "mù biāo",
+          "syllables": ["mù", "biāo"]
+        },
+        {
+          "id": "day-11-s5-i17",
+          "original": "yóu xì",
+          "display": "yóu xì",
+          "syllables": ["yóu", "xì"]
+        },
+        {
+          "id": "day-11-s5-i18",
+          "original": "hòu niǎo",
+          "display": "hòu niǎo",
+          "syllables": ["hòu", "niǎo"]
+        },
+        {
+          "id": "day-11-s5-i19",
+          "original": "xiǎo qiáo",
+          "display": "xiǎo qiáo",
+          "syllables": ["xiǎo", "qiáo"]
+        },
+        {
+          "id": "day-11-s5-i20",
+          "original": "piāo liú",
+          "display": "piāo liú",
+          "syllables": ["piāo", "liú"]
+        },
+        {
+          "id": "day-11-s6-i1",
+          "original": "xiǎo qiáo",
+          "display": "xiǎo qiáo",
+          "syllables": ["xiǎo", "qiáo"]
+        },
+        {
+          "id": "day-11-s6-i2",
+          "original": "shuǐ",
+          "display": "shuǐ",
+          "syllables": ["shuǐ"]
+        },
+        {
+          "id": "day-11-s6-i3",
+          "original": "tái shàng",
+          "display": "tái shàng",
+          "syllables": ["tái", "shàng"]
+        },
+        {
+          "id": "day-11-s6-i4",
+          "original": "qiáo shàng",
+          "display": "qiáo shàng",
+          "syllables": ["qiáo", "shàng"]
+        },
+        {
+          "id": "day-11-s6-i5",
+          "original": "xiǎo chóng",
+          "display": "xiǎo chóng",
+          "syllables": ["xiǎo", "chóng"]
+        },
+        {
+          "id": "day-11-s6-i6",
+          "original": "xiǎo huā",
+          "display": "xiǎo huā",
+          "syllables": ["xiǎo", "huā"]
+        },
+        {
+          "id": "day-11-s6-i7",
+          "original": "liǔ tiáo",
+          "display": "liǔ tiáo",
+          "syllables": ["liǔ", "tiáo"]
+        }
+      ]
+    },
+    {
+      "id": "day-11-section-6",
+      "items": [
+        {
+          "id": "day-11-s6-i8",
+          "original": "miāo miāo miāo，xiǎo māo jiào。",
+          "display": "miāo miāo miāo，xiǎo māo jiào。",
+          "syllables": ["miāo", "miāo", "miāo", "xiǎo", "māo", "jiào"]
+        },
+        {
+          "id": "day-11-s6-i9",
+          "original": "jiù jiu shì yōu xiù de lǎo shī。",
+          "display": "jiù jiu shì yōu xiù de lǎo shī。",
+          "syllables": ["jiù", "jiu", "shì", "yōu", "xiù", "de", "lǎo", "shī"]
+        },
+        {
+          "id": "day-11-s6-i10",
+          "original": "niú mā ma tuó zhe niú bǎo bao zuò yóu xì。",
+          "display": "niú mā ma tuó zhe niú bǎo bao zuò yóu xì。",
+          "syllables": ["niú", "mā", "ma", "tuó", "zhe", "niú", "bǎo", "bao", "zuò", "yóu", "xì"]
+        }
+      ]
+    },
+    {
+      "id": "day-12-section-1",
+      "items": [
+        {
+          "id": "day-12-s1-i1",
+          "original": "ie",
+          "display": "ie",
+          "syllables": ["ie"]
+        },
+        {
+          "id": "day-12-s1-i2",
+          "original": "üe",
+          "display": "üe",
+          "syllables": ["üe"]
+        },
+        {
+          "id": "day-12-s1-i3",
+          "original": "er",
+          "display": "er",
+          "syllables": ["er"]
+        },
+        {
+          "id": "day-12-s1-i4",
+          "original": "ye",
+          "display": "ye",
+          "syllables": ["ye"]
+        },
+        {
+          "id": "day-12-s1-i5",
+          "original": "yue",
+          "display": "yue",
+          "syllables": ["yue"]
+        }
+      ]
+    },
+    {
+      "id": "day-12-section-2",
+      "items": [
+        {
+          "id": "day-12-s2-i1",
+          "original": "iē",
+          "display": "iē",
+          "syllables": ["iē"]
+        },
+        {
+          "id": "day-12-s2-i2",
+          "original": "üè",
+          "display": "üè",
+          "syllables": ["üè"]
+        },
+        {
+          "id": "day-12-s2-i3",
+          "original": "ér",
+          "display": "ér",
+          "syllables": ["ér"]
+        },
+        {
+          "id": "day-12-s2-i4",
+          "original": "üē",
+          "display": "üē",
+          "syllables": ["üē"]
+        },
+        {
+          "id": "day-12-s2-i5",
+          "original": "ié",
+          "display": "ié",
+          "syllables": ["ié"]
+        },
+        {
+          "id": "day-12-s2-i6",
+          "original": "ěr",
+          "display": "ěr",
+          "syllables": ["ěr"]
+        },
+        {
+          "id": "day-12-s2-i7",
+          "original": "iě",
+          "display": "iě",
+          "syllables": ["iě"]
+        },
+        {
+          "id": "day-12-s2-i8",
+          "original": "èr",
+          "display": "èr",
+          "syllables": ["èr"]
+        },
+        {
+          "id": "day-12-s2-i9",
+          "original": "iè",
+          "display": "iè",
+          "syllables": ["iè"]
+        },
+        {
+          "id": "day-12-s2-i10",
+          "original": "üé",
+          "display": "üé",
+          "syllables": ["üé"]
+        },
+        {
+          "id": "day-12-s2-i11",
+          "original": "ēr",
+          "display": "ēr",
+          "syllables": ["ēr"]
+        },
+        {
+          "id": "day-12-s2-i12",
+          "original": "üě",
+          "display": "üě",
+          "syllables": ["üě"]
+        },
+        {
+          "id": "day-12-s2-i13",
+          "original": "yē",
+          "display": "yē",
+          "syllables": ["yē"]
+        },
+        {
+          "id": "day-12-s2-i14",
+          "original": "yé",
+          "display": "yé",
+          "syllables": ["yé"]
+        },
+        {
+          "id": "day-12-s2-i15",
+          "original": "yě",
+          "display": "yě",
+          "syllables": ["yě"]
+        },
+        {
+          "id": "day-12-s2-i16",
+          "original": "yè",
+          "display": "yè",
+          "syllables": ["yè"]
+        },
+        {
+          "id": "day-12-s2-i17",
+          "original": "yuē",
+          "display": "yuē",
+          "syllables": ["yuē"]
+        },
+        {
+          "id": "day-12-s2-i18",
+          "original": "yué",
+          "display": "yué",
+          "syllables": ["yué"]
+        },
+        {
+          "id": "day-12-s2-i19",
+          "original": "yuě",
+          "display": "yuě",
+          "syllables": ["yuě"]
+        },
+        {
+          "id": "day-12-s2-i20",
+          "original": "yuè",
+          "display": "yuè",
+          "syllables": ["yuè"]
+        }
+      ]
+    },
+    {
+      "id": "day-12-section-3",
+      "items": [
+        {
+          "id": "day-12-s3-i1",
+          "original": "ie-ei",
+          "display": "ie-ei",
+          "syllables": ["ie", "ei"]
+        },
+        {
+          "id": "day-12-s3-i2",
+          "original": "ui-iu",
+          "display": "ui-iu",
+          "syllables": ["ui", "iu"]
+        },
+        {
+          "id": "day-12-s3-i3",
+          "original": "ei-er",
+          "display": "ei-er",
+          "syllables": ["ei", "er"]
+        },
+        {
+          "id": "day-12-s3-i4",
+          "original": "üe-ie",
+          "display": "üe-ie",
+          "syllables": ["üe", "ie"]
+        },
+        {
+          "id": "day-12-s3-i5",
+          "original": "ye-yue",
+          "display": "ye-yue",
+          "syllables": ["ye", "yue"]
+        }
+      ]
+    },
+    {
+      "id": "day-12-section-4",
+      "items": [
+        {
+          "id": "day-12-s4-i1",
+          "original": "yē",
+          "display": "yē",
+          "syllables": ["yē"]
+        },
+        {
+          "id": "day-12-s4-i2",
+          "original": "ěr",
+          "display": "ěr",
+          "syllables": ["ěr"]
+        },
+        {
+          "id": "day-12-s4-i3",
+          "original": "yě",
+          "display": "yě",
+          "syllables": ["yě"]
+        },
+        {
+          "id": "day-12-s4-i4",
+          "original": "yuē",
+          "display": "yuē",
+          "syllables": ["yuē"]
+        },
+        {
+          "id": "day-12-s4-i5",
+          "original": "nüè",
+          "display": "nüè",
+          "syllables": ["nüè"]
+        },
+        {
+          "id": "day-12-s4-i6",
+          "original": "lüè",
+          "display": "lüè",
+          "syllables": ["lüè"]
+        },
+        {
+          "id": "day-12-s4-i7",
+          "original": "yè",
+          "display": "yè",
+          "syllables": ["yè"]
+        },
+        {
+          "id": "day-12-s4-i8",
+          "original": "yuè",
+          "display": "yuè",
+          "syllables": ["yuè"]
+        },
+        {
+          "id": "day-12-s4-i9",
+          "original": "ér",
+          "display": "ér",
+          "syllables": ["ér"]
+        },
+        {
+          "id": "day-12-s4-i10",
+          "original": "yé",
+          "display": "yé",
+          "syllables": ["yé"]
+        }
+      ]
+    },
+    {
+      "id": "day-12-section-5",
+      "items": [
+        {
+          "id": "day-12-s5-i1",
+          "original": "j-üé-jué",
+          "display": "j-üé-jué",
+          "syllables": ["j", "üé", "jué"]
+        },
+        {
+          "id": "day-12-s5-i2",
+          "original": "q-üè-què",
+          "display": "q-üè-què",
+          "syllables": ["q", "üè", "què"]
+        },
+        {
+          "id": "day-12-s5-i3",
+          "original": "x-üě-xuě",
+          "display": "x-üě-xuě",
+          "syllables": ["x", "üě", "xuě"]
+        }
+      ]
+    },
+    {
+      "id": "day-12-section-6",
+      "items": [
+        {
+          "id": "day-12-s6-i1",
+          "original": "hú dié",
+          "display": "hú dié",
+          "syllables": ["hú", "dié"]
+        },
+        {
+          "id": "day-12-s6-i2",
+          "original": "xǐ què",
+          "display": "xǐ què",
+          "syllables": ["xǐ", "què"]
+        },
+        {
+          "id": "day-12-s6-i3",
+          "original": "ér qiě",
+          "display": "ér qiě",
+          "syllables": ["ér", "qiě"]
+        },
+        {
+          "id": "day-12-s6-i4",
+          "original": "jiē dào",
+          "display": "jiē dào",
+          "syllables": ["jiē", "dào"]
+        },
+        {
+          "id": "day-12-s6-i5",
+          "original": "jié yuē",
+          "display": "jié yuē",
+          "syllables": ["jié", "yuē"]
+        },
+        {
+          "id": "day-12-s6-i6",
+          "original": "shù yè",
+          "display": "shù yè",
+          "syllables": ["shù", "yè"]
+        },
+        {
+          "id": "day-12-s6-i7",
+          "original": "lüè wēi",
+          "display": "lüè wēi",
+          "syllables": ["lüè", "wēi"]
+        },
+        {
+          "id": "day-12-s6-i8",
+          "original": "ěr duo",
+          "display": "ěr duo",
+          "syllables": ["ěr", "duo"]
+        },
+        {
+          "id": "day-12-s6-i9",
+          "original": "hēi yè",
+          "display": "hēi yè",
+          "syllables": ["hēi", "yè"]
+        },
+        {
+          "id": "day-12-s6-i10",
+          "original": "nüè dài",
+          "display": "nüè dài",
+          "syllables": ["nüè", "dài"]
+        },
+        {
+          "id": "day-12-s6-i11",
+          "original": "ér zi",
+          "display": "ér zi",
+          "syllables": ["ér", "zi"]
+        },
+        {
+          "id": "day-12-s6-i12",
+          "original": "quē shǎo",
+          "display": "quē shǎo",
+          "syllables": ["quē", "shǎo"]
+        },
+        {
+          "id": "day-12-s6-i13",
+          "original": "fēi dié",
+          "display": "fēi dié",
+          "syllables": ["fēi", "dié"]
+        },
+        {
+          "id": "day-12-s6-i14",
+          "original": "xué xí",
+          "display": "xué xí",
+          "syllables": ["xué", "xí"]
+        },
+        {
+          "id": "day-12-s6-i15",
+          "original": "zì jué",
+          "display": "zì jué",
+          "syllables": ["zì", "jué"]
+        },
+        {
+          "id": "day-12-s6-i16",
+          "original": "xià xuě",
+          "display": "xià xuě",
+          "syllables": ["xià", "xuě"]
+        },
+        {
+          "id": "day-12-s6-i17",
+          "original": "ěr jī",
+          "display": "ěr jī",
+          "syllables": ["ěr", "jī"]
+        },
+        {
+          "id": "day-12-s6-i18",
+          "original": "diē dǎo",
+          "display": "diē dǎo",
+          "syllables": ["diē", "dǎo"]
+        },
+        {
+          "id": "day-12-s7-i1",
+          "original": "kāi huā",
+          "display": "kāi huā",
+          "syllables": ["kāi", "huā"]
+        },
+        {
+          "id": "day-12-s7-i2",
+          "original": "yè sè",
+          "display": "yè sè",
+          "syllables": ["yè", "sè"]
+        },
+        {
+          "id": "day-12-s7-i3",
+          "original": "měi bái",
+          "display": "měi bái",
+          "syllables": ["měi", "bái"]
+        },
+        {
+          "id": "day-12-s7-i4",
+          "original": "xuě huā",
+          "display": "xuě huā",
+          "syllables": ["xuě", "huā"]
+        },
+        {
+          "id": "day-12-s7-i5",
+          "original": "fēng xuě",
+          "display": "fēng xuě",
+          "syllables": ["fēng", "xuě"]
+        },
+        {
+          "id": "day-12-s7-i6",
+          "original": "xià xuě",
+          "display": "xià xuě",
+          "syllables": ["xià", "xuě"]
+        }
+      ]
+    },
+    {
+      "id": "day-12-section-7",
+      "items": [
+        {
+          "id": "day-12-s7-i7",
+          "original": "xǐ què zhī tóu jiào，xǐ shì jiù lái dào。",
+          "display": "xǐ què zhī tóu jiào，xǐ shì jiù lái dào。",
+          "syllables": ["xǐ", "què", "zhī", "tóu", "jiào", "xǐ", "shì", "jiù", "lái", "dào"]
+        },
+        {
+          "id": "day-12-s7-i8",
+          "original": "xiǎo yā niǔ niǔ yāo，juē zhe pì gu guò xiǎo qiáo。",
+          "display": "xiǎo yā niǔ niǔ yāo，juē zhe pì gu guò xiǎo qiáo。",
+          "syllables": [
+            "xiǎo",
+            "yā",
+            "niǔ",
+            "niǔ",
+            "yāo",
+            "juē",
+            "zhe",
+            "pì",
+            "gu",
+            "guò",
+            "xiǎo",
+            "qiáo"
+          ]
+        },
+        {
+          "id": "day-12-s7-i9",
+          "original": "yé ye zuò zhe yáo yao yǐ，dài zhe ěr jī shuì zháo le。",
+          "display": "yé ye zuò zhe yáo yao yǐ，dài zhe ěr jī shuì zháo le。",
+          "syllables": [
+            "yé",
+            "ye",
+            "zuò",
+            "zhe",
+            "yáo",
+            "yao",
+            "yǐ",
+            "dài",
+            "zhe",
+            "ěr",
+            "jī",
+            "shuì",
+            "zháo",
+            "le"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "day-13-section-1",
+      "items": [
+        {
+          "id": "day-13-s1-i1",
+          "original": "an",
+          "display": "an",
+          "syllables": ["an"]
+        },
+        {
+          "id": "day-13-s1-i2",
+          "original": "en",
+          "display": "en",
+          "syllables": ["en"]
+        },
+        {
+          "id": "day-13-s1-i3",
+          "original": "in",
+          "display": "in",
+          "syllables": ["in"]
+        },
+        {
+          "id": "day-13-s1-i4",
+          "original": "un",
+          "display": "un",
+          "syllables": ["un"]
+        },
+        {
+          "id": "day-13-s1-i5",
+          "original": "ün",
+          "display": "ün",
+          "syllables": ["ün"]
+        },
+        {
+          "id": "day-13-s1-i6",
+          "original": "yin",
+          "display": "yin",
+          "syllables": ["yin"]
+        },
+        {
+          "id": "day-13-s1-i7",
+          "original": "yun",
+          "display": "yun",
+          "syllables": ["yun"]
+        },
+        {
+          "id": "day-13-s1-i8",
+          "original": "yuan",
+          "display": "yuan",
+          "syllables": ["yuan"]
+        }
+      ]
+    },
+    {
+      "id": "day-13-section-2",
+      "items": [
+        {
+          "id": "day-13-s2-i1",
+          "original": "ūn",
+          "display": "ūn",
+          "syllables": ["ūn"]
+        },
+        {
+          "id": "day-13-s2-i2",
+          "original": "ǚn",
+          "display": "ǚn",
+          "syllables": ["ǚn"]
+        },
+        {
+          "id": "day-13-s2-i3",
+          "original": "ùn",
+          "display": "ùn",
+          "syllables": ["ùn"]
+        },
+        {
+          "id": "day-13-s2-i4",
+          "original": "ǜn",
+          "display": "ǜn",
+          "syllables": ["ǜn"]
+        },
+        {
+          "id": "day-13-s2-i5",
+          "original": "ǔn",
+          "display": "ǔn",
+          "syllables": ["ǔn"]
+        },
+        {
+          "id": "day-13-s2-i6",
+          "original": "ǚn",
+          "display": "ǚn",
+          "syllables": ["ǚn"]
+        },
+        {
+          "id": "day-13-s2-i7",
+          "original": "àn",
+          "display": "àn",
+          "syllables": ["àn"]
+        },
+        {
+          "id": "day-13-s2-i8",
+          "original": "ēn",
+          "display": "ēn",
+          "syllables": ["ēn"]
+        },
+        {
+          "id": "day-13-s2-i9",
+          "original": "ín",
+          "display": "ín",
+          "syllables": ["ín"]
+        },
+        {
+          "id": "day-13-s2-i10",
+          "original": "ào",
+          "display": "ào",
+          "syllables": ["ào"]
+        },
+        {
+          "id": "day-13-s2-i11",
+          "original": "ōu",
+          "display": "ōu",
+          "syllables": ["ōu"]
+        },
+        {
+          "id": "day-13-s2-i12",
+          "original": "uì",
+          "display": "uì",
+          "syllables": ["uì"]
+        },
+        {
+          "id": "day-13-s2-i13",
+          "original": "iú",
+          "display": "iú",
+          "syllables": ["iú"]
+        },
+        {
+          "id": "day-13-s2-i14",
+          "original": "üé",
+          "display": "üé",
+          "syllables": ["üé"]
+        },
+        {
+          "id": "day-13-s2-i15",
+          "original": "ěr",
+          "display": "ěr",
+          "syllables": ["ěr"]
+        },
+        {
+          "id": "day-13-s2-i16",
+          "original": "iè",
+          "display": "iè",
+          "syllables": ["iè"]
+        },
+        {
+          "id": "day-13-s2-i17",
+          "original": "éi",
+          "display": "éi",
+          "syllables": ["éi"]
+        }
+      ]
+    },
+    {
+      "id": "day-13-section-3",
+      "items": [
+        {
+          "id": "day-13-s3-i1",
+          "original": "gān-gāi",
+          "display": "gān-gāi",
+          "syllables": ["gān", "gāi"]
+        },
+        {
+          "id": "day-13-s3-i2",
+          "original": "bēi-bēn",
+          "display": "bēi-bēn",
+          "syllables": ["bēi", "bēn"]
+        },
+        {
+          "id": "day-13-s3-i3",
+          "original": "kān-kuān",
+          "display": "kān-kuān",
+          "syllables": ["kān", "kuān"]
+        },
+        {
+          "id": "day-13-s3-i4",
+          "original": "xiàn-xuàn",
+          "display": "xiàn-xuàn",
+          "syllables": ["xiàn", "xuàn"]
+        }
+      ]
+    },
+    {
+      "id": "day-13-section-4",
+      "items": [
+        {
+          "id": "day-13-s4-i1",
+          "original": "yún",
+          "display": "yún",
+          "syllables": ["yún"]
+        },
+        {
+          "id": "day-13-s4-i2",
+          "original": "yuǎn",
+          "display": "yuǎn",
+          "syllables": ["yuǎn"]
+        },
+        {
+          "id": "day-13-s4-i3",
+          "original": "yuē",
+          "display": "yuē",
+          "syllables": ["yuē"]
+        },
+        {
+          "id": "day-13-s4-i4",
+          "original": "yè",
+          "display": "yè",
+          "syllables": ["yè"]
+        },
+        {
+          "id": "day-13-s4-i5",
+          "original": "yuè",
+          "display": "yuè",
+          "syllables": ["yuè"]
+        },
+        {
+          "id": "day-13-s4-i6",
+          "original": "yuán",
+          "display": "yuán",
+          "syllables": ["yuán"]
+        },
+        {
+          "id": "day-13-s4-i7",
+          "original": "yùn",
+          "display": "yùn",
+          "syllables": ["yùn"]
+        },
+        {
+          "id": "day-13-s4-i8",
+          "original": "yuàn",
+          "display": "yuàn",
+          "syllables": ["yuàn"]
+        },
+        {
+          "id": "day-13-s4-i9",
+          "original": "yín",
+          "display": "yín",
+          "syllables": ["yín"]
+        },
+        {
+          "id": "day-13-s4-i10",
+          "original": "yǔn",
+          "display": "yǔn",
+          "syllables": ["yǔn"]
+        }
+      ]
+    },
+    {
+      "id": "day-13-section-5",
+      "items": [
+        {
+          "id": "day-13-s5-i1",
+          "original": "bǎn",
+          "display": "bǎn",
+          "syllables": ["bǎn"]
+        },
+        {
+          "id": "day-13-s5-i2",
+          "original": "dàn",
+          "display": "dàn",
+          "syllables": ["dàn"]
+        },
+        {
+          "id": "day-13-s5-i3",
+          "original": "xīn",
+          "display": "xīn",
+          "syllables": ["xīn"]
+        },
+        {
+          "id": "day-13-s5-i4",
+          "original": "fèn",
+          "display": "fèn",
+          "syllables": ["fèn"]
+        },
+        {
+          "id": "day-13-s5-i5",
+          "original": "zhēn",
+          "display": "zhēn",
+          "syllables": ["zhēn"]
+        },
+        {
+          "id": "day-13-s5-i6",
+          "original": "kěn",
+          "display": "kěn",
+          "syllables": ["kěn"]
+        },
+        {
+          "id": "day-13-s5-i7",
+          "original": "rán",
+          "display": "rán",
+          "syllables": ["rán"]
+        },
+        {
+          "id": "day-13-s5-i8",
+          "original": "zhàn",
+          "display": "zhàn",
+          "syllables": ["zhàn"]
+        },
+        {
+          "id": "day-13-s5-i9",
+          "original": "pén",
+          "display": "pén",
+          "syllables": ["pén"]
+        },
+        {
+          "id": "day-13-s5-i10",
+          "original": "mín",
+          "display": "mín",
+          "syllables": ["mín"]
+        },
+        {
+          "id": "day-13-s5-i11",
+          "original": "qín",
+          "display": "qín",
+          "syllables": ["qín"]
+        },
+        {
+          "id": "day-13-s5-i12",
+          "original": "jūn",
+          "display": "jūn",
+          "syllables": ["jūn"]
+        },
+        {
+          "id": "day-13-s5-i13",
+          "original": "gùn",
+          "display": "gùn",
+          "syllables": ["gùn"]
+        },
+        {
+          "id": "day-13-s5-i14",
+          "original": "chén",
+          "display": "chén",
+          "syllables": ["chén"]
+        },
+        {
+          "id": "day-13-s5-i15",
+          "original": "qún",
+          "display": "qún",
+          "syllables": ["qún"]
+        },
+        {
+          "id": "day-13-s5-i16",
+          "original": "xùn",
+          "display": "xùn",
+          "syllables": ["xùn"]
+        },
+        {
+          "id": "day-13-s5-i17",
+          "original": "biān",
+          "display": "biān",
+          "syllables": ["biān"]
+        },
+        {
+          "id": "day-13-s5-i18",
+          "original": "qián",
+          "display": "qián",
+          "syllables": ["qián"]
+        },
+        {
+          "id": "day-13-s5-i19",
+          "original": "piān",
+          "display": "piān",
+          "syllables": ["piān"]
+        },
+        {
+          "id": "day-13-s5-i20",
+          "original": "tiān",
+          "display": "tiān",
+          "syllables": ["tiān"]
+        },
+        {
+          "id": "day-13-s5-i21",
+          "original": "diàn",
+          "display": "diàn",
+          "syllables": ["diàn"]
+        },
+        {
+          "id": "day-13-s5-i22",
+          "original": "nián",
+          "display": "nián",
+          "syllables": ["nián"]
+        },
+        {
+          "id": "day-13-s5-i23",
+          "original": "juàn",
+          "display": "juàn",
+          "syllables": ["juàn"]
+        },
+        {
+          "id": "day-13-s5-i24",
+          "original": "quān",
+          "display": "quān",
+          "syllables": ["quān"]
+        },
+        {
+          "id": "day-13-s5-i25",
+          "original": "shuān",
+          "display": "shuān",
+          "syllables": ["shuān"]
+        },
+        {
+          "id": "day-13-s5-i26",
+          "original": "zhuān",
+          "display": "zhuān",
+          "syllables": ["zhuān"]
+        },
+        {
+          "id": "day-13-s5-i27",
+          "original": "chuán",
+          "display": "chuán",
+          "syllables": ["chuán"]
+        },
+        {
+          "id": "day-13-s5-i28",
+          "original": "kuān",
+          "display": "kuān",
+          "syllables": ["kuān"]
+        },
+        {
+          "id": "day-13-s5-i29",
+          "original": "huān",
+          "display": "huān",
+          "syllables": ["huān"]
+        },
+        {
+          "id": "day-13-s5-i30",
+          "original": "chūn",
+          "display": "chūn",
+          "syllables": ["chūn"]
+        },
+        {
+          "id": "day-13-s5-i31",
+          "original": "xuǎn",
+          "display": "xuǎn",
+          "syllables": ["xuǎn"]
+        }
+      ]
+    },
+    {
+      "id": "day-13-section-6",
+      "items": [
+        {
+          "id": "day-13-s6-i1",
+          "original": "gāo shān",
+          "display": "gāo shān",
+          "syllables": ["gāo", "shān"]
+        },
+        {
+          "id": "day-13-s6-i2",
+          "original": "kè běn",
+          "display": "kè běn",
+          "syllables": ["kè", "běn"]
+        },
+        {
+          "id": "day-13-s6-i3",
+          "original": "jīn tiān",
+          "display": "jīn tiān",
+          "syllables": ["jīn", "tiān"]
+        },
+        {
+          "id": "day-13-s6-i4",
+          "original": "hēi bǎn",
+          "display": "hēi bǎn",
+          "syllables": ["hēi", "bǎn"]
+        },
+        {
+          "id": "day-13-s6-i5",
+          "original": "bēn pǎo",
+          "display": "bēn pǎo",
+          "syllables": ["bēn", "pǎo"]
+        },
+        {
+          "id": "day-13-s6-i6",
+          "original": "shù lín",
+          "display": "shù lín",
+          "syllables": ["shù", "lín"]
+        },
+        {
+          "id": "day-13-s6-i7",
+          "original": "dǎ zhēn",
+          "display": "dǎ zhēn",
+          "syllables": ["dǎ", "zhēn"]
+        },
+        {
+          "id": "day-13-s6-i8",
+          "original": "lún chuán",
+          "display": "lún chuán",
+          "syllables": ["lún", "chuán"]
+        },
+        {
+          "id": "day-13-s6-i9",
+          "original": "qún zi",
+          "display": "qún zi",
+          "syllables": ["qún", "zi"]
+        },
+        {
+          "id": "day-13-s6-i10",
+          "original": "bái yún",
+          "display": "bái yún",
+          "syllables": ["bái", "yún"]
+        },
+        {
+          "id": "day-13-s6-i11",
+          "original": "tiān ān mén",
+          "display": "tiān ān mén",
+          "syllables": ["tiān", "ān", "mén"]
+        },
+        {
+          "id": "day-13-s6-i12",
+          "original": "yuán quān",
+          "display": "yuán quān",
+          "syllables": ["yuán", "quān"]
+        },
+        {
+          "id": "day-13-s6-i13",
+          "original": "yī yuàn",
+          "display": "yī yuàn",
+          "syllables": ["yī", "yuàn"]
+        },
+        {
+          "id": "day-13-s6-i14",
+          "original": "jiǎo yìn",
+          "display": "jiǎo yìn",
+          "syllables": ["jiǎo", "yìn"]
+        },
+        {
+          "id": "day-13-s7-i1",
+          "original": "lán tiān",
+          "display": "lán tiān",
+          "syllables": ["lán", "tiān"]
+        },
+        {
+          "id": "day-13-s7-i2",
+          "original": "wū yún",
+          "display": "wū yún",
+          "syllables": ["wū", "yún"]
+        },
+        {
+          "id": "day-13-s7-i3",
+          "original": "shuǐ cǎo",
+          "display": "shuǐ cǎo",
+          "syllables": ["shuǐ", "cǎo"]
+        },
+        {
+          "id": "day-13-s7-i4",
+          "original": "cǎo yuán",
+          "display": "cǎo yuán",
+          "syllables": ["cǎo", "yuán"]
+        }
+      ]
+    },
+    {
+      "id": "day-13-section-7",
+      "items": [
+        {
+          "id": "day-13-s7-i5",
+          "original": "wǒ měi tiān dōu qù pá shān。",
+          "display": "wǒ měi tiān dōu qù pá shān。",
+          "syllables": ["wǒ", "měi", "tiān", "dōu", "qù", "pá", "shān"]
+        },
+        {
+          "id": "day-13-s7-i6",
+          "original": "wǒ men dōu ài dú yǔ wén kè běn。",
+          "display": "wǒ men dōu ài dú yǔ wén kè běn。",
+          "syllables": ["wǒ", "men", "dōu", "ài", "dú", "yǔ", "wén", "kè", "běn"]
+        },
+        {
+          "id": "day-13-s7-i7",
+          "original": "lán lán de tiān shàng bái yún piāo。",
+          "display": "lán lán de tiān shàng bái yún piāo。",
+          "syllables": ["lán", "lán", "de", "tiān", "shàng", "bái", "yún", "piāo"]
+        }
+      ]
+    },
+    {
+      "id": "day-14-section-1",
+      "items": [
+        {
+          "id": "day-14-s1-i1",
+          "original": "ang",
+          "display": "ang",
+          "syllables": ["ang"]
+        },
+        {
+          "id": "day-14-s1-i2",
+          "original": "eng",
+          "display": "eng",
+          "syllables": ["eng"]
+        },
+        {
+          "id": "day-14-s1-i3",
+          "original": "ing",
+          "display": "ing",
+          "syllables": ["ing"]
+        },
+        {
+          "id": "day-14-s1-i4",
+          "original": "ong",
+          "display": "ong",
+          "syllables": ["ong"]
+        },
+        {
+          "id": "day-14-s1-i5",
+          "original": "ying",
+          "display": "ying",
+          "syllables": ["ying"]
+        }
+      ]
+    },
+    {
+      "id": "day-14-section-2",
+      "items": [
+        {
+          "id": "day-14-s2-i1",
+          "original": "àng",
+          "display": "àng",
+          "syllables": ["àng"]
+        },
+        {
+          "id": "day-14-s2-i2",
+          "original": "ēng",
+          "display": "ēng",
+          "syllables": ["ēng"]
+        },
+        {
+          "id": "day-14-s2-i3",
+          "original": "ǐng",
+          "display": "ǐng",
+          "syllables": ["ǐng"]
+        },
+        {
+          "id": "day-14-s2-i4",
+          "original": "óng",
+          "display": "óng",
+          "syllables": ["óng"]
+        },
+        {
+          "id": "day-14-s2-i5",
+          "original": "áng",
+          "display": "áng",
+          "syllables": ["áng"]
+        },
+        {
+          "id": "day-14-s2-i6",
+          "original": "èng",
+          "display": "èng",
+          "syllables": ["èng"]
+        },
+        {
+          "id": "day-14-s2-i7",
+          "original": "ìng",
+          "display": "ìng",
+          "syllables": ["ìng"]
+        },
+        {
+          "id": "day-14-s2-i8",
+          "original": "ǒng",
+          "display": "ǒng",
+          "syllables": ["ǒng"]
+        },
+        {
+          "id": "day-14-s2-i9",
+          "original": "āng",
+          "display": "āng",
+          "syllables": ["āng"]
+        },
+        {
+          "id": "day-14-s2-i10",
+          "original": "ěng",
+          "display": "ěng",
+          "syllables": ["ěng"]
+        },
+        {
+          "id": "day-14-s2-i11",
+          "original": "īng",
+          "display": "īng",
+          "syllables": ["īng"]
+        },
+        {
+          "id": "day-14-s2-i12",
+          "original": "òng",
+          "display": "òng",
+          "syllables": ["òng"]
+        },
+        {
+          "id": "day-14-s2-i13",
+          "original": "íng",
+          "display": "íng",
+          "syllables": ["íng"]
+        },
+        {
+          "id": "day-14-s2-i14",
+          "original": "yǐng",
+          "display": "yǐng",
+          "syllables": ["yǐng"]
+        }
+      ]
+    },
+    {
+      "id": "day-14-section-3",
+      "items": [
+        {
+          "id": "day-14-s3-i1",
+          "original": "bān-bāng",
+          "display": "bān-bāng",
+          "syllables": ["bān", "bāng"]
+        },
+        {
+          "id": "day-14-s3-i2",
+          "original": "gāng-guāng",
+          "display": "gāng-guāng",
+          "syllables": ["gāng", "guāng"]
+        },
+        {
+          "id": "day-14-s3-i3",
+          "original": "jīn-jīng",
+          "display": "jīn-jīng",
+          "syllables": ["jīn", "jīng"]
+        },
+        {
+          "id": "day-14-s3-i4",
+          "original": "bèn-bèng",
+          "display": "bèn-bèng",
+          "syllables": ["bèn", "bèng"]
+        },
+        {
+          "id": "day-14-s3-i5",
+          "original": "yìn-yìng",
+          "display": "yìn-yìng",
+          "syllables": ["yìn", "yìng"]
+        },
+        {
+          "id": "day-14-s3-i6",
+          "original": "láng-liáng",
+          "display": "láng-liáng",
+          "syllables": ["láng", "liáng"]
+        },
+        {
+          "id": "day-14-s3-i7",
+          "original": "chāng-chuāng",
+          "display": "chāng-chuāng",
+          "syllables": ["chāng", "chuāng"]
+        }
+      ]
+    },
+    {
+      "id": "day-14-section-4",
+      "items": [
+        {
+          "id": "day-14-s4-i1",
+          "original": "yīng",
+          "display": "yīng",
+          "syllables": ["yīng"]
+        },
+        {
+          "id": "day-14-s4-i2",
+          "original": "yǐng",
+          "display": "yǐng",
+          "syllables": ["yǐng"]
+        },
+        {
+          "id": "day-14-s4-i3",
+          "original": "yìng",
+          "display": "yìng",
+          "syllables": ["yìng"]
+        },
+        {
+          "id": "day-14-s4-i4",
+          "original": "yīng",
+          "display": "yīng",
+          "syllables": ["yīng"]
+        }
+      ]
+    },
+    {
+      "id": "day-14-section-5",
+      "items": [
+        {
+          "id": "day-14-s5-i1",
+          "original": "bàng",
+          "display": "bàng",
+          "syllables": ["bàng"]
+        },
+        {
+          "id": "day-14-s5-i2",
+          "original": "máng",
+          "display": "máng",
+          "syllables": ["máng"]
+        },
+        {
+          "id": "day-14-s5-i3",
+          "original": "fàng",
+          "display": "fàng",
+          "syllables": ["fàng"]
+        },
+        {
+          "id": "day-14-s5-i4",
+          "original": "gāng",
+          "display": "gāng",
+          "syllables": ["gāng"]
+        },
+        {
+          "id": "day-14-s5-i5",
+          "original": "zhāng",
+          "display": "zhāng",
+          "syllables": ["zhāng"]
+        },
+        {
+          "id": "day-14-s5-i6",
+          "original": "shàng",
+          "display": "shàng",
+          "syllables": ["shàng"]
+        },
+        {
+          "id": "day-14-s5-i7",
+          "original": "chuáng",
+          "display": "chuáng",
+          "syllables": ["chuáng"]
+        },
+        {
+          "id": "day-14-s5-i8",
+          "original": "xīng",
+          "display": "xīng",
+          "syllables": ["xīng"]
+        },
+        {
+          "id": "day-14-s5-i9",
+          "original": "dèng",
+          "display": "dèng",
+          "syllables": ["dèng"]
+        },
+        {
+          "id": "day-14-s5-i10",
+          "original": "téng",
+          "display": "téng",
+          "syllables": ["téng"]
+        },
+        {
+          "id": "day-14-s5-i11",
+          "original": "chéng",
+          "display": "chéng",
+          "syllables": ["chéng"]
+        },
+        {
+          "id": "day-14-s5-i12",
+          "original": "dōng",
+          "display": "dōng",
+          "syllables": ["dōng"]
+        },
+        {
+          "id": "day-14-s5-i13",
+          "original": "lóng",
+          "display": "lóng",
+          "syllables": ["lóng"]
+        },
+        {
+          "id": "day-14-s5-i14",
+          "original": "zhōng",
+          "display": "zhōng",
+          "syllables": ["zhōng"]
+        },
+        {
+          "id": "day-14-s5-i15",
+          "original": "chóng",
+          "display": "chóng",
+          "syllables": ["chóng"]
+        },
+        {
+          "id": "day-14-s5-i16",
+          "original": "míng",
+          "display": "míng",
+          "syllables": ["míng"]
+        },
+        {
+          "id": "day-14-s5-i17",
+          "original": "sōng",
+          "display": "sōng",
+          "syllables": ["sōng"]
+        },
+        {
+          "id": "day-14-s5-i18",
+          "original": "tīng",
+          "display": "tīng",
+          "syllables": ["tīng"]
+        },
+        {
+          "id": "day-14-s5-i19",
+          "original": "jīng",
+          "display": "jīng",
+          "syllables": ["jīng"]
+        },
+        {
+          "id": "day-14-s5-i20",
+          "original": "qióng",
+          "display": "qióng",
+          "syllables": ["qióng"]
+        },
+        {
+          "id": "day-14-s5-i21",
+          "original": "xióng",
+          "display": "xióng",
+          "syllables": ["xióng"]
+        }
+      ]
+    },
+    {
+      "id": "day-14-section-6",
+      "items": [
+        {
+          "id": "day-14-s6-i1",
+          "original": "lǎo yīng",
+          "display": "lǎo yīng",
+          "syllables": ["lǎo", "yīng"]
+        },
+        {
+          "id": "day-14-s6-i2",
+          "original": "mì fēng",
+          "display": "mì fēng",
+          "syllables": ["mì", "fēng"]
+        },
+        {
+          "id": "day-14-s6-i3",
+          "original": "cǎi hóng",
+          "display": "cǎi hóng",
+          "syllables": ["cǎi", "hóng"]
+        },
+        {
+          "id": "day-14-s6-i4",
+          "original": "xué shēng",
+          "display": "xué shēng",
+          "syllables": ["xué", "shēng"]
+        },
+        {
+          "id": "day-14-s6-i5",
+          "original": "nào zhōng",
+          "display": "nào zhōng",
+          "syllables": ["nào", "zhōng"]
+        },
+        {
+          "id": "day-14-s6-i6",
+          "original": "shān yáng",
+          "display": "shān yáng",
+          "syllables": ["shān", "yáng"]
+        },
+        {
+          "id": "day-14-s6-i7",
+          "original": "tái dēng",
+          "display": "tái dēng",
+          "syllables": ["tái", "dēng"]
+        },
+        {
+          "id": "day-14-s6-i8",
+          "original": "nóng mín",
+          "display": "nóng mín",
+          "syllables": ["nóng", "mín"]
+        },
+        {
+          "id": "day-14-s6-i9",
+          "original": "gōng chǎng",
+          "display": "gōng chǎng",
+          "syllables": ["gōng", "chǎng"]
+        },
+        {
+          "id": "day-14-s6-i10",
+          "original": "liū bīng",
+          "display": "liū bīng",
+          "syllables": ["liū", "bīng"]
+        },
+        {
+          "id": "day-14-s6-i11",
+          "original": "huā shēng",
+          "display": "huā shēng",
+          "syllables": ["huā", "shēng"]
+        },
+        {
+          "id": "day-14-s6-i12",
+          "original": "shuǐ tǒng",
+          "display": "shuǐ tǒng",
+          "syllables": ["shuǐ", "tǒng"]
+        },
+        {
+          "id": "day-14-s6-i13",
+          "original": "jiě fàng jūn",
+          "display": "jiě fàng jūn",
+          "syllables": ["jiě", "fàng", "jūn"]
+        },
+        {
+          "id": "day-14-s6-i14",
+          "original": "xióng māo",
+          "display": "xióng māo",
+          "syllables": ["xióng", "māo"]
+        },
+        {
+          "id": "day-14-s6-i15",
+          "original": "cūn zhuāng",
+          "display": "cūn zhuāng",
+          "syllables": ["cūn", "zhuāng"]
+        },
+        {
+          "id": "day-14-s6-i16",
+          "original": "chuāng hù",
+          "display": "chuāng hù",
+          "syllables": ["chuāng", "hù"]
+        },
+        {
+          "id": "day-14-s6-i17",
+          "original": "zhōng guó",
+          "display": "zhōng guó",
+          "syllables": ["zhōng", "guó"]
+        },
+        {
+          "id": "day-14-s6-i18",
+          "original": "fēng yǔ",
+          "display": "fēng yǔ",
+          "syllables": ["fēng", "yǔ"]
+        },
+        {
+          "id": "day-14-s7-i1",
+          "original": "huǒ chē",
+          "display": "huǒ chē",
+          "syllables": ["huǒ", "chē"]
+        },
+        {
+          "id": "day-14-s7-i2",
+          "original": "chē shàng",
+          "display": "chē shàng",
+          "syllables": ["chē", "shàng"]
+        },
+        {
+          "id": "day-14-s7-i3",
+          "original": "shuǐ chē",
+          "display": "shuǐ chē",
+          "syllables": ["shuǐ", "chē"]
+        },
+        {
+          "id": "day-14-s7-i4",
+          "original": "bīng xuě",
+          "display": "bīng xuě",
+          "syllables": ["bīng", "xuě"]
+        },
+        {
+          "id": "day-14-s7-i5",
+          "original": "bīng shuǐ",
+          "display": "bīng shuǐ",
+          "syllables": ["bīng", "shuǐ"]
+        },
+        {
+          "id": "day-14-s7-i6",
+          "original": "zì xíng chē",
+          "display": "zì xíng chē",
+          "syllables": ["zì", "xíng", "chē"]
+        }
+      ]
+    },
+    {
+      "id": "day-14-section-7",
+      "items": [
+        {
+          "id": "day-14-s7-i7",
+          "original": "wǒ men shàng xué qù。",
+          "display": "wǒ men shàng xué qù。",
+          "syllables": ["wǒ", "men", "shàng", "xué", "qù"]
+        },
+        {
+          "id": "day-14-s7-i8",
+          "original": "lǎo shī shì xīn qín de yuán dīng。",
+          "display": "lǎo shī shì xīn qín de yuán dīng。",
+          "syllables": ["lǎo", "shī", "shì", "xīn", "qín", "de", "yuán", "dīng"]
+        },
+        {
+          "id": "day-14-s7-i9",
+          "original": "tā shì zhōng guó rén，wǒ yě shì zhōng guó rén。",
+          "display": "tā shì zhōng guó rén，wǒ yě shì zhōng guó rén。",
+          "syllables": [
+            "tā",
+            "shì",
+            "zhōng",
+            "guó",
+            "rén",
+            "wǒ",
+            "yě",
+            "shì",
+            "zhōng",
+            "guó",
+            "rén"
+          ]
+        }
+      ]
+    }
+  ]
+}

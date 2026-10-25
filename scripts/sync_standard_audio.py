@@ -31,8 +31,9 @@ def sync(repo: Path) -> dict:
     )
     if ready:
         try:
-            for asset in daily_reading.load()["assets"]:
-                path, digest = daily_reading.registered(asset["id"])
+            daily = daily_reading.load()
+            for asset_id in [*[a["id"] for a in daily["assets"]], *daily.get("derivedAssets", [])]:
+                path, digest = daily_reading.registered(asset_id)
                 if hashlib.sha256(path.read_bytes()).hexdigest() != digest:
                     ready = False
         except (OSError, HTTPException):

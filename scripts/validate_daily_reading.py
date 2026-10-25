@@ -1,10 +1,13 @@
 """Validate faithful daily content and optional real local resource readiness."""
 
 import argparse
+import hashlib
 import json
 import re
+import unicodedata
 
-from server import daily_reading, learning_audio, reading_timings
+from scripts.daily_reading_rules import MARKS, expected_audio, key, unique_items
+from server import daily_pronunciation, daily_reading, learning_audio, reading_timings
 from server.audio_assets import _verified_file
 from server.content import load_writing
 
@@ -53,8 +56,77 @@ def validate_categories(data: dict, navigation: dict, hanzi: dict) -> None:
         raise ValueError("Daily character annotations do not match words and sentences")
 
 
+def validate_normalization(data: dict, ledger: dict, policy: dict, inventory: dict) -> None:
+    """Compare against source occurrences, not the old Word's raw item count.
+
+    Source repetitions are intentional input to this rule. Reimporting a changed
+    Word/PDF requires a new reviewed ledger, not restoring removed duplicate IDs.
+    """
+    if ledger["sourceSha256"] != data["source"]["sha256"]:
+        raise ValueError("Daily source ledger digest mismatch")
+    sections = [s for day in data["days"] for s in day["sections"]]
+    if [s["id"] for s in sections] != [s["id"] for s in ledger["sections"]]:
+        raise ValueError("Daily source sections mismatch")
+    consonants = set(inventory["initials"] + inventory["orthographicLetters"])
+    if policy["unmarkedTone"] != 1 or policy["deduplicateWithin"] != "section":
+        raise ValueError("Invalid daily tone/deduplication policy")
+    neutrals = policy["neutralSyllableIndices"]
+    seen_neutrals = set()
+    for section, source in zip(sections, ledger["sections"], strict=True):
+        expected = unique_items(source["items"])
+        if [i["id"] for i in section["items"]] != [i["id"] for i in expected]:
+            raise ValueError(f"Daily within-section deduplication: {section['id']}")
+        for item, original in zip(section["items"], expected, strict=True):
+            if any(
+                item[field] != original[field] for field in ("original", "display", "syllables")
+            ):
+                raise ValueError(f"Daily source text changed: {item['id']}")
+            if len({key(i) for i in section["items"]}) != len(section["items"]):
+                raise ValueError("Duplicate daily pinyin within section")
+            positions = neutrals.get(item["id"], [])
+            unmarked = [
+                n
+                for n, s in enumerate(item["syllables"])
+                if s not in consonants
+                and not any(m in unicodedata.normalize("NFD", s) for m in MARKS)
+            ]
+            if section["kind"] in {"words", "sentences"}:
+                if positions != unmarked:
+                    raise ValueError(f"Daily neutral tone positions: {item['id']}")
+            elif positions:
+                raise ValueError("Neutral tones only apply to words and sentences")
+            if positions:
+                seen_neutrals.add(item["id"])
+            if any(
+                s not in [item["syllables"][n] for n in positions] for s in item["missingSyllables"]
+            ):
+                raise ValueError("Only neutral tones may use Chinese narration")
+            if item["audioIds"] != expected_audio(item, policy, consonants):
+                raise ValueError(f"Daily demonstration tone mismatch: {item['id']}")
+            derived = any(a in policy["derivedFirstTones"] for a in item["audioIds"])
+            if bool(item.get("derivedAudio")) != derived:
+                raise ValueError("Daily derived audio attribution missing")
+    if seen_neutrals != set(neutrals):
+        raise ValueError("Stale neutral tone exceptions")
+    if data["derivedAssets"] != list(policy["derivedFirstTones"]):
+        raise ValueError("Daily derived asset coverage")
+    assets = {a["id"]: a for a in data["assets"]}
+    for recipe in policy["derivedFirstTones"].values():
+        if assets[recipe["sourceId"]]["sha256"] != recipe["sourceSha256"]:
+            raise ValueError("Daily derived source digest")
+
+
 def validate(release: bool = False) -> dict:
     data = daily_reading.load()
+    ledger = json.loads((daily_reading.CONTENT.parent / "daily-reading-source.json").read_text())
+    from server.content import load_curriculum
+
+    validate_normalization(
+        data, ledger, daily_pronunciation.policy(), load_curriculum()["inventory"]
+    )
+    pdf = daily_reading.CONTENT.parents[1] / "resources" / data["source"]["filename"]
+    if hashlib.sha256(pdf.read_bytes()).hexdigest() != ledger["sourceSha256"]:
+        raise ValueError("Daily source changed; review the new Word/PDF and rebuild its ledger")
     validate_categories(
         data,
         json.loads((daily_reading.CONTENT.parent / "daily-reading-navigation.json").read_text()),
@@ -65,7 +137,7 @@ def validate(release: bool = False) -> dict:
         raise ValueError("Daily narration must not synthesize pinyin text")
     sections = [s for d in data["days"] for s in d["sections"]]
     items = [i for s in sections for i in s["items"]]
-    if len(items) != 840 or len({s["id"] for s in sections}) != len(sections):
+    if len({s["id"] for s in sections}) != len(sections):
         raise ValueError("Daily source coverage changed without a reviewed content update")
     examples = daily_reading.word_examples()
     sentences = daily_reading.sentence_readings()
@@ -131,6 +203,7 @@ def validate(release: bool = False) -> dict:
         "days": len(data["days"]),
         "items": len(items),
         "standardClips": len(data["assets"]),
+        "derivedFirstTones": len(data["derivedAssets"]),
         "release": release,
         "automaticRecognition": True,
         "professionalAssessment": False,

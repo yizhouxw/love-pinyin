@@ -6,16 +6,16 @@ import pytest
 from server import daily_reading, learning_audio, source_audio
 
 
-def test_pdf_sequence_preserves_duplicates_tones_and_shared_source_page():
+def test_pdf_sequence_deduplicates_within_sections_preserving_tones_and_source_page():
     data = daily_reading.load()
     assert [d["sourcePage"] for d in data["days"]] == [3, 4, 4, *range(5, 16)]
     first = data["days"][0]["sections"][0]["items"]
-    assert [i["display"] for i in first[:8]] == ["ā", "á", "ǎ", "à", "á", "ō", "è", "ó"]
-    assert len(first) == 24
+    assert [i["display"] for i in first[:8]] == ["ā", "á", "ǎ", "à", "ō", "è", "ó", "ǒ"]
+    assert len(first) == 12
     assert first[0]["audioIds"] != first[1]["audioIds"]
-    assert sum(len(s["items"]) for d in data["days"] for s in d["sections"]) == 840
+    assert sum(len(s["items"]) for d in data["days"] for s in d["sections"]) == 785
     nasal = data["days"][12]["sections"][1]["items"]
-    assert [i["display"] for i in nasal[:6]] == ["ūn", "ǚn", "ùn", "ǜn", "ǔn", "ǚn"]
+    assert [i["display"] for i in nasal[:6]] == ["ūn", "ǚn", "ùn", "ǜn", "ǔn", "àn"]
     dad = data["days"][2]["sections"][2]["items"][0]
     assert dad["display"] == "bà ba"
     assert dad["spokenText"] == "爸爸"

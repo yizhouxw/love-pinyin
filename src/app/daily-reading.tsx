@@ -810,7 +810,9 @@ function ReadingSession({
               : '整句连读 · 普通话示范'
             : item.narrationId
               ? '中文词句朗读 · 普通话示范'
-              : '拼音标准音 · 逐音节示范'}
+              : item.derivedAudio
+                ? '拼音派生示范 · 一声'
+                : '拼音标准音 · 逐音节示范'}
         </p>
         {item.audioNotes.length > 0 && (
           <p className="daily-audio-note">{item.audioNotes.join('；')}</p>

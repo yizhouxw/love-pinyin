@@ -3,7 +3,7 @@
     {
       "family": "a",
       "compact": true,
-      "itemIds": ["day-01-s1-i1", "day-01-s1-i2", "day-01-s1-i3", "day-01-s1-i4", "day-01-s1-i5"]
+      "itemIds": ["day-01-s1-i1", "day-01-s1-i2", "day-01-s1-i3", "day-01-s1-i4"]
     },
     {
       "family": "o / e",
@@ -13,74 +13,39 @@
     {
       "family": "o",
       "compact": true,
-      "itemIds": ["day-01-s1-i8", "day-01-s1-i9", "day-01-s1-i10", "day-01-s1-i11", "day-01-s1-i12"]
-    },
-    {
-      "family": "a",
-      "compact": true,
-      "itemIds": ["day-01-s1-i13", "day-01-s1-i14"]
+      "itemIds": ["day-01-s1-i8", "day-01-s1-i11", "day-01-s1-i12"]
     },
     {
       "family": "e",
       "compact": true,
-      "itemIds": [
-        "day-01-s1-i15",
-        "day-01-s1-i16",
-        "day-01-s1-i17",
-        "day-01-s1-i18",
-        "day-01-s1-i19",
-        "day-01-s1-i20"
-      ]
-    },
-    {
-      "family": "o / e / a",
-      "compact": true,
-      "itemIds": ["day-01-s1-i21", "day-01-s1-i22", "day-01-s1-i23", "day-01-s1-i24"]
+      "itemIds": ["day-01-s1-i15", "day-01-s1-i16", "day-01-s1-i18"]
     }
   ],
   "day-02-section-1": [
     {
       "family": "i",
       "compact": true,
-      "itemIds": ["day-02-s1-i1", "day-02-s1-i2", "day-02-s1-i3", "day-02-s1-i4", "day-02-s1-i5"]
+      "itemIds": ["day-02-s1-i1", "day-02-s1-i2", "day-02-s1-i3", "day-02-s1-i4"]
     },
     {
       "family": "u / ü / i",
       "compact": true,
-      "itemIds": ["day-02-s1-i6", "day-02-s1-i7", "day-02-s1-i8"]
+      "itemIds": ["day-02-s1-i6", "day-02-s1-i7"]
     },
     {
       "family": "u",
       "compact": true,
-      "itemIds": [
-        "day-02-s1-i9",
-        "day-02-s1-i10",
-        "day-02-s1-i11",
-        "day-02-s1-i12",
-        "day-02-s1-i13"
-      ]
+      "itemIds": ["day-02-s1-i9", "day-02-s1-i10", "day-02-s1-i11"]
     },
     {
       "family": "ü / i",
       "compact": true,
-      "itemIds": ["day-02-s1-i14", "day-02-s1-i15"]
+      "itemIds": ["day-02-s1-i14"]
     },
     {
       "family": "ü",
       "compact": true,
-      "itemIds": [
-        "day-02-s1-i16",
-        "day-02-s1-i17",
-        "day-02-s1-i18",
-        "day-02-s1-i19",
-        "day-02-s1-i20",
-        "day-02-s1-i21"
-      ]
-    },
-    {
-      "family": "i / u",
-      "compact": true,
-      "itemIds": ["day-02-s1-i22", "day-02-s1-i23", "day-02-s1-i24"]
+      "itemIds": ["day-02-s1-i16", "day-02-s1-i20"]
     }
   ],
   "day-03-section-1": [
@@ -568,7 +533,7 @@
     {
       "family": "z",
       "compact": true,
-      "itemIds": ["day-07-s3-i1", "day-07-s3-i2", "day-07-s3-i3", "day-07-s3-i4", "day-07-s3-i5"]
+      "itemIds": ["day-07-s3-i1", "day-07-s3-i2", "day-07-s3-i3", "day-07-s3-i4"]
     },
     {
       "family": "c / s",
@@ -578,17 +543,17 @@
     {
       "family": "z",
       "compact": true,
-      "itemIds": ["day-07-s3-i8", "day-07-s3-i9", "day-07-s3-i10", "day-07-s3-i11", "day-07-s3-i12"]
+      "itemIds": ["day-07-s3-i9", "day-07-s3-i10", "day-07-s3-i11", "day-07-s3-i12"]
     },
     {
       "family": "c",
       "compact": true,
-      "itemIds": ["day-07-s3-i13", "day-07-s3-i14", "day-07-s3-i15", "day-07-s3-i16"]
+      "itemIds": ["day-07-s3-i13", "day-07-s3-i14", "day-07-s3-i16"]
     },
     {
       "family": "s / c / z",
       "compact": true,
-      "itemIds": ["day-07-s3-i17", "day-07-s3-i18", "day-07-s3-i19", "day-07-s3-i20"]
+      "itemIds": ["day-07-s3-i17", "day-07-s3-i19"]
     },
     {
       "family": "c",
@@ -598,12 +563,7 @@
     {
       "family": "s",
       "compact": true,
-      "itemIds": ["day-07-s3-i25", "day-07-s3-i26", "day-07-s3-i27", "day-07-s3-i28"]
-    },
-    {
-      "family": "z / c / s",
-      "compact": true,
-      "itemIds": ["day-07-s3-i29", "day-07-s3-i30", "day-07-s3-i31", "day-07-s3-i32"]
+      "itemIds": ["day-07-s3-i25"]
     },
     {
       "family": "s",
@@ -622,8 +582,7 @@
         "day-07-s4-i4",
         "day-07-s4-i5",
         "day-07-s4-i6",
-        "day-07-s4-i7",
-        "day-07-s4-i8"
+        "day-07-s4-i7"
       ]
     },
     {
@@ -682,8 +641,7 @@
         "day-07-s5-i12",
         "day-07-s5-i13",
         "day-07-s5-i14",
-        "day-07-s5-i15",
-        "day-07-s5-i16"
+        "day-07-s5-i15"
       ]
     },
     {
@@ -838,54 +796,27 @@
     {
       "family": "y",
       "compact": true,
-      "itemIds": [
-        "day-09-s2-i1",
-        "day-09-s2-i2",
-        "day-09-s2-i3",
-        "day-09-s2-i4",
-        "day-09-s2-i5",
-        "day-09-s2-i6"
-      ]
+      "itemIds": ["day-09-s2-i1", "day-09-s2-i2", "day-09-s2-i3", "day-09-s2-i4", "day-09-s2-i5"]
     },
     {
       "family": "w / y",
       "compact": true,
-      "itemIds": ["day-09-s2-i7", "day-09-s2-i8"]
+      "itemIds": ["day-09-s2-i7"]
     },
     {
       "family": "w",
       "compact": true,
-      "itemIds": [
-        "day-09-s2-i9",
-        "day-09-s2-i10",
-        "day-09-s2-i11",
-        "day-09-s2-i12",
-        "day-09-s2-i13"
-      ]
+      "itemIds": ["day-09-s2-i9", "day-09-s2-i10", "day-09-s2-i12"]
     },
     {
       "family": "y / w",
       "compact": true,
-      "itemIds": ["day-09-s2-i14", "day-09-s2-i15"]
+      "itemIds": ["day-09-s2-i14"]
     },
     {
       "family": "y",
       "compact": true,
-      "itemIds": [
-        "day-09-s2-i16",
-        "day-09-s2-i17",
-        "day-09-s2-i18",
-        "day-09-s2-i19",
-        "day-09-s2-i20",
-        "day-09-s2-i21",
-        "day-09-s2-i22",
-        "day-09-s2-i23"
-      ]
-    },
-    {
-      "family": "w",
-      "compact": true,
-      "itemIds": ["day-09-s2-i24"]
+      "itemIds": ["day-09-s2-i17", "day-09-s2-i20"]
     }
   ],
   "day-09-section-3": [
@@ -993,7 +924,6 @@
         "day-10-s5-i9",
         "day-10-s5-i10",
         "day-10-s5-i11",
-        "day-10-s5-i12",
         "day-10-s5-i13",
         "day-10-s5-i14",
         "day-10-s5-i15",
@@ -1122,7 +1052,6 @@
         "day-11-s5-i18",
         "day-11-s5-i19",
         "day-11-s5-i20",
-        "day-11-s6-i1",
         "day-11-s6-i2",
         "day-11-s6-i3",
         "day-11-s6-i4"
@@ -1257,8 +1186,7 @@
         "day-12-s7-i2",
         "day-12-s7-i3",
         "day-12-s7-i4",
-        "day-12-s7-i5",
-        "day-12-s7-i6"
+        "day-12-s7-i5"
       ]
     }
   ],
@@ -1291,7 +1219,6 @@
         "day-13-s2-i3",
         "day-13-s2-i4",
         "day-13-s2-i5",
-        "day-13-s2-i6",
         "day-13-s2-i7",
         "day-13-s2-i8"
       ]
@@ -1497,7 +1424,7 @@
     {
       "family": "y",
       "compact": true,
-      "itemIds": ["day-14-s4-i1", "day-14-s4-i2", "day-14-s4-i3", "day-14-s4-i4"]
+      "itemIds": ["day-14-s4-i1", "day-14-s4-i2", "day-14-s4-i3"]
     }
   ],
   "day-14-section-5": [

@@ -77,7 +77,11 @@ def test_complete_audio_reused_without_git_cache_or_network(tmp_path, monkeypatc
     clip = tmp_path / "daily.mp3"
     clip.write_bytes(b"daily-fixture")
     monkeypatch.setattr(setup.source_audio, "installed", lambda: True)
-    monkeypatch.setattr(setup.daily_reading, "load", lambda: {"assets": [{"id": "daily"}]})
+    monkeypatch.setattr(
+        setup.daily_reading,
+        "load",
+        lambda: {"assets": [{"id": "daily"}], "derivedAssets": ["derived"]},
+    )
     monkeypatch.setattr(
         setup.daily_reading,
         "registered",
@@ -94,14 +98,22 @@ def test_complete_audio_reused_without_git_cache_or_network(tmp_path, monkeypatc
     assert setup.sync(repo.parent / "missing-cache") == {"commit": pinned, "reused": True}
 
 
-@pytest.mark.parametrize("damage", ["daily", "course"])
+@pytest.mark.parametrize("damage", ["daily", "derived", "course"])
 def test_damaged_audio_repaired_from_local_pin_without_pull(tmp_path, monkeypatch, damage):
     repo, pinned = repository(tmp_path, monkeypatch)
     monkeypatch.setattr(setup.source_audio, "installed", lambda: True)
-    if damage == "daily":
+    if damage in {"daily", "derived"}:
         clip = tmp_path / "daily.mp3"
         clip.write_bytes(b"corrupt")
-        monkeypatch.setattr(setup.daily_reading, "load", lambda: {"assets": [{"id": "daily"}]})
+        monkeypatch.setattr(
+            setup.daily_reading,
+            "load",
+            lambda: (
+                {"assets": [{"id": "daily"}]}
+                if damage == "daily"
+                else {"assets": [], "derivedAssets": ["derived"]}
+            ),
+        )
         monkeypatch.setattr(setup.daily_reading, "registered", lambda _: (clip, "0" * 64))
     else:
         catalog = setup.source_audio.catalog()

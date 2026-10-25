@@ -40,3 +40,7 @@ SPEC-012新增Qwen3-ForcedAligner-0.6B，Apache-2.0；官方Qwen/Qwen3-ForcedAli
 ## SPEC-013 私有 Docker 镜像
 
 镜像在构建期装入固定 PinYinSound 音频与 Whisper small，以便运行时完全使用本地资源。此打包不改变 PinYinSound 的 unknown 许可、课程/PDF的独立来源及其公开分发边界，不自动发布到公共镜像仓库。Whisper MIT 许可全文随包保存于 resources/licenses/Whisper-MIT.txt，来源为 OpenAI whisper v20250625 的 LICENSE（https://github.com/openai/whisper/blob/v20250625/LICENSE）。基础镜像、Debian构建工具和运行库的固定版本/官方来源见 docs/engineering/dependencies.md，OS组件许可保留于镜像/usr/share/doc。
+
+## 2026-10-25 天天练一声派生示范（DAILY-12）
+
+用户授权将固定PinYinSound中缺少一声的10个音节在本机处理为一声并记录来源。现有来源录音的unknown许可不变；本地派生WAV不纳入代码MIT或Qwen Apache许可，不提交Git、不对外发布。来源SHA、PSOLA参数在content/daily-reading-policy.json，结果SHA与配置摘要在private/pinyinsound/daily-first-tones.json。显式准备使用既有afconvert（macOS）或ffmpeg（Linux）及Python标准库，无新依赖；音高分析复用uv.lock维护组的librosa 1.0.0/numpy 2.5.3/scipy 1.18.1。

@@ -101,3 +101,7 @@ Kokoro/sherpa-onnx维护依赖已移除；使用[MLX-Audio 0.5.8](https://pypi.o
 Debian bookworm/security 软件包固定到 snapshot.debian.org 的20261015T000000Z快照（官方 https://snapshot.debian.org/），构建阶段安装 curl（curl许可）、FFmpeg（Debian构建GPL-2.0-or-later及其组件许可）以支持固定资源下载和音频检查；Python仅安装锁定的二进制轮子。运行镜像仅另含libgomp1（GCC运行库例外），各包许可保留在/usr/share/doc。具体实装与架构记录在SPEC-013，镜像内`dpkg-query -W`可查看精确版本。Whisper权重固定来源/摘要沿用scripts/asr_model.py，不纳入Git。
 
 DOCKER-05的Windows x86-64宿主运行Linux amd64容器，不新增Windows原生包或更换模型。uv.lock已锁定pywhispercpp1.5.1的CPython3.12 manylinux_2_27/2_28_x86_64轮子（SHA-256 973eafb3c27f4bc67f5e13f92491f91cee4ae0dd2d50c1b19c610f34c9ded9d8）及NumPy2.5.3对应Linux x86-64轮子；来源均为官方PyPI，许可证分别MIT与BSD-3-Clause。Docker内CPU后端通过已锁定pywhispercpp的context_params.use_gpu=false选择，固定Whisper small权重摘要不变。Windows/amd64轮子实装、模型初始化与推理按用户要求本次未验证；此前arm64实装不作为Windows证据。
+
+## DAILY-12 本地一声派生（2026-10-25）
+
+无新增npm/uv依赖或模型。显式准备使用Python 3.12标准库的wave/struct/math实现时域PSOLA，解码复用现有macOS afconvert或Linux FFmpeg；目标300Hz与来源SHA记录在content/daily-reading-policy.json。维护检查复用已锁定的librosa 1.0.0（ISC，官方https://github.com/librosa/librosa）、NumPy 2.5.3（BSD-3-Clause，官方https://numpy.org/）、SciPy 1.18.1（BSD-3-Clause，官方https://scipy.org/），本机已实装并用于10条派生音的音高检查，普通运行/准备不依赖此维护组。派生音保持原录音unknown许可，仅写入private。

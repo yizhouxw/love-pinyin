@@ -49,7 +49,11 @@ def prepare(archive: Path, *, archive_digest: str | None = None) -> dict:
             temporary.write_bytes((workspace / target.name).read_bytes())
             os.replace(temporary, target)
     atomic_json(root / "daily-decode-report.json", {"assets": report})
-    return {"clips": len(report), "source": source["commit"]}
+    from scripts.build_first_tones import prepare as prepare_first_tones
+
+    with tempfile.TemporaryDirectory(prefix="daily-first-tone-") as temp:
+        derived = prepare_first_tones(daily_reading.load()["assets"], Path(temp))
+    return {"clips": len(report), "derivedClips": len(derived), "source": source["commit"]}
 
 
 def main():
