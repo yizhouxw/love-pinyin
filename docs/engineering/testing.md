@@ -46,6 +46,8 @@ Vite的Chrome/Edge120、Firefox121、Safari17是构建语法目标，产品支�
 
 已记录macOS27.0 + Playwright1.63.0 Firefox启动报 `Could not find profile folder`。`test:e2e:local`只在这一精确组合且非CI时打印原因并选择另外五项目；`test:e2e`始终保留六项目，其他环境不跳过。既有调查关联[Playwright #42768](https://github.com/microsoft/playwright/issues/42768)及[Mozilla #2060476](https://bugzilla.mozilla.org/show_bug.cgi?id=2060476)，不将上游其他版本的报告当作本机测试。升级后须重验，不能把五项目通过写成Firefox通过。
 
+2026-10-25 DEPS-02升级到Playwright1.64.1后，在本机macOS27安装Chromium156、Firefox157及WebKit27.2运行时；Firefox实际启动/交互成功，`test:e2e:local`执行全部六项目36项通过，没有扩大旧版跳过条件。真实API/声音和移动真机仍分别验收，不把新版自动化浏览器当作原生Safari或实际手机。
+
 ## SOAK-01 长时观测
 
 实际安装Chrome与Playwright WebKit分别在隔离服务中运行至少20分钟墙钟时间。`LOVE_PINYIN_SOAK_SECONDS=90 npm run test:e2e:soak`仅是烟测，不满足长测验收。全程真实题目与声音、UI答题和休息，导出记录数必须一致。

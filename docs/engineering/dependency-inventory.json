@@ -323,11 +323,11 @@
     },
     {
       "path": "node_modules/@playwright/test",
-      "version": "1.63.0",
+      "version": "1.64.1",
       "license": "Apache-2.0",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-oxMK4vllB9RK5NQ2l1pq1IfOf2AvnEuj/vYGDj0H2nMtmtZpKtCwt/l00GEO6xjGfpBNAvjovvYdCm50dRQkpQ=="
+      "integrity": "sha512-IaYGml/nSOiZWROfPtuIL7neuu9qDOZ3TNvNljUIrhDMxiGTgPjzj/g9p9RxpS2tSepPDRY+UwAaEeiKtUvIAg=="
     },
     {
       "path": "node_modules/@rolldown/binding-android-arm-eabi",
@@ -523,75 +523,75 @@
     },
     {
       "path": "node_modules/@typescript-eslint/eslint-plugin",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-nDNrUQ/4ruSNYbu749TRY7cfrzPtoLHEXSNBI8aaNY32LlZCajixqRf3FqcKC4p5Cam4VOHYx/t+i5+nKXvrqA=="
+      "integrity": "sha512-aysKgysPX9XOv/dk95UkvUDe++Q3n3dJPG9CEWT3RUccxfkPJ+Qn6nhKPDhZXU6Ofo9kgwGWwKyQCnZIXTgngg=="
     },
     {
       "path": "node_modules/@typescript-eslint/eslint-plugin/node_modules/ignore",
-      "version": "7.0.10",
+      "version": "7.0.14",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-HpbUakT7xp5miBUywCHf36ZEuAJNklBJDDsGpUIjMzOSmM8ELSfA9Sa/QDPeNeqeoN31u+UTCkL4klCOVvRm4Q=="
+      "integrity": "sha512-wCBiZ77u1tuWde6G/nfOtLaCTYcFDU5yCzARzK10y+rLhzYoL7a7yEemcopcc2Mzow7gZOIjnV2ym1NYmdiJOQ=="
     },
     {
       "path": "node_modules/@typescript-eslint/parser",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-nO974WLllwhSFWQXnMLj6nDGa8f0khKEz1JzpPJ1u7Vm/4X1X6ZHajpoknU4bb41vJyMB0HHVyS2GqdhWfIXZw=="
+      "integrity": "sha512-0O+x3ynciD6zuXb1CKSu165haQV6ey53DKhHHUnujP7U+XlltJG+/keT0Xhd1HXCze+IHf7Tvt39ovyepX/LNw=="
     },
     {
       "path": "node_modules/@typescript-eslint/project-service",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-62xOgboPfwc3/IgPSX/W6oQR3ZbF04194FPGUGH8HL8iLFHbt/456/8Ph1wLNUgVF+s94FlHoipBsz+v7+LMnA=="
+      "integrity": "sha512-bzHngBbmIgzj6TsTjVUCntGx6FFLgE7mPjpO0PzHycOaZHXqS43XnrkFIHRS16LLr/xO6FHSXG3GJFo/F4bSBQ=="
     },
     {
       "path": "node_modules/@typescript-eslint/scope-manager",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-Pa0EeSeAusQc1WbjQMac+YfenewYTBu0KjgYvkUKwhXaHUKbFog23Dm/rp0DX/6tyYOQ3Xl1a+3EcFNZynGHCw=="
+      "integrity": "sha512-JewPyJOYcXBSAS7PIgufscHOwZqhTGyBRiQJhhuDln66tMchxvvt7nJ90JKKIoOelmdHA3kAQbm9cEUHc4JSEA=="
     },
     {
       "path": "node_modules/@typescript-eslint/tsconfig-utils",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-jumze1fPI+sDOaM2TWGQdn39PDxTr7TZGeuyLkAbNyx2vtMT3uRnVKChN0hfht5V2TugphJzF6bYXvBcE09qqg=="
+      "integrity": "sha512-0vbxCf7xLVPSjcOdm6eQbgViH8EDJ8xnl1laLT9yoqSz2YmcSfSg5Vdl0JUvZf6rcuJ0ZivJIuMD4edTg8obaA=="
     },
     {
       "path": "node_modules/@typescript-eslint/type-utils",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-7zKTnyvaVWqzLZHPFQtX1hVHqgkMC+WebPWakNCSyrQVbIP1AM0L0TlBZtACldIRb6PptI8Odk+jyZ5kP3B1VA=="
+      "integrity": "sha512-gEXxmmbSTSOVTC37IYYvremOM31v+UN2W772bJxmVYPhAOPSUxtacyb7wkm1EhkYKU6KzFJsdU44DCV4to0LWw=="
     },
     {
       "path": "node_modules/@typescript-eslint/types",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-Dm1ypdhhrGCTyyehxElhgJ6kgk8MVCv5qXdoOVqPr1uqk42jX8KjrZqhROvdShczA8qrDoYiOWn1ykWlx2k81Q=="
+      "integrity": "sha512-Adfoy59kxNEjT5E5fnyrp7GpHYuWs8ONbdohu4ez6IU46qDq8LltG90tLmkucZB2uhYL8mqBjtXqGd8yhfjXqQ=="
     },
     {
       "path": "node_modules/@typescript-eslint/typescript-estree",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-TU8PwyGN0PQJUcE96mw8eCQ44SmxGdQlJmlWakHaHQ15eIuuvye5yNtmh/i6oS88jzXVQB71xdNkbkB/fMwL0g=="
+      "integrity": "sha512-gwLfFgWcw15tN2KXDCJvxEOQjPn+P3j/n3eSqkZ5sX4VpW9Cosodr+tWwBZRvJT3TcKx6HnPRGZMCNAiP1Xhug=="
     },
     {
       "path": "node_modules/@typescript-eslint/typescript-estree/node_modules/semver",
@@ -603,19 +603,19 @@
     },
     {
       "path": "node_modules/@typescript-eslint/utils",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-Esgul8MsnKnRLdYU2Eb2cRV9bS5HJYtKj1ByJnOzzG2M58DGdSUQ1jUuILxipqcpB2h9WLrbD5GijIWUjX/Tqw=="
+      "integrity": "sha512-0up3oArJZBYnzOaEXKo8DmI43QvMZyPoFEt9LWzRJcyl/RcJjfKKPebknN1VbTgXBf3M/KggUh5uUMdURLnseg=="
     },
     {
       "path": "node_modules/@typescript-eslint/visitor-keys",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-Vwj9lUIW5Xq3wQ9w6gv3R86g1hMK8f2zNOdGTAgeXUMMXFK78G9ruCjjqutHMNJc0+CH7LYRnHeUB9IT8wFmcw=="
+      "integrity": "sha512-E2mroviasaWecDzTGiGMtuEguuLVOeRggnrIn93CJuxYJzQBHbyymlT08aVQydbBal5538o+JkBKXh2sRuCyIA=="
     },
     {
       "path": "node_modules/@vitejs/plugin-react",
@@ -1371,19 +1371,19 @@
     },
     {
       "path": "node_modules/playwright",
-      "version": "1.63.0",
+      "version": "1.64.1",
       "license": "Apache-2.0",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-+7ziBLidS4NaNCdt57SUDT+wYmmd5fmiQejUic/kb+YsYSCPyOOE9sebzMjNmQrsnNpDJqd4WHvV/8lfKfUDUg=="
+      "integrity": "sha512-HCrVhHr5QQuwYoswEUGTb7gGp522yflbv/ST8nF4sFWGuLjQCt17Q/EubpGGSNKYn1tsTCPZxqHhHCfVURu7UA=="
     },
     {
       "path": "node_modules/playwright-core",
-      "version": "1.63.0",
+      "version": "1.64.1",
       "license": "Apache-2.0",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg=="
+      "integrity": "sha512-BC4s8y6SEVA6Q1rSxZTto8hI1KUI3xXlHGZgvGqP4IqPdI/a6FX9H29IDNz7vKo9l21b6LfYosScPL6M3xxyDQ=="
     },
     {
       "path": "node_modules/postcss",
@@ -1403,11 +1403,11 @@
     },
     {
       "path": "node_modules/prettier",
-      "version": "3.9.9",
+      "version": "3.9.10",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-Z/CJHIkdujO/OtN7nXUii0Rf3VT5SRuhjBA82Xvu2XhBUgX3nhP67T0LHceBdQLex7OOFGTox+Q5Yg8Jk2Qivg=="
+      "integrity": "sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA=="
     },
     {
       "path": "node_modules/punycode",
@@ -1435,19 +1435,19 @@
     },
     {
       "path": "node_modules/react",
-      "version": "19.3.0",
+      "version": "19.3.1",
       "license": "MIT",
       "dev": false,
       "optional": false,
-      "integrity": "sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog=="
+      "integrity": "sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw=="
     },
     {
       "path": "node_modules/react-dom",
-      "version": "19.3.0",
+      "version": "19.3.1",
       "license": "MIT",
       "dev": false,
       "optional": false,
-      "integrity": "sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q=="
+      "integrity": "sha512-Y0bARz53lhEC1NMCASs0/j+faB/zqt3R8hpvg1e8+61ZVJ4UL0UdC4cBbXfZMcIuhrfgeILTLe+ZeBCavQPtKQ=="
     },
     {
       "path": "node_modules/require-from-string",
@@ -1563,11 +1563,11 @@
     },
     {
       "path": "node_modules/typescript-eslint",
-      "version": "8.70.1",
+      "version": "8.72.0",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-AcWG7KDjZ2THNXsgwttMaGmzVi0VFRlFYfqFHYQRbDpF3owuYbuiL8c7UUrd2k8s3PoSfIQrWfrGXfcElrWLYA=="
+      "integrity": "sha512-r26Fkc8As+mZvqp7SLsMmNFyYUup/6CjK7/eHBHmhOw6GH6n6YFxHVFrG0jN1c5CMpDzelLPxvgeCOzx7BjN+A=="
     },
     {
       "path": "node_modules/undici-types",
@@ -1595,11 +1595,11 @@
     },
     {
       "path": "node_modules/vite",
-      "version": "8.3.4",
+      "version": "8.3.5",
       "license": "MIT",
       "dev": true,
       "optional": false,
-      "integrity": "sha512-IftLE8phJhdNRIGNEV4JCCvfNScoZQVfcXaN8TQropWGJtOHcu+iAB9pHcuGvmEb/kddw0LBe/jS8ztdC6xdiQ=="
+      "integrity": "sha512-z1YpjieJ9g0ebTmQpLBv/oq9E3F9EIlOe+7LahW8SrE3LTiG3udBRUXQOlYXP9b+IC2q2phHeVxj9xGlw34OEQ=="
     },
     {
       "path": "node_modules/vitest",

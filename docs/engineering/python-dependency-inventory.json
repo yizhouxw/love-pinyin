@@ -79,7 +79,7 @@
     },
     {
       "name": "fastapi",
-      "version": "0.143.0",
+      "version": "0.159.1",
       "licenseExpression": "MIT",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
@@ -279,7 +279,7 @@
     },
     {
       "name": "numpy",
-      "version": "2.5.3",
+      "version": "2.5.4",
       "licenseExpression": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
@@ -433,7 +433,7 @@
     },
     {
       "name": "ruff",
-      "version": "0.17.0",
+      "version": "0.17.1",
       "licenseExpression": "MIT",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],

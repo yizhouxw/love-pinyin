@@ -6,15 +6,15 @@
 
 | 用途            | 依赖                                    | 许可                              | 结果/选择原因                                                        |
 | --------------- | --------------------------------------- | --------------------------------- | -------------------------------------------------------------------- |
-| UI              | react / react-dom 19.3.0                | MIT                               | 单页交互生态成熟，后续可放入原生壳                                   |
-| 构建            | vite 8.3.4 / plugin-react 6.1.1         | MIT                               | Node24兼容，静态产物由Mac API服务                                    |
-| 类型            | typescript 6.0.3                        | Apache-2.0                        | 最新7.0.2超出typescript-eslint 8.70.1的peer范围，因此锁6.0.3         |
-| 格式/lint       | prettier3.9.9 / ESLint10.12.0           | MIT                               | 自动化统一代码风格                                                   |
-| 测试            | Vitest5.0.4 / Playwright1.63.0          | MIT / Apache-2.0                  | 已下载三浏览器运行时；不等同真机                                     |
+| UI              | react / react-dom 19.3.1                | MIT                               | 单页交互生态成熟，后续可放入原生壳                                   |
+| 构建            | vite 8.3.5 / plugin-react 6.1.1         | MIT                               | Node24兼容，静态产物由Mac API服务                                    |
+| 类型            | typescript 6.0.3                        | Apache-2.0                        | 最新7.0.2超出typescript-eslint 8.72.0的peer范围，因此锁6.0.3         |
+| 格式/lint       | prettier3.9.10 / ESLint10.12.0          | MIT                               | 自动化统一代码风格                                                   |
+| 测试            | Vitest5.0.4 / Playwright1.64.1          | MIT / Apache-2.0                  | 已下载三浏览器运行时；不等同真机                                     |
 | 内容Schema      | Ajv8.20.0                               | MIT                               | JSON结构及教学引用门禁                                               |
-| API             | FastAPI0.143.0 / Uvicorn0.54.0          | MIT / BSD-3-Clause                | 实际内容、家庭数据及资源API                                          |
-| 服务端测试/lint | pytest9.1.1 / httpx0.28.1 / ruff0.17.0  | MIT / BSD-3-Clause / MIT          | 锁定在uv dev组                                                       |
-| 声学研究        | librosa1.0.0 / NumPy2.5.3 / SciPy1.18.1 | ISC / BSD-3-Clause / BSD-3-Clause | `assessment-poc`独立组，仅研究候选；已验证arm64原生轮子及YIN合成信号 |
+| API             | FastAPI0.159.1 / Uvicorn0.54.0          | MIT / BSD-3-Clause                | 实际内容、家庭数据及资源API                                          |
+| 服务端测试/lint | pytest9.1.1 / httpx0.28.1 / ruff0.17.1  | MIT / BSD-3-Clause / MIT          | 锁定在uv dev组                                                       |
+| 声学研究        | librosa1.0.0 / NumPy2.5.4 / SciPy1.18.1 | ISC / BSD-3-Clause / BSD-3-Clause | `assessment-poc`独立组，仅研究候选；已验证arm64原生轮子及YIN合成信号 |
 | 数据库          | Python标准库sqlite3                     | 随Python/SQLite各自许可           | 单Mac家庭使用，避免数据库运维                                        |
 
 Node24.18.1、npm11.16.0、uv0.12.5、Python3.12.12。本机更高Python版本不直接用于声学依赖，以减少兼容风险。安装Python时uv出现动态库install-name修补警告；预编译依赖与现有测试可运行，未来构建原生扩展须另行验证，不能据此声称所有C扩展都可编译。
@@ -55,6 +55,34 @@ CI Actions均为MIT，版本v7.0.0，通过各官方仓库发行tag核对并固�
 一手资料：[Vite要求](https://vite.dev/guide/)、[uv项目与锁文件](https://docs.astral.sh/uv/guides/projects/)、[FastAPI部署](https://fastapi.tiangolo.com/deployment/)、[librosa](https://librosa.org/doc/latest/index.html)、[Playwright](https://playwright.dev/docs/intro)。版本和许可证通过npm/PyPI包元数据及实际安装核对，详见锁文件，不靠搜索片段推定。
 
 已观察到的非阻塞提示：npm未执行可选fsevents安装脚本（未放宽脚本授权，Vite构建/测试已可运行）；FastAPI的上游TestClient对httpx与AnyIO接口发出弃用提醒，既有API测试可运行，升级测试客户端时再处理，不屏蔽警告。
+
+### DEPS-02（2026-10-25）
+
+按用户要求关闭Dependabot #13–25，兼容变更在main本地验证后提交。采用12项提案：#13–22及#24–25；#16补齐React一起升级，#14/#20/#22/#25补齐生成依赖清单。保持TypeScript6.0.3、Node24.18.1、npm11.16.0、uv0.12.5、Python3.12.12。
+
+| 包                | 固定版本        | 官方来源                                                                                                            | 许可         |
+| ----------------- | --------------- | ------------------------------------------------------------------------------------------------------------------- | ------------ |
+| React / React DOM | 19.3.1 / 19.3.1 | [React](https://github.com/facebook/react/releases/tag/v19.3.1)、[npm](https://registry.npmjs.org/react-dom/19.3.1) | MIT          |
+| Vite              | 8.3.5           | [发行](https://github.com/vitejs/vite/releases/tag/v8.3.5)                                                          | MIT          |
+| Playwright        | 1.64.1          | [发行](https://github.com/microsoft/playwright/releases/tag/v1.64.1)                                                | Apache-2.0   |
+| Prettier          | 3.9.10          | [发行](https://github.com/prettier/prettier/releases/tag/3.9.10)                                                    | MIT          |
+| typescript-eslint | 8.72.0          | [发行](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.0)                                 | MIT          |
+| FastAPI           | 0.159.1         | [发行](https://github.com/fastapi/fastapi/releases/tag/0.159.1)                                                     | MIT          |
+| Ruff              | 0.17.1          | [发行](https://github.com/astral-sh/ruff/releases/tag/0.17.1)                                                       | MIT          |
+| NumPy             | 2.5.4           | [PyPI](https://pypi.org/project/numpy/2.5.4/)                                                                       | BSD-3-Clause |
+
+全部精确pin、官方registry、归档摘要及传递依赖见package-lock.json/uv.lock，两份自动许可清单同步实际锁定版本。MLX-Audio保留0.5.8及原MLX0.32.3，不采纳#23：新版引擎需要单独处理生成配置/缓存/历史素材来源并验证离线TTS与对齐；没有当前产品必需的新能力，不以Linux默认组CI通过作为Apple Silicon推理通过。
+
+Actions继续使用MIT许可与完整commit pin，以下commit由官方仓库发行tag通过git ls-remote核对：
+
+| 官方来源                                                                                         | 固定commit                                 |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------ |
+| [actions/checkout v7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1)               | `3d3c42e5aac5ba805825da76410c181273ba90b1` |
+| [actions/setup-node v7.1.0](https://github.com/actions/setup-node/releases/tag/v7.1.0)           | `949feb2413d6458794dcd2491c4babbbce0c15c1` |
+| [actions/upload-artifact v7.0.2](https://github.com/actions/upload-artifact/releases/tag/v7.0.2) | `cf430e030ddbb5b0abf93d22962f4752f3646cd9` |
+| [astral-sh/setup-uv v10.3.2](https://github.com/astral-sh/setup-uv/releases/tag/v10.3.2)         | `07a047e608db84b3d8c06cd9a7c7dcc9c355c18e` |
+
+核对setup-uv该commit的[action.yml](https://github.com/astral-sh/setup-uv/blob/07a047e608db84b3d8c06cd9a7c7dcc9c355c18e/action.yml)：仍支持version与enable-cache输入，内部node24运行时与托管ubuntu runner匹配；应用uv保持0.12.5。contents只读权限、失败诊断目录与7天保留时间不变。实际远端CI与上传分支执行结果分别记录，不由本地成功推定。
 
 ## 本机私有音频制作依赖
 

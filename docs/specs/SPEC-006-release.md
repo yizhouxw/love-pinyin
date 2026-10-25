@@ -38,6 +38,20 @@ DEPS-01本机完成记录：采用#1–7、#9、#11–12的10项更新；#8/#10�
 
 2026-10-25的verify:all通过131项前端/工具、389项服务端、30项本机浏览器视口、40项真实API/SQLite/声音GUI回归；validate:release通过（14课、83知识项、476题；14份840条每日材料、602个标准音白名单）。新增test_no_telemetry.py验证宿主遥测环境变量不能开启provider或网络连接。证据留在忽略目录private/deps01-verify-all.log、deps01-release.log、deps01-audit.json和deps01-npm-tree.log。保留macOS27 + Playwright1.63既有Firefox例外和上游AnyIO弃用提示；未新增移动真机、家庭LAN故障或Docker镜像重建验收，远端Actions运行不由本机结果推定。
 
+## DEPS-02：关闭依赖 PR 后直接维护 main（2026-10-25）
+
+按用户要求关闭Dependabot #13–25，不合并PR。在main本地整合兼容更新：React/react-dom一起固定到19.3.1，修复#16的peer冲突；更新Vite8.3.5、Playwright1.64.1、Prettier3.9.10、typescript-eslint8.72.0、FastAPI0.159.1、Ruff0.17.1及NumPy2.5.4。四项Actions更新按官方发行commit核对，Node/npm/uv/Python运行版本及只读权限保持不变。
+
+#23的MLX-Audio0.6.1暂不采用：当前0.5.8已验证用于固定Qwen声音和对齐；升级会使现有生成配置/缓存与实际引擎版本不一致，且没有当前产品必需的新能力。保持原引擎及历史素材来源，不仅为追新重生成素材。后续需要新版能力时，另做引擎版本检查、缓存区分和Apple Silicon离线生成/对齐验收。
+
+验收：提交两份依赖许可清单与来源/实装记录；正常npm ci、npm ls --all、uv sync --locked及维护组同步成功，不绕过peer冲突；npm audit、verify:all、validate:release和受影响声音/游戏功能回归。Playwright升级后实际重验Firefox，不能沿用1.63.0的本机例外或把失败隐藏。每项如实报告，不以本机验证替代远端Actions、移动真机或家庭LAN验收。相关修复验证后直接提交并正常push到main，不创建新PR。
+
+DEPS-02本机完成记录（基于main 43ebc41及本次依赖变更）：13个PR全部关闭且未合并；采用12项更新，MLX-Audio暂不升级。正常npm ci、npm ls --all、uv sync --locked及assessment-poc/voice-build组同步通过；npm audit为0，两份许可清单与锁定版本同步。官方Actions发行tag与完整commit一致，setup-uv新版本仍支持所用输入。
+
+安装新版三浏览器后，`npm run verify:all`完整通过141项前端/工具、426项后端、36项六项目视口（含Firefox）、40项真实API/SQLite浏览器测试；`npm run validate:release`通过（14课、83知识项、476题；14份785条每日材料、607个标准音白名单）。另跑Chromium/WebKit共20项声音/游戏专项通过，覆盖743份不同WAV实际解码、标准音/课程录音、断网缓存重播及四场景操作/暂停/设置/保存恢复。新版NumPy2.5.4配合现有Whisper在禁止socket联网的进程内，正确识别随包非隐私示范“弟弟哭了。”；音节匹配不评价四声或专业发音。DSP合成信号检查仅证明运行库可用。
+
+首轮verify:all在浏览器下载结束前过早进入E2E，因缺少Firefox/WebKit可执行文件失败；保留private/deps02-verify-before-browsers.log，安装完成后完整重跑，不扩大跳过条件。最终证据为private/deps02-{verify-all,release,product-chromium,product-webkit}.log及deps02-{audit,real-asr,dsp}.json；保留既有AnyIO弃用和构建体积提示。未新增移动真机、家庭LAN、长时soak、Docker重建、Actions失败上传分支的通过结论；远端新main CI结果独立核对。其他正在编写的游戏关卡改动不属于本次提交或以上验证范围。
+
 ## 跨端、性能与安全验收
 
 完整执行 [UX 验收矩阵](../product/UX.md)。登记真实设备/浏览器版本并冻结首版支持下限；所有声明支持设备均能配对、听音、完成四类客观题、保存及跨设备读进度。桌面 Firefox/WebKit/Chromium 自动化与手机视口通过不等于 iOS/Android 实机通过。
