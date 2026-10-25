@@ -96,3 +96,5 @@ Mac 系统时钟保护切片：SQLite迁移5引入记录（当前数据库迁移
 ## GAME-03 游戏记录和时长备份
 
 SPEC-017增加游戏来源和最近7天的游戏效果统计，不改变原客观成绩/掌握规则。JSON备份v5可选profile.gameState、settings.gameSessionMinutes/gameDailyMinutes和session.gameId；旧备份缺省为空时钟和15/60分钟，恢复保留冻结题单与首次结果。删除学习记录保留游戏额度及设置；明确重置家庭档案才清除。SQLite迁移8增加相应字段，拒绝未知后续迁移。
+
+SCENE/ADAPT修订：schema5会话增加可选gameSettings，冻结本轮实际难度、速度和匹配依据；缺省为空对象，严格校验字段/枚举/计数。SQLite迁移9增加sessions.game_settings_json，不改变首次成绩、课程范围或时长状态。

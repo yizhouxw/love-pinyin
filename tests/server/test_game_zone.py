@@ -15,6 +15,11 @@ from server.game_service import clock_status
 from server.profile_backup import _restore_backup, _validate_backup
 
 
+@pytest.fixture(autouse=True)
+def game_audio(registered_audio_catalog):
+    """Only registration integrity, never pronunciation evidence."""
+
+
 def request(client, path, body=None, method="post"):
     return client.request(
         method.upper(),
@@ -108,7 +113,7 @@ def test_game_sessions_use_learned_content_and_freeze_recovery(
     lesson_ids = {"lesson-01", "lesson-02", "lesson-03"}
     for task in session["tasks"]:
         question = map_by_id("exercises")[task["exercise"]["id"]]
-        assert question["type"] == GAMES[game_id]["mode"]
+        assert question["type"] in GAMES[game_id]["modes"]
         assert question["lessonId"] in lesson_ids
         assert "answer" not in task["exercise"]
     restored = client.get("/api/v1/sessions/current").json()

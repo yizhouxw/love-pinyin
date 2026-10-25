@@ -32,6 +32,8 @@ import {
 import { DailyReadingPage } from './daily-reading';
 import { gameCatalog } from '../domain/games';
 import { GameZone, GamePause } from './game-zone';
+import { SceneGame } from './scene-game';
+import { readScenePreference } from '../platform/game-preferences';
 import { useGameClock } from './use-game-clock';
 import { GameOptionContent } from './game-option-content';
 import { GuestPanel } from './guest-panel';
@@ -372,7 +374,16 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     if (guidanceEnabled) playVoice('ui-start');
     const started = (await api('/sessions', {
       method: 'POST',
-      body: JSON.stringify({ lessonId, ...(gameId ? { gameId } : {}) }),
+      body: JSON.stringify({
+        lessonId,
+        ...(gameId
+          ? {
+              gameId,
+              gameDifficulty: readScenePreference(gameId).difficulty,
+              gameSpeed: readScenePreference(gameId).speed,
+            }
+          : {}),
+      }),
     })) as Session;
     setSession(started);
     setBlendDraft(null);
@@ -518,6 +529,57 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           void gameClock.resume();
         }}
         onExit={() => void act(exitGame)}
+      />
+    );
+
+  if (active?.gameId && game && question && task)
+    return (
+      <SceneGame
+        key={task.instanceId}
+        gameId={game.id}
+        settings={active.gameSettings}
+        question={question}
+        index={taskIndex}
+        total={active.tasks.length}
+        voice={voice}
+        busy={busy}
+        locked={answerNeedsAudio}
+        error={error}
+        answer={answer}
+        hint={hint}
+        corrected={corrected}
+        reducedMotion={progress?.settings.reducedMotion ?? false}
+        pendingOptionId={readPendingAnswer(task.instanceId)?.answerOptionId}
+        onInteract={() => {
+          voiceStarted.current = true;
+        }}
+        onAnswer={submitOption}
+        onExit={() => void act(exitGame)}
+        onNext={() =>
+          void act(async () => {
+            stopVoice();
+            setSession((await api('/sessions/current')) as Session);
+            setAnswer(null);
+            setHint(null);
+            setBlendDraft(null);
+          })
+        }
+        onHint={() =>
+          void act(async () => {
+            const data = await api(`/instances/${task.instanceId}/hint`, { method: 'POST' });
+            setHint(data as Hint);
+          })
+        }
+        onSkip={() =>
+          void act(async () => {
+            stopVoice();
+            await api(`/instances/${task.instanceId}/skip`, { method: 'POST' });
+            setSession((await api('/sessions/current')) as Session);
+            setAnswer(null);
+            setHint(null);
+            setBlendDraft(null);
+          })
+        }
       />
     );
 
@@ -1092,7 +1154,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 <div>
                   <span className="eyebrow">边玩边学 · 每次短一点</span>
                   <h2>拼音游戏乐园</h2>
-                  <p>听音寻宝、声调探险、字形侦探、拼读列车。</p>
+                  <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
                 </div>
                 <button
                   onClick={() => {

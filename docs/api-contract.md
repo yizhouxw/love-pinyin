@@ -71,7 +71,7 @@
 
 ## 实际 SQLite 存储
 
-`server/storage.py` 维护迁移1–7及下列表：`schema_migrations`、`household`、`pairing_codes`、`devices`、`exercise_instances`、`attempts`、`request_receipts`、`review_plans`、`sessions`、`skipped_instances`、`assessment_summaries`。家庭设置在household中，没有独立profiles/settings表；assessment_summaries仅为历史兼容，首版不创建发音评测结果。
+`server/storage.py` 维护迁移1–9及下列表：`schema_migrations`、`household`、`pairing_codes`、`devices`、`exercise_instances`、`attempts`、`request_receipts`、`review_plans`、`sessions`、`skipped_instances`、`assessment_summaries`。家庭设置在household中，没有独立profiles/settings表；assessment_summaries仅为历史兼容，首版不创建发音评测结果。
 
 外键、实例唯一约束及事务保证一致性。每日同题去重在写事务内查询，服务端进度可从有效事件重建。未知迁移版本在改journal模式和执行DDL前拒绝，不能自动清库。具体字段与约束以迁移代码为准。
 
@@ -94,3 +94,5 @@ ACCESS-03：家长API与`/local/pairing-code`仅接受来源127.0.0.1且Host hos
 - `PUT /household/settings`可选整数gameSessionMinutes（1～60，默认15）、gameDailyMinutes（1～180，默认60）；仍需soundEnabled和本机家长权限，未传保留。
 - 游戏hint/skip/首次answer在同一写事务内检查授权；超限返回409 GAME_SESSION_LIMIT/GAME_DAILY_LIMIT，过期GAME_PAUSED，回拨GAME_CLOCK_ROLLBACK。已成功答案的幂等回执仍可重读。普通课程接口不受游戏时长限制。
 - 时间按服务器UTC、日额度按Asia/Shanghai零点；跨设备重叠区间只计一次。`profile.gameState`保存version、days、runSeconds、accountedAt、leaseUntil，不含凭据。SQLite迁移8、JSON备份v5的可选扩展见SPEC-005。访客通过现有operate白名单使用同一计算，但仅标签页保留额度。
+
+SCENE/ADAPT修订：`GET /games`增加`recommendation`（level/speed/sampleSize/correctCount/masteredCount），仅统计家长所选课及之前知识的有效掌握样本。`POST /sessions`新增gameDifficulty（auto/gentle/steady/challenge）及gameSpeed（auto/slow/normal/fast），默认auto；游戏响应和恢复包含冻结的`gameSettings`（实际level/speed、requestedDifficulty/requestedSpeed、推荐快照、version=1）。题库优先场景对应类型，缺少时以已学听辨/声调/拼读补足，必须具备真实标准音。最多六题，优先待巩固和当前课，再按历史轮转；难度不解锁课程。SQLite迁移9增加sessions.game_settings_json，schema5备份增加可选session.gameSettings；旧会话/旧备份默认为空对象。浏览器物理状态不上传，未命中动作不调用作答API。

@@ -19,4 +19,8 @@ export type GameReport = {
   pendingClock: number;
   practiceKnowledgeIds: string[];
 };
-export type GameOverview = { clock: GameClock; report: GameReport };
+export type GameOverview = {
+  clock: GameClock;
+  report: GameReport;
+  recommendation?: import('./scene-game').GameSettings['recommendation'];
+};

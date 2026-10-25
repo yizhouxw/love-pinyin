@@ -3,7 +3,7 @@ import { expect, type Page } from '@playwright/test';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
 import { test } from '../support/real-server';
 import { openSection } from '../support/interaction';
-import { optionById } from '../support/options';
+import { playScene } from '../support/scene-actions';
 
 test.use({ selectedPinyinSource: true });
 
@@ -41,7 +41,7 @@ test('GAME-01/03: spoken game, first-answer evidence, corrections, skips and fro
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await expect(page.getByLabel('游戏时长约定')).toContainText('每次最多 15 分钟');
   await expect(page.getByLabel('游戏时长约定')).toContainText('每天最多 60 分钟');
-  await expect(page.getByRole('button', { name: '开始拼读列车' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: '开始星际投递' })).toBeEnabled({ timeout: 15000 });
   for (const width of [1280, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
@@ -52,27 +52,26 @@ test('GAME-01/03: spoken game, first-answer evidence, corrections, skips and fro
       fullPage: true,
     });
   }
-  await page.getByRole('button', { name: '听玩法：字形侦探', exact: true }).click();
+  await page.getByRole('button', { name: '听玩法：节奏鼓岛', exact: true }).click();
   await expect.poll(() => voices.some((url) => url.endsWith('/voice/ui-game_shape'))).toBe(true);
   const created = page.waitForResponse(
     (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
   );
-  await expect(page.getByRole('button', { name: '开始字形侦探' })).toBeEnabled();
-  await page.getByRole('button', { name: '开始字形侦探' }).press('Enter');
+  await expect(page.getByRole('button', { name: '开始节奏鼓岛' })).toBeEnabled({ timeout: 15000 });
+  await page.getByRole('button', { name: '开始节奏鼓岛' }).press('Enter');
   const session = await (await created).json();
   const first = session.tasks[0];
   const question = curriculum.exercises.find((q) => q.id === first.exercise.id)!;
   const wrong = question.options.find((o) => o.id !== question.answer.optionId)!;
-  await expect(page.getByLabel('本关探索进度')).toBeVisible();
-  await expect(optionById(page, wrong.id)).toBeEnabled();
-  await optionById(page, wrong.id).press('Enter');
-  await expect(page.locator('.feedback')).toContainText('没关系');
-  await expect(optionById(page, question.answer.optionId!)).toBeEnabled();
-  await optionById(page, question.answer.optionId!).press('Enter');
-  await expect(page.locator('.feedback')).toContainText('找到正确答案');
-  await page.getByRole('button', { name: '继续 →', exact: true }).click();
+  await expect(page.locator('.scene-nav')).toContainText('第 1 /');
+  await playScene(page, wrong.id);
+  await expect(page.locator('.feedback')).toContainText('再听一听');
+  await page.getByRole('button', { name: '再走一次这段场景' }).click();
+  await playScene(page, question.answer.optionId!);
+  await expect(page.locator('.feedback')).toContainText('找到正确目标');
+  await page.getByRole('button', { name: '继续航程 →', exact: true }).click();
   await page.reload();
-  await expect(page.locator('.play-nav strong')).toHaveText(`第 2 / ${session.tasks.length} 关`);
+  await expect(page.locator('.scene-nav')).toContainText(`第 2 / ${session.tasks.length} 关`);
   const restored = await (await page.request.get(`${appUrl}/api/v1/sessions/current`)).json();
   expect(restored.tasks).toEqual(session.tasks);
   expect(restored.gameId).toBe('shape');
@@ -113,8 +112,11 @@ test('GAME-02: real parent settings, expiry, reload, offline pause and server re
   await expect(page.getByRole('status').filter({ hasText: '游戏时长已保存' })).toBeVisible();
   await page.getByRole('button', { name: '返回学习', exact: true }).click();
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
-  await page.getByRole('button', { name: '开始字形侦探' }).click();
-  await expect(page.locator('.game-option').first()).toBeEnabled();
+  await page.getByRole('button', { name: '开始节奏鼓岛' }).click();
+  await page.getByRole('button', { name: '听拼音', exact: true }).click();
+  await expect(
+    page.getByRole('group', { name: '场景动作' }).getByRole('button').nth(1),
+  ).toBeEnabled({ timeout: 15000 });
   await page.route('**/api/v1/games/heartbeat', (route) => route.abort('failed'));
   await expect(page.getByRole('heading', { name: '游戏先暂停一下' })).toBeVisible({
     timeout: 15000,
@@ -122,7 +124,9 @@ test('GAME-02: real parent settings, expiry, reload, offline pause and server re
   expect(await page.locator('.game-option').count()).toBe(0);
   await page.unroute('**/api/v1/games/heartbeat');
   await page.getByRole('button', { name: '继续游戏', exact: true }).click();
-  await expect(page.locator('.game-option').first()).toBeEnabled();
+  await expect(
+    page.getByRole('group', { name: '场景动作' }).getByRole('button').nth(1),
+  ).toBeEnabled({ timeout: 15000 });
   // Fast-forward only the disposable database's clock usage. The production API,
   // browser timer and media remain real; this is not a 15-minute duration claim.
   python(
@@ -148,7 +152,7 @@ with storage.transaction() as db:
   await page.getByRole('button', { name: '休息后检查时间' }).click();
   await expect(page.getByRole('heading', { name: '该休息一下啦' })).toBeVisible();
   await page.getByRole('button', { name: '保存并回游戏乐园' }).click();
-  await expect(page.getByRole('button', { name: '开始字形侦探' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: '开始节奏鼓岛' })).toBeDisabled();
   // A later day restores the daily budget; only a real ten-minute idle gap
   // resets a run. Represent that gap in the isolated server state.
   python(
@@ -165,35 +169,26 @@ with storage.transaction() as db:
 `,
   );
   await page.getByRole('button', { name: '刷新可玩时间' }).click();
-  await expect(page.getByRole('button', { name: '开始字形侦探' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: '开始节奏鼓岛' })).toBeEnabled({ timeout: 15000 });
 });
 
-test('GAME-01: real standard sound completes before choosing treasure; blend is reversible', async ({
+test('SCENE-04: missed space delivery retries without learning errors and real standard audio unlocks actions', async ({
   page,
   appUrl,
 }) => {
   await pair(page, appUrl);
-  await parent(page);
-  await page.getByRole('combobox').selectOption('lesson-03');
-  await page.getByRole('button', { name: '保存', exact: true }).click();
-  await page.getByRole('button', { name: '返回学习', exact: true }).click();
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
-  await page.getByRole('button', { name: '开始听音寻宝' }).click();
-  await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 25000 });
-  await page.getByRole('button', { name: '退出练习' }).click();
-  const created = page.waitForResponse(
-    (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
-  );
-  await page.getByRole('button', { name: '开始拼读列车' }).click();
-  const session = await (await created).json();
-  await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 25000 });
-  await page.locator('.game-option').first().press('Enter');
-  await expect(page.getByRole('button', { name: '确认拼读', exact: true })).toBeFocused();
-  await page.getByRole('button', { name: '撤销拼读选择', exact: true }).press('Enter');
-  await expect(page.getByLabel('当前拼读预览')).toHaveCount(0);
+  await page.getByRole('button', { name: '开始星际投递' }).click();
+  await page.getByRole('button', { name: '听拼音', exact: true }).click();
+  const action = page.getByRole('group', { name: '场景动作' }).getByRole('button').nth(1);
+  await expect(action).toBeEnabled({ timeout: 15000 });
+  const stage = page.getByRole('group', { name: '游戏操作区：方向键控制，空格行动' });
+  await stage.focus();
+  // First-lesson option targets are at 120, 400, 680. Aim into the empty gap.
+  for (let i = 0; i < 5; i++) await stage.press('ArrowLeft');
+  await stage.press('Space');
+  await expect(page.locator('.scene-motor-note')).toContainText('没有碰到目标');
   const backup = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
   expect(backup.attempts).toHaveLength(0);
-  expect(
-    session.tasks.every((t: { exercise: { type: string } }) => t.exercise.type === 'blend-choice'),
-  ).toBe(true);
+  await page.getByRole('button', { name: '保存并退出游戏' }).click();
 });

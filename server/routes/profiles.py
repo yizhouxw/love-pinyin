@@ -127,7 +127,8 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
         sessions = db.execute(
             """SELECT id,content_version AS contentVersion,started_at AS startedAt,
                       status,tasks_json,
-                      review_knowledge_id AS reviewKnowledgeId,game_id AS gameId
+                      review_knowledge_id AS reviewKnowledgeId,game_id AS gameId,
+                      game_settings_json
                FROM sessions WHERE household_id=? ORDER BY started_at,id""",
             (device["household_id"],),
         ).fetchall()
@@ -163,15 +164,18 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
         "attempts": [dict(row) for row in attempts],
         "sessions": [
             {
-                key: row[key]
-                for key in (
-                    "id",
-                    "contentVersion",
-                    "startedAt",
-                    "status",
-                    "reviewKnowledgeId",
-                    "gameId",
-                )
+                **{
+                    key: row[key]
+                    for key in (
+                        "id",
+                        "contentVersion",
+                        "startedAt",
+                        "status",
+                        "reviewKnowledgeId",
+                        "gameId",
+                    )
+                },
+                "gameSettings": json.loads(row["game_settings_json"]),
             }
             for row in sessions
         ],

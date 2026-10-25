@@ -16,7 +16,7 @@ from server.playback_settings import DEFAULT_TENTHS
 DATA_DIR = Path(os.environ.get("LOVE_PINYIN_DATA_DIR", "private/data")).expanduser().resolve()
 DATABASE_PATH = DATA_DIR / "love-pinyin.sqlite3"
 # SQLite migration versions, independent of the portable JSON backup format.
-SUPPORTED_SCHEMA_VERSIONS = frozenset({1, 2, 3, 4, 5, 6, 7, 8})
+SUPPORTED_SCHEMA_VERSIONS = frozenset({1, 2, 3, 4, 5, 6, 7, 8, 9})
 _request_database: ContextVar[sqlite3.Connection | None] = ContextVar(
     "request_database", default=None
 )
@@ -248,6 +248,14 @@ def migrate() -> None:
             db.execute(
                 "INSERT OR IGNORE INTO schema_migrations(version,applied_at) "
                 "VALUES(8,CURRENT_TIMESTAMP)"
+            )
+            if "game_settings_json" not in session_columns:
+                db.execute(
+                    "ALTER TABLE sessions ADD COLUMN game_settings_json TEXT NOT NULL DEFAULT '{}'"
+                )
+            db.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version,applied_at) "
+                "VALUES(9,CURRENT_TIMESTAMP)"
             )
             db.execute("COMMIT")
         except Exception:

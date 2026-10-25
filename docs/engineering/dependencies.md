@@ -109,3 +109,7 @@ DOCKER-05的Windows x86-64宿主运行Linux amd64容器，不新增Windows原生
 ### GAME-01～03（2026-10-25）
 
 新增游戏乐园无新增npm/uv依赖，沿用锁文件、React/FastAPI/SQLite及Python标准库zoneinfo。7份新增中文引导复用固定Qwen3-TTS/MLX本地生成，许可证与构建配置仍见content/voice-build.json、resources/licenses/Qwen3-TTS-Apache-2.0.txt和manifest；不下载模型或调用外部服务。
+
+### SCENE-01～05、ADAPT-01～02（2026-10-25）
+
+无新增依赖。四场景使用浏览器原生SVG、requestAnimationFrame与Web Audio短鼓声，纯TS物理计算；复用锁定React19.3.0和既有Andika字体。五段玩法中文按既有固定Qwen3-TTS/MLX配置在本机实际重新生成，manifest摘要与Apache-2.0许可保留；不在运行时下载模型或接入远程素材。新增会话配置使用Python标准库JSON和SQLite迁移9。安装来源和固定版本沿用本文件既有清单。

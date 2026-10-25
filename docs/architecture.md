@@ -88,3 +88,5 @@ READ-07的`quick-gap-settings`管理紧凑入口、原生模态卡片与草稿�
 文本传输与静态缓存按[ADR-0024](adr/0024-text-compression-and-public-assets.md)处理：锁定Starlette压缩JS/CSS和API文本，媒体及Range保持原字节；家庭API不缓存，哈希构建资源与字体按独立策略缓存。连接检测只在当前浏览器测现有同源资源，不增设数据收集服务。
 
 游戏乐园按[ADR-0031](adr/0031-household-game-budget.md)拆分：src/app/game-zone.tsx与game-settings.tsx展示入口/效果/设置，use-game-clock.ts负责短授权失效时锁界面；content/games.json是唯一玩法和时间策略目录。server/game_policy.py纯函数结算共享授权区间，game_service.py负责事务内读写/守卫，routes/games.py提供接口；原sessions/attempts继续冻结题单、保存唯一首次成绩。SQLite迁移8的household列保存分钟与版本化时钟，sessions.game_id保存玩法来源；家庭备份与访客快照复用原事务。
+
+四场景按[ADR-0032](adr/0032-scene-game-engine.md)实现：src/domain/scene-game.ts 是无I/O的运动与碰撞函数；src/app/scene-game.tsx 管理输入、RAF及暂停生命周期，scene-world.tsx 绘制原生SVG，game-percussion适配器仅合成本机短鼓声。server/game_adaptation.py 依真实有效掌握度推荐并规划有限题单，场景参数与阈值在content/games.json。只有主动动作命中目标才沿原首次作答接口记录，空操作不影响学习成绩。迁移9冻结会话难度/速度/推荐依据；游戏启动偏好按设备与访客分别存储，家庭额度仍由服务器控制。

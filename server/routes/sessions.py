@@ -3,6 +3,7 @@
 import json
 import secrets
 from datetime import UTC, datetime
+from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict
@@ -17,6 +18,7 @@ from server.domain import (
     next_review,
     plan_practice,
 )
+from server.game_adaptation import plan_game, settings_for
 from server.game_policy import GAMES
 from server.game_service import clock_status
 from server.learning_state import (
@@ -35,6 +37,8 @@ class StartSession(BaseModel):
     model_config = ConfigDict(extra="forbid")
     lessonId: str | None = None
     gameId: str | None = None
+    gameDifficulty: Literal["auto", "gentle", "steady", "challenge"] = "auto"
+    gameSpeed: Literal["auto", "slow", "normal", "fast"] = "auto"
 
 
 @router.post("/reviews/{knowledge_id}/sessions")
@@ -169,13 +173,23 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         by_id[qid]
         for qid in question_lessons
         if _objective_available(by_id[qid], audio_ids)
-        and (not body.gameId or by_id[qid]["type"] == GAMES[body.gameId]["mode"])
+        and (
+            not body.gameId
+            or (
+                by_id[qid]["type"] in GAMES[body.gameId]["modes"]
+                and by_id[qid].get("audioRef")
+                and all(
+                    not o.get("pictureId") and not o.get("writing") for o in by_id[qid]["options"]
+                )
+            )
+        )
     ]
     if not questions:
         raise HTTPException(409, detail={"code": "LESSON_NOT_READY"})
     session_id = secrets.token_urlsafe(18)
     now = now_iso()
     tasks = []
+    game_settings = {}
     with transaction() as db:
         # Recheck under the same write lock as session creation. A second
         # device may have completed round two after this request's auth
@@ -204,13 +218,40 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                  AND (a.id IS NOT NULL OR s.instance_id IS NOT NULL)""",
             (device["household_id"], lesson["id"], body.gameId),
         ).fetchall()
-        selected_ids = plan_practice(
-            [q["id"] for q in questions],
-            [
-                PracticeCompletion(row["exercise_id"], datetime.fromisoformat(row["completed_at"]))
-                for row in history
-            ],
-        )
+        if body.gameId:
+            mastery = _mastery(db, device["household_id"])
+            # Recommendations ignore knowledge beyond the school-selected lesson.
+            allowed = {
+                k["id"]
+                for k in content["knowledgeItems"]
+                if k["lessonId"] in {item["id"] for item in eligible_lessons}
+            }
+            mastery = {key: item for key, item in mastery.items() if key in allowed}
+            game_settings = settings_for(mastery, body.gameDifficulty, body.gameSpeed)
+            # Genre preference is a stable tie-break, never a filter that traps
+            # later learners in lesson one's tone bank or drops current content.
+            questions = sorted(questions, key=lambda q: q["type"] != GAMES[body.gameId]["mode"])
+            selected_ids = plan_game(
+                questions,
+                [
+                    PracticeCompletion(
+                        row["exercise_id"], datetime.fromisoformat(row["completed_at"])
+                    )
+                    for row in history
+                ],
+                mastery,
+                device["selected_lesson_id"],
+            )
+        else:
+            selected_ids = plan_practice(
+                [q["id"] for q in questions],
+                [
+                    PracticeCompletion(
+                        row["exercise_id"], datetime.fromisoformat(row["completed_at"])
+                    )
+                    for row in history
+                ],
+            )
         question_set = [by_id[exercise_id] for exercise_id in selected_ids]
         for q in question_set:
             instance_id = OPTION_ORDER_V1_PREFIX + secrets.token_urlsafe(18)
@@ -236,7 +277,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
             )
         db.execute(
             """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
-               tasks_json,game_id) VALUES(?,?,?,?,?,?,?)""",
+               tasks_json,game_id,game_settings_json) VALUES(?,?,?,?,?,?,?,?)""",
             (
                 session_id,
                 device["household_id"],
@@ -245,6 +286,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                 now,
                 json.dumps(tasks, ensure_ascii=False),
                 body.gameId,
+                json.dumps(game_settings),
             ),
         )
         revision = db.execute(
@@ -255,6 +297,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         "id": session_id,
         "lessonId": lesson["id"],
         "gameId": body.gameId,
+        "gameSettings": game_settings,
         "contentVersion": content["contentVersion"],
         "startedAt": now,
         "tasks": tasks,
@@ -331,6 +374,7 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
     return {
         "id": row["id"],
         "gameId": row["game_id"],
+        "gameSettings": json.loads(row["game_settings_json"]),
         "status": row["status"],
         "contentVersion": row["content_version"],
         "startedAt": row["started_at"],

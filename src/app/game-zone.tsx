@@ -3,6 +3,11 @@ import { gameCatalog, type GameOverview } from '../domain/games';
 import type { Curriculum } from '../domain/learning-api';
 import { api } from '../platform/api-client';
 import { isGuest } from '../platform/guest';
+import {
+  readScenePreference,
+  saveScenePreference,
+  type ScenePreference,
+} from '../platform/game-preferences';
 import { VoiceButton, VoiceFailure, type useLearningVoice } from './learning-voice';
 import { Notice, errorMessage } from './notice';
 
@@ -65,6 +70,14 @@ export function GameZone({
   onStart: (id: string) => void;
   onBack: () => void;
 }) {
+  const [preferences, setPreferences] = useState(() =>
+    Object.fromEntries(gameCatalog.games.map((g) => [g.id, readScenePreference(g.id)])),
+  );
+  function changePreference(id: string, value: Partial<ScenePreference>) {
+    const next = { ...preferences[id]!, ...value };
+    saveScenePreference(id, next);
+    setPreferences({ ...preferences, [id]: next });
+  }
   const [data, setData] = useState<GameOverview | null>(null);
   const [error, setError] = useState('');
   const [revision, setRevision] = useState(0);
@@ -96,7 +109,7 @@ export function GameZone({
       <header className="game-zone-heading">
         <span className="eyebrow">听一听 · 玩一玩 · 学一点</span>
         <h1>拼音游戏乐园</h1>
-        <p>用学过的拼音闯小关，每次最多 6 题。想停就停，不比快慢。</p>
+        <p>跑一跑、划一划、敲一敲、送一送。每次 6 个目的地，听学过的拼音，玩自己的节奏。</p>
         <VoiceButton id="ui-game_welcome" voice={voice} label="听游戏怎么玩" />
         <VoiceFailure voice={voice} />
       </header>
@@ -130,7 +143,9 @@ export function GameZone({
       <Notice error={error} onReconnect={() => setRevision((value) => value + 1)} />
       <div className="game-grid">
         {gameCatalog.games.map((game) => {
-          const available = curriculum.exercises.some((q) => ids.has(q.id) && q.type === game.mode);
+          const available = curriculum.exercises.some(
+            (q) => ids.has(q.id) && game.modes.includes(q.type) && !!q.audioRef,
+          );
           return (
             <article className={`game-card game-${game.id}`} key={game.id}>
               <div className="game-card-icon" aria-hidden="true">
@@ -138,6 +153,52 @@ export function GameZone({
               </div>
               <h2>{game.title}</h2>
               <p>{game.description}</p>
+              <div className="game-preferences">
+                <label>
+                  难度
+                  <select
+                    aria-label={`${game.title}难度`}
+                    value={preferences[game.id]?.difficulty ?? 'auto'}
+                    onChange={(event) =>
+                      changePreference(game.id, {
+                        difficulty: event.target.value as ScenePreference['difficulty'],
+                      })
+                    }
+                  >
+                    <option value="auto">按进度匹配</option>
+                    {Object.entries(gameCatalog.levels).map(([key, value]) => (
+                      <option key={key} value={key}>
+                        {value.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  速度
+                  <select
+                    aria-label={`${game.title}速度`}
+                    value={preferences[game.id]?.speed ?? 'auto'}
+                    onChange={(event) =>
+                      changePreference(game.id, {
+                        speed: event.target.value as ScenePreference['speed'],
+                      })
+                    }
+                  >
+                    <option value="auto">自动</option>
+                    {Object.entries(gameCatalog.speeds).map(([key, value]) => (
+                      <option key={key} value={key}>
+                        {value.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              <p className="game-recommendation">
+                当前推荐：{gameCatalog.levels[data?.recommendation?.level ?? 'gentle'].label} ·{' '}
+                {gameCatalog.speeds[data?.recommendation?.speed ?? 'slow'].label}
+                。依据已学范围内最近有效作答（{data?.recommendation?.sampleSize ?? 0}{' '}
+                个样本）；操作快慢不计掌握度。
+              </p>
               <VoiceButton id={game.voiceId} voice={voice} label={`听玩法：${game.title}`} />
               <button
                 className="game-start"

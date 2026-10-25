@@ -12,6 +12,7 @@ from server.content_history import compatible_revision, exercises_for_revision
 from server.domain import (
     business_date,
 )
+from server.game_adaptation import valid_settings
 from server.game_policy import GAMES, POLICY, empty_clock, validate_clock
 from server.learning_state import _public_exercise
 from server.playback_settings import GAP, gap_tenths
@@ -150,7 +151,7 @@ def _validate_backup(value: object) -> dict:
     for row in backup["sessions"]:
         _require(
             isinstance(row, dict)
-            and set(row) - {"gameId"}
+            and set(row) - {"gameId", "gameSettings"}
             == {"id", "contentVersion", "startedAt", "status", "reviewKnowledgeId"},
             "BACKUP_SESSION_INVALID",
         )
@@ -174,6 +175,7 @@ def _validate_backup(value: object) -> dict:
             or (isinstance(row.get("gameId"), str) and row["gameId"] in GAMES),
             "BACKUP_SESSION_INVALID",
         )
+        _require(valid_settings(row.get("gameSettings", {})), "BACKUP_SESSION_INVALID")
         sessions[row["id"]] = row
 
     exercises = map_by_id("exercises")
@@ -525,7 +527,8 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
         ]
         db.execute(
             """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
-               tasks_json,status,review_knowledge_id,game_id) VALUES(?,?,?,?,?,?,?,?,?)""",
+               tasks_json,status,review_knowledge_id,game_id,game_settings_json)
+               VALUES(?,?,?,?,?,?,?,?,?,?)""",
             (
                 session["id"],
                 household_id,
@@ -536,6 +539,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
                 session["status"],
                 session["reviewKnowledgeId"],
                 session.get("gameId"),
+                json.dumps(session.get("gameSettings", {})),
             ),
         )
     for item in backup["exerciseInstances"]:

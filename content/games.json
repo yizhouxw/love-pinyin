@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "policy": {
     "sessionMinutes": 15,
     "dailyMinutes": 60,
@@ -13,35 +13,89 @@
   "games": [
     {
       "id": "sound",
-      "title": "听音寻宝",
-      "icon": "🐚",
+      "title": "森林跑酷",
+      "icon": "🦊",
       "mode": "listen-choice",
-      "description": "听声音，找到藏起来的拼音宝贝。",
-      "voiceId": "ui-game_sound"
+      "description": "换跑道、跳过树根，穿过听到的拼音拱门。",
+      "voiceId": "ui-game_sound",
+      "scene": "runner",
+      "controls": "左右换道，按跳跃越过树根，穿过听到的拼音拱门。",
+      "modes": ["listen-choice", "tone-choice", "blend-choice"]
     },
     {
       "id": "tone",
-      "title": "声调探险",
-      "icon": "⛰️",
+      "title": "河湾划船",
+      "icon": "🛶",
       "mode": "tone-choice",
-      "description": "听一听、看一看，找到声调的路线。",
-      "voiceId": "ui-game_tone"
+      "description": "交替划桨，顺着水流驶进拼音浮标。",
+      "voiceId": "ui-game_tone",
+      "scene": "boat",
+      "controls": "左右划桨控制方向，交替划桨向前，驶进听到的拼音浮标。",
+      "modes": ["tone-choice", "listen-choice", "blend-choice"]
     },
     {
       "id": "shape",
-      "title": "字形侦探",
-      "icon": "🔎",
-      "mode": "symbol-choice",
-      "description": "仔细看，找出字母和拼音的小秘密。",
-      "voiceId": "ui-game_shape"
+      "title": "节奏鼓岛",
+      "icon": "🥁",
+      "mode": "listen-choice",
+      "description": "跟着节拍，敲响听到的拼音音符。",
+      "voiceId": "ui-game_shape",
+      "scene": "drum",
+      "controls": "音符走到鼓面上方时，敲鼓接住听到的拼音。不是目标就让它过去。",
+      "modes": ["listen-choice", "tone-choice", "blend-choice"]
     },
     {
       "id": "blend",
-      "title": "拼读列车",
-      "icon": "🚂",
+      "title": "星际投递",
+      "icon": "🚀",
       "mode": "blend-choice",
-      "description": "选好拼音车厢，确认后一起出发。",
-      "voiceId": "ui-game_blend"
+      "description": "瞄准移动的拼音星球，发射能量包裹。",
+      "voiceId": "ui-game_blend",
+      "scene": "space",
+      "controls": "左右瞄准，发射包裹，送到听到的拼音星球。",
+      "modes": ["blend-choice", "listen-choice", "tone-choice"]
     }
-  ]
+  ],
+  "adaptation": {
+    "steadySamples": 8,
+    "steadyAccuracy": 0.7,
+    "challengeSamples": 16,
+    "challengeAccuracy": 0.85,
+    "challengeMastered": 4,
+    "weakSlots": 2
+  },
+  "levels": {
+    "gentle": {
+      "label": "启蒙",
+      "travel": 62,
+      "assist": true,
+      "targetRadius": 42
+    },
+    "steady": {
+      "label": "熟练",
+      "travel": 86,
+      "assist": false,
+      "targetRadius": 35
+    },
+    "challenge": {
+      "label": "挑战",
+      "travel": 112,
+      "assist": false,
+      "targetRadius": 28
+    }
+  },
+  "speeds": {
+    "slow": {
+      "label": "慢速",
+      "factor": 0.7
+    },
+    "normal": {
+      "label": "标准",
+      "factor": 1
+    },
+    "fast": {
+      "label": "快速",
+      "factor": 1.35
+    }
+  }
 }

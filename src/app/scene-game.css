@@ -1,0 +1,449 @@
+.scene-page {
+  max-width: 1240px;
+  margin: auto;
+  padding: 22px;
+  color: #28473f;
+}
+.scene-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.scene-nav strong {
+  font-size: 1.35rem;
+}
+.scene-nav > span {
+  color: #62766b;
+}
+.scene-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 22px;
+  align-items: start;
+}
+.scene-playfield {
+  min-width: 0;
+  border: 1px solid #dce7d9;
+  border-radius: 26px;
+  background: #fffdf4;
+  box-shadow: 0 8px 24px #214c3510;
+  padding: 14px;
+}
+.scene-topline {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  padding: 0 8px 12px;
+  color: #63766a;
+}
+.scene-stage {
+  position: relative;
+  outline-offset: 4px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+.scene-stage:focus-visible {
+  outline: 4px solid #e3ae49;
+}
+.scene-world {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 800/440;
+}
+.scene-pinyin {
+  font-family: var(--pinyin-font);
+  font-weight: 700;
+}
+.scene-controls {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+.scene-controls button {
+  min-height: 60px;
+  background: #e9eedf;
+  color: #315d4f;
+  box-shadow: 0 4px 0 #c6d3bd;
+  border: 1px solid #d2dfc9;
+  border-radius: 16px;
+  font-size: 1rem;
+  touch-action: manipulation;
+}
+.scene-controls .scene-action {
+  background: #f4bf69;
+  color: #684722;
+  box-shadow: 0 4px 0 #d79b49;
+  border-color: #e2ae61;
+}
+.scene-controls button:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+.scene-controls button:disabled {
+  opacity: 0.5;
+}
+.scene-tools {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+}
+.scene-tools button {
+  font-size: 0.85rem;
+  min-height: 44px;
+  padding: 8px;
+}
+.scene-tools [aria-pressed='true'] {
+  background: #e6edcf;
+}
+.scene-instruction {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 12px 8px 6px;
+}
+.scene-motor-note {
+  font-size: 0.8rem;
+  color: #708376;
+  min-height: 2.6em;
+  margin: 5px 8px;
+}
+.scene-mission {
+  border-radius: 24px;
+  background: #fffdf6;
+  border: 1px solid #e0e5d7;
+  padding: 22px;
+}
+.scene-mission h1 {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin: 12px 0 16px;
+}
+.scene-voices {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.scene-voices button {
+  font-size: 0.9rem;
+  min-height: 46px;
+}
+.scene-cue {
+  text-align: center;
+  font-size: 2rem;
+  border-radius: 16px;
+  background: #f3efda;
+  padding: 10px;
+  margin-bottom: 14px;
+}
+.scene-audio-status {
+  font-size: 0.85rem;
+  color: #6f7e72;
+}
+.scene-help {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.scene-help button {
+  min-height: 48px;
+}
+.scene-next {
+  width: 100%;
+  background: #467b63;
+  margin-top: 18px;
+  min-height: 54px;
+}
+.scene-route {
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.scene-route span {
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9eddf;
+  color: #75856c;
+  font-size: 0.8rem;
+}
+.scene-route .current {
+  outline: 2px solid #d1a85c;
+  outline-offset: 3px;
+  background: #f6d99e;
+  color: #6c5025;
+}
+.scene-route .reached {
+  background: #567e66;
+  color: white;
+}
+.scene-curtain {
+  position: absolute;
+  inset: 0;
+  background: #243d4388;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  color: white;
+  backdrop-filter: blur(3px);
+}
+.scene-curtain strong {
+  font-size: 2rem;
+}
+.scene-mission .feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 16px;
+  margin: 14px 0;
+  font-size: 0.95rem;
+}
+.scene-arrival {
+  padding: 12px;
+  background: #f5eed7;
+  border-radius: 14px;
+}
+.scene-arrival p,
+.scene-mission .feedback p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.scene-hint {
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+.scene-space {
+  color: #393e61;
+}
+.game-preferences {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 18px 0;
+}
+.game-preferences label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+.game-preferences select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #d8dfcc;
+  border-radius: 10px;
+  padding: 8px;
+  background: #fffdf5;
+  color: #344e40;
+}
+.game-recommendation {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #72806b;
+}
+.game-card .game-start {
+  margin-top: auto;
+}
+.game-card {
+  display: flex;
+  flex-direction: column;
+}
+.game-card p {
+  min-height: 3em;
+}
+.game-card .game-recommendation {
+  min-height: 0;
+}
+.game-card-icon {
+  font-size: 3rem;
+}
+.scene-stage svg text {
+  user-select: none;
+}
+@media (max-width: 950px) {
+  .scene-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scene-mission {
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+  }
+  .scene-mission h1 {
+    font-size: 1.1rem;
+    margin: 8px 0;
+  }
+  .scene-route {
+    margin-top: 16px;
+  }
+  .scene-page {
+    padding: 16px;
+  }
+  .scene-layout {
+    gap: 14px;
+  }
+  .scene-mission .eyebrow {
+    display: none;
+  }
+  .scene-playfield {
+    order: 1;
+  }
+  .scene-mission {
+    order: 0;
+  }
+  .scene-mission .scene-help {
+    margin-top: 8px;
+  }
+  .scene-mission .feedback {
+    margin: 8px 0;
+  }
+  .scene-cue {
+    font-size: 1.4rem;
+  }
+  .scene-voices {
+    gap: 6px;
+  }
+  .scene-voices button {
+    padding: 8px 12px;
+  }
+  .scene-audio-status {
+    margin: 8px 0;
+  }
+  .scene-route {
+    display: none;
+  }
+}
+@media (max-width: 430px) {
+  .scene-page {
+    padding: 10px;
+  }
+  .scene-nav {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .scene-nav strong {
+    font-size: 1.05rem;
+  }
+  .scene-nav .quiet {
+    padding: 8px;
+    font-size: 0.82rem;
+    min-height: 44px;
+  }
+  .scene-playfield {
+    padding: 8px;
+    border-radius: 18px;
+  }
+  .scene-controls {
+    gap: 6px;
+  }
+  .scene-controls button {
+    font-size: 0.85rem;
+    padding: 8px;
+    min-height: 55px;
+    border-radius: 12px;
+  }
+  .scene-tools {
+    gap: 3px;
+  }
+  .scene-tools button {
+    font-size: 0.78rem;
+  }
+  .scene-instruction {
+    font-size: 0.85rem;
+  }
+  .scene-mission {
+    padding: 14px;
+  }
+  .scene-voices button {
+    font-size: 0.82rem;
+  }
+  .scene-topline {
+    font-size: 0.78rem;
+  }
+  .scene-motor-note {
+    font-size: 0.75rem;
+  }
+  .scene-mission h1 {
+    font-size: 1rem;
+  }
+}
+
+.scene-next,
+.scene-curtain button,
+.scene-arrival button,
+.scene-mission .feedback > button:not(.voice-button) {
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  background: #467b63;
+  padding: 14px 18px;
+  font: inherit;
+  cursor: pointer;
+  min-height: 48px;
+}
+.scene-next:focus-visible,
+.scene-controls button:focus-visible {
+  outline: 3px solid #d6a143;
+  outline-offset: 3px;
+}
+@media (max-width: 950px) {
+  .scene-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .scene-mission {
+    display: contents;
+  }
+  .scene-mission > * {
+    order: 3;
+  }
+  .scene-mission h1 {
+    order: 0;
+    margin: 0 5px;
+  }
+  .scene-mission .scene-voices {
+    order: 1;
+  }
+  .scene-mission .scene-cue {
+    order: 1;
+    padding: 6px;
+    margin: 0;
+  }
+  .scene-mission .scene-audio-status {
+    order: 1;
+    margin: 0 5px;
+    font-size: 0.8rem;
+  }
+  .scene-playfield {
+    order: 2;
+  }
+  .scene-mission .feedback {
+    margin: 0;
+  }
+  .scene-mission .scene-route {
+    display: none;
+  }
+  .scene-mission .scene-help {
+    margin: 0;
+  }
+  .scene-mission .scene-next {
+    margin: 0;
+  }
+}
