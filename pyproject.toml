@@ -26,7 +26,7 @@ dev = [
     "ruff==0.17.0",
 ]
 voice-build = [
-    "mlx-audio==0.5.8 ; platform_machine == 'arm64' and sys_platform == 'darwin'",
+    "mlx-audio==0.6.1 ; platform_machine == 'arm64' and sys_platform == 'darwin'",
 ]
 
 [tool.pytest.ini_options]
