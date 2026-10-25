@@ -108,7 +108,7 @@ def test_game_sessions_use_learned_content_and_freeze_recovery(
     assert response.status_code == 200, response.text
     session = response.json()
     assert session["gameId"] == game_id
-    assert 1 <= len(session["tasks"]) <= 6
+    assert len(session["tasks"]) == 12
     assert len({t["exercise"]["id"] for t in session["tasks"]}) == len(session["tasks"])
     lesson_ids = {"lesson-01", "lesson-02", "lesson-03"}
     for task in session["tasks"]:
@@ -211,6 +211,7 @@ def test_game_settings_ranges_backup_and_delete_boundaries(paired_client, monkey
     old["profile"]["settings"].pop("gameDailyMinutes")
     for session in old["sessions"]:
         session.pop("gameId")
+        session.pop("gameRun", None)
     _validate_backup(old)
     bad = deepcopy(backup)
     bad["profile"]["gameState"]["leaseUntil"] = 1e11
@@ -314,6 +315,7 @@ def test_game_backup_import_api_restores_settings_budget_and_source(paired_clien
         legacy["profile"]["settings"].pop(key)
     for session in legacy["sessions"]:
         session.pop("gameId")
+        session.pop("gameRun", None)
     preview = request(client, "/profiles/import-preview", legacy).json()
     result = request(
         client,

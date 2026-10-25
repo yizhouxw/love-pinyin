@@ -69,19 +69,25 @@
       "label": "启蒙",
       "travel": 62,
       "assist": true,
-      "targetRadius": 42
+      "targetRadius": 42,
+      "targetMotion": 0,
+      "currentScale": 0
     },
     "steady": {
       "label": "熟练",
       "travel": 86,
       "assist": false,
-      "targetRadius": 35
+      "targetRadius": 35,
+      "targetMotion": 18,
+      "currentScale": 0.7
     },
     "challenge": {
       "label": "挑战",
       "travel": 112,
       "assist": false,
-      "targetRadius": 28
+      "targetRadius": 28,
+      "targetMotion": 36,
+      "currentScale": 1.4
     }
   },
   "speeds": {
@@ -97,5 +103,13 @@
       "label": "快速",
       "factor": 1.35
     }
+  },
+  "input": {
+    "left": ["ArrowLeft", "KeyA"],
+    "right": ["ArrowRight", "KeyD"],
+    "act": ["Space", "ArrowUp", "KeyW"],
+    "pass": ["ArrowDown", "KeyS"],
+    "pause": ["KeyP", "Escape"],
+    "repeatMilliseconds": 180
   }
 }

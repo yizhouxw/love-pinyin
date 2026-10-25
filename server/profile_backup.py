@@ -13,11 +13,12 @@ from server.domain import (
     business_date,
 )
 from server.game_adaptation import valid_settings
+from server.game_levels import valid_run
 from server.game_policy import GAMES, POLICY, empty_clock, validate_clock
 from server.learning_state import _public_exercise
 from server.playback_settings import GAP, gap_tenths
 
-IMPORT_MAX_BYTES = 1_048_576
+IMPORT_MAX_BYTES = 16 * 1_048_576
 
 
 IMPORT_MAX_ATTEMPTS = 50_000
@@ -151,7 +152,7 @@ def _validate_backup(value: object) -> dict:
     for row in backup["sessions"]:
         _require(
             isinstance(row, dict)
-            and set(row) - {"gameId", "gameSettings"}
+            and set(row) - {"gameId", "gameSettings", "gameRun"}
             == {"id", "contentVersion", "startedAt", "status", "reviewKnowledgeId"},
             "BACKUP_SESSION_INVALID",
         )
@@ -176,6 +177,7 @@ def _validate_backup(value: object) -> dict:
             "BACKUP_SESSION_INVALID",
         )
         _require(valid_settings(row.get("gameSettings", {})), "BACKUP_SESSION_INVALID")
+        _require(valid_run(row.get("gameRun", {}), row.get("gameId")), "BACKUP_SESSION_INVALID")
         sessions[row["id"]] = row
 
     exercises = map_by_id("exercises")
@@ -400,6 +402,17 @@ def _validate_backup(value: object) -> dict:
             "BACKUP_ASSESSMENT_INVALID",
         )
         _parse_datetime(row["createdAt"], "BACKUP_TIME_INVALID")
+    grouped_instances = defaultdict(list)
+    for row in backup["exerciseInstances"]:
+        grouped_instances[row["session_id"]].append(row)
+    for session in backup["sessions"]:
+        ordered = sorted(grouped_instances[session["id"]], key=lambda row: row["position"])
+        _require(
+            valid_run(
+                session.get("gameRun", {}), session.get("gameId"), [row["id"] for row in ordered]
+            ),
+            "BACKUP_SESSION_INVALID",
+        )
     return {
         **backup,
         "contentVersion": curriculum["contentVersion"],
@@ -527,8 +540,8 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
         ]
         db.execute(
             """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
-               tasks_json,status,review_knowledge_id,game_id,game_settings_json)
-               VALUES(?,?,?,?,?,?,?,?,?,?)""",
+               tasks_json,status,review_knowledge_id,game_id,game_settings_json,game_run_json)
+               VALUES(?,?,?,?,?,?,?,?,?,?,?)""",
             (
                 session["id"],
                 household_id,
@@ -540,6 +553,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
                 session["reviewKnowledgeId"],
                 session.get("gameId"),
                 json.dumps(session.get("gameSettings", {})),
+                json.dumps(session.get("gameRun", {}), ensure_ascii=False),
             ),
         )
     for item in backup["exerciseInstances"]:

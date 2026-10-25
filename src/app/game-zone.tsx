@@ -11,6 +11,8 @@ import {
 import { VoiceButton, VoiceFailure, type useLearningVoice } from './learning-voice';
 import { Notice, errorMessage } from './notice';
 
+import { levelCatalog } from '../domain/game-levels';
+
 type Voice = ReturnType<typeof useLearningVoice>;
 export function GameEvidence({ data, curriculum }: { data: GameOverview; curriculum: Curriculum }) {
   const report = data.report;
@@ -67,9 +69,10 @@ export function GameZone({
   lessonId: string;
   voice: Voice;
   busy: boolean;
-  onStart: (id: string) => void;
+  onStart: (id: string, levelId: string) => void;
   onBack: () => void;
 }) {
+  const [selectedLevels, setSelectedLevels] = useState<Record<string, string>>({});
   const [preferences, setPreferences] = useState(() =>
     Object.fromEntries(gameCatalog.games.map((g) => [g.id, readScenePreference(g.id)])),
   );
@@ -109,7 +112,7 @@ export function GameZone({
       <header className="game-zone-heading">
         <span className="eyebrow">听一听 · 玩一玩 · 学一点</span>
         <h1>拼音游戏乐园</h1>
-        <p>跑一跑、划一划、敲一敲、送一送。每次 6 个目的地，听学过的拼音，玩自己的节奏。</p>
+        <p>24 段完整旅程，每关 3 个章节、12 个拼音任务。选好路线，一路玩到目的地。</p>
         <VoiceButton id="ui-game_welcome" voice={voice} label="听游戏怎么玩" />
         <VoiceFailure voice={voice} />
       </header>
@@ -146,6 +149,15 @@ export function GameZone({
           const available = curriculum.exercises.some(
             (q) => ids.has(q.id) && game.modes.includes(q.type) && !!q.audioRef,
           );
+          const routes = levelCatalog.levels.filter((l) => l.gameId === game.id);
+          const match =
+            preferences[game.id]?.difficulty === 'auto'
+              ? (data?.recommendation?.level ?? 'gentle')
+              : preferences[game.id]?.difficulty;
+          const chosen =
+            routes.find((l) => l.id === selectedLevels[game.id]) ??
+            routes.find((l) => l.recommendedDifficulty === match) ??
+            routes[0]!;
           return (
             <article className={`game-card game-${game.id}`} key={game.id}>
               <div className="game-card-icon" aria-hidden="true">
@@ -153,6 +165,33 @@ export function GameZone({
               </div>
               <h2>{game.title}</h2>
               <p>{game.description}</p>
+              <div className="game-level-picker">
+                <label>
+                  选择完整关卡
+                  <select
+                    aria-label={`${game.title}关卡`}
+                    value={chosen.id}
+                    onChange={(e) =>
+                      setSelectedLevels({ ...selectedLevels, [game.id]: e.target.value })
+                    }
+                  >
+                    {routes.map((route) => (
+                      <option value={route.id} key={route.id}>
+                        第{route.number}关 · {route.title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <p>{chosen.subtitle}</p>
+                <span>
+                  3 章节 · 12 任务 · {gameCatalog.levels[chosen.recommendedDifficulty].label}路线
+                </span>
+                <VoiceButton
+                  id={chosen.voiceId}
+                  voice={voice}
+                  label={`听关卡故事：${chosen.title}`}
+                />
+              </div>
               <div className="game-preferences">
                 <label>
                   难度
@@ -203,7 +242,7 @@ export function GameZone({
               <button
                 className="game-start"
                 disabled={busy || !data || !!data.clock.reason || !available}
-                onClick={() => onStart(game.id)}
+                onClick={() => onStart(game.id, chosen.id)}
               >
                 开始{game.title} →
               </button>

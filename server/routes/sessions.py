@@ -19,6 +19,7 @@ from server.domain import (
     plan_practice,
 )
 from server.game_adaptation import plan_game, settings_for
+from server.game_levels import freeze_run, level_for
 from server.game_policy import GAMES
 from server.game_service import clock_status
 from server.learning_state import (
@@ -37,6 +38,7 @@ class StartSession(BaseModel):
     model_config = ConfigDict(extra="forbid")
     lessonId: str | None = None
     gameId: str | None = None
+    gameLevelId: str | None = None
     gameDifficulty: Literal["auto", "gentle", "steady", "challenge"] = "auto"
     gameSpeed: Literal["auto", "slow", "normal", "fast"] = "auto"
 
@@ -190,6 +192,8 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
     now = now_iso()
     tasks = []
     game_settings = {}
+    game_run = {}
+    route_level = None
     with transaction() as db:
         # Recheck under the same write lock as session creation. A second
         # device may have completed round two after this request's auth
@@ -228,6 +232,13 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
             }
             mastery = {key: item for key, item in mastery.items() if key in allowed}
             game_settings = settings_for(mastery, body.gameDifficulty, body.gameSpeed)
+            try:
+                route_level = level_for(body.gameId, body.gameLevelId, game_settings["level"])
+            except ValueError as error:
+                raise HTTPException(422, detail={"code": str(error)}) from error
+            route_size = sum(len(chapter["segments"]) for chapter in route_level["chapters"])
+            if len(questions) < route_size:
+                raise HTTPException(409, detail={"code": "GAME_LEVEL_CONTENT_INSUFFICIENT"})
             # Genre preference is a stable tie-break, never a filter that traps
             # later learners in lesson one's tone bank or drops current content.
             questions = sorted(questions, key=lambda q: q["type"] != GAMES[body.gameId]["mode"])
@@ -241,6 +252,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                 ],
                 mastery,
                 device["selected_lesson_id"],
+                limit=route_size,
             )
         else:
             selected_ids = plan_practice(
@@ -275,9 +287,11 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                     "exercise": _public_exercise(q, instance_id=instance_id),
                 }
             )
+        if route_level is not None:
+            game_run = freeze_run(route_level, tasks)
         db.execute(
             """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
-               tasks_json,game_id,game_settings_json) VALUES(?,?,?,?,?,?,?,?)""",
+               tasks_json,game_id,game_settings_json,game_run_json) VALUES(?,?,?,?,?,?,?,?,?)""",
             (
                 session_id,
                 device["household_id"],
@@ -287,6 +301,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                 json.dumps(tasks, ensure_ascii=False),
                 body.gameId,
                 json.dumps(game_settings),
+                json.dumps(game_run, ensure_ascii=False),
             ),
         )
         revision = db.execute(
@@ -298,6 +313,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         "lessonId": lesson["id"],
         "gameId": body.gameId,
         "gameSettings": game_settings,
+        "gameRun": game_run,
         "contentVersion": content["contentVersion"],
         "startedAt": now,
         "tasks": tasks,
@@ -375,6 +391,7 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
         "id": row["id"],
         "gameId": row["game_id"],
         "gameSettings": json.loads(row["game_settings_json"]),
+        "gameRun": json.loads(row["game_run_json"]),
         "status": row["status"],
         "contentVersion": row["content_version"],
         "startedAt": row["started_at"],

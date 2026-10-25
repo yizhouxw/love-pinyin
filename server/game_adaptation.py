@@ -79,19 +79,20 @@ def valid_settings(value: object) -> bool:
     )
 
 
-def plan_game(questions: list[dict], completions: list, mastery: dict, lesson_id: str) -> list[str]:
-    """Two weak spots, then current lesson, then historical rotation; no repeats."""
+def plan_game(
+    questions: list[dict], completions: list, mastery: dict, lesson_id: str, limit: int = 6
+) -> list[str]:
+    """Bounded weak review plus current school lesson; rotate real authored tasks."""
     weak = [
         q["id"]
         for q in questions
         if mastery.get(q["primaryKnowledgeId"], {}).get("status") == "practicing"
     ]
-    chosen = plan_practice(weak, completions, limit=CATALOG["adaptation"]["weakSlots"])
+    chosen = plan_practice(weak, completions, limit=min(limit, CATALOG["adaptation"]["weakSlots"]))
     current = [q["id"] for q in questions if q["lessonId"] == lesson_id and q["id"] not in chosen]
-    chosen += plan_practice(current, completions, limit=6 - len(chosen))
-    remaining = [q["id"] for q in questions if q["id"] not in chosen]
-    return (
-        chosen
-        if len(chosen) == 6
-        else chosen + plan_practice(remaining, completions, limit=6 - len(chosen))
-    )
+    if len(chosen) < limit:
+        chosen += plan_practice(current, completions, limit=limit - len(chosen))
+    if len(chosen) < limit:
+        remaining = [q["id"] for q in questions if q["id"] not in chosen]
+        chosen += plan_practice(remaining, completions, limit=limit - len(chosen))
+    return chosen

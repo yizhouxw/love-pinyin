@@ -498,7 +498,7 @@ export function ParentPanel({
                 setImportComplete(false);
                 if (!file) return;
                 void act(async () => {
-                  if (file.size > 1_048_576) throw new Error('BACKUP_TOO_LARGE');
+                  if (file.size > 16 * 1_048_576) throw new Error('BACKUP_TOO_LARGE');
                   const contents = await file.text();
                   const result = await api('/profiles/import-preview', {
                     method: 'POST',

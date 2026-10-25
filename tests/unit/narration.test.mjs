@@ -68,3 +68,13 @@ describe('初学儿童的中文朗读脚本', () => {
     expect(errors).toContain('ui.welcome.text: placeholder script');
   });
 });
+
+it('allows numbered level resource IDs while still rejecting digits in spoken text', () => {
+  const valid = structuredClone(narration);
+  valid.ui.level_runner_01 = { text: '走进森林，开始这一关。' };
+  expect(validateNarration(curriculum, valid)).toEqual([]);
+  valid.ui.level_runner_01.text = '第1关。';
+  expect(validateNarration(curriculum, valid).join('\n')).toContain(
+    'ui.level_runner_01.text: expected NFC Mandarin',
+  );
+});

@@ -16,7 +16,7 @@ from server.routes import attempts, games, profiles, progress, resources, sessio
 
 router = APIRouter(prefix="/api/v1/guest")
 
-MAX_BYTES = 1_048_576
+MAX_BYTES = 4 * 1_048_576
 
 
 class GuestOperation(BaseModel):

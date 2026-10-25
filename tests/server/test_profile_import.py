@@ -129,7 +129,7 @@ def test_preview_migrates_schema_v4_clock_pending_field(paired_client):
 def test_preview_rejects_oversized_payload_before_parsing(paired_client):
     response = paired_client.post(
         "/api/v1/profiles/import-preview",
-        content=b" " * (1_048_576 + 1),
+        content=b" " * (16 * 1_048_576 + 1),
         headers={
             "Content-Type": "application/json",
             "X-LP-CSRF": paired_client.cookies.get("lp_csrf"),

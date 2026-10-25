@@ -1,6 +1,6 @@
-import type { Scene, World, Level } from '../domain/scene-game';
-import { gameCatalog } from '../domain/games';
-import { targetPosition } from '../domain/scene-game';
+import type { Scene, World, EngineConfig } from '../domain/scene-game';
+import type { RouteTheme } from '../domain/game-levels';
+import { targetPosition, routeX, routeY } from '../domain/scene-game';
 import type { Option } from '../domain/learning-api';
 
 function Fox({ x, y, jump = 0 }: { x: number; y: number; jump?: number }) {
@@ -21,16 +21,21 @@ export function SceneWorld({
   scene,
   world,
   options,
-  level,
+  config,
+  theme,
+  routeOffset,
   highlight,
 }: {
   scene: Scene;
   world: World;
   options: Option[];
-  level: Level;
+  config: EngineConfig;
+  theme: RouteTheme;
+  routeOffset: number;
   highlight?: string;
 }) {
-  const offset = world.distance % 70;
+  const offset = (world.distance + routeOffset) % 70;
+  const pattern = config.pattern;
   return (
     <svg
       className={`scene-world world-${scene}`}
@@ -47,13 +52,8 @@ export function SceneWorld({
     >
       <defs>
         <linearGradient id="scene-sky" x2="0" y2="1">
-          <stop
-            stopColor={scene === 'space' ? '#15264f' : scene === 'drum' ? '#f9d3a0' : '#d7f0dd'}
-          />
-          <stop
-            offset="1"
-            stopColor={scene === 'space' ? '#424986' : scene === 'boat' ? '#91d5d6' : '#fcf0cf'}
-          />
+          <stop stopColor={theme.sky} />
+          <stop offset="1" stopColor={theme.horizon} />
         </linearGradient>
         <linearGradient id="scene-river" x2="1" y2="1">
           <stop stopColor="#55c2cc" />
@@ -64,7 +64,7 @@ export function SceneWorld({
       {scene === 'runner' && (
         <>
           <circle cx="660" cy="65" r="35" fill="#fff5b4" />
-          <path d="M0 160Q120 25 240 135Q390 25 530 145Q680 25 800 125V440H0" fill="#95bc8f" />
+          <path d="M0 160Q120 25 240 135Q390 25 530 145Q680 25 800 125V440H0" fill={theme.land} />
           <path d="M80 440L205 110H595L720 440Z" fill="#d8b681" />
           {options.map((_, i) => (
             <path
@@ -85,19 +85,13 @@ export function SceneWorld({
               <path d="M0 5V40" stroke="#986d46" strokeWidth="9" />
             </g>
           ))}
-          <path
-            d={`M95 ${180 + world.distance}Q400 ${162 + world.distance} 705 ${180 + world.distance}`}
-            stroke="#ac7946"
-            strokeWidth="15"
-            fill="none"
-          />
         </>
       )}
       {scene === 'boat' && (
         <>
           <path
             d="M0 100Q110 40 215 100L135 440H0M800 100Q690 40 585 100L665 440H800"
-            fill="#72ac74"
+            fill={theme.land}
           />
           <path d="M90 85Q400 45 710 85L750 440H50Z" fill="url(#scene-river)" />
           {[0, 1, 2, 3, 4, 5].map((i) => (
@@ -119,7 +113,7 @@ export function SceneWorld({
       {scene === 'drum' && (
         <>
           <circle cx="650" cy="75" r="40" fill="#fff1c2" />
-          <path d="M0 330Q120 280 240 340T480 340T800 330V440H0" fill="#81bca9" />
+          <path d="M0 330Q120 280 240 340T480 340T800 330V440H0" fill={theme.land} />
           {[70, 300, 530, 750].map((x) => (
             <g key={x}>
               <path d={`M${x} 40V120`} stroke="#a25e55" strokeWidth="2" />
@@ -168,82 +162,165 @@ export function SceneWorld({
           <path d={`M${world.x} 345V85`} stroke="#d6dcff66" strokeDasharray="6 9" strokeWidth="2" />
         </>
       )}
-      {options.map((option, index) => {
-        const p = targetPosition(scene, index, options.length, world, level),
-          active = highlight === option.id;
-        return (
-          <g
-            key={option.id}
-            transform={`translate(${p.x} ${p.y})`}
-            data-scene-target={option.id}
-            data-target-x={p.x}
-            data-target-y={p.y}
-            aria-label={`场景目标 ${option.label}`}
-          >
-            {scene === 'runner' ? (
-              <>
+      {scene === 'drum' &&
+        pattern.beats.map((at) => {
+          const x = 180 + at - world.distance;
+          return (
+            <g key={at} transform={`translate(${x} 190)`}>
+              <circle
+                r="22"
+                fill={world.beatHits.includes(at) ? '#fff3ab' : theme.accent}
+                stroke="#fff6d7"
+                strokeWidth="3"
+              />
+              <text textAnchor="middle" y="8" fontSize="25" fill="#6e5345">
+                {world.beatHits.includes(at) ? '✦' : '♪'}
+              </text>
+            </g>
+          );
+        })}
+      {pattern.obstacles
+        .filter((o) => !world.cleared.includes(o.id))
+        .map((o) => {
+          const x = o.lane === -1 ? 400 : routeX(o.lane, options.length),
+            y = routeY(o.at, world);
+          return (
+            <g
+              key={o.id}
+              transform={`translate(${x} ${y})`}
+              data-obstacle={o.id}
+              data-obstacle-at={o.at}
+              data-obstacle-lane={o.lane}
+              data-obstacle-kind={o.kind}
+            >
+              {o.kind === 'root' ? (
+                <>
+                  <path
+                    d={o.lane === -1 ? 'M-320 0Q0-15 320 0' : 'M-45 0Q0-15 45 0'}
+                    stroke="#9b6946"
+                    strokeWidth="20"
+                    fill="none"
+                  />
+                  <path d="M-20-3L-33-24M20-5L34-20" stroke="#9b6946" strokeWidth="10" />
+                </>
+              ) : o.kind === 'bush' ? (
+                <>
+                  <ellipse rx="42" ry="27" fill="#477c55" />
+                  <circle cx="-20" cy="-18" r="24" fill="#65975c" />
+                  <circle cx="15" cy="-20" r="28" fill="#53884e" />
+                </>
+              ) : o.kind === 'reef' ? (
                 <path
-                  d="M-48 55V-24Q0-80 48-24V55"
-                  fill="#fff4cf"
-                  stroke={active ? '#ecad26' : '#488269'}
-                  strokeWidth="10"
-                />
-                <path d="M-55 55H55" stroke="#966a46" strokeWidth="8" />
-              </>
-            ) : scene === 'boat' ? (
-              <>
-                <ellipse cy="30" rx="57" ry="14" fill="#176b8044" />
-                <path
-                  d="M-42 24L-31-37H31L42 24Z"
-                  fill={active ? '#ffe07d' : '#ffefc6'}
-                  stroke="#c47e4e"
-                  strokeWidth="5"
-                />
-              </>
-            ) : scene === 'space' ? (
-              <>
-                <circle
-                  r={gameCatalog.levels[level].targetRadius}
-                  fill={
-                    active ? '#f8d88e' : ['#dba9b6', '#9ecfcb', '#e5c59b', '#bac0ef'][index % 4]
-                  }
-                  stroke="#f3e5ce"
+                  d="M-40 20L-24-20 0-37 28-16 42 20Z"
+                  fill="#6f8190"
+                  stroke="#4f6975"
                   strokeWidth="4"
                 />
-                <ellipse
-                  rx={gameCatalog.levels[level].targetRadius + 14}
-                  ry="12"
-                  fill="none"
-                  stroke="#f3e5ce"
-                  strokeWidth="3"
-                  transform="rotate(-20)"
-                />
-              </>
-            ) : (
-              <circle
-                r={gameCatalog.levels[level].targetRadius}
-                fill={active ? '#fce191' : index % 2 ? '#98d7dc' : '#f4bfb0'}
-                stroke="#fff0d1"
-                strokeWidth="4"
-              />
-            )}
-            <text
-              y="9"
-              textAnchor="middle"
-              className="scene-pinyin"
-              fontSize={option.label.length > 6 ? 21 : 35}
-              fill="#263f48"
-            >
-              {option.label}
+              ) : (
+                <>
+                  <path
+                    d="M-35-12L-17-34 18-30 36-6 23 27-6 35-32 15Z"
+                    fill="#8c839d"
+                    stroke="#bfb0be"
+                    strokeWidth="4"
+                  />
+                  <circle cx="-9" cy="-9" r="10" fill="#6e6c87" />
+                  <circle cx="14" cy="10" r="7" fill="#6e6c87" />
+                </>
+              )}
+            </g>
+          );
+        })}
+      {pattern.pickups
+        .filter((p) => !world.collected.includes(p.id))
+        .map((p) => (
+          <g
+            key={p.id}
+            transform={`translate(${routeX(p.lane, options.length)} ${routeY(p.at, world)})`}
+          >
+            <circle r="15" fill="#ffe29d" stroke="#c69246" strokeWidth="3" />
+            <text y="6" textAnchor="middle" fontSize="18" fill="#986331">
+              ✦
             </text>
-            {active && (
-              <text x="0" y="-60" textAnchor="middle" fontSize="26" fill="#e9a218">
-                ✦
-              </text>
-            )}
           </g>
-        );
-      })}
+        ))}
+      {(scene !== 'space' || world.distance >= pattern.choiceAt) &&
+        options.map((option, index) => {
+          const p = targetPosition(index, world, config),
+            active = highlight === option.id;
+          return (
+            <g
+              key={option.id}
+              transform={`translate(${p.x} ${p.y})`}
+              data-scene-target={option.id}
+              data-target-x={p.x}
+              data-target-y={p.y}
+              aria-label={`场景目标 ${option.label}`}
+            >
+              {scene === 'runner' ? (
+                <>
+                  <path
+                    d="M-48 55V-24Q0-80 48-24V55"
+                    fill="#fff4cf"
+                    stroke={active ? '#ecad26' : '#488269'}
+                    strokeWidth="10"
+                  />
+                  <path d="M-55 55H55" stroke="#966a46" strokeWidth="8" />
+                </>
+              ) : scene === 'boat' ? (
+                <>
+                  <ellipse cy="30" rx="57" ry="14" fill="#176b8044" />
+                  <path
+                    d="M-42 24L-31-37H31L42 24Z"
+                    fill={active ? '#ffe07d' : '#ffefc6'}
+                    stroke="#c47e4e"
+                    strokeWidth="5"
+                  />
+                </>
+              ) : scene === 'space' ? (
+                <>
+                  <circle
+                    r={config.targetRadius}
+                    fill={
+                      active ? '#f8d88e' : ['#dba9b6', '#9ecfcb', '#e5c59b', '#bac0ef'][index % 4]
+                    }
+                    stroke="#f3e5ce"
+                    strokeWidth="4"
+                  />
+                  <ellipse
+                    rx={config.targetRadius + 14}
+                    ry="12"
+                    fill="none"
+                    stroke="#f3e5ce"
+                    strokeWidth="3"
+                    transform="rotate(-20)"
+                  />
+                </>
+              ) : (
+                <circle
+                  r={config.targetRadius}
+                  fill={active ? '#fce191' : index % 2 ? '#98d7dc' : '#f4bfb0'}
+                  stroke="#fff0d1"
+                  strokeWidth="4"
+                />
+              )}
+              <text
+                y="9"
+                textAnchor="middle"
+                className="scene-pinyin"
+                fontSize={option.label.length > 6 ? 21 : 35}
+                fill="#263f48"
+              >
+                {option.label}
+              </text>
+              {active && (
+                <text x="0" y="-60" textAnchor="middle" fontSize="26" fill="#e9a218">
+                  ✦
+                </text>
+              )}
+            </g>
+          );
+        })}
       {scene === 'runner' && <Fox x={world.x} y={365} jump={world.jump} />}
       {scene === 'boat' && (
         <g transform={`translate(${world.x} 360) rotate(${world.vx / 12})`}>
@@ -283,6 +360,9 @@ export function SceneWorld({
             ✦ 目标已抵达 ✦
           </text>
         </g>
+      )}
+      {world.flash > 0 && (
+        <rect width="800" height="440" rx="24" fill="#ffe9a355" pointerEvents="none" />
       )}
     </svg>
   );

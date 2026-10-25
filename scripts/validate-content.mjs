@@ -31,6 +31,24 @@ if (release) {
     errors.push(`release: ${error.stdout?.trim() || 'local audio resources unavailable'}`);
   }
 }
+try {
+  execFileSync(
+    'uv',
+    [
+      'run',
+      '--locked',
+      'python',
+      '-m',
+      'scripts.validate_game_levels',
+      ...(release ? ['--release'] : []),
+    ],
+    { encoding: 'utf8' },
+  );
+} catch (error) {
+  errors.push(
+    `game levels: ${error.stdout?.trim() || error.stderr?.trim() || 'invalid level content'}`,
+  );
+}
 if (errors.length) {
   console.error(errors.join('\n'));
   process.exitCode = 1;

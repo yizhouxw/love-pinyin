@@ -59,11 +59,11 @@
 
 `learning-audio` 的形状为 `{narration: Record<audioId, boolean>, lessons: Record<lessonId, {audioId,title,available,sourceType}>}`。课程音频需求附 `available` 及可用时的 `standardSource`。标准音唯一来源是固定cmguo/PinYinSound；没有审核状态或备用审音来源。
 
-访客 `operate` 接收 `{path,method,body,state}`，初始state为null。仅允许学习、选课/设置和查询等白名单操作，不支持家庭管理；客户端不携带家庭Cookie。请求最大1MiB，快照经校验后在请求级内存SQLite中执行，结果回存sessionStorage。公开资源接口包含课程录音，见[隐私边界](engineering/privacy.md)。
+访客 `operate` 接收 `{path,method,body,state}`，初始state为null。仅允许学习、选课/设置和查询等白名单操作，不支持家庭管理；客户端不携带家庭Cookie。请求最大4MiB，快照经校验后在请求级内存SQLite中执行，结果回存sessionStorage。公开资源接口包含课程录音，见[隐私边界](engineering/privacy.md)。
 
 ## 备份、时间与历史内容
 
-家庭JSON schema为v5，显式迁移v2/v3/v4；最大1MiB、最多50000条作答，内存预览缓存最多8个。导入失败不部分写入。导出包含 `masteryRuleVersion: 1`；进度返回 `masteryRuleVersion: "mastery-v1"`，二者属于不同响应格式，不能交换使用。
+家庭JSON schema为v5，显式迁移v2/v3/v4；最大16MiB、最多50000条作答，内存预览缓存最多8个。导入失败不部分写入。导出包含 `masteryRuleVersion: 1`；进度返回 `masteryRuleVersion: "mastery-v1"`，二者属于不同响应格式，不能交换使用。
 
 选课ID已不在当前课程时，进度保留原ID，创建普通/复习会话返回409 `CURRENT_LESSON_REQUIRES_SELECTION`，家长重选后继续，不隐式改成第一课。旧会话从已登记历史内容及冻结题单恢复；未知历史版本拒绝。
 
@@ -96,3 +96,5 @@ ACCESS-03：家长API与`/local/pairing-code`仅接受来源127.0.0.1且Host hos
 - 时间按服务器UTC、日额度按Asia/Shanghai零点；跨设备重叠区间只计一次。`profile.gameState`保存version、days、runSeconds、accountedAt、leaseUntil，不含凭据。SQLite迁移8、JSON备份v5的可选扩展见SPEC-005。访客通过现有operate白名单使用同一计算，但仅标签页保留额度。
 
 SCENE/ADAPT修订：`GET /games`增加`recommendation`（level/speed/sampleSize/correctCount/masteredCount），仅统计家长所选课及之前知识的有效掌握样本。`POST /sessions`新增gameDifficulty（auto/gentle/steady/challenge）及gameSpeed（auto/slow/normal/fast），默认auto；游戏响应和恢复包含冻结的`gameSettings`（实际level/speed、requestedDifficulty/requestedSpeed、推荐快照、version=1）。题库优先场景对应类型，缺少时以已学听辨/声调/拼读补足，必须具备真实标准音。最多六题，优先待巩固和当前课，再按历史轮转；难度不解锁课程。SQLite迁移9增加sessions.game_settings_json，schema5备份增加可选session.gameSettings；旧会话/旧备份默认为空对象。浏览器物理状态不上传，未命中动作不调用作答API。
+
+LEVEL-01～04：`POST /sessions`可选`gameLevelId`（如runner-01），须与gameId对应；省略按推荐物理难度选择一关。新游戏会话绑定12道不同的已学真实题目，普通课程仍6题。响应/恢复含`gameRun`（version=1、catalogVersion=1、level、theme、patterns和依次绑定instanceId的bindings），无教学标准答案。SQLite迁移10的sessions.game_run_json冻结数据；导出schema5会话可选gameRun，旧档案缺省{}，恢复校验12段与题实例精确对应。前端自动接续已完成检查点，暂停可停留；刷新仅重走当前未完成段，首次成绩仍幂等。家庭导入16MiB、访客4MiB，超限拒绝且不截断。

@@ -3,6 +3,8 @@ const messages: Record<string, string> = {
   GAME_DAILY_LIMIT: '今天的游戏时间用完啦。明天再来探索拼音吧。',
   GAME_CLOCK_ROLLBACK: '家庭 Mac 的时间发生回退，游戏已暂停。请家长校准系统时间后再继续。',
   GAME_PAUSED: '游戏时间需要重新确认。检查家庭 Mac 连接后，点继续游戏。',
+  GAME_LEVEL_NOT_FOUND: '这个关卡暂时不存在，请返回游戏乐园重新选择。',
+  GAME_LEVEL_CONTENT_INSUFFICIENT: '本关需要12个不同的已学任务。请家长检查标准音是否安装完整。',
   GAME_NOT_FOUND: '这个游戏暂时不可用，请返回游戏乐园重新选择。',
   MAC_UNREACHABLE:
     '暂时无法连接家庭 Mac。检查 Mac 是否运行、设备是否连着家庭网络，再重新连接；本次操作尚未确认，重试不会重复计分。',
@@ -14,7 +16,7 @@ const messages: Record<string, string> = {
   PARENT_AUTH_REQUIRED: '这个操作需要家长权限。请在服务器 Mac 的家长管理中操作。',
   PARENT_LOCAL_REQUIRED: '请在服务器 Mac 打开本机入口 http://127.0.0.1:8000，再进行家长操作。',
   REVISION_CONFLICT: '其他设备已更新家庭记录。请重新连接刷新，再检查并重试刚才的操作。',
-  BACKUP_TOO_LARGE: '备份文件超过 1 MiB。请选择由本应用导出的家庭 JSON 备份。',
+  BACKUP_TOO_LARGE: '备份文件超过 16 MiB。请选择由本应用导出的家庭 JSON 备份。',
   BACKUP_INVALID: '这份文件不是可用的家庭备份。请选择由本应用导出的 JSON 备份。',
   IMPORT_PREVIEW_EXPIRED: '备份预览已过期。请重新选择备份文件，检查预览后确认恢复。',
   IMPORT_PREVIEW_MISMATCH: '备份或家庭记录已改变。请重新选择文件并检查恢复预览。',

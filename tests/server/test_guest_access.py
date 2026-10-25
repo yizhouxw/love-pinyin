@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 from fastapi.testclient import TestClient
 
 from server import storage
-from server.guest import GuestOperation, execute
+from server.guest import MAX_BYTES, GuestOperation, execute
 from server.main import app
 from server.routes import resources
 
@@ -116,7 +116,9 @@ def test_guest_rejects_family_operations_and_invalid_state(test_client):
         ).status_code
         == 422
     )
-    assert test_client.post("/api/v1/guest/operate", content=b"x" * 1_048_577).status_code == 413
+    assert (
+        test_client.post("/api/v1/guest/operate", content=b"x" * (MAX_BYTES + 1)).status_code == 413
+    )
     assert (
         test_client.post(
             "/api/v1/guest/operate",

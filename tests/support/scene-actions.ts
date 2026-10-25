@@ -1,58 +1,136 @@
 import { expect, type Page } from '@playwright/test';
-/** Drive actual keyboard/touch controls; inspect visible world geometry, never inject answers. */
-export async function playScene(page: Page, optionId: string) {
+/** Real controls only. Read the visible route geometry, never mutate game state or submit an answer. */
+export async function playScene(
+  page: Page,
+  optionId: string,
+  { continuous = false }: { continuous?: boolean } = {},
+) {
   const stage = page.getByRole('group', { name: '游戏操作区：方向键控制，空格行动' });
   await expect(stage).toBeVisible();
-  // Explicit standard audio also works after page reload (gesture required).
+  const auto = page.getByRole('button', { name: /连续旅程：/ });
+  if (!continuous && (await auto.getAttribute('aria-pressed')) === 'true') await auto.click();
   await page.getByRole('button', { name: '听拼音', exact: true }).click();
   const actions = page.getByRole('group', { name: '场景动作' }).getByRole('button');
-  await expect(actions.nth(1)).toBeEnabled();
+  await expect(actions.nth(1)).toBeEnabled({ timeout: 20000 });
   const scene = await stage.getAttribute('data-scene');
+  const goal = Number(await stage.getAttribute('data-choice-at'));
+  let index = -1;
   const targets = stage.locator('[data-scene-target]');
-  const ids = await targets.evaluateAll((nodes) =>
-    nodes.map((n) => n.getAttribute('data-scene-target')),
-  );
-  const index = ids.indexOf(optionId);
-  expect(index).toBeGreaterThanOrEqual(0);
-  await stage.focus();
+  if (scene !== 'space')
+    index = (
+      await targets.evaluateAll((nodes) => nodes.map((n) => n.getAttribute('data-scene-target')))
+    ).indexOf(optionId);
+  // Space planets enter view only after the meteor route. Index is resolved below.
   if (scene === 'runner') {
-    const current = Math.floor(ids.length / 2);
-    for (let i = 0; i < Math.abs(index - current); i++)
-      await stage.press(index < current ? 'ArrowLeft' : 'ArrowRight');
-    await expect
-      .poll(async () => Number(await stage.getAttribute('data-world-distance')))
-      .toBeGreaterThanOrEqual(145);
-    await stage.press('Space');
+    expect(index).toBeGreaterThanOrEqual(0);
+    for (let step = 0; step < 180; step++) {
+      const snapshot = await stage.evaluate((el) => ({
+        distance: Number(el.getAttribute('data-world-distance')),
+        x: Number(el.getAttribute('data-world-x')),
+        jump: Number(el.getAttribute('data-world-jump')),
+        obstacles: Array.from(el.querySelectorAll('[data-obstacle]')).map((o) => ({
+          at: Number(o.getAttribute('data-obstacle-at')),
+          lane: Number(o.getAttribute('data-obstacle-lane')),
+          kind: o.getAttribute('data-obstacle-kind'),
+        })),
+        count: el.querySelectorAll('[data-scene-target]').length,
+      }));
+      if (snapshot.distance >= goal) break;
+      const obstacle = snapshot.obstacles.find(
+        (o) => o.at > snapshot.distance && o.at - snapshot.distance < 55,
+      );
+      if (obstacle) {
+        const ox = 120 + ((obstacle.lane % snapshot.count) * 560) / Math.max(1, snapshot.count - 1);
+        if (
+          obstacle.kind === 'root' &&
+          (obstacle.lane === -1 || Math.abs(ox - snapshot.x) < 65) &&
+          snapshot.jump < 1
+        )
+          await page.keyboard.press('Space');
+        if (obstacle.kind === 'bush' && Math.abs(ox - snapshot.x) < 80)
+          await page.keyboard.press(snapshot.x < 500 ? 'ArrowRight' : 'ArrowLeft');
+      } else if (!snapshot.obstacles.some((o) => o.at > snapshot.distance)) {
+        const x = 120 + (index * 560) / Math.max(1, snapshot.count - 1);
+        if (Math.abs(snapshot.x - x) > 20)
+          await page.keyboard.press(snapshot.x < x ? 'ArrowRight' : 'ArrowLeft');
+      }
+      await page.waitForTimeout(100);
+      if (await stage.getAttribute('data-world-hit')) break;
+    }
   } else if (scene === 'drum') {
-    for (let i = 0; i < index; i++) await stage.press('ArrowRight');
+    expect(index).toBeGreaterThanOrEqual(0);
+    for (let i = 0; i < index; i++) await page.keyboard.press('ArrowRight');
     await expect
       .poll(
         async () => Math.abs(Number(await targets.nth(index).getAttribute('data-target-x')) - 180),
-        { timeout: 20000 },
+        { timeout: 30000 },
       )
-      .toBeLessThan(3);
-    await stage.press('Space');
+      .toBeLessThan(4);
+    await page.keyboard.press('Space');
   } else if (scene === 'boat') {
-    const target = Number(await targets.nth(index).getAttribute('data-target-x'));
-    let x = Number(await stage.getAttribute('data-world-x'));
-    // Steer through real inertia, then row ahead when aligned.
-    for (let tries = 0; Math.abs(target - x) > 35 && tries < 20; tries++) {
-      await stage.press(target < x ? 'ArrowLeft' : 'ArrowRight');
-      await page.waitForTimeout(300);
-      x = Number(await stage.getAttribute('data-world-x'));
-    }
-    for (let i = 0; i < 14 && !(await stage.getAttribute('data-world-hit')); i++) {
-      await stage.press('Space');
-      await page.waitForTimeout(50);
+    expect(index).toBeGreaterThanOrEqual(0);
+    const count = await targets.count();
+    for (let step = 0; step < 350; step++) {
+      const snapshot = await stage.evaluate((el) => ({
+        distance: Number(el.getAttribute('data-world-distance')),
+        x: Number(el.getAttribute('data-world-x')),
+        vx: Number(el.getAttribute('data-world-vx')),
+        obstacles: Array.from(el.querySelectorAll('[data-obstacle]')).map((o) => ({
+          at: Number(o.getAttribute('data-obstacle-at')),
+          lane: Number(o.getAttribute('data-obstacle-lane')),
+        })),
+      }));
+      const next = snapshot.obstacles.find(
+        (o) => o.at > snapshot.distance && o.at - snapshot.distance < 100,
+      );
+      const targetX = next
+        ? 120 + (((next.lane + 1) % count) * 560) / Math.max(1, count - 1)
+        : 120 + (index * 560) / Math.max(1, count - 1);
+      const projected = snapshot.x + snapshot.vx * 0.35;
+      if (Math.abs(targetX - projected) > 35)
+        await page.keyboard.press(targetX < projected ? 'ArrowLeft' : 'ArrowRight');
+      await page.keyboard.press('Space');
+      await page.waitForTimeout(120);
+      if (await stage.getAttribute('data-world-hit')) break;
     }
   } else {
-    const target = Number(await targets.nth(index).getAttribute('data-target-x'));
-    let x = Number(await stage.getAttribute('data-world-x'));
-    for (let tries = 0; Math.abs(target - x) > 15 && tries < 30; tries++) {
-      await stage.press(target < x ? 'ArrowLeft' : 'ArrowRight');
-      x = Number(await stage.getAttribute('data-world-x'));
+    // Stay away from the first meteor lane, then aim at actual planets after the flight.
+    for (let n = 0; n < 350; n++) {
+      const snapshot = await stage.evaluate((el) => ({
+        distance: Number(el.getAttribute('data-world-distance')),
+        x: Number(el.getAttribute('data-world-x')),
+        obstacles: Array.from(el.querySelectorAll('[data-obstacle]')).map((o) => ({
+          at: Number(o.getAttribute('data-obstacle-at')),
+          lane: Number(o.getAttribute('data-obstacle-lane')),
+        })),
+      }));
+      if (snapshot.distance >= goal) break;
+      const count = Number(await stage.getAttribute('data-option-count'));
+      const obstacle = snapshot.obstacles.find(
+        (o) => o.at > snapshot.distance && o.at - snapshot.distance < 150,
+      );
+      if (
+        obstacle &&
+        Math.abs(120 + ((obstacle.lane % count) * 560) / Math.max(1, count - 1) - snapshot.x) < 80
+      )
+        await page.keyboard.press(snapshot.x < 500 ? 'ArrowRight' : 'ArrowLeft');
+      await page.waitForTimeout(100);
     }
-    await stage.press('Space');
+    await expect
+      .poll(async () => Number(await stage.getAttribute('data-world-distance')), { timeout: 5000 })
+      .toBeGreaterThanOrEqual(goal);
+    await expect(targets.first()).toBeVisible();
+    index = (
+      await targets.evaluateAll((nodes) => nodes.map((n) => n.getAttribute('data-scene-target')))
+    ).indexOf(optionId);
+    expect(index).toBeGreaterThanOrEqual(0);
+    const x = Number(await targets.nth(index).getAttribute('data-target-x'));
+    for (let n = 0; n < 30; n++) {
+      const current = Number(await stage.getAttribute('data-world-x'));
+      if (Math.abs(x - current) < 15) break;
+      await page.keyboard.press(x < current ? 'ArrowLeft' : 'ArrowRight');
+    }
+    await page.keyboard.press('Space');
   }
   await expect(stage).toHaveAttribute('data-world-hit', String(index), { timeout: 20000 });
 }

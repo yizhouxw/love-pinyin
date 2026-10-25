@@ -56,7 +56,7 @@ export function validateNarration(curriculum, narration) {
     if (!(key in ui)) errors.push(`ui: missing ${key}`);
   }
   for (const [key, value] of Object.entries(ui)) {
-    if (!/^[a-z][a-z_]*$/.test(key)) errors.push(`ui: invalid key ${key}`);
+    if (!/^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$/.test(key)) errors.push(`ui: invalid key ${key}`);
     checkText(value?.text, `ui.${key}.text`);
   }
 

@@ -1,0 +1,4071 @@
+{
+  "version": 1,
+  "themes": {
+    "runner-theme-1": {
+      "id": "runner-theme-1",
+      "sky": "#d7f0dd",
+      "horizon": "#fcf0cf",
+      "land": "#95bc8f",
+      "accent": "#f2bd6e"
+    },
+    "runner-theme-2": {
+      "id": "runner-theme-2",
+      "sky": "#e5efcf",
+      "horizon": "#f6e3be",
+      "land": "#85ad76",
+      "accent": "#c4d495"
+    },
+    "runner-theme-3": {
+      "id": "runner-theme-3",
+      "sky": "#d3edf0",
+      "horizon": "#e7f4e6",
+      "land": "#86b6a0",
+      "accent": "#b7d8d0"
+    },
+    "runner-theme-4": {
+      "id": "runner-theme-4",
+      "sky": "#e3edcb",
+      "horizon": "#f8e4b9",
+      "land": "#a8bb7b",
+      "accent": "#d4b3cf"
+    },
+    "runner-theme-5": {
+      "id": "runner-theme-5",
+      "sky": "#eccfd4",
+      "horizon": "#f8dbb5",
+      "land": "#9da0a0",
+      "accent": "#e3bc9f"
+    },
+    "runner-theme-6": {
+      "id": "runner-theme-6",
+      "sky": "#c8d7ec",
+      "horizon": "#e8e6d3",
+      "land": "#78959b",
+      "accent": "#d0c8e5"
+    },
+    "boat-theme-1": {
+      "id": "boat-theme-1",
+      "sky": "#cfebde",
+      "horizon": "#a0ddd9",
+      "land": "#76ab76",
+      "accent": "#f2bd6e"
+    },
+    "boat-theme-2": {
+      "id": "boat-theme-2",
+      "sky": "#dae9d0",
+      "horizon": "#bcdfd9",
+      "land": "#83b58b",
+      "accent": "#c4d495"
+    },
+    "boat-theme-3": {
+      "id": "boat-theme-3",
+      "sky": "#ccecf1",
+      "horizon": "#a9d4e8",
+      "land": "#89bba5",
+      "accent": "#b7d8d0"
+    },
+    "boat-theme-4": {
+      "id": "boat-theme-4",
+      "sky": "#dfdfc8",
+      "horizon": "#8cc7d4",
+      "land": "#9eac8f",
+      "accent": "#d4b3cf"
+    },
+    "boat-theme-5": {
+      "id": "boat-theme-5",
+      "sky": "#edcfb3",
+      "horizon": "#b9d4da",
+      "land": "#9eae8d",
+      "accent": "#e3bc9f"
+    },
+    "boat-theme-6": {
+      "id": "boat-theme-6",
+      "sky": "#c4d5eb",
+      "horizon": "#9dc4d5",
+      "land": "#7f9c97",
+      "accent": "#d0c8e5"
+    },
+    "drum-theme-1": {
+      "id": "drum-theme-1",
+      "sky": "#f9d3a0",
+      "horizon": "#ffe4c3",
+      "land": "#81bca9",
+      "accent": "#f2bd6e"
+    },
+    "drum-theme-2": {
+      "id": "drum-theme-2",
+      "sky": "#dce7b9",
+      "horizon": "#efefd6",
+      "land": "#92b796",
+      "accent": "#c4d495"
+    },
+    "drum-theme-3": {
+      "id": "drum-theme-3",
+      "sky": "#c9e6e6",
+      "horizon": "#fae4c9",
+      "land": "#8fbbbc",
+      "accent": "#b7d8d0"
+    },
+    "drum-theme-4": {
+      "id": "drum-theme-4",
+      "sky": "#f0c7b7",
+      "horizon": "#f7debd",
+      "land": "#c5a7a1",
+      "accent": "#d4b3cf"
+    },
+    "drum-theme-5": {
+      "id": "drum-theme-5",
+      "sky": "#c8c7de",
+      "horizon": "#e2d5da",
+      "land": "#94a8a8",
+      "accent": "#e3bc9f"
+    },
+    "drum-theme-6": {
+      "id": "drum-theme-6",
+      "sky": "#bfc5df",
+      "horizon": "#e4d9cf",
+      "land": "#a0b4ba",
+      "accent": "#d0c8e5"
+    },
+    "space-theme-1": {
+      "id": "space-theme-1",
+      "sky": "#15264f",
+      "horizon": "#424986",
+      "land": "#777db0",
+      "accent": "#f2bd6e"
+    },
+    "space-theme-2": {
+      "id": "space-theme-2",
+      "sky": "#2c315e",
+      "horizon": "#676596",
+      "land": "#9a83a8",
+      "accent": "#c4d495"
+    },
+    "space-theme-3": {
+      "id": "space-theme-3",
+      "sky": "#153f58",
+      "horizon": "#547d91",
+      "land": "#79b5b3",
+      "accent": "#b7d8d0"
+    },
+    "space-theme-4": {
+      "id": "space-theme-4",
+      "sky": "#463759",
+      "horizon": "#8c7288",
+      "land": "#c39fa2",
+      "accent": "#d4b3cf"
+    },
+    "space-theme-5": {
+      "id": "space-theme-5",
+      "sky": "#22385d",
+      "horizon": "#687e9b",
+      "land": "#a4b5ca",
+      "accent": "#e3bc9f"
+    },
+    "space-theme-6": {
+      "id": "space-theme-6",
+      "sky": "#3b315e",
+      "horizon": "#807196",
+      "land": "#bba1bd",
+      "accent": "#d0c8e5"
+    }
+  },
+  "patterns": {
+    "runner-route-01": {
+      "id": "runner-route-01",
+      "scene": "runner",
+      "length": 440,
+      "choiceAt": 440,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": -1,
+          "kind": "root",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 0
+        },
+        {
+          "id": "p2",
+          "at": 167,
+          "lane": 2
+        },
+        {
+          "id": "p3",
+          "at": 263,
+          "lane": 0
+        },
+        {
+          "id": "p4",
+          "at": 360,
+          "lane": 2
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-02": {
+      "id": "runner-route-02",
+      "scene": "runner",
+      "length": 485,
+      "choiceAt": 485,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 1,
+          "kind": "root",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 1
+        },
+        {
+          "id": "p2",
+          "at": 182,
+          "lane": 3
+        },
+        {
+          "id": "p3",
+          "at": 293,
+          "lane": 1
+        },
+        {
+          "id": "p4",
+          "at": 405,
+          "lane": 3
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-03": {
+      "id": "runner-route-03",
+      "scene": "runner",
+      "length": 530,
+      "choiceAt": 530,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 2,
+          "kind": "root",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 2
+        },
+        {
+          "id": "p2",
+          "at": 197,
+          "lane": 0
+        },
+        {
+          "id": "p3",
+          "at": 323,
+          "lane": 2
+        },
+        {
+          "id": "p4",
+          "at": 450,
+          "lane": 0
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-04": {
+      "id": "runner-route-04",
+      "scene": "runner",
+      "length": 575,
+      "choiceAt": 575,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": -1,
+          "kind": "root",
+          "size": 28
+        },
+        {
+          "id": "o2",
+          "at": 465,
+          "lane": 0,
+          "kind": "bush",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 3
+        },
+        {
+          "id": "p2",
+          "at": 212,
+          "lane": 1
+        },
+        {
+          "id": "p3",
+          "at": 353,
+          "lane": 3
+        },
+        {
+          "id": "p4",
+          "at": 495,
+          "lane": 1
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-05": {
+      "id": "runner-route-05",
+      "scene": "runner",
+      "length": 620,
+      "choiceAt": 620,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 0,
+          "kind": "root",
+          "size": 33
+        },
+        {
+          "id": "o2",
+          "at": 510,
+          "lane": 1,
+          "kind": "bush",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 0
+        },
+        {
+          "id": "p2",
+          "at": 227,
+          "lane": 2
+        },
+        {
+          "id": "p3",
+          "at": 383,
+          "lane": 0
+        },
+        {
+          "id": "p4",
+          "at": 540,
+          "lane": 2
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-06": {
+      "id": "runner-route-06",
+      "scene": "runner",
+      "length": 665,
+      "choiceAt": 665,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 1,
+          "kind": "root",
+          "size": 38
+        },
+        {
+          "id": "o2",
+          "at": 555,
+          "lane": 2,
+          "kind": "bush",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 1
+        },
+        {
+          "id": "p2",
+          "at": 242,
+          "lane": 3
+        },
+        {
+          "id": "p3",
+          "at": 413,
+          "lane": 1
+        },
+        {
+          "id": "p4",
+          "at": 585,
+          "lane": 3
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-07": {
+      "id": "runner-route-07",
+      "scene": "runner",
+      "length": 710,
+      "choiceAt": 710,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": -1,
+          "kind": "root",
+          "size": 28
+        },
+        {
+          "id": "o2",
+          "at": 355,
+          "lane": 3,
+          "kind": "bush",
+          "size": 28
+        },
+        {
+          "id": "o3",
+          "at": 600,
+          "lane": -1,
+          "kind": "root",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 2
+        },
+        {
+          "id": "p2",
+          "at": 257,
+          "lane": 0
+        },
+        {
+          "id": "p3",
+          "at": 443,
+          "lane": 2
+        },
+        {
+          "id": "p4",
+          "at": 630,
+          "lane": 0
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-08": {
+      "id": "runner-route-08",
+      "scene": "runner",
+      "length": 755,
+      "choiceAt": 755,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 3,
+          "kind": "root",
+          "size": 33
+        },
+        {
+          "id": "o2",
+          "at": 378,
+          "lane": 0,
+          "kind": "bush",
+          "size": 33
+        },
+        {
+          "id": "o3",
+          "at": 645,
+          "lane": 1,
+          "kind": "root",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 3
+        },
+        {
+          "id": "p2",
+          "at": 272,
+          "lane": 1
+        },
+        {
+          "id": "p3",
+          "at": 473,
+          "lane": 3
+        },
+        {
+          "id": "p4",
+          "at": 675,
+          "lane": 1
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-09": {
+      "id": "runner-route-09",
+      "scene": "runner",
+      "length": 800,
+      "choiceAt": 800,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 0,
+          "kind": "root",
+          "size": 38
+        },
+        {
+          "id": "o2",
+          "at": 400,
+          "lane": 1,
+          "kind": "bush",
+          "size": 38
+        },
+        {
+          "id": "o3",
+          "at": 690,
+          "lane": 2,
+          "kind": "root",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 0
+        },
+        {
+          "id": "p2",
+          "at": 287,
+          "lane": 2
+        },
+        {
+          "id": "p3",
+          "at": 503,
+          "lane": 0
+        },
+        {
+          "id": "p4",
+          "at": 720,
+          "lane": 2
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-10": {
+      "id": "runner-route-10",
+      "scene": "runner",
+      "length": 845,
+      "choiceAt": 845,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": -1,
+          "kind": "root",
+          "size": 28
+        },
+        {
+          "id": "o2",
+          "at": 318,
+          "lane": 2,
+          "kind": "bush",
+          "size": 28
+        },
+        {
+          "id": "o3",
+          "at": 527,
+          "lane": -1,
+          "kind": "root",
+          "size": 28
+        },
+        {
+          "id": "o4",
+          "at": 735,
+          "lane": 0,
+          "kind": "bush",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 1
+        },
+        {
+          "id": "p2",
+          "at": 302,
+          "lane": 3
+        },
+        {
+          "id": "p3",
+          "at": 533,
+          "lane": 1
+        },
+        {
+          "id": "p4",
+          "at": 765,
+          "lane": 3
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-11": {
+      "id": "runner-route-11",
+      "scene": "runner",
+      "length": 890,
+      "choiceAt": 890,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 2,
+          "kind": "root",
+          "size": 33
+        },
+        {
+          "id": "o2",
+          "at": 333,
+          "lane": 3,
+          "kind": "bush",
+          "size": 33
+        },
+        {
+          "id": "o3",
+          "at": 557,
+          "lane": 0,
+          "kind": "root",
+          "size": 33
+        },
+        {
+          "id": "o4",
+          "at": 780,
+          "lane": 1,
+          "kind": "bush",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 2
+        },
+        {
+          "id": "p2",
+          "at": 317,
+          "lane": 0
+        },
+        {
+          "id": "p3",
+          "at": 563,
+          "lane": 2
+        },
+        {
+          "id": "p4",
+          "at": 810,
+          "lane": 0
+        }
+      ],
+      "beats": []
+    },
+    "runner-route-12": {
+      "id": "runner-route-12",
+      "scene": "runner",
+      "length": 935,
+      "choiceAt": 935,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 3,
+          "kind": "root",
+          "size": 38
+        },
+        {
+          "id": "o2",
+          "at": 348,
+          "lane": 0,
+          "kind": "bush",
+          "size": 38
+        },
+        {
+          "id": "o3",
+          "at": 587,
+          "lane": 1,
+          "kind": "root",
+          "size": 38
+        },
+        {
+          "id": "o4",
+          "at": 825,
+          "lane": 2,
+          "kind": "bush",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 3
+        },
+        {
+          "id": "p2",
+          "at": 332,
+          "lane": 1
+        },
+        {
+          "id": "p3",
+          "at": 593,
+          "lane": 3
+        },
+        {
+          "id": "p4",
+          "at": 855,
+          "lane": 1
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-01": {
+      "id": "boat-route-01",
+      "scene": "boat",
+      "length": 440,
+      "choiceAt": 440,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 0,
+          "kind": "reef",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 0
+        },
+        {
+          "id": "p2",
+          "at": 167,
+          "lane": 2
+        },
+        {
+          "id": "p3",
+          "at": 263,
+          "lane": 0
+        },
+        {
+          "id": "p4",
+          "at": 360,
+          "lane": 2
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-02": {
+      "id": "boat-route-02",
+      "scene": "boat",
+      "length": 485,
+      "choiceAt": 485,
+      "choiceGap": 150,
+      "currentStrength": 8,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 1,
+          "kind": "reef",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 1
+        },
+        {
+          "id": "p2",
+          "at": 182,
+          "lane": 3
+        },
+        {
+          "id": "p3",
+          "at": 293,
+          "lane": 1
+        },
+        {
+          "id": "p4",
+          "at": 405,
+          "lane": 3
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-03": {
+      "id": "boat-route-03",
+      "scene": "boat",
+      "length": 530,
+      "choiceAt": 530,
+      "choiceGap": 150,
+      "currentStrength": 16,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 2,
+          "kind": "reef",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 2
+        },
+        {
+          "id": "p2",
+          "at": 197,
+          "lane": 0
+        },
+        {
+          "id": "p3",
+          "at": 323,
+          "lane": 2
+        },
+        {
+          "id": "p4",
+          "at": 450,
+          "lane": 0
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-04": {
+      "id": "boat-route-04",
+      "scene": "boat",
+      "length": 575,
+      "choiceAt": 575,
+      "choiceGap": 150,
+      "currentStrength": 24,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 3,
+          "kind": "reef",
+          "size": 28
+        },
+        {
+          "id": "o2",
+          "at": 465,
+          "lane": 0,
+          "kind": "reef",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 3
+        },
+        {
+          "id": "p2",
+          "at": 212,
+          "lane": 1
+        },
+        {
+          "id": "p3",
+          "at": 353,
+          "lane": 3
+        },
+        {
+          "id": "p4",
+          "at": 495,
+          "lane": 1
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-05": {
+      "id": "boat-route-05",
+      "scene": "boat",
+      "length": 620,
+      "choiceAt": 620,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 0,
+          "kind": "reef",
+          "size": 33
+        },
+        {
+          "id": "o2",
+          "at": 510,
+          "lane": 1,
+          "kind": "reef",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 0
+        },
+        {
+          "id": "p2",
+          "at": 227,
+          "lane": 2
+        },
+        {
+          "id": "p3",
+          "at": 383,
+          "lane": 0
+        },
+        {
+          "id": "p4",
+          "at": 540,
+          "lane": 2
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-06": {
+      "id": "boat-route-06",
+      "scene": "boat",
+      "length": 665,
+      "choiceAt": 665,
+      "choiceGap": 150,
+      "currentStrength": 8,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 1,
+          "kind": "reef",
+          "size": 38
+        },
+        {
+          "id": "o2",
+          "at": 555,
+          "lane": 2,
+          "kind": "reef",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 1
+        },
+        {
+          "id": "p2",
+          "at": 242,
+          "lane": 3
+        },
+        {
+          "id": "p3",
+          "at": 413,
+          "lane": 1
+        },
+        {
+          "id": "p4",
+          "at": 585,
+          "lane": 3
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-07": {
+      "id": "boat-route-07",
+      "scene": "boat",
+      "length": 710,
+      "choiceAt": 710,
+      "choiceGap": 150,
+      "currentStrength": 16,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 2,
+          "kind": "reef",
+          "size": 28
+        },
+        {
+          "id": "o2",
+          "at": 355,
+          "lane": 3,
+          "kind": "reef",
+          "size": 28
+        },
+        {
+          "id": "o3",
+          "at": 600,
+          "lane": 0,
+          "kind": "reef",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 2
+        },
+        {
+          "id": "p2",
+          "at": 257,
+          "lane": 0
+        },
+        {
+          "id": "p3",
+          "at": 443,
+          "lane": 2
+        },
+        {
+          "id": "p4",
+          "at": 630,
+          "lane": 0
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-08": {
+      "id": "boat-route-08",
+      "scene": "boat",
+      "length": 755,
+      "choiceAt": 755,
+      "choiceGap": 150,
+      "currentStrength": 24,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 3,
+          "kind": "reef",
+          "size": 33
+        },
+        {
+          "id": "o2",
+          "at": 378,
+          "lane": 0,
+          "kind": "reef",
+          "size": 33
+        },
+        {
+          "id": "o3",
+          "at": 645,
+          "lane": 1,
+          "kind": "reef",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 3
+        },
+        {
+          "id": "p2",
+          "at": 272,
+          "lane": 1
+        },
+        {
+          "id": "p3",
+          "at": 473,
+          "lane": 3
+        },
+        {
+          "id": "p4",
+          "at": 675,
+          "lane": 1
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-09": {
+      "id": "boat-route-09",
+      "scene": "boat",
+      "length": 800,
+      "choiceAt": 800,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 0,
+          "kind": "reef",
+          "size": 38
+        },
+        {
+          "id": "o2",
+          "at": 400,
+          "lane": 1,
+          "kind": "reef",
+          "size": 38
+        },
+        {
+          "id": "o3",
+          "at": 690,
+          "lane": 2,
+          "kind": "reef",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 0
+        },
+        {
+          "id": "p2",
+          "at": 287,
+          "lane": 2
+        },
+        {
+          "id": "p3",
+          "at": 503,
+          "lane": 0
+        },
+        {
+          "id": "p4",
+          "at": 720,
+          "lane": 2
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-10": {
+      "id": "boat-route-10",
+      "scene": "boat",
+      "length": 845,
+      "choiceAt": 845,
+      "choiceGap": 150,
+      "currentStrength": 8,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 1,
+          "kind": "reef",
+          "size": 28
+        },
+        {
+          "id": "o2",
+          "at": 318,
+          "lane": 2,
+          "kind": "reef",
+          "size": 28
+        },
+        {
+          "id": "o3",
+          "at": 527,
+          "lane": 3,
+          "kind": "reef",
+          "size": 28
+        },
+        {
+          "id": "o4",
+          "at": 735,
+          "lane": 0,
+          "kind": "reef",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 1
+        },
+        {
+          "id": "p2",
+          "at": 302,
+          "lane": 3
+        },
+        {
+          "id": "p3",
+          "at": 533,
+          "lane": 1
+        },
+        {
+          "id": "p4",
+          "at": 765,
+          "lane": 3
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-11": {
+      "id": "boat-route-11",
+      "scene": "boat",
+      "length": 890,
+      "choiceAt": 890,
+      "choiceGap": 150,
+      "currentStrength": 16,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 2,
+          "kind": "reef",
+          "size": 33
+        },
+        {
+          "id": "o2",
+          "at": 333,
+          "lane": 3,
+          "kind": "reef",
+          "size": 33
+        },
+        {
+          "id": "o3",
+          "at": 557,
+          "lane": 0,
+          "kind": "reef",
+          "size": 33
+        },
+        {
+          "id": "o4",
+          "at": 780,
+          "lane": 1,
+          "kind": "reef",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 2
+        },
+        {
+          "id": "p2",
+          "at": 317,
+          "lane": 0
+        },
+        {
+          "id": "p3",
+          "at": 563,
+          "lane": 2
+        },
+        {
+          "id": "p4",
+          "at": 810,
+          "lane": 0
+        }
+      ],
+      "beats": []
+    },
+    "boat-route-12": {
+      "id": "boat-route-12",
+      "scene": "boat",
+      "length": 935,
+      "choiceAt": 935,
+      "choiceGap": 150,
+      "currentStrength": 24,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 3,
+          "kind": "reef",
+          "size": 38
+        },
+        {
+          "id": "o2",
+          "at": 348,
+          "lane": 0,
+          "kind": "reef",
+          "size": 38
+        },
+        {
+          "id": "o3",
+          "at": 587,
+          "lane": 1,
+          "kind": "reef",
+          "size": 38
+        },
+        {
+          "id": "o4",
+          "at": 825,
+          "lane": 2,
+          "kind": "reef",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 3
+        },
+        {
+          "id": "p2",
+          "at": 332,
+          "lane": 1
+        },
+        {
+          "id": "p3",
+          "at": 593,
+          "lane": 3
+        },
+        {
+          "id": "p4",
+          "at": 855,
+          "lane": 1
+        }
+      ],
+      "beats": []
+    },
+    "drum-route-01": {
+      "id": "drum-route-01",
+      "scene": "drum",
+      "length": 1160,
+      "choiceAt": 710,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-02": {
+      "id": "drum-route-02",
+      "scene": "drum",
+      "length": 1215,
+      "choiceAt": 765,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-03": {
+      "id": "drum-route-03",
+      "scene": "drum",
+      "length": 1270,
+      "choiceAt": 820,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-04": {
+      "id": "drum-route-04",
+      "scene": "drum",
+      "length": 1325,
+      "choiceAt": 875,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-05": {
+      "id": "drum-route-05",
+      "scene": "drum",
+      "length": 1380,
+      "choiceAt": 930,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-06": {
+      "id": "drum-route-06",
+      "scene": "drum",
+      "length": 1435,
+      "choiceAt": 985,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-07": {
+      "id": "drum-route-07",
+      "scene": "drum",
+      "length": 1490,
+      "choiceAt": 1040,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-08": {
+      "id": "drum-route-08",
+      "scene": "drum",
+      "length": 1545,
+      "choiceAt": 1095,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-09": {
+      "id": "drum-route-09",
+      "scene": "drum",
+      "length": 1600,
+      "choiceAt": 1150,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-10": {
+      "id": "drum-route-10",
+      "scene": "drum",
+      "length": 1655,
+      "choiceAt": 1205,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-11": {
+      "id": "drum-route-11",
+      "scene": "drum",
+      "length": 1710,
+      "choiceAt": 1260,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "drum-route-12": {
+      "id": "drum-route-12",
+      "scene": "drum",
+      "length": 1765,
+      "choiceAt": 1315,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [],
+      "pickups": [],
+      "beats": [80, 160, 240, 320, 400]
+    },
+    "space-route-01": {
+      "id": "space-route-01",
+      "scene": "space",
+      "length": 440,
+      "choiceAt": 440,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 0,
+          "kind": "asteroid",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 0
+        },
+        {
+          "id": "p2",
+          "at": 167,
+          "lane": 2
+        },
+        {
+          "id": "p3",
+          "at": 263,
+          "lane": 0
+        },
+        {
+          "id": "p4",
+          "at": 360,
+          "lane": 2
+        }
+      ],
+      "beats": []
+    },
+    "space-route-02": {
+      "id": "space-route-02",
+      "scene": "space",
+      "length": 485,
+      "choiceAt": 485,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 1,
+          "kind": "asteroid",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 1
+        },
+        {
+          "id": "p2",
+          "at": 182,
+          "lane": 3
+        },
+        {
+          "id": "p3",
+          "at": 293,
+          "lane": 1
+        },
+        {
+          "id": "p4",
+          "at": 405,
+          "lane": 3
+        }
+      ],
+      "beats": []
+    },
+    "space-route-03": {
+      "id": "space-route-03",
+      "scene": "space",
+      "length": 530,
+      "choiceAt": 530,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 2,
+          "kind": "asteroid",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 2
+        },
+        {
+          "id": "p2",
+          "at": 197,
+          "lane": 0
+        },
+        {
+          "id": "p3",
+          "at": 323,
+          "lane": 2
+        },
+        {
+          "id": "p4",
+          "at": 450,
+          "lane": 0
+        }
+      ],
+      "beats": []
+    },
+    "space-route-04": {
+      "id": "space-route-04",
+      "scene": "space",
+      "length": 575,
+      "choiceAt": 575,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 3,
+          "kind": "asteroid",
+          "size": 28
+        },
+        {
+          "id": "o2",
+          "at": 465,
+          "lane": 0,
+          "kind": "asteroid",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 3
+        },
+        {
+          "id": "p2",
+          "at": 212,
+          "lane": 1
+        },
+        {
+          "id": "p3",
+          "at": 353,
+          "lane": 3
+        },
+        {
+          "id": "p4",
+          "at": 495,
+          "lane": 1
+        }
+      ],
+      "beats": []
+    },
+    "space-route-05": {
+      "id": "space-route-05",
+      "scene": "space",
+      "length": 620,
+      "choiceAt": 620,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 0,
+          "kind": "asteroid",
+          "size": 33
+        },
+        {
+          "id": "o2",
+          "at": 510,
+          "lane": 1,
+          "kind": "asteroid",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 0
+        },
+        {
+          "id": "p2",
+          "at": 227,
+          "lane": 2
+        },
+        {
+          "id": "p3",
+          "at": 383,
+          "lane": 0
+        },
+        {
+          "id": "p4",
+          "at": 540,
+          "lane": 2
+        }
+      ],
+      "beats": []
+    },
+    "space-route-06": {
+      "id": "space-route-06",
+      "scene": "space",
+      "length": 665,
+      "choiceAt": 665,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 1,
+          "kind": "asteroid",
+          "size": 38
+        },
+        {
+          "id": "o2",
+          "at": 555,
+          "lane": 2,
+          "kind": "asteroid",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 1
+        },
+        {
+          "id": "p2",
+          "at": 242,
+          "lane": 3
+        },
+        {
+          "id": "p3",
+          "at": 413,
+          "lane": 1
+        },
+        {
+          "id": "p4",
+          "at": 585,
+          "lane": 3
+        }
+      ],
+      "beats": []
+    },
+    "space-route-07": {
+      "id": "space-route-07",
+      "scene": "space",
+      "length": 710,
+      "choiceAt": 710,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 2,
+          "kind": "asteroid",
+          "size": 28
+        },
+        {
+          "id": "o2",
+          "at": 355,
+          "lane": 3,
+          "kind": "asteroid",
+          "size": 28
+        },
+        {
+          "id": "o3",
+          "at": 600,
+          "lane": 0,
+          "kind": "asteroid",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 2
+        },
+        {
+          "id": "p2",
+          "at": 257,
+          "lane": 0
+        },
+        {
+          "id": "p3",
+          "at": 443,
+          "lane": 2
+        },
+        {
+          "id": "p4",
+          "at": 630,
+          "lane": 0
+        }
+      ],
+      "beats": []
+    },
+    "space-route-08": {
+      "id": "space-route-08",
+      "scene": "space",
+      "length": 755,
+      "choiceAt": 755,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 3,
+          "kind": "asteroid",
+          "size": 33
+        },
+        {
+          "id": "o2",
+          "at": 378,
+          "lane": 0,
+          "kind": "asteroid",
+          "size": 33
+        },
+        {
+          "id": "o3",
+          "at": 645,
+          "lane": 1,
+          "kind": "asteroid",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 3
+        },
+        {
+          "id": "p2",
+          "at": 272,
+          "lane": 1
+        },
+        {
+          "id": "p3",
+          "at": 473,
+          "lane": 3
+        },
+        {
+          "id": "p4",
+          "at": 675,
+          "lane": 1
+        }
+      ],
+      "beats": []
+    },
+    "space-route-09": {
+      "id": "space-route-09",
+      "scene": "space",
+      "length": 800,
+      "choiceAt": 800,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 0,
+          "kind": "asteroid",
+          "size": 38
+        },
+        {
+          "id": "o2",
+          "at": 400,
+          "lane": 1,
+          "kind": "asteroid",
+          "size": 38
+        },
+        {
+          "id": "o3",
+          "at": 690,
+          "lane": 2,
+          "kind": "asteroid",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 0
+        },
+        {
+          "id": "p2",
+          "at": 287,
+          "lane": 2
+        },
+        {
+          "id": "p3",
+          "at": 503,
+          "lane": 0
+        },
+        {
+          "id": "p4",
+          "at": 720,
+          "lane": 2
+        }
+      ],
+      "beats": []
+    },
+    "space-route-10": {
+      "id": "space-route-10",
+      "scene": "space",
+      "length": 845,
+      "choiceAt": 845,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.0,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 1,
+          "kind": "asteroid",
+          "size": 28
+        },
+        {
+          "id": "o2",
+          "at": 318,
+          "lane": 2,
+          "kind": "asteroid",
+          "size": 28
+        },
+        {
+          "id": "o3",
+          "at": 527,
+          "lane": 3,
+          "kind": "asteroid",
+          "size": 28
+        },
+        {
+          "id": "o4",
+          "at": 735,
+          "lane": 0,
+          "kind": "asteroid",
+          "size": 28
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 1
+        },
+        {
+          "id": "p2",
+          "at": 302,
+          "lane": 3
+        },
+        {
+          "id": "p3",
+          "at": 533,
+          "lane": 1
+        },
+        {
+          "id": "p4",
+          "at": 765,
+          "lane": 3
+        }
+      ],
+      "beats": []
+    },
+    "space-route-11": {
+      "id": "space-route-11",
+      "scene": "space",
+      "length": 890,
+      "choiceAt": 890,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.08,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 2,
+          "kind": "asteroid",
+          "size": 33
+        },
+        {
+          "id": "o2",
+          "at": 333,
+          "lane": 3,
+          "kind": "asteroid",
+          "size": 33
+        },
+        {
+          "id": "o3",
+          "at": 557,
+          "lane": 0,
+          "kind": "asteroid",
+          "size": 33
+        },
+        {
+          "id": "o4",
+          "at": 780,
+          "lane": 1,
+          "kind": "asteroid",
+          "size": 33
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 2
+        },
+        {
+          "id": "p2",
+          "at": 317,
+          "lane": 0
+        },
+        {
+          "id": "p3",
+          "at": 563,
+          "lane": 2
+        },
+        {
+          "id": "p4",
+          "at": 810,
+          "lane": 0
+        }
+      ],
+      "beats": []
+    },
+    "space-route-12": {
+      "id": "space-route-12",
+      "scene": "space",
+      "length": 935,
+      "choiceAt": 935,
+      "choiceGap": 150,
+      "currentStrength": 0,
+      "travelScale": 1.16,
+      "obstacles": [
+        {
+          "id": "o1",
+          "at": 110,
+          "lane": 3,
+          "kind": "asteroid",
+          "size": 38
+        },
+        {
+          "id": "o2",
+          "at": 348,
+          "lane": 0,
+          "kind": "asteroid",
+          "size": 38
+        },
+        {
+          "id": "o3",
+          "at": 587,
+          "lane": 1,
+          "kind": "asteroid",
+          "size": 38
+        },
+        {
+          "id": "o4",
+          "at": 825,
+          "lane": 2,
+          "kind": "asteroid",
+          "size": 38
+        }
+      ],
+      "pickups": [
+        {
+          "id": "p1",
+          "at": 70,
+          "lane": 3
+        },
+        {
+          "id": "p2",
+          "at": 332,
+          "lane": 1
+        },
+        {
+          "id": "p3",
+          "at": 593,
+          "lane": 3
+        },
+        {
+          "id": "p4",
+          "at": 855,
+          "lane": 1
+        }
+      ],
+      "beats": []
+    }
+  },
+  "levels": [
+    {
+      "id": "runner-01",
+      "gameId": "sound",
+      "scene": "runner",
+      "number": 1,
+      "title": "林间出发",
+      "subtitle": "草地入口 → 树根小径 → 林间驿站",
+      "voiceId": "ui-level_runner_01",
+      "recommendedDifficulty": "gentle",
+      "themeId": "runner-theme-1",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "草地入口",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "runner-route-01"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "runner-route-02"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "runner-route-01"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "runner-route-03"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "树根小径",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "runner-route-02"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "runner-route-04"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "runner-route-03"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "runner-route-05"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "林间驿站",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "runner-route-04"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "runner-route-06"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "runner-route-05"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "runner-route-06"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "runner-02",
+      "gameId": "sound",
+      "scene": "runner",
+      "number": 2,
+      "title": "蘑菇小径",
+      "subtitle": "蘑菇林 → 弯弯小路 → 松果营地",
+      "voiceId": "ui-level_runner_02",
+      "recommendedDifficulty": "gentle",
+      "themeId": "runner-theme-2",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "蘑菇林",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "runner-route-03"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "runner-route-05"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "runner-route-07"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "runner-route-09"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "弯弯小路",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "runner-route-11"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "runner-route-01"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "runner-route-03"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "runner-route-05"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "松果营地",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "runner-route-07"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "runner-route-09"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "runner-route-11"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "runner-route-01"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "runner-03",
+      "gameId": "sound",
+      "scene": "runner",
+      "number": 3,
+      "title": "溪边寻路",
+      "subtitle": "溪边草坡 → 独木桥边 → 瀑布营地",
+      "voiceId": "ui-level_runner_03",
+      "recommendedDifficulty": "steady",
+      "themeId": "runner-theme-3",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "溪边草坡",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "runner-route-05"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "runner-route-08"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "runner-route-11"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "runner-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "独木桥边",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "runner-route-05"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "runner-route-08"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "runner-route-11"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "runner-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "瀑布营地",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "runner-route-05"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "runner-route-08"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "runner-route-11"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "runner-route-02"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "runner-04",
+      "gameId": "sound",
+      "scene": "runner",
+      "number": 4,
+      "title": "风车山坡",
+      "subtitle": "风车谷 → 蜿蜒坡道 → 山腰小屋",
+      "voiceId": "ui-level_runner_04",
+      "recommendedDifficulty": "steady",
+      "themeId": "runner-theme-4",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "风车谷",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "runner-route-07"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "runner-route-08"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "runner-route-09"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "runner-route-10"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "蜿蜒坡道",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "runner-route-11"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "runner-route-12"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "runner-route-01"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "runner-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "山腰小屋",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "runner-route-03"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "runner-route-04"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "runner-route-05"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "runner-route-06"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "runner-05",
+      "gameId": "sound",
+      "scene": "runner",
+      "number": 5,
+      "title": "暮色密林",
+      "subtitle": "夕阳入口 → 密林岔路 → 萤火营地",
+      "voiceId": "ui-level_runner_05",
+      "recommendedDifficulty": "challenge",
+      "themeId": "runner-theme-5",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "夕阳入口",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "runner-route-09"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "runner-route-12"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "runner-route-07"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "runner-route-10"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "密林岔路",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "runner-route-05"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "runner-route-08"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "runner-route-11"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "runner-route-06"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "萤火营地",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "runner-route-09"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "runner-route-12"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "runner-route-07"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "runner-route-10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "runner-06",
+      "gameId": "sound",
+      "scene": "runner",
+      "number": 6,
+      "title": "星光山顶",
+      "subtitle": "星光山脚 → 云雾小径 → 山顶灯塔",
+      "voiceId": "ui-level_runner_06",
+      "recommendedDifficulty": "challenge",
+      "themeId": "runner-theme-6",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "星光山脚",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "runner-route-10"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "runner-route-05"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "runner-route-08"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "runner-route-11"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "云雾小径",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "runner-route-06"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "runner-route-09"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "runner-route-12"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "runner-route-07"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "山顶灯塔",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "runner-route-10"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "runner-route-05"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "runner-route-08"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "runner-route-11"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boat-01",
+      "gameId": "tone",
+      "scene": "boat",
+      "number": 1,
+      "title": "小河启航",
+      "subtitle": "码头出发 → 浅水河湾 → 小桥驿站",
+      "voiceId": "ui-level_boat_01",
+      "recommendedDifficulty": "gentle",
+      "themeId": "boat-theme-1",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "码头出发",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "boat-route-01"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "boat-route-02"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "boat-route-01"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "boat-route-03"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "浅水河湾",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "boat-route-02"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "boat-route-04"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "boat-route-03"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "boat-route-05"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "小桥驿站",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "boat-route-04"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "boat-route-06"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "boat-route-05"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "boat-route-06"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boat-02",
+      "gameId": "tone",
+      "scene": "boat",
+      "number": 2,
+      "title": "荷塘采莲",
+      "subtitle": "荷叶入口 → 莲花水道 → 湖心亭",
+      "voiceId": "ui-level_boat_02",
+      "recommendedDifficulty": "gentle",
+      "themeId": "boat-theme-2",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "荷叶入口",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "boat-route-03"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "boat-route-05"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "boat-route-07"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "boat-route-09"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "莲花水道",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "boat-route-11"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "boat-route-01"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "boat-route-03"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "boat-route-05"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "湖心亭",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "boat-route-07"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "boat-route-09"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "boat-route-11"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "boat-route-01"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boat-03",
+      "gameId": "tone",
+      "scene": "boat",
+      "number": 3,
+      "title": "双岛环游",
+      "subtitle": "沙洲出发 → 双岛岔湾 → 白鹭港",
+      "voiceId": "ui-level_boat_03",
+      "recommendedDifficulty": "steady",
+      "themeId": "boat-theme-3",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "沙洲出发",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "boat-route-05"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "boat-route-08"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "boat-route-11"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "boat-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "双岛岔湾",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "boat-route-05"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "boat-route-08"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "boat-route-11"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "boat-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "白鹭港",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "boat-route-05"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "boat-route-08"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "boat-route-11"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "boat-route-02"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boat-04",
+      "gameId": "tone",
+      "scene": "boat",
+      "number": 4,
+      "title": "峡谷运粮",
+      "subtitle": "峡谷入口 → 礁石航道 → 粮仓码头",
+      "voiceId": "ui-level_boat_04",
+      "recommendedDifficulty": "steady",
+      "themeId": "boat-theme-4",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "峡谷入口",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "boat-route-07"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "boat-route-08"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "boat-route-09"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "boat-route-10"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "礁石航道",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "boat-route-11"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "boat-route-12"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "boat-route-01"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "boat-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "粮仓码头",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "boat-route-03"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "boat-route-04"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "boat-route-05"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "boat-route-06"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boat-05",
+      "gameId": "tone",
+      "scene": "boat",
+      "number": 5,
+      "title": "晚霞归航",
+      "subtitle": "晚霞水面 → 芦苇水湾 → 渔村港口",
+      "voiceId": "ui-level_boat_05",
+      "recommendedDifficulty": "challenge",
+      "themeId": "boat-theme-5",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "晚霞水面",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "boat-route-09"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "boat-route-12"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "boat-route-07"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "boat-route-10"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "芦苇水湾",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "boat-route-05"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "boat-route-08"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "boat-route-11"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "boat-route-06"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "渔村港口",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "boat-route-09"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "boat-route-12"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "boat-route-07"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "boat-route-10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boat-06",
+      "gameId": "tone",
+      "scene": "boat",
+      "number": 6,
+      "title": "灯塔远行",
+      "subtitle": "远航码头 → 星光海峡 → 灯塔港湾",
+      "voiceId": "ui-level_boat_06",
+      "recommendedDifficulty": "challenge",
+      "themeId": "boat-theme-6",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "远航码头",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "boat-route-10"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "boat-route-05"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "boat-route-08"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "boat-route-11"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "星光海峡",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "boat-route-06"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "boat-route-09"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "boat-route-12"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "boat-route-07"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "灯塔港湾",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "boat-route-10"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "boat-route-05"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "boat-route-08"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "boat-route-11"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "drum-01",
+      "gameId": "shape",
+      "scene": "drum",
+      "number": 1,
+      "title": "鼓岛初演",
+      "subtitle": "热身鼓点 → 海边小舞台 → 小小谢幕",
+      "voiceId": "ui-level_drum_01",
+      "recommendedDifficulty": "gentle",
+      "themeId": "drum-theme-1",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "热身鼓点",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "drum-route-01"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "drum-route-02"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "drum-route-01"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "drum-route-03"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "海边小舞台",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "drum-route-02"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "drum-route-04"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "drum-route-03"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "drum-route-05"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "小小谢幕",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "drum-route-04"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "drum-route-06"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "drum-route-05"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "drum-route-06"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "drum-02",
+      "gameId": "shape",
+      "scene": "drum",
+      "number": 2,
+      "title": "竹林小调",
+      "subtitle": "竹叶拍子 → 竹林舞台 → 清风谢幕",
+      "voiceId": "ui-level_drum_02",
+      "recommendedDifficulty": "gentle",
+      "themeId": "drum-theme-2",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "竹叶拍子",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "drum-route-03"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "drum-route-05"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "drum-route-07"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "drum-route-09"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "竹林舞台",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "drum-route-11"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "drum-route-01"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "drum-route-03"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "drum-route-05"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "清风谢幕",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "drum-route-07"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "drum-route-09"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "drum-route-11"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "drum-route-01"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "drum-03",
+      "gameId": "shape",
+      "scene": "drum",
+      "number": 3,
+      "title": "海风合奏",
+      "subtitle": "浪花节拍 → 双鼓合奏 → 海岸谢幕",
+      "voiceId": "ui-level_drum_03",
+      "recommendedDifficulty": "steady",
+      "themeId": "drum-theme-3",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "浪花节拍",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "drum-route-05"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "drum-route-08"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "drum-route-11"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "drum-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "双鼓合奏",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "drum-route-05"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "drum-route-08"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "drum-route-11"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "drum-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "海岸谢幕",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "drum-route-05"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "drum-route-08"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "drum-route-11"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "drum-route-02"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "drum-04",
+      "gameId": "shape",
+      "scene": "drum",
+      "number": 4,
+      "title": "花火巡演",
+      "subtitle": "巡游开场 → 花火舞台 → 广场谢幕",
+      "voiceId": "ui-level_drum_04",
+      "recommendedDifficulty": "steady",
+      "themeId": "drum-theme-4",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "巡游开场",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "drum-route-07"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "drum-route-08"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "drum-route-09"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "drum-route-10"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "花火舞台",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "drum-route-11"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "drum-route-12"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "drum-route-01"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "drum-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "广场谢幕",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "drum-route-03"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "drum-route-04"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "drum-route-05"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "drum-route-06"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "drum-05",
+      "gameId": "shape",
+      "scene": "drum",
+      "number": 5,
+      "title": "雨夜鼓会",
+      "subtitle": "雨滴序曲 → 灯笼鼓会 → 雨后谢幕",
+      "voiceId": "ui-level_drum_05",
+      "recommendedDifficulty": "challenge",
+      "themeId": "drum-theme-5",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "雨滴序曲",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "drum-route-09"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "drum-route-12"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "drum-route-07"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "drum-route-10"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "灯笼鼓会",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "drum-route-05"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "drum-route-08"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "drum-route-11"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "drum-route-06"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "雨后谢幕",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "drum-route-09"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "drum-route-12"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "drum-route-07"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "drum-route-10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "drum-06",
+      "gameId": "shape",
+      "scene": "drum",
+      "number": 6,
+      "title": "星空音乐会",
+      "subtitle": "星空序曲 → 流星舞台 → 星光谢幕",
+      "voiceId": "ui-level_drum_06",
+      "recommendedDifficulty": "challenge",
+      "themeId": "drum-theme-6",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "星空序曲",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "drum-route-10"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "drum-route-05"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "drum-route-08"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "drum-route-11"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "流星舞台",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "drum-route-06"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "drum-route-09"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "drum-route-12"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "drum-route-07"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "星光谢幕",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "drum-route-10"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "drum-route-05"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "drum-route-08"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "drum-route-11"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space-01",
+      "gameId": "blend",
+      "scene": "space",
+      "number": 1,
+      "title": "月球邮局",
+      "subtitle": "地球出港 → 月球航线 → 月面邮局",
+      "voiceId": "ui-level_space_01",
+      "recommendedDifficulty": "gentle",
+      "themeId": "space-theme-1",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "地球出港",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "space-route-01"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "space-route-02"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "space-route-01"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "space-route-03"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "月球航线",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "space-route-02"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "space-route-04"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "space-route-03"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "space-route-05"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "月面邮局",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "space-route-04"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "space-route-06"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "space-route-05"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "space-route-06"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space-02",
+      "gameId": "blend",
+      "scene": "space",
+      "number": 2,
+      "title": "星环快递",
+      "subtitle": "星环入口 → 双环航线 → 土星驿站",
+      "voiceId": "ui-level_space_02",
+      "recommendedDifficulty": "gentle",
+      "themeId": "space-theme-2",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "星环入口",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "space-route-03"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "space-route-05"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "space-route-07"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "space-route-09"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "双环航线",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "space-route-11"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "space-route-01"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "space-route-03"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "space-route-05"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "土星驿站",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "space-route-07"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "space-route-09"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "space-route-11"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "space-route-01"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space-03",
+      "gameId": "blend",
+      "scene": "space",
+      "number": 3,
+      "title": "彗星追光",
+      "subtitle": "追光出发 → 彗星航线 → 冰晶驿站",
+      "voiceId": "ui-level_space_03",
+      "recommendedDifficulty": "steady",
+      "themeId": "space-theme-3",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "追光出发",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "space-route-05"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "space-route-08"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "space-route-11"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "space-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "彗星航线",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "space-route-05"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "space-route-08"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "space-route-11"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "space-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "冰晶驿站",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "space-route-05"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "space-route-08"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "space-route-11"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "space-route-02"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space-04",
+      "gameId": "blend",
+      "scene": "space",
+      "number": 4,
+      "title": "陨石航线",
+      "subtitle": "航线入口 → 陨石走廊 → 维修空间站",
+      "voiceId": "ui-level_space_04",
+      "recommendedDifficulty": "steady",
+      "themeId": "space-theme-4",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "航线入口",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "space-route-07"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "space-route-08"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "space-route-09"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "space-route-10"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "陨石走廊",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "space-route-11"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "space-route-12"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "space-route-01"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "space-route-02"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "维修空间站",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "space-route-03"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "space-route-04"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "space-route-05"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "space-route-06"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space-05",
+      "gameId": "blend",
+      "scene": "space",
+      "number": 5,
+      "title": "银河补给",
+      "subtitle": "补给出发 → 银河航道 → 远星补给站",
+      "voiceId": "ui-level_space_05",
+      "recommendedDifficulty": "challenge",
+      "themeId": "space-theme-5",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "补给出发",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "space-route-09"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "space-route-12"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "space-route-07"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "space-route-10"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "银河航道",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "space-route-05"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "space-route-08"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "space-route-11"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "space-route-06"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "远星补给站",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "space-route-09"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "space-route-12"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "space-route-07"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "space-route-10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space-06",
+      "gameId": "blend",
+      "scene": "space",
+      "number": 6,
+      "title": "星云远征",
+      "subtitle": "星云入口 → 极光航道 → 星际灯塔",
+      "voiceId": "ui-level_space_06",
+      "recommendedDifficulty": "challenge",
+      "themeId": "space-theme-6",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "星云入口",
+          "segments": [
+            {
+              "id": "segment-01",
+              "patternId": "space-route-10"
+            },
+            {
+              "id": "segment-02",
+              "patternId": "space-route-05"
+            },
+            {
+              "id": "segment-03",
+              "patternId": "space-route-08"
+            },
+            {
+              "id": "segment-04",
+              "patternId": "space-route-11"
+            }
+          ]
+        },
+        {
+          "id": "chapter-2",
+          "title": "极光航道",
+          "segments": [
+            {
+              "id": "segment-05",
+              "patternId": "space-route-06"
+            },
+            {
+              "id": "segment-06",
+              "patternId": "space-route-09"
+            },
+            {
+              "id": "segment-07",
+              "patternId": "space-route-12"
+            },
+            {
+              "id": "segment-08",
+              "patternId": "space-route-07"
+            }
+          ]
+        },
+        {
+          "id": "chapter-3",
+          "title": "星际灯塔",
+          "segments": [
+            {
+              "id": "segment-09",
+              "patternId": "space-route-10"
+            },
+            {
+              "id": "segment-10",
+              "patternId": "space-route-05"
+            },
+            {
+              "id": "segment-11",
+              "patternId": "space-route-08"
+            },
+            {
+              "id": "segment-12",
+              "patternId": "space-route-11"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

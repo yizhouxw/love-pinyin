@@ -320,7 +320,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             ? 'ui-summary'
             : question && answer
               ? answer.correct || corrected
-                ? 'ui-correct'
+                ? active?.gameId
+                  ? 'ui-game_checkpoint'
+                  : 'ui-correct'
                 : (answer.explanationAudioId ?? 'ui-incorrect')
               : question && hint
                 ? `hint-${question.id}`
@@ -369,7 +371,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     }
   }
 
-  async function beginLesson(lessonId: string, gameId?: string) {
+  async function beginLesson(lessonId: string, gameId?: string, gameLevelId?: string) {
     voiceStarted.current = true;
     if (guidanceEnabled) playVoice('ui-start');
     const started = (await api('/sessions', {
@@ -379,6 +381,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         ...(gameId
           ? {
               gameId,
+              gameLevelId,
               gameDifficulty: readScenePreference(gameId).difficulty,
               gameSpeed: readScenePreference(gameId).speed,
             }
@@ -538,6 +541,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         key={task.instanceId}
         gameId={game.id}
         settings={active.gameSettings}
+        run={active.gameRun}
         question={question}
         index={taskIndex}
         total={active.tasks.length}
@@ -948,7 +952,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             window.location.hash = '';
             setGamesOpen(false);
           }}
-          onStart={(gameId) => void act(() => beginLesson(progress.selectedLessonId, gameId))}
+          onStart={(gameId, gameLevelId) =>
+            void act(() => beginLesson(progress.selectedLessonId, gameId, gameLevelId))
+          }
         />
         <Notice error={error} onReconnect={() => void act(refresh)} />
       </main>

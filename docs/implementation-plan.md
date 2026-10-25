@@ -55,3 +55,5 @@ SPEC-013的DOCKER-05/06补充Windows x86-64宿主的linux/amd64部署及CPU Whis
 2026-10-25 SPEC-017 场景修订：SCENE-01～05 替代题卡互动，实现跑酷、划船、节奏、投递四套场景运动/碰撞；ADAPT-01～02 实现进度推荐、独立难度/速度与冻结设置，架构与迁移9见 [ADR-0032](adr/0032-scene-game-engine.md)。GAME-02/03 保持原家庭额度与真实成绩边界。
 
 2026-10-25补充SPEC-006 DEPS-02：关闭Dependabot #13–25，在main整合兼容更新并修复React配套版本与依赖清单遗漏；MLX-Audio维持已验证版本，Playwright新版实际复验Firefox。验证与剩余门禁见SPEC-006。
+
+2026-10-25按用户实测修订SPEC-017：KEY-01修复按钮/声音操作后的键盘焦点及长按，LEVEL-01～04以24关/72章/288任务槽和48种路线替代单题场景；独立关卡JSON、纯运动引擎与教学题单绑定，迁移10冻结整关数据，正确后连续前进。架构见[ADR-0033](adr/0033-authored-game-levels.md)，无新增依赖。

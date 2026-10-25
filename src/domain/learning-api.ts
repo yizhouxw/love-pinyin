@@ -53,6 +53,7 @@ export type PendingAnswer = { requestId: string; answerOptionId: string };
 export type Session = {
   id: string;
   gameId?: string | null;
+  gameRun?: import('./game-levels').GameRun;
   gameSettings?: import('./scene-game').GameSettings;
   lessonId?: string;
   reviewKnowledgeId?: string | null;
