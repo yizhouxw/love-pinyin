@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "policy": {
+    "sessionMinutes": 15,
+    "dailyMinutes": 60,
+    "sessionMaxMinutes": 60,
+    "dailyMaxMinutes": 180,
+    "breakSeconds": 600,
+    "leaseSeconds": 12,
+    "heartbeatSeconds": 4,
+    "requestTimeoutSeconds": 6
+  },
+  "games": [
+    {
+      "id": "sound",
+      "title": "听音寻宝",
+      "icon": "🐚",
+      "mode": "listen-choice",
+      "description": "听声音，找到藏起来的拼音宝贝。",
+      "voiceId": "ui-game_sound"
+    },
+    {
+      "id": "tone",
+      "title": "声调探险",
+      "icon": "⛰️",
+      "mode": "tone-choice",
+      "description": "听一听、看一看，找到声调的路线。",
+      "voiceId": "ui-game_tone"
+    },
+    {
+      "id": "shape",
+      "title": "字形侦探",
+      "icon": "🔎",
+      "mode": "symbol-choice",
+      "description": "仔细看，找出字母和拼音的小秘密。",
+      "voiceId": "ui-game_shape"
+    },
+    {
+      "id": "blend",
+      "title": "拼读列车",
+      "icon": "🚂",
+      "mode": "blend-choice",
+      "description": "选好拼音车厢，确认后一起出发。",
+      "voiceId": "ui-game_blend"
+    }
+  ]
+}

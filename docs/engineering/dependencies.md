@@ -105,3 +105,7 @@ DOCKER-05的Windows x86-64宿主运行Linux amd64容器，不新增Windows原生
 ## DAILY-12 本地一声派生（2026-10-25）
 
 无新增npm/uv依赖或模型。显式准备使用Python 3.12标准库的wave/struct/math实现时域PSOLA，解码复用现有macOS afconvert或Linux FFmpeg；目标300Hz与来源SHA记录在content/daily-reading-policy.json。维护检查复用已锁定的librosa 1.0.0（ISC，官方https://github.com/librosa/librosa）、NumPy 2.5.3（BSD-3-Clause，官方https://numpy.org/）、SciPy 1.18.1（BSD-3-Clause，官方https://scipy.org/），本机已实装并用于10条派生音的音高检查，普通运行/准备不依赖此维护组。派生音保持原录音unknown许可，仅写入private。
+
+### GAME-01～03（2026-10-25）
+
+新增游戏乐园无新增npm/uv依赖，沿用锁文件、React/FastAPI/SQLite及Python标准库zoneinfo。7份新增中文引导复用固定Qwen3-TTS/MLX本地生成，许可证与构建配置仍见content/voice-build.json、resources/licenses/Qwen3-TTS-Apache-2.0.txt和manifest；不下载模型或调用外部服务。

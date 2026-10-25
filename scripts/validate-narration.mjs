@@ -18,6 +18,13 @@ const requiredUi = [
   'audio_error',
   'blend_how',
   'blend_ready',
+  'game_welcome',
+  'game_sound',
+  'game_tone',
+  'game_shape',
+  'game_blend',
+  'game_rest',
+  'game_paused',
 ];
 const spokenChinese = /^[\p{Script=Han}\s，。！？、；：…“”‘’（）《》「」『』—·]+$/u;
 const hasHan = /\p{Script=Han}/u;

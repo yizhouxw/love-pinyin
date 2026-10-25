@@ -85,6 +85,8 @@ def progress(device: dict = Depends(paired)) -> dict:
         "clockSkewDetected": bool(device["clock_skew_detected"]),
         "pendingClockAttempts": pending_clock_count,
         "settings": {
+            "gameSessionMinutes": device["game_session_minutes"],
+            "gameDailyMinutes": device["game_daily_minutes"],
             "soundEnabled": bool(device["sound_enabled"]),
             "reducedMotion": bool(device["reduced_motion"]),
             "playbackGapSeconds": device["playback_gap_tenths"] / 10,

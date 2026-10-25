@@ -60,6 +60,7 @@ export function guestApi(path: string, options: RequestInit): Promise<unknown> {
       throw new Error('GUEST_CACHE_INVALID');
     }
     const response = await fetch('/api/v1/guest/operate', {
+      signal: options.signal,
       method: 'POST',
       credentials: 'omit',
       headers: { 'Content-Type': 'application/json' },

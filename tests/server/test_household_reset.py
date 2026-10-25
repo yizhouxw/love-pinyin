@@ -148,6 +148,8 @@ def test_reset_clears_settings_and_revokes_every_device_and_pending_code(paired_
     assert re_paired.status_code == 200
     assert re_paired.json()["isParent"] is True
     assert parent.get("/api/v1/bootstrap").json()["profile"]["settings"] == {
+        "gameSessionMinutes": 15,
+        "gameDailyMinutes": 60,
         "soundEnabled": True,
         "reducedMotion": False,
         "playbackGapSeconds": 1,

@@ -56,6 +56,7 @@ def _get_device(raw: str | None, request: Request) -> dict:
     with connect() as db:
         row = db.execute(
             """SELECT d.*,h.id AS profile_id,h.revision,h.content_version,
+                      h.game_session_minutes,h.game_daily_minutes,h.game_state_json,
                       h.selected_lesson_id,h.sound_enabled,h.reduced_motion,h.playback_gap_tenths,h.rounds_since_break,
                       h.last_observed_at,h.clock_skew_detected
                FROM devices d JOIN household h ON h.id=d.household_id

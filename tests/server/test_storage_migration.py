@@ -37,7 +37,7 @@ def test_migration_adds_motion_and_rest_fields_to_an_existing_household(monkeypa
     assert household["playback_gap_tenths"] == 10
     assert household["reduced_motion"] == 0
     assert household["rounds_since_break"] == 0
-    assert version == 7
+    assert version == max(storage.SUPPORTED_SCHEMA_VERSIONS)
     with storage.connect() as db:
         columns = {row["name"] for row in db.execute("PRAGMA table_info(sessions)")}
     assert "review_knowledge_id" in columns
@@ -100,7 +100,7 @@ def test_future_schema_is_rejected_before_any_database_change(monkeypatch, tmp_p
         owner.executescript("""
             CREATE TABLE schema_migrations(version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL);
             INSERT INTO schema_migrations VALUES(1,'2026-01-01');
-            INSERT INTO schema_migrations VALUES(8,'2026-01-01');
+            INSERT INTO schema_migrations VALUES(999,'2026-01-01');
             CREATE TABLE future_records(value TEXT NOT NULL);
             INSERT INTO future_records VALUES('private test household');
         """)
@@ -129,7 +129,7 @@ def test_device_metadata_migration_preserves_legacy_records_and_rolls_back_failu
         )
         for column in ("model", "pairing_code", "last_connected_at"):
             db.execute(f"ALTER TABLE devices DROP COLUMN {column}")
-        db.execute("DELETE FROM schema_migrations WHERE version=7")
+        db.execute("DELETE FROM schema_migrations WHERE version>=7")
         db.execute(
             "CREATE TRIGGER fail_version_seven BEFORE INSERT ON schema_migrations "
             "WHEN NEW.version=7 BEGIN SELECT RAISE(ABORT,'device migration failure'); END;"

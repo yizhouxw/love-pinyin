@@ -36,7 +36,9 @@ def test_backup_is_an_integral_private_snapshot_with_retention(monkeypatch, tmp_
     with sqlite3.connect(third) as db:
         assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
         assert db.execute("SELECT label FROM devices").fetchone()[0] == "测试设备"
-        assert db.execute("SELECT MAX(version) FROM schema_migrations").fetchone()[0] == 7
+        assert db.execute("SELECT MAX(version) FROM schema_migrations").fetchone()[0] == max(
+            storage.SUPPORTED_SCHEMA_VERSIONS
+        )
     assert data_dir.joinpath("love-pinyin.sqlite3").exists()
 
 

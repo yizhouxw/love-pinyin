@@ -12,6 +12,7 @@ from server.content_history import compatible_revision, exercises_for_revision
 from server.domain import (
     business_date,
 )
+from server.game_policy import GAMES, POLICY, empty_clock, validate_clock
 from server.learning_state import _public_exercise
 from server.playback_settings import GAP, gap_tenths
 
@@ -85,7 +86,7 @@ def _validate_backup(value: object) -> dict:
     profile = backup["profile"]
     _require(
         isinstance(profile, dict)
-        and set(profile)
+        and set(profile) - {"gameState"}
         == {
             "id",
             "selectedLessonId",
@@ -108,7 +109,7 @@ def _validate_backup(value: object) -> dict:
     settings_value = profile["settings"]
     _require(
         isinstance(settings_value, dict)
-        and set(settings_value)
+        and set(settings_value) - {"gameSessionMinutes", "gameDailyMinutes"}
         in (
             {"soundEnabled", "reducedMotion"},
             {"soundEnabled", "reducedMotion", "playbackGapSeconds"},
@@ -122,6 +123,17 @@ def _validate_backup(value: object) -> dict:
     try:
         gap_tenths(settings_value.get("playbackGapSeconds", GAP["defaultSeconds"]))
     except ValueError:
+        _require(False, "BACKUP_PROFILE_INVALID")
+
+    for key, default, maximum in (
+        ("gameSessionMinutes", POLICY["sessionMinutes"], POLICY["sessionMaxMinutes"]),
+        ("gameDailyMinutes", POLICY["dailyMinutes"], POLICY["dailyMaxMinutes"]),
+    ):
+        number = settings_value.get(key, default)
+        _require(type(number) is int and 1 <= number <= maximum, "BACKUP_PROFILE_INVALID")
+    try:
+        validate_clock(profile.get("gameState", empty_clock()))
+    except (ValueError, TypeError, OverflowError):
         _require(False, "BACKUP_PROFILE_INVALID")
 
     arrays = (
@@ -138,7 +150,8 @@ def _validate_backup(value: object) -> dict:
     for row in backup["sessions"]:
         _require(
             isinstance(row, dict)
-            and set(row) == {"id", "contentVersion", "startedAt", "status", "reviewKnowledgeId"},
+            and set(row) - {"gameId"}
+            == {"id", "contentVersion", "startedAt", "status", "reviewKnowledgeId"},
             "BACKUP_SESSION_INVALID",
         )
         _require(
@@ -155,6 +168,11 @@ def _validate_backup(value: object) -> dict:
             row["reviewKnowledgeId"] is None
             or row["reviewKnowledgeId"] in map_by_id("knowledgeItems"),
             "BACKUP_REFERENCE_INVALID",
+        )
+        _require(
+            row.get("gameId") is None
+            or (isinstance(row.get("gameId"), str) and row["gameId"] in GAMES),
+            "BACKUP_SESSION_INVALID",
         )
         sessions[row["id"]] = row
 
@@ -479,6 +497,10 @@ def _migrate_v4_backup(value: dict) -> dict:
 
 
 def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None:
+    db.execute(
+        "UPDATE household SET game_state_json=? WHERE id=?",
+        (json.dumps(backup["profile"].get("gameState", empty_clock())), household_id),
+    )
     db.execute("DELETE FROM request_receipts WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM attempts WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM skipped_instances WHERE household_id=?", (household_id,))
@@ -503,7 +525,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
         ]
         db.execute(
             """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
-               tasks_json,status,review_knowledge_id) VALUES(?,?,?,?,?,?,?,?)""",
+               tasks_json,status,review_knowledge_id,game_id) VALUES(?,?,?,?,?,?,?,?,?)""",
             (
                 session["id"],
                 household_id,
@@ -513,6 +535,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
                 json.dumps(tasks, ensure_ascii=False),
                 session["status"],
                 session["reviewKnowledgeId"],
+                session.get("gameId"),
             ),
         )
     for item in backup["exerciseInstances"]:

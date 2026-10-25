@@ -10,8 +10,9 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from server import api_dependencies, profile_backup, storage
 from server.content import load_curriculum
+from server.game_policy import POLICY
 from server.playback_settings import GAP, gap_tenths
-from server.routes import attempts, profiles, progress, resources, sessions
+from server.routes import attempts, games, profiles, progress, resources, sessions
 
 router = APIRouter(prefix="/api/v1/guest")
 
@@ -29,6 +30,8 @@ class GuestOperation(BaseModel):
 def dispatch(operation: GuestOperation, device: dict):
     path, method, body = operation.path, operation.method, operation.body
     if method == "GET":
+        if path == "/games":
+            return games.games(device)
         if path == "/bootstrap":
             with storage.connect() as db:
                 row = db.execute("SELECT * FROM household").fetchone()
@@ -48,6 +51,8 @@ def dispatch(operation: GuestOperation, device: dict):
         if path == "/household/settings":
             return profiles.settings(profiles.Settings.model_validate(body), device)
     if method == "POST":
+        if path in {"/games/heartbeat", "/games/pause"}:
+            return games.game_clock(path.rsplit("/", 1)[1], device)
         if path == "/sessions":
             return sessions.start_session(sessions.StartSession.model_validate(body), device)
         if path == "/rest/complete":
@@ -93,7 +98,8 @@ def execute(operation: GuestOperation) -> dict:
                 profile = backup["profile"]
                 db.execute(
                     """UPDATE household SET selected_lesson_id=?,sound_enabled=?,reduced_motion=?,
-                       playback_gap_tenths=?,rounds_since_break=?,revision=? WHERE id=?""",
+                       playback_gap_tenths=?,rounds_since_break=?,revision=?,
+                       game_session_minutes=?,game_daily_minutes=? WHERE id=?""",
                     (
                         profile["selectedLessonId"],
                         int(profile["settings"]["soundEnabled"]),
@@ -103,6 +109,8 @@ def execute(operation: GuestOperation) -> dict:
                         ),
                         profile["roundsSinceBreak"],
                         profile["revision"],
+                        profile["settings"].get("gameSessionMinutes", POLICY["sessionMinutes"]),
+                        profile["settings"].get("gameDailyMinutes", POLICY["dailyMinutes"]),
                         household_id,
                     ),
                 )

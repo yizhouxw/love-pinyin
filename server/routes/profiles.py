@@ -11,6 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from server.api_dependencies import COOKIE, CSRF_COOKIE, parent, parent_read
 from server.content import map_by_id
+from server.game_policy import POLICY, empty_clock
 from server.playback_settings import GAP, gap_tenths
 from server.profile_backup import (
     IMPORT_MAX_BYTES,
@@ -63,6 +64,12 @@ def select_lesson(body: LessonChoice, device: dict = Depends(parent)) -> dict:
 
 class Settings(BaseModel):
     model_config = ConfigDict(extra="forbid")
+    gameSessionMinutes: int | None = Field(
+        default=None, strict=True, ge=1, le=POLICY["sessionMaxMinutes"]
+    )
+    gameDailyMinutes: int | None = Field(
+        default=None, strict=True, ge=1, le=POLICY["dailyMaxMinutes"]
+    )
     soundEnabled: bool
     reducedMotion: bool | None = None
     playbackGapSeconds: float | None = Field(
@@ -80,11 +87,15 @@ def settings(body: Settings, device: dict = Depends(parent)) -> dict:
     with transaction() as db:
         db.execute(
             """UPDATE household SET sound_enabled=?,
+               game_session_minutes=COALESCE(?,game_session_minutes),
+               game_daily_minutes=COALESCE(?,game_daily_minutes),
                reduced_motion=COALESCE(?,reduced_motion),
                playback_gap_tenths=COALESCE(?,playback_gap_tenths),
                revision=revision+1 WHERE id=?""",
             (
                 int(body.soundEnabled),
+                body.gameSessionMinutes,
+                body.gameDailyMinutes,
                 int(body.reducedMotion) if body.reducedMotion is not None else None,
                 gap_tenths(body.playbackGapSeconds)
                 if body.playbackGapSeconds is not None
@@ -116,7 +127,7 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
         sessions = db.execute(
             """SELECT id,content_version AS contentVersion,started_at AS startedAt,
                       status,tasks_json,
-                      review_knowledge_id AS reviewKnowledgeId
+                      review_knowledge_id AS reviewKnowledgeId,game_id AS gameId
                FROM sessions WHERE household_id=? ORDER BY started_at,id""",
             (device["household_id"],),
         ).fetchall()
@@ -153,7 +164,14 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
         "sessions": [
             {
                 key: row[key]
-                for key in ("id", "contentVersion", "startedAt", "status", "reviewKnowledgeId")
+                for key in (
+                    "id",
+                    "contentVersion",
+                    "startedAt",
+                    "status",
+                    "reviewKnowledgeId",
+                    "gameId",
+                )
             }
             for row in sessions
         ],
@@ -268,7 +286,7 @@ def import_profile(body: ImportConfirm, device: dict = Depends(parent)) -> dict:
         _restore_backup(db, household_id, device["id"], backup)
         row = db.execute(
             """UPDATE household SET selected_lesson_id=?,sound_enabled=?,reduced_motion=?,
-               playback_gap_tenths=?,rounds_since_break=?,
+               playback_gap_tenths=?,rounds_since_break=?,game_session_minutes=?,game_daily_minutes=?,
                revision=revision+1 WHERE id=? RETURNING *""",
             (
                 backup["profile"]["selectedLessonId"],
@@ -278,6 +296,8 @@ def import_profile(body: ImportConfirm, device: dict = Depends(parent)) -> dict:
                     backup["profile"]["settings"].get("playbackGapSeconds", GAP["defaultSeconds"])
                 ),
                 backup["profile"]["roundsSinceBreak"],
+                backup["profile"]["settings"].get("gameSessionMinutes", POLICY["sessionMinutes"]),
+                backup["profile"]["settings"].get("gameDailyMinutes", POLICY["dailyMinutes"]),
                 household_id,
             ),
         ).fetchone()
@@ -375,8 +395,15 @@ def reset_profile(body: DeleteData, response: Response, device: dict = Depends(p
         db.execute(
             """UPDATE household SET selected_lesson_id='lesson-01',sound_enabled=1,
                reduced_motion=0,playback_gap_tenths=?,rounds_since_break=0,
+               game_session_minutes=?,game_daily_minutes=?,game_state_json=?,
                revision=revision+1 WHERE id=?""",
-            (round(GAP["defaultSeconds"] * 10), household_id),
+            (
+                round(GAP["defaultSeconds"] * 10),
+                POLICY["sessionMinutes"],
+                POLICY["dailyMinutes"],
+                json.dumps(empty_clock()),
+                household_id,
+            ),
         )
     with _import_previews_lock:
         for token, preview in list(_import_previews.items()):

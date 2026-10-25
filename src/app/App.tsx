@@ -30,6 +30,9 @@ import {
   savePendingAnswer,
 } from '../platform/pending-answer';
 import { DailyReadingPage } from './daily-reading';
+import { gameCatalog } from '../domain/games';
+import { GameZone, GamePause } from './game-zone';
+import { useGameClock } from './use-game-clock';
 import { GameOptionContent } from './game-option-content';
 import { GuestPanel } from './guest-panel';
 import { GuidanceSwitch } from './guidance-switch';
@@ -111,9 +114,13 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   );
   const blendConfirm = useRef<HTMLButtonElement | null>(null);
   const blendOptions = useRef(new Map<string, HTMLButtonElement>());
+  const [gamesOpen, setGamesOpen] = useState(window.location.hash === '#games');
   const [dailyOpen, setDailyOpen] = useState(window.location.hash === '#daily-reading');
   useEffect(() => {
-    const followHash = () => setDailyOpen(window.location.hash === '#daily-reading');
+    const followHash = () => {
+      setDailyOpen(window.location.hash === '#daily-reading');
+      setGamesOpen(window.location.hash === '#games');
+    };
     window.addEventListener('hashchange', followHash);
     return () => window.removeEventListener('hashchange', followHash);
   }, []);
@@ -248,6 +255,11 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const task = active && taskIndex >= 0 ? active.tasks[taskIndex] : null;
   const voice = useLearningVoice(task?.instanceId ?? null);
   const { play: playVoice, playSequence, stop: stopVoice } = voice;
+  const gameClock = useGameClock(
+    Boolean(active?.gameId) && (boot?.profile?.roundsSinceBreak ?? 0) < 2,
+    stopVoice,
+  );
+  const game = gameCatalog.games.find((item) => item.id === active?.gameId);
   const question = task?.exercise;
   const pictureIds = [
     ...new Set(
@@ -296,21 +308,26 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const autoVoiceId =
     !boot?.paired || parentOpen || parentGateOpen || lessonViewId
       ? null
-      : (boot.profile?.roundsSinceBreak ?? 0) >= 2
-        ? 'ui-rest'
-        : active && !question
-          ? 'ui-summary'
-          : question && answer
-            ? answer.correct || corrected
-              ? 'ui-correct'
-              : (answer.explanationAudioId ?? 'ui-incorrect')
-            : question && hint
-              ? `hint-${question.id}`
-              : question
-                ? `prompt-${question.id}`
-                : null;
+      : gameClock.paused
+        ? gameClock.reason.includes('LIMIT')
+          ? 'ui-game_rest'
+          : null
+        : (boot.profile?.roundsSinceBreak ?? 0) >= 2
+          ? 'ui-rest'
+          : active && !question
+            ? 'ui-summary'
+            : question && answer
+              ? answer.correct || corrected
+                ? 'ui-correct'
+                : (answer.explanationAudioId ?? 'ui-incorrect')
+              : question && hint
+                ? `hint-${question.id}`
+                : question
+                  ? `prompt-${question.id}`
+                  : null;
 
-  const autoStandardId = question && !answer && !hint ? question.audioRef : undefined;
+  const autoStandardId =
+    question && !answer && !hint && !gameClock.paused ? question.audioRef : undefined;
   useEffect(() => {
     if (autoVoiceId && voiceStarted.current && autoStandardId) {
       playSequence([
@@ -331,6 +348,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     parentOpen,
     parentGateOpen,
     boot?.paired,
+    gameClock.paused,
   ]);
 
   async function act(work: () => Promise<void>) {
@@ -349,12 +367,12 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     }
   }
 
-  async function beginLesson(lessonId: string) {
+  async function beginLesson(lessonId: string, gameId?: string) {
     voiceStarted.current = true;
     if (guidanceEnabled) playVoice('ui-start');
     const started = (await api('/sessions', {
       method: 'POST',
-      body: JSON.stringify({ lessonId }),
+      body: JSON.stringify({ lessonId, ...(gameId ? { gameId } : {}) }),
     })) as Session;
     setSession(started);
     setBlendDraft(null);
@@ -380,6 +398,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       !task ||
       busy ||
       answerNeedsAudio ||
+      gameClock.paused ||
       picturesPending ||
       (answer && (answer.correct || corrected))
     )
@@ -473,10 +492,39 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         ? lessonById.get(active.lessonId ?? '')?.title
         : undefined) ?? currentLesson?.title;
 
+  async function exitGame() {
+    if (!active) return;
+    stopVoice();
+    gameClock.pause('');
+    await api(`/sessions/${active.id}/finish`, { method: 'POST' });
+    await api('/games/pause', { method: 'POST' });
+    setSession(null);
+    setBlendDraft(null);
+    setAnswer(null);
+    setHint(null);
+    setGamesOpen(true);
+    window.location.hash = 'games';
+    await refresh();
+  }
+
+  if (active?.gameId && gameClock.paused)
+    return (
+      <GamePause
+        reason={gameClock.reason}
+        voice={voice}
+        busy={busy}
+        onResume={() => {
+          voiceStarted.current = true;
+          void gameClock.resume();
+        }}
+        onExit={() => void act(exitGame)}
+      />
+    );
+
   if (active && question)
     return (
       <main
-        className="play-page"
+        className={`play-page ${game ? `game-play game-${game.id}` : ''}`}
         onClickCapture={() => {
           voiceStarted.current = true;
         }}
@@ -488,6 +536,10 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             disabled={busy}
             onClick={() =>
               void act(async () => {
+                if (active.gameId) {
+                  await exitGame();
+                  return;
+                }
                 stopVoice();
                 await api(`/sessions/${active.id}/finish`, { method: 'POST' });
                 setSession(null);
@@ -501,7 +553,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             ←
           </button>
           <div>
-            <small>拼音小岛 · {title}</small>
+            <small>{game ? `${game.icon} ${game.title}` : `拼音小岛 · ${title}`}</small>
             <strong>
               第 {taskIndex + 1} / {active.tasks.length} 关
             </strong>
@@ -513,7 +565,22 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             ))}
           </span>
         </nav>
-        {!active.reviewKnowledgeId && active.tasks.length < 6 && (
+        {game && (
+          <aside className="game-trail" aria-label="本关探索进度">
+            <span>
+              {game.icon} {game.title}
+            </span>
+            <div aria-hidden="true">
+              {active.tasks.map((_, index) => (
+                <span key={index} className={index < taskIndex ? 'collected' : ''}>
+                  {index < taskIndex ? '🌱' : '○'}
+                </span>
+              ))}
+            </div>
+            <small>完成就点亮 · 不比快慢 · 随时休息</small>
+          </aside>
+        )}
+        {!active.gameId && !active.reviewKnowledgeId && active.tasks.length < 6 && (
           <p className="session-size-note" role="status">
             本课目前准备了 {active.tasks.length} 道可用练习，本轮先完成这些。
           </p>
@@ -790,6 +857,10 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         onReconnect={() => void act(refresh)}
         onFinish={() =>
           void act(async () => {
+            if (active.gameId) {
+              await exitGame();
+              return;
+            }
             await api(`/sessions/${active.id}/finish`, { method: 'POST' });
             setSession(null);
             await refresh();
@@ -801,6 +872,25 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   async function refreshProgressOnly() {
     setProgress((await api('/profiles/progress')) as Progress);
   }
+
+  if (gamesOpen && !parentOpen && curriculum && progress)
+    return (
+      <main className="home-page">
+        <GameZone
+          curriculum={curriculum}
+          lessonId={progress.selectedLessonId}
+          voice={voice}
+          busy={busy}
+          onBack={() => {
+            stopVoice();
+            window.location.hash = '';
+            setGamesOpen(false);
+          }}
+          onStart={(gameId) => void act(() => beginLesson(progress.selectedLessonId, gameId))}
+        />
+        <Notice error={error} onReconnect={() => void act(refresh)} />
+      </main>
+    );
 
   if (dailyOpen)
     return (
@@ -998,6 +1088,24 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             />
           ) : (
             <>
+              <section className="daily-entry games-entry">
+                <div>
+                  <span className="eyebrow">边玩边学 · 每次短一点</span>
+                  <h2>拼音游戏乐园</h2>
+                  <p>听音寻宝、声调探险、字形侦探、拼读列车。</p>
+                </div>
+                <button
+                  onClick={() => {
+                    stopVoice();
+                    voiceStarted.current = true;
+                    window.location.hash = 'games';
+                    setGamesOpen(true);
+                    if (guidanceEnabled) playVoice('ui-game_welcome');
+                  }}
+                >
+                  进入游戏乐园 →
+                </button>
+              </section>
               <section className="daily-entry">
                 <div>
                   <span className="eyebrow">每天读一点</span>

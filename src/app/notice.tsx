@@ -1,4 +1,9 @@
 const messages: Record<string, string> = {
+  GAME_SESSION_LIMIT: '这一次的游戏时间用完啦。连续休息 10 分钟后，再回来玩吧。',
+  GAME_DAILY_LIMIT: '今天的游戏时间用完啦。明天再来探索拼音吧。',
+  GAME_CLOCK_ROLLBACK: '家庭 Mac 的时间发生回退，游戏已暂停。请家长校准系统时间后再继续。',
+  GAME_PAUSED: '游戏时间需要重新确认。检查家庭 Mac 连接后，点继续游戏。',
+  GAME_NOT_FOUND: '这个游戏暂时不可用，请返回游戏乐园重新选择。',
   MAC_UNREACHABLE:
     '暂时无法连接家庭 Mac。检查 Mac 是否运行、设备是否连着家庭网络，再重新连接；本次操作尚未确认，重试不会重复计分。',
   PAIRING_CODE_INVALID: '配对码已失效或输入有误。请核对配对码，或在服务器 Mac 重新生成后输入。',

@@ -1,5 +1,6 @@
 """Small, transactional SQLite storage for a single household Mac server."""
 
+import json
 import os
 import secrets
 import sqlite3
@@ -9,12 +10,13 @@ from contextvars import ContextVar
 from datetime import UTC, datetime
 from pathlib import Path
 
+from server.game_policy import POLICY, empty_clock
 from server.playback_settings import DEFAULT_TENTHS
 
 DATA_DIR = Path(os.environ.get("LOVE_PINYIN_DATA_DIR", "private/data")).expanduser().resolve()
 DATABASE_PATH = DATA_DIR / "love-pinyin.sqlite3"
 # SQLite migration versions, independent of the portable JSON backup format.
-SUPPORTED_SCHEMA_VERSIONS = frozenset({1, 2, 3, 4, 5, 6, 7})
+SUPPORTED_SCHEMA_VERSIONS = frozenset({1, 2, 3, 4, 5, 6, 7, 8})
 _request_database: ContextVar[sqlite3.Connection | None] = ContextVar(
     "request_database", default=None
 )
@@ -226,6 +228,27 @@ def migrate() -> None:
                 "INSERT OR IGNORE INTO schema_migrations(version,applied_at) "
                 "VALUES(7,CURRENT_TIMESTAMP)"
             )
+            if "game_id" not in session_columns:
+                db.execute("ALTER TABLE sessions ADD COLUMN game_id TEXT")
+            for column, default in (
+                ("game_session_minutes", POLICY["sessionMinutes"]),
+                ("game_daily_minutes", POLICY["dailyMinutes"]),
+            ):
+                if column not in columns:
+                    db.execute(
+                        f"ALTER TABLE household ADD COLUMN {column} "
+                        f"INTEGER NOT NULL DEFAULT {default}"
+                    )
+            if "game_state_json" not in columns:
+                default_clock = json.dumps(empty_clock())
+                db.execute(
+                    "ALTER TABLE household ADD COLUMN game_state_json "
+                    f"TEXT NOT NULL DEFAULT '{default_clock}'"
+                )
+            db.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version,applied_at) "
+                "VALUES(8,CURRENT_TIMESTAMP)"
+            )
             db.execute("COMMIT")
         except Exception:
             if db.in_transaction:
@@ -259,7 +282,10 @@ def public_profile(row: sqlite3.Row) -> dict:
         "selectedLessonId": row["selected_lesson_id"],
         "contentVersion": row["content_version"],
         "revision": row["revision"],
+        "gameState": json.loads(row["game_state_json"]),
         "settings": {
+            "gameSessionMinutes": row["game_session_minutes"],
+            "gameDailyMinutes": row["game_daily_minutes"],
             "soundEnabled": bool(row["sound_enabled"]),
             "reducedMotion": bool(row["reduced_motion"]),
             "playbackGapSeconds": row["playback_gap_tenths"] / 10,

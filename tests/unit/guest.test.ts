@@ -18,6 +18,37 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('per-tab guest transport', () => {
+  it('cancels a stalled game renewal without replacing cached progress or blocking retry', async () => {
+    startGuest();
+    const before = cache.get('lp.guest.v1');
+    const controller = new AbortController();
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockImplementationOnce(
+          (_url: string, options: RequestInit) =>
+            new Promise((_resolve, reject) => {
+              options.signal?.addEventListener(
+                'abort',
+                () => reject(new DOMException('Aborted', 'AbortError')),
+                { once: true },
+              );
+            }),
+        )
+        .mockResolvedValueOnce(
+          Response.json({ result: { leaseSeconds: 12 }, state: { renewed: true } }),
+        ),
+    );
+    const pending = guestApi('/games/heartbeat', { method: 'POST', signal: controller.signal });
+    await Promise.resolve();
+    controller.abort();
+    await expect(pending).rejects.toThrow('Aborted');
+    expect(cache.get('lp.guest.v1')).toBe(before);
+    await expect(guestApi('/games/heartbeat', { method: 'POST' })).resolves.toEqual({
+      leaseSeconds: 12,
+    });
+  });
   it('serializes concurrent operations using the most recently cached state', async () => {
     startGuest();
     const states: unknown[] = [];

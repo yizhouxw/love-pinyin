@@ -17,6 +17,8 @@ from server.domain import (
     next_review,
     plan_practice,
 )
+from server.game_policy import GAMES
+from server.game_service import clock_status
 from server.learning_state import (
     _available_standard_audio,
     _current_lesson_order,
@@ -32,6 +34,7 @@ router = APIRouter()
 class StartSession(BaseModel):
     model_config = ConfigDict(extra="forbid")
     lessonId: str | None = None
+    gameId: str | None = None
 
 
 @router.post("/reviews/{knowledge_id}/sessions")
@@ -154,8 +157,19 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
     # Hearing exercises use only reviewed, present and integrity-checked standard
     # sounds. Whole-lesson recordings and Chinese instructions cannot replace them.
     audio_ids = _available_standard_audio(content)
+    if body.gameId is not None and body.gameId not in GAMES:
+        raise HTTPException(422, detail={"code": "GAME_NOT_FOUND"})
+    eligible_lessons = (
+        [item for item in content["lessons"] if item["order"] <= current_order]
+        if body.gameId
+        else [lesson]
+    )
+    question_lessons = {qid: item["id"] for item in eligible_lessons for qid in item["exerciseIds"]}
     questions = [
-        by_id[qid] for qid in lesson["exerciseIds"] if _objective_available(by_id[qid], audio_ids)
+        by_id[qid]
+        for qid in question_lessons
+        if _objective_available(by_id[qid], audio_ids)
+        and (not body.gameId or by_id[qid]["type"] == GAMES[body.gameId]["mode"])
     ]
     if not questions:
         raise HTTPException(409, detail={"code": "LESSON_NOT_READY"})
@@ -172,14 +186,23 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         ).fetchone()
         if household["rounds_since_break"] >= 2:
             raise HTTPException(409, detail={"code": "REST_REQUIRED"})
+        if body.gameId:
+            budget = clock_status(db, device["household_id"], "heartbeat")
+            if budget["reason"]:
+                raise HTTPException(409, detail={"code": budget["reason"]})
+            db.execute(
+                "UPDATE sessions SET status='finished' WHERE household_id=? "
+                "AND game_id IS NOT NULL AND status='active'",
+                (device["household_id"],),
+            )
         history = db.execute(
             """SELECT i.exercise_id, COALESCE(a.occurred_at,s.skipped_at) AS completed_at
                FROM exercise_instances i
                LEFT JOIN attempts a ON a.instance_id=i.id
                LEFT JOIN skipped_instances s ON s.instance_id=i.id
-               WHERE i.household_id=? AND i.lesson_id=?
+               WHERE i.household_id=? AND (i.lesson_id=? OR ? IS NOT NULL)
                  AND (a.id IS NOT NULL OR s.instance_id IS NOT NULL)""",
-            (device["household_id"], lesson["id"]),
+            (device["household_id"], lesson["id"], body.gameId),
         ).fetchall()
         selected_ids = plan_practice(
             [q["id"] for q in questions],
@@ -199,7 +222,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                     instance_id,
                     device["household_id"],
                     q["id"],
-                    lesson["id"],
+                    question_lessons[q["id"]],
                     content["contentVersion"],
                     now,
                     session_id,
@@ -212,8 +235,8 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                 }
             )
         db.execute(
-            """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,tasks_json)
-               VALUES(?,?,?,?,?,?)""",
+            """INSERT INTO sessions(id,household_id,device_id,content_version,started_at,
+               tasks_json,game_id) VALUES(?,?,?,?,?,?,?)""",
             (
                 session_id,
                 device["household_id"],
@@ -221,6 +244,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                 content["contentVersion"],
                 now,
                 json.dumps(tasks, ensure_ascii=False),
+                body.gameId,
             ),
         )
         revision = db.execute(
@@ -230,6 +254,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
     return {
         "id": session_id,
         "lessonId": lesson["id"],
+        "gameId": body.gameId,
         "contentVersion": content["contentVersion"],
         "startedAt": now,
         "tasks": tasks,
@@ -305,6 +330,7 @@ def current_session(device: dict = Depends(paired)) -> dict | None:
     audio_ids = _available_standard_audio(content)
     return {
         "id": row["id"],
+        "gameId": row["game_id"],
         "status": row["status"],
         "contentVersion": row["content_version"],
         "startedAt": row["started_at"],

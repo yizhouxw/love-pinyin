@@ -1,0 +1,177 @@
+.games-entry {
+  background: #e8f3e9;
+  border: 2px solid #bedac6;
+}
+.game-zone {
+  padding-block: 1rem 3rem;
+}
+.game-zone-heading {
+  padding: 1.5rem 0;
+  max-width: 44rem;
+}
+.game-zone-heading h1 {
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  margin: 0.5rem 0;
+}
+.game-budget {
+  display: grid;
+  gap: 0.65rem;
+  background: #eef3e9;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.game-budget button {
+  justify-self: start;
+}
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.game-card {
+  border: 2px solid #d5e1d6;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  background: #f7fbf3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+.game-card h2,
+.game-card p {
+  margin: 0;
+}
+.game-card p {
+  flex: 1;
+}
+.game-card > button {
+  max-width: 100%;
+  white-space: normal;
+}
+.game-card-icon {
+  font-size: 2.8rem;
+}
+.game-tone {
+  background: #fff7e8;
+  border-color: #ebd9b3;
+}
+.game-shape {
+  background: #eef5fc;
+  border-color: #c5d9ee;
+}
+.game-blend {
+  background: #fcf0ed;
+  border-color: #e9cec5;
+}
+.game-evidence {
+  padding: 1.5rem 0;
+}
+.game-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.game-stats > span {
+  display: grid;
+  gap: 0.3rem;
+  background: #f0f4ef;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+.game-stats strong {
+  font-size: 1.8rem;
+}
+.game-evidence p {
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.game-trail {
+  display: grid;
+  gap: 0.65rem;
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem auto;
+  border-radius: 1rem;
+  background: #edf5e9;
+}
+.game-trail > div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 1.5rem;
+}
+.game-trail .collected {
+  background: #d4e9ce;
+  border-radius: 50%;
+}
+.game-settings {
+  display: grid;
+  gap: 1rem;
+  max-width: 42rem;
+}
+.game-settings label {
+  display: grid;
+  gap: 0.5rem;
+}
+.game-settings input {
+  width: 100%;
+  min-height: 48px;
+}
+.game-pause {
+  display: grid;
+  gap: 1rem;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  .game-grid {
+    grid-template-columns: 1fr;
+  }
+  .game-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .game-card {
+    padding: 1.25rem;
+  }
+}
+.game-play .question-card {
+  border: 2px solid #c9dfcf;
+}
+.game-play.game-sound .game-option {
+  border-radius: 2rem 2rem 1rem 1rem;
+  background: #f2fbfa;
+}
+.game-play.game-tone .game-option {
+  background: #fff8e9;
+}
+.game-play.game-shape .game-option {
+  background: #f0f7ff;
+}
+.game-play.game-blend .blend-piece {
+  border-radius: 0.75rem 0.75rem 0.4rem 0.4rem;
+  border-bottom: 0.35rem solid #b47858;
+  background: #fff5ed;
+}
+.game-play .game-option.correct {
+  background: #dff0d8;
+}
+
+.game-start {
+  min-height: 56px;
+  padding: 0.8rem 1.2rem;
+  border: 0;
+  border-radius: 1rem;
+  background: #356d52;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.game-card > .game-start {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+.game-settings > .game-start {
+  justify-self: start;
+}

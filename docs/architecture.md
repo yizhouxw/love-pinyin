@@ -86,3 +86,5 @@ READ-07的`quick-gap-settings`管理紧凑入口、原生模态卡片与草稿�
 家长管理按[ADR-0023](adr/0023-loopback-parent-management.md)限定为服务器127.0.0.1入口：来源与Host共同检查，启动时禁用代理头。旧远程家长Cookie保留学习访问，不能调用管理API；家庭与访客界面按服务端入口能力显示家长按钮。
 
 文本传输与静态缓存按[ADR-0024](adr/0024-text-compression-and-public-assets.md)处理：锁定Starlette压缩JS/CSS和API文本，媒体及Range保持原字节；家庭API不缓存，哈希构建资源与字体按独立策略缓存。连接检测只在当前浏览器测现有同源资源，不增设数据收集服务。
+
+游戏乐园按[ADR-0031](adr/0031-household-game-budget.md)拆分：src/app/game-zone.tsx与game-settings.tsx展示入口/效果/设置，use-game-clock.ts负责短授权失效时锁界面；content/games.json是唯一玩法和时间策略目录。server/game_policy.py纯函数结算共享授权区间，game_service.py负责事务内读写/守卫，routes/games.py提供接口；原sessions/attempts继续冻结题单、保存唯一首次成绩。SQLite迁移8的household列保存分钟与版本化时钟，sessions.game_id保存玩法来源；家庭备份与访客快照复用原事务。

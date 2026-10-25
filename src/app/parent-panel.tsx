@@ -4,6 +4,7 @@ import type { LearningSettingsProps } from './settings-types';
 import playback from '../../content/playback.json';
 import type { AudioRequirement, Bootstrap, Json, Lesson } from '../domain/learning-api';
 import { api } from '../platform/api-client';
+import { GameSettings } from './game-settings';
 import { CopyCode } from './copy-code';
 import { KnowledgeProgress } from './knowledge-progress';
 import { formatAttemptTime } from './labels';
@@ -125,6 +126,14 @@ export function ParentPanel({
           </button>
         </div>
       </div>
+      <GameSettings
+        progress={progress}
+        curriculum={curriculum}
+        busy={busy}
+        disabled={!isParent}
+        act={act}
+        refresh={refresh}
+      />
       <details className="parent-section">
         <summary>声音与播放设置</summary>
         <section className="parent-audio-status" aria-label="学习音频准备状态">
@@ -521,6 +530,9 @@ export function ParentPanel({
                 {importPreview.counts.clockPendingAttempts ?? 0} 条。
               </p>
               <p>此操作会替换本家庭全部学习记录；已经下载的旧备份无法远程删除。</p>
+              <p>
+                同时恢复备份中的游戏时长约定与使用额度；缺少游戏字段的旧备份会使用默认时长并清空游戏额度。
+              </p>
               <label className="import-confirm-label">
                 输入“替换家庭学习档案”确认
                 <input

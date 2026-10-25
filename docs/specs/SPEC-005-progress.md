@@ -92,3 +92,7 @@ Mac 系统时钟保护切片：SQLite迁移5引入记录（当前数据库迁移
 家长JSON原生下载/文件选择及恢复已有实际Chrome/Safari记录，真实服务GUI还覆盖删除、拒绝坏备份、历史版本与访客隔离。详见[交付核对](../engineering/delivery-audit.md)；测试构造历史不代表运行过旧版二进制。
 
 当前设置另含SPEC-012的playbackGapSeconds：0.1～5秒、步长0.1、默认1秒。SQLite迁移6用整数十分之一秒保存，JSON备份仍为schema v5；缺字段的旧备份默认1秒，设置更新未传该字段保留原值。天天练识别结果和家长当次标记仅留页面，不写掌握度或备份。
+
+## GAME-03 游戏记录和时长备份
+
+SPEC-017增加游戏来源和最近7天的游戏效果统计，不改变原客观成绩/掌握规则。JSON备份v5可选profile.gameState、settings.gameSessionMinutes/gameDailyMinutes和session.gameId；旧备份缺省为空时钟和15/60分钟，恢复保留冻结题单与首次结果。删除学习记录保留游戏额度及设置；明确重置家庭档案才清除。SQLite迁移8增加相应字段，拒绝未知后续迁移。

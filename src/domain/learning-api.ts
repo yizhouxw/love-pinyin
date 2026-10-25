@@ -52,6 +52,7 @@ export type PendingAnswer = { requestId: string; answerOptionId: string };
 
 export type Session = {
   id: string;
+  gameId?: string | null;
   lessonId?: string;
   reviewKnowledgeId?: string | null;
   tasks: Task[];
@@ -65,7 +66,13 @@ export type Progress = {
   clockSkewDetected?: boolean;
   pendingClockAttempts?: number;
   attemptCount?: number;
-  settings: { reducedMotion: boolean; soundEnabled: boolean; playbackGapSeconds?: number };
+  settings: {
+    reducedMotion: boolean;
+    soundEnabled: boolean;
+    playbackGapSeconds?: number;
+    gameSessionMinutes?: number;
+    gameDailyMinutes?: number;
+  };
   mastery: {
     knowledgeId: string;
     status: string;

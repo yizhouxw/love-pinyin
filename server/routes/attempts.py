@@ -12,6 +12,7 @@ from server.content_history import exercises_for_revision
 from server.domain import (
     business_date,
 )
+from server.game_service import require_game_lease
 from server.learning_audio import narration_scripts
 from server.learning_state import _mastery
 from server.storage import connect, now_iso, transaction
@@ -35,6 +36,7 @@ def mark_hint(instance_id: str, device: dict = Depends(mutable)) -> dict:
         ).fetchone()
         if skipped:
             raise HTTPException(409, detail={"code": "INSTANCE_ALREADY_SKIPPED"})
+        require_game_lease(db, device["household_id"], row["session_id"])
         changed = not row["hint_used"]
         db.execute("UPDATE exercise_instances SET hint_used=1 WHERE id=?", (instance_id,))
         if changed:
@@ -67,6 +69,7 @@ def skip_instance(instance_id: str, device: dict = Depends(mutable)) -> dict:
         ).fetchone()
         if not session or session["status"] != "active":
             raise HTTPException(409, detail={"code": "SESSION_NOT_ACTIVE"})
+        require_game_lease(db, device["household_id"], instance["session_id"])
         skipped_at = now_iso()
         inserted = db.execute(
             """INSERT OR IGNORE INTO skipped_instances
@@ -117,6 +120,7 @@ def submit_answer(instance_id: str, body: SubmitAnswer, device: dict = Depends(m
             "SELECT 1 FROM skipped_instances WHERE instance_id=?", (instance_id,)
         ).fetchone():
             raise HTTPException(409, detail={"code": "INSTANCE_ALREADY_SKIPPED"})
+        require_game_lease(db, device["household_id"], instance["session_id"])
         question = exercises_for_revision(instance["content_version"]).get(instance["exercise_id"])
         if not question or question["type"] == "read-aloud":
             raise HTTPException(409, detail={"code": "EXERCISE_NOT_READY"})

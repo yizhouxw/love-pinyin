@@ -84,3 +84,13 @@ SPEC-012新增`settings.playbackGapSeconds`：基础间隔数字0.1～5、步长
 DEVICE-01：POST `/pair`可带可选`model`（最多80字符）；GET `/devices`返回`model`、`pairingCode`、`lastConnectedAt`，缺失历史数据为null。已用配对码不是可重用邀请，不返回会话令牌。认证请求可附`X-LP-Device-Model`用于旧设备首次补全类型提示，不覆盖已有型号；连接时间只使用服务端时钟。
 
 ACCESS-03：家长API与`/local/pairing-code`仅接受来源127.0.0.1且Host hostname为127.0.0.1的请求；否则返回403 `PARENT_LOCAL_REQUIRED`。家庭/访客bootstrap的`isLocalHost`表示这一严格入口条件。远程bootstrap的`device.isParent`固定false，即使旧Cookie对应历史家长角色；新远程配对也仅学习角色。远程访客PUT课程/设置同样拒绝。提供的Uvicorn启动命令禁用代理头，不信任转发头授予管理权限。
+
+## SPEC-017 游戏接口与时间状态
+
+- `GET /games`：配对设备只读取得`clock`和最近7天`report`（answered、independentCorrect、hints、skipped、pendingClock、practiceKnowledgeIds）；读取不修改revision。
+- `POST /games/heartbeat`：需要CSRF，家庭共享游戏授权最长12秒，返回服务端结算的sessionSeconds/dailySeconds、剩余额度remainingSeconds、短期leaseSeconds、reason及breakRemainingSeconds。浏览器4秒续期，单调时钟到期锁界面，失联/后台后先续期。
+- `POST /games/pause`：需要CSRF，结算并结束家庭当前游戏授权，不清零单次用量；连续无授权10分钟才重新开始一次。
+- `POST /sessions`可选`gameId`（sound/tone/shape/blend），选择当前课及之前已学内容中该模式最多6题；返回及恢复包含gameId。新游戏关闭此前活动游戏会话，已保存结果不丢失。
+- `PUT /household/settings`可选整数gameSessionMinutes（1～60，默认15）、gameDailyMinutes（1～180，默认60）；仍需soundEnabled和本机家长权限，未传保留。
+- 游戏hint/skip/首次answer在同一写事务内检查授权；超限返回409 GAME_SESSION_LIMIT/GAME_DAILY_LIMIT，过期GAME_PAUSED，回拨GAME_CLOCK_ROLLBACK。已成功答案的幂等回执仍可重读。普通课程接口不受游戏时长限制。
+- 时间按服务器UTC、日额度按Asia/Shanghai零点；跨设备重叠区间只计一次。`profile.gameState`保存version、days、runSeconds、accountedAt、leaseUntil，不含凭据。SQLite迁移8、JSON备份v5的可选扩展见SPEC-005。访客通过现有operate白名单使用同一计算，但仅标签页保留额度。
