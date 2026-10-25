@@ -5,7 +5,7 @@ description = "Local Mac Studio API baseline for Love Pinyin"
 requires-python = ">=3.12,<3.13"
 license = "MIT"
 dependencies = [
-    "fastapi==0.143.0",
+    "fastapi==0.159.1",
     "pypinyin==0.55.0",
     "pywhispercpp==1.5.1",
     "uvicorn==0.54.0",
