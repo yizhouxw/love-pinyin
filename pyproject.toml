@@ -23,7 +23,7 @@ audio-asr = [
 dev = [
     "httpx==0.28.1",
     "pytest==9.1.1",
-    "ruff==0.17.0",
+    "ruff==0.17.1",
 ]
 voice-build = [
     "mlx-audio==0.5.8 ; platform_machine == 'arm64' and sys_platform == 'darwin'",
