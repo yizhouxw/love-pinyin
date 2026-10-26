@@ -2,6 +2,8 @@
 
 当前目标是家庭实际可用产品，范围见[PRD](product/PRD.md)与[产品重审](product/reimplementation-review.md)。按[ADR-0005](adr/0005-voice-first-product.md)提供语音引导，按[ADR-0008](adr/0008-trusted-standard-audio.md)直接采用PinYinSound。用户仅学生和家长；原课程不录音或评分。2026-10-13新增[SPEC-008每日跟读](specs/SPEC-008-daily-reading.md)，允许浏览器内存录音回放；用户随后要求不训练，以识别结果判断；[SPEC-009](specs/SPEC-009-asr-reading-match.md)接入已有本地Whisper，提供音节识别匹配，不作专业发音/四声评分。
 
+2026-10-26 保留决定：SPEC-018 MATCH-01～06 合成数据小型拼音匹配实验及其工具、测试、结果保留在 `main`，**本项目暂不使用**，暂停该路线继续优化与应用接入。质量门禁未通过，保留状态不列为产品能力或发布前置任务；后续启用须明确重启并重新验收。
+
 ## 当前阶段
 
 | 阶段         | 实现状态                                               | 下一项验收                               |
