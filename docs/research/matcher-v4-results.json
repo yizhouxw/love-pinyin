@@ -1,0 +1,881 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-26",
+  "experiment": "masked-acoustic-v4-int8-frozen-new-families",
+  "calibrationPassed": true,
+  "testPassed": false,
+  "qualityPassed": false,
+  "status": "failed-quality-gates-preserved; consumed holdout is diagnostic for future development",
+  "protocolVersion": 2,
+  "protocolSha256": "d55ebfd704caef4f3f806b52f4f3e8ab895b7e5048e91c20149102f4b40fc3a2",
+  "freezeSha256": "9ce80ca289e9688f04b62726881aa91cecb3a96b96a2ed8da4224a9f84b9c97b",
+  "qualityLimits": {
+    "negativeFalseAcceptance": 0.05,
+    "positiveExplicitRejection": 0.1,
+    "clearPositiveAbstention": 0.2
+  },
+  "frozenModel": {
+    "files": {
+      "model.json": "b1e7171687b0fb6d1ed42943f2ee6bca2edac3d807d716791ded3365371430f0",
+      "acoustic.int8.onnx": "a2531aba0b612eb907ac8e33e2baf283b55a190ac2b587bd22628f6fe856eb5a",
+      "targets.json": "797f628b68479d83882c39b2cfbf10797c9fe4bc6b837eebcafa1605390df404",
+      "pitch.onnx": "a823601bae50b1506325581d6e0d2cf467c53811552cb1c609de44f593cb6759",
+      "swift-f0.onnx": "6385e8c2ebc3872e82c9ff5946228de44cd3be77a750ea53698b7dbfe94b0a22",
+      "SWIFT-F0-LICENSE": "5f4711c748cf616e894fbab28144ee74f1650dfe1bbd6801c44f11e054508c18"
+    },
+    "version": "masked-phonetic-swift-v3-a2531aba0b61",
+    "coveredTargetIds": [
+      "pm-ma1",
+      "pm-ma2",
+      "pm-ma3",
+      "pm-ma4",
+      "pm-ba1",
+      "pm-pa1",
+      "pm-bi3",
+      "pm-pi3",
+      "pm-da1",
+      "pm-ta1",
+      "pm-ni3",
+      "pm-li3",
+      "pm-ge1",
+      "pm-ke1",
+      "pm-he1",
+      "pm-ji1",
+      "pm-qi1",
+      "pm-xi1",
+      "pm-zi1",
+      "pm-ci1",
+      "pm-si1",
+      "pm-zhi1",
+      "pm-chi1",
+      "pm-shi1",
+      "pm-ri4",
+      "pm-nv3",
+      "pm-lv4",
+      "pm-hua1",
+      "pm-gua1",
+      "pm-duo3",
+      "pm-tuo1",
+      "pm-yue4"
+    ],
+    "thresholds": {
+      "minimumContentMargin": 0.5,
+      "maximumFreeCtcAdvantage": 0.025,
+      "minimumToneProbability": 0.45
+    }
+  },
+  "sourceBindings": [
+    {
+      "file": "private/matcher-v4-quality-results.json",
+      "sha256": "ee811b16ac19d5ade8389d0083bbceac0a7f5bec3b3b7e8ef4b7bb402ddc3b28"
+    },
+    {
+      "file": "private/matcher-v4-quality.plan.json",
+      "sha256": "4fe2158c078518553e48c48877812fc84731af027bf0d41ce4dcafc8874490a9"
+    },
+    {
+      "file": "private/matcher-v4-quality-cases/manifest.json",
+      "sha256": "0ad5432d4ba741ac16afb6d2cb5aa62de6c68ef351da358cc6fe8d4cc0c94f05"
+    },
+    {
+      "file": "private/matcher-v4-generation.lock.json",
+      "sha256": "439f576f042a76cf947ffe60186db15de54354eed809a4f6f85db277a49db38d"
+    },
+    {
+      "file": "private/matcher-v4-foreign-evaluation.plan.json",
+      "sha256": "c31f0e85ca073f4191b8abcfd42683f56438fc78f026d79b902e79aab577a463"
+    },
+    {
+      "file": "private/matcher-v4-frozen-new-families/cosy-locked-evaluation/manifest.json",
+      "sha256": "5c6fd4dc7ddf6874fc3acae111d4f78aed6de7faaded9ff4a2800e67f9c273dd"
+    },
+    {
+      "file": "private/matcher-v4-foreign-evaluation/manifest.json",
+      "sha256": "ad5bbb19978eb783e5d861fad5722ade5e66eda88d312ea3863a7624de7b477b"
+    },
+    {
+      "file": "private/matcher-v4-final-calibration-v2-stable/calibration.json",
+      "sha256": "c8564e281bbeff16245664618187f643c44c2b9a602f622b87c94e5ed25dffb5"
+    },
+    {
+      "file": "private/matcher-v4-final-calibration-v2-stable/collection.json",
+      "sha256": "fbfc31d1e94787d3c62e2ab70ff8d2ec7b205624a4e1fb0f71ea73c2e60a585a"
+    },
+    {
+      "file": "private/matcher-v4-frozen/model.json",
+      "sha256": "b1e7171687b0fb6d1ed42943f2ee6bca2edac3d807d716791ded3365371430f0"
+    },
+    {
+      "file": "content/pronunciation-quality-protocol-v2.json",
+      "sha256": "d55ebfd704caef4f3f806b52f4f3e8ab895b7e5048e91c20149102f4b40fc3a2"
+    },
+    {
+      "file": "private/matcher-v4-acoustic/anchors/manifest.json",
+      "sha256": "899ca4b37ba8efb0b58e99649cbdd25e08c6e2bdde79051ad18a94da426d8da2"
+    },
+    {
+      "file": "private/matcher-v4-acoustic/manifest-vc-training-v4.json",
+      "sha256": "7bf2ba92e7d0684b2700e5fd6088ccebec726a5e2103def4a663d31365de22c2"
+    }
+  ],
+  "coverage": {
+    "distinctEvaluatedWaveforms": 200,
+    "queryPairs": 3424,
+    "missingResults": 0,
+    "vcWaveforms": 52,
+    "knownStandardParents": 13,
+    "syntheticFamilies": 4,
+    "voiceFamilyIds": ["voice-32", "voice-33", "voice-34", "voice-35"],
+    "extraConcatenatedWaveforms": 52,
+    "extraCreatesNewIndependentParents": false,
+    "foreignWaveforms": 96,
+    "foreignLexicalRoots": 24,
+    "publicCoveredTargetIdsCount": 32,
+    "publicPositiveTargetIds": ["pm-chi1", "pm-he1", "pm-ni3", "pm-ri4", "pm-xi1"],
+    "positiveTargetCount": 5,
+    "positiveWaveforms": 20,
+    "independentHumanSpeakers": 0,
+    "allPublicTargetsPositivelyValidated": false
+  },
+  "calibration": {
+    "thresholds": {
+      "minimumContentMargin": 0.5,
+      "maximumFreeCtcAdvantage": 0.025,
+      "minimumToneProbability": 0.45
+    },
+    "feasibleCombinations": 101,
+    "combinations": 448,
+    "overall": {
+      "positiveAudioUnits": 96,
+      "negativeAudioUnits": 368,
+      "positiveUnitStatuses": {
+        "matched": 83,
+        "retry": 3,
+        "uncertain": 10,
+        "unavailable": 0
+      },
+      "gates": {
+        "negativeFalseAcceptance": {
+          "count": 5,
+          "denominator": 368,
+          "rate": 0.01358695652173913,
+          "wilson95": [0.00581712589278853, 0.03140696112696637],
+          "limit": 0.05,
+          "passed": true
+        },
+        "positiveExplicitRejection": {
+          "count": 3,
+          "denominator": 96,
+          "rate": 0.03125,
+          "wilson95": [0.010684070371201164, 0.0878867932453698],
+          "limit": 0.1,
+          "passed": true
+        },
+        "clearPositiveAbstention": {
+          "count": 10,
+          "denominator": 96,
+          "rate": 0.10416666666666667,
+          "wilson95": [0.057571532417443415, 0.18122164130321652],
+          "limit": 0.2,
+          "passed": true
+        }
+      }
+    }
+  },
+  "test": {
+    "overall": {
+      "positiveAudioUnits": 20,
+      "negativeAudioUnits": 200,
+      "positiveUnitStatuses": {
+        "matched": 10,
+        "retry": 5,
+        "uncertain": 5,
+        "unavailable": 0
+      },
+      "gates": {
+        "negativeFalseAcceptance": {
+          "count": 3,
+          "denominator": 200,
+          "rate": 0.015,
+          "wilson95": [0.00511423779325831, 0.04316572879269026],
+          "limit": 0.05,
+          "passed": true
+        },
+        "positiveExplicitRejection": {
+          "count": 5,
+          "denominator": 20,
+          "rate": 0.25,
+          "wilson95": [0.11186170140766569, 0.468700877618744],
+          "limit": 0.1,
+          "passed": false
+        },
+        "clearPositiveAbstention": {
+          "count": 5,
+          "denominator": 20,
+          "rate": 0.25,
+          "wilson95": [0.11186170140766569, 0.468700877618744],
+          "limit": 0.2,
+          "passed": false
+        }
+      }
+    },
+    "bySource": {
+      "known-standard-new-vc-families": {
+        "positiveAudioUnits": 20,
+        "negativeAudioUnits": 52,
+        "positiveUnitStatuses": {
+          "matched": 10,
+          "retry": 5,
+          "uncertain": 5,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 3,
+            "denominator": 52,
+            "rate": 0.057692307692307696,
+            "wilson95": [0.019814172112270614, 0.1564251136896076],
+            "limit": 0.05,
+            "passed": false
+          },
+          "positiveExplicitRejection": {
+            "count": 5,
+            "denominator": 20,
+            "rate": 0.25,
+            "wilson95": [0.11186170140766569, 0.468700877618744],
+            "limit": 0.1,
+            "passed": false
+          },
+          "clearPositiveAbstention": {
+            "count": 5,
+            "denominator": 20,
+            "rate": 0.25,
+            "wilson95": [0.11186170140766569, 0.468700877618744],
+            "limit": 0.2,
+            "passed": false
+          }
+        }
+      },
+      "known-standard-new-vc-extra-syllable": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 52,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 52,
+            "rate": 0.0,
+            "wilson95": [0, 0.06879223612386234],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "new-family-foreign-intended-contrasts": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 96,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 96,
+            "rate": 0.0,
+            "wilson95": [3.469446951953614e-18, 0.038475587857675686],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      }
+    },
+    "byCase": {
+      "known-standard-new-vc-extra-syllable/extra-syllable": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 52,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 52,
+            "rate": 0.0,
+            "wilson95": [0, 0.06879223612386234],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "known-standard-new-vc-families/clean-positive": {
+        "positiveAudioUnits": 20,
+        "negativeAudioUnits": 0,
+        "positiveUnitStatuses": {
+          "matched": 10,
+          "retry": 5,
+          "uncertain": 5,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.05,
+            "passed": null
+          },
+          "positiveExplicitRejection": {
+            "count": 5,
+            "denominator": 20,
+            "rate": 0.25,
+            "wilson95": [0.11186170140766569, 0.468700877618744],
+            "limit": 0.1,
+            "passed": false
+          },
+          "clearPositiveAbstention": {
+            "count": 5,
+            "denominator": 20,
+            "rate": 0.25,
+            "wilson95": [0.11186170140766569, 0.468700877618744],
+            "limit": 0.2,
+            "passed": false
+          }
+        }
+      },
+      "known-standard-new-vc-families/near-phoneme": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 52,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 3,
+            "denominator": 52,
+            "rate": 0.057692307692307696,
+            "wilson95": [0.019814172112270614, 0.1564251136896076],
+            "limit": 0.05,
+            "passed": false
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "known-standard-new-vc-families/tone": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 32,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 32,
+            "rate": 0.0,
+            "wilson95": [0, 0.1071791982550706],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "new-family-foreign-intended-contrasts/cross-language-acoustic-mismatch": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 96,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 96,
+            "rate": 0.0,
+            "wilson95": [3.469446951953614e-18, 0.038475587857675686],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      }
+    },
+    "byLanguageAndContrastCategory": {
+      "English/dental-fricative": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 16,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 16,
+            "rate": 0.0,
+            "wilson95": [0, 0.1936076805344365],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "English/labiodental-fricative": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 16,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 16,
+            "rate": 0.0,
+            "wilson95": [0, 0.1936076805344365],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "English/voiced-dental-fricative": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 16,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 16,
+            "rate": 0.0,
+            "wilson95": [0, 0.1936076805344365],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "French/labiodental-fricative": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 16,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 16,
+            "rate": 0.0,
+            "wilson95": [0, 0.1936076805344365],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "French/nasal-vowel-or-multisyllable": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 16,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 16,
+            "rate": 0.0,
+            "wilson95": [0, 0.1936076805344365],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "French/uvular-r": {
+        "positiveAudioUnits": 0,
+        "negativeAudioUnits": 16,
+        "positiveUnitStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 16,
+            "rate": 0.0,
+            "wilson95": [0, 0.1936076805344365],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      }
+    },
+    "foreignByLanguage": {
+      "English": {
+        "falseAcceptedWaveforms": 0,
+        "negativeWaveforms": 48,
+        "lexicalRoots": 12
+      },
+      "French": {
+        "falseAcceptedWaveforms": 0,
+        "negativeWaveforms": 48,
+        "lexicalRoots": 12
+      }
+    },
+    "positiveTargetStatuses": {
+      "pm-chi1": {
+        "matched": 2,
+        "retry": 1,
+        "uncertain": 1,
+        "unavailable": 0
+      },
+      "pm-he1": {
+        "matched": 4,
+        "retry": 0,
+        "uncertain": 0,
+        "unavailable": 0
+      },
+      "pm-ni3": {
+        "matched": 0,
+        "retry": 2,
+        "uncertain": 2,
+        "unavailable": 0
+      },
+      "pm-ri4": {
+        "matched": 1,
+        "retry": 1,
+        "uncertain": 2,
+        "unavailable": 0
+      },
+      "pm-xi1": {
+        "matched": 3,
+        "retry": 1,
+        "uncertain": 0,
+        "unavailable": 0
+      }
+    },
+    "positiveReasonCounts": {
+      "MATCHED": 10,
+      "OTHER_PHONEMES_DETECTED": 4,
+      "NO_RELIABLE_PHONE_EVIDENCE": 3,
+      "OTHER_TONE_DETECTED": 1,
+      "CONTENT_CONFIDENCE_INSUFFICIENT": 2
+    },
+    "wrongAcceptedTargetPairs": [
+      {
+        "actualTargetId": "pm-chi1",
+        "requestedTargetId": "pm-zhi1"
+      },
+      {
+        "actualTargetId": "pm-ni3",
+        "requestedTargetId": "pm-nv3"
+      }
+    ],
+    "parentStressView": {
+      "view": "source-parent-any-adverse-derivative",
+      "isAcceptanceGate": false,
+      "positiveParentUnits": 5,
+      "negativeParentUnits": 37,
+      "metrics": {
+        "negativeFalseAcceptance": {
+          "count": 2,
+          "denominator": 37,
+          "rate": 0.05405405405405406,
+          "wilson95": [0.014950976833157673, 0.17704654350813104]
+        },
+        "positiveExplicitRejection": {
+          "count": 4,
+          "denominator": 5,
+          "rate": 0.8,
+          "wilson95": [0.37553462976252533, 0.9637758913675698]
+        },
+        "clearPositiveAbstention": {
+          "count": 3,
+          "denominator": 5,
+          "rate": 0.6,
+          "wilson95": [0.2307242812760128, 0.882379225767352]
+        }
+      },
+      "adverseEventsAreIndependentCounters": true,
+      "positiveAllDerivativesMatched": 1
+    },
+    "blockers": [
+      "overall:positiveExplicitRejection",
+      "overall:clearPositiveAbstention",
+      "source:known-standard-new-vc-families:negativeFalseAcceptance",
+      "source:known-standard-new-vc-families:positiveExplicitRejection",
+      "source:known-standard-new-vc-families:clearPositiveAbstention",
+      "case:known-standard-new-vc-families/clean-positive:positiveExplicitRejection",
+      "case:known-standard-new-vc-families/clean-positive:clearPositiveAbstention",
+      "case:known-standard-new-vc-families/near-phoneme:negativeFalseAcceptance",
+      "generator:cosy:positiveExplicitRejection",
+      "generator:cosy:clearPositiveAbstention"
+    ]
+  },
+  "diagnosis": {
+    "standardDomainZeroCoverageGroups": [
+      "I_n:F_i",
+      "I_h:F_e",
+      "I_x:F_i",
+      "I_ch:F_i-retroflex",
+      "I_r:F_i-retroflex",
+      "I_l:F_ü"
+    ],
+    "countInStandardAcousticTraining": 0,
+    "countInVcAcousticTraining": 0,
+    "statement": "The whole-pilot-phone-group exclusion leaves these six standard-domain training gaps. This is a verified coverage defect and an optimization hypothesis, not proof of the sole cause of every failed utterance."
+  },
+  "nextIteration": {
+    "name": "acoustic-v5",
+    "failedTestWaveformsMayTrain": false,
+    "thresholdsMayChangeThisIteration": false,
+    "reserveNewFamiliesBeforeNewHoldoutGeneration": true,
+    "oldReportsAndModelBytesRemainPreserved": true,
+    "nonBlindCalibrationCandidatesForSixGroups": 0,
+    "releaseFormerBlindStandardParentsAfterRetiringOldTest": true,
+    "releasedTargetIds": [
+      "pm-ni2",
+      "pm-he2",
+      "pm-he4",
+      "pm-xi2",
+      "pm-xi3",
+      "pm-xi4",
+      "pm-chi3",
+      "pm-lv2"
+    ],
+    "newTrainingFamilyIds": ["voice-00", "voice-06", "voice-08", "voice-10"],
+    "previous228CalibrationContainsReleasedParents": false,
+    "original96PublicPositiveCalibrationRetained": true,
+    "anyOtherNewTrainingParentRequiresWholeLineageCalibrationExclusion": true,
+    "nextPublicStandardParentTargetIds": ["pm-ni3", "pm-he1", "pm-xi1", "pm-chi1", "pm-ri4"],
+    "reservedNextFamilyIds": ["voice-36", "voice-37", "voice-38", "voice-39"],
+    "nextVcWaveformPlan": 20,
+    "retainAllOriginal13BlindParents": false,
+    "dailyNi1Ri1Eligibility": "Only if directly licensed original assets, not PSOLA or derivatives of former blind sources; not yet claimed added."
+  },
+  "limitations": [
+    "Known standard recordings have historical benchmark use; new VC waveforms/families do not establish independent standard-source or human validation.",
+    "Only five of 32 public targets have positive examples here.",
+    "TTS/VC weak intended labels, shared word/parent/family dependence and unadjusted Wilson intervals do not establish population or child pronunciation accuracy.",
+    "Zero foreign/extra-syllable false accepts do not override failed VC near-neighbor and positive gates."
+  ]
+}
