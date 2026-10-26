@@ -1,0 +1,1487 @@
+{
+  "version": 2,
+  "seed": 26102026,
+  "purpose": "Explicit phonetic non-target pairs; language identity is never a correctness label. Weak TTS labels only.",
+  "officialGeneratorSource": "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign",
+  "officialLanguageEvidence": "https://github.com/QwenLM/Qwen3-TTS#released-models-description-and-download",
+  "languageSupportCheckedOn": "2026-10-26",
+  "runtimeDownloads": false,
+  "trainPersonaIds": [
+    "voice-00",
+    "voice-04",
+    "voice-08",
+    "voice-16",
+    "voice-06",
+    "voice-10"
+  ],
+  "calibrationPersonaIds": [
+    "voice-28",
+    "voice-29",
+    "voice-30",
+    "voice-31"
+  ],
+  "blindPersonaIds": [
+    "voice-32",
+    "voice-33",
+    "voice-34",
+    "voice-35"
+  ],
+  "blindGenerationEnabled": false,
+  "lexicalSplitsDisjoint": true,
+  "homophonePolicy": "Do not label a sound incorrect merely because it was spoken in another language or dialect. Use only explicit phonetic contrasts to the configured targets; apparent homophones require adjudication or remain unavailable.",
+  "maximumSeconds": 3,
+  "definitions": [
+    {
+      "id": "en-thin",
+      "lexicalRootId": "en-thin",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thin",
+      "split": "train",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial voiceless dental fricative /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thick",
+      "lexicalRootId": "en-thick",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thick",
+      "split": "train",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial voiceless dental fricative /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thief",
+      "lexicalRootId": "en-thief",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thief",
+      "split": "train",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial voiceless dental fricative /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thumb",
+      "lexicalRootId": "en-thumb",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thumb",
+      "split": "train",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial voiceless dental fricative /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thank",
+      "lexicalRootId": "en-thank",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thank",
+      "split": "train",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial voiceless dental fricative /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thunder",
+      "lexicalRootId": "en-thunder",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thunder",
+      "split": "train",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial voiceless dental fricative /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-this",
+      "lexicalRootId": "en-this",
+      "language": "English",
+      "locale": "en-US",
+      "text": "this",
+      "split": "train",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Voiced dental fricative /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-that",
+      "lexicalRootId": "en-that",
+      "language": "English",
+      "locale": "en-US",
+      "text": "that",
+      "split": "train",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Voiced dental fricative /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-these",
+      "lexicalRootId": "en-these",
+      "language": "English",
+      "locale": "en-US",
+      "text": "these",
+      "split": "train",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Voiced dental fricative /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-those",
+      "lexicalRootId": "en-those",
+      "language": "English",
+      "locale": "en-US",
+      "text": "those",
+      "split": "train",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Voiced dental fricative /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-their",
+      "lexicalRootId": "en-their",
+      "language": "English",
+      "locale": "en-US",
+      "text": "their",
+      "split": "train",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Voiced dental fricative /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-therefore",
+      "lexicalRootId": "en-therefore",
+      "language": "English",
+      "locale": "en-US",
+      "text": "therefore",
+      "split": "train",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Voiced dental fricative /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-van",
+      "lexicalRootId": "en-van",
+      "language": "English",
+      "locale": "en-US",
+      "text": "van",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Voiced labiodental fricative /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-vest",
+      "lexicalRootId": "en-vest",
+      "language": "English",
+      "locale": "en-US",
+      "text": "vest",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Voiced labiodental fricative /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-very",
+      "lexicalRootId": "en-very",
+      "language": "English",
+      "locale": "en-US",
+      "text": "very",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Voiced labiodental fricative /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-voice",
+      "lexicalRootId": "en-voice",
+      "language": "English",
+      "locale": "en-US",
+      "text": "voice",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Voiced labiodental fricative /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-vote",
+      "lexicalRootId": "en-vote",
+      "language": "English",
+      "locale": "en-US",
+      "text": "vote",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Voiced labiodental fricative /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-velvet",
+      "lexicalRootId": "en-velvet",
+      "language": "English",
+      "locale": "en-US",
+      "text": "velvet",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Voiced labiodental fricative /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-spring",
+      "lexicalRootId": "en-spring",
+      "language": "English",
+      "locale": "en-US",
+      "text": "spring",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Consonant cluster, final consonant cluster or multiple syllables differs from a single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-strength",
+      "lexicalRootId": "en-strength",
+      "language": "English",
+      "locale": "en-US",
+      "text": "strength",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Consonant cluster, final consonant cluster or multiple syllables differs from a single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-crisp",
+      "lexicalRootId": "en-crisp",
+      "language": "English",
+      "locale": "en-US",
+      "text": "crisp",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Consonant cluster, final consonant cluster or multiple syllables differs from a single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-desk",
+      "lexicalRootId": "en-desk",
+      "language": "English",
+      "locale": "en-US",
+      "text": "desk",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Consonant cluster, final consonant cluster or multiple syllables differs from a single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-music",
+      "lexicalRootId": "en-music",
+      "language": "English",
+      "locale": "en-US",
+      "text": "music",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Consonant cluster, final consonant cluster or multiple syllables differs from a single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-window",
+      "lexicalRootId": "en-window",
+      "language": "English",
+      "locale": "en-US",
+      "text": "window",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Consonant cluster, final consonant cluster or multiple syllables differs from a single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thirst",
+      "lexicalRootId": "en-thirst",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thirst",
+      "split": "calibration",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thread",
+      "lexicalRootId": "en-thread",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thread",
+      "split": "calibration",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-throne",
+      "lexicalRootId": "en-throne",
+      "language": "English",
+      "locale": "en-US",
+      "text": "throne",
+      "split": "calibration",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-theft",
+      "lexicalRootId": "en-theft",
+      "language": "English",
+      "locale": "en-US",
+      "text": "theft",
+      "split": "calibration",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-them",
+      "lexicalRootId": "en-them",
+      "language": "English",
+      "locale": "en-US",
+      "text": "them",
+      "split": "calibration",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Initial /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-then",
+      "lexicalRootId": "en-then",
+      "language": "English",
+      "locale": "en-US",
+      "text": "then",
+      "split": "calibration",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Initial /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-though",
+      "lexicalRootId": "en-though",
+      "language": "English",
+      "locale": "en-US",
+      "text": "though",
+      "split": "calibration",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Initial /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thereby",
+      "lexicalRootId": "en-thereby",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thereby",
+      "split": "calibration",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "Initial /ð/ differs from Mandarin dental affricate /ts/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-vivid",
+      "lexicalRootId": "en-vivid",
+      "language": "English",
+      "locale": "en-US",
+      "text": "vivid",
+      "split": "calibration",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial /v/ and multiple syllables differ from the target bilabial-stop syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-visit",
+      "lexicalRootId": "en-visit",
+      "language": "English",
+      "locale": "en-US",
+      "text": "visit",
+      "split": "calibration",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial /v/ and multiple syllables differ from the target bilabial-stop syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-volcano",
+      "lexicalRootId": "en-volcano",
+      "language": "English",
+      "locale": "en-US",
+      "text": "volcano",
+      "split": "calibration",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial /v/ and multiple syllables differ from the target bilabial-stop syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-video",
+      "lexicalRootId": "en-video",
+      "language": "English",
+      "locale": "en-US",
+      "text": "video",
+      "split": "calibration",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial /v/ and multiple syllables differ from the target bilabial-stop syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-theme",
+      "lexicalRootId": "en-theme",
+      "language": "English",
+      "locale": "en-US",
+      "text": "theme",
+      "split": "test",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-theory",
+      "lexicalRootId": "en-theory",
+      "language": "English",
+      "locale": "en-US",
+      "text": "theory",
+      "split": "test",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thirty",
+      "lexicalRootId": "en-thirty",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thirty",
+      "split": "test",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thermal",
+      "lexicalRootId": "en-thermal",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thermal",
+      "split": "test",
+      "contrastCategory": "dental-fricative",
+      "againstTargetIds": [
+        "pm-shi1"
+      ],
+      "phoneticDifference": "Initial /θ/ differs from Mandarin retroflex /ʂ/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-theirs",
+      "lexicalRootId": "en-theirs",
+      "language": "English",
+      "locale": "en-US",
+      "text": "theirs",
+      "split": "test",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "A /ð/ segment or multiple syllables differs from the target /ts/ syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-thus",
+      "lexicalRootId": "en-thus",
+      "language": "English",
+      "locale": "en-US",
+      "text": "thus",
+      "split": "test",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "A /ð/ segment or multiple syllables differs from the target /ts/ syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-within",
+      "lexicalRootId": "en-within",
+      "language": "English",
+      "locale": "en-US",
+      "text": "within",
+      "split": "test",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "A /ð/ segment or multiple syllables differs from the target /ts/ syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-together",
+      "lexicalRootId": "en-together",
+      "language": "English",
+      "locale": "en-US",
+      "text": "together",
+      "split": "test",
+      "contrastCategory": "voiced-dental-fricative",
+      "againstTargetIds": [
+        "pm-zi1"
+      ],
+      "phoneticDifference": "A /ð/ segment or multiple syllables differs from the target /ts/ syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-valley",
+      "lexicalRootId": "en-valley",
+      "language": "English",
+      "locale": "en-US",
+      "text": "valley",
+      "split": "test",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-vessel",
+      "lexicalRootId": "en-vessel",
+      "language": "English",
+      "locale": "en-US",
+      "text": "vessel",
+      "split": "test",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-volume",
+      "lexicalRootId": "en-volume",
+      "language": "English",
+      "locale": "en-US",
+      "text": "volume",
+      "split": "test",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "en-violin",
+      "lexicalRootId": "en-violin",
+      "language": "English",
+      "locale": "en-US",
+      "text": "violin",
+      "split": "test",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-rue",
+      "lexicalRootId": "fr-rue",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "rue",
+      "split": "train",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-rouge",
+      "lexicalRootId": "fr-rouge",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "rouge",
+      "split": "train",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-rire",
+      "lexicalRootId": "fr-rire",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "rire",
+      "split": "train",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-rare",
+      "lexicalRootId": "fr-rare",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "rare",
+      "split": "train",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-rond",
+      "lexicalRootId": "fr-rond",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "rond",
+      "split": "train",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-robe",
+      "lexicalRootId": "fr-robe",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "robe",
+      "split": "train",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-vin",
+      "lexicalRootId": "fr-vin",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "vin",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "French /v/ differs from the target bilabial stop; nasal vowels do not license language-only labeling.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-vent",
+      "lexicalRootId": "fr-vent",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "vent",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "French /v/ differs from the target bilabial stop; nasal vowels do not license language-only labeling.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-vague",
+      "lexicalRootId": "fr-vague",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "vague",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "French /v/ differs from the target bilabial stop; nasal vowels do not license language-only labeling.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-vert",
+      "lexicalRootId": "fr-vert",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "vert",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "French /v/ differs from the target bilabial stop; nasal vowels do not license language-only labeling.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-vite",
+      "lexicalRootId": "fr-vite",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "vite",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "French /v/ differs from the target bilabial stop; nasal vowels do not license language-only labeling.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-voyage",
+      "lexicalRootId": "fr-voyage",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "voyage",
+      "split": "train",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "French /v/ differs from the target bilabial stop; nasal vowels do not license language-only labeling.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-pain",
+      "lexicalRootId": "fr-pain",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "pain",
+      "split": "train",
+      "contrastCategory": "nasal-vowel-or-cluster",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Explicit different onset and nasal vowel or cluster differs from the target single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-bain",
+      "lexicalRootId": "fr-bain",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "bain",
+      "split": "train",
+      "contrastCategory": "nasal-vowel-or-cluster",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Explicit different onset and nasal vowel or cluster differs from the target single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-blanc",
+      "lexicalRootId": "fr-blanc",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "blanc",
+      "split": "train",
+      "contrastCategory": "nasal-vowel-or-cluster",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Explicit different onset and nasal vowel or cluster differs from the target single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-brun",
+      "lexicalRootId": "fr-brun",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "brun",
+      "split": "train",
+      "contrastCategory": "nasal-vowel-or-cluster",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Explicit different onset and nasal vowel or cluster differs from the target single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-champ",
+      "lexicalRootId": "fr-champ",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "champ",
+      "split": "train",
+      "contrastCategory": "nasal-vowel-or-cluster",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Explicit different onset and nasal vowel or cluster differs from the target single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-long",
+      "lexicalRootId": "fr-long",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "long",
+      "split": "train",
+      "contrastCategory": "nasal-vowel-or-cluster",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Explicit different onset and nasal vowel or cluster differs from the target single /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-trois",
+      "lexicalRootId": "fr-trois",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "trois",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ni3"
+      ],
+      "phoneticDifference": "Consonant cluster or multiple syllables differs from the single /ni/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-froid",
+      "lexicalRootId": "fr-froid",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "froid",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ni3"
+      ],
+      "phoneticDifference": "Consonant cluster or multiple syllables differs from the single /ni/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-crabe",
+      "lexicalRootId": "fr-crabe",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "crabe",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ni3"
+      ],
+      "phoneticDifference": "Consonant cluster or multiple syllables differs from the single /ni/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-plume",
+      "lexicalRootId": "fr-plume",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "plume",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ni3"
+      ],
+      "phoneticDifference": "Consonant cluster or multiple syllables differs from the single /ni/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-musique",
+      "lexicalRootId": "fr-musique",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "musique",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ni3"
+      ],
+      "phoneticDifference": "Consonant cluster or multiple syllables differs from the single /ni/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-fenetre",
+      "lexicalRootId": "fr-fenetre",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "fenêtre",
+      "split": "train",
+      "contrastCategory": "cluster-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ni3"
+      ],
+      "phoneticDifference": "Consonant cluster or multiple syllables differs from the single /ni/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-route",
+      "lexicalRootId": "fr-route",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "route",
+      "split": "calibration",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "Initial French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-regle",
+      "lexicalRootId": "fr-regle",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "règle",
+      "split": "calibration",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "Initial French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-radio",
+      "lexicalRootId": "fr-radio",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "radio",
+      "split": "calibration",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "Initial French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-regard",
+      "lexicalRootId": "fr-regard",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "regard",
+      "split": "calibration",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "Initial French uvular /ʁ/ differs from Mandarin lateral /l/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-ville",
+      "lexicalRootId": "fr-ville",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "ville",
+      "split": "calibration",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial French /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-veste",
+      "lexicalRootId": "fr-veste",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "veste",
+      "split": "calibration",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial French /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-venir",
+      "lexicalRootId": "fr-venir",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "venir",
+      "split": "calibration",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial French /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-vendre",
+      "lexicalRootId": "fr-vendre",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "vendre",
+      "split": "calibration",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial French /v/ differs from the target bilabial stop.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-train",
+      "lexicalRootId": "fr-train",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "train",
+      "split": "calibration",
+      "contrastCategory": "nasal-vowel-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Cluster, different onset and nasal vowel, or multiple syllables differs from /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-prince",
+      "lexicalRootId": "fr-prince",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "prince",
+      "split": "calibration",
+      "contrastCategory": "nasal-vowel-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Cluster, different onset and nasal vowel, or multiple syllables differs from /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-parfum",
+      "lexicalRootId": "fr-parfum",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "parfum",
+      "split": "calibration",
+      "contrastCategory": "nasal-vowel-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Cluster, different onset and nasal vowel, or multiple syllables differs from /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-maison",
+      "lexicalRootId": "fr-maison",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "maison",
+      "split": "calibration",
+      "contrastCategory": "nasal-vowel-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Cluster, different onset and nasal vowel, or multiple syllables differs from /ma/.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-riviere",
+      "lexicalRootId": "fr-riviere",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "rivière",
+      "split": "test",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ and multiple syllables differ from the single lateral-initial target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-retour",
+      "lexicalRootId": "fr-retour",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "retour",
+      "split": "test",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ and multiple syllables differ from the single lateral-initial target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-rapide",
+      "lexicalRootId": "fr-rapide",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "rapide",
+      "split": "test",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ and multiple syllables differ from the single lateral-initial target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-renard",
+      "lexicalRootId": "fr-renard",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "renard",
+      "split": "test",
+      "contrastCategory": "uvular-r",
+      "againstTargetIds": [
+        "pm-li3"
+      ],
+      "phoneticDifference": "French uvular /ʁ/ and multiple syllables differ from the single lateral-initial target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-valise",
+      "lexicalRootId": "fr-valise",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "valise",
+      "split": "test",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial French /v/ and multiple syllables differ from the target bilabial-stop syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-voyelle",
+      "lexicalRootId": "fr-voyelle",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "voyelle",
+      "split": "test",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial French /v/ and multiple syllables differ from the target bilabial-stop syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-village",
+      "lexicalRootId": "fr-village",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "village",
+      "split": "test",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial French /v/ and multiple syllables differ from the target bilabial-stop syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-voisin",
+      "lexicalRootId": "fr-voisin",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "voisin",
+      "split": "test",
+      "contrastCategory": "labiodental-fricative",
+      "againstTargetIds": [
+        "pm-ba1"
+      ],
+      "phoneticDifference": "Initial French /v/ and multiple syllables differ from the target bilabial-stop syllable.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-jardin",
+      "lexicalRootId": "fr-jardin",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "jardin",
+      "split": "test",
+      "contrastCategory": "nasal-vowel-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Different onset and multiple syllables differ from the single /ma/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-garcon",
+      "lexicalRootId": "fr-garcon",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "garçon",
+      "split": "test",
+      "contrastCategory": "nasal-vowel-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Different onset and multiple syllables differ from the single /ma/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-demain",
+      "lexicalRootId": "fr-demain",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "demain",
+      "split": "test",
+      "contrastCategory": "nasal-vowel-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Different onset and multiple syllables differ from the single /ma/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    },
+    {
+      "id": "fr-enfant",
+      "lexicalRootId": "fr-enfant",
+      "language": "French",
+      "locale": "fr-FR",
+      "text": "enfant",
+      "split": "test",
+      "contrastCategory": "nasal-vowel-or-multisyllable",
+      "againstTargetIds": [
+        "pm-ma1"
+      ],
+      "phoneticDifference": "Different onset and multiple syllables differ from the single /ma/ target.",
+      "unknownRelativeToPilot": true,
+      "labelProvenance": "authored intended contrast; actual TTS phonemes and language unverified"
+    }
+  ],
+  "dialectExploration": {
+    "Cantonese": {
+      "status": "not-generated-not-formal-negative",
+      "reason": "The fixed VoiceDesign language list contains Chinese but does not independently guarantee Cantonese. A style instruction is not evidence that actual generated phones are Cantonese.",
+      "formalNegativeAllowed": false,
+      "requiredBeforeUse": "Independent actual pronunciation evidence and explicit non-homophone target pairs."
+    }
+  },
+  "previousConfiguration": {
+    "file": "pronunciation-foreign-contrast-v1.json",
+    "sha256": "0906052e19c0995f463b3a96545cf5511740ad030d63f55d5c6c1f596aaadb76"
+  }
+}

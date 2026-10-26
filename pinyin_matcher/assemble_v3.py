@@ -13,12 +13,13 @@ from pinyin_matcher.package import bundle_path
 from pinyin_matcher.pitch_swift import MODEL_SHA256, PITCH_FEATURE_VERSION
 
 
-def _populate(acoustic: Path, pitch: Path, tracker: Path, output: Path):
+def _populate(acoustic: Path, pitch: Path, tracker: Path, output: Path, *, precision="int8"):
     if output.exists():
         raise ValueError("CANDIDATE_ALREADY_EXISTS")
     if fingerprint(tracker / "model.onnx") != MODEL_SHA256:
         raise ValueError("PITCH_TRACKER_MODEL_DIGEST_MISMATCH")
-    metadata = json.loads((acoustic / "model.json").read_text())
+    metadata_file = "model.fp32.json" if precision == "fp32" else "model.json"
+    metadata = json.loads((acoustic / metadata_file).read_text())
     inputs = acoustic / "run-inputs.json"
     if inputs.is_file():
         if inputs.stat().st_size > 2 * 1024 * 1024:
@@ -67,13 +68,15 @@ def _populate(acoustic: Path, pitch: Path, tracker: Path, output: Path):
     return candidate.capabilities()
 
 
-def assemble(acoustic: Path, pitch: Path, tracker: Path, output: Path):
+def assemble(acoustic: Path, pitch: Path, tracker: Path, output: Path, *, precision="int8"):
+    if precision not in {"int8", "fp32"}:
+        raise ValueError("MODEL_PRECISION_UNSUPPORTED")
     if output.exists():
         raise ValueError("CANDIDATE_ALREADY_EXISTS")
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".matcher-candidate-", dir=output.parent) as temporary:
         staging = Path(temporary) / "bundle"
-        capabilities = _populate(acoustic, pitch, tracker, staging)
+        capabilities = _populate(acoustic, pitch, tracker, staging, precision=precision)
         staging.rename(output)
     return capabilities
 
@@ -84,5 +87,10 @@ if __name__ == "__main__":
     parser.add_argument("--pitch", type=Path, required=True)
     parser.add_argument("--tracker", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--precision", choices=["int8", "fp32"], default="int8")
     args = parser.parse_args()
-    print(json.dumps(assemble(args.acoustic, args.pitch, args.tracker, args.output)))
+    print(
+        json.dumps(
+            assemble(args.acoustic, args.pitch, args.tracker, args.output, precision=args.precision)
+        )
+    )

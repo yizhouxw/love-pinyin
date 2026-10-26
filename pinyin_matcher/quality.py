@@ -13,14 +13,14 @@ from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 
-from pinyin_matcher.catalog import fingerprint
+from pinyin_matcher.catalog import ROOT, fingerprint
 
 STATUSES = ("matched", "retry", "uncertain", "unavailable")
-LIMITS = {
-    "negativeFalseAcceptance": 0.05,
-    "positiveExplicitRejection": 0.10,
-    "clearPositiveAbstention": 0.20,
-}
+PROTOCOL_FILE = ROOT / "content/pronunciation-quality-protocol-v2.json"
+PROTOCOL = json.loads(PROTOCOL_FILE.read_text())
+PROTOCOL_VERSION = PROTOCOL["protocolVersion"]
+PROTOCOL_SHA256 = fingerprint(PROTOCOL_FILE)
+LIMITS = dict(PROTOCOL["qualityLimits"])
 NEGATIVE_CASES = {
     "cross-language-acoustic-mismatch": (
         "A documented phoneme, tone or syllable-count mismatch; "
@@ -31,6 +31,16 @@ NEGATIVE_CASES = {
     "extra-syllable": "Additional spoken syllables beyond the requested single syllable.",
     "non-speech": "Silence/noise without the requested speech.",
 }
+
+
+def assert_protocol(expected_sha256: str | None = None):
+    if (
+        PROTOCOL_VERSION != 2
+        or fingerprint(PROTOCOL_FILE) != PROTOCOL_SHA256
+        or expected_sha256 is not None
+        and expected_sha256 != PROTOCOL_SHA256
+    ):
+        raise ValueError("QUALITY_PROTOCOL_CHANGED_OR_UNSUPPORTED")
 
 
 def validate_case_semantics(case: dict):
@@ -156,6 +166,7 @@ def freeze_plan(
     """
     if output.exists():
         raise ValueError("FROZEN_PLAN_ALREADY_EXISTS")
+    assert_protocol()
     data = json.loads(manifest.read_text())
     if data.get("schemaVersion") != 1 or not data.get("sources") or not data.get("cases"):
         raise ValueError("QUALITY_MANIFEST_INVALID")
@@ -214,6 +225,8 @@ def freeze_plan(
         raise ValueError("DUPLICATE_POSITIVE_UNIT")
     plan = {
         "schemaVersion": 1,
+        "protocolVersion": PROTOCOL_VERSION,
+        "protocolSha256": PROTOCOL_SHA256,
         "createdUtc": datetime.now(UTC).isoformat(),
         "purpose": "confirmatory"
         if all(s["usage"] == "unseen" for s in data["sources"].values())
@@ -253,58 +266,82 @@ def _rate(count: int, total: int) -> dict:
     }
 
 
-def _metrics(records: list[dict], limits: dict, *, aggregate_parents=True) -> dict:
+def _wave(record: dict):
+    # Source/case/query metadata never multiplies one waveform's denominator.
+    return (
+        ("sha256", record["sha256"])
+        if record.get("sha256")
+        else ("unitId", record.get("rawAudioId") or record["unitId"])
+    )
+
+
+def _parent(record: dict):
+    return (
+        record.get("sourceRootId")
+        or record.get("parentRootId")
+        or record.get("parentSha256")
+        or record.get("sourceSha256")
+        or record.get("sourceWavSha256")
+        or _wave(record)
+    )
+
+
+def _grouped(rows: list[dict], identity) -> dict:
+    units = defaultdict(list)
+    for record in rows:
+        units[identity(record)].append(record)
+    return units
+
+
+def _events(positive, clear, negative):
+    return {
+        "negativeFalseAcceptance": _rate(
+            sum(any(r["status"] == "matched" for r in group) for group in negative.values()),
+            len(negative),
+        ),
+        "positiveExplicitRejection": _rate(
+            sum(any(r["status"] == "retry" for r in group) for group in positive.values()),
+            len(positive),
+        ),
+        "clearPositiveAbstention": _rate(
+            sum(
+                any(r["status"] in {"uncertain", "unavailable"} for r in group)
+                for group in clear.values()
+            ),
+            len(clear),
+        ),
+    }
+
+
+def _metrics(records: list[dict], limits: dict) -> dict:
     positive = [r for r in records if r["expectedMatch"]]
     clear = [r for r in positive if r["clearAudio"]]
     negative = [r for r in records if not r["expectedMatch"]]
 
-    def grouped(rows):
-        units = defaultdict(list)
-        for record in rows:
-            unit = (
-                (
-                    record.get("sourceRootId")
-                    or record.get("parentRootId")
-                    or record.get("parentSha256")
-                    or record.get("sourceSha256")
-                    or record.get("sourceWavSha256")
-                    or record["unitId"]
-                )
-                if aggregate_parents
-                else record["unitId"]
-            )
-            units[(record["source"], record["case"], unit)].append(record)
-        return units
-
     def worst(group):
-        # A parent root is not multiplied into four independent voice trials.
-        # Preserve an explicit error whenever any derivative incorrectly rejects.
+        # Correct-target duplicates for one WAV should have identical outcomes;
+        # preserve every adverse event in _events even if metadata is duplicated.
         return next(
             status
             for status in ("retry", "unavailable", "uncertain", "matched")
             if any(r["status"] == status for r in group)
         )
 
-    units, positive_units, clear_units = grouped(negative), grouped(positive), grouped(clear)
+    units, positive_units, clear_units = (
+        _grouped(rows, _wave) for rows in (negative, positive, clear)
+    )
     positive_statuses = [worst(group) for group in positive_units.values()]
-    clear_statuses = [worst(group) for group in clear_units.values()]
-    non_speech = [group for (source, case, unit), group in units.items() if case == "non-speech"]
-    non_speech_errors = sum(any(r["status"] == "retry" for r in group) for group in non_speech)
-    values = {
-        "negativeFalseAcceptance": _rate(
-            sum(any(r["status"] == "matched" for r in group) for group in units.values()),
-            len(units),
-        ),
-        "positiveExplicitRejection": _rate(
-            sum(status == "retry" for status in positive_statuses), len(positive_units)
-        ),
-        "clearPositiveAbstention": _rate(
-            sum(status in {"uncertain", "unavailable"} for status in clear_statuses),
-            len(clear_units),
-        ),
-    }
+    non_speech = _grouped([r for r in negative if r["case"] == "non-speech"], _wave)
+    non_speech_errors = sum(
+        any(r["status"] == "retry" for r in group) for group in non_speech.values()
+    )
+    values = _events(positive_units, clear_units, units)
+    parent_positive, parent_clear, parent_negative = (
+        _grouped(rows, _parent) for rows in (positive, clear, negative)
+    )
     report = {
-        "view": "source-parent-worst-derivative" if aggregate_parents else "raw-audio-unit",
+        "protocolVersion": PROTOCOL_VERSION,
+        "view": "per-wave-any-wrong-query",
         "pairs": len(records),
         "distinctAudioSha256": len({r["sha256"] for r in records if r.get("sha256")}),
         "positivePairs": len(positive),
@@ -336,9 +373,22 @@ def _metrics(records: list[dict], limits: dict, *, aggregate_parents=True) -> di
                 "passed": non_speech_errors == 0 if non_speech else None,
             }
         },
+        "parentStressView": {
+            "view": "source-parent-any-adverse-derivative",
+            "isAcceptanceGate": False,
+            "positiveParentUnits": len(parent_positive),
+            "negativeParentUnits": len(parent_negative),
+            "metrics": _events(parent_positive, parent_clear, parent_negative),
+            "adverseEventsAreIndependentCounters": True,
+            "positiveAllDerivativesMatched": sum(
+                all(r["status"] == "matched" for r in group) for group in parent_positive.values()
+            ),
+        },
+        "intervalInterpretation": (
+            "Unadjusted binomial description only; TTS/VC dependence prevents an independent "
+            "population-confidence claim."
+        ),
     }
-    if aggregate_parents:
-        report["rawView"] = _metrics(records, limits, aggregate_parents=False)
     return report
 
 
@@ -349,7 +399,7 @@ def quality_metrics(records: list[dict]) -> dict:
 
 def coverage_metrics(records: list[dict]) -> dict:
     """Describe data structure without mistaking correlated derivatives for people."""
-    units = {(r["source"], r["unitId"]) for r in records}
+    units = {_wave(r) for r in records}
     parents = {
         str(
             r.get("sourceRootId")
@@ -366,7 +416,8 @@ def coverage_metrics(records: list[dict]) -> dict:
     phonetic = {r["sourcePhoneticGroup"] for r in records if r.get("sourcePhoneticGroup")}
     return {
         "pairs": len(records),
-        "rawAudioUnits": len(parents),
+        "protocolVersion": PROTOCOL_VERSION,
+        "rawAudioUnits": len(units),
         "evaluatedAudioUnits": len(units),
         "distinctWaveforms": len({r["sha256"] for r in records if r.get("sha256")}),
         "parentRootIds": sorted(parents),
@@ -389,6 +440,12 @@ def build_report(plan: dict, results: list[dict]) -> dict:
     unsigned = {key: value for key, value in plan.items() if key != "freezeSha256"}
     if _digest(unsigned) != plan.get("freezeSha256"):
         raise ValueError("QUALITY_PLAN_DIGEST_MISMATCH")
+    if (
+        plan.get("protocolVersion") != PROTOCOL_VERSION
+        or plan.get("protocolSha256") != PROTOCOL_SHA256
+    ):
+        raise ValueError("QUALITY_PROTOCOL_CHANGED_OR_UNSUPPORTED")
+    assert_protocol(plan.get("protocolSha256"))
     if plan["limits"] != LIMITS:
         raise ValueError("QUALITY_LIMITS_CHANGED")
     expected = {case["id"]: case for case in plan["cases"]}
@@ -477,6 +534,8 @@ def build_report(plan: dict, results: list[dict]) -> dict:
     # Source and case gates keep noise/easy pairs from hiding tone/content failures.
     return {
         "schemaVersion": 1,
+        "protocolVersion": PROTOCOL_VERSION,
+        "protocolSha256": PROTOCOL_SHA256,
         "freezeSha256": plan["freezeSha256"],
         "model": plan["model"],
         "limits": plan["limits"],
@@ -503,7 +562,10 @@ def build_report(plan: dict, results: list[dict]) -> dict:
 def evaluate_plan(path: Path, output: Path) -> dict:
     from pinyin_matcher.inference import PinyinMatcher
 
+    if output.exists():
+        raise ValueError("QUALITY_REPORT_ALREADY_EXISTS")
     plan = json.loads(path.read_text())
+    assert_protocol(plan.get("protocolSha256"))
     if (
         _model_snapshot(Path(plan["modelDirectory"])) != plan["model"]
         or _evaluation_code() != plan["evaluationCodeSha256"]

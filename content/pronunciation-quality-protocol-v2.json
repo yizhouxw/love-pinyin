@@ -1,0 +1,48 @@
+{
+  "protocolVersion": 2,
+  "date": "2026-10-26",
+  "status": "frozen-before-new-blind-generation",
+  "qualityLimits": {
+    "negativeFalseAcceptance": 0.05,
+    "positiveExplicitRejection": 0.1,
+    "clearPositiveAbstention": 0.2
+  },
+  "primary": {
+    "unit": "distinct evaluated WAV SHA256; unitId fallback is only for test fixtures without audio",
+    "negativeEvent": "At least one wrong-target query for the same WAV is matched. Overall aggregation ignores case, source and query count.",
+    "positiveEvent": "The result of the correct-target query for each distinct WAV. Duplicate copies do not create additional trials.",
+    "positiveExplicitRejection": "retry / all positive WAV units",
+    "clearPositiveAbstention": "(uncertain or unavailable) / all predeclared clear positive WAV units",
+    "negativeFalseAcceptance": "any wrong query matched / all negative WAV units",
+    "missingResults": "unavailable; retain in the full declared denominator",
+    "subgroups": "Apply the unchanged limits separately within each declared source, generator, case and language/contrast category; subgroup rates do not replace the overall union."
+  },
+  "parentStress": {
+    "unit": "sourceRootId or documented parent identity",
+    "negativeEvent": "Any derivative WAV has any wrong-target query matched.",
+    "positiveExplicitRejectionEvent": "Any positive derivative returns retry.",
+    "clearPositiveAbstentionEvent": "Any predeclared clear positive derivative returns uncertain or unavailable.",
+    "eventsAreIndependentCounters": true,
+    "retryMayHideAbstention": false,
+    "isAcceptanceGate": false,
+    "purpose": "Additional worst-derivative robustness stress view, not the original per-utterance estimand."
+  },
+  "engineeringContracts": {
+    "nonSpeechRetryRequiredCount": 0,
+    "languageIdentityIsCorrectnessLabel": false,
+    "testMayCalibrateThresholds": false
+  },
+  "dependence": {
+    "rootCoverageIsSeparateFromWavePointEstimates": true,
+    "ttsAndVoiceConversionDoNotCreateIndependentRealSpeakers": true,
+    "ordinaryWilsonInterval": "Unadjusted binomial description only; correlated TTS/VC waves do not establish independent population confidence.",
+    "clusterReporting": "Report parent roots, lexical roots and voice families. Parent stress rates are descriptive and not a newly introduced quality threshold."
+  },
+  "history": {
+    "legacyProtocol": "Reports without protocolVersion used the initial implementation, referred to as protocol 1.",
+    "correctionOne": "Promoting source-parent worst over four different VC WAVs to the primary 5/10/20 gate was an accidental extra requirement, beyond the original per-utterance metric.",
+    "correctionTwo": "Including case in the overall negative unit key counted a WAV once per counterexample case, diluting the required any-wrong-query union.",
+    "preservation": "Keep all protocol-1 reports and their then-failed calibration conclusions unchanged. New protocol-2 recalibrations use new output paths and bind this JSON SHA256.",
+    "timing": "Correction recorded before final model/threshold freeze and before any new blind audio was generated. No failed sample is deleted and no percentage limit is relaxed."
+  }
+}

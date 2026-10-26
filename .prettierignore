@@ -8,3 +8,6 @@ docs/engineering/dependency-inventory.json
 uv.lock
 .pytest_cache
 .ruff_cache
+# Immutable generation configurations retain the exact SHA bound by private manifests.
+content/pronunciation-foreign-contrast-v1.json
+content/pronunciation-foreign-contrast-v2.json

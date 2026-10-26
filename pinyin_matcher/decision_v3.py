@@ -11,7 +11,14 @@ import json
 import math
 from collections import Counter
 
-from pinyin_matcher.quality import LIMITS, quality_metrics, validate_case_semantics
+from pinyin_matcher.quality import (
+    LIMITS,
+    PROTOCOL_SHA256,
+    PROTOCOL_VERSION,
+    assert_protocol,
+    quality_metrics,
+    validate_case_semantics,
+)
 
 THRESHOLD_GRID = {
     "minimumContentMargin": [0, 0.25, 0.5, 1, 1.5, 2, 3, 4],
@@ -187,6 +194,7 @@ def calibrate(
     audio with many easy negative targets never increases its trial denominator.
     """
     _validate_records(records)
+    assert_protocol()
     source_policies = source_policies or {}
     if any(
         type(policy.get("requireBothClasses", True)) is not bool
@@ -232,6 +240,8 @@ def calibrate(
             selected = (key, thresholds, metrics, Counter(r["reason"] or "NONE" for r in outcomes))
     report = {
         "schemaVersion": 1,
+        "protocolVersion": PROTOCOL_VERSION,
+        "protocolSha256": PROTOCOL_SHA256,
         "split": "calibration",
         "decisionVersion": 3,
         "calibrationRecordsSha256": _digest(records),
@@ -261,4 +271,5 @@ def calibrate(
         report["groups"] = closest[1]
         report["blockers"] = closest[2]
         report["failure"] = "NO_THRESHOLDS_SATISFY_ORIGINAL_QUALITY_LIMITS"
+    assert_protocol()
     return report

@@ -199,3 +199,47 @@ def test_far_multisyllable_negatives_cannot_hide_hard_foreign_phonetic_failures(
     assert report["groups"]["overall"]["gates"]["negativeFalseAcceptance"]["rate"] == 0.05
     assert "contrast:English/dental-fricative:negativeFalseAcceptance" in report["blockers"]
     assert not report["calibrationPassed"]
+
+
+def test_cross_case_union_above_five_percent_fails_even_when_each_case_passes():
+    rows = []
+    for index in range(100):
+        base = {
+            **evidence(
+                predictedPhones=["b", "a"] if 4 <= index < 8 else ["m", "a"],
+                predictedTone=2 if index < 4 else 1,
+            ),
+            "id": str(index),
+            "unitId": str(index),
+            "sha256": f"wave-{index}",
+            "source": "cal",
+            "generator": "fixture",
+            "split": "calibration",
+            "clearAudio": True,
+        }
+        rows.append(
+            {**base, "id": f"{index}-positive", "case": "clean-positive", "expectedMatch": True}
+        )
+        rows.append(
+            {**base, "id": f"{index}-tone", "case": "tone", "expectedMatch": False, "targetTone": 2}
+        )
+        rows.append(
+            {
+                **base,
+                "id": f"{index}-near",
+                "case": "near-phoneme",
+                "expectedMatch": False,
+                "targetPhones": ["b", "a"],
+            }
+        )
+    report = calibrate(rows, grid=GRID)
+    assert report["protocolVersion"] == 2
+    assert report["groups"]["case:cal/tone"]["gates"]["negativeFalseAcceptance"]["rate"] == 0.04
+    assert (
+        report["groups"]["case:cal/near-phoneme"]["gates"]["negativeFalseAcceptance"]["rate"]
+        == 0.04
+    )
+    overall = report["groups"]["overall"]["gates"]["negativeFalseAcceptance"]
+    assert (overall["count"], overall["denominator"], overall["rate"]) == (8, 100, 0.08)
+    assert not report["calibrationPassed"]
+    assert report["thresholds"] is None

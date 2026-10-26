@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from pinyin_matcher import quality
 from pinyin_matcher.catalog import fingerprint
 from pinyin_matcher.quality import (
     build_report,
@@ -266,7 +267,8 @@ def test_coverage_does_not_turn_derived_voice_or_target_pairs_into_original_root
     ]
     counts = coverage_metrics(rows + rows)
     assert counts["pairs"] == 6
-    assert counts["rawAudioUnits"] == counts["sourceUtteranceRoots"] == 1
+    assert counts["rawAudioUnits"] == 3
+    assert counts["sourceUtteranceRoots"] == 1
     assert counts["evaluatedAudioUnits"] == counts["distinctWaveforms"] == 3
     assert counts["uniqueLexicalRoots"] == 1
     assert counts["voiceFamilies"] == 3
@@ -304,7 +306,7 @@ def test_freeze_binds_actual_pitch_tracker_bytes_and_declared_digest(tmp_path):
         )
 
 
-def test_parent_roots_use_worst_derivative_and_keep_same_raw_view_for_calibration_and_test():
+def test_protocol_two_primary_is_per_wave_and_parent_stress_does_not_replace_the_gate():
     rows = [
         {
             "source": "vc",
@@ -320,9 +322,65 @@ def test_parent_roots_use_worst_derivative_and_keep_same_raw_view_for_calibratio
     ]
     rows[0]["status"] = "uncertain"
     report = quality_metrics(rows)
-    parent = report["gates"]["clearPositiveAbstention"]
-    raw = report["rawView"]["gates"]["clearPositiveAbstention"]
+    parent = report["parentStressView"]["metrics"]["clearPositiveAbstention"]
+    raw = report["gates"]["clearPositiveAbstention"]
     assert (parent["count"], parent["denominator"]) == (1, 2)
     assert (raw["count"], raw["denominator"]) == (1, 8)
-    assert not parent["passed"]
     assert raw["passed"]
+    assert not report["parentStressView"]["isAcceptanceGate"]
+
+
+def test_protocol_two_wrong_query_union_spans_cases_and_import_sources():
+    rows = [
+        {
+            "source": source,
+            "case": case,
+            "unitId": f"alias-{index}",
+            "sha256": "same-wave",
+            "expectedMatch": False,
+            "clearAudio": True,
+            "status": status,
+        }
+        for index, (source, case, status) in enumerate(
+            [
+                ("a", "tone", "matched"),
+                ("a", "near-phoneme", "retry"),
+                ("duplicate-import", "tone", "retry"),
+            ]
+        )
+    ]
+    report = quality_metrics(rows)
+    gate = report["gates"]["negativeFalseAcceptance"]
+    assert report["negativePairs"] == 3
+    assert (gate["count"], gate["denominator"]) == (1, 1)
+
+
+def test_parent_retry_does_not_hide_another_derivatives_abstention():
+    rows = [
+        {
+            "source": "vc",
+            "case": "clean-positive",
+            "unitId": str(index),
+            "sha256": f"wave-{index}",
+            "sourceRootId": "one-parent",
+            "expectedMatch": True,
+            "clearAudio": True,
+            "status": status,
+        }
+        for index, status in enumerate(["retry", "uncertain"])
+    ]
+    stress = quality_metrics(rows)["parentStressView"]
+    assert stress["metrics"]["positiveExplicitRejection"]["count"] == 1
+    assert stress["metrics"]["clearPositiveAbstention"]["count"] == 1
+    assert stress["adverseEventsAreIndependentCounters"]
+
+
+def test_protocol_json_digest_is_frozen_and_checked_before_model_inference(tmp_path, monkeypatch):
+    plan, _, _ = make_plan(tmp_path)
+    assert plan["protocolVersion"] == 2
+    assert plan["protocolSha256"] == fingerprint(quality.PROTOCOL_FILE)
+    changed = tmp_path / "changed-protocol.json"
+    changed.write_bytes(quality.PROTOCOL_FILE.read_bytes() + b" ")
+    monkeypatch.setattr(quality, "PROTOCOL_FILE", changed)
+    with pytest.raises(ValueError, match="QUALITY_PROTOCOL_CHANGED"):
+        quality.evaluate_plan(tmp_path / "freeze.json", tmp_path / "output.json")

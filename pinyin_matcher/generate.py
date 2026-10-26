@@ -33,7 +33,7 @@ def engine_qwen(model_dir: Path):
         chunks = list(
             model.generate_voice_design(
                 text=text,
-                language="Chinese",
+                language=persona.get("language", "Chinese"),
                 instruct=persona["instruction"],
                 max_tokens=256,
                 temperature=0.7,
@@ -48,6 +48,7 @@ def engine_qwen(model_dir: Path):
         mx.clear_cache()
         return samples, rate
 
+    synthesize.model = model
     return synthesize
 
 
@@ -159,6 +160,7 @@ def engine_cosy(model_dir: Path, source: Path, threads: int, device: str):
         )
         return samples, model.sample_rate
 
+    synthesize.model = model
     return synthesize
 
 

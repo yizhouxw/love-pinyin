@@ -1,0 +1,328 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://love-pinyin.local/schemas/model-generation-evaluation-lock-v1",
+  "title": "Pinyin matcher model and generation plan lock v1",
+  "description": "Created only by controlled_generation --create-evaluation-lock after passed calibration. JSON schema alone never authorizes audio access: code additionally verifies canonical lock digest and every bound file/code/plan. No audio is read/generated during lock creation. This is separate from quality.freeze.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "createdUtc",
+    "kind",
+    "stage",
+    "modelDirectory",
+    "model",
+    "configuration",
+    "calibrationReport",
+    "generatorRegistry",
+    "codeSha256",
+    "generationPlan",
+    "claims",
+    "lockSha256",
+    "calibrationModelDirectory",
+    "calibrationModel",
+    "calibrationCollection"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "createdUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "kind": {
+      "const": "pinyin-matcher-model-and-generation-plan-v1"
+    },
+    "stage": {
+      "const": "before-audio-generation"
+    },
+    "modelDirectory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "configuration": {
+      "type": "object",
+      "required": ["file", "sha256"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "calibrationReport": {
+      "type": "object",
+      "required": ["file", "sha256"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "generatorRegistry": {
+      "type": "object",
+      "required": ["file", "sha256"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "codeSha256": {
+      "type": "object",
+      "minProperties": 10,
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "lockSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "model": {
+      "type": "object",
+      "required": ["files", "version", "coveredTargetIds", "thresholds"],
+      "properties": {
+        "files": {
+          "type": "object",
+          "minProperties": 3,
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "version": {
+          "type": "string"
+        },
+        "coveredTargetIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "thresholds": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "generationPlan": {
+      "type": "object",
+      "required": [
+        "outputDirectory",
+        "sourcePool",
+        "outputSuffix",
+        "ttsDevice",
+        "threads",
+        "repetitions",
+        "sources",
+        "personas",
+        "units",
+        "expectedWaveforms",
+        "expectedStandardRoots",
+        "expectedSyntheticReferenceFamilies",
+        "queryPolicy",
+        "claimScope"
+      ],
+      "properties": {
+        "outputDirectory": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourcePool": {
+          "const": "locked-evaluation"
+        },
+        "outputSuffix": {
+          "const": "-locked-evaluation"
+        },
+        "ttsDevice": {
+          "const": "mps"
+        },
+        "threads": {
+          "const": 4
+        },
+        "repetitions": {
+          "const": 1
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 13,
+          "maxItems": 13,
+          "items": {
+            "type": "object",
+            "required": ["targetId", "sourceSha256", "sourceRootId", "sourceHistory"]
+          }
+        },
+        "personas": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "split",
+              "instruction",
+              "referenceText",
+              "referenceSeed",
+              "referenceFile"
+            ],
+            "properties": {
+              "split": {
+                "const": "test"
+              }
+            }
+          }
+        },
+        "units": {
+          "type": "array",
+          "minItems": 52,
+          "maxItems": 52,
+          "items": {
+            "type": "object",
+            "required": ["id", "voiceFamilyId", "targetId", "sourceSha256", "seed", "file"],
+            "properties": {
+              "sourceSha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "seed": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "expectedWaveforms": {
+          "const": 52
+        },
+        "expectedStandardRoots": {
+          "const": 13
+        },
+        "expectedSyntheticReferenceFamilies": {
+          "const": 4
+        },
+        "queryPolicy": {
+          "type": "object",
+          "required": ["coveredTargetIds", "allPlannedWaveformsRequired", "rule"],
+          "properties": {
+            "allPlannedWaveformsRequired": {
+              "const": true
+            }
+          }
+        },
+        "claimScope": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "claims": {
+      "type": "object",
+      "required": [
+        "newIndependentHumanSpeakers",
+        "realChildAccuracyEstablished",
+        "standardRootsHistoricallyKnown",
+        "newWaveformsAndFamiliesNotGeneratedBeforeLock",
+        "isQualityFreeze"
+      ],
+      "properties": {
+        "newIndependentHumanSpeakers": {
+          "const": false
+        },
+        "realChildAccuracyEstablished": {
+          "const": false
+        },
+        "standardRootsHistoricallyKnown": {
+          "const": true
+        },
+        "newWaveformsAndFamiliesNotGeneratedBeforeLock": {
+          "const": true
+        },
+        "isQualityFreeze": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "calibrationModelDirectory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "calibrationModel": {
+      "type": "object",
+      "required": ["files", "version", "coveredTargetIds", "thresholds"],
+      "properties": {
+        "files": {
+          "type": "object",
+          "minProperties": 3,
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "version": {
+          "type": "string"
+        },
+        "coveredTargetIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "thresholds": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "calibrationCollection": {
+      "type": "object",
+      "required": ["file", "sha256"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

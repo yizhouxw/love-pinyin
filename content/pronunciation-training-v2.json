@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "seed": 3182027,
+  "epochs": 100,
+  "batchSize": 32,
+  "learningRate": 0.0008,
+  "fineTuneLearningRate": 0.0002,
+  "foreignSamplingWeight": 4,
+  "hiddenSize": 192,
+  "blocks": 10,
+  "expansion": 3,
+  "standardSamplingWeight": 4,
+  "ctcLossWeight": 0.7,
+  "auxiliaryToneLossWeight": 0.1,
+  "vocalTractWarp": [0.92, 1.08],
+  "acceptance": { "falsePass": 0.05, "falseRetry": 0.1, "uncertain": 0.2 },
+  "coveredTargetIdsSource": "pronunciation-targets.json:pilotIds",
+  "featureVersion": "logmel64-pitch4-v1",
+  "acousticInput": "mel-only"
+}
