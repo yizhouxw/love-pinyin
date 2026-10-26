@@ -6,6 +6,8 @@ export class BrowserReadingRecorder {
   private url: string | null = null;
   private watchdog: ReturnType<typeof setTimeout> | null = null;
 
+  constructor(private readonly maximumMs = 120_000) {}
+
   get supported(): boolean {
     return Boolean(
       window.isSecureContext &&
@@ -49,7 +51,7 @@ export class BrowserReadingRecorder {
       };
       recorder.start();
       // Memory/device protection only; no countdown or learning deadline.
-      this.watchdog = setTimeout(() => this.stop(), 120_000);
+      this.watchdog = setTimeout(() => this.stop(), this.maximumMs);
     } catch (error) {
       this.discard();
       throw error;

@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "basketLimit": 6,
+  "recognitionTimeoutMs": 15000,
+  "products": [
+    {
+      "id": "gift-a",
+      "targetId": "v2-openmouth",
+      "name": "啊音礼盒",
+      "icon": "🎁",
+      "color": "coral"
+    },
+    {
+      "id": "gift-o",
+      "targetId": "v2-rooster",
+      "name": "喔音礼盒",
+      "icon": "🎁",
+      "color": "gold"
+    },
+    {
+      "id": "gift-e",
+      "targetId": "v2-goose",
+      "name": "鹅音礼盒",
+      "icon": "🎁",
+      "color": "mint"
+    },
+    {
+      "id": "gift-i",
+      "targetId": "v2-shirt",
+      "name": "衣音礼盒",
+      "icon": "🎁",
+      "color": "mint"
+    },
+    {
+      "id": "gift-u",
+      "targetId": "v2-crow",
+      "name": "乌音礼盒",
+      "icon": "🎁",
+      "color": "coral"
+    },
+    {
+      "id": "gift-v",
+      "targetId": "v2-vowelfish",
+      "name": "迂音礼盒",
+      "icon": "🎁",
+      "color": "gold"
+    },
+    {
+      "id": "rice",
+      "targetId": "v1-rice",
+      "name": "米",
+      "icon": "🍚",
+      "color": "gold"
+    },
+    {
+      "id": "cloth",
+      "targetId": "v2-cloth",
+      "name": "布",
+      "icon": "🧣",
+      "color": "coral"
+    },
+    {
+      "id": "horse",
+      "targetId": "v2-horse",
+      "name": "小马玩偶",
+      "icon": "🐴",
+      "color": "mint"
+    },
+    {
+      "id": "pear",
+      "targetId": "v2-pear",
+      "name": "梨",
+      "icon": "🍐",
+      "color": "gold"
+    },
+    {
+      "id": "rabbit",
+      "targetId": "v2-rabbit",
+      "name": "兔子玩偶",
+      "icon": "🐰",
+      "color": "coral"
+    },
+    {
+      "id": "melon",
+      "targetId": "v1-melon",
+      "name": "瓜",
+      "icon": "🍉",
+      "color": "mint"
+    },
+    {
+      "id": "pot",
+      "targetId": "v2-pot",
+      "name": "锅",
+      "icon": "🍲",
+      "color": "gold"
+    },
+    {
+      "id": "flower",
+      "targetId": "v2-flower",
+      "name": "花",
+      "icon": "🌸",
+      "color": "coral"
+    },
+    {
+      "id": "orange",
+      "targetId": "v2-orange",
+      "name": "橘",
+      "icon": "🍊",
+      "color": "gold"
+    },
+    {
+      "id": "shrimp",
+      "targetId": "v2-shrimp",
+      "name": "虾",
+      "icon": "🦐",
+      "color": "coral"
+    },
+    {
+      "id": "tea",
+      "targetId": "v2-tea",
+      "name": "茶",
+      "icon": "🍵",
+      "color": "mint"
+    },
+    {
+      "id": "book",
+      "targetId": "v2-book",
+      "name": "书",
+      "icon": "📚",
+      "color": "coral"
+    },
+    {
+      "id": "cabbage",
+      "targetId": "v2-cabbage",
+      "name": "菜",
+      "icon": "🥬",
+      "color": "mint"
+    },
+    {
+      "id": "cup",
+      "targetId": "v2-cup",
+      "name": "杯",
+      "icon": "🥤",
+      "color": "coral"
+    },
+    {
+      "id": "bean",
+      "targetId": "v2-bean",
+      "name": "豆",
+      "icon": "🫘",
+      "color": "gold"
+    },
+    {
+      "id": "ball",
+      "targetId": "v2-ball",
+      "name": "球",
+      "icon": "⚽",
+      "color": "mint"
+    },
+    {
+      "id": "coconut",
+      "targetId": "v2-coconut",
+      "name": "椰",
+      "icon": "🥥",
+      "color": "gold"
+    },
+    {
+      "id": "lamp",
+      "targetId": "v2-lamp",
+      "name": "灯",
+      "icon": "💡",
+      "color": "gold"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # 拼读识别应用端口 v1
 
-对应 SPEC-018 MATCH-10/11。真实模型后续沿 SenseVoice 编码器＋声母/韵母/声调专用头研发，当前质量未通过；本端口让应用可以先用 mock 开发。没有新增依赖、HTTP 路由或页面接入。
+对应 SPEC-018 MATCH-10/11。真实模型后续沿 SenseVoice 编码器＋声母/韵母/声调专用头研发，当前质量未通过；本端口让应用可以先用 mock 开发。端口本身没有新增依赖或 HTTP 路由；2026-10-26 小卖部页面已按 SPEC-019 接入，真实模型仍未配置。
 
 类型定义：`src/domain/pronunciation.ts`。实现：`src/platform/audio/pronunciation-service.ts`。应用依赖 `PronunciationService` 接口，通过依赖注入替换实现，不依赖研究 Python 或模型包。
 
@@ -49,7 +49,7 @@ export function createDevelopmentRecognition(
 
 reason 枚举见类型：unsupported-target、not-configured、invalid-audio、insufficient-evidence、model-unavailable、timeout、busy、network-error。未来网络/模型失败转成 unavailable，声音不可评估转成 uncertain，不能转成 retry 或自动切 mock。用户取消以 Promise 拒绝 AbortError 表达，不显示“读错”；非法请求标识属于开发错误，抛 INVALID_PRONUNCIATION_REQUEST。
 
-对已登记目标 mock 永远成功；未知目标返回 unavailable/unsupported-target，不猜预期内容。省略 mode 或使用 unavailable 时返回 unavailable/not-configured，没有隐式模拟。mock 只由开发组装代码显式注入；实际产品组装不得使用它作为自动裁决，模拟结果不写掌握度或真实识别成绩。当前没有页面入口或默认启用开关。
+对已登记目标 mock 永远成功；未知目标返回 unavailable/unsupported-target，不猜预期内容。省略 mode 或使用 unavailable 时返回 unavailable/not-configured，没有隐式模拟。mock 只由开发组装代码显式注入；实际产品组装不得使用它作为自动裁决，模拟结果不写掌握度或真实识别成绩。小卖部页面已提供显式开发演示：Vite 开发服务器加 `?shopRecognition=mock`，生产构建忽略此参数。页面和购物清单标记模拟，不记学习成绩；正式默认未配置。见[场景接入说明](pinyin-shop.md)。
 
 ## 后续真实实现边界
 
