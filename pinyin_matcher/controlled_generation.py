@@ -76,8 +76,39 @@ def _evaluation_generation_plan(configuration: dict, model: dict, output: Path) 
         if (row.get("standardSource") or {}).get("allocation") == "blind"
     ]
     voice_ids = configuration["blindTestPersonaIds"]
-    personas = {row["id"]: row for row in configuration["additionalPersonas"]}
-    if len(source_rows) != 13 or voice_ids != [f"voice-{i}" for i in range(32, 36)]:
+    persona_rows = configuration["additionalPersonas"]
+    personas = {row["id"]: row for row in persona_rows}
+    excluded_voices = set().union(
+        *(
+            set(configuration.get(key, []))
+            for key in (
+                "trainPersonaIds",
+                "calibrationPersonaIds",
+                "excludedPreviousTestPersonaIds",
+                "historicalEvaluationPersonaIds",
+            )
+        )
+    )
+    excluded_voices.update(
+        row["id"]
+        for row in json.loads((ROOT / "content/pronunciation-training.json").read_text())[
+            "personas"
+        ]
+    )
+    if (
+        not source_rows
+        or len({row["id"] for row in source_rows}) != len(source_rows)
+        or len({row["standardSource"]["sourceSha256"] for row in source_rows}) != len(source_rows)
+        or not isinstance(voice_ids, list)
+        or len(voice_ids) != 4
+        or any(
+            not isinstance(key, str) or not re.fullmatch(r"voice-\d{2}", key) for key in voice_ids
+        )
+        or len(set(voice_ids)) != 4
+        or set(voice_ids) & excluded_voices
+        or len(personas) != len(persona_rows)
+        or not set(voice_ids) <= set(personas)
+    ):
         raise ValueError("FROZEN_EVALUATION_SOURCE_OR_FAMILY_SET_INVALID")
     voices = []
     for key in voice_ids:
@@ -135,8 +166,8 @@ def _evaluation_generation_plan(configuration: dict, model: dict, output: Path) 
         "sources": sources,
         "personas": voices,
         "units": units,
-        "expectedWaveforms": 52,
-        "expectedStandardRoots": 13,
+        "expectedWaveforms": len(units),
+        "expectedStandardRoots": len(sources),
         "expectedSyntheticReferenceFamilies": 4,
         "queryPolicy": {
             "coveredTargetIds": model["coveredTargetIds"],
@@ -301,6 +332,20 @@ def _evaluation_reference_record(reference: Path, persona: dict, lock: dict):
         or record.get("persona") != persona
     ):
         raise ValueError("EVALUATION_REFERENCE_PROVENANCE_MISMATCH")
+
+
+def _evaluation_generation_failed(data: dict) -> bool:
+    return any(
+        data.get(key)
+        for key in (
+            "rejected",
+            "quarantined",
+            "diagnostics",
+            "failedGenerationAttempts",
+            "inProgressUnit",
+            "inProgressReference",
+        )
+    )
 
 
 def pitch_evidence(samples: np.ndarray) -> dict:
@@ -546,6 +591,45 @@ def acoustic_extension_definitions(configuration: dict) -> list[dict]:
     return definitions
 
 
+def acoustic_v5_definitions(configuration: dict) -> list[dict]:
+    """Explicit released diagnostic sources, never reserved test roots or old VC."""
+    from pinyin_matcher.catalog import targets_by_id, training_catalog
+
+    extension = configuration["acousticOnlyExtensionV5"]
+    original = {row["id"]: row for row in configuration["definitions"]}
+    directory = training_catalog(ROOT / configuration["trainingCatalogExtensions"])
+    public = set(directory["pilotIds"])
+    known = targets_by_id(directory)
+    selected = extension["selectedSources"]
+    if len({r["targetId"] for r in selected}) != len(selected) or {
+        r["targetId"] for r in selected
+    } != set(extension["candidateTargetIds"]):
+        raise ValueError("ACOUSTIC_V5_EXPLICIT_SOURCE_SET_REQUIRED")
+    reserved = {
+        r["standardSource"]["sourceSha256"]
+        for r in original.values()
+        if (r.get("standardSource") or {}).get("allocation") == "blind"
+    }
+    definitions = []
+    for selected_source in selected:
+        key = selected_source["targetId"]
+        row = json.loads(json.dumps(original[key]))
+        source = row["standardSource"]
+        if (
+            key in public
+            or key not in known
+            or source["allocation"] != "train"
+            or source["sourceSha256"] != selected_source["sourceSha256"]
+            or source["sourceSha256"] in reserved
+            or not selected_source.get("acousticOnlyExtension")
+            or selected_source.get("pitchTrainingEligible") is not False
+        ):
+            raise ValueError("ACOUSTIC_V5_SOURCE_REFERENCE_INVALID")
+        row["phoneticCoverageExtension"] = True
+        definitions.append(row)
+    return definitions
+
+
 def generate(args):
     os.environ["HF_HUB_OFFLINE"] = "1"
     os.environ["TRANSFORMERS_OFFLINE"] = "1"
@@ -584,7 +668,11 @@ def generate(args):
         ]
     elif args.evaluation_lock is not None:
         raise ValueError("EVALUATION_LOCK_ONLY_FOR_LOCKED_SOURCE_POOL")
-    training_pool = args.source_pool in {"anchor-training", "acoustic-v4-extension"}
+    training_pool = args.source_pool in {
+        "anchor-training",
+        "acoustic-v4-extension",
+        "acoustic-v5-extension",
+    }
     if args.source_pool == "anchor-training":
         if args.engine != "cosy" or args.modes != ["vc"]:
             raise ValueError("ANCHOR_TRAINING_POOL_REQUIRES_COSY_VC")
@@ -593,6 +681,10 @@ def generate(args):
         if args.engine != "cosy" or args.modes != ["vc"]:
             raise ValueError("ACOUSTIC_EXTENSION_REQUIRES_COSY_VC")
         definitions = acoustic_extension_definitions(configuration)
+    elif args.source_pool == "acoustic-v5-extension":
+        if args.engine != "cosy" or args.modes != ["vc"]:
+            raise ValueError("ACOUSTIC_EXTENSION_REQUIRES_COSY_VC")
+        definitions = acoustic_v5_definitions(configuration)
     if args.engine != "cosy" and set(args.modes) & {"vc", "phonemes"}:
         raise ValueError("PHONEME_AND_VC_MODES_COSY_ONLY")
     if args.engine != "qwen" and "carrier" in args.modes:
@@ -643,11 +735,6 @@ def generate(args):
             raise ValueError("NO_ELIGIBLE_STANDARD_SOURCES")
     model_dir = args.model.resolve(strict=True)
     install = verify_model(args.engine, model_dir)
-    synthesize = (
-        engine_qwen(model_dir)
-        if args.engine == "qwen"
-        else engine_cosy(model_dir, args.source.resolve(strict=True), args.threads, args.tts_device)
-    )
     # Register special-token spellings are checked against the exact locked source.
     tokenizer_source = (args.source / "cosyvoice/tokenizer/tokenizer.py").read_text()
     registered = set(re.findall(r'\[[^\[\]"\s]+\]', tokenizer_source))
@@ -674,8 +761,8 @@ def generate(args):
     if evaluation:
         if manifest.exists() and data.get("evaluationLockSha256") != evaluation["lockSha256"]:
             raise ValueError("EVALUATION_MANIFEST_LOCK_MISMATCH")
-        data.setdefault("failedGenerationAttempts", []).extend(data["rejected"])
-        data["rejected"] = []
+        if _evaluation_generation_failed(data):
+            raise ValueError("FROZEN_EVALUATION_GENERATION_FAILED")
         data.update(
             {
                 "evaluationLockSha256": evaluation["lockSha256"],
@@ -684,6 +771,22 @@ def generate(args):
                 "realChildAccuracyEstablished": False,
             }
         )
+    try:
+        synthesize = (
+            engine_qwen(model_dir)
+            if args.engine == "qwen"
+            else engine_cosy(
+                model_dir, args.source.resolve(strict=True), args.threads, args.tts_device
+            )
+        )
+    except Exception as error:
+        if evaluation:
+            data["rejected"].append(
+                {"id": args.engine + "-engine-initialization", "reason": str(error)}
+            )
+            data["evaluationGenerationComplete"] = False
+            atomic_json(manifest, data)
+        raise
     seen = {
         row["id"]
         for group in (data["items"], data["diagnostics"], data["quarantined"], data["rejected"])
@@ -703,16 +806,31 @@ def generate(args):
             if existing.exists() and not evaluation:
                 reference.write_bytes(existing.read_bytes())
             elif args.engine == "qwen":
-                samples, rate = synthesize(
-                    persona["referenceText"],
-                    persona,
-                    configuration["seed"] + int(persona["id"][-2:]),
-                )
                 if evaluation:
-                    validate_evaluation_lock(args.evaluation_lock, args.configuration, args.output)
-                reference.write_bytes(
-                    encode_wav(resample_poly(samples, SAMPLE_RATE, rate).astype(np.float32))
-                )
+                    data["inProgressReference"] = persona["id"]
+                    data["evaluationGenerationComplete"] = False
+                    atomic_json(manifest, data)
+                try:
+                    samples, rate = synthesize(
+                        persona["referenceText"],
+                        persona,
+                        configuration["seed"] + int(persona["id"][-2:]),
+                    )
+                    if evaluation:
+                        validate_evaluation_lock(
+                            args.evaluation_lock, args.configuration, args.output
+                        )
+                    reference.write_bytes(
+                        encode_wav(resample_poly(samples, SAMPLE_RATE, rate).astype(np.float32))
+                    )
+                except Exception as error:
+                    if evaluation:
+                        data["rejected"].append(
+                            {"id": "reference-" + persona["id"], "reason": str(error)}
+                        )
+                        data["evaluationGenerationComplete"] = False
+                        atomic_json(manifest, data)
+                    raise
             else:
                 raise ValueError("EXPLICIT_SYNTHETIC_REFERENCE_REQUIRED")
         reference_hash = fingerprint(reference)
@@ -737,6 +855,9 @@ def generate(args):
                 )["generators"]["qwen"]["revision"],
             },
         )
+        if evaluation:
+            data.pop("inProgressReference", None)
+            atomic_json(manifest, data)
         if args.references_only:
             print(json.dumps({"reference": persona["id"], "sha256": reference_hash}), flush=True)
             continue
@@ -796,6 +917,10 @@ def generate(args):
                         % 1_000_000
                     )
                     started = time.monotonic()
+                    if evaluation:
+                        data["inProgressUnit"] = {"id": item_id, "seed": seed}
+                        data["evaluationGenerationComplete"] = False
+                        atomic_json(manifest, data)
                     try:
                         if mode == "vc":
                             source_audio = standard_source(
@@ -875,13 +1000,15 @@ def generate(args):
                                     "realChildAccuracyEstablished": False,
                                 }
                             )
-                        if args.source_pool == "acoustic-v4-extension":
+                        if args.source_pool in {"acoustic-v4-extension", "acoustic-v5-extension"}:
                             row.update(
                                 {
                                     "phoneticCoverageExtension": True,
                                     "acousticOnlyExtension": True,
                                     "pitchTrainingEligible": False,
-                                    "acousticAllocationVersion": 4,
+                                    "acousticAllocationVersion": 5
+                                    if args.source_pool == "acoustic-v5-extension"
+                                    else 4,
                                 }
                             )
                         reason = (
@@ -917,7 +1044,9 @@ def generate(args):
                             ),
                             flush=True,
                         )
-                    except (ValueError, RuntimeError) as error:
+                    except Exception as error:
+                        if not evaluation and not isinstance(error, (ValueError, RuntimeError)):
+                            raise
                         if evaluation:
                             validate_evaluation_lock(
                                 args.evaluation_lock, args.configuration, args.output
@@ -930,17 +1059,21 @@ def generate(args):
                             flush=True,
                         )
                     seen.add(item_id)
+                    if evaluation:
+                        data.pop("inProgressUnit", None)
+                    if evaluation and _evaluation_generation_failed(data):
+                        data["evaluationGenerationComplete"] = False
                     atomic_json(manifest, data)
+                    if evaluation and _evaluation_generation_failed(data):
+                        raise ValueError("FROZEN_EVALUATION_GENERATION_FAILED")
                     count += 1
                     if args.limit and count >= args.limit:
                         return
 
     if evaluation and args.engine == "cosy":
         expected = {row["id"]: row for row in evaluation["generationPlan"]["units"]}
-        if (
-            data["rejected"]
-            or data["quarantined"]
-            or {row["id"] for row in data["items"]} != set(expected)
+        if _evaluation_generation_failed(data) or {row["id"] for row in data["items"]} != set(
+            expected
         ):
             raise ValueError("FROZEN_EVALUATION_GENERATION_INCOMPLETE")
         for row in data["items"]:
@@ -1235,7 +1368,13 @@ def main():
     parser.add_argument("--configuration", type=Path, default=CONFIG)
     parser.add_argument(
         "--source-pool",
-        choices=["pilot", "anchor-training", "acoustic-v4-extension", "locked-evaluation"],
+        choices=[
+            "pilot",
+            "anchor-training",
+            "acoustic-v4-extension",
+            "acoustic-v5-extension",
+            "locked-evaluation",
+        ],
         default="pilot",
     )
     parser.add_argument("--repetitions", type=int, default=1)
@@ -1260,7 +1399,7 @@ def main():
                     "lock": str(args.evaluation_lock),
                     "lockSha256": lock["lockSha256"],
                     "configuration": lock["configuration"]["file"],
-                    "plannedWaveforms": 52,
+                    "plannedWaveforms": lock["generationPlan"]["expectedWaveforms"],
                     "audioGenerated": False,
                 }
             )
@@ -1275,7 +1414,7 @@ def main():
                 {
                     "valid": True,
                     "lockSha256": lock["lockSha256"],
-                    "plannedWaveforms": 52,
+                    "plannedWaveforms": lock["generationPlan"]["expectedWaveforms"],
                     "audioGenerated": False,
                 }
             )

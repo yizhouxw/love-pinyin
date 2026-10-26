@@ -312,6 +312,17 @@ def test_vc_incomplete_set_and_changed_parent_cannot_be_used(inputs):
         builder.build_cases(**inputs)
 
 
+@pytest.mark.parametrize("field", ["failedGenerationAttempts", "diagnostics"])
+def test_prior_failure_cannot_be_hidden_by_a_legacy_complete_marker(inputs, field):
+    data = json.loads(inputs["vc_manifest"].read_text())
+    assert data["evaluationGenerationComplete"] is True
+    data[field] = [{"id": data["items"][0]["id"], "reason": "prior failed attempt"}]
+    write(inputs["vc_manifest"], data)
+    with pytest.raises(ValueError, match="COMPLETE_LOCKED_VC_MANIFEST_REQUIRED"):
+        builder.build_cases(**inputs)
+    assert not inputs["output"].exists()
+
+
 def test_exclusion_digest_change_blocks_construction(inputs):
     base = json.loads(inputs["evaluation_lock"].read_text())
     model = json.loads((Path(base["modelDirectory"]) / "model.json").read_text())

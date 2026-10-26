@@ -20,14 +20,16 @@ def augmentation_config():
     return json.loads((ROOT / "content/pronunciation-training.json").read_text())["augmentation"]
 
 
-def read_manifest(path: Path, *, verify_audio: bool = True) -> list[dict]:
+def read_manifest(
+    path: Path, *, verify_audio: bool = True, catalog: dict | None = None
+) -> list[dict]:
     data = json.loads(path.read_text())
     if data.get("version") != 1 or data.get("cohort") != "synthetic":
         raise ValueError("SYNTHETIC_MANIFEST_REQUIRED")
     rows = data["items"]
     if not rows:
         raise ValueError("EMPTY_DATASET")
-    known = targets_by_id()
+    known = targets_by_id(catalog)
     ids, hashes, family_splits, root_splits, reference_splits = set(), {}, {}, {}, {}
     audio_root = path.parent.resolve()
     for row in rows:

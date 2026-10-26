@@ -142,10 +142,11 @@ class PinyinMatcher:
             if metadata.get("pitchTone"):
                 pitch = metadata["pitchTone"]
                 pitch_file = (self.directory / pitch["file"]).resolve()
-                from pinyin_matcher.pitch_swift import PITCH_FEATURE_VERSION as SWIFT_VERSION
+                from pinyin_matcher.pitch_swift import SUPPORTED_FEATURE_VERSIONS
 
                 if (
-                    pitch["featureVersion"] not in {PITCH_FEATURE_VERSION, SWIFT_VERSION}
+                    pitch["featureVersion"]
+                    not in {PITCH_FEATURE_VERSION, *SUPPORTED_FEATURE_VERSIONS}
                     or not pitch_file.is_relative_to(self.directory.resolve())
                     or pitch_file.stat().st_size > 2 * 1024 * 1024
                     or fingerprint(pitch_file) != pitch["sha256"]
@@ -155,7 +156,8 @@ class PinyinMatcher:
                     str(pitch_file), sess_options=options, providers=["CPUExecutionProvider"]
                 )
                 inputs, outputs = self.pitch_session.get_inputs(), self.pitch_session.get_outputs()
-                expected_channels = 4 if pitch["featureVersion"] == SWIFT_VERSION else 2
+                swift = pitch["featureVersion"] in SUPPORTED_FEATURE_VERSIONS
+                expected_channels = 4 if swift else 2
                 if (
                     len(inputs) != 1
                     or inputs[0].name != "contour"
@@ -166,7 +168,7 @@ class PinyinMatcher:
                     or outputs[0].shape[1:] != [6]
                 ):
                     raise ValueError("PITCH_MODEL_INTERFACE_MISMATCH")
-                if pitch["featureVersion"] == SWIFT_VERSION:
+                if swift:
                     from pinyin_matcher.pitch_swift import SwiftPitch
 
                     if version != 3:
@@ -175,7 +177,9 @@ class PinyinMatcher:
                     tracker_path = (self.directory / tracker["file"]).resolve()
                     if not tracker_path.is_relative_to(self.directory.resolve()):
                         raise ValueError("PITCH_TRACKER_PATH_INVALID")
-                    self.pitch_tracker = SwiftPitch(tracker_path, tracker["sha256"])
+                    self.pitch_tracker = SwiftPitch(
+                        tracker_path, tracker["sha256"], feature_version=pitch["featureVersion"]
+                    )
             if version == 3 and self.pitch_tracker is None:
                 raise ValueError("INDEPENDENT_RAW_PITCH_REQUIRED")
             self.metadata = metadata

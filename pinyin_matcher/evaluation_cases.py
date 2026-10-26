@@ -152,6 +152,8 @@ def build_cases(
         or vc.get("evaluationGenerationPlan") != plan
         or vc.get("rejected")
         or vc.get("quarantined")
+        or vc.get("failedGenerationAttempts")
+        or vc.get("diagnostics")
     ):
         raise ValueError("COMPLETE_LOCKED_VC_MANIFEST_REQUIRED")
     vc_rows = _unique(vc["items"], plan["units"])

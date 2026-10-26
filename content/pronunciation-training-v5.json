@@ -1,0 +1,28 @@
+{
+  "version": 5,
+  "seed": 3182029,
+  "epochs": 24,
+  "batchSize": 64,
+  "learningRate": 0.0008,
+  "fineTuneLearningRate": 0.0002,
+  "hiddenSize": 192,
+  "blocks": 10,
+  "expansion": 3,
+  "standardSamplingWeight": 4,
+  "foreignSamplingWeight": 4,
+  "coverageExtensionSamplingWeight": 24,
+  "coverageExtensionVcSamplingWeight": 8,
+  "ctcLossWeight": 0.7,
+  "auxiliaryToneLossWeight": 0.1,
+  "vocalTractWarp": [0.92, 1.08],
+  "acceptance": {
+    "falsePass": 0.05,
+    "falseRetry": 0.1,
+    "uncertain": 0.2
+  },
+  "coveredTargetIdsSource": "pronunciation-targets.json:pilotIds",
+  "featureVersion": "logmel64-pitch4-v1",
+  "acousticInput": "mel-only",
+  "purpose": "Fill six declared acoustic-domain coverage gaps with new train-family VC and released diagnostic non-public standard parents. Preserve all public calibration positives, avoid consumed VC test waves/references, and keep the previous decision thresholds fixed.",
+  "trainingCatalogExtensions": "content/pronunciation-training-extensions-v5.json"
+}

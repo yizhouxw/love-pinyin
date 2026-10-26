@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "experiment": "swift-relative-component-support-v2",
+  "date": "2026-10-26",
+  "baselineGitRevision": "4ea2bbce9aab4cc3dafb8110e6db52213f9c90f4",
+  "status": "not-selected-experimental-candidate",
+  "algorithmMotivatedByDisclosedV4Failure": true,
+  "testLabelsUsedForTrainingCheckpointOrSelection": false,
+  "independentHumanOrChildAccuracyEstablished": false,
+  "sourceBinding": {
+    "kind": "trusted-licensed-standard-recordings",
+    "manifest": "private/matcher-standard-anchors/manifest.json",
+    "manifestSha256": "a520a339d8230187e94bff812e2fddbca6d541cfc0ecb9b5e9d4a6813db04c6e",
+    "trainingRoots": 325,
+    "calibrationRoots": 92,
+    "noV4HoldoutWaveformsUsedForTrainingOrSelection": true
+  },
+  "fixedComponentPolicy": {
+    "minimumUnvoicedGapHops": 6,
+    "hopMilliseconds": 16,
+    "maximumWeakComponentVoicedHops": 6,
+    "maximumMedianConfidenceExclusive": 0.8,
+    "maximumRelativeMedianRmsExclusive": 0.15,
+    "f0OrRequestedTargetUsedForRemoval": false,
+    "acousticAndCtcReceiveFullWaveform": true
+  },
+  "candidate": {
+    "featureVersion": "relative-swift-f0-0.3.0-components32-v2",
+    "modelSha256": "a823601bae50b1506325581d6e0d2cf467c53811552cb1c609de44f593cb6759",
+    "inputShape": [32, 4],
+    "parameters": 10468,
+    "epochs": 300,
+    "selectedEpoch": 56,
+    "trainingReportSha256": "906b21ee1a18de3f7525ba1cd79573aa1a3906991bc17dc3cd85620015a74c89"
+  },
+  "baseline": {
+    "featureVersion": "relative-swift-f0-0.3.0-contour32-v1",
+    "modelSha256": "a823601bae50b1506325581d6e0d2cf467c53811552cb1c609de44f593cb6759"
+  },
+  "comparison": {
+    "sameHeadWeights": true,
+    "changedWaveformsBySplit": {
+      "train": 0,
+      "calibration": 1
+    },
+    "scores": {
+      "old": {
+        "count": 92,
+        "correct": 91,
+        "unavailable": 0,
+        "meanNll": 0.050787913408661865,
+        "toneBalancedNll": 0.048929105165260306
+      },
+      "new": {
+        "count": 92,
+        "correct": 91,
+        "unavailable": 0,
+        "meanNll": 0.05083989677760932,
+        "toneBalancedNll": 0.04898603933125037
+      }
+    },
+    "comparisonReportSha256": "92ef9ee8e80f1dd99f08ab15a5d811d3822cc4ef96d449a1a03ec5160e50ca69"
+  },
+  "selection": {
+    "selectedFeatureVersion": "relative-swift-f0-0.3.0-contour32-v1",
+    "rule": "Complete standard92 correct count, then lower unweighted NLL; no V4 test accessed in this decision",
+    "reason": "Both achieve 91/92; candidate unweighted NLL is slightly worse, so retain the original v1 frontend and head."
+  },
+  "validation": {
+    "matcherTestsPassed": 221,
+    "matcherTestsSkipped": 4,
+    "actualExistingV4BundleLoaded": true,
+    "v1FeatureArrayComparedBitExactlyAgainstOriginalFormula": true,
+    "bothFeatureVersionsActualOnnxAssemblyAndLoadPassed": true,
+    "ruffPassed": true,
+    "speechDerivedSupportRegressionPassed": true
+  },
+  "codeSha256": {
+    "pitch_swift.py": "6c076650898342a4476cdc2f6a14460096756fc02442e9e581134c4ddd1a5c56",
+    "pitch_v2.py": "5be1f5cf97ce682100e3421d92d2924c1c835200947947343fe9361893410db1",
+    "pitch_diagnostics.py": "9f19d399c0ba3faff9a5bf05fa0138b56cc1b5dbd2f6c1c66958d46fee542d32",
+    "inference.py": "f8e00c9dd21b68a30243a6145fbd9c091f379ef21e6bee297719b56edf30b34a",
+    "assemble_v3.py": "17aedf7173f2aff06a87b8a87a3b20c298d5a87f975525a57a3ec3372f0ce0ee"
+  },
+  "limitations": [
+    "The calibration recordings were already used in previous development; this is model selection, not new independent validation.",
+    "V4 disclosed diagnostics motivated the component mechanism; improvement on those waveforms is not an independent quality result.",
+    "Numerical calibration loss with label smoothing is not the same as unsmoothed NLL.",
+    "No new audio or large weights are included in this public summary."
+  ]
+}

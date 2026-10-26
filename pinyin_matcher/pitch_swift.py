@@ -22,8 +22,37 @@ from pinyin_matcher.catalog import fingerprint
 from pinyin_matcher.pitch_v2 import PitchTrack
 
 PITCH_FEATURE_VERSION = "relative-swift-f0-0.3.0-contour32-v1"
+COMPONENT_PITCH_FEATURE_VERSION = "relative-swift-f0-0.3.0-components32-v2"
+SUPPORTED_FEATURE_VERSIONS = frozenset({PITCH_FEATURE_VERSION, COMPONENT_PITCH_FEATURE_VERSION})
 MODEL_SHA256 = "6385e8c2ebc3872e82c9ff5946228de44cd3be77a750ea53698b7dbfe94b0a22"
 HOP_LENGTH = 256
+
+
+def component_support(pitch: PitchTrack) -> tuple[np.ndarray, dict]:
+    """Remove only brief, weak and disconnected voiced islands; never use F0 labels."""
+    good = np.flatnonzero(pitch.voiced)
+    if not len(good):
+        return good, {"voicedComponents": 0, "removedVoicedFrames": 0}
+    # Six genuinely unvoiced hops separate components. Short creaky gaps stay connected.
+    components = np.split(good, np.flatnonzero(np.diff(good) > 6) + 1)
+    energy = [float(np.sum(pitch.rms[index] ** 2)) for index in components]
+    principal = int(np.argmax(energy))
+    reference_rms = max(float(np.median(pitch.rms[components[principal]])), 1e-9)
+    retained, removed = [], []
+    for index, frames in enumerate(components):
+        discard = (
+            index != principal
+            and len(frames) <= 6
+            and float(np.median(pitch.confidence[frames])) < 0.8
+            and float(np.median(pitch.rms[frames])) < reference_rms * 0.15
+        )
+        (removed if discard else retained).append(frames)
+    return np.concatenate(retained), {
+        "voicedComponents": len(components),
+        "retainedVoicedComponents": len(retained),
+        "removedVoicedFrames": sum(len(index) for index in removed),
+        "rawVoicedFrames": len(good),
+    }
 
 
 def install_from_fixed_tool_package(destination: Path) -> dict:
@@ -67,7 +96,16 @@ def install_from_fixed_tool_package(destination: Path) -> dict:
 class SwiftPitch:
     """Explicit CPU tracker; a model/digest mismatch fails instead of falling back."""
 
-    def __init__(self, model: Path, expected_sha256: str = MODEL_SHA256):
+    def __init__(
+        self,
+        model: Path,
+        expected_sha256: str = MODEL_SHA256,
+        *,
+        feature_version: str = PITCH_FEATURE_VERSION,
+    ):
+        if feature_version not in SUPPORTED_FEATURE_VERSIONS:
+            raise ValueError("PITCH_FEATURE_VERSION_UNSUPPORTED")
+        self.feature_version = feature_version
         if (
             expected_sha256 != MODEL_SHA256
             or not model.is_file()
@@ -132,7 +170,10 @@ class SwiftPitch:
         self, samples: np.ndarray, *, check: bool = True, run_options=None
     ) -> tuple[np.ndarray, dict]:
         pitch = self.track(samples, check=check, run_options=run_options)
-        good = np.flatnonzero(pitch.voiced)
+        if self.feature_version == COMPONENT_PITCH_FEATURE_VERSION:
+            good, components = component_support(pitch)
+        else:
+            good, components = np.flatnonzero(pitch.voiced), {}
         if len(good) < 6:
             raise AudioRejected("NO_RELIABLE_VOICED_SPEECH")
         positions = np.linspace(good[0], good[-1], 32)
@@ -142,11 +183,24 @@ class SwiftPitch:
         relative = np.interp(positions, good, log_f0) - np.median(log_f0)
         relative = np.clip(relative, -2, 2)
         confidence = np.interp(positions, np.arange(len(pitch.f0)), pitch.confidence)
-        voiced = np.interp(positions, np.arange(len(pitch.f0)), pitch.voiced.astype(np.float32))
+        mask = pitch.voiced.astype(np.float32)
+        if components:
+            mask[:] = 0
+            mask[good] = 1
+        voiced = np.interp(positions, np.arange(len(pitch.f0)), mask)
         array = np.stack([relative, np.gradient(relative), confidence, voiced], axis=1).astype(
             np.float32
         )
-        return array, pitch.summary()
+        summary = pitch.summary()
+        if components:
+            summary.update(
+                components,
+                voicedFrames=len(good),
+                medianF0=float(np.median(pitch.f0[good])),
+                pitchRangeOctaves=float(np.ptp(log_f0)),
+                medianPeriodicity=float(np.median(pitch.confidence[good])),
+            )
+        return array, summary
 
 
 if __name__ == "__main__":

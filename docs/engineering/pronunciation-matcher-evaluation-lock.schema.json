@@ -171,8 +171,7 @@
         },
         "sources": {
           "type": "array",
-          "minItems": 13,
-          "maxItems": 13,
+          "minItems": 1,
           "items": {
             "type": "object",
             "required": ["targetId", "sourceSha256", "sourceRootId", "sourceHistory"]
@@ -201,8 +200,7 @@
         },
         "units": {
           "type": "array",
-          "minItems": 52,
-          "maxItems": 52,
+          "minItems": 4,
           "items": {
             "type": "object",
             "required": ["id", "voiceFamilyId", "targetId", "sourceSha256", "seed", "file"],
@@ -219,10 +217,14 @@
           }
         },
         "expectedWaveforms": {
-          "const": 52
+          "type": "integer",
+          "minimum": 4,
+          "description": "Exactly sources times four configured families, verified by generator."
         },
         "expectedStandardRoots": {
-          "const": 13
+          "type": "integer",
+          "minimum": 1,
+          "description": "Exactly the explicit frozen sources array length, verified by generator."
         },
         "expectedSyntheticReferenceFamilies": {
           "const": 4

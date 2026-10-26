@@ -8,7 +8,7 @@ import numpy as np
 import pytest
 
 from pinyin_matcher import foreign_evaluation as foreign
-from pinyin_matcher.catalog import fingerprint
+from pinyin_matcher.catalog import ROOT, fingerprint
 
 
 @pytest.fixture
@@ -128,6 +128,53 @@ def test_mechanical_failures_kept_and_missing_waveform_never_dropped(planned, mo
     assert len(calls) == 96
 
 
+@pytest.mark.parametrize("orphan_output", [False, True])
+def test_interrupted_attempt_is_terminal_and_same_seed_is_never_redrawn(
+    planned, monkeypatch, orphan_output
+):
+    plan, path, output, model, _, _ = planned
+    calls = []
+
+    def fake_engine(directory):
+        def synthesize(text, persona, seed):
+            calls.append(seed)
+            if len(calls) == 1:
+                stored = json.loads((output / "manifest.json").read_text())
+                assert stored["items"][0]["generationStatus"] == "in-progress"
+                if orphan_output:
+                    from pinyin_matcher.audio import encode_wav
+
+                    file = output / plan["generationPlan"]["units"][0]["file"]
+                    file.parent.mkdir(parents=True, exist_ok=True)
+                    file.write_bytes(encode_wav(np.zeros(100, dtype=np.float32)))
+                raise KeyboardInterrupt("explicit test process interruption")
+            return np.zeros(100, dtype=np.float32), 16000
+
+        return synthesize
+
+    monkeypatch.setattr(foreign, "engine_qwen", fake_engine)
+    with pytest.raises(KeyboardInterrupt):
+        foreign.generate_foreign_evaluation(path, model)
+    first_seed = calls[0]
+    stored = json.loads((output / "manifest.json").read_text())
+    assert len(stored["items"]) == 96
+    assert stored["items"][0]["generationStatus"] == "in-progress"
+    assert all(row["generationStatus"] == "pending" for row in stored["items"][1:])
+    resumed = foreign.generate_foreign_evaluation(path, model)
+    assert len(calls) == 96
+    assert calls.count(first_seed) == 1
+    assert len(resumed["items"]) == 96
+    assert resumed["items"][0]["generationStatus"] == "tts-failure"
+    assert resumed["items"][0]["error"] == "PREVIOUS_ATTEMPT_INTERRUPTED"
+    assert not resumed["qualityManifestReady"]
+    quality = json.loads((output / "quality-manifest.json").read_text())
+    assert len(quality["cases"]) == 96
+    assert quality["cases"][0]["sha256"] is None
+    assert len(list(output.rglob("*.wav"))) == 95 + int(orphan_output)
+    foreign.generate_foreign_evaluation(path, model)
+    assert len(calls) == 96
+
+
 def test_changed_saved_audio_and_preexisting_output_are_rejected(planned, monkeypatch):
     plan, path, output, model, _, config = planned
     output.mkdir()
@@ -135,3 +182,73 @@ def test_changed_saved_audio_and_preexisting_output_are_rejected(planned, monkey
         foreign.generate_foreign_evaluation(path, model)
     with pytest.raises(ValueError, match="PLAN_AND_OUTPUT_MUST_BE_NEW"):
         foreign.create_foreign_plan(Path(plan["evaluationLock"]["file"]), config, output, path)
+
+
+def test_v5_explicit_configuration_binds_new_words_and_exact_new_families(planned):
+    old_plan, old_path, _, _, base, _ = planned
+    for index, persona in enumerate(base["generationPlan"]["personas"]):
+        persona["id"] = f"voice-{36 + index}"
+    path = old_path.with_name("v5-plan.json")
+    output = old_path.parent / "v5-not-generated"
+    config = ROOT / "content/pronunciation-foreign-evaluation-v5.json"
+    plan = foreign.create_foreign_plan(
+        Path(old_plan["evaluationLock"]["file"]), config, output, path
+    )
+    assert foreign.validate_foreign_plan(path) == plan
+    assert not output.exists()
+    units = plan["generationPlan"]["units"]
+    assert {row["voiceFamilyId"] for row in units} == {f"voice-{i}" for i in range(36, 40)}
+    assert len(units) == 96
+    assert len({row["sourceText"] for row in units}) == 24
+    assert len(plan["vocabularyExclusions"]) == 2
+    old_config = foreign.configuration(ROOT / "content/pronunciation-foreign-contrast.json")
+    old_words = {foreign._text(row["text"]) for row in old_config["definitions"]}
+    old_roots = {row["lexicalRootId"] for row in old_config["definitions"]}
+    assert all(foreign._text(row["sourceText"]) not in old_words for row in units)
+    assert all(row["lexicalRootId"] not in old_roots for row in units)
+
+
+@pytest.mark.parametrize("mutation", ["mismatched-family", "duplicate-family", "not-test"])
+def test_v5_requires_four_unique_matching_test_families(planned, mutation):
+    old_plan, path, _, _, base, _ = planned
+    for index, persona in enumerate(base["generationPlan"]["personas"]):
+        persona["id"] = f"voice-{36 + index}"
+    personas = base["generationPlan"]["personas"]
+    if mutation == "mismatched-family":
+        personas[0]["id"] = "voice-32"
+    elif mutation == "duplicate-family":
+        personas[0]["id"] = personas[1]["id"]
+    else:
+        personas[0]["split"] = "calibration"
+    with pytest.raises(ValueError, match="BASE_LOCK_BLIND_FAMILIES_MISMATCH"):
+        foreign.create_foreign_plan(
+            Path(old_plan["evaluationLock"]["file"]),
+            ROOT / "content/pronunciation-foreign-evaluation-v5.json",
+            path.parent / "v5-audio",
+            path.with_name("v5-plan.json"),
+        )
+
+
+@pytest.mark.parametrize(
+    "reused_field,reused_value", [("text", "theme"), ("lexicalRootId", "en-theme")]
+)
+def test_v5_rejects_reuse_of_disclosed_v4_test_words_or_roots(planned, reused_field, reused_value):
+    old_plan, path, _, _, base, _ = planned
+    for index, persona in enumerate(base["generationPlan"]["personas"]):
+        persona["id"] = f"voice-{36 + index}"
+    original = ROOT / "content/pronunciation-foreign-evaluation-v5.json"
+    config = json.loads(original.read_text())
+    for excluded in config["heldoutVocabularyExclusions"]:
+        excluded["file"] = str(original.parent / excluded["file"])
+    next(row for row in config["definitions"] if row["split"] == "test")[reused_field] = (
+        reused_value
+    )
+    mutated = path.parent / "mutated-v5.json"
+    mutated.write_text(json.dumps(config))
+    with pytest.raises(ValueError, match="FOREIGN_HELDOUT_VOCABULARY_REUSED"):
+        foreign.create_foreign_plan(
+            Path(old_plan["evaluationLock"]["file"]),
+            mutated,
+            path.parent / "v5-audio",
+            path.with_name("v5-plan.json"),
+        )

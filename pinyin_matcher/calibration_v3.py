@@ -13,7 +13,7 @@ from pathlib import Path
 from pinyin_matcher.audio import AudioRejected, decode_wav, features
 from pinyin_matcher.catalog import fingerprint, targets_by_id
 from pinyin_matcher.data import read_manifest
-from pinyin_matcher.decision_v3 import calibrate
+from pinyin_matcher.decision_v3 import _thresholds, calibrate
 from pinyin_matcher.foreign_data import read_manifest as read_foreign_manifest
 from pinyin_matcher.generate import atomic_json
 from pinyin_matcher.inference import PinyinMatcher
@@ -366,7 +366,7 @@ def collect_records(
     }
 
 
-def _fit(matcher, records: list[dict], output: Path):
+def _fit(matcher, records: list[dict], output: Path, *, fixed_thresholds: dict | None = None):
     lineage_check = training_lineage_check(matcher.metadata, records)
     atomic_json(output / "training-lineage-check.json", lineage_check)
     if lineage_check["overlapRawUnitIds"]:
@@ -381,7 +381,15 @@ def _fit(matcher, records: list[dict], output: Path):
         }
         for source in {r["source"] for r in records}
     }
-    report = calibrate(records, source_policies=policies)
+    if fixed_thresholds is not None:
+        _thresholds(fixed_thresholds)
+    grid = {key: [value] for key, value in fixed_thresholds.items()} if fixed_thresholds else None
+    report = calibrate(records, grid=grid, source_policies=policies)
+    report["thresholdSelectionMode"] = (
+        "predeclared-single-setting" if fixed_thresholds else "calibration-grid"
+    )
+    if fixed_thresholds is not None:
+        report["predeclaredThresholds"] = fixed_thresholds
     report["trainingLineageCheck"] = lineage_check
     if not lineage_check["complete"]:
         report["calibrationPassed"] = False
@@ -391,11 +399,19 @@ def _fit(matcher, records: list[dict], output: Path):
     return report
 
 
-def run(model: Path, inputs: list[tuple[Path, str]], output: Path):
+def run(
+    model: Path,
+    inputs: list[tuple[Path, str]],
+    output: Path,
+    *,
+    fixed_thresholds: dict | None = None,
+):
     if output.exists():
         raise ValueError("CALIBRATION_OUTPUT_ALREADY_EXISTS")
     if not inputs:
         raise ValueError("CALIBRATION_INPUTS_REQUIRED")
+    if fixed_thresholds is not None:
+        _thresholds(fixed_thresholds)
     assert_protocol()
     matcher = PinyinMatcher(model)
     if matcher.session is None or matcher.metadata.get("decisionVersion") != 3:
@@ -412,12 +428,15 @@ def run(model: Path, inputs: list[tuple[Path, str]], output: Path):
             "modelMetadataSha256": fingerprint(model / "model.json"),
             "collectionCodeSha256": fingerprint(Path(__file__)),
             "inputManifestSha256": {str(path): fingerprint(path) for path, kind in inputs},
+            "predeclaredThresholds": fixed_thresholds,
         },
     )
-    return _fit(matcher, records, output)
+    return _fit(matcher, records, output, fixed_thresholds=fixed_thresholds)
 
 
-def recalibrate(model: Path, records_path: Path, output: Path):
+def recalibrate(
+    model: Path, records_path: Path, output: Path, *, fixed_thresholds: dict | None = None
+):
     """Apply the amended protocol to identical stored evidence in a new directory."""
     if output.exists():
         raise ValueError("CALIBRATION_OUTPUT_ALREADY_EXISTS")
@@ -443,12 +462,13 @@ def recalibrate(model: Path, records_path: Path, output: Path):
             "coverage": coverage_metrics(records),
             "inferenceRerun": False,
             "sourceProtocolVersion": original.get("protocolVersion", 1),
+            "predeclaredThresholds": fixed_thresholds,
             "legacyCalibrationReportSha256": fingerprint(original_report)
             if original_report.exists()
             else None,
         },
     )
-    report = _fit(matcher, records, output)
+    report = _fit(matcher, records, output, fixed_thresholds=fixed_thresholds)
     report["recalibrationSourceRecordsFileSha256"] = fingerprint(records_path)
     report["legacyCalibrationReportSha256"] = (
         fingerprint(original_report) if original_report.exists() else None
@@ -469,6 +489,11 @@ def main():
         help="Recalibrate identical stored evidence into a new output directory.",
     )
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--fixed-thresholds",
+        type=Path,
+        help="Validate exactly one predeclared setting; never search or relax thresholds.",
+    )
     args = parser.parse_args()
     inputs = [
         (path, kind)
@@ -481,10 +506,16 @@ def main():
     ]
     if args.records and inputs:
         raise ValueError("RECALIBRATION_RECORDS_CANNOT_MIX_NEW_INPUTS")
+    fixed = None
+    if args.fixed_thresholds is not None:
+        fixed = json.loads(args.fixed_thresholds.read_text())
+        if not isinstance(fixed, dict):
+            raise ValueError("EXPLICIT_FIXED_THRESHOLDS_OBJECT_REQUIRED")
+        _thresholds(fixed)
     report = (
-        recalibrate(args.model, args.records, args.output)
+        recalibrate(args.model, args.records, args.output, fixed_thresholds=fixed)
         if args.records
-        else run(args.model, inputs, args.output)
+        else run(args.model, inputs, args.output, fixed_thresholds=fixed)
     )
     print(
         json.dumps(

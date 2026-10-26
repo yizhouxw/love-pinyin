@@ -19,12 +19,16 @@ from pinyin_matcher.generate import atomic_json
 from pinyin_matcher.pitch_v2 import PITCH_FEATURE_VERSION, contour
 
 
-def prepare(anchors: Path, synthetic: Path, cache: Path, tracker=None) -> tuple[list[dict], dict]:
+def prepare(
+    anchors: Path, synthetic: Path | None, cache: Path, tracker=None
+) -> tuple[list[dict], dict]:
     """Cache derived numeric features; verify every source waveform digest."""
     cache.mkdir(parents=True, exist_ok=True)
     targets = targets_by_id()
     rows, counts = [], {}
     for source, manifest in [("standard", anchors), ("synthetic", synthetic)]:
+        if manifest is None:
+            continue
         for row in json.loads(manifest.read_text())["items"]:
             target = targets[row["targetId"]]
             if target["tone"] not in [1, 2, 3, 4]:
@@ -37,9 +41,7 @@ def prepare(anchors: Path, synthetic: Path, cache: Path, tracker=None) -> tuple[
                 raise ValueError("SOURCE_DIGEST_MISMATCH")
             feature_version = PITCH_FEATURE_VERSION
             if tracker is not None:
-                from pinyin_matcher.pitch_swift import PITCH_FEATURE_VERSION as swift_version
-
-                feature_version += swift_version
+                feature_version += tracker.feature_version
             key = hashlib.sha256((row["sha256"] + feature_version).encode()).hexdigest()
             cached = cache / (key + ".npz")
             if cached.exists():
@@ -104,7 +106,7 @@ def train(
     torch.set_num_threads(1)
     torch.manual_seed(3182026)
     rng = np.random.default_rng(3182026)
-    if version not in ["v1", "v2", "v2-shape", "swift"]:
+    if version not in ["v1", "v2", "v2-shape", "swift", "swift-components"]:
         raise ValueError("UNKNOWN_FEATURE_VERSION")
 
     def selected(split):
@@ -216,8 +218,13 @@ def train(
         opset_version=17,
         dynamo=False,
     )
-    if version == "swift":
-        from pinyin_matcher.pitch_swift import PITCH_FEATURE_VERSION as feature_version
+    if version.startswith("swift"):
+        from pinyin_matcher.pitch_swift import COMPONENT_PITCH_FEATURE_VERSION
+        from pinyin_matcher.pitch_swift import PITCH_FEATURE_VERSION as swift_version
+
+        feature_version = (
+            COMPONENT_PITCH_FEATURE_VERSION if version == "swift-components" else swift_version
+        )
     else:
         feature_version = PITCH_FEATURE_VERSION if version == "v2" else version
     report = {
@@ -322,7 +329,10 @@ if __name__ == "__main__":
     )
     parser.add_argument("--cache", type=Path, default=Path("private/matcher-pitch-v2-cache"))
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--version", choices=["v1", "v2", "v2-shape", "swift"], default="v2")
+    parser.add_argument(
+        "--version", choices=["v1", "v2", "v2-shape", "swift", "swift-components"], default="v2"
+    )
+    parser.add_argument("--exclude-synthetic", action="store_true")
     parser.add_argument(
         "--tracker-model", type=Path, default=Path("models/matcher-pitch-swift/model.onnx")
     )
@@ -332,17 +342,25 @@ if __name__ == "__main__":
     args = parser.parse_args()
     started = time.perf_counter()
     tracker = None
-    if args.version == "swift":
-        from pinyin_matcher.pitch_swift import SwiftPitch
+    if args.version.startswith("swift"):
+        from pinyin_matcher.pitch_swift import COMPONENT_PITCH_FEATURE_VERSION, SwiftPitch
+        from pinyin_matcher.pitch_swift import PITCH_FEATURE_VERSION as swift_version
 
-        tracker = SwiftPitch(args.tracker_model)
-    examples, counts = prepare(args.anchors, args.synthetic, args.cache, tracker)
+        version = (
+            COMPONENT_PITCH_FEATURE_VERSION if args.version == "swift-components" else swift_version
+        )
+        tracker = SwiftPitch(args.tracker_model, feature_version=version)
+    examples, counts = prepare(
+        args.anchors, None if args.exclude_synthetic else args.synthetic, args.cache, tracker
+    )
     print(
         json.dumps({"counts": counts, "featureSeconds": time.perf_counter() - started}), flush=True
     )
     record = train(examples, args.version, args.cohort, args.output, args.epochs, args.architecture)
     record["anchorDatasetSha256"] = fingerprint(args.anchors)
-    record["syntheticManifestSha256"] = fingerprint(args.synthetic)
+    record["syntheticManifestSha256"] = (
+        None if args.exclude_synthetic else fingerprint(args.synthetic)
+    )
     atomic_json(args.output / "pitch.json", record)
     print(json.dumps({key: value for key, value in record.items() if key != "history"}), flush=True)
     print(json.dumps(evaluate(examples, args.output)["bySourceSplit"]), flush=True)

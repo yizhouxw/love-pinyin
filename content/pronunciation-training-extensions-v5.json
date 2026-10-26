@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "baseCatalogSha256": "797f628b68479d83882c39b2cfbf10797c9fe4bc6b837eebcafa1605390df404",
+  "publicCoverageChanges": false,
+  "purpose": "Explicit direct standard anchor labels for acoustic training only. Reuse the declared prototype phones without changing public coverage or the base application catalog.",
+  "targets": [
+    {
+      "id": "pm-ni1",
+      "prototypeId": "pm-ni2",
+      "pinyin": "nī",
+      "tone": 1,
+      "standardAudioId": "daily-ni1",
+      "trainingOnly": true
+    },
+    {
+      "id": "pm-ri1",
+      "prototypeId": "pm-ri4",
+      "pinyin": "rī",
+      "tone": 1,
+      "standardAudioId": "daily-ri1",
+      "trainingOnly": true
+    }
+  ]
+}

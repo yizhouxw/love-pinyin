@@ -1,9 +1,12 @@
 """Collector fixtures verify control flow and counts, never pronunciation validity."""
 
 import json
+import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
+import pytest
 
 from pinyin_matcher import calibration_v3
 from pinyin_matcher.audio import encode_wav
@@ -214,3 +217,97 @@ def test_absent_or_changed_training_metadata_never_claims_the_lineage_check_comp
     )
     assert not changed["complete"]
     assert changed["errors"]
+
+
+def test_predeclared_setting_does_not_search_for_a_looser_feasible_threshold(tmp_path, monkeypatch):
+    from pinyin_matcher.decision_v3 import calibrate
+
+    rows = [
+        {
+            "id": f"test-only-{expected}-{index}",
+            "unitId": f"test-only-{expected}-{index}",
+            "split": "calibration",
+            "source": "synthetic-calibration",
+            "case": "clean-positive" if expected else "tone",
+            "expectedMatch": expected,
+            "clearAudio": True,
+            "targetPhones": ["m", "a"],
+            "targetTone": 1,
+            "predictedPhones": ["m", "a"],
+            "predictedTone": 1 if expected else 2,
+            "contentMargin": 0.4,
+            "freeCtcAdvantage": 0.0,
+            "toneProbability": 0.99,
+            "pitchReliable": True,
+        }
+        for expected in (True, False)
+        for index in range(20)
+    ]
+    assert calibrate(rows)["calibrationPassed"]
+    monkeypatch.setattr(
+        calibration_v3,
+        "training_lineage_check",
+        lambda metadata, records: {
+            "complete": True,
+            "overlapRawUnitIds": [],
+            "errors": [],
+        },
+    )
+    report = calibration_v3._fit(
+        SimpleNamespace(metadata={}), rows, tmp_path, fixed_thresholds=THRESHOLDS
+    )
+    assert report["combinations"] == 1
+    assert not report["calibrationPassed"]
+    assert report["thresholds"] is None
+    assert report["predeclaredThresholds"] == THRESHOLDS
+    assert report["thresholdSelectionMode"] == "predeclared-single-setting"
+
+
+@pytest.mark.parametrize("value", [None, [], "not-a-threshold-object"])
+def test_explicit_invalid_fixed_file_never_reverts_to_grid(tmp_path, monkeypatch, value):
+    fixed = tmp_path / "fixed.json"
+    fixed.write_text(json.dumps(value))
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "calibration_v3",
+            "--model",
+            "not-loaded",
+            "--output",
+            str(tmp_path / "not-created"),
+            "--fixed-thresholds",
+            str(fixed),
+        ],
+    )
+    with pytest.raises(ValueError, match="EXPLICIT_FIXED_THRESHOLDS_OBJECT_REQUIRED"):
+        calibration_v3.main()
+    assert not (tmp_path / "not-created").exists()
+
+
+def test_replay_collection_records_the_new_explicit_fixed_setting(tmp_path, monkeypatch):
+    model = tmp_path / "model"
+    model.mkdir()
+    (model / "model.json").write_text("{}")
+    old = tmp_path / "old"
+    old.mkdir()
+    (old / "records.json").write_text("[]")
+    (old / "collection.json").write_text(
+        json.dumps({"modelMetadataSha256": fingerprint(model / "model.json")})
+    )
+    monkeypatch.setattr(
+        calibration_v3,
+        "PinyinMatcher",
+        lambda path: SimpleNamespace(session=True, metadata={"decisionVersion": 3}),
+    )
+    monkeypatch.setattr(
+        calibration_v3,
+        "_fit",
+        lambda *args, **kw: {"predeclaredThresholds": kw["fixed_thresholds"]},
+    )
+    output = tmp_path / "new"
+    report = calibration_v3.recalibrate(
+        model, old / "records.json", output, fixed_thresholds=THRESHOLDS
+    )
+    collection = json.loads((output / "collection.json").read_text())
+    assert collection["predeclaredThresholds"] == report["predeclaredThresholds"] == THRESHOLDS

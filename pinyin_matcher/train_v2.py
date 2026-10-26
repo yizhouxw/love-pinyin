@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 
 from pinyin_matcher.audio import FEATURE_VERSION, decode_wav, features
-from pinyin_matcher.catalog import CATALOG, ROOT, fingerprint, load_catalog, targets_by_id
+from pinyin_matcher.catalog import ROOT, fingerprint, targets_by_id, training_catalog
 from pinyin_matcher.data import augment, dataset_digest
 from pinyin_matcher.generate import atomic_json
 from pinyin_matcher.train import prepare, quantize
@@ -60,6 +60,7 @@ def dataset(
     cache: Path,
     foreign: tuple[Path, ...] = (),
     derived: tuple[Path, ...] = (),
+    directory: dict | None = None,
 ):
     rows, arrays = prepare(manifest, cache)
     rows = [
@@ -135,7 +136,7 @@ def dataset(
         }
         source_targets.update(pilot_calibration)
         for source in derived:
-            for original in read_manifest(source):
+            for original in read_manifest(source, catalog=directory):
                 if (
                     original.get("generationMode") != "vc"
                     or original.get("independentRoot") is not False
@@ -201,8 +202,10 @@ def train(
     torch.set_num_threads(4)
     if device == "auto":
         device = "mps" if torch.backends.mps.is_available() else "cpu"
-    rows, arrays = dataset(manifest, anchors, cache, foreign, derived)
-    directory = load_catalog()
+    extension_file = config.get("trainingCatalogExtensions")
+    extension_path = ROOT / extension_file if extension_file else None
+    directory = training_catalog(extension_path)
+    rows, arrays = dataset(manifest, anchors, cache, foreign, derived, directory)
     targets = targets_by_id(directory)
     onsets = sorted({target["onset"] for target in targets.values()} | {"<unknown>"})
     rimes = sorted({target["rime"] for target in targets.values()} | {"<unknown>"})
@@ -231,9 +234,12 @@ def train(
             "standardManifestSha256": fingerprint(anchors),
             "foreignManifestSha256": {str(path): fingerprint(path) for path in foreign},
             "derivedManifestSha256": {str(path): fingerprint(path) for path in derived},
+            "trainingCatalogExtensionsSha256": fingerprint(extension_path)
+            if extension_path
+            else None,
         },
     )
-    (output / "targets.json").write_bytes(CATALOG.read_bytes())
+    atomic_json(output / "targets.json", directory)
     train_rows = [row for row in rows if row["split"] == "train"]
     pool = [
         row

@@ -24,7 +24,7 @@ from pinyin_matcher.controlled_generation import (
     validate_evaluation_lock,
     verify_model,
 )
-from pinyin_matcher.foreign_data import CONFIG, configuration
+from pinyin_matcher.foreign_data import CONFIG, _text, configuration
 from pinyin_matcher.generate import atomic_json, engine_qwen
 
 KIND = "pinyin-matcher-foreign-evaluation-plan-v1"
@@ -50,10 +50,16 @@ def _code_snapshot() -> dict:
 def _generation_plan(config: dict, base: dict, output: Path) -> dict:
     definitions = [row for row in config["definitions"] if row["split"] == "test"]
     voices = config["blindPersonaIds"]
-    if len(definitions) != 24 or voices != [f"voice-{i}" for i in range(32, 36)]:
+    if len(definitions) != 24 or len(voices) != 4 or len(set(voices)) != 4:
         raise ValueError("FROZEN_FOREIGN_HOLDOUT_SET_REQUIRED")
-    personas = {row["id"]: row for row in base["generationPlan"]["personas"]}
-    if set(personas) != set(voices) or any(p["split"] != "test" for p in personas.values()):
+    persona_rows = base["generationPlan"]["personas"]
+    personas = {row["id"]: row for row in persona_rows}
+    if (
+        len(persona_rows) != 4
+        or len(personas) != 4
+        or set(personas) != set(voices)
+        or any(p["split"] != "test" for p in persona_rows)
+    ):
         raise ValueError("BASE_LOCK_BLIND_FAMILIES_MISMATCH")
     units = []
     for voice in voices:
@@ -100,16 +106,32 @@ def _generation_plan(config: dict, base: dict, output: Path) -> dict:
     }
 
 
+def _vocabulary_exclusions(config: dict, source: Path) -> list[dict]:
+    """Bind earlier vocabulary without reading or generating any audio."""
+    bindings = []
+    tests = [row for row in config["definitions"] if row["split"] == "test"]
+    for excluded in config.get("heldoutVocabularyExclusions", []):
+        file = (source.parent / excluded["file"]).resolve(strict=True)
+        if fingerprint(file) != excluded["sha256"]:
+            raise ValueError("FOREIGN_EXCLUDED_VOCABULARY_CHANGED")
+        rows = configuration(file)["definitions"]
+        texts = {_text(row["text"]) for row in rows}
+        lexical = {row["lexicalRootId"] for row in rows}
+        if any(_text(row["text"]) in texts or row["lexicalRootId"] in lexical for row in tests):
+            raise ValueError("FOREIGN_HELDOUT_VOCABULARY_REUSED")
+        bindings.append({"file": str(file), "sha256": excluded["sha256"]})
+    return bindings
+
+
 def create_foreign_plan(
     evaluation_lock: Path, foreign_configuration: Path, output: Path, plan_path: Path
 ) -> dict:
     """Freeze metadata only. Does not import TTS, read held-out audio or generate it."""
     if plan_path.exists() or output.exists():
         raise ValueError("FOREIGN_PLAN_AND_OUTPUT_MUST_BE_NEW")
-    if foreign_configuration.resolve() != CONFIG.resolve():
-        raise ValueError("FIXED_FOREIGN_CONFIGURATION_REQUIRED")
     base = _base_lock(evaluation_lock)
     config = configuration(foreign_configuration)
+    exclusions = _vocabulary_exclusions(config, foreign_configuration.resolve())
     generation = _generation_plan(config, base, output)
     frozen = plan_path.with_suffix(".configuration.frozen.json").resolve()
     if frozen.exists():
@@ -136,6 +158,7 @@ def create_foreign_plan(
         },
         "generatorRegistry": base["generatorRegistry"],
         "qwenInstallation": registry["generators"]["qwen"],
+        "vocabularyExclusions": exclusions,
         "codeSha256": _code_snapshot(),
         "generationPlan": generation,
     }
@@ -173,17 +196,20 @@ def validate_foreign_plan(plan_path: Path) -> dict:
     ):
         raise ValueError("FOREIGN_MODEL_OR_CALIBRATION_BINDING_CHANGED")
     config = plan["configuration"]
-    if Path(config["sourceFile"]) != CONFIG.resolve() or any(
-        fingerprint(Path(config[key])) != config["sha256"] for key in ("file", "sourceFile")
-    ):
+    if any(fingerprint(Path(config[key])) != config["sha256"] for key in ("file", "sourceFile")):
         raise ValueError("FROZEN_FOREIGN_CONFIGURATION_CHANGED")
+    frozen_configuration = configuration(Path(config["file"]))
+    if plan.get("vocabularyExclusions", []) != _vocabulary_exclusions(
+        frozen_configuration, Path(config["sourceFile"])
+    ):
+        raise ValueError("FOREIGN_EXCLUSION_BINDING_CHANGED")
     registry = json.loads(Path(base["generatorRegistry"]["file"]).read_text())
     if plan["qwenInstallation"] != registry["generators"]["qwen"]:
         raise ValueError("FOREIGN_GENERATOR_BINDING_CHANGED")
     if plan["codeSha256"] != _code_snapshot():
         raise ValueError("FROZEN_FOREIGN_CODE_CHANGED")
     if plan["generationPlan"] != _generation_plan(
-        configuration(Path(config["file"])), base, Path(plan["generationPlan"]["outputDirectory"])
+        frozen_configuration, base, Path(plan["generationPlan"]["outputDirectory"])
     ):
         raise ValueError("FROZEN_FOREIGN_GENERATION_PLAN_CHANGED")
     return plan
@@ -192,6 +218,7 @@ def validate_foreign_plan(plan_path: Path) -> dict:
 def _quality_manifest(data: dict, plan: dict) -> dict:
     cases = []
     for row in data["items"]:
+        completed = row["generationStatus"] in {"accepted-mechanically", "mechanical-failure"}
         for target in row["againstTargetIds"]:
             cases.append(
                 {
@@ -214,7 +241,8 @@ def _quality_manifest(data: dict, plan: dict) -> dict:
                     "expectedMatch": False,
                     "clearAudio": False,
                     "file": row.get("file"),
-                    "sha256": row.get("sha256"),
+                    # Interrupted output is preserved for diagnosis, never a complete case.
+                    "sha256": row.get("sha256") if completed else None,
                     "mismatchBasis": "phoneme",
                     "mismatchDescription": row["phoneticDifference"],
                     "sourceText": row["sourceText"],
@@ -224,7 +252,9 @@ def _quality_manifest(data: dict, plan: dict) -> dict:
                 }
             )
     ready = len(data["items"]) == plan["generationPlan"]["expectedWaveforms"] and all(
-        row.get("sha256") and row["generationStatus"] != "pending" for row in data["items"]
+        row.get("sha256")
+        and row["generationStatus"] in {"accepted-mechanically", "mechanical-failure"}
+        for row in data["items"]
     )
     return {
         "schemaVersion": 1,
@@ -264,6 +294,15 @@ def generate_foreign_evaluation(plan_path: Path, model_dir: Path) -> dict:
             if any(row.get(key) != value for key, value in unit.items()):
                 raise ValueError("FOREIGN_EXISTING_UNIT_CHANGED")
             audio = output / row["file"]
+            if row["generationStatus"] == "in-progress":
+                row.update(
+                    generationStatus="tts-failure",
+                    error="PREVIOUS_ATTEMPT_INTERRUPTED",
+                    errorType="InterruptedAttempt",
+                )
+                if audio.exists() and not row.get("sha256"):
+                    row["sha256"] = fingerprint(audio)
+                    row["interruptedOutputRetained"] = True
             if row.get("sha256"):
                 if fingerprint(audio) != row["sha256"]:
                     raise ValueError("FOREIGN_EXISTING_AUDIO_CHANGED")
@@ -323,6 +362,9 @@ def generate_foreign_evaluation(plan_path: Path, model_dir: Path) -> dict:
         if row["generationStatus"] != "pending":
             continue
         validate_foreign_plan(plan_path)
+        row["generationStatus"] = "in-progress"
+        row["attemptStartedUtc"] = datetime.now(UTC).isoformat()
+        save()
         started = time.perf_counter()
         try:
             samples, rate = synthesize(row["sourceText"], row["persona"], row["seed"])

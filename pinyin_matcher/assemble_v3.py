@@ -10,14 +10,29 @@ from pinyin_matcher.catalog import fingerprint
 from pinyin_matcher.generate import atomic_json
 from pinyin_matcher.inference import PinyinMatcher
 from pinyin_matcher.package import bundle_path
-from pinyin_matcher.pitch_swift import MODEL_SHA256, PITCH_FEATURE_VERSION
+from pinyin_matcher.pitch_swift import MODEL_SHA256, SUPPORTED_FEATURE_VERSIONS
 
 
-def _populate(acoustic: Path, pitch: Path, tracker: Path, output: Path, *, precision="int8"):
+def _populate(
+    acoustic: Path,
+    pitch: Path,
+    tracker: Path,
+    output: Path,
+    *,
+    feature_version: str,
+    precision="int8",
+):
     if output.exists():
         raise ValueError("CANDIDATE_ALREADY_EXISTS")
     if fingerprint(tracker / "model.onnx") != MODEL_SHA256:
         raise ValueError("PITCH_TRACKER_MODEL_DIGEST_MISMATCH")
+    pitch_metadata = json.loads(pitch.with_suffix(".json").read_text())
+    if (
+        pitch_metadata.get("sha256") != fingerprint(pitch)
+        or pitch_metadata.get("featureVersion") != feature_version
+        or pitch_metadata.get("inputShape") != [32, 4]
+    ):
+        raise ValueError("PITCH_FEATURE_OR_HEAD_BINDING_MISMATCH")
     metadata_file = "model.fp32.json" if precision == "fp32" else "model.json"
     metadata = json.loads((acoustic / metadata_file).read_text())
     inputs = acoustic / "run-inputs.json"
@@ -49,7 +64,7 @@ def _populate(acoustic: Path, pitch: Path, tracker: Path, output: Path, *, preci
         pitchTone={
             "file": "pitch.onnx",
             "sha256": fingerprint(output / "pitch.onnx"),
-            "featureVersion": PITCH_FEATURE_VERSION,
+            "featureVersion": feature_version,
             "parameters": 10468,
             "inputShape": [32, 4],
             "tracker": {
@@ -68,15 +83,27 @@ def _populate(acoustic: Path, pitch: Path, tracker: Path, output: Path, *, preci
     return candidate.capabilities()
 
 
-def assemble(acoustic: Path, pitch: Path, tracker: Path, output: Path, *, precision="int8"):
+def assemble(
+    acoustic: Path,
+    pitch: Path,
+    tracker: Path,
+    output: Path,
+    *,
+    feature_version: str,
+    precision="int8",
+):
     if precision not in {"int8", "fp32"}:
         raise ValueError("MODEL_PRECISION_UNSUPPORTED")
+    if feature_version not in SUPPORTED_FEATURE_VERSIONS:
+        raise ValueError("PITCH_FEATURE_VERSION_UNSUPPORTED")
     if output.exists():
         raise ValueError("CANDIDATE_ALREADY_EXISTS")
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".matcher-candidate-", dir=output.parent) as temporary:
         staging = Path(temporary) / "bundle"
-        capabilities = _populate(acoustic, pitch, tracker, staging, precision=precision)
+        capabilities = _populate(
+            acoustic, pitch, tracker, staging, feature_version=feature_version, precision=precision
+        )
         staging.rename(output)
     return capabilities
 
@@ -88,9 +115,19 @@ if __name__ == "__main__":
     parser.add_argument("--tracker", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--precision", choices=["int8", "fp32"], default="int8")
+    parser.add_argument(
+        "--feature-version", choices=sorted(SUPPORTED_FEATURE_VERSIONS), required=True
+    )
     args = parser.parse_args()
     print(
         json.dumps(
-            assemble(args.acoustic, args.pitch, args.tracker, args.output, precision=args.precision)
+            assemble(
+                args.acoustic,
+                args.pitch,
+                args.tracker,
+                args.output,
+                feature_version=args.feature_version,
+                precision=args.precision,
+            )
         )
     )
