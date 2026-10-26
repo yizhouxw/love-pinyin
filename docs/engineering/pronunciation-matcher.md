@@ -315,6 +315,27 @@ tools/pinyin-matcher/.venv/bin/python -m pinyin_matcher.quality evaluate \
 
 合并器逐字段核验完整规范TTS清单，删查询、增加容易查询或弱化来源门禁均拒绝；保留VC、外语及纯TTS各自来源/生成器/类别分组，再统一冻结最终音频摘要和CPU评估计划。
 
+v5实际结果为失败，见[v5结果](../research/matcher-v5-results.md)。一段外语生成缺少WAV，完整合并被阻止。新增`evaluation_subsets`仅报告原计划中完整的VC/固定双音节来源，以及保留全部96个计划单位的外语诊断；不能将子集改称整批通过。外语诊断对95个实际WAV推理，缺失单位返回`unavailable`，分别报告观测波形和完整计划分母。它不补造音频、不重抽生成、不修改模型/阈值，已有输出不得覆盖。
+
+```sh
+tools/pinyin-matcher/.venv/bin/python -m pinyin_matcher.evaluation_subsets vc \
+  --evaluation-lock private/matcher-v5-generation.lock.json \
+  --vc-manifest private/matcher-v5-frozen-new-families/cosy-locked-evaluation/manifest.json \
+  --exclude-manifest private/matcher-standard-anchors/manifest.json \
+  --output private/matcher-v5-vc-quality-cases
+
+tools/pinyin-matcher/.venv/bin/python -m pinyin_matcher.evaluation_subsets foreign-freeze \
+  --foreign-plan private/matcher-v5-foreign-evaluation.plan.json \
+  --manifest private/matcher-v5-foreign-evaluation/manifest.json \
+  --output private/matcher-v5-foreign-diagnostic.plan.json
+
+tools/pinyin-matcher/.venv/bin/python -m pinyin_matcher.evaluation_subsets foreign-run \
+  --plan private/matcher-v5-foreign-diagnostic.plan.json \
+  --output private/matcher-v5-foreign-diagnostic-results.json
+```
+
+VC子集仍须用`quality freeze/evaluate`显式冻结后评估；`--calibration-manifest`应传其清单中的全部`exclusionManifests`，不能只排除当前公开校准而漏掉训练、声调或旧清单谱系。10项子集回归测试覆盖失败/缺失保留、拒绝替换音频、摘要/单位篡改、父源泄漏及完整分母。
+
 ## Python 接口和 CLI
 
 2026-10-26 的 v3 实验候选使用逐帧归一化/填充屏蔽声学编码、全目录音素头和独立 SwiftF0 波形前端。基础声学训练入口为 `python -m pinyin_matcher.train_v2`，必须显式传入 `--manifest`、`--anchors`、`--cache-dir`、`--output`。`--resume` 使用内容配置中的微调学习率；可重复 `--foreign` 添加有明确目标差异的弱标签反例，可重复 `--derived` 添加经过父源/划分核验的标准音 VC 派生。外语反例只对明确目标对施加拒绝损失，不编造它们的音素转写，也不参与 CTC 或声调标签损失。

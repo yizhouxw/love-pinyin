@@ -1,0 +1,1384 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-26",
+  "status": "complete-record-of-separate-failed-evaluations; originally planned combined batch remains incomplete",
+  "experiment": "masked-acoustic-v5-int8-pure-tts-confirmatory-and-separate-failed-subsets",
+  "runtimeCommit": "34c98e3e1d41ace38a9c977d223fe7464e10c0d0",
+  "calibrationPassed": true,
+  "ttsConfirmatoryPassed": false,
+  "qualityPassed": false,
+  "combinedCompleteEvaluationAvailable": false,
+  "protocolVersion": 2,
+  "protocolSha256": "d55ebfd704caef4f3f806b52f4f3e8ab895b7e5048e91c20149102f4b40fc3a2",
+  "qualityLimits": {
+    "negativeFalseAcceptance": 0.05,
+    "positiveExplicitRejection": 0.1,
+    "clearPositiveAbstention": 0.2
+  },
+  "model": {
+    "files": {
+      "model.json": "39cf338cabc5101c81240c5cd71a3d372326c05e0825d6320939f3ecb4c978aa",
+      "acoustic.int8.onnx": "7f9b21b8c01f24de41bcad9a8bdef0c669307d421f5e2853ea67de0187264cbc",
+      "targets.json": "2a616a6380af0b84cf946abbbef93b40dd5360015069aebc60e99e2a89ca985f",
+      "pitch.onnx": "a823601bae50b1506325581d6e0d2cf467c53811552cb1c609de44f593cb6759",
+      "swift-f0.onnx": "6385e8c2ebc3872e82c9ff5946228de44cd3be77a750ea53698b7dbfe94b0a22",
+      "SWIFT-F0-LICENSE": "5f4711c748cf616e894fbab28144ee74f1650dfe1bbd6801c44f11e054508c18"
+    },
+    "version": "masked-phonetic-swift-v3-7f9b21b8c01f",
+    "coveredTargetIds": [
+      "pm-ma1",
+      "pm-ma2",
+      "pm-ma3",
+      "pm-ma4",
+      "pm-ba1",
+      "pm-pa1",
+      "pm-bi3",
+      "pm-pi3",
+      "pm-da1",
+      "pm-ta1",
+      "pm-ni3",
+      "pm-li3",
+      "pm-ge1",
+      "pm-ke1",
+      "pm-he1",
+      "pm-ji1",
+      "pm-qi1",
+      "pm-xi1",
+      "pm-zi1",
+      "pm-ci1",
+      "pm-si1",
+      "pm-zhi1",
+      "pm-chi1",
+      "pm-shi1",
+      "pm-ri4",
+      "pm-nv3",
+      "pm-lv4",
+      "pm-hua1",
+      "pm-gua1",
+      "pm-duo3",
+      "pm-tuo1",
+      "pm-yue4"
+    ],
+    "thresholds": {
+      "minimumContentMargin": 0.5,
+      "maximumFreeCtcAdvantage": 0.025,
+      "minimumToneProbability": 0.45
+    }
+  },
+  "sourceBindings": [
+    {
+      "file": "private/matcher-v5-tts-quality-results.json",
+      "sha256": "a889eba350850066f16e8c68a9a3aec91af8678f5155b97742dc3f2c2cebd2b6"
+    },
+    {
+      "file": "private/matcher-v5-tts-quality.plan.json",
+      "sha256": "eb2fadbf0f65544b3269ad1dc6888d9e14829e6503813d9924c90b57a9fcc013"
+    },
+    {
+      "file": "private/matcher-v5-generation.lock.json",
+      "sha256": "b26a453331b9e66a6eabada5e7576107ef9efaeaffc155378b92751a34ddadb9"
+    },
+    {
+      "file": "private/matcher-v5-tts-evaluation.plan.json",
+      "sha256": "de1ed714f2c0bcea38c250fa4b2dcc82e07a43dac0a7d74ad2da5971da0b7b07"
+    },
+    {
+      "file": "private/matcher-v5-tts-evaluation/manifest.json",
+      "sha256": "122400a6e939048741e404f59b850e593a56551b098ec52fd9376d66475bc880"
+    },
+    {
+      "file": "private/matcher-v5-tts-evaluation/quality-manifest.json",
+      "sha256": "b84cce06353ccef96de11a50ce262da69dbb4705cb18f0512a9ee3dc95d4deff"
+    },
+    {
+      "file": "private/matcher-v5-calibration/calibration.json",
+      "sha256": "11806200713a1de9c25470b42a037459b88989c7979b010672d18abf4d47fb2e"
+    },
+    {
+      "file": "private/matcher-v5-calibration/collection.json",
+      "sha256": "b9a10f7b1c3b54ab82be21326b9baed8f389c9af8a6a7fd9510861cb59b043e4"
+    },
+    {
+      "file": "private/matcher-v5-fp32-calibration/calibration.json",
+      "sha256": "42db8248cab3015e064e7853209008e8b818911fc6bdf526af67863308291a6f"
+    },
+    {
+      "file": "private/matcher-v5-cpu.json",
+      "sha256": "f6c5d3daa2f6154fdd9b9603bf8cc6fe4199818d92756ea0998d38e245c77843"
+    },
+    {
+      "file": "private/matcher-v5-frozen/model.json",
+      "sha256": "39cf338cabc5101c81240c5cd71a3d372326c05e0825d6320939f3ecb4c978aa"
+    },
+    {
+      "file": "models/pinyin-matcher-v5/model.json",
+      "sha256": "39cf338cabc5101c81240c5cd71a3d372326c05e0825d6320939f3ecb4c978aa"
+    },
+    {
+      "file": "private/matcher-v5-foreign-evaluation/manifest.json",
+      "sha256": "2c65bd615ccdc030966bb4f991464d1e8032ec6c5f1c735cebd90f112f5fdf71"
+    },
+    {
+      "file": "private/matcher-v5-foreign-evaluation/quality-manifest.json",
+      "sha256": "b3e46656d5a33672984ba651950527ce4795f995f515235a2dc2a5439de75fd7"
+    },
+    {
+      "file": "private/matcher-v5-frozen-new-families/cosy-locked-evaluation/manifest.json",
+      "sha256": "5fbb948b0100a08889fa60d816b28ea3f8b2d4245599d6573cd62011ce25bb46"
+    },
+    {
+      "file": "content/pronunciation-quality-protocol-v2.json",
+      "sha256": "d55ebfd704caef4f3f806b52f4f3e8ab895b7e5048e91c20149102f4b40fc3a2"
+    },
+    {
+      "file": "content/pronunciation-thresholds-v5.json",
+      "sha256": "05729673552a16d2329db164695017cda9d47637fba10024111e521f9f109d71"
+    },
+    {
+      "file": "content/pronunciation-training-extensions-v5.json",
+      "sha256": "85e53b81c4df9782842f4ff201893a75100138bf8f348da389f29d39298e93e3"
+    },
+    {
+      "file": "private/matcher-v5-trained/run-inputs.json",
+      "sha256": "d79d24f14787df5ca334cb13e62490a1b0450d14f39c909000fa09e9eaa8f08b"
+    },
+    {
+      "file": "private/matcher-v5-vc-quality-results.json",
+      "sha256": "8dccb9ba30972ced1fbce13bcfda64932e487557746df377635d547cab77bea1"
+    },
+    {
+      "file": "private/matcher-v5-vc-quality.plan.json",
+      "sha256": "5c1ece5a57365e3454470c99a2cb7a8f154e5e08dfb6c7132a7b71abd960a15b"
+    },
+    {
+      "file": "private/matcher-v5-vc-quality-cases/manifest.json",
+      "sha256": "1fcacebdc265f4437cc5ba10c25579ba19b22859676fca6ae1fec266ec2aa7f3"
+    },
+    {
+      "file": "private/matcher-v5-foreign-diagnostic-results.json",
+      "sha256": "2b3b2611a295a915d33c90341e44d8792f040a7afb2f9ddbdd02fb7e6295ac63"
+    },
+    {
+      "file": "private/matcher-v5-foreign-diagnostic.plan.json",
+      "sha256": "30e29e30c47a26c9ac8ac36d1029b377080a697cb5098e9d3f90cc6d0605c499"
+    },
+    {
+      "file": "pinyin_matcher/evaluation_subsets.py",
+      "sha256": "208b35152e7b04b8c05bfaf24582bdf25bdc5a32dd12fc2032d258d52e40d96a"
+    },
+    {
+      "file": "tests/matcher/test_evaluation_subsets.py",
+      "sha256": "77d0bdf5f728977bdd5ee51f5eed245d2221854d4123c7f089ec882d8b1091fa"
+    },
+    {
+      "file": "private/matcher-v5-final-verify-all.log",
+      "sha256": "0713ea8e53c028e7821efc2f3f0148a84c03f00ba03861b2a118e4981f2c5eb3"
+    }
+  ],
+  "freezes": {
+    "phase1BeforeAudioGeneration": {
+      "mainCreatedUtc": "2026-10-26T01:19:07.140136+00:00",
+      "mainLockSha256": "5f3e42cb2b40ff3ad4e70c9f380f99bb0d42016d6ed8ae911143c391994c3401",
+      "ttsLeafCreatedUtc": "2026-10-26T01:19:08.388788+00:00",
+      "ttsLeafPlanSha256": "6def23a16e1004adc0317ea4793e36b777cbc0bbb22ba4c59945db74cda75d86"
+    },
+    "phase2TtsOnlyQuality": {
+      "createdUtc": "2026-10-26T01:27:20.282318+00:00",
+      "purpose": "confirmatory",
+      "freezeSha256": "ed6e7e874693ac650d2199d4cc7e33a58c363de17d160a2061bbc797df244cc6",
+      "queries": 8192
+    },
+    "sameModelAndThresholdsAcrossBothPhases": true,
+    "sourceSpecificSubsetPlans": {
+      "vc": {
+        "createdUtc": "2026-10-26T01:36:20.911517+00:00",
+        "freezeSha256": "faddae396d067972df1dfecc890d1dcc7f7597a93125ddf2743de0fa4d3c1d24"
+      },
+      "foreignDiagnostic": {
+        "createdUtc": "2026-10-26T01:36:22.687603+00:00",
+        "freezeSha256": "89e661c70f04a9f2ce52cd32bfe570bde7b577fec87be8756df1ebe2477580cb"
+      }
+    },
+    "sameModelThresholdsAndProtocolAcrossAllReports": true
+  },
+  "calibration": {
+    "selectionMode": "predeclared-single-setting",
+    "combinations": 1,
+    "thresholds": {
+      "minimumContentMargin": 0.5,
+      "maximumFreeCtcAdvantage": 0.025,
+      "minimumToneProbability": 0.45
+    },
+    "INT8": {
+      "passed": true,
+      "overall": {
+        "positiveWaveforms": 96,
+        "negativeWaveforms": 368,
+        "positiveStatuses": {
+          "matched": 83,
+          "retry": 5,
+          "uncertain": 8,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 7,
+            "denominator": 368,
+            "rate": 0.019021739130434784,
+            "wilson95": [0.009244013894534275, 0.03873734589594962],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 5,
+            "denominator": 96,
+            "rate": 0.052083333333333336,
+            "wilson95": [0.02244960047424143, 0.11618478031492638],
+            "limit": 0.1,
+            "passed": true
+          },
+          "clearPositiveAbstention": {
+            "count": 8,
+            "denominator": 96,
+            "rate": 0.08333333333333333,
+            "wilson95": [0.04283062415096722, 0.15589903239709585],
+            "limit": 0.2,
+            "passed": true
+          }
+        }
+      }
+    },
+    "FP32": {
+      "passed": true,
+      "overall": {
+        "positiveWaveforms": 96,
+        "negativeWaveforms": 368,
+        "positiveStatuses": {
+          "matched": 83,
+          "retry": 5,
+          "uncertain": 8,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 7,
+            "denominator": 368,
+            "rate": 0.019021739130434784,
+            "wilson95": [0.009244013894534275, 0.03873734589594962],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 5,
+            "denominator": 96,
+            "rate": 0.052083333333333336,
+            "wilson95": [0.02244960047424143, 0.11618478031492638],
+            "limit": 0.1,
+            "passed": true
+          },
+          "clearPositiveAbstention": {
+            "count": 8,
+            "denominator": 96,
+            "rate": 0.08333333333333333,
+            "wilson95": [0.04283062415096722, 0.15589903239709585],
+            "limit": 0.2,
+            "passed": true
+          }
+        }
+      }
+    },
+    "selectedPrecision": "INT8",
+    "testUsedForSelection": false
+  },
+  "ttsConfirmatory": {
+    "plannedWaveforms": 256,
+    "actualWaveforms": 256,
+    "queries": 8192,
+    "publicIntendedPositiveTargets": 32,
+    "textRoots": 32,
+    "syntheticFamilies": 4,
+    "independentHumanSpeakers": 0,
+    "missingResults": 0,
+    "generationStatuses": {
+      "accepted-mechanically": 247,
+      "mechanical-failure": 9
+    },
+    "mechanicalFailuresRetainedInMetrics": true,
+    "overall": {
+      "positiveWaveforms": 256,
+      "negativeWaveforms": 256,
+      "positiveStatuses": {
+        "matched": 151,
+        "retry": 67,
+        "uncertain": 38,
+        "unavailable": 0
+      },
+      "gates": {
+        "negativeFalseAcceptance": {
+          "count": 22,
+          "denominator": 256,
+          "rate": 0.0859375,
+          "wilson95": [0.05743557903626671, 0.12668230206640807],
+          "limit": 0.05,
+          "passed": false
+        },
+        "positiveExplicitRejection": {
+          "count": 67,
+          "denominator": 256,
+          "rate": 0.26171875,
+          "wilson95": [0.21167863808724405, 0.31880429349071027],
+          "limit": 0.1,
+          "passed": false
+        },
+        "clearPositiveAbstention": {
+          "count": 38,
+          "denominator": 256,
+          "rate": 0.1484375,
+          "wilson95": [0.1100947469586396, 0.19717515209080125],
+          "limit": 0.2,
+          "passed": true
+        }
+      }
+    },
+    "bySource": {
+      "pure-tts-new-family-qwen": {
+        "positiveWaveforms": 128,
+        "negativeWaveforms": 128,
+        "positiveStatuses": {
+          "matched": 82,
+          "retry": 35,
+          "uncertain": 11,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 11,
+            "denominator": 128,
+            "rate": 0.0859375,
+            "wilson95": [0.04866313137138619, 0.14734091054261295],
+            "limit": 0.05,
+            "passed": false
+          },
+          "positiveExplicitRejection": {
+            "count": 35,
+            "denominator": 128,
+            "rate": 0.2734375,
+            "wilson95": [0.20366999780458017, 0.3564076855068533],
+            "limit": 0.1,
+            "passed": false
+          },
+          "clearPositiveAbstention": {
+            "count": 11,
+            "denominator": 128,
+            "rate": 0.0859375,
+            "wilson95": [0.04866313137138619, 0.14734091054261295],
+            "limit": 0.2,
+            "passed": true
+          }
+        }
+      },
+      "pure-tts-new-family-cosy": {
+        "positiveWaveforms": 128,
+        "negativeWaveforms": 128,
+        "positiveStatuses": {
+          "matched": 69,
+          "retry": 32,
+          "uncertain": 27,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 11,
+            "denominator": 128,
+            "rate": 0.0859375,
+            "wilson95": [0.04866313137138619, 0.14734091054261295],
+            "limit": 0.05,
+            "passed": false
+          },
+          "positiveExplicitRejection": {
+            "count": 32,
+            "denominator": 128,
+            "rate": 0.25,
+            "wilson95": [0.18301284861358558, 0.33155562952316864],
+            "limit": 0.1,
+            "passed": false
+          },
+          "clearPositiveAbstention": {
+            "count": 27,
+            "denominator": 128,
+            "rate": 0.2109375,
+            "wilson95": [0.14921308750498039, 0.28950671534064165],
+            "limit": 0.2,
+            "passed": false
+          }
+        }
+      }
+    },
+    "byCase": {
+      "pure-tts-new-family-cosy/clean-positive": {
+        "positiveWaveforms": 128,
+        "negativeWaveforms": 0,
+        "positiveStatuses": {
+          "matched": 69,
+          "retry": 32,
+          "uncertain": 27,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.05,
+            "passed": null
+          },
+          "positiveExplicitRejection": {
+            "count": 32,
+            "denominator": 128,
+            "rate": 0.25,
+            "wilson95": [0.18301284861358558, 0.33155562952316864],
+            "limit": 0.1,
+            "passed": false
+          },
+          "clearPositiveAbstention": {
+            "count": 27,
+            "denominator": 128,
+            "rate": 0.2109375,
+            "wilson95": [0.14921308750498039, 0.28950671534064165],
+            "limit": 0.2,
+            "passed": false
+          }
+        }
+      },
+      "pure-tts-new-family-cosy/near-phoneme": {
+        "positiveWaveforms": 0,
+        "negativeWaveforms": 128,
+        "positiveStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 6,
+            "denominator": 128,
+            "rate": 0.046875,
+            "wilson95": [0.021657844171923776, 0.09849752245094322],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "pure-tts-new-family-cosy/tone": {
+        "positiveWaveforms": 0,
+        "negativeWaveforms": 16,
+        "positiveStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 5,
+            "denominator": 16,
+            "rate": 0.3125,
+            "wilson95": [0.14164643854782039, 0.5559564416525933],
+            "limit": 0.05,
+            "passed": false
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "pure-tts-new-family-qwen/clean-positive": {
+        "positiveWaveforms": 128,
+        "negativeWaveforms": 0,
+        "positiveStatuses": {
+          "matched": 82,
+          "retry": 35,
+          "uncertain": 11,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.05,
+            "passed": null
+          },
+          "positiveExplicitRejection": {
+            "count": 35,
+            "denominator": 128,
+            "rate": 0.2734375,
+            "wilson95": [0.20366999780458017, 0.3564076855068533],
+            "limit": 0.1,
+            "passed": false
+          },
+          "clearPositiveAbstention": {
+            "count": 11,
+            "denominator": 128,
+            "rate": 0.0859375,
+            "wilson95": [0.04866313137138619, 0.14734091054261295],
+            "limit": 0.2,
+            "passed": true
+          }
+        }
+      },
+      "pure-tts-new-family-qwen/near-phoneme": {
+        "positiveWaveforms": 0,
+        "negativeWaveforms": 128,
+        "positiveStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 2,
+            "denominator": 128,
+            "rate": 0.015625,
+            "wilson95": [0.004295449710144082, 0.055180976679817195],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "pure-tts-new-family-qwen/tone": {
+        "positiveWaveforms": 0,
+        "negativeWaveforms": 16,
+        "positiveStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 9,
+            "denominator": 16,
+            "rate": 0.5625,
+            "wilson95": [0.331785563988119, 0.7690134759450765],
+            "limit": 0.05,
+            "passed": false
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      }
+    },
+    "positiveReasonCounts": {
+      "OTHER_TONE_DETECTED": 57,
+      "MATCHED": 151,
+      "OTHER_PHONEMES_DETECTED": 10,
+      "CONTENT_CONFIDENCE_INSUFFICIENT": 9,
+      "TONE_CONFIDENCE_INSUFFICIENT": 2,
+      "NO_RELIABLE_PHONE_EVIDENCE": 17,
+      "SILENCE_OR_TOO_QUIET": 8,
+      "EXTRA_OR_UNSUPPORTED_PHONE_EVIDENCE": 1,
+      "AUDIO_DURATION_INVALID": 1
+    },
+    "parentStressView": {
+      "view": "source-parent-any-adverse-derivative",
+      "isAcceptanceGate": false,
+      "positiveParentUnits": 32,
+      "negativeParentUnits": 32,
+      "metrics": {
+        "negativeFalseAcceptance": {
+          "count": 10,
+          "denominator": 32,
+          "rate": 0.3125,
+          "wilson95": [0.17952541633609734, 0.4856667830095541]
+        },
+        "positiveExplicitRejection": {
+          "count": 20,
+          "denominator": 32,
+          "rate": 0.625,
+          "wilson95": [0.4525440735307745, 0.7706611269054578]
+        },
+        "clearPositiveAbstention": {
+          "count": 25,
+          "denominator": 32,
+          "rate": 0.78125,
+          "wilson95": [0.6124500635075647, 0.8897616374739581]
+        }
+      },
+      "adverseEventsAreIndependentCounters": true,
+      "positiveAllDerivativesMatched": 2
+    },
+    "blockers": [
+      "overall:negativeFalseAcceptance",
+      "overall:positiveExplicitRejection",
+      "source:pure-tts-new-family-qwen:negativeFalseAcceptance",
+      "source:pure-tts-new-family-qwen:positiveExplicitRejection",
+      "source:pure-tts-new-family-cosy:negativeFalseAcceptance",
+      "source:pure-tts-new-family-cosy:positiveExplicitRejection",
+      "source:pure-tts-new-family-cosy:clearPositiveAbstention",
+      "case:pure-tts-new-family-cosy/clean-positive:positiveExplicitRejection",
+      "case:pure-tts-new-family-cosy/clean-positive:clearPositiveAbstention",
+      "case:pure-tts-new-family-cosy/tone:negativeFalseAcceptance",
+      "case:pure-tts-new-family-qwen/clean-positive:positiveExplicitRejection",
+      "case:pure-tts-new-family-qwen/tone:negativeFalseAcceptance",
+      "generator:cosy:negativeFalseAcceptance",
+      "generator:cosy:positiveExplicitRejection",
+      "generator:cosy:clearPositiveAbstention",
+      "generator:qwen:negativeFalseAcceptance",
+      "generator:qwen:positiveExplicitRejection",
+      "contrast:Mandarin/public-target-positive:positiveExplicitRejection",
+      "contrast:Mandarin/same-syllable-tone:negativeFalseAcceptance"
+    ],
+    "actualPhonesAndTonesIndependentlyVerified": false
+  },
+  "vcSubset": {
+    "evaluationStatus": "completed-source-specific-failed",
+    "plannedWaveforms": 20,
+    "generatedWaveforms": 20,
+    "standardParents": 5,
+    "syntheticFamilies": 4,
+    "generationComplete": true,
+    "generationFailures": 0,
+    "plannedExtraWaveforms": 20,
+    "plannedQueries": 1280,
+    "metrics": {
+      "overall": {
+        "positiveWaveforms": 20,
+        "negativeWaveforms": 40,
+        "positiveStatuses": {
+          "matched": 15,
+          "retry": 0,
+          "uncertain": 5,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 0,
+            "denominator": 40,
+            "rate": 0.0,
+            "wilson95": [0, 0.08762160119728664],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 20,
+            "rate": 0.0,
+            "wilson95": [0, 0.16112515805281938],
+            "limit": 0.1,
+            "passed": true
+          },
+          "clearPositiveAbstention": {
+            "count": 5,
+            "denominator": 20,
+            "rate": 0.25,
+            "wilson95": [0.11186170140766569, 0.468700877618744],
+            "limit": 0.2,
+            "passed": false
+          }
+        }
+      },
+      "bySource": {
+        "known-standard-new-vc-families": {
+          "positiveWaveforms": 20,
+          "negativeWaveforms": 20,
+          "positiveStatuses": {
+            "matched": 15,
+            "retry": 0,
+            "uncertain": 5,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 20,
+              "rate": 0.0,
+              "wilson95": [0, 0.16112515805281938],
+              "limit": 0.05,
+              "passed": true
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 20,
+              "rate": 0.0,
+              "wilson95": [0, 0.16112515805281938],
+              "limit": 0.1,
+              "passed": true
+            },
+            "clearPositiveAbstention": {
+              "count": 5,
+              "denominator": 20,
+              "rate": 0.25,
+              "wilson95": [0.11186170140766569, 0.468700877618744],
+              "limit": 0.2,
+              "passed": false
+            }
+          }
+        },
+        "known-standard-new-vc-extra-syllable": {
+          "positiveWaveforms": 0,
+          "negativeWaveforms": 20,
+          "positiveStatuses": {
+            "matched": 0,
+            "retry": 0,
+            "uncertain": 0,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 20,
+              "rate": 0.0,
+              "wilson95": [0, 0.16112515805281938],
+              "limit": 0.05,
+              "passed": true
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.1,
+              "passed": null
+            },
+            "clearPositiveAbstention": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.2,
+              "passed": null
+            }
+          }
+        }
+      },
+      "byCase": {
+        "known-standard-new-vc-extra-syllable/extra-syllable": {
+          "positiveWaveforms": 0,
+          "negativeWaveforms": 20,
+          "positiveStatuses": {
+            "matched": 0,
+            "retry": 0,
+            "uncertain": 0,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 20,
+              "rate": 0.0,
+              "wilson95": [0, 0.16112515805281938],
+              "limit": 0.05,
+              "passed": true
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.1,
+              "passed": null
+            },
+            "clearPositiveAbstention": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.2,
+              "passed": null
+            }
+          }
+        },
+        "known-standard-new-vc-families/clean-positive": {
+          "positiveWaveforms": 20,
+          "negativeWaveforms": 0,
+          "positiveStatuses": {
+            "matched": 15,
+            "retry": 0,
+            "uncertain": 5,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.05,
+              "passed": null
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 20,
+              "rate": 0.0,
+              "wilson95": [0, 0.16112515805281938],
+              "limit": 0.1,
+              "passed": true
+            },
+            "clearPositiveAbstention": {
+              "count": 5,
+              "denominator": 20,
+              "rate": 0.25,
+              "wilson95": [0.11186170140766569, 0.468700877618744],
+              "limit": 0.2,
+              "passed": false
+            }
+          }
+        },
+        "known-standard-new-vc-families/near-phoneme": {
+          "positiveWaveforms": 0,
+          "negativeWaveforms": 20,
+          "positiveStatuses": {
+            "matched": 0,
+            "retry": 0,
+            "uncertain": 0,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 20,
+              "rate": 0.0,
+              "wilson95": [0, 0.16112515805281938],
+              "limit": 0.05,
+              "passed": true
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.1,
+              "passed": null
+            },
+            "clearPositiveAbstention": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.2,
+              "passed": null
+            }
+          }
+        }
+      },
+      "positiveTargetStatuses": {
+        "pm-chi1": {
+          "matched": 3,
+          "uncertain": 1
+        },
+        "pm-he1": {
+          "matched": 4
+        },
+        "pm-ni3": {
+          "uncertain": 3,
+          "matched": 1
+        },
+        "pm-ri4": {
+          "uncertain": 1,
+          "matched": 3
+        },
+        "pm-xi1": {
+          "matched": 4
+        }
+      },
+      "blockers": [
+        "overall:clearPositiveAbstention",
+        "source:known-standard-new-vc-families:clearPositiveAbstention",
+        "case:known-standard-new-vc-families/clean-positive:clearPositiveAbstention",
+        "generator:cosy:clearPositiveAbstention"
+      ],
+      "toneNegativeQueryCount": 0,
+      "toneNegativeEvidenceAvailable": false
+    },
+    "knownStandardParentNewFamilyScopeOnly": true,
+    "qualityPassed": false,
+    "actualExtraWaveforms": 20,
+    "actualQueries": 1280,
+    "distinctWaveforms": 40,
+    "sourceSubsetPassWouldNotEstablishFullBatchAcceptance": true
+  },
+  "foreign": {
+    "evaluationStatus": "completed-diagnostic-only-generation-incomplete",
+    "plannedUnits": 96,
+    "realWaveforms": 95,
+    "missingUnits": 1,
+    "generationStatuses": {
+      "accepted-mechanically": 94,
+      "tts-failure": 1,
+      "mechanical-failure": 1
+    },
+    "qualityManifestReady": false,
+    "missingUnit": {
+      "id": "foreign-qwen-voice-36-fr-vapeur-0",
+      "reason": "TTS_TRUNCATED",
+      "mayResample": false
+    },
+    "retainedMechanicalFailure": {
+      "id": "foreign-qwen-voice-39-fr-riz-0",
+      "reason": "FOREIGN_MAXIMUM_DURATION_EXCEEDED",
+      "durationSeconds": 4.0
+    },
+    "completeCombinedMergeAllowed": false,
+    "plannedDiagnosticIncludes95ObservedAnd1Unavailable": true,
+    "metrics": {
+      "plannedSlotMetrics": {
+        "positiveWaveforms": 0,
+        "negativeWaveforms": 96,
+        "positiveStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 1,
+            "denominator": 96,
+            "rate": 0.010416666666666666,
+            "wilson95": [0.0018411702168162486, 0.056666176227157854],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "observedAudioMetrics": {
+        "positiveWaveforms": 0,
+        "negativeWaveforms": 95,
+        "positiveStatuses": {
+          "matched": 0,
+          "retry": 0,
+          "uncertain": 0,
+          "unavailable": 0
+        },
+        "gates": {
+          "negativeFalseAcceptance": {
+            "count": 1,
+            "denominator": 95,
+            "rate": 0.010526315789473684,
+            "wilson95": [0.001860576262347903, 0.05723870141313616],
+            "limit": 0.05,
+            "passed": true
+          },
+          "positiveExplicitRejection": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.1,
+            "passed": null
+          },
+          "clearPositiveAbstention": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null,
+            "limit": 0.2,
+            "passed": null
+          }
+        }
+      },
+      "byLanguage": {
+        "English": {
+          "plannedUnits": 48,
+          "actualWaveforms": 48,
+          "falseAcceptedWaveforms": 1,
+          "unavailableUnits": 0
+        },
+        "French": {
+          "plannedUnits": 48,
+          "actualWaveforms": 47,
+          "falseAcceptedWaveforms": 0,
+          "unavailableUnits": 1
+        }
+      },
+      "byLanguageAndContrastCategory": {
+        "English/dental-fricative": {
+          "positiveWaveforms": 0,
+          "negativeWaveforms": 16,
+          "positiveStatuses": {
+            "matched": 0,
+            "retry": 0,
+            "uncertain": 0,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 16,
+              "rate": 0.0,
+              "wilson95": [0, 0.1936076805344365],
+              "limit": 0.05,
+              "passed": true
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.1,
+              "passed": null
+            },
+            "clearPositiveAbstention": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.2,
+              "passed": null
+            }
+          }
+        },
+        "English/labiodental-fricative": {
+          "positiveWaveforms": 0,
+          "negativeWaveforms": 16,
+          "positiveStatuses": {
+            "matched": 0,
+            "retry": 0,
+            "uncertain": 0,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 16,
+              "rate": 0.0,
+              "wilson95": [0, 0.1936076805344365],
+              "limit": 0.05,
+              "passed": true
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.1,
+              "passed": null
+            },
+            "clearPositiveAbstention": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.2,
+              "passed": null
+            }
+          }
+        },
+        "English/voiced-dental-fricative": {
+          "positiveWaveforms": 0,
+          "negativeWaveforms": 16,
+          "positiveStatuses": {
+            "matched": 0,
+            "retry": 0,
+            "uncertain": 0,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 1,
+              "denominator": 16,
+              "rate": 0.0625,
+              "wilson95": [0.01111934476464252, 0.28328737570298945],
+              "limit": 0.05,
+              "passed": false
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.1,
+              "passed": null
+            },
+            "clearPositiveAbstention": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.2,
+              "passed": null
+            }
+          }
+        },
+        "French/labiodental-fricative": {
+          "positiveWaveforms": 0,
+          "negativeWaveforms": 16,
+          "positiveStatuses": {
+            "matched": 0,
+            "retry": 0,
+            "uncertain": 0,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 16,
+              "rate": 0.0,
+              "wilson95": [0, 0.1936076805344365],
+              "limit": 0.05,
+              "passed": true
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.1,
+              "passed": null
+            },
+            "clearPositiveAbstention": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.2,
+              "passed": null
+            }
+          }
+        },
+        "French/nasal-vowel-or-multisyllable": {
+          "positiveWaveforms": 0,
+          "negativeWaveforms": 16,
+          "positiveStatuses": {
+            "matched": 0,
+            "retry": 0,
+            "uncertain": 0,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 16,
+              "rate": 0.0,
+              "wilson95": [0, 0.1936076805344365],
+              "limit": 0.05,
+              "passed": true
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.1,
+              "passed": null
+            },
+            "clearPositiveAbstention": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.2,
+              "passed": null
+            }
+          }
+        },
+        "French/uvular-r": {
+          "positiveWaveforms": 0,
+          "negativeWaveforms": 16,
+          "positiveStatuses": {
+            "matched": 0,
+            "retry": 0,
+            "uncertain": 0,
+            "unavailable": 0
+          },
+          "gates": {
+            "negativeFalseAcceptance": {
+              "count": 0,
+              "denominator": 16,
+              "rate": 0.0,
+              "wilson95": [0, 0.1936076805344365],
+              "limit": 0.05,
+              "passed": true
+            },
+            "positiveExplicitRejection": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.1,
+              "passed": null
+            },
+            "clearPositiveAbstention": {
+              "count": 0,
+              "denominator": 0,
+              "rate": null,
+              "wilson95": null,
+              "limit": 0.2,
+              "passed": null
+            }
+          }
+        }
+      },
+      "statuses": {
+        "uncertain": 79,
+        "retry": 15,
+        "unavailable": 1,
+        "matched": 1
+      },
+      "falseAccepts": [
+        {
+          "unitId": "foreign-qwen-voice-38-en-feather-0",
+          "sourceText": "feather",
+          "targetId": "pm-zi1",
+          "voiceFamilyId": "voice-38",
+          "contrastCategory": "voiced-dental-fricative"
+        }
+      ],
+      "blockers": [
+        "DIAGNOSTIC_COHORT_CANNOT_ESTABLISH_QUALITY",
+        "overall:MISSING_POSITIVE_OR_NEGATIVE_COVERAGE",
+        "contrast:English/voiced-dental-fricative:negativeFalseAcceptance",
+        "FOREIGN_GENERATION_INCOMPLETE"
+      ]
+    },
+    "qualityPassed": false,
+    "purpose": "diagnostic",
+    "actualAudioInferenceAttempts": 95,
+    "fullBatchAcceptanceComplete": false,
+    "planned96SlotsAllHaveResults": true,
+    "missingAudioIsNotOmittedOrCountedAsSuccessfulAcousticRejection": true
+  },
+  "cpu": {
+    "cohort": "PinYinSound-reference-diagnostic-not-independent-speaker-not-child",
+    "qualityGateEvaluation": false,
+    "independentSpeakerValidation": false,
+    "threads": 2,
+    "coldLoadMilliseconds": 74.38479200936854,
+    "p95Milliseconds": 14.14012850727886,
+    "p95RealTimeFactor": 0.015581142856963999,
+    "peakProcessRSSBytes": 240156672,
+    "peakRSSIncreaseBytes": 140951552,
+    "fourSecondRepeatedSpeechP95Milliseconds": 55.3400375880301,
+    "fourSecondRepeatedSpeechP95RealTimeFactor": 0.013835009397007525,
+    "extraSpeechFalsePass": 0,
+    "extraSpeechSamples": 29,
+    "modelBytes": 3031276,
+    "samples": 29,
+    "matched": 26,
+    "retry": 2,
+    "uncertain": 1,
+    "realChildAccuracyEstablished": false,
+    "cpuProviders": ["CPUExecutionProvider"],
+    "diagnosticPerformanceOnly": true
+  },
+  "engineeringVerification": {
+    "evidence": "Actual command outputs observed by supervising agent; latest full verify:all log is SHA-bound below. Other suite counts retain the observed command-output evidence without invented log hashes.",
+    "matcher": {
+      "fullSuitePassed": 226,
+      "fullSuiteSkipped": 1,
+      "initialSkipReason": "MATCHER_V4_MODEL not set",
+      "subsequentV4CompatibilityTest": "test_optional_actual_v4_bundle_loads_and_uses_bit_exact_v1_features",
+      "subsequentV4CompatibilityPassed": 1,
+      "allDistinct227TestsActuallyExecutedSuccessfully": true
+    },
+    "application": {
+      "vitest": {
+        "passed": 142,
+        "files": 24
+      },
+      "serverPytest": {
+        "passed": 455
+      },
+      "localE2e": {
+        "passed": 36
+      },
+      "liveE2e": {
+        "passed": 40
+      },
+      "validateRelease": "passed",
+      "verifyAll": "blocked-at-format-check",
+      "verifyAllBlocker": "docs/research/target-pronunciation-pretrained-data-audit.md",
+      "blockerOwner": "other concurrent work; unrelated research document intentionally not modified",
+      "individualRemainingChecks": "passed as reported; full verify:all was not reported passed"
+    },
+    "independentSubsetHelperTestsPassed": 10
+  },
+  "limitations": [
+    "Pure TTS labels describe intended character pronunciation; no independent phone/tone truth is established.",
+    "New family descriptions and shared references do not create independent human speakers or new lexical structures.",
+    "Any subset or foreign diagnostic result cannot overturn the failed TTS confirmatory source gates.",
+    "The missing foreign WAV prevents the originally planned complete combined evaluation; unavailable stays in diagnostic denominators.",
+    "VC subset fails 25% clear-positive abstention and has no tone-negative queries; it cannot establish full 32-target or same-syllable tone accuracy.",
+    "Foreign English voiced-dental contrast is 1/16 false acceptance; overall 1/95 observed or 1/96 planned does not override subgroup failure or incomplete generation."
+  ]
+}
