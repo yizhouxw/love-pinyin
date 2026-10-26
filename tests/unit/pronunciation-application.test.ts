@@ -36,6 +36,8 @@ describe('MATCH-13/14 application boundaries', () => {
       pronunciationTargets.length,
     );
     expect(coursePronunciationTargets.length).toBe(79);
+    expect(pronunciationTargets.find((item) => item.id === 'day-03-s1-i1')?.task).toBe('initial');
+    expect(pronunciationTargets.find((item) => item.id === 'day-06-s3-i1')?.task).toBe('blend');
     expect(
       pronunciationTargets.every((item) =>
         ['initial', 'final', 'syllable', 'blend', 'sequence'].includes(item.task),

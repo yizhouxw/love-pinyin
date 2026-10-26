@@ -11,11 +11,14 @@ from server.storage import now_iso, transaction
 
 @lru_cache(maxsize=1)
 def targets() -> dict:
-    forms = json.loads(
+    config = json.loads(
         (
             Path(__file__).resolve().parents[1] / "content" / "pronunciation-practice.json"
         ).read_text()
-    )["taskByPronunciationForm"]
+    )
+    forms = config["taskByPronunciationForm"]
+    inventory = load_curriculum()["inventory"]
+    initials = set(inventory["initials"] + inventory["orthographicLetters"])
     result = {
         row["id"]: {
             "id": row["id"],
@@ -30,7 +33,14 @@ def targets() -> dict:
                 result[item["id"]] = {
                     "id": item["id"],
                     "pinyin": " ".join(item["syllables"]),
-                    "task": "sequence" if len(item["syllables"]) > 1 else "syllable",
+                    "task": config["dailySectionTasks"].get(section["kind"])
+                    or (
+                        "sequence"
+                        if len(item["syllables"]) > 1
+                        else "initial"
+                        if item["syllables"][0] in initials
+                        else "syllable"
+                    ),
                 }
     return result
 

@@ -153,3 +153,9 @@ def test_backup_rejects_forged_evidence_and_unknown_targets(
     with pytest.raises(Exception) as error:
         _validate_backup(invalid)
     assert getattr(error.value, "status_code", None) == 422
+
+
+def test_daily_catalog_retains_initial_and_blending_task_semantics():
+    assert pronunciation.targets()["day-03-s1-i1"]["task"] == "initial"
+    assert pronunciation.targets()["day-06-s3-i1"]["task"] == "blend"
+    assert pronunciation.targets()["rt-02-v1"]["task"] == "final"

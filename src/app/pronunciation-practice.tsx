@@ -12,7 +12,7 @@ import {
   pronunciationHistory,
 } from '../platform/audio/pronunciation-http';
 import { BrowserReadingRecorder } from '../platform/audio/browser-reading-recorder';
-import { recordingWav } from '../platform/audio/reading-recognition';
+import { recordingWav } from '../platform/audio/recording-wav';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { isGuest } from '../platform/guest';
 
@@ -76,7 +76,7 @@ export function PronunciationResults({
         const request = {
           requestId,
           targetId,
-          audio: new Blob([wav], { type: 'audio/wav' }),
+          audio: wav,
           signal: controller.signal,
         };
         const assessment = service

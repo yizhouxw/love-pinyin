@@ -1,3 +1,4 @@
+import { validatePinyinShop } from './validate-pinyin-shop.mjs';
 import { readFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import { validateIllustrations } from './validate-illustrations.mjs';
@@ -14,6 +15,12 @@ const errors = validateCurriculum(data, schema, {
   sourceIds: sourceRows.map((s) => s.id),
   release,
 });
+errors.push(
+  ...validatePinyinShop(
+    await readJson('content/pinyin-shop.json'),
+    await readJson('content/illustrations.json'),
+  ),
+);
 if (release) {
   errors.push(
     ...validateIllustrations(

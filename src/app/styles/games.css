@@ -175,3 +175,36 @@
 .game-settings > .game-start {
   justify-self: start;
 }
+
+.shop-entry {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  border: 2px solid #e7b47d;
+  background: #fff1da;
+  border-radius: 22px;
+  padding: 24px;
+  margin: 24px 0;
+}
+.shop-entry > span {
+  font-size: 2.6rem;
+}
+.shop-entry > div {
+  flex: 1 1 240px;
+}
+.shop-entry h2 {
+  color: #954307;
+  margin: 4px 0;
+}
+.shop-entry p {
+  margin: 8px 0;
+}
+.shop-entry > button {
+  background: #a64608;
+  color: white;
+  border-radius: 16px;
+  padding: 14px 20px;
+  border: 0;
+  min-height: 52px;
+}

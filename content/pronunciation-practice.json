@@ -11,5 +11,11 @@
     "retry": "这次听到的拼读与目标不同，可以再听再读",
     "uncertain": "这次没有听清，不算读错",
     "unavailable": "拼读识别暂不可用，不算读错"
+  },
+  "dailySectionTasks": {
+    "spelling": "blend",
+    "comparison": "sequence",
+    "words": "sequence",
+    "sentences": "sequence"
   }
 }

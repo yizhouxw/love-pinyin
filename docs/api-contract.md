@@ -1,6 +1,6 @@
 # API 与数据契约
 
-本文描述当前 `server/api.py` 的实现。路径统一以 `/api/v1` 为前缀；运行服务的 `/openapi.json` 提供请求模型，客户端类型见 `src/domain/contracts.ts`。首版无录音上传、识别或评测端点。
+本文描述当前 `server/api.py` 的实现。路径统一以 `/api/v1` 为前缀；运行服务的 `/openapi.json` 提供请求模型，客户端类型见 `src/domain/contracts.ts`。新增跟读端点只在家庭 Mac 内存处理录音；Whisper 音节对照与 MATCH-10 专用拼读端口独立，均不提供专业发音评分。
 
 ## 认证、错误与一致性
 

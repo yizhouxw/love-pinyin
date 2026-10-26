@@ -1,3 +1,4 @@
+import { PinyinShop } from './pinyin-shop';
 import { useEffect, useState } from 'react';
 import { gameCatalog, type GameOverview } from '../domain/games';
 import type { Curriculum } from '../domain/learning-api';
@@ -72,6 +73,7 @@ export function GameZone({
   onStart: (id: string, levelId: string) => void;
   onBack: () => void;
 }) {
+  const [shopOpen, setShopOpen] = useState(false);
   const [selectedLevels, setSelectedLevels] = useState<Record<string, string>>({});
   const [preferences, setPreferences] = useState(() =>
     Object.fromEntries(gameCatalog.games.map((g) => [g.id, readScenePreference(g.id)])),
@@ -104,6 +106,17 @@ export function GameZone({
   const ids = new Set(
     curriculum.lessons.filter((item) => item.order <= order).flatMap((item) => item.exerciseIds),
   );
+  if (shopOpen)
+    return (
+      <PinyinShop
+        curriculum={curriculum}
+        lessonId={lessonId}
+        onExit={() => {
+          setShopOpen(false);
+          setRevision((v) => v + 1);
+        }}
+      />
+    );
   return (
     <section className="game-zone" aria-label="拼音游戏乐园">
       <button className="quiet" onClick={onBack}>
@@ -144,6 +157,25 @@ export function GameZone({
         </p>
       )}
       <Notice error={error} onReconnect={() => setRevision((value) => value + 1)} />
+      <article className="shop-entry">
+        <span aria-hidden="true">🍊 🧺</span>
+        <div>
+          <span className="eyebrow">新场景 · 口头拼读</span>
+          <h2>拼音小卖部</h2>
+          <VoiceButton id="ui-shop_welcome" voice={voice} label="听小卖部怎么玩" />
+          <p>选一件喜欢的商品，读包装上的拼音，匹配后自动入篮。每篮最多六件。</p>
+          <p className="adult-hint">真实识别待接入，当前可听示范与跟读；开发模拟不计学习成绩。</p>
+        </div>
+        <button
+          disabled={busy || !data || !!data.clock.reason}
+          onClick={() => {
+            voice.stop();
+            setShopOpen(true);
+          }}
+        >
+          进入拼音小卖部 →
+        </button>
+      </article>
       <div className="game-grid">
         {gameCatalog.games.map((game) => {
           const available = curriculum.exercises.some(
