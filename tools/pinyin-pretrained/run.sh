@@ -16,10 +16,13 @@ case "${1:-help}" in
   bundle) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_bundle "$@" ;;
   match|info) exec "$pretrained_python" -m pinyin_matcher.pretrained_runtime "$@" ;;
   evaluate|freeze|benchmark) exec "$pretrained_python" -m pinyin_matcher.pretrained_evaluate "$@" ;;
+  ensemble) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_ensemble "$@" ;;
+  readout-diagnostics) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_readout_diagnostics "$@" ;;
   native) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_native "$@" ;;
   comparison) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_comparison "$@" ;;
   finetune) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_finetune "$@" ;;
   stress) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_stress "$@" ;;
+  iteration-report) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_iteration_report "$@" ;;
   report) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_report "$@" ;;
   cold) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_cold "$@" ;;
   ctc) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_ctc_runtime "$@" ;;
@@ -28,5 +31,5 @@ case "${1:-help}" in
   sensevoice-finetune) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_sensevoice_finetune "$@" ;;
   sensevoice-export) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_sensevoice_export "$@" ;;
   test) exec "$pretrained_python" -m pytest tests/pretrained tests/matcher/test_pretrained_*.py tests/matcher/test_preserved_baseline_cli.py -q ;;
-  *) printf '%s\n' 'Usage: run.sh setup | prepare NAME | data prepare | ompal prepare | clips | cache | train | export | bundle | info | match | evaluate | freeze | benchmark | native | comparison | finetune | sensevoice-finetune | sensevoice-export | coverage | pressure | ctc | stress | cold | report | test' ;;
+  *) printf '%s\n' 'Usage: run.sh setup | prepare NAME | data prepare | ompal prepare | clips | cache | train | export | bundle | info | match | evaluate | freeze | benchmark | ensemble | readout-diagnostics | native | comparison | finetune | sensevoice-finetune | sensevoice-export | coverage | pressure | ctc | stress | cold | report | iteration-report | test' ;;
 esac

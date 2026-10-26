@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "sensevoice-expert-correct-feature-mixup-v1",
+  "betaAlpha": 0.4,
+  "lossWeight": 0.5,
+  "supervision": "Only training rows with unanimous-correct labels for all three components; soft labels reflect interpolation, not new verified audio.",
+  "maximumEpochs": 120,
+  "finalTestUsed": false
+}

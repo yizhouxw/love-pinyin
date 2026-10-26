@@ -63,3 +63,5 @@ SPEC-013的DOCKER-05/06补充Windows x86-64宿主的linux/amd64部署及CPU Whis
 2026-10-26 SPEC-018 MATCH-10/11：选定 SenseVoice 编码器＋音素/声调专用头后续主线，先固化应用 TypeScript v1 端口和显式 mock，提供目标匹配与内容识别，支持取消及请求关联；模型、HTTP 和页面接入独立推进。见[接口说明](engineering/pronunciation-interface.md)。
 
 2026-10-26新增[SPEC-019](specs/SPEC-019-pinyin-shop.md)：SHOP-01商品/六件购物篮、SHOP-02 MATCH-10采音与匹配状态、SHOP-03声音/取消/家庭额度。按ADR-0035独立购物场景，不写客观题成绩；用户确认本次先完成游戏和接口，真实模型另行验收。正式默认未配置，模拟只在开发服务器显式启用并标记。无新增依赖。
+
+2026-10-26 MATCH-12：SenseVoice 独立分量头、时序头、特征插值正则与固定概率集成已实装，五次120轮训练及五包完整CPU校准/压力/性能测量完成。最佳本轮正例接受候选仍有47.52%拒判，质量未达标；不启用最终集，不据此替换应用mock。实测与复现见[后续优化记录](research/sensevoice-iteration-results.md)。

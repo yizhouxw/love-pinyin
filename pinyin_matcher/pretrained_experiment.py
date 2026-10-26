@@ -222,11 +222,15 @@ def cache_features(
     return metadata
 
 
-def arrays(rows, cache, vocab):
+def arrays(rows, cache, vocab, *, temporal=False):
     pooled, pitch, labels = [], [], []
     identity = fingerprint(cache / "identity.json")
     repository = json.loads((cache / "identity.json").read_text())["model"]["repository"]
     dimensions = 2560 if "SenseVoice" in repository else 5120
+    if temporal:
+        from pinyin_matcher.pretrained_temporal import TEMPORAL_BINS, temporal_vector
+
+        dimensions = dimensions // 5 * TEMPORAL_BINS
     for row in rows:
         if (
             row.get("labelPolicyFlags")
@@ -237,7 +241,7 @@ def arrays(rows, cache, vocab):
             pitch.append(np.zeros(68, dtype=np.float32))
         else:
             with read_cached(cache / (row["sha256"] + ".npz"), identity) as item:
-                pooled.append(item["pooled"])
+                pooled.append(temporal_vector(item["frames"]) if temporal else item["pooled"])
                 pitch.append(item["pitch"])
         labels.append(
             [
@@ -485,8 +489,8 @@ def train(
         raise ValueError("TRAIN_AND_CALIBRATION_REQUIRED")
     config = configuration()
     vocab = {key: sorted({str(r[key]) for r in train_rows}) for key in ("onset", "rime", "tone")}
-    x, pitch, labels = arrays(train_rows, cache, vocab)
-    cx, cp, cl = arrays(calibration_rows, cache, vocab)
+    x, pitch, labels = arrays(train_rows, cache, vocab, temporal=variant == "temporal")
+    cx, cp, cl = arrays(calibration_rows, cache, vocab, temporal=variant == "temporal")
     pitch_override = None
     pitch_available = calibration_pitch_available = None
     if pitch_cache is not None:
@@ -534,7 +538,7 @@ def train(
     head = ComponentHeads(
         x.shape[1],
         [len(vocab[k]) for k in vocab],
-        variant=variant,
+        variant="multihead" if variant == "mixup" else variant,
         hidden=config["hiddenSize"],
         dropout=config["dropout"],
     ).to(device)
@@ -546,6 +550,8 @@ def train(
     annotations = torch.from_numpy(annotations).to(device)
     cal_annotations = torch.from_numpy(cal_annotations).to(device)
     best, history, checkpoint = float("inf"), [], None
+    component_best = [float("inf")] * 3
+    component_epochs = [0] * 3
     started = time.perf_counter()
     for epoch in range(config["maximumEpochs"]):
         head.train()
@@ -555,6 +561,12 @@ def train(
             indices = torch.tensor(permutation[start : start + config["batchSize"]], device=device)
             result = head(x[indices], pitch[indices])
             loss = component_loss(result, labels[indices], annotations[indices])
+            if variant == "mixup":
+                from pinyin_matcher.pretrained_mixup import mixup_loss
+
+                loss = loss + mixup_loss(
+                    head, x[indices], pitch[indices], labels[indices], annotations[indices], rng
+                )
             optimizer.zero_grad()
             loss.backward()
             nn.utils.clip_grad_norm_(head.parameters(), 5)
@@ -575,7 +587,25 @@ def train(
                 "componentTargetAgreementDiagnostic": correct,
             }
         )
-        if calibration_loss < best:
+        if variant in {"independent", "temporal"}:
+            if checkpoint is None:
+                checkpoint = {}
+            for component, prefix in enumerate(("initial.", "final.", "tone.")):
+                mask = torch.full_like(cal_annotations, -1)
+                mask[:, component] = cal_annotations[:, component]
+                score = component_loss(logits, clt, mask).item()
+                if score < component_best[component]:
+                    component_best[component] = score
+                    component_epochs[component] = epoch + 1
+                    checkpoint.update(
+                        {
+                            key: value.detach().cpu().clone()
+                            for key, value in head.state_dict().items()
+                            if key.startswith(prefix)
+                        }
+                    )
+            selected_epoch = None
+        elif calibration_loss < best:
             best = calibration_loss
             checkpoint = {
                 key: value.detach().cpu().clone() for key, value in head.state_dict().items()
@@ -624,10 +654,25 @@ def train(
         "schemaVersion": 1,
         "model": name,
         "variant": variant,
+        "regularizationConfigSha256": fingerprint(
+            ROOT / "content/pronunciation-pretrained-mixup.json"
+        )
+        if variant == "mixup"
+        else None,
+        "representation": "temporal16-v1" if variant == "temporal" else "pool5-v1",
+        "representationCodeSha256": fingerprint(Path(__file__).with_name("pretrained_temporal.py"))
+        if variant == "temporal"
+        else None,
         "vocabulary": vocab,
         "dimensions": len(mean),
         "configuration": config,
         "selectedEpoch": selected_epoch,
+        "selectedComponentEpochs": component_epochs
+        if variant in {"independent", "temporal"}
+        else None,
+        "checkpointSelection": "independent-component-loss"
+        if variant in {"independent", "temporal"}
+        else "joint-loss",
         "trainRows": len(train_rows),
         "calibrationRows": len(calibration_rows),
         "trainingNumericalExclusions": sum(bool(r.get("numericalQualityFlags")) for r in train_all),
@@ -676,7 +721,11 @@ def main():
     fit.add_argument("--cache", type=Path, required=True)
     fit.add_argument("--output", type=Path, required=True)
     fit.add_argument("--name", required=True)
-    fit.add_argument("--variant", choices=["linear", "multihead", "tone-specialist"], required=True)
+    fit.add_argument(
+        "--variant",
+        choices=["linear", "multihead", "tone-specialist", "independent", "temporal", "mixup"],
+        required=True,
+    )
     fit.add_argument("--device", choices=["cpu", "mps"], default="cpu")
     fit.add_argument("--pitch-cache", type=Path)
     args = parser.parse_args()

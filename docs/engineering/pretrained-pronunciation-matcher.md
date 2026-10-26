@@ -437,3 +437,39 @@ PRETRAINED_PARITY_OUTPUT=private/pretrained-matcher/sensevoice50-int8-parity-rep
 三款原始模型的同预算比较、列出的实际微调和读出优化均保留各轮结果，但没有候选通过完整质量门槛。校准不能代替最终验收；OMPAL 预留的 10 位说话人、494 份 WAV 未下载、未推理，须在模型和阈值确定后才启用。其公开标注库存也显示真实声母、韵母错误分别不足 100 个独立根，因此最终留出本身仍不足以关闭全部分层样本量门禁。句中成人发音及最后一次尝试的专家评分不能验证儿童孤立拼音、多读/漏读的全部实际范围。
 
 当前可运行包是研究包，应用层尚未接入。剩余门禁包括原 5%/10%/20% 质量、独立孤立音与真实近邻错误的可信分量标签及足量说话人、冻结测试和真实儿童验证；延迟/内存与输入挑战分别按实际结果报告，不用某一单项通过追认整体通过。
+
+## MATCH-12：独立分量头、时序头与特征插值训练
+
+本轮在同一 OMPAL v2 train/calibration 清单上实际完成五次 120 轮训练，并构建固定等权集成。所有超参继承已有锁定配置；`mixup` 另绑定 `content/pronunciation-pretrained-mixup.json`。仅专家三分量一致正确行参与特征软标签插值；没有新增合成音频或对未知错音伪造实际读音。新增实现不引入依赖，继续使用本工具 `uv.lock`。
+
+以下复现原编码器三个新读出；使用新的输出目录，保留已实测包。运行前按前文准备同一清单与原始缓存。
+
+```sh
+for variant in independent temporal mixup; do
+  tools/pinyin-pretrained/run.sh train \
+    --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+    --cache private/pretrained-matcher/ompal-v2-bound-sensevoice \
+    --name sensevoice --variant "$variant" --device mps \
+    --output "private/pretrained-matcher/rebuild-sensevoice-$variant"
+  tools/pinyin-pretrained/run.sh bundle \
+    --heads "private/pretrained-matcher/rebuild-sensevoice-$variant" \
+    --encoder models/pinyin-pretrained/sensevoice --backend int8 \
+    --output "models/pinyin-pretrained/bundles/rebuild-sensevoice-$variant"
+done
+```
+
+实际原始独立头与 mixup 使用 CPU，时序头使用 MPS。复现逐轮数值时保持相同设备；MPS 与 CPU 不保证逐位一致。50 层衍生编码器的两次读出训练分别使用 `--variant independent --device cpu` 和 `--variant temporal --device mps`，缓存替换为 `private/pretrained-matcher/ompal-v2-sensevoice-finetuned-cache`；时序 CPU 包指定 `--encoder models/pinyin-pretrained/sensevoice-finetuned-v1 --backend torch`。50 层独立池化头只作缓存筛选，没有完整 CPU 质量结论。
+
+```sh
+tools/pinyin-pretrained/run.sh ensemble \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --cache private/pretrained-matcher/ompal-v2-bound-sensevoice \
+  --member private/pretrained-matcher/ompal-v2-sensevoice-multihead \
+  --member private/pretrained-matcher/sensevoice-independent-v1 \
+  --member private/pretrained-matcher/sensevoice-mixup-v1 \
+  --output private/pretrained-matcher/rebuild-sensevoice-ensemble
+```
+
+集成固定平均三个成员的完整类别概率，编码器只执行一次；不能混用不同清单、归一化或声学缓存。使用相同 `bundle` 命令导出，随后对每包执行前文 `evaluate --split calibration`、`stress evaluate`、`benchmark --exact-four-seconds` 和 `cold`。当前五包位于 `models/pinyin-pretrained/bundles/{sensevoice-independent-v1,sensevoice-temporal-v1,sensevoice50-temporal-v1,sensevoice-mixup-v1,sensevoice-ensemble-v1}`；四秒测速文件为 `private/pretrained-matcher/cpu-pressure-continuous.wav`，目标 `pm-ba1`。端到端评测逐条运行波形，不以缓存读出替代量化后的质量。
+
+`run.sh readout-diagnostics --help` 提供仅校准缓存的分量混淆与时长诊断，明确不构成完整 CPU 评测。`run.sh iteration-report` 严格从本轮已完成的训练、全量校准、压力、暖机和冷启动文件重建[结果](../research/sensevoice-iteration-results.md)，核对模型、数据、压力波形摘要，缺失实验会失败。详细每轮曲线、区间及来源摘要在对应 JSON。494 份最终 WAV 未启用，结果仍为研发校准，未通过质量门槛，不替换应用 mock。

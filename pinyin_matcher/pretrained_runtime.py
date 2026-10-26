@@ -102,6 +102,13 @@ class PretrainedMatcher:
                 raise ValueError("MODEL_METADATA_INVALID")
             if metadata["configuration"] != configuration():
                 raise ValueError("FEATURE_CONFIGURATION_MISMATCH")
+            representation = metadata.get("representation", "pool5-v1")
+            if representation not in {"pool5-v1", "temporal16-v1"}:
+                raise ValueError("UNKNOWN_REPRESENTATION")
+            if representation == "temporal16-v1" and metadata.get(
+                "representationCodeSha256"
+            ) != fingerprint(Path(__file__).with_name("pretrained_temporal.py")):
+                raise ValueError("TEMPORAL_REPRESENTATION_CODE_MISMATCH")
             thresholds = metadata["thresholds"]
             if set(thresholds) != {"probability", "margin"} or any(
                 type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 1
@@ -294,6 +301,10 @@ class PretrainedMatcher:
             if reason:
                 return self._result("uncertain", reason)
             normal = self.normalization
+            if self.metadata.get("representation") == "temporal16-v1":
+                from pinyin_matcher.pretrained_temporal import temporal_vector
+
+                representation["pooled"] = temporal_vector(representation["frames"])
             acoustic = (representation["pooled"] - normal["mean"]) / normal["scale"]
             pitch = (representation["pitch"] - normal["pitch_mean"]) / normal["pitch_scale"]
             outputs = self.session.run(
