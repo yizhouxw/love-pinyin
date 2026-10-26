@@ -39,14 +39,15 @@ def test_actual_cpu_artifact_works_offline_and_cancelled_results_are_discarded(
     assert result["toneAssessed"] is False
     assert "score" not in result
     cancel = threading.Event()
-    original = matcher._scores
+    method = "_branch_evidence" if matcher.metadata.get("decisionVersion") == 3 else "_scores"
+    original = getattr(matcher, method)
 
     def cancel_after_native_run(*args, **kwargs):
         scores = original(*args, **kwargs)
         cancel.set()
         return scores
 
-    monkeypatch.setattr(matcher, "_scores", cancel_after_native_run)
+    monkeypatch.setattr(matcher, method, cancel_after_native_run)
     assert matcher.match(target, wav, cancel=cancel)["reason"] == "MATCH_CANCELLED"
     assert matcher.lock.acquire(blocking=False)
     matcher.lock.release()

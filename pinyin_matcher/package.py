@@ -6,9 +6,19 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from pinyin_matcher.catalog import ROOT
+from pinyin_matcher.catalog import ROOT, fingerprint
 from pinyin_matcher.generate import atomic_json
 from pinyin_matcher.inference import PinyinMatcher
+
+
+def bundle_path(directory: Path, name: str) -> Path:
+    """Inference bundles are flat; reject path traversal before any copy."""
+    if not isinstance(name, str) or not name or Path(name).name != name or name in {".", ".."}:
+        raise ValueError("BUNDLE_FILENAME_INVALID")
+    path = (directory / name).resolve()
+    if not path.is_relative_to(directory.resolve()):
+        raise ValueError("BUNDLE_PATH_ESCAPE")
+    return path
 
 
 def install(source: Path, destination: Path) -> dict:
@@ -29,8 +39,18 @@ def install(source: Path, destination: Path) -> dict:
         files = {"model.json", matcher.metadata["file"], matcher.metadata["catalogFile"]}
         if matcher.metadata.get("pitchTone"):
             files.add(matcher.metadata["pitchTone"]["file"])
+            tracker = matcher.metadata["pitchTone"].get("tracker")
+            if tracker:
+                files.add(tracker["file"])
+                license_path = (source / tracker["licenseFile"]).resolve()
+                if (
+                    not license_path.is_relative_to(source.resolve())
+                    or fingerprint(license_path) != tracker["licenseSha256"]
+                ):
+                    raise ValueError("PITCH_TRACKER_LICENSE_DIGEST_MISMATCH")
+                files.add(tracker["licenseFile"])
         for name in files:
-            shutil.copyfile(source / name, staging / name)
+            shutil.copyfile(bundle_path(source, name), bundle_path(staging, name))
         atomic_json(
             staging / "provenance.json",
             {
@@ -38,6 +58,7 @@ def install(source: Path, destination: Path) -> dict:
                 "realChildAccuracyEstablished": False,
                 "modelSha256": matcher.metadata["sha256"],
                 "datasetSha256": matcher.metadata["datasetSha256"],
+                "dataProvenance": matcher.metadata.get("dataProvenance"),
                 "generators": json.loads((ROOT / "content/pronunciation-models.json").read_text()),
                 "standardAudioSource": json.loads((ROOT / "content/pinyin-source.json").read_text())
                 | {"assets": []},

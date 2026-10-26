@@ -44,3 +44,9 @@ SPEC-012新增Qwen3-ForcedAligner-0.6B，Apache-2.0；官方Qwen/Qwen3-ForcedAli
 ## 2026-10-25 天天练一声派生示范（DAILY-12）
 
 用户授权将固定PinYinSound中缺少一声的10个音节在本机处理为一声并记录来源。现有来源录音的unknown许可不变；本地派生WAV不纳入代码MIT或Qwen Apache许可，不提交Git、不对外发布。来源SHA、PSOLA参数在content/daily-reading-policy.json，结果SHA与配置摘要在private/pinyinsound/daily-first-tones.json。显式准备使用既有afconvert（macOS）或ffmpeg（Linux）及Python标准库，无新依赖；音高分析复用uv.lock维护组的librosa 1.0.0/numpy 2.5.3/scipy 1.18.1。
+
+## 2026-10-26 独立音高前端（SPEC-018 MATCH-05）
+
+SwiftF0 0.3.0，Copyright (c) 2025–2026 Lars Nieradzik，MIT；来源 https://github.com/lars76/swift-f0 ，完整许可保留于 `resources/licenses/SwiftF0-MIT.txt`。本地显式安装的135090字节ONNX摘要为 `6385e8c2ebc3872e82c9ff5946228de44cd3be77a750ea53698b7dbfe94b0a22`，权重留忽略目录；部署包复制模型时同时复制许可并核对摘要。适配器不自动下载、不加载通用ASR。
+
+Praat-Parselmouth 0.4.7（GPL-3.0-or-later）仅为隔离工具环境内的离线音高诊断对照，不进入推理包、不包含于应用发布；实际arm64 wheel安装记录与锁定摘要见 `docs/research/matcher-pitch-swift.md` 及 `tools/pinyin-matcher/uv.lock`。

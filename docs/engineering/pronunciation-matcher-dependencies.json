@@ -5,6 +5,27 @@
   "applicationDependenciesChanged": false,
   "packages": [
     {
+      "name": "swift-f0",
+      "version": "0.3.0",
+      "officialSource": "https://pypi.org/pypi/swift-f0/0.3.0/json",
+      "projectUrl": "https://github.com/lars76/swift-f0",
+      "license": "MIT",
+      "usedBy": ["tools/pinyin-matcher/pyproject.toml (offline train group)"],
+      "installation": "fixed universal wheel installed in Python 3.12/macOS arm64; 135090-byte bundled ONNX explicitly copied locally; CPU runtime uses existing numpy/scipy/onnxruntime, no package download",
+      "wheelSha256": "d7240c7c94b1d3e8f0e0cd2701b79be89a0f23a19cd5f944895a6518ecad72f3",
+      "modelSha256": "6385e8c2ebc3872e82c9ff5946228de44cd3be77a750ea53698b7dbfe94b0a22"
+    },
+    {
+      "name": "praat-parselmouth",
+      "version": "0.4.7",
+      "officialSource": "https://pypi.org/pypi/praat-parselmouth/0.4.7/json",
+      "projectUrl": "https://github.com/YannickJadoul/Parselmouth",
+      "license": "GPL-3.0-or-later",
+      "usedBy": ["tools/pinyin-matcher/pyproject.toml (offline diagnostics only)"],
+      "installation": "CPython 3.12 macOS 11+ arm64 wheel installed; includes Praat 6.1.38 raw autocorrelation for comparison; absent from inference runtime",
+      "wheelSha256": "29e468febc3de2acad8f7718b10cc800610871e229afc549b6b51f009a87ede7"
+    },
+    {
       "name": "HyperPyYAML",
       "version": "1.2.3",
       "officialSource": "https://pypi.org/pypi/HyperPyYAML/1.2.3/json",

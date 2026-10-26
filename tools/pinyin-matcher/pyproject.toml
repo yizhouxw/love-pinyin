@@ -9,7 +9,13 @@ dependencies = [
 ]
 
 [dependency-groups]
-train = ["torch==2.8.0", "onnx==1.23.2", "librosa==1.0.0"]
+train = [
+    "torch==2.8.0",
+    "onnx==1.23.2",
+    "librosa==1.0.0",
+    "praat-parselmouth==0.4.7",
+    "swift-f0==0.3.0",
+]
 dev = ["pytest==9.1.1", "ruff==0.17.1", "pypinyin==0.55.0"]
 
 [tool.uv]

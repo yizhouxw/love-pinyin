@@ -95,7 +95,8 @@ def benchmark(model: Path, output: Path, repeats: int = 3):
         raise ValueError("NO_HELD_OUT_REFERENCE_AUDIO")
     peak = peak_rss_bytes()
     report = {
-        "cohort": "held-out-PinYinSound-recordings-not-independent-speaker-not-child",
+        "cohort": "PinYinSound-reference-diagnostic-not-independent-speaker-not-child",
+        "qualityGateEvaluation": False,
         "independentSpeakerValidation": False,
         "cpuProviders": matcher.session.get_providers(),
         "threads": 2,
@@ -112,6 +113,11 @@ def benchmark(model: Path, output: Path, repeats: int = 3):
         + (
             (model / matcher.metadata["pitchTone"]["file"]).stat().st_size
             if matcher.metadata.get("pitchTone")
+            else 0
+        )
+        + (
+            (model / matcher.metadata["pitchTone"]["tracker"]["file"]).stat().st_size
+            if matcher.metadata.get("pitchTone", {}).get("tracker")
             else 0
         ),
         "samples": len(results),

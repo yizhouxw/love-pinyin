@@ -44,6 +44,7 @@ class PinyinMatcher:
         self.lock = threading.Lock()
         self.session = None
         self.pitch_session = None
+        self.pitch_tracker = None
         self.problem = "MODEL_UNAVAILABLE"
         self.catalog = load_catalog()
         self.targets = targets_by_id(self.catalog)
@@ -80,8 +81,10 @@ class PinyinMatcher:
                 metadata["coveredTargetIds"]
             ) <= 1000 or any(key not in self.targets for key in metadata["coveredTargetIds"]):
                 raise ValueError("MODEL_TARGETS_INVALID")
-            if metadata.get("decisionVersion", 1) not in (1, 2):
+            if metadata.get("decisionVersion", 1) not in (1, 2, 3):
                 raise ValueError("MODEL_DECISION_VERSION_UNSUPPORTED")
+            if metadata.get("acousticInput") not in {None, "mel-only"}:
+                raise ValueError("MODEL_ACOUSTIC_INPUT_UNSUPPORTED")
             for field in ("onsets", "rimes"):
                 values = metadata[field]
                 if (
@@ -95,8 +98,15 @@ class PinyinMatcher:
                     )
                 ):
                     raise ValueError("MODEL_PHONETIC_HEADS_INVALID")
-            required_thresholds = {"minimumScore", "minimumMargin", "minimumCtc"}
+            version = metadata.get("decisionVersion", 1)
+            required_thresholds = (
+                {"minimumContentMargin", "maximumFreeCtcAdvantage", "minimumToneProbability"}
+                if version == 3
+                else {"minimumScore", "minimumMargin", "minimumCtc"}
+            )
             optional_thresholds = {"minimumComponentProbability", "maximumFreeCtcAdvantage"}
+            if version == 3:
+                optional_thresholds = set()
             if not required_thresholds <= set(metadata["thresholds"]) or (
                 set(metadata["thresholds"]) - required_thresholds - optional_thresholds
             ):
@@ -107,7 +117,11 @@ class PinyinMatcher:
             ):
                 raise ValueError("MODEL_THRESHOLDS_INVALID")
             thresholds = metadata["thresholds"]
-            if (
+            if version == 3:
+                from pinyin_matcher.decision_v3 import _thresholds
+
+                _thresholds(thresholds)
+            elif (
                 thresholds["minimumScore"] > 0
                 or thresholds["minimumCtc"] > 0
                 or thresholds["minimumMargin"] < 0
@@ -128,8 +142,10 @@ class PinyinMatcher:
             if metadata.get("pitchTone"):
                 pitch = metadata["pitchTone"]
                 pitch_file = (self.directory / pitch["file"]).resolve()
+                from pinyin_matcher.pitch_swift import PITCH_FEATURE_VERSION as SWIFT_VERSION
+
                 if (
-                    pitch["featureVersion"] != PITCH_FEATURE_VERSION
+                    pitch["featureVersion"] not in {PITCH_FEATURE_VERSION, SWIFT_VERSION}
                     or not pitch_file.is_relative_to(self.directory.resolve())
                     or pitch_file.stat().st_size > 2 * 1024 * 1024
                     or fingerprint(pitch_file) != pitch["sha256"]
@@ -138,6 +154,30 @@ class PinyinMatcher:
                 self.pitch_session = ort.InferenceSession(
                     str(pitch_file), sess_options=options, providers=["CPUExecutionProvider"]
                 )
+                inputs, outputs = self.pitch_session.get_inputs(), self.pitch_session.get_outputs()
+                expected_channels = 4 if pitch["featureVersion"] == SWIFT_VERSION else 2
+                if (
+                    len(inputs) != 1
+                    or inputs[0].name != "contour"
+                    or inputs[0].type != "tensor(float)"
+                    or inputs[0].shape[1:] != [32, expected_channels]
+                    or len(outputs) != 1
+                    or outputs[0].name != "tone"
+                    or outputs[0].shape[1:] != [6]
+                ):
+                    raise ValueError("PITCH_MODEL_INTERFACE_MISMATCH")
+                if pitch["featureVersion"] == SWIFT_VERSION:
+                    from pinyin_matcher.pitch_swift import SwiftPitch
+
+                    if version != 3:
+                        raise ValueError("RAW_PITCH_REQUIRES_DECISION_V3")
+                    tracker = pitch["tracker"]
+                    tracker_path = (self.directory / tracker["file"]).resolve()
+                    if not tracker_path.is_relative_to(self.directory.resolve()):
+                        raise ValueError("PITCH_TRACKER_PATH_INVALID")
+                    self.pitch_tracker = SwiftPitch(tracker_path, tracker["sha256"])
+            if version == 3 and self.pitch_tracker is None:
+                raise ValueError("INDEPENDENT_RAW_PITCH_REQUIRED")
             self.metadata = metadata
             self.problem = ""
         # ONNX Runtime exposes several native exception types, all load failures
@@ -145,6 +185,7 @@ class PinyinMatcher:
         except Exception as error:
             self.session = None
             self.pitch_session = None
+            self.pitch_tracker = None
             self.problem = str(error) if isinstance(error, ValueError) else "MODEL_UNAVAILABLE"
 
     def _result(self, status: str, reason: str | None = None, **extra) -> dict:
@@ -153,15 +194,19 @@ class PinyinMatcher:
             "reason": reason,
             "mode": "target-acoustic-match",
             "toneAssessed": bool(self.metadata.get("toneValidated", False)),
+            "qualityPassed": bool(self.metadata.get("qualityPassed", False)),
             "modelVersion": self.metadata.get("version"),
             "experimental": self.metadata.get("status") != "validated",
             **extra,
         }
 
     def _scores(self, array: np.ndarray, *, run_options=None, deadline=None, cancel=None) -> dict:
+        acoustic_array = array.copy() if self.metadata.get("acousticInput") == "mel-only" else array
+        if self.metadata.get("acousticInput") == "mel-only":
+            acoustic_array[:, 64:] = 0
         phones, onset, rime, tone = self.session.run(
             None,
-            {"acoustic": array[None], "lengths": np.array([len(array)], dtype=np.int64)},
+            {"acoustic": acoustic_array[None], "lengths": np.array([len(array)], dtype=np.int64)},
             run_options=run_options,
         )
         if self.pitch_session is not None:
@@ -227,6 +272,85 @@ class PinyinMatcher:
             }
         return scores
 
+    def _branch_evidence(
+        self, array: np.ndarray, samples: np.ndarray, target_id: str, *, run_options=None
+    ):
+        """Independent phonetic heads and raw-waveform pitch; no truth labels."""
+        acoustic = array.copy()
+        if self.metadata.get("acousticInput") == "mel-only":
+            acoustic[:, 64:] = 0
+        phones, onset, rime, _ = self.session.run(
+            None,
+            {"acoustic": acoustic[None], "lengths": np.asarray([len(array)], dtype=np.int64)},
+            run_options=run_options,
+        )
+        if (
+            phones.shape != (1, len(array), len(self.catalog["tokens"]))
+            or onset.shape != (1, len(self.metadata["onsets"]))
+            or rime.shape != (1, len(self.metadata["rimes"]))
+            or any(not np.isfinite(x).all() for x in (phones, onset, rime))
+        ):
+            raise ValueError("MODEL_OUTPUT_SHAPE_INVALID")
+        onset_log, rime_log = log_softmax(onset[0]), log_softmax(rime[0])
+        oi, ri = int(np.argmax(onset_log)), int(np.argmax(rime_log))
+        pair = (self.metadata["onsets"][oi], self.metadata["rimes"][ri])
+        candidates = {
+            tuple(row["phones"])
+            for row in self.targets.values()
+            if (row["onset"], row["rime"]) == pair
+        }
+        predicted = list(next(iter(candidates))) if len(candidates) == 1 else []
+        margins = [
+            float(np.sort(values)[-1] - np.sort(values)[-2]) for values in (onset_log, rime_log)
+        ]
+        evidence = {
+            "targetPhones": self.targets[target_id]["phones"],
+            "targetTone": self.targets[target_id]["tone"],
+            "predictedPhones": predicted,
+            "contentMargin": min(margins),
+            "freeCtcAdvantage": 0.0,
+            "predictedTone": None,
+            "toneProbability": 0.0,
+            "pitchReliable": False,
+        }
+        if predicted:
+            phone_log = log_softmax(phones[0], axis=-1)
+            path = np.argmax(phone_log, axis=-1).tolist()
+            decoded = [v for i, v in enumerate(path) if v and (i == 0 or v != path[i - 1])]
+            sequence = [self.catalog["tokens"].index(token) for token in predicted]
+            constrained = ctc_log_probability(phone_log, sequence) / len(array)
+            free = ctc_log_probability(phone_log, decoded) / len(array) if len(decoded) <= 16 else 0
+            evidence["freeCtcAdvantage"] = float(free - constrained)
+        try:
+            pitch, quality = self.pitch_tracker.contour(samples, run_options=run_options)
+            tone = self.pitch_session.run(None, {"contour": pitch[None]}, run_options=run_options)[
+                0
+            ]
+            if tone.shape != (1, 6) or not np.isfinite(tone).all():
+                raise ValueError("PITCH_MODEL_OUTPUT_INVALID")
+            probabilities = np.exp(log_softmax(tone[0]))
+            index = int(np.argmax(probabilities))
+            evidence.update(
+                predictedTone=index,
+                toneProbability=float(probabilities[index]),
+                pitchReliable=index in {1, 2, 3, 4},
+                pitchQuality=quality,
+            )
+        except AudioRejected:
+            # No confident voiced evidence is never a request to try again.
+            evidence["predictedPhones"] = []
+        evidence["candidateId"] = next(
+            (
+                key
+                for key in sorted(self.targets)
+                if self.targets[key]["form"] == "whole-syllable"
+                and self.targets[key]["phones"] == evidence["predictedPhones"]
+                and self.targets[key]["tone"] == evidence["predictedTone"]
+            ),
+            None,
+        )
+        return evidence
+
     def capabilities(self) -> dict:
         return {
             "available": self.session is not None,
@@ -238,6 +362,7 @@ class PinyinMatcher:
                 {self.targets[key]["form"] for key in self.metadata.get("coveredTargetIds", [])}
             ),
             "toneAssessed": bool(self.metadata.get("toneValidated", False)),
+            "qualityPassed": bool(self.metadata.get("qualityPassed", False)),
             "experimental": self.metadata.get("status") != "validated",
             "providers": self.session.get_providers() if self.session else [],
             "toneEvidence": "relative-pitch-only" if self.pitch_session else "shared-acoustic-head",
@@ -264,8 +389,9 @@ class PinyinMatcher:
         started = time.perf_counter()
         timer = None
         try:
-            array, quality = features(decode_wav(wav))
-            if quality["voicedFrames"] < 8:
+            samples = decode_wav(wav)
+            array, quality = features(samples)
+            if self.metadata.get("decisionVersion", 1) != 3 and quality["voicedFrames"] < 8:
                 return self._result("uncertain", "NO_RELIABLE_VOICED_SPEECH")
             import onnxruntime as ort
 
@@ -273,6 +399,28 @@ class PinyinMatcher:
             timer = threading.Timer(2, lambda: setattr(options, "terminate", True))
             timer.daemon = True
             timer.start()
+            if self.metadata.get("decisionVersion", 1) == 3:
+                from pinyin_matcher.decision_v3 import decide
+
+                evidence = self._branch_evidence(array, samples, target_id, run_options=options)
+                decision = decide(evidence, self.metadata["thresholds"])
+                if time.perf_counter() - started > 2:
+                    return self._result("unavailable", "MATCHER_TIMEOUT")
+                if cancel is not None and cancel.is_set():
+                    return self._result("unavailable", "MATCH_CANCELLED")
+                return self._result(
+                    **decision,
+                    durationMilliseconds=round((time.perf_counter() - started) * 1000, 2),
+                    **(
+                        {
+                            "branchEvidence": evidence,
+                            "candidateId": evidence.get("candidateId"),
+                            "quality": quality,
+                        }
+                        if include_evidence
+                        else {}
+                    ),
+                )
             values = self._scores(array, run_options=options, deadline=started + 2, cancel=cancel)
             ordered = sorted(values, key=lambda key: values[key]["score"], reverse=True)
             best, runner = ordered[:2]
