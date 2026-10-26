@@ -190,7 +190,7 @@ export function LessonDetail({
         />
       )}
       <CoursePronunciationPractice
-        key={lesson.id}
+        key={`${lesson.id}-${activity}`}
         lessonId={lesson.id}
         guidanceEnabled={soundEnabled}
       />

@@ -40,6 +40,30 @@ afterEach(() => {
 });
 
 describe('BrowserAudioPlayer', () => {
+  it('arbitrates recording and playback without letting an old input release stop new audio', async () => {
+    vi.stubGlobal('Audio', FakeAudio);
+    const player = new BrowserAudioPlayer();
+    const prior = player.play('audio-final-a');
+    const stopped = expect(prior).rejects.toMatchObject({ name: 'AbortError' });
+    const cancel = vi.fn();
+    const release = player.claimInput(cancel);
+    await stopped;
+    expect(FakeAudio.instances[0]!.paused).toBe(true);
+    const next = player.playPrivate('prompt-question');
+    const interrupted = expect(next).rejects.toMatchObject({ name: 'AbortError' });
+    expect(cancel).toHaveBeenCalledTimes(1);
+    release();
+    expect(FakeAudio.instances[0]!.paused).toBe(false);
+    player.stop();
+    await interrupted;
+    expect(cancel).toHaveBeenCalledTimes(1);
+    const completed = vi.fn();
+    const releaseCompleted = player.claimInput(completed);
+    releaseCompleted();
+    player.stop();
+    expect(completed).not.toHaveBeenCalled();
+  });
+
   it('bounds initial loading and playback stalls, releasing timers and the active source', async () => {
     vi.useFakeTimers();
     vi.stubGlobal('Audio', FakeAudio);

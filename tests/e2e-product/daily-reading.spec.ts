@@ -191,9 +191,11 @@ test('ASR-04: native browser recording of permitted reference audio reaches loca
     await page.getByRole('button', { name: '停止录音' }).click();
     const response = await result;
     expect((await response.json()).toneAssessed).toBe(false);
-    await expect(page.locator('.daily-recognition')).toContainText(expected, { timeout: 15000 });
-    await expect(page.locator('.daily-recognition')).toContainText('识别文字：');
-    await expect(page.locator('.daily-recognition')).toContainText('不是发音分数');
+    await expect(page.locator('.daily-recognition[role="status"]')).toContainText(expected, {
+      timeout: 15000,
+    });
+    await expect(page.locator('.daily-recognition[role="status"]')).toContainText('识别文字：');
+    await expect(page.locator('.daily-recognition[role="status"]')).toContainText('不是发音分数');
   }
   expect(skippedGuides).toEqual([]);
   await page.screenshot({
@@ -202,7 +204,7 @@ test('ASR-04: native browser recording of permitted reference audio reaches loca
   });
   await page.getByRole('button', { name: '读过了，下一条' }).click();
   await expect(page.getByLabel('回放我的跟读')).toHaveCount(0);
-  await expect(page.locator('.daily-recognition')).toHaveCount(0);
+  await expect(page.locator('.daily-recognition[role="status"]')).toHaveCount(0);
 });
 
 test('DAILY-04: guidance can be skipped, remembered and restored while target audio stays direct', async ({

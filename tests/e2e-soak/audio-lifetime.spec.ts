@@ -1,3 +1,5 @@
+import { openSection } from '../support/interaction';
+import { observeReadingMedia } from '../support/media-log';
 import { optionById } from '../support/options';
 import { writeFile } from 'node:fs/promises';
 import { platform, release } from 'node:os';
@@ -36,6 +38,7 @@ test('SOAK-01: sustained real learning releases media and records playback laten
   browserName,
   appUrl,
 }, info) => {
+  await observeReadingMedia(page);
   const seconds = Number(process.env.LOVE_PINYIN_SOAK_SECONDS ?? 1200);
   expect(Number.isInteger(seconds) && seconds >= 30 && seconds <= 1500).toBe(true);
   const errors: string[] = [];
@@ -189,22 +192,55 @@ test('SOAK-01: sustained real learning releases media and records playback laten
         await expect(page.locator('.play-nav strong')).toHaveText(
           `第 ${index + 1} / ${tasks.length} 关`,
         );
+        if (question.audioRef) await openSection(page, '听题目说明');
         await expect(page.getByRole('button', { name: '听题目', exact: true })).toBeVisible({
           timeout: 20_000,
         });
-        if (question.audioRef)
+        if (question.audioRef) {
+          const standardAfter = await page.evaluate(() => performance.now());
           await page.getByRole('button', { name: '听拼音', exact: true }).click();
+          await expect
+            .poll(
+              () =>
+                page.evaluate(
+                  ({ after, id }) =>
+                    window.readingMediaEvents.some(
+                      (event) =>
+                        event.type === 'end' &&
+                        event.source.endsWith(`/audio/${id}`) &&
+                        event.time >= after,
+                    ),
+                  { after: standardAfter, id: question.audioRef },
+                ),
+              { timeout: 20_000 },
+            )
+            .toBe(true);
+        }
         const choice = optionById(page, question.answer.optionId);
         await expect(choice).toBeEnabled({ timeout: 20_000 });
+        const feedbackAfter = await page.evaluate(() => performance.now());
         await choice.click();
         if (question.type === 'blend-choice')
           await page.getByRole('button', { name: '确认拼读', exact: true }).click();
         await expect(page.locator('.feedback')).toContainText('答对啦');
         answers++;
         // Let real feedback finish as well, so the workload does not only abort every sound.
-        await expect(page.getByRole('button', { name: '听结果', exact: true })).toBeVisible({
-          timeout: 20_000,
-        });
+        await expect
+          .poll(
+            () =>
+              page.evaluate(
+                (after) =>
+                  window.readingMediaEvents.some(
+                    (event) =>
+                      event.type === 'end' &&
+                      event.source.endsWith('/voice/ui-correct') &&
+                      event.time >= after,
+                  ),
+                feedbackAfter,
+              ),
+            { timeout: 20_000 },
+          )
+          .toBe(true);
         const transition = Date.now();
         await page.getByRole('button', { name: '继续 →', exact: true }).click();
         if (index < tasks.length - 1) {

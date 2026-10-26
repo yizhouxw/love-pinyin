@@ -90,6 +90,22 @@ export class BrowserAudioPlayer implements AudioPlayer {
     );
   }
 
+  /** Recording owns the same audio lifetime: any new playback first cancels the input. */
+  claimInput(onInterrupted: () => void): () => void {
+    this.stop();
+    const input: ActivePlayback = {
+      stop: () => {
+        if (this.active !== input) return;
+        this.active = null;
+        onInterrupted();
+      },
+    };
+    this.active = input;
+    return () => {
+      if (this.active === input) this.active = null;
+    };
+  }
+
   /** Native controls keep pause/seek support for long courses while sharing the singleton. */
   registerExternalMedia(media: HTMLMediaElement): () => void {
     const playback: ActivePlayback = { stop: () => media.pause() };

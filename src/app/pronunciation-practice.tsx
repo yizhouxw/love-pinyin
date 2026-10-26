@@ -244,6 +244,7 @@ function RecordedPractice({
   service?: PronunciationService;
 }) {
   const recorder = useRef(new BrowserReadingRecorder());
+  const releaseInput = useRef<(() => void) | null>(null);
   const active = useRef<AbortController | null>(null);
   const [phase, setPhase] = useState<'idle' | 'starting' | 'recording' | 'stopping'>('idle');
   const [url, setUrl] = useState<string | null>(null);
@@ -251,6 +252,8 @@ function RecordedPractice({
   const replay = useRef<HTMLAudioElement | null>(null);
   const [open, setOpen] = useState(true);
   function clear() {
+    releaseInput.current?.();
+    releaseInput.current = null;
     active.current?.abort();
     recorder.current.discard();
     replay.current?.pause();
@@ -261,6 +264,8 @@ function RecordedPractice({
     const capture = recorder.current;
     const hidden = () => {
       if (document.hidden) {
+        releaseInput.current?.();
+        releaseInput.current = null;
         active.current?.abort();
         capture.discard();
         setUrl(null);
@@ -270,6 +275,8 @@ function RecordedPractice({
     document.addEventListener('visibilitychange', hidden);
     return () => {
       document.removeEventListener('visibilitychange', hidden);
+      releaseInput.current?.();
+      releaseInput.current = null;
       active.current?.abort();
       capture.discard();
       audioPlayer.stop();
@@ -289,18 +296,26 @@ function RecordedPractice({
       // Existing licensed Chinese instruction; a child need not read the controls first.
       if (guidanceEnabled) await audioPlayer.playPrivate('daily-ui-record', controller.signal);
       if (controller.signal.aborted) return;
+      releaseInput.current = audioPlayer.claimInput(clear);
       await recorder.current.start(
         (value) => {
+          releaseInput.current?.();
+          releaseInput.current = null;
           setUrl(value);
           setPhase('idle');
         },
         () => {
+          releaseInput.current?.();
+          releaseInput.current = null;
           setPhase('idle');
           setError('这次没有录好，请再试一次。');
         },
       );
       if (!controller.signal.aborted) setPhase('recording');
     } catch {
+      if (active.current !== controller) return;
+      releaseInput.current?.();
+      releaseInput.current = null;
       if (!controller.signal.aborted) {
         setPhase('idle');
         setError(

@@ -21,6 +21,8 @@ async function installCapture(page: import('@playwright/test').Page) {
             source.stop();
             void context.close();
           };
+          (window as unknown as { lastCaptureStream: MediaStream }).lastCaptureStream =
+            output.stream;
           return output.stream;
         },
       },
@@ -163,4 +165,88 @@ test('MATCH-15: narrow and enlarged-text course controls remain usable', async (
       expect(bounds?.width).toBeGreaterThanOrEqual(44);
     }
   }
+});
+
+for (const action of ['demonstration', 'activity'] as const) {
+  test(`MATCH-15: ${action} interruption releases course microphone without assessing speaker audio`, async ({
+    page,
+    appUrl,
+  }) => {
+    await installCapture(page);
+    const assessments: string[] = [];
+    page.on('request', (request) => {
+      if (request.url().endsWith('/assess')) assessments.push(request.url());
+    });
+    await guest(page, appUrl);
+    await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
+    await page.getByRole('button', { name: '课堂学习' }).click();
+    const course = page.getByRole('region', { name: '课程拼读跟读' });
+    await course.getByRole('button', { name: '录下我的跟读' }).click();
+    await expect(course.getByRole('button', { name: '停止录音并识别' })).toBeVisible();
+    if (action === 'demonstration')
+      await page.getByRole('button', { name: '播放课程录音', exact: true }).click();
+    else await page.getByRole('button', { name: '写一写', exact: true }).click();
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          (window as unknown as { lastCaptureStream: MediaStream }).lastCaptureStream
+            .getTracks()
+            .every((track) => track.readyState === 'ended'),
+        ),
+      )
+      .toBe(true);
+    await expect(course.getByRole('button', { name: '停止录音并识别' })).toHaveCount(0);
+    await expect(page.getByLabel('回放课程跟读')).toHaveCount(0);
+    expect(assessments).toEqual([]);
+  });
+}
+
+test('MATCH-15: interrupted pending microphone permission cannot stop the newer demonstration', async ({
+  page,
+  appUrl,
+}) => {
+  await installCapture(page);
+  const assessments: string[] = [];
+  page.on('request', (request) => {
+    if (request.url().endsWith('/assess')) assessments.push(request.url());
+  });
+  await guest(page, appUrl);
+  await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
+  await page.getByRole('button', { name: '课堂学习' }).click();
+  await page.evaluate(() => {
+    const capture = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+    navigator.mediaDevices.getUserMedia = async (constraints) => {
+      const stream = await capture(constraints);
+      return new Promise<MediaStream>((resolve) => {
+        (window as unknown as { finishPermission: () => void }).finishPermission = () =>
+          resolve(stream);
+      });
+    };
+  });
+  const course = page.getByRole('region', { name: '课程拼读跟读' });
+  await course.getByRole('button', { name: '录下我的跟读' }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => typeof (window as unknown as { finishPermission?: () => void }).finishPermission,
+      ),
+    )
+    .toBe('function');
+  await page.getByRole('button', { name: '播放课程录音', exact: true }).click();
+  await expect(course.getByRole('button', { name: '录下我的跟读' })).toBeEnabled();
+  await page.evaluate(() =>
+    (window as unknown as { finishPermission: () => void }).finishPermission(),
+  );
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        (window as unknown as { lastCaptureStream: MediaStream }).lastCaptureStream
+          .getTracks()
+          .every((track) => track.readyState === 'ended'),
+      ),
+    )
+    .toBe(true);
+  await expect(page.getByRole('button', { name: '停止播放课程录音', exact: true })).toBeVisible();
+  await expect(page.getByLabel('回放课程跟读')).toHaveCount(0);
+  expect(assessments).toEqual([]);
 });
