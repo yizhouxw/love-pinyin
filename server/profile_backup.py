@@ -74,7 +74,7 @@ def _validate_backup(value: object) -> dict:
         "assessmentSummaries",
         "note",
     }
-    _require(set(backup) == required, "BACKUP_FIELDS_INVALID")
+    _require(set(backup) - {"pronunciationAttempts"} == required, "BACKUP_FIELDS_INVALID")
     _require(backup["schemaVersion"] == 5, "BACKUP_VERSION_UNSUPPORTED")
     curriculum = load_curriculum()
     _require(
@@ -402,6 +402,21 @@ def _validate_backup(value: object) -> dict:
             "BACKUP_ASSESSMENT_INVALID",
         )
         _parse_datetime(row["createdAt"], "BACKUP_TIME_INVALID")
+    from server.pronunciation import valid_record
+
+    pronunciation_records = backup.get("pronunciationAttempts", [])
+    _require(
+        isinstance(pronunciation_records, list) and len(pronunciation_records) <= 50_000,
+        "BACKUP_PRONUNCIATION_INVALID",
+    )
+    _require(
+        all(valid_record(row) for row in pronunciation_records), "BACKUP_PRONUNCIATION_INVALID"
+    )
+    _require(
+        len({row["match"]["requestId"] for row in pronunciation_records})
+        == len(pronunciation_records),
+        "BACKUP_DUPLICATE_ID",
+    )
     grouped_instances = defaultdict(list)
     for row in backup["exerciseInstances"]:
         grouped_instances[row["session_id"]].append(row)
@@ -435,7 +450,7 @@ def _migrate_v2_backup(value: dict) -> dict:
         "assessmentSummaries",
         "note",
     }
-    _require(set(value) == expected, "BACKUP_FIELDS_INVALID")
+    _require(set(value) - {"pronunciationAttempts"} == expected, "BACKUP_FIELDS_INVALID")
     _require(isinstance(value.get("profile"), dict), "BACKUP_PROFILE_INVALID")
     profile = value["profile"]
     _require(
@@ -522,6 +537,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
     db.execute("DELETE FROM exercise_instances WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM sessions WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM review_plans WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM pronunciation_attempts WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM assessment_summaries WHERE household_id=?", (household_id,))
 
     instance_groups: dict[str, list[dict]] = defaultdict(list)
@@ -612,6 +628,18 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
                 item["updated_at"],
             ),
         )
+    for item in backup.get("pronunciationAttempts", []):
+        db.execute(
+            "INSERT INTO pronunciation_attempts "
+            "(household_id,request_id,target_id,result_json,created_at) VALUES(?,?,?,?,?)",
+            (
+                household_id,
+                item["match"]["requestId"],
+                item["match"]["targetId"],
+                json.dumps(item, ensure_ascii=False),
+                item["createdAt"],
+            ),
+        )
     for item in backup["assessmentSummaries"]:
         db.execute(
             """INSERT INTO assessment_summaries(request_id,household_id,target_id,status,
@@ -630,6 +658,7 @@ def _restore_backup(db, household_id: str, device_id: str, backup: dict) -> None
 
 def _delete_learning_rows(db, household_id: str) -> None:
     db.execute("DELETE FROM request_receipts WHERE household_id=?", (household_id,))
+    db.execute("DELETE FROM pronunciation_attempts WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM assessment_summaries WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM attempts WHERE household_id=?", (household_id,))
     db.execute("DELETE FROM skipped_instances WHERE household_id=?", (household_id,))

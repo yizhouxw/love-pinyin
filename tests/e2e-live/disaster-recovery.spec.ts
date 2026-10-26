@@ -92,7 +92,8 @@ shutil.copyfile(backup, staged)
 os.chmod(staged, 0o600)
 with sqlite3.connect(f'file:{staged}?mode=ro', uri=True) as db:
     assert db.execute('PRAGMA integrity_check').fetchone()[0] == 'ok'
-    assert db.execute('SELECT max(version) FROM schema_migrations').fetchone()[0] == 10
+    assert {row[0] for row in db.execute('SELECT version FROM schema_migrations')} == storage.SUPPORTED_SCHEMA_VERSIONS
+    assert db.execute('SELECT COUNT(*) FROM pronunciation_attempts').fetchone()[0] == 0
 archive = root / 'before-restore'
 archive.mkdir(mode=0o700)
 for suffix in ('', '-wal', '-shm'):
@@ -127,6 +128,7 @@ print(json.dumps({'badBackupRejected': True, 'damagedDatabasePreserved': True,
     'exerciseInstances',
     'skippedInstances',
     'reviewPlans',
+    'pronunciationAttempts',
   ])
     expect(restored[field]).toEqual(saved[field]);
   await page.getByRole('button', { name: '开始今天的练习' }).click();

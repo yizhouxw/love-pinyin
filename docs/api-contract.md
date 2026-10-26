@@ -102,3 +102,7 @@ LEVEL-01～04：`POST /sessions`可选`gameLevelId`（如runner-01），须与ga
 ## SPEC-018 应用识别端口（无 HTTP 路由）
 
 `src/domain/pronunciation.ts` 固定 v1 异步 `match` / `recognize` 契约。应用开发可显式注入始终成功的 mock，返回 evidence=mock、toneAssessed=false；省略模式不会启用 mock。这是进程内 TypeScript 端口，尚未发布新的 REST 接口。参数、状态、取消和真实实现边界见[接口说明](engineering/pronunciation-interface.md)。
+
+## 专用拼读应用接口（MATCH-13～15）
+
+`POST /api/v1/pronunciation/{targetId}/assess` 使用配对、同源/CSRF 与 X-LP-Request-Id，接收有界内存 PCM WAV，返回 MATCH-10 match/recognition 与保存回执。`GET /api/v1/pronunciation/{targetId}/history` 返回本家庭最近20条及完整状态计数。访客 POST 前缀为 `/api/v1/guest`，不写家庭库。默认专用模型未配置，返回 unavailable，不产生成绩。仅可信服务端 acoustic 摘要可写库；不接受客户端自报准确结果。目标白名单、格式/大小、幂等与备份字段详见[拼读应用契约](engineering/pronunciation-interface.md#应用组装与摘要match1315)。原 Whisper 音节匹配接口独立保留。

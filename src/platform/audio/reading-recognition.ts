@@ -15,6 +15,29 @@ export async function recognizeReading(
   url: string,
   signal: AbortSignal,
 ): Promise<RecognitionResult> {
+  const buffer = await recordingWav(url, signal);
+  const headers = new Headers({ 'Content-Type': 'audio/wav' });
+  const csrf = document.cookie
+    .split('; ')
+    .find((value) => value.startsWith('lp_csrf='))
+    ?.slice('lp_csrf='.length);
+  if (csrf && !isGuest()) headers.set('X-LP-CSRF', decodeURIComponent(csrf));
+  const result = await fetch(
+    `/api/v1/${isGuest() ? 'guest/' : ''}daily-reading/${encodeURIComponent(itemId)}/recognize`,
+    {
+      method: 'POST',
+      body: buffer,
+      headers,
+      signal,
+      credentials: isGuest() ? 'omit' : 'same-origin',
+    },
+  );
+  if (!result.ok) throw new Error(`RECOGNITION_HTTP_${result.status}`);
+  return result.json() as Promise<RecognitionResult>;
+}
+
+/** Shared bounded conversion for MATCH-10 and legacy daily ASR. */
+export async function recordingWav(url: string, signal: AbortSignal): Promise<ArrayBuffer> {
   const response = await fetch(url, { signal });
   const context = new AudioContext();
   let decoded: AudioBuffer;
@@ -54,22 +77,5 @@ export async function recognizeReading(
     const sample = Math.max(-1, Math.min(1, pcm[i]!));
     view.setInt16(44 + i * 2, Math.round(sample * (sample < 0 ? 32768 : 32767)), true);
   }
-  const headers = new Headers({ 'Content-Type': 'audio/wav' });
-  const csrf = document.cookie
-    .split('; ')
-    .find((value) => value.startsWith('lp_csrf='))
-    ?.slice('lp_csrf='.length);
-  if (csrf && !isGuest()) headers.set('X-LP-CSRF', decodeURIComponent(csrf));
-  const result = await fetch(
-    `/api/v1/${isGuest() ? 'guest/' : ''}daily-reading/${encodeURIComponent(itemId)}/recognize`,
-    {
-      method: 'POST',
-      body: buffer,
-      headers,
-      signal,
-      credentials: isGuest() ? 'omit' : 'same-origin',
-    },
-  );
-  if (!result.ok) throw new Error(`RECOGNITION_HTTP_${result.status}`);
-  return result.json() as Promise<RecognitionResult>;
+  return buffer;
 }

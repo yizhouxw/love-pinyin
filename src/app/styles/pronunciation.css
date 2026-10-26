@@ -1,0 +1,57 @@
+.lesson-pronunciation {
+  margin-block: 24px;
+  padding: clamp(16px, 3vw, 28px);
+  border: 1px solid #c4ded0;
+  border-radius: 20px;
+  background: #fffefa;
+}
+.lesson-pronunciation > h3,
+.pronunciation-results > h3 {
+  margin-block: 0 16px;
+  font-size: 1.3rem;
+}
+.lesson-pronunciation nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block: 16px;
+}
+.lesson-pronunciation nav button {
+  min-width: 56px;
+  min-height: 52px;
+  font-size: 1.4rem;
+}
+.lesson-pronunciation nav button[aria-pressed='true'] {
+  background: #d6efe7;
+  outline: 3px solid #277563;
+}
+.pronunciation-capture > button {
+  margin: 4px 8px 4px 0;
+  min-height: 48px;
+}
+.pronunciation-capture summary {
+  padding-block: 10px;
+  font-weight: 650;
+}
+.pronunciation-target {
+  margin-block: 16px;
+  font-family: var(--pinyin-font);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+}
+.pronunciation-results {
+  margin-block: 16px;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+.pronunciation-results li {
+  margin-block: 12px;
+}
+.pronunciation-results small {
+  display: block;
+  font-size: 0.9rem;
+}
+.pronunciation-capture audio {
+  display: block;
+  max-width: 100%;
+  margin-block: 12px;
+}

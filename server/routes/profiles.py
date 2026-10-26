@@ -157,6 +157,7 @@ def export_profile(device: dict = Depends(parent_read)) -> dict:
         ).fetchall()
     return {
         "schemaVersion": 5,
+        "pronunciationAttempts": pronunciation_records(device["household_id"]),
         "contentVersion": household["content_version"],
         "masteryRuleVersion": 1,
         "exportedAt": now_iso(),
@@ -253,6 +254,7 @@ async def import_preview(request: Request, device: dict = Depends(parent)) -> di
             "skippedInstances": len(backup["skippedInstances"]),
             "reviewPlans": len(backup["reviewPlans"]),
             "assessmentSummaries": len(backup["assessmentSummaries"]),
+            "pronunciationAttempts": len(backup.get("pronunciationAttempts", [])),
         },
         "willReplaceEntireHousehold": True,
     }
@@ -417,3 +419,15 @@ def reset_profile(body: DeleteData, response: Response, device: dict = Depends(p
     response.delete_cookie(COOKIE, path="/")
     response.delete_cookie(CSRF_COOKIE, path="/")
     return {"reset": True, "pairingRequired": True}
+
+
+def pronunciation_records(household_id: str) -> list:
+    with connect() as db:
+        return [
+            json.loads(row["result_json"])
+            for row in db.execute(
+                "SELECT result_json FROM pronunciation_attempts WHERE household_id=? "
+                "ORDER BY created_at,request_id",
+                (household_id,),
+            )
+        ]

@@ -527,7 +527,8 @@ export function ParentPanel({
                 {importPreview.counts.sessions} 个会话、
                 {importPreview.counts.skippedInstances} 道跳过题和
                 {importPreview.counts.reviewPlans} 项复习计划；其中待校时练习{' '}
-                {importPreview.counts.clockPendingAttempts ?? 0} 条。
+                {importPreview.counts.clockPendingAttempts ?? 0} 条。拼读识别摘要{' '}
+                {importPreview.counts.pronunciationAttempts ?? 0} 条。
               </p>
               <p>此操作会替换本家庭全部学习记录；已经下载的旧备份无法远程删除。</p>
               <p>

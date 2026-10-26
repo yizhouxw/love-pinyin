@@ -184,3 +184,17 @@ async def recognize_daily_reading(item_id: str, request: Request):
     api_dependencies._check_origin(request)
     payload = await request_audio(request, item_id)
     return await run_in_threadpool(recognize, item_id, payload)
+
+
+@router.post("/pronunciation/{target_id}/assess")
+async def assess_pronunciation(
+    target_id: str,
+    request: Request,
+    x_lp_request_id: str = Header(min_length=8, max_length=80, pattern=r"^[\w-]+$"),
+) -> dict:
+    from server import pronunciation
+    from server.routes.pronunciation import read_audio
+
+    api_dependencies._check_origin(request)
+    payload = await read_audio(request)
+    return await run_in_threadpool(pronunciation.assess, target_id, x_lp_request_id, payload, None)

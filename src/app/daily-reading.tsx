@@ -1,3 +1,4 @@
+import { PronunciationResults } from './pronunciation-practice';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type {
   DailyDay,
@@ -893,6 +894,12 @@ function ReadingSession({
           {recordError && <p role="alert">{recordError}</p>}
           {recordUrl && (
             <div className="daily-recording">
+              <PronunciationResults
+                key={item.id}
+                targetId={item.id}
+                guidanceEnabled={false}
+                audioUrl={recordUrl}
+              />
               <strong>我的跟读 · 听回放比较</strong>
               <audio ref={replay} src={recordUrl} controls aria-label="回放我的跟读" />
               <button className="quiet" onClick={clearCapture}>
@@ -912,7 +919,7 @@ function ReadingSession({
                   className={`daily-recognition daily-recognition-${recognition.status}`}
                   role="status"
                 >
-                  <strong>{recognitionContent.ui[recognition.status]}</strong>
+                  <strong>音节对照（Whisper）：{recognitionContent.ui[recognition.status]}</strong>
                   {recognition.transcript && <p>识别文字：{recognition.transcript}</p>}
                   {recognition.recognizedPinyin && (
                     <p>识别文字的拼音：{recognition.recognizedPinyin}</p>

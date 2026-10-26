@@ -92,3 +92,5 @@ READ-07的`quick-gap-settings`管理紧凑入口、原生模态卡片与草稿�
 四场景按[ADR-0032](adr/0032-scene-game-engine.md)实现：src/domain/scene-game.ts 是无I/O的运动与碰撞函数；src/app/scene-game.tsx 管理输入、RAF及暂停生命周期，scene-world.tsx 绘制原生SVG，game-percussion适配器仅合成本机短鼓声。server/game_adaptation.py 依真实有效掌握度推荐并规划有限题单，场景参数与阈值在content/games.json。只有主动动作命中目标才沿原首次作答接口记录，空操作不影响学习成绩。迁移9冻结会话难度/速度/推荐依据；游戏启动偏好按设备与访客分别存储，家庭额度仍由服务器控制。
 
 完整关卡按[ADR-0033](adr/0033-authored-game-levels.md)进一步分层：content/game-levels.json包含关卡/章节/路线模式/主题，server/game_levels.py做严格数据校验并冻结引用与教学实例；src/domain/scene-game.ts只接收EngineConfig与时间/输入，完全不导入关卡或教学JSON。src/app/use-game-input.ts独立管理活动游戏按键、连续输入、失焦释放与表单例外；scene-game.tsx编排声音、纯引擎、保存与自动接续。迁移10保存完整gameRun，现有客观学习数据、GAME-02家庭时钟保持原边界。
+
+SPEC-018 MATCH-13～15：课程详情和天天练共用 PronunciationResults。MATCH-10 的家庭 HTTP 适配器通过一次同源评估得到 match/recognize，服务端可信目标目录由现有 content 派生。独立 pronunciation_attempts 仅保存 acoustic 摘要，支持历史、幂等、备份与清除，不写客观题掌握度。默认后端未配置，实验模型及 Whisper 不作自动替代。录音仍仅在内存，见 ADR-0036。

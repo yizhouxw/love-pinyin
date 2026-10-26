@@ -55,6 +55,7 @@ def test_export_is_valid_for_a_bound_parent_preview(paired_client):
         "skippedInstances": 0,
         "reviewPlans": 0,
         "assessmentSummaries": 0,
+        "pronunciationAttempts": 0,
     }
     assert len(data["previewToken"]) > 30
 

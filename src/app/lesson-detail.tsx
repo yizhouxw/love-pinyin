@@ -1,3 +1,4 @@
+import { CoursePronunciationPractice } from './pronunciation-practice';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { IllustrationCatalog } from '../domain/illustrations';
 import type { AudioRequirement, Knowledge, Lesson, Progress } from '../domain/learning-api';
@@ -188,6 +189,11 @@ export function LessonDetail({
           onGuidanceChange={onGuidanceChange}
         />
       )}
+      <CoursePronunciationPractice
+        key={lesson.id}
+        lessonId={lesson.id}
+        guidanceEnabled={soundEnabled}
+      />
       <details className="lesson-knowledge">
         <summary>知识与教学提示</summary>
         <ul className="lesson-objectives">
