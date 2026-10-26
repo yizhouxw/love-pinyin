@@ -3,6 +3,7 @@ export function validatePinyinShop(shop, illustrations, readImage) {
   const errors = [];
   if (
     shop.version !== 2 ||
+    !['mock', 'unavailable'].includes(shop.recognitionMode) ||
     shop.basketLimit !== 6 ||
     shop.recognitionTimeoutMs !== 5000 ||
     !Number.isInteger(shop.minimumAudioMs) ||
@@ -68,7 +69,7 @@ export function validatePinyinShop(shop, illustrations, readImage) {
   )
     errors.push('shop: invalid vowel task metadata');
   if (
-    shop.image?.src !== '/shop/products-atlas.png' ||
+    shop.image?.src !== '/shop/products-photo-atlas.png' ||
     shop.image.columns !== 12 ||
     shop.image.rows !== 8
   )

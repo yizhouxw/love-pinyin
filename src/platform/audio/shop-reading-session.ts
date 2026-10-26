@@ -10,6 +10,7 @@ export type ShopReadingCallbacks = {
 /** One active commodity, one serial MATCH-10 request, one five-second capture/inference budget. */
 export class ShopReadingSession {
   private epoch = 0;
+  private sequence = 0;
   private request: AbortController | null = null;
   private deadline: ReturnType<typeof setTimeout> | null = null;
   private poll: ReturnType<typeof setTimeout> | null = null;
@@ -58,8 +59,11 @@ export class ShopReadingSession {
         if (audio) {
           const controller = new AbortController();
           this.request = controller;
-          const requestId = crypto.randomUUID();
           try {
+            // Mock requests are local to this session and need no secure-context API.
+            const requestId = this.mock
+              ? `shop-mock-${generation}-${++this.sequence}`
+              : crypto.randomUUID();
             const result = await this.service.match({
               requestId,
               targetId: target.id,

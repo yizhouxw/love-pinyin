@@ -5,7 +5,7 @@
   "minimumAudioMs": 650,
   "pollIntervalMs": 450,
   "image": {
-    "src": "/shop/products-atlas.png",
+    "src": "/shop/products-photo-atlas.png",
     "columns": 12,
     "rows": 8,
     "license": "generated-project-asset"
@@ -804,5 +804,6 @@
     "v2-shirt",
     "v2-crow",
     "v2-vowelfish"
-  ]
+  ],
+  "recognitionMode": "mock"
 }

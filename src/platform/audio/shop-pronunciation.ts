@@ -1,13 +1,15 @@
+import { shopRules } from '../../domain/pinyin-shop';
 import { createPronunciationService } from './pronunciation-service';
 import type { PronunciationTarget } from '../../domain/pronunciation';
 
-/** Replace this composition with a verified acoustic adapter when MATCH-10 has one. */
-export function shopPronunciation(targets: readonly PronunciationTarget[]) {
-  const mock =
-    import.meta.env.DEV && new URLSearchParams(location.search).get('shopRecognition') === 'mock';
+/** Explicitly configured shop simulation; never inferred from a real service failure. */
+export function shopPronunciation(
+  targets: readonly PronunciationTarget[],
+  mode: 'mock' | 'unavailable' = shopRules.recognitionMode === 'mock' ? 'mock' : 'unavailable',
+) {
   return {
-    configured: mock,
-    mock,
-    service: createPronunciationService({ targets, mode: mock ? 'mock' : 'unavailable' }),
+    configured: mode === 'mock',
+    mock: mode === 'mock',
+    service: createPronunciationService({ targets, mode }),
   };
 }

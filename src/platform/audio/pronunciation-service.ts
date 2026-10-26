@@ -9,7 +9,7 @@ type Options = Readonly<{
   targets: readonly PronunciationTarget[];
 }>;
 
-/** Explicit development wiring only. No model loading, audio retention or network access. */
+/** Explicitly selected simulation or unavailable port. No model loading, audio retention or network access. */
 export function createPronunciationService(options: Options): PronunciationService {
   const mode = options.mode ?? 'unavailable';
   const targets = new Map<string, string>();

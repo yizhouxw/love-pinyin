@@ -12,6 +12,7 @@ import {
   type ShopTarget,
 } from '../domain/pinyin-shop';
 import { BrowserShopRecorder } from '../platform/audio/browser-shop-recorder';
+import { MockShopCapture } from '../platform/audio/mock-shop-capture';
 import {
   ShopReadingSession,
   type ShopReadingOutcome,
@@ -64,7 +65,9 @@ export function PinyinShop({
   const [reading] = useState(
     () =>
       new ShopReadingSession(
-        new BrowserShopRecorder(shopRules.recognitionTimeoutMs),
+        adapter.mock
+          ? new MockShopCapture()
+          : new BrowserShopRecorder(shopRules.recognitionTimeoutMs),
         adapter.service,
         adapter.mock,
         shopRules,
@@ -101,13 +104,14 @@ export function PinyinShop({
   useEffect(() => {
     if (!clock.paused && !welcomed.current) {
       welcomed.current = true;
-      if (guidance.current) playVoice('ui-shop_welcome');
+      if (guidance.current) playVoice(adapter.mock ? 'ui-shop_mock_welcome' : 'ui-shop_welcome');
     }
-  }, [clock.paused, playVoice]);
+  }, [clock.paused, playVoice, adapter.mock]);
 
   function tell(next: Feedback) {
     setFeedback(next);
-    if (guidance.current) voice.play(`ui-shop_${next}`);
+    if (guidance.current)
+      voice.play(next === 'matched' && adapter.mock ? 'ui-shop_mock_added' : `ui-shop_${next}`);
   }
   const full = basket.length >= shopRules.basketLimit;
   const shelf = shopRules.shelves[cabinet]!;
@@ -173,10 +177,18 @@ export function PinyinShop({
   const total = shopPrice(shopTotalCents(basket));
   const feedbackText =
     phase === 'starting'
-      ? '正在打开麦克风，首次使用请允许权限。'
+      ? adapter.mock
+        ? '正在准备模拟识别。'
+        : '正在打开麦克风，首次使用请允许权限。'
       : phase === 'listening'
-        ? '我在听，直接读出右边的拼音…'
-        : messages[feedback];
+        ? adapter.mock
+          ? '正在模拟识别，不判断真实读音…'
+          : '我在听，直接读出右边的拼音…'
+        : feedback === 'matched' && adapter.mock
+          ? '模拟完成，商品已加入购物车。现在不是真实识别。'
+          : feedback === 'welcome' && adapter.mock
+            ? '挑一件喜欢的商品，模拟成功后会自动加入购物车。'
+            : messages[feedback];
   return (
     <section className="pinyin-shop" aria-label="拼音小卖部">
       <header className="shop-topbar">
@@ -219,7 +231,7 @@ export function PinyinShop({
       </div>
       {adapter.mock && (
         <aside className="shop-mode" role="status">
-          <strong>开发模拟演示</strong> · 不判断声音，匹配固定成功，不记录学习成绩。
+          <strong>模拟识别</strong> · 当前不是真实识别，商品会自动加入购物车，不记录学习成绩。
         </aside>
       )}
       {!adapter.mock && adapter.configured === false && (
@@ -296,7 +308,9 @@ export function PinyinShop({
                   {finished
                     ? '本次购物结束'
                     : selected
-                      ? '读这个拼音，商品就来啦'
+                      ? adapter.mock
+                        ? '模拟识别，商品自动入车'
+                        : '读这个拼音，商品就来啦'
                       : '挑一件你喜欢的商品'}
                 </span>
                 <div className="shop-choice">
@@ -328,7 +342,15 @@ export function PinyinShop({
                     </>
                   ) : (
                     <span>
-                      {phase === 'starting' ? '🎙' : full ? '✓ 购物车装好啦' : '选商品后自动开始听'}
+                      {phase === 'starting'
+                        ? adapter.mock
+                          ? '模拟'
+                          : '🎙'
+                        : full
+                          ? '✓ 购物车装好啦'
+                          : adapter.mock
+                            ? '选商品后模拟入车'
+                            : '选商品后自动开始听'}
                     </span>
                   )}
                 </div>
@@ -390,7 +412,7 @@ export function PinyinShop({
                     {basket.length} / {shopRules.basketLimit} 件
                   </span>
                 </h2>
-                {adapter.mock && <p className="shop-simulation">模拟购物清单</p>}
+                {adapter.mock && <p className="shop-simulation">模拟购物清单 · 不是真实识别</p>}
                 {basket.length ? (
                   <ul>
                     {basket.map((id) => {
@@ -405,7 +427,11 @@ export function PinyinShop({
                     })}
                   </ul>
                 ) : (
-                  <p className="shop-empty">读音匹配后，喜欢的商品会自动来到这里。</p>
+                  <p className="shop-empty">
+                    {adapter.mock
+                      ? '选好商品后，会模拟成功并自动入车。'
+                      : '读音匹配后，喜欢的商品会自动来到这里。'}
+                  </p>
                 )}
                 <div className="shop-total">
                   <span>{finished ? '结算总金额' : '合计'}</span>
@@ -419,8 +445,10 @@ export function PinyinShop({
             </div>
           </div>
           <footer className="shop-footnote">
-            每次最多六件，选好就结算。录音仅在内存处理，退出清除；口头练习不计客观题掌握度。
-            {adapter.mock ? '当前为固定成功模拟，不判断发音。' : '真实识别能力以接入的服务为准。'}
+            每次最多六件，选好就结算。口头练习不计客观题掌握度。
+            {adapter.mock
+              ? ' 当前为模拟识别，不使用麦克风或判断发音。'
+              : ' 录音仅在内存处理，退出清除；识别能力以接入的服务为准。'}
           </footer>
         </>
       )}

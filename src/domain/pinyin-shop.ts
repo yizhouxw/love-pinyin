@@ -51,7 +51,7 @@ export function shopPrice(cents: number): string {
 }
 
 export type ShopOutcome = 'matched' | 'retry' | 'uncertain' | 'unavailable' | 'stale';
-/** Only the active correlated request may affect a basket; mock requires explicit development mode. */
+/** Only the active correlated request may affect a basket; mock requires an explicitly configured simulation mode. */
 export function shopOutcome(
   result: PronunciationMatchResult,
   requestId: string,

@@ -34,13 +34,14 @@ const service: PronunciationService = {
       evidence: mock ? ('mock' as const) : ('acoustic' as const),
       toneAssessed: false,
     };
-    if (request.audio.type !== 'audio/wav' || request.audio.size <= 44)
+    if (!mock && (request.audio.type !== 'audio/wav' || request.audio.size <= 44))
       throw new Error('INVALID_TEST_CAPTURE');
     const header = new DataView(await request.audio.arrayBuffer());
     if (
-      header.getUint32(24, true) !== 16000 ||
-      header.getUint16(22, true) !== 1 ||
-      header.getUint16(34, true) !== 16
+      !mock &&
+      (header.getUint32(24, true) !== 16000 ||
+        header.getUint16(22, true) !== 1 ||
+        header.getUint16(34, true) !== 16)
     )
       throw new Error('INVALID_TEST_WAV');
     if (mode === 'growing' && calls < 3)

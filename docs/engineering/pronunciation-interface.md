@@ -67,4 +67,4 @@ reason 枚举见类型：unsupported-target、not-configured、invalid-audio、i
 
 开发目标目录由 `src/platform/audio/pronunciation-development.ts` 导出，产品主包不加载整份每日 mock 目录。mock 仅供显式依赖注入（例如 `service={createPronunciationService({mode:'mock', targets: pronunciationTargets})}`），展示“开发模拟”且不保存。没有真实模型的产品默认只能验证录音、拒判和记录边界；不能宣称儿童准确率验收完成。
 
-SPEC-019 小卖部保留独立组装：Vite 开发服务器加 `?shopRecognition=mock` 显式演示，生产构建忽略此参数；页面和购物清单标记模拟，不记学习成绩。正式默认未配置。见[场景接入说明](pinyin-shop.md)。
+SPEC-019 小卖部按用户要求通过内容配置显式启用模拟体验，正式构建也可玩；页面和购物清单标记不是真实识别，不使用麦克风或记学习成绩。课程和天天练的正式后端仍独立默认不可用。见[场景接入说明](pinyin-shop.md)。

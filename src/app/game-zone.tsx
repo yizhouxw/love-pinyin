@@ -1,4 +1,5 @@
 import { PinyinShop } from './pinyin-shop';
+import { shopRules } from '../domain/pinyin-shop';
 import { useEffect, useState } from 'react';
 import { gameCatalog, type GameOverview } from '../domain/games';
 import type { Curriculum } from '../domain/learning-api';
@@ -168,9 +169,22 @@ export function GameZone({
         <div>
           <span className="eyebrow">新场景 · 口头拼读</span>
           <h2>拼音小卖部</h2>
-          <VoiceButton id="ui-shop_welcome" voice={voice} label="听小卖部怎么玩" />
-          <p>八个货架，九十六件带图商品。挑喜欢的，读右边的拼音，自动入车，还能结算总金额。</p>
-          <p className="adult-hint">真实识别待接入，当前可听示范与跟读；开发模拟不计学习成绩。</p>
+          <VoiceButton
+            id={shopRules.recognitionMode === 'mock' ? 'ui-shop_mock_welcome' : 'ui-shop_welcome'}
+            voice={voice}
+            label="听小卖部怎么玩"
+          />
+          <p>
+            八个货架，九十六件带图商品。
+            {shopRules.recognitionMode === 'mock'
+              ? '挑喜欢的，模拟成功后自动入车，还能结算总金额。'
+              : '挑喜欢的，读右边的拼音，匹配后自动入车，还能结算总金额。'}
+          </p>
+          <p className="adult-hint">
+            {shopRules.recognitionMode === 'mock'
+              ? '当前为模拟识别，不是真实识别；选商品会自动入车，不记录学习成绩。'
+              : '真实识别服务需通过验收后接入；不可用时不会自动切换模拟。'}
+          </p>
         </div>
         <button
           disabled={busy || !data || !!data.clock.reason}

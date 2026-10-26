@@ -1,4 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { MockShopCapture } from '../../src/platform/audio/mock-shop-capture';
+import { createPronunciationService } from '../../src/platform/audio/pronunciation-service';
 import { ShopReadingSession } from '../../src/platform/audio/shop-reading-session';
 import { shopPcmWav, type ShopCapture } from '../../src/platform/audio/browser-shop-recorder';
 import type {
@@ -42,7 +44,10 @@ function setup(match: PronunciationService['match']) {
   return { capture, session, callbacks };
 }
 beforeEach(() => vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'performance'] }));
-afterEach(() => vi.useRealTimers());
+afterEach(() => {
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
+});
 describe('SHOP-05: serial live snapshots within one five-second budget', () => {
   it('captures automatically and stops immediately when matched', async () => {
     const match = vi.fn(async (r: PronunciationRequest) => result(r));
@@ -137,4 +142,15 @@ it('SHOP-05: PCM snapshots have the required rate, channels, signed samples and 
   expect(data.getUint16(34, true)).toBe(16);
   expect(data.getUint32(40, true)).toBe(32000);
   expect(data.getInt16(44, true)).toBe(16384);
+});
+
+it('SHOP-08: mock completes without a microphone or secure-context randomUUID', async () => {
+  vi.stubGlobal('crypto', {});
+  const capture = new MockShopCapture();
+  const service = createPronunciationService({ mode: 'mock', targets: [target] });
+  const session = new ShopReadingSession(capture, service, true, timing);
+  const callbacks = { phase: vi.fn(), outcome: vi.fn() };
+  await session.start(target, callbacks);
+  await vi.advanceTimersByTimeAsync(650);
+  expect(callbacks.outcome).toHaveBeenCalledExactlyOnceWith('matched');
 });

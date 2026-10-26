@@ -161,7 +161,7 @@ test('SHOP-05/06: six automatic additions and exact decorative checkout total', 
   test.skip(browserName !== 'chromium', 'Requires synthetic Chromium microphone.');
   await context.grantPermissions(['microphone']);
   await openHarness(page, devUrl, 'evidence=mock');
-  await expect(page.getByText('开发模拟演示', { exact: true })).toBeVisible();
+  await expect(page.getByText('模拟识别', { exact: true })).toBeVisible();
   const goods = page.locator('.shop-product');
   for (let i = 0; i < 6; i++) {
     await goods.nth(i).click();
@@ -172,7 +172,7 @@ test('SHOP-05/06: six automatic additions and exact decorative checkout total', 
   await page.getByRole('button', { name: '结算购物车', exact: false }).click();
   await expect(page.getByText('结算总金额', { exact: true })).toBeVisible();
   await expect(page.locator('.shop-total strong')).toHaveText('¥30.00');
-  await expect(page.getByText('模拟购物清单', { exact: true })).toBeVisible();
+  await expect(page.getByText('模拟购物清单 · 不是真实识别', { exact: true })).toBeVisible();
   await page.screenshot({ path: test.info().outputPath('shop2-checkout.png'), fullPage: true });
 });
 
@@ -284,4 +284,55 @@ test('SHOP-05: narrow selection brings the live target into view and cancels rea
     .toBe(true);
   await page.waitForTimeout(5500);
   await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+});
+
+test('SHOP-08: production mock completes checkout with no microphone device or permission', async ({
+  page,
+  appUrl,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'mediaDevices', { value: undefined, configurable: true });
+    Object.defineProperty(window.crypto, 'randomUUID', { value: undefined, configurable: true });
+  });
+  await guest(page, appUrl);
+  await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
+  await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
+  await expect(page.getByText('模拟识别', { exact: true })).toBeVisible();
+  await expect(page.getByText('当前不是真实识别', { exact: false }).first()).toBeVisible();
+  expect(await page.evaluate(() => navigator.mediaDevices)).toBeUndefined();
+  expect(await page.evaluate(() => typeof window.crypto.randomUUID)).toBe('undefined');
+  const goods = page.locator('.shop-product');
+  for (let i = 0; i < 6; i++) {
+    await goods.nth(i).click();
+    await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(i + 1, { timeout: 6000 });
+    await expect(page.locator('.shop-feedback')).toContainText('现在不是真实识别');
+  }
+  await expect(goods.nth(6)).toBeDisabled();
+  await page.getByRole('button', { name: '结算购物车', exact: false }).click();
+  await expect(page.getByText('模拟购物清单 · 不是真实识别', { exact: true })).toBeVisible();
+  await expect(page.locator('.shop-total strong')).toHaveText('¥30.00');
+  await page.screenshot({
+    path: test.info().outputPath('shop3-production-checkout.png'),
+    fullPage: true,
+  });
+});
+
+test('SHOP-08: spoken entry and add feedback both identify the simulation', async ({
+  page,
+  appUrl,
+}) => {
+  await guest(page, appUrl);
+  await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
+  const intro = page.waitForResponse(
+    (response) => response.url().includes('/voice/ui-shop_mock_welcome') && response.ok(),
+  );
+  await page.getByRole('button', { name: '听小卖部怎么玩', exact: true }).click();
+  await intro;
+  await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
+  const feedback = page.waitForResponse(
+    (response) => response.url().includes('/voice/ui-shop_mock_added') && response.ok(),
+  );
+  await page.getByRole('button', { name: '选择薯片', exact: true }).click();
+  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(1);
+  await feedback;
 });
