@@ -59,3 +59,5 @@ SPEC-013的DOCKER-05/06补充Windows x86-64宿主的linux/amd64部署及CPU Whis
 2026-10-25补充SPEC-006 DEPS-02：关闭Dependabot #13–25，在main整合兼容更新并修复React配套版本与依赖清单遗漏；MLX-Audio维持已验证版本，Playwright新版实际复验Firefox。验证与剩余门禁见SPEC-006。
 
 2026-10-25按用户实测修订SPEC-017：KEY-01修复按钮/声音操作后的键盘焦点及长按，LEVEL-01～04以24关/72章/288任务槽和48种路线替代单题场景；独立关卡JSON、纯运动引擎与教学题单绑定，迁移10冻结整关数据，正确后连续前进。架构见[ADR-0033](adr/0033-authored-game-levels.md)，无新增依赖。
+
+2026-10-26 SPEC-018 MATCH-10/11：选定 SenseVoice 编码器＋音素/声调专用头后续主线，先固化应用 TypeScript v1 端口和显式 mock，提供目标匹配与内容识别，支持取消及请求关联；模型、HTTP 和页面接入独立推进。见[接口说明](engineering/pronunciation-interface.md)。

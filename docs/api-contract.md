@@ -98,3 +98,7 @@ ACCESS-03：家长API与`/local/pairing-code`仅接受来源127.0.0.1且Host hos
 SCENE/ADAPT修订：`GET /games`增加`recommendation`（level/speed/sampleSize/correctCount/masteredCount），仅统计家长所选课及之前知识的有效掌握样本。`POST /sessions`新增gameDifficulty（auto/gentle/steady/challenge）及gameSpeed（auto/slow/normal/fast），默认auto；游戏响应和恢复包含冻结的`gameSettings`（实际level/speed、requestedDifficulty/requestedSpeed、推荐快照、version=1）。题库优先场景对应类型，缺少时以已学听辨/声调/拼读补足，必须具备真实标准音。最多六题，优先待巩固和当前课，再按历史轮转；难度不解锁课程。SQLite迁移9增加sessions.game_settings_json，schema5备份增加可选session.gameSettings；旧会话/旧备份默认为空对象。浏览器物理状态不上传，未命中动作不调用作答API。
 
 LEVEL-01～04：`POST /sessions`可选`gameLevelId`（如runner-01），须与gameId对应；省略按推荐物理难度选择一关。新游戏会话绑定12道不同的已学真实题目，普通课程仍6题。响应/恢复含`gameRun`（version=1、catalogVersion=1、level、theme、patterns和依次绑定instanceId的bindings），无教学标准答案。SQLite迁移10的sessions.game_run_json冻结数据；导出schema5会话可选gameRun，旧档案缺省{}，恢复校验12段与题实例精确对应。前端自动接续已完成检查点，暂停可停留；刷新仅重走当前未完成段，首次成绩仍幂等。家庭导入16MiB、访客4MiB，超限拒绝且不截断。
+
+## SPEC-018 应用识别端口（无 HTTP 路由）
+
+`src/domain/pronunciation.ts` 固定 v1 异步 `match` / `recognize` 契约。应用开发可显式注入始终成功的 mock，返回 evidence=mock、toneAssessed=false；省略模式不会启用 mock。这是进程内 TypeScript 端口，尚未发布新的 REST 接口。参数、状态、取消和真实实现边界见[接口说明](engineering/pronunciation-interface.md)。
