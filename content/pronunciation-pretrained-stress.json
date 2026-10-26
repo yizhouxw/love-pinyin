@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "version": "pretrained-stress-calibration-v1",
+  "phase": "calibration-diagnostic",
+  "date": "2026-10-26",
+  "establishesFinalAcceptance": false,
+  "sourceDataset": "OMPAL",
+  "sourceRevision": "c3aaa9e892e4b1c2a25b637401f52f6e35b53e74",
+  "sourceSplit": "calibration",
+  "sourceLicense": "CC-BY-4.0",
+  "sourceRequirements": {
+    "expertLabel": "unanimous-correct",
+    "requireResolvedExpertAnnotation": true,
+    "rejectLabelPolicyFlags": true,
+    "rejectNumericalQualityFlags": true,
+    "requireAvailableAlignment": true,
+    "minimumSeconds": 0.2,
+    "maximumSeconds": 1.5,
+    "minimumSourcesPerSpeaker": 3
+  },
+  "selection": {
+    "seed": "love-pinyin-pretrained-stress-v1-3182026",
+    "anchorsPerSpeaker": 3,
+    "order": "SHA256(seed:speakerId:wordId), before any model inference",
+    "commonCoverageOnly": true,
+    "partnerPolicy": "Same calibration speaker; another parent utterance and different lexical syllable; deterministic SHA order. Both sources have unanimous expert correctness."
+  },
+  "cases": {
+    "cleanControl": true,
+    "twoSyllablePauseSeconds": [0, 0.12, 0.3],
+    "omissionSilenceSeconds": 1,
+    "noiseSnrDb": [0, -5],
+    "noise": "Seeded NumPy PCG64 white noise; scale using whole-clip speech RMS and prescribed SNR; normalize joint peak to0.8; preserve pre-PCM SNR and seed.",
+    "overlongSeconds": [4.25, 9],
+    "tooShortSeconds": 0.05,
+    "wrongSampleRate": 8000,
+    "truncatedWavRemoveBytes": 200,
+    "nonWavPayloadUtf8": "Love Pinyin explicit invalid-audio stress fixture"
+  },
+  "outcomes": {
+    "clean-control": "accept",
+    "two-syllable": "do-not-match",
+    "omission-silence": "abstain",
+    "noise": "abstain",
+    "overlong": "abstain",
+    "too-short": "abstain",
+    "wrong-sample-rate": "abstain",
+    "truncated-wav": "abstain",
+    "non-wav": "abstain"
+  },
+  "limits": {
+    "cleanExplicitRejection": 0.1,
+    "cleanAbstentionIncludingUnavailable": 0.2,
+    "multiSyllableFalseAcceptance": 0.05,
+    "unassessableInputMatched": 0,
+    "unassessableInputExplicitRetry": 0
+  },
+  "counting": {
+    "unit": "Actual payload SHA256; all target queries for that waveform are combined and any unsafe result fails the waveform once.",
+    "twoSyllableTargets": "Query both constituent known targets; either matched counts one waveform failure.",
+    "missingResult": "unavailable and retained in the complete denominator",
+    "duplicatePayloads": "Retain every planned case/query, report duplicate payloads, do not count repeated silence or invalid bytes as independent waveforms.",
+    "confidenceIntervals": "Wilson95 per-waveform descriptive intervals; derived siblings and eight calibration speakers are correlated; no final population or child claim."
+  },
+  "constraints": [
+    "Never read frozen test items or audio.",
+    "The protocol selects public real speech using original expert votes, not model agreement or synthetic expected text.",
+    "Concatenation is a derived multi-syllable structural challenge, not newly recorded natural connected speech.",
+    "Silence and contaminated or invalid audio are unassessable inputs; do not label them child pronunciation errors.",
+    "Do not modify model weights, thresholds, coverage or signal guards during stress evaluation.",
+    "Freeze source manifest, complete package metadata and protocol hashes in every preparation and result."
+  ]
+}

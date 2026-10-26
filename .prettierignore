@@ -11,3 +11,8 @@ uv.lock
 # Immutable generation configurations retain the exact SHA bound by private manifests.
 content/pronunciation-foreign-contrast-v1.json
 content/pronunciation-foreign-contrast-v2.json
+content/pronunciation-training-v5.json
+# Canonical generated OMPAL provenance is byte-bound by the experiment manifests.
+content/pronunciation-ompal-detail-id-map.json
+content/pronunciation-ompal-policy.json
+content/pronunciation-pretrained-pitch.json

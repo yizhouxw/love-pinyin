@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 1,
+  "auditedOn": "2026-10-26",
+  "models": {
+    "hanziflow": {
+      "repository": "thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2",
+      "revision": "93c4b3f185f67b2f82135b34ca0397ddf8254de1",
+      "lastModified": "2026-08-30T18:25:00Z",
+      "license": "Apache-2.0",
+      "licenseEvidence": "Model-card declaration; no standalone LICENSE file in pinned repository. Base model and AISHELL-1 attribution retained.",
+      "source": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2",
+      "trainingData": "Model card: AISHELL-1 retained subset;14285 train utterances310 speakers;1549 dev utterances36 speakers;17.714h;206000 target syllables;817 records quarantined. Full utterance manifest absent.",
+      "outputs": "Three independent CTC logit sequences:24 initial,44 final,7 tone classes including blank0 and unknown1; sequence lengths may differ.",
+      "runtime": "PyTorch Wav2Vec2Model1024x24; custom code audited; requirements upstream torch>=2.2,transformers>=5.0.0,<6,safetensors>=0.4.5,soundfile>=0.12; use locked local runtime.",
+      "files": [
+        {
+          "path": "model.safetensors",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/model.safetensors",
+          "sha256": "889281f1c22101fd93c1362e1788e7fca22c6d13e1067b5b0250b9962fb4c10d",
+          "sizeBytes": 1262115108
+        },
+        {
+          "path": "config.json",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/config.json",
+          "sha256": "a94adc79de9121497540fbbca5f0d5512dbba5fae4891ebf0c89c776b5e631bf",
+          "sizeBytes": 3808
+        },
+        {
+          "path": "preprocessor_config.json",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/preprocessor_config.json",
+          "sha256": "60ca5a31e13f69ee2fbf147504c8676db5f6398fd7a6b12294341dff838edfcf",
+          "sizeBytes": 214
+        },
+        {
+          "path": "v2_1_initial_vocabulary.json",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/v2_1_initial_vocabulary.json",
+          "sha256": "96903427bd78a6d5be7067a7b98a0928e830f81b641a6c3924ecb3db266867a0",
+          "sizeBytes": 272
+        },
+        {
+          "path": "v2_1_final_vocabulary.json",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/v2_1_final_vocabulary.json",
+          "sha256": "0aba8b6ff403fa07b3feb5d85ccfdd9adebadf6bade8a4e058f99ce944807713",
+          "sizeBytes": 541
+        },
+        {
+          "path": "v2_1_tone_vocabulary.json",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/v2_1_tone_vocabulary.json",
+          "sha256": "46c3ab99b08980e59f49b8a83e557fef2c6859a1b81048a53ddfea84c9f55375",
+          "sizeBytes": 87
+        },
+        {
+          "path": "v2_1_target_schema.json",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/v2_1_target_schema.json",
+          "sha256": "1664632ace184c2851d7e6d68884225287020d913d653a0f885c41245210f433",
+          "sizeBytes": 2065
+        },
+        {
+          "path": "configuration_hanziflow_v2.py",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/configuration_hanziflow_v2.py",
+          "sha256": "34373eac3c04da217937f0745408de81c8fb63870dcac3e9247199431cd9b823",
+          "sizeBytes": 1789
+        },
+        {
+          "path": "modeling_hanziflow_v2.py",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/modeling_hanziflow_v2.py",
+          "sha256": "459723683096089bf0ab4d5e36efc9d36f14f3f528b6b97cda8d69809a477f79",
+          "sizeBytes": 8022
+        },
+        {
+          "path": "README.md",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/README.md",
+          "sha256": "84f412b70624aae0c4a9d178e6600ef9b8e917a80c0d2c964cb0a2a74212d944",
+          "sizeBytes": 4460
+        },
+        {
+          "path": "requirements.txt",
+          "url": "https://huggingface.co/thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2/resolve/93c4b3f185f67b2f82135b34ca0397ddf8254de1/requirements.txt",
+          "sha256": "feb13f0d318dbcf4c0d915a20c760c68b97c1a5d95996a418e8336ca0ebc98b6",
+          "sizeBytes": 69
+        }
+      ]
+    },
+    "charsiu": {
+      "repository": "charsiu/zh_xlsr_fc_10ms",
+      "revision": "2d274d10cce1dd66818c0706abbc4cc20d4ef710",
+      "lastModified": "2021-12-16T03:45:24Z",
+      "license": "MIT project declaration; standalone weight license unspecified",
+      "licenseEvidence": "Official Charsiu README links these weights and declares tool MIT; copyright2021 jzhu. HF weight repository has no model card/LICENSE. Research local comparison retained; model redistribution not authorized by this record.",
+      "source": "https://huggingface.co/charsiu/zh_xlsr_fc_10ms",
+      "sourceRepository": "https://github.com/lingjzhu/charsiu",
+      "sourceRevision": "13a69f2a22ca0c0962b75cc693399b0ae23a12c9",
+      "tokenizerRepository": "charsiu/tokenizer_zh_pinyin",
+      "tokenizerRevision": "a370e90191d18be4035783a7b98c509666e5c058",
+      "trainingData": "XLS-R300M pretrained encoder. Exact Mandarin fine-tune corpus,split and supervision provenance are not documented in pinned HF repository. Official Charsiu paper describes frame labels from forced alignment; official released corpus alignments are not evidence that every listed corpus trained this checkpoint.",
+      "outputs": "210 frame class logits at10ms:initials and tone-bearing finals plus special phones; not a CTC-trained head. Textless predictions use acoustic argmax, no expected text.",
+      "runtime": "Upstream custom Wav2Vec2ForFrameClassification eval forward equals Wav2Vec2ForCTC wav2vec2/dropout/lm_head. Config conv_stride=[5,2,2,2,2,2,1]; utterance-normalized16k waveform; vocab from separately pinned tokenizer.",
+      "files": [
+        {
+          "path": "pytorch_model.bin",
+          "url": "https://huggingface.co/charsiu/zh_xlsr_fc_10ms/resolve/2d274d10cce1dd66818c0706abbc4cc20d4ef710/pytorch_model.bin",
+          "sha256": "158068c24c31ae7adede2d2c2b7ae85598ac949f9f104b930b74dcbdab4ff872",
+          "sizeBytes": 1262784689
+        },
+        {
+          "path": "config.json",
+          "url": "https://huggingface.co/charsiu/zh_xlsr_fc_10ms/resolve/2d274d10cce1dd66818c0706abbc4cc20d4ef710/config.json",
+          "sha256": "073ae6a252bb103cd0b46f9fe906572bba434086d69cc8d51a0f7bb27a124e18",
+          "sizeBytes": 1639
+        },
+        {
+          "path": "vocab.json",
+          "url": "https://huggingface.co/charsiu/tokenizer_zh_pinyin/resolve/a370e90191d18be4035783a7b98c509666e5c058/vocab.json",
+          "sha256": "2fa12e80d41d9f167991ce85b86505542ee4367ba2edf5f0528e7d2f73df25e2",
+          "sizeBytes": 2431
+        },
+        {
+          "path": "tokenizer_config.json",
+          "url": "https://huggingface.co/charsiu/tokenizer_zh_pinyin/resolve/a370e90191d18be4035783a7b98c509666e5c058/tokenizer_config.json",
+          "sha256": "56e02b54de01a0ec4cc0c705ad3c303d7b73c83d61063a94b84cbf3a55da76a1",
+          "sizeBytes": 180
+        },
+        {
+          "path": "special_tokens_map.json",
+          "url": "https://huggingface.co/charsiu/tokenizer_zh_pinyin/resolve/a370e90191d18be4035783a7b98c509666e5c058/special_tokens_map.json",
+          "sha256": "50eb73d51191696209d30d42d6ede50e57e7a542ca1db12df714b2c0aa3da8e2",
+          "sizeBytes": 85
+        },
+        {
+          "path": "LICENSE",
+          "url": "https://raw.githubusercontent.com/lingjzhu/charsiu/13a69f2a22ca0c0962b75cc693399b0ae23a12c9/LICENSE",
+          "sha256": "a622a386b2acb06e150e16c26fb93ff6c09b3096eb1d84aa5b6436ac6c52f6bc",
+          "sizeBytes": 1061
+        },
+        {
+          "path": "README.md",
+          "url": "https://raw.githubusercontent.com/lingjzhu/charsiu/13a69f2a22ca0c0962b75cc693399b0ae23a12c9/README.md",
+          "sha256": "010320aa61d240960ef3ff394ccb47c73d3bc9358378f6b78ac65e4513ac239f",
+          "sizeBytes": 8113
+        },
+        {
+          "path": "upstream-models.py",
+          "url": "https://raw.githubusercontent.com/lingjzhu/charsiu/13a69f2a22ca0c0962b75cc693399b0ae23a12c9/src/models.py",
+          "sha256": "a11dbb5bcb7df09b1e7727ee900588bc28e3004717e54703fa75906a763901a3",
+          "sizeBytes": 28890
+        },
+        {
+          "path": "upstream-processors.py",
+          "url": "https://raw.githubusercontent.com/lingjzhu/charsiu/13a69f2a22ca0c0962b75cc693399b0ae23a12c9/src/processors.py",
+          "sha256": "4535a8a7ce16bedcc59bff90e54e909689fc74191aebff4f9e9798a1e504c7c8",
+          "sizeBytes": 14370
+        }
+      ]
+    },
+    "sensevoice": {
+      "repository": "FunAudioLLM/SenseVoiceSmall",
+      "revision": "3847d57b6bdf2dd8875cb1508d2af43d80a16bf7",
+      "lastModified": "2026-06-20T10:39:39Z",
+      "license": "FunASR Model Open Source License Agreement1.1 (weight); MIT (source)",
+      "licenseEvidence": "HF license other linking FunASR MODEL_LICENSE, pinned fbbfe01800a8c4c9103cb2150fb1a5d06cc64758. Source MIT does not replace weight license.",
+      "source": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall",
+      "sourceRepository": "https://github.com/QwenAudio/SenseVoice",
+      "sourceRevision": "586bbdb2b052f4fe19322581825228b6810a9fb3",
+      "trainingData": "Upstream reports broad multilingual speech pretraining; complete utterance-level training corpus,split and overlap not publicly disclosed.",
+      "outputs": "Character/subword ASR with language,emotion,event tags. No native Mandarin initial/final/tone output; compare acoustic encoder probes, not Hanzi transcription success.",
+      "runtime": "Native local audited encoder implementation,16k waveform→80dim fbank+LFR+CMVN→SenseVoice SANM; PyTorch CPU or MPS for offline training; no inference downloads.",
+      "files": [
+        {
+          "path": "model.pt",
+          "url": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall/resolve/3847d57b6bdf2dd8875cb1508d2af43d80a16bf7/model.pt",
+          "sha256": "833ca2dcfdf8ec91bd4f31cfac36d6124e0c459074d5e909aec9cabe6204a3ea",
+          "sizeBytes": 936291369
+        },
+        {
+          "path": "am.mvn",
+          "url": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall/resolve/3847d57b6bdf2dd8875cb1508d2af43d80a16bf7/am.mvn",
+          "sha256": "29b3c740a2c0cfc6b308126d31d7f265fa2be74f3bb095cd2f143ea970896ae5",
+          "sizeBytes": 11203
+        },
+        {
+          "path": "config.yaml",
+          "url": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall/resolve/3847d57b6bdf2dd8875cb1508d2af43d80a16bf7/config.yaml",
+          "sha256": "f71e239ba36705564b5bf2d2ffd07eece07b8e3f2bbf6d2c99d8df856339ac19",
+          "sizeBytes": 1855
+        },
+        {
+          "path": "configuration.json",
+          "url": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall/resolve/3847d57b6bdf2dd8875cb1508d2af43d80a16bf7/configuration.json",
+          "sha256": "02810a7f8e9e8aee10370a265f7e799728ce25b4c00cdbf4602b303ee395a38e",
+          "sizeBytes": 396
+        },
+        {
+          "path": "chn_jpn_yue_eng_ko_spectok.bpe.model",
+          "url": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall/resolve/3847d57b6bdf2dd8875cb1508d2af43d80a16bf7/chn_jpn_yue_eng_ko_spectok.bpe.model",
+          "sha256": "aa87f86064c3730d799ddf7af3c04659151102cba548bce325cf06ba4da4e6a8",
+          "sizeBytes": 377341
+        },
+        {
+          "path": "README.md",
+          "url": "https://huggingface.co/FunAudioLLM/SenseVoiceSmall/resolve/3847d57b6bdf2dd8875cb1508d2af43d80a16bf7/README.md",
+          "sha256": "6add90487ea3d685b6604ad0932b565fc5cf7e9daaf8aebc674de49da4560958",
+          "sizeBytes": 11952
+        },
+        {
+          "path": "MODEL_LICENSE",
+          "url": "https://raw.githubusercontent.com/modelscope/FunASR/fbbfe01800a8c4c9103cb2150fb1a5d06cc64758/MODEL_LICENSE",
+          "sha256": "7dba975a2069691db4992b0592d70828b330d2f8a30a71450f4e152a554e84f8",
+          "sizeBytes": 5306
+        }
+      ]
+    }
+  }
+}

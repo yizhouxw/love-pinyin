@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "hanziflow-last-two-expert-signed-ctc-v1",
+  "seed": 3182026,
+  "maximumEpochs": 10,
+  "batchSize": 16,
+  "trainableTransformerLayers": 2,
+  "encoderLearningRate": 0.00001,
+  "headLearningRate": 0.0001,
+  "weightDecay": 0.01,
+  "gradientClip": 5.0,
+  "specAugment": false,
+  "layerDrop": 0.0,
+  "gradientCheckpointing": false,
+  "cpuCtcDoublePrecision": true,
+  "compositionExtraFraction": 0.2,
+  "compositionPauseSeconds": 0.18,
+  "waveformFrontend": "shared-trim-silence-80ms-margin-then-utterance-mean-variance",
+  "checkpointMetric": "calibration-balanced-signed-ctc-loss",
+  "requiredAlignmentVersion": "ompal-three-head-midpoint-v2-model-specific-apical",
+  "expertLabelPolicy": "Positive components supervise exact CTC events; negative components suppress expected events; ambiguous components receive no loss.",
+  "finalTestUsedForModelSelection": false
+}

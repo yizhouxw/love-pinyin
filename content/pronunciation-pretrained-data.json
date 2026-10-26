@@ -1,0 +1,956 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "mandi-cmn-wl1",
+  "snapshotDate": "2026-10-26",
+  "source": "https://osf.io/fgv4w/",
+  "license": "CC-BY-NC-3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-nc/3.0/",
+  "citation": "Liang Zhao and Eleanor Chodroff. 2022. The ManDi Corpus: A Spoken Corpus of Mandarin Regional Dialects. LREC 2022, pp. 1985-1990.",
+  "paper": "https://aclanthology.org/2022.lrec-1.213/",
+  "labelProvenance": "Native adult reading of the corpus Standard Mandarin WL1 task; intended phonetic lexicon labels, MFA word/phone boundaries; not independently expert-verified segment/tone correctness.",
+  "splitPolicy": "SHA256(mandi-v1:speakerId) ordering before model/audio inspection; first16 train, next4 calibration, remaining6 frozen test; 10 of36 recordings lack public word grids, so allocation reduced before downloading audio; never split recordings of same speaker.",
+  "frozenTestPolicy": "Preparation excludes test audio unless --include-frozen-test. Freeze all model and calibration parameters before opening this cohort. After any diagnostic use, reserve a new external cohort for further acceptance.",
+  "coverage": "11 syllables x four lexical tones. Native adult speakers with regional Mandarin backgrounds performing the CMN task. No children, lexical neutral tones, tone sandhi, isolated initial/final tasks, or broad minimal segmental pairs.",
+  "lexicon": {
+    "name": "mandarin_wl1.txt",
+    "fileId": "61e21678466d150320d564f2",
+    "version": 1,
+    "bytes": 465,
+    "sha256": "b1cd84f17180f7787d0311dc02c75dd58c99380ed9cb1a912ccf4b311a4b4c71",
+    "url": "https://osf.io/download/bksxr/?version=1",
+    "modified": "2022-01-15T00:34:00.734817"
+  },
+  "labels": {
+    "猜": {
+      "syllable": "cai1",
+      "onset": "c",
+      "rime": "ai",
+      "tone": 1
+    },
+    "才": {
+      "syllable": "cai2",
+      "onset": "c",
+      "rime": "ai",
+      "tone": 2
+    },
+    "彩": {
+      "syllable": "cai3",
+      "onset": "c",
+      "rime": "ai",
+      "tone": 3
+    },
+    "菜": {
+      "syllable": "cai4",
+      "onset": "c",
+      "rime": "ai",
+      "tone": 4
+    },
+    "八": {
+      "syllable": "ba1",
+      "onset": "b",
+      "rime": "a",
+      "tone": 1
+    },
+    "拔": {
+      "syllable": "ba2",
+      "onset": "b",
+      "rime": "a",
+      "tone": 2
+    },
+    "把": {
+      "syllable": "ba3",
+      "onset": "b",
+      "rime": "a",
+      "tone": 3
+    },
+    "爸": {
+      "syllable": "ba4",
+      "onset": "b",
+      "rime": "a",
+      "tone": 4
+    },
+    "夫": {
+      "syllable": "fu1",
+      "onset": "f",
+      "rime": "u",
+      "tone": 1
+    },
+    "服": {
+      "syllable": "fu2",
+      "onset": "f",
+      "rime": "u",
+      "tone": 2
+    },
+    "腐": {
+      "syllable": "fu3",
+      "onset": "f",
+      "rime": "u",
+      "tone": 3
+    },
+    "复": {
+      "syllable": "fu4",
+      "onset": "f",
+      "rime": "u",
+      "tone": 4
+    },
+    "遮": {
+      "syllable": "zhe1",
+      "onset": "zh",
+      "rime": "e",
+      "tone": 1
+    },
+    "哲": {
+      "syllable": "zhe2",
+      "onset": "zh",
+      "rime": "e",
+      "tone": 2
+    },
+    "者": {
+      "syllable": "zhe3",
+      "onset": "zh",
+      "rime": "e",
+      "tone": 3
+    },
+    "这": {
+      "syllable": "zhe4",
+      "onset": "zh",
+      "rime": "e",
+      "tone": 4
+    },
+    "吃": {
+      "syllable": "chi1",
+      "onset": "ch",
+      "rime": "i-retroflex",
+      "tone": 1
+    },
+    "池": {
+      "syllable": "chi2",
+      "onset": "ch",
+      "rime": "i-retroflex",
+      "tone": 2
+    },
+    "齿": {
+      "syllable": "chi3",
+      "onset": "ch",
+      "rime": "i-retroflex",
+      "tone": 3
+    },
+    "赤": {
+      "syllable": "chi4",
+      "onset": "ch",
+      "rime": "i-retroflex",
+      "tone": 4
+    },
+    "汤": {
+      "syllable": "tang1",
+      "onset": "t",
+      "rime": "ang",
+      "tone": 1
+    },
+    "糖": {
+      "syllable": "tang2",
+      "onset": "t",
+      "rime": "ang",
+      "tone": 2
+    },
+    "躺": {
+      "syllable": "tang3",
+      "onset": "t",
+      "rime": "ang",
+      "tone": 3
+    },
+    "烫": {
+      "syllable": "tang4",
+      "onset": "t",
+      "rime": "ang",
+      "tone": 4
+    },
+    "懵": {
+      "syllable": "meng1",
+      "onset": "m",
+      "rime": "eng",
+      "tone": 1
+    },
+    "萌": {
+      "syllable": "meng2",
+      "onset": "m",
+      "rime": "eng",
+      "tone": 2
+    },
+    "猛": {
+      "syllable": "meng3",
+      "onset": "m",
+      "rime": "eng",
+      "tone": 3
+    },
+    "梦": {
+      "syllable": "meng4",
+      "onset": "m",
+      "rime": "eng",
+      "tone": 4
+    },
+    "身": {
+      "syllable": "shen1",
+      "onset": "sh",
+      "rime": "en",
+      "tone": 1
+    },
+    "神": {
+      "syllable": "shen2",
+      "onset": "sh",
+      "rime": "en",
+      "tone": 2
+    },
+    "审": {
+      "syllable": "shen3",
+      "onset": "sh",
+      "rime": "en",
+      "tone": 3
+    },
+    "慎": {
+      "syllable": "shen4",
+      "onset": "sh",
+      "rime": "en",
+      "tone": 4
+    },
+    "香": {
+      "syllable": "xiang1",
+      "onset": "x",
+      "rime": "iang",
+      "tone": 1
+    },
+    "祥": {
+      "syllable": "xiang2",
+      "onset": "x",
+      "rime": "iang",
+      "tone": 2
+    },
+    "想": {
+      "syllable": "xiang3",
+      "onset": "x",
+      "rime": "iang",
+      "tone": 3
+    },
+    "向": {
+      "syllable": "xiang4",
+      "onset": "x",
+      "rime": "iang",
+      "tone": 4
+    },
+    "优": {
+      "syllable": "you1",
+      "onset": "",
+      "rime": "iou",
+      "tone": 1
+    },
+    "油": {
+      "syllable": "you2",
+      "onset": "",
+      "rime": "iou",
+      "tone": 2
+    },
+    "有": {
+      "syllable": "you3",
+      "onset": "",
+      "rime": "iou",
+      "tone": 3
+    },
+    "又": {
+      "syllable": "you4",
+      "onset": "",
+      "rime": "iou",
+      "tone": 4
+    },
+    "一": {
+      "syllable": "yi1",
+      "onset": "",
+      "rime": "i",
+      "tone": 1
+    },
+    "姨": {
+      "syllable": "yi2",
+      "onset": "",
+      "rime": "i",
+      "tone": 2
+    },
+    "已": {
+      "syllable": "yi3",
+      "onset": "",
+      "rime": "i",
+      "tone": 3
+    },
+    "毅": {
+      "syllable": "yi4",
+      "onset": "",
+      "rime": "i",
+      "tone": 4
+    }
+  },
+  "recordings": [
+    {
+      "speakerId": "BEI_004_F",
+      "split": "calibration",
+      "wav": {
+        "name": "BEI_004_F_CMN_WL1.wav",
+        "fileId": "61e4d33753349e04f35f95f1",
+        "version": 1,
+        "bytes": 10051520,
+        "sha256": "14bfe82991f9eee5c4be244c6024860e68dd7ce2afda873311f7b346f647dcb3",
+        "url": "https://osf.io/download/u7h2a/?version=1",
+        "modified": "2022-01-17T02:23:51.350113"
+      },
+      "grid": {
+        "name": "BEI_004_F_CMN_WL1.TextGrid",
+        "fileId": "61e4da61466d1504d8d570f5",
+        "version": 1,
+        "bytes": 32666,
+        "sha256": "9779cebd9a71a8209be3a6d4c0fa01c26b7ea9c546f068ee53ada9b3cdb11a25",
+        "url": "https://osf.io/download/wmezn/?version=1",
+        "modified": "2022-01-17T02:54:26.095600"
+      }
+    },
+    {
+      "speakerId": "BEI_008_F",
+      "split": "train",
+      "wav": {
+        "name": "BEI_008_F_CMN_WL1.wav",
+        "fileId": "61e4d35953349e04ed5f929a",
+        "version": 1,
+        "bytes": 10035244,
+        "sha256": "b1b7f08da4fc503a67405aba6ce2710fc43f36ef8619b6de5db6c379d14c71e7",
+        "url": "https://osf.io/download/vct6k/?version=1",
+        "modified": "2022-01-17T02:24:25.506014"
+      },
+      "grid": {
+        "name": "BEI_008_F_CMN_WL1.TextGrid",
+        "fileId": "61e4da6a466d1504dbd576ed",
+        "version": 1,
+        "bytes": 32088,
+        "sha256": "c083af3975fbcffe1eafcdd205db056f28849bbc45c95848abed5fd142070fbc",
+        "url": "https://osf.io/download/61e4da6a466d1504dbd576ed/?version=1",
+        "modified": "2022-01-17T02:54:34.137346"
+      }
+    },
+    {
+      "speakerId": "BEI_011_M",
+      "split": "train",
+      "wav": {
+        "name": "BEI_011_M_CMN_WL1.wav",
+        "fileId": "61e4d378c99ebd057a0188dc",
+        "version": 1,
+        "bytes": 9700396,
+        "sha256": "737eb81cb959a209645ea4bfdb87bdf2dfdad8c522f368b2c445ffcc20273937",
+        "url": "https://osf.io/download/rfwtq/?version=1",
+        "modified": "2022-01-17T02:24:56.818178"
+      },
+      "grid": {
+        "name": "BEI_011_M_CMN_WL1.TextGrid",
+        "fileId": "61e4da76bc925b04dbd4c8df",
+        "version": 1,
+        "bytes": 31826,
+        "sha256": "9b5938fa530a9f126bee1b7cec6e9ba4293b10696a209cb70a0832f3d71fdee0",
+        "url": "https://osf.io/download/xsgb9/?version=1",
+        "modified": "2022-01-17T02:54:46.165442"
+      }
+    },
+    {
+      "speakerId": "BEI_015_M",
+      "split": "train",
+      "wav": {
+        "name": "BEI_015_M_CMN_WL1.wav",
+        "fileId": "61e4d390466d1504e1d56713",
+        "version": 1,
+        "bytes": 9361452,
+        "sha256": "615076d63dc532992f95bddc3e536d73bd31520758e057de53982b4eab4fddb2",
+        "url": "https://osf.io/download/vpfwz/?version=1",
+        "modified": "2022-01-17T02:25:20.792641"
+      },
+      "grid": {
+        "name": "BEI_015_M_CMN_WL1.TextGrid",
+        "fileId": "61e4da8153349e04fb5f8aef",
+        "version": 1,
+        "bytes": 32063,
+        "sha256": "531611f7d41fd2951668830793ac060e942bc9604c5dcb44aa2983c88b30f011",
+        "url": "https://osf.io/download/61e4da8153349e04fb5f8aef/?version=1",
+        "modified": "2022-01-17T02:54:57.450997"
+      }
+    },
+    {
+      "speakerId": "BEI_016_F",
+      "split": "train",
+      "wav": {
+        "name": "BEI_016_F_CMN_WL1.wav",
+        "fileId": "61e4d3b7bc925b04e8d4b40c",
+        "version": 1,
+        "bytes": 13676588,
+        "sha256": "672ae3eacc96313e6f319daa5915fe610b1e82f6061df4e6dae02e85ce4c9117",
+        "url": "https://osf.io/download/61e4d3b7bc925b04e8d4b40c/?version=1",
+        "modified": "2022-01-17T02:25:59.890977"
+      },
+      "grid": {
+        "name": "BEI_016_F_CMN_WL1.TextGrid",
+        "fileId": "61e4da8bc99ebd0580018ce5",
+        "version": 1,
+        "bytes": 32986,
+        "sha256": "20ca2476b24180d228efb8407f9efaae5ce92bc4dc05c5eadeb8fe06c827b028",
+        "url": "https://osf.io/download/61e4da8bc99ebd0580018ce5/?version=1",
+        "modified": "2022-01-17T02:55:07.769625"
+      }
+    },
+    {
+      "speakerId": "BEI_018_F",
+      "split": "train",
+      "wav": {
+        "name": "BEI_018_F_CMN_WL1.wav",
+        "fileId": "61e4d3d1c99ebd0580016fd4",
+        "version": 1,
+        "bytes": 6117420,
+        "sha256": "0387723b36593aa8c0554becdcf9fb609f586b100d4acb11f0f7d245777ed30d",
+        "url": "https://osf.io/download/61e4d3d1c99ebd0580016fd4/?version=1",
+        "modified": "2022-01-17T02:26:25.578714"
+      },
+      "grid": {
+        "name": "BEI_018_F_CMN_WL1.TextGrid",
+        "fileId": "61e4da9a95a03004c8ed4187",
+        "version": 1,
+        "bytes": 31401,
+        "sha256": "968434e4fa9cbcbe847bcbd916a7dbc4dc4a963a2d37f0bc39d7a0d9bcce52df",
+        "url": "https://osf.io/download/61e4da9a95a03004c8ed4187/?version=1",
+        "modified": "2022-01-17T02:55:22.545977"
+      }
+    },
+    {
+      "speakerId": "BEI_023_M",
+      "split": "calibration",
+      "wav": {
+        "name": "BEI_023_M_CMN_WL1.wav",
+        "fileId": "61e4d3f553349e04f05f94e7",
+        "version": 1,
+        "bytes": 9620634,
+        "sha256": "100bb22dcf0cbc0a64097c277893f4fb65122fc1a08382b624315d31c55eca7c",
+        "url": "https://osf.io/download/61e4d3f553349e04f05f94e7/?version=1",
+        "modified": "2022-01-17T02:27:01.874621"
+      },
+      "grid": {
+        "name": "BEI_023_M_CMN_WL1.TextGrid",
+        "fileId": "61e4daa3466d1504e1d58191",
+        "version": 1,
+        "bytes": 32302,
+        "sha256": "cbd4d8955aa676590e5a57674fe9f798235b79dd4cc736e5968bb4568e449625",
+        "url": "https://osf.io/download/61e4daa3466d1504e1d58191/?version=1",
+        "modified": "2022-01-17T02:55:31.284018"
+      }
+    },
+    {
+      "speakerId": "BEI_039_F",
+      "split": "train",
+      "wav": {
+        "name": "BEI_039_F_CMN_WL1.wav",
+        "fileId": "61e4d41a53349e04f05f9536",
+        "version": 1,
+        "bytes": 11958316,
+        "sha256": "d6b2e36cc4f1e9894b7bf687849aa3dfb873ef9bd6664edb0dbd73481f57b19e",
+        "url": "https://osf.io/download/61e4d41a53349e04f05f9536/?version=1",
+        "modified": "2022-01-17T02:27:38.962880"
+      },
+      "grid": {
+        "name": "BEI_039_F_CMN_WL1.TextGrid",
+        "fileId": "61e4dab2bc925b04bfd4c9f1",
+        "version": 1,
+        "bytes": 31926,
+        "sha256": "34d9cb9cf0106811dc2f0469380260430ed0c7c30a8014c55c6cf31bbebf776f",
+        "url": "https://osf.io/download/61e4dab2bc925b04bfd4c9f1/?version=1",
+        "modified": "2022-01-17T02:55:46.420900"
+      }
+    },
+    {
+      "speakerId": "CHD_012_F",
+      "split": "calibration",
+      "wav": {
+        "name": "CHD_012_F_CMN_WL1.wav",
+        "fileId": "61e4d46a95a0300506ed29cd",
+        "version": 1,
+        "bytes": 11636780,
+        "sha256": "2e15151ba0b5352fc25d0f300a29d70af8d5b8adf7413d777974b207ed2938ec",
+        "url": "https://osf.io/download/61e4d46a95a0300506ed29cd/?version=1",
+        "modified": "2022-01-17T02:28:58.144863"
+      },
+      "grid": {
+        "name": "CHD_012_F_CMN_WL1.TextGrid",
+        "fileId": "61e4dac0c99ebd05860170f2",
+        "version": 1,
+        "bytes": 32276,
+        "sha256": "b77f977cbfc6afe26dfcdf0e33a66384d8951029feb348b577a45f23603b9c1b",
+        "url": "https://osf.io/download/89rj4/?version=1",
+        "modified": "2022-01-17T02:56:00.161554"
+      }
+    },
+    {
+      "speakerId": "CHD_025_M",
+      "split": "test",
+      "wav": {
+        "name": "CHD_025_M_CMN_WL1.wav",
+        "fileId": "61e4d498466d1504ded571ea",
+        "version": 1,
+        "bytes": 8415276,
+        "sha256": "a580f4a5beee0108ec6bae5c07c37b4fd74327a426b324f4c1e341e8bb7ae959",
+        "url": "https://osf.io/download/gxsbv/?version=1",
+        "modified": "2022-01-17T02:29:44.729875"
+      },
+      "grid": {
+        "name": "CHD_025_M_CMN_WL1.TextGrid",
+        "fileId": "61e4dac8bc925b04e4d4c5be",
+        "version": 1,
+        "bytes": 31795,
+        "sha256": "ca87f956b1cad5c9fbfc959c45932189988f815f3efb7347235f0ed6a776cb08",
+        "url": "https://osf.io/download/uwpdc/?version=1",
+        "modified": "2022-01-17T02:56:08.244858"
+      }
+    },
+    {
+      "speakerId": "CHD_033_F",
+      "split": "calibration",
+      "wav": {
+        "name": "CHD_033_F_CMN_WL1.wav",
+        "fileId": "61e4d4be53349e04ed5f9465",
+        "version": 1,
+        "bytes": 10520620,
+        "sha256": "440a3e472b50f3cb8c8b2f3de8941b99d6bd4eafe5217c75fdc9bf3af295c8b1",
+        "url": "https://osf.io/download/61e4d4be53349e04ed5f9465/?version=1",
+        "modified": "2022-01-17T02:30:22.792180"
+      },
+      "grid": {
+        "name": "CHD_033_F_CMN_WL1.TextGrid",
+        "fileId": "61e4dad153349e04fb5f8cc8",
+        "version": 1,
+        "bytes": 31828,
+        "sha256": "1595941aa95157f8dad926d19246d5140c30a9b5f1b4b208ecd104b75f456c88",
+        "url": "https://osf.io/download/61e4dad153349e04fb5f8cc8/?version=1",
+        "modified": "2022-01-17T02:56:17.283430"
+      }
+    },
+    {
+      "speakerId": "CHD_034_F",
+      "split": "train",
+      "wav": {
+        "name": "CHD_034_F_CMN_WL1.wav",
+        "fileId": "61e4d4de53349e04f05f9701",
+        "version": 1,
+        "bytes": 5746732,
+        "sha256": "2b807db39f16ca1bf90b58c291d55e96e709b5122f474480ed9936d518d2bc58",
+        "url": "https://osf.io/download/61e4d4de53349e04f05f9701/?version=1",
+        "modified": "2022-01-17T02:30:54.766307"
+      },
+      "grid": {
+        "name": "CHD_034_F_CMN_WL1.TextGrid",
+        "fileId": "61e4dad6bc925b04eed4b1a8",
+        "version": 1,
+        "bytes": 31823,
+        "sha256": "d835a354add081336e58b277fc4ed170c0e932f3e90343e84253219bb34205f2",
+        "url": "https://osf.io/download/61e4dad6bc925b04eed4b1a8/?version=1",
+        "modified": "2022-01-17T02:56:22.896364"
+      }
+    },
+    {
+      "speakerId": "JNN_013_F",
+      "split": "train",
+      "wav": {
+        "name": "JNN_013_F_CMN_WL1.wav",
+        "fileId": "61e4d50c466d1504d8d56c7b",
+        "version": 1,
+        "bytes": 8320448,
+        "sha256": "b76f7ce292af9bc8aaf44126357ee7c6ef7b947758e0459730d76a859e342106",
+        "url": "https://osf.io/download/d9e4v/?version=1",
+        "modified": "2022-01-17T02:31:40.896087"
+      },
+      "grid": {
+        "name": "JNN_013_F_CMN_WL1.TextGrid",
+        "fileId": "61e4dadb95a0300509ed2acd",
+        "version": 1,
+        "bytes": 32064,
+        "sha256": "44c63581cdd256cf5e49c70c62245740a11c876e7f8e1aad458689fc2e1e5fbc",
+        "url": "https://osf.io/download/61e4dadb95a0300509ed2acd/?version=1",
+        "modified": "2022-01-17T02:56:27.972223"
+      }
+    },
+    {
+      "speakerId": "JNN_017_F",
+      "split": "train",
+      "wav": {
+        "name": "JNN_017_F_CMN_WL1.wav",
+        "fileId": "61e4d52b466d1504d8d56c91",
+        "version": 1,
+        "bytes": 10260524,
+        "sha256": "cadc8d5b4eb700427d6808e33cde13e9be1d9561274e0ba98e5a0aa75e8d2b37",
+        "url": "https://osf.io/download/61e4d52b466d1504d8d56c91/?version=1",
+        "modified": "2022-01-17T02:32:11.204422"
+      },
+      "grid": {
+        "name": "JNN_017_F_CMN_WL1.TextGrid",
+        "fileId": "61e4dae5bc925b04e8d4c6c9",
+        "version": 1,
+        "bytes": 32006,
+        "sha256": "21207c51cd9f05e953c5915ff803845268d4a82c92f30652eb8ee4a4bad554c8",
+        "url": "https://osf.io/download/61e4dae5bc925b04e8d4c6c9/?version=1",
+        "modified": "2022-01-17T02:56:37.278355"
+      }
+    },
+    {
+      "speakerId": "JNN_028_M",
+      "split": "test",
+      "wav": {
+        "name": "JNN_028_M_CMN_WL1.wav",
+        "fileId": "61e4d555bc925b0498d4cf61",
+        "version": 1,
+        "bytes": 9153580,
+        "sha256": "2ec7320fa706a328463cafdfd9a84781711f604de4b59149605176d803bb2459",
+        "url": "https://osf.io/download/61e4d555bc925b0498d4cf61/?version=1",
+        "modified": "2022-01-17T02:32:53.322775"
+      },
+      "grid": {
+        "name": "JNN_028_M_CMN_WL1.TextGrid",
+        "fileId": "61e4daf453349e04f05fa536",
+        "version": 1,
+        "bytes": 32034,
+        "sha256": "ed811edca7440071c59145a7e4b64b22d6bbd4d0801eb1d066276c1578a637e1",
+        "url": "https://osf.io/download/61e4daf453349e04f05fa536/?version=1",
+        "modified": "2022-01-17T02:56:52.629705"
+      }
+    },
+    {
+      "speakerId": "TYN_006_M",
+      "split": "train",
+      "wav": {
+        "name": "TYN_006_M_CMN_WL1.wav",
+        "fileId": "61e4d5b1bc925b04ebd4af4d",
+        "version": 1,
+        "bytes": 10830892,
+        "sha256": "759dfff2bf2afe5f08be7b9d0decf7c0fd1540e580127c477dac5751004a3796",
+        "url": "https://osf.io/download/61e4d5b1bc925b04ebd4af4d/?version=1",
+        "modified": "2022-01-17T02:34:25.260363"
+      },
+      "grid": {
+        "name": "TYN_006_M_CMN_WL1.TextGrid",
+        "fileId": "61e4db02466d1504d8d571de",
+        "version": 1,
+        "bytes": 31764,
+        "sha256": "9957fc277131788ae9b885e708bea8120af67d44bebfd8884ccab96b0d98c284",
+        "url": "https://osf.io/download/61e4db02466d1504d8d571de/?version=1",
+        "modified": "2022-01-17T02:57:07.100001"
+      }
+    },
+    {
+      "speakerId": "TYN_036_F",
+      "split": "test",
+      "wav": {
+        "name": "TYN_036_F_CMN_WL1.wav",
+        "fileId": "61e4d650bc925b04d9d4c327",
+        "version": 1,
+        "bytes": 13217836,
+        "sha256": "a68b2ccc30f223f5e9447fc9fdf360b1584ddaa7997bcd97b8fcf4cc253952a8",
+        "url": "https://osf.io/download/61e4d650bc925b04d9d4c327/?version=1",
+        "modified": "2022-01-17T02:37:04.720293"
+      },
+      "grid": {
+        "name": "TYN_036_F_CMN_WL1.TextGrid",
+        "fileId": "61e4db17466d1504dbd5785b",
+        "version": 1,
+        "bytes": 32397,
+        "sha256": "ba282f1be26e7e193dd603b8f9012756528dcd353707186137b34a69c64f30a3",
+        "url": "https://osf.io/download/61e4db17466d1504dbd5785b/?version=1",
+        "modified": "2022-01-17T02:57:28.006264"
+      }
+    },
+    {
+      "speakerId": "WHN_003_F",
+      "split": "test",
+      "wav": {
+        "name": "WHN_003_F_CMN_WL1.wav",
+        "fileId": "61e4d69abc925b04ebd4b255",
+        "version": 1,
+        "bytes": 9439148,
+        "sha256": "8938fc5b96aa7a613ccafdfef724f1c8a7bdfc31e06e732a2fd0d4a44ba94e27",
+        "url": "https://osf.io/download/61e4d69abc925b04ebd4b255/?version=1",
+        "modified": "2022-01-17T02:38:18.305905"
+      },
+      "grid": {
+        "name": "WHN_003_F_CMN_WL1.TextGrid",
+        "fileId": "61e4db24bc925b04dbd4c960",
+        "version": 1,
+        "bytes": 31760,
+        "sha256": "f6a40608b387f2ba8b150b0c8663b1b6f40d5665956d0a617dfa5c485f6bb639",
+        "url": "https://osf.io/download/61e4db24bc925b04dbd4c960/?version=1",
+        "modified": "2022-01-17T02:57:40.871272"
+      }
+    },
+    {
+      "speakerId": "WHN_010_F",
+      "split": "train",
+      "wav": {
+        "name": "WHN_010_F_CMN_WL1.wav",
+        "fileId": "61e4d6e7bc925b04dbd4c613",
+        "version": 1,
+        "bytes": 9081900,
+        "sha256": "a0eb7b3de6d6dcdcb8d022c8111e5be47e597581877dc93fd8fdfdbf480728f0",
+        "url": "https://osf.io/download/61e4d6e7bc925b04dbd4c613/?version=1",
+        "modified": "2022-01-17T02:39:35.711803"
+      },
+      "grid": {
+        "name": "WHN_010_F_CMN_WL1.TextGrid",
+        "fileId": "61e4db2e466d1504e1d5843c",
+        "version": 1,
+        "bytes": 32050,
+        "sha256": "fa1209637d35bdd6e87606b2a261a9e39a23dc4855e1dd9dbcbf5a38f4b3545d",
+        "url": "https://osf.io/download/61e4db2e466d1504e1d5843c/?version=1",
+        "modified": "2022-01-17T02:57:50.394628"
+      }
+    },
+    {
+      "speakerId": "WHN_014_F",
+      "split": "test",
+      "wav": {
+        "name": "WHN_014_F_CMN_WL1.wav",
+        "fileId": "61e4d70053349e04f35fa349",
+        "version": 1,
+        "bytes": 6186028,
+        "sha256": "5e79d73bd13767b5cc4af1479ffd2dad5205a8055baba969959aa9f8fc76a1bd",
+        "url": "https://osf.io/download/rpgx4/?version=1",
+        "modified": "2022-01-17T02:40:00.533712"
+      },
+      "grid": {
+        "name": "WHN_014_F_CMN_WL1.TextGrid",
+        "fileId": "61e4db3795a0300503ed36d0",
+        "version": 1,
+        "bytes": 31897,
+        "sha256": "cfafd847afc894fc0179b46b42f32924be5ba3c45337f80bf6fc54b569cfb35f",
+        "url": "https://osf.io/download/61e4db3795a0300503ed36d0/?version=1",
+        "modified": "2022-01-17T02:57:59.997831"
+      }
+    },
+    {
+      "speakerId": "WHN_029_M",
+      "split": "train",
+      "wav": {
+        "name": "WHN_029_M_CMN_WL1.wav",
+        "fileId": "61e4d72c466d1504e1d572e3",
+        "version": 1,
+        "bytes": 11380780,
+        "sha256": "096e41558c53175a950d1365f3032efdcf12dadb8675cd955aafbf6acc234a47",
+        "url": "https://osf.io/download/61e4d72c466d1504e1d572e3/?version=1",
+        "modified": "2022-01-17T02:40:44.199275"
+      },
+      "grid": {
+        "name": "WHN_029_M_CMN_WL1.TextGrid",
+        "fileId": "61e4db4095a0300509ed2c4a",
+        "version": 1,
+        "bytes": 32158,
+        "sha256": "6bf2078dafc7b4690137e2d7afaa85d8924e6ee73e89d807270199a5650a5d9b",
+        "url": "https://osf.io/download/61e4db4095a0300509ed2c4a/?version=1",
+        "modified": "2022-01-17T02:58:08.497730"
+      }
+    },
+    {
+      "speakerId": "WHN_030_F",
+      "split": "test",
+      "wav": {
+        "name": "WHN_030_F_CMN_WL1.wav",
+        "fileId": "61e4d753bc925b04ebd4b471",
+        "version": 1,
+        "bytes": 5964686,
+        "sha256": "3fd40806378b8e1a6e9763b834ea3a2bc15519f20b04e482b121932e8d85c744",
+        "url": "https://osf.io/download/61e4d753bc925b04ebd4b471/?version=1",
+        "modified": "2022-01-17T02:41:23.701599"
+      },
+      "grid": {
+        "name": "WHN_030_F_CMN_WL1.TextGrid",
+        "fileId": "61e4db4795a0300509ed2c63",
+        "version": 1,
+        "bytes": 32313,
+        "sha256": "d6f245676a7e2d76e1d1ff6257ce6ef3af6a61ff9db0fe8019ba198927cc68ab",
+        "url": "https://osf.io/download/61e4db4795a0300509ed2c63/?version=1",
+        "modified": "2022-01-17T02:58:15.289814"
+      }
+    },
+    {
+      "speakerId": "XIA_007_M",
+      "split": "train",
+      "wav": {
+        "name": "XIA_007_M_CMN_WL1.wav",
+        "fileId": "61e4d77f95a0300503ed2eb4",
+        "version": 1,
+        "bytes": 15048748,
+        "sha256": "f225132cb09c3d098da902d0e579f41eee859e2291ec3b88a3b63c4560f68d17",
+        "url": "https://osf.io/download/5jgdc/?version=1",
+        "modified": "2022-01-17T02:42:07.345496"
+      },
+      "grid": {
+        "name": "XIA_007_M_CMN_WL1.TextGrid",
+        "fileId": "61e4db4f53349e04f75f8f6f",
+        "version": 1,
+        "bytes": 32307,
+        "sha256": "cf50b48e50c2e8ab25ce88c1bae641ce1fdd1a029effd5529679769e1b8339c2",
+        "url": "https://osf.io/download/61e4db4f53349e04f75f8f6f/?version=1",
+        "modified": "2022-01-17T02:58:23.986711"
+      }
+    },
+    {
+      "speakerId": "XIA_020_F",
+      "split": "train",
+      "wav": {
+        "name": "XIA_020_F_CMN_WL1.wav",
+        "fileId": "61e4d7a5466d150478d57d3c",
+        "version": 1,
+        "bytes": 12017580,
+        "sha256": "5778cbb60ad13f442ba91d37ede1a109393e0cddb0eb31cf93e09fb0807fef41",
+        "url": "https://osf.io/download/2ztex/?version=1",
+        "modified": "2022-01-17T02:42:45.318738"
+      },
+      "grid": {
+        "name": "XIA_020_F_CMN_WL1.TextGrid",
+        "fileId": "61e4db5853349e04fb5f8f0e",
+        "version": 1,
+        "bytes": 31719,
+        "sha256": "03abf694388df36588b787f9fa6a5d8774cada9ad891f8d1b67c347c666c9bb8",
+        "url": "https://osf.io/download/61e4db5853349e04fb5f8f0e/?version=1",
+        "modified": "2022-01-17T02:58:32.765543"
+      }
+    },
+    {
+      "speakerId": "XIA_022_M",
+      "split": "train",
+      "wav": {
+        "name": "XIA_022_M_CMN_WL1.wav",
+        "fileId": "61e4d7ca53349e04f35fa5e4",
+        "version": 1,
+        "bytes": 11042732,
+        "sha256": "b3e6f4d89bb564f29ff3a31a0c2d904a775c00c763749fd47ec3eb6b99e6aa90",
+        "url": "https://osf.io/download/61e4d7ca53349e04f35fa5e4/?version=1",
+        "modified": "2022-01-17T02:43:22.605026"
+      },
+      "grid": {
+        "name": "XIA_022_M_CMN_WL1.TextGrid",
+        "fileId": "61e4db5fc99ebd0580018f12",
+        "version": 1,
+        "bytes": 40679,
+        "sha256": "adac19a58900d27fe69877efe204f72eb7572e19d4c5bae19a35e104f6aae749",
+        "url": "https://osf.io/download/61e4db5fc99ebd0580018f12/?version=1",
+        "modified": "2022-01-17T02:58:39.967863"
+      }
+    },
+    {
+      "speakerId": "XIA_027_F",
+      "split": "train",
+      "wav": {
+        "name": "XIA_027_F_CMN_WL1.wav",
+        "fileId": "61e4d7ee95a0300503ed2f7c",
+        "version": 1,
+        "bytes": 13181996,
+        "sha256": "9d179a7555d5ba50863a62e1bf26f75ddedec5ff9c13e650e876e6ca511995d7",
+        "url": "https://osf.io/download/61e4d7ee95a0300503ed2f7c/?version=1",
+        "modified": "2022-01-17T02:43:59.011579"
+      },
+      "grid": {
+        "name": "XIA_027_F_CMN_WL1.TextGrid",
+        "fileId": "61e4db6695a03004b9ed3917",
+        "version": 1,
+        "bytes": 31899,
+        "sha256": "0f045291ee906730b28af78882e4c890dbc3cc1db151da14a5bb95c1a5c77ce2",
+        "url": "https://osf.io/download/61e4db6695a03004b9ed3917/?version=1",
+        "modified": "2022-01-17T02:58:46.499042"
+      }
+    }
+  ],
+  "unavailableAnnotations": [
+    {
+      "name": "CHD_035_F_CMN_WL1.wav",
+      "fileId": "61e4d4fec99ebd0580017454",
+      "version": 1,
+      "bytes": 9830444,
+      "sha256": "ae01370084f2b8326f3718e47aee741356bc61b7ce91eca2d97090b1a28259db",
+      "url": "https://osf.io/download/61e4d4fec99ebd0580017454/?version=1",
+      "modified": "2022-01-17T02:31:26.376532"
+    },
+    {
+      "name": "JNN_019_F_CMN_WL1.wav",
+      "fileId": "61e4d53b53349e04ea5f98da",
+      "version": 1,
+      "bytes": 3008044,
+      "sha256": "d173779ca7a1fa626343791090e13d330f19ced21b24ec8bb49724f669b6153a",
+      "url": "https://osf.io/download/61e4d53b53349e04ea5f98da/?version=1",
+      "modified": "2022-01-17T02:32:27.552364"
+    },
+    {
+      "name": "JNN_031_M_CMN_WL1.wav",
+      "fileId": "61e4d57153349e04f35f9dea",
+      "version": 1,
+      "bytes": 10127404,
+      "sha256": "ee17a74b3af3de43a078461fa9de9db9d26f67ac65060bee68c58edaa9643ab8",
+      "url": "https://osf.io/download/61e4d57153349e04f35f9dea/?version=1",
+      "modified": "2022-01-17T02:33:21.960117"
+    },
+    {
+      "name": "TYN_001_F_CMN_WL1.wav",
+      "fileId": "61e4d59095a03004bbed3e34",
+      "version": 1,
+      "bytes": 7622376,
+      "sha256": "2130d1c13e1d7306a249c0f0d83c2839e92df0deaf0c75fb00dd8e3b123babfd",
+      "url": "https://osf.io/download/61e4d59095a03004bbed3e34/?version=1",
+      "modified": "2022-01-17T02:33:52.426041"
+    },
+    {
+      "name": "TYN_009_F_CMN_WL1.wav",
+      "fileId": "61e4d5d195a0300506ed2e78",
+      "version": 1,
+      "bytes": 8874028,
+      "sha256": "098df3d90e2204c012ac00291147cc5525855ea0dd4df3c104094f057391a6fc",
+      "url": "https://osf.io/download/61e4d5d195a0300506ed2e78/?version=1",
+      "modified": "2022-01-17T02:34:57.869677"
+    },
+    {
+      "name": "TYN_024_M_CMN_WL1.wav",
+      "fileId": "61e4d5fc95a03004ffed2df7",
+      "version": 1,
+      "bytes": 12013466,
+      "sha256": "7256460822db2da45ec571977200bc62ec13df7de08ea46a8613e874e5ae8bb3",
+      "url": "https://osf.io/download/61e4d5fc95a03004ffed2df7/?version=1",
+      "modified": "2022-01-17T02:35:40.956099"
+    },
+    {
+      "name": "TYN_026_M_CMN_WL1.wav",
+      "fileId": "61e4d637bc925b04e8d4bb24",
+      "version": 1,
+      "bytes": 25848142,
+      "sha256": "1067fb65cb21208c2340e63f20ce63c3f21bb2b6763c9f02553b26d2f49461f8",
+      "url": "https://osf.io/download/61e4d637bc925b04e8d4bb24/?version=1",
+      "modified": "2022-01-17T02:36:39.331613"
+    },
+    {
+      "name": "TYN_037_F_CMN_WL1.wav",
+      "fileId": "61e4d675466d1504cfd57abd",
+      "version": 1,
+      "bytes": 9089068,
+      "sha256": "2ecbb9bcb597f522a830465896da5daeebd946c1cdaee7ea81b24ae4deb0c985",
+      "url": "https://osf.io/download/61e4d675466d1504cfd57abd/?version=1",
+      "modified": "2022-01-17T02:37:41.948112"
+    },
+    {
+      "name": "WHN_005_M_CMN_WL1.wav",
+      "fileId": "61e4d6bc466d1504ded575f3",
+      "version": 1,
+      "bytes": 10795052,
+      "sha256": "9b8174296a5c329de833bead3c6a718db089cecdb0b04331105ffa62d21f22e4",
+      "url": "https://osf.io/download/ujfqr/?version=1",
+      "modified": "2022-01-17T02:38:52.860936"
+    },
+    {
+      "name": "BEI_041_F_CMN_WL1.wav",
+      "fileId": "66ece73ea970b235f612c8b9",
+      "version": 1,
+      "bytes": 10947832,
+      "sha256": "aa360460e078c0e9b1182e4d4525b1b4472294b3575b728a58772f372a14c44b",
+      "url": "https://osf.io/download/db9g6/?version=1",
+      "modified": "2024-09-20T03:08:46.534781"
+    }
+  ],
+  "nonLexicalWordLabels": ["sounding"]
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "purpose": "length-only CPU benchmark; not pronunciation quality evidence",
+  "sourceId": "mandi-cmn-wl1-CHD_012_F-000",
+  "sourceSha256": "9bec97bd19e1006d99228ebb8cff9c136065b2b32cddbff4a2128f486ccfa034",
+  "archivedRevision": "335a09d2782891c2858b8e248c471793ada14ecc",
+  "archivedAudioCodeSha256": "cd7cec2c5095a869069b74d0badce88fdb4c0db18d48be456b5b2d55c5323380",
+  "payloadSha256": "f0f4fa647b5de7e9c766b11c33eb61d7fdd5aa9183dfd3dba0461ecc23300e69",
+  "samples": 64000,
+  "sampleRate": 16000,
+  "method": "archived decode_wav; numpy.resize to 64000; archived encode_wav; no trim"
+}

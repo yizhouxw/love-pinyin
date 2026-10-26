@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "version": "pretrained-swift-relative32-pitch68-v2",
+  "experimental": true,
+  "toneAccuracyEstablished": false,
+  "tracker": {
+    "package": "swift-f0",
+    "version": "0.3.0",
+    "source": "https://github.com/lars76/swift-f0",
+    "license": "MIT",
+    "modelSha256": "6385e8c2ebc3872e82c9ff5946228de44cd3be77a750ea53698b7dbfe94b0a22",
+    "modelBytes": 135090,
+    "sampleRate": 16000,
+    "hopSamples": 256,
+    "frequencyRangeHz": [46.875, 1000],
+    "provider": "CPUExecutionProvider",
+    "threads": 2,
+    "runtimeDownload": false
+  },
+  "features": {
+    "dimensions": 68,
+    "contourPoints": 32,
+    "minimumVoicedFrames": 6,
+    "voicingConfidenceThreshold": 0.5,
+    "relativeClipOctaves": 2,
+    "rangeClipOctaves": 3,
+    "medianF0ClipHz": 800,
+    "medianF0DivisorHz": 400,
+    "layout": ["relative-log2-F0[32]", "relative-contour-gradient[32]", "voiced-frame-fraction", "relative-F0-range-clipped", "first-to-last-voiced-extent-fraction", "clipped-median-F0-divided-by400"],
+    "timePolicy": "Sample equally spaced real frame positions from first to last voiced frame. Interpolate F0 at those positions; do not concatenate voiced frames across gaps.",
+    "weakVoicingPolicy": "All-zero float32[68] and explicit PITCH_INSUFFICIENT_VOICING flag. A zero vector is unavailable evidence, never a wrong tone label."
+  },
+  "cache": {
+    "allowedSplits": ["train", "calibration"],
+    "otherSplits": "Keep metadata counts but never open test/diagnostic audio; explicit include-test is rejected.",
+    "key": "Original audio SHA256; identity binds model, license, adapter, audio decoder, pitch feature code, protocol and base manifest SHA256.",
+    "predeclaredNumericalOrPlaceholder": "Keep row with all-zero unavailable evidence and source flags; do not train from placeholder speech.",
+    "labelPolicy": "Pitch extraction never reads targets, expert correctness, transcript or phonetic labels. Downstream learning applies its separately frozen label policy."
+  },
+  "limitations": [
+    "No real F0 ground truth is available in these Mandarin calibration recordings.",
+    "Voicing, continuity and tracker disagreement do not establish F0 or tone accuracy.",
+    "Median F0 is included for compatibility with the existing68-dimensional branch; independent speaker-isolated validation is required.",
+    "This version needs separately trained heads; original YIN head weights cannot interpret it."
+  ]
+}

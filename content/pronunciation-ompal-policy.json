@@ -1,0 +1,6678 @@
+{
+  "schemaVersion": 1,
+  "sourceRepository": "https://github.com/phantomhsieh/OMPAL-corpus",
+  "sourceRevision": "c3aaa9e892e4b1c2a25b637401f52f6e35b53e74",
+  "sourceLicense": "CC-BY-4.0",
+  "annotationSha256": "5f23e7eadefbe465a7a71a896bff0c1def665fe0c2e5d40985f47f8846ad6f48",
+  "pypinyinVersion": "0.55.0",
+  "policyVersion": "ompal-context-lexical-v2",
+  "phoneticRules": "content/pronunciation-rules.json",
+  "labelPolicy": "Expert correctness ratings are independent ground truth. This policy specifies intended lexical phones for target comparison/alignment only, not the realized pronunciation. Any labelPolicyFlags excludes that word from unambiguous four-tone correctness adjudication while preserving it for full accounting and boundaries.",
+  "wordTextArrayPolicy": "Multiple elements are alternative wordings, not concatenated characters; primary first alternative is the alignment anchor and all alternatives are retained/flagged.",
+  "surfaceTonePolicy": "No automatic sentence sandhi correction. Yi/Bu, adjacent third tones, neutral tone, erhua and listed lexical variation are flagged. Citation tones retained for boundary alignment.",
+  "phraseOverrides": {
+    "大夫": {
+      "pinyin": [
+        "dai4",
+        "fu5"
+      ],
+      "reason": "Physician in 有名的大夫; Mainland lexical reading, regional variation flagged"
+    },
+    "先得": {
+      "pinyin": [
+        "xian1",
+        "dei3"
+      ],
+      "reason": "Necessity modal: must first"
+    },
+    "打掃得": {
+      "pinyin": [
+        "da3",
+        "sao3",
+        "de5"
+      ],
+      "reason": "Complement particle after cleaning verb"
+    },
+    "乾乾淨淨": {
+      "pinyin": [
+        "gan1",
+        "gan1",
+        "jing4",
+        "jing4"
+      ],
+      "reason": "Clean, not surname or Qian hexagram"
+    },
+    "倒著": {
+      "pinyin": [
+        "dao4",
+        "zhe5"
+      ],
+      "reason": "Upside-down 福 character and aspect particle"
+    },
+    "親親熱熱地": {
+      "pinyin": [
+        "qin1",
+        "qin1",
+        "re4",
+        "re4",
+        "de5"
+      ],
+      "reason": "Adverbial particle"
+    },
+    "得意地": {
+      "pinyin": [
+        "de2",
+        "yi4",
+        "de5"
+      ],
+      "reason": "Adverbial particle after 得意"
+    },
+    "帶著": {
+      "pinyin": [
+        "dai4",
+        "zhe5"
+      ],
+      "reason": "Aspect particle"
+    },
+    "裝著": {
+      "pinyin": [
+        "zhuang1",
+        "zhe5"
+      ],
+      "reason": "Aspect particle"
+    },
+    "看得": {
+      "pinyin": [
+        "kan4",
+        "de5"
+      ],
+      "reason": "Complement particle"
+    },
+    "覺得": {
+      "pinyin": [
+        "jue2",
+        "de5"
+      ],
+      "reason": "Cognition verb 觉得, not sleep"
+    },
+    "變得": {
+      "pinyin": [
+        "bian4",
+        "de5"
+      ],
+      "reason": "Complement particle"
+    },
+    "坐著": {
+      "pinyin": [
+        "zuo4",
+        "zhe5"
+      ],
+      "reason": "Aspect particle"
+    },
+    "擺著": {
+      "pinyin": [
+        "bai3",
+        "zhe5"
+      ],
+      "reason": "Aspect particle"
+    },
+    "看著": {
+      "pinyin": [
+        "kan4",
+        "zhe5"
+      ],
+      "reason": "Aspect particle"
+    },
+    "空座位": {
+      "pinyin": [
+        "kong4",
+        "zuo4",
+        "wei4"
+      ],
+      "reason": "Unoccupied seat; not empty space noun"
+    },
+    "答應": {
+      "pinyin": [
+        "da1",
+        "ying5"
+      ],
+      "reason": "Respond or agree; optional full/neutral tone flagged"
+    },
+    "兩只": {
+      "pinyin": [
+        "liang3",
+        "zhi1"
+      ],
+      "reason": "Measure word for socks, not adverb only"
+    },
+    "名字": {
+      "pinyin": [
+        "ming2",
+        "zi5"
+      ],
+      "reason": "Name; optional full/neutral tone flagged"
+    },
+    "爸爸": {
+      "pinyin": [
+        "ba4",
+        "ba5"
+      ],
+      "reason": "Kinship reduplication; neutral/full variation flagged"
+    },
+    "媽媽": {
+      "pinyin": [
+        "ma1",
+        "ma5"
+      ],
+      "reason": "Kinship reduplication; neutral/full variation flagged"
+    },
+    "哥哥": {
+      "pinyin": [
+        "ge1",
+        "ge5"
+      ],
+      "reason": "Kinship reduplication; neutral/full variation flagged"
+    },
+    "朋友": {
+      "pinyin": [
+        "peng2",
+        "you5"
+      ],
+      "reason": "Friend; neutral/full variation flagged"
+    },
+    "漂亮": {
+      "pinyin": [
+        "piao4",
+        "liang5"
+      ],
+      "reason": "Beautiful; neutral/full variation flagged"
+    },
+    "衣服": {
+      "pinyin": [
+        "yi1",
+        "fu5"
+      ],
+      "reason": "Clothes; neutral/full variation flagged"
+    },
+    "時候": {
+      "pinyin": [
+        "shi2",
+        "hou5"
+      ],
+      "reason": "Time; neutral/full variation flagged"
+    },
+    "早上": {
+      "pinyin": [
+        "zao3",
+        "shang5"
+      ],
+      "reason": "Morning; neutral/full variation flagged"
+    },
+    "眼睛": {
+      "pinyin": [
+        "yan3",
+        "jing5"
+      ],
+      "reason": "Eye; neutral/full variation flagged"
+    },
+    "窗戶": {
+      "pinyin": [
+        "chuang1",
+        "hu5"
+      ],
+      "reason": "Window; neutral/full variation flagged"
+    },
+    "招呼": {
+      "pinyin": [
+        "zhao1",
+        "hu5"
+      ],
+      "reason": "Greeting; neutral/full variation flagged"
+    },
+    "知道": {
+      "pinyin": [
+        "zhi1",
+        "dao5"
+      ],
+      "reason": "Know; neutral/full variation flagged"
+    },
+    "麻煩": {
+      "pinyin": [
+        "ma2",
+        "fan5"
+      ],
+      "reason": "Troublesome; neutral/full variation flagged"
+    },
+    "熱鬧": {
+      "pinyin": [
+        "re4",
+        "nao5"
+      ],
+      "reason": "Lively; neutral/full variation flagged"
+    }
+  },
+  "nativeUniquePrompts": 82,
+  "allUniquePrompts": 84,
+  "prompts": [
+    {
+      "text": "不再把春節看得那麼重要了",
+      "lexicalPinyin": [
+        "bu4",
+        "zai4",
+        "ba3",
+        "chun1",
+        "jie2",
+        "kan4",
+        "de5",
+        "na4",
+        "me5",
+        "zhong4",
+        "yao4",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "2": [
+          "ba3",
+          "ba4",
+          "pa2"
+        ],
+        "3": [
+          "chun1",
+          "chun3"
+        ],
+        "4": [
+          "jie2",
+          "jie1"
+        ],
+        "5": [
+          "kan4",
+          "kan1"
+        ],
+        "6": [
+          "de2",
+          "de5",
+          "dei3"
+        ],
+        "7": [
+          "na4",
+          "na1",
+          "nuo2",
+          "nuo4",
+          "nei4",
+          "na3",
+          "nei3",
+          "ne2",
+          "nai3",
+          "ne4"
+        ],
+        "9": [
+          "zhong4",
+          "chong2",
+          "tong2"
+        ],
+        "10": [
+          "yao4",
+          "yao1",
+          "yao3"
+        ],
+        "11": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 6,
+          "before": "de2",
+          "after": "de5",
+          "phrase": "看得",
+          "reason": "Complement particle"
+        }
+      ]
+    },
+    {
+      "text": "中國陰曆的新年叫作春節",
+      "lexicalPinyin": [
+        "zhong1",
+        "guo2",
+        "yin1",
+        "li4",
+        "de5",
+        "xin1",
+        "nian2",
+        "jiao4",
+        "zuo4",
+        "chun1",
+        "jie2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "zhong1",
+          "zhong4"
+        ],
+        "2": [
+          "yin1",
+          "yin4",
+          "an1"
+        ],
+        "4": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "6": [
+          "nian2",
+          "ning4"
+        ],
+        "8": [
+          "zuo4",
+          "zuo1",
+          "zuo2"
+        ],
+        "9": [
+          "chun1",
+          "chun3"
+        ],
+        "10": [
+          "jie2",
+          "jie1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "也是全家人團圓的日子",
+      "lexicalPinyin": [
+        "ye3",
+        "shi4",
+        "quan2",
+        "jia1",
+        "ren2",
+        "tuan2",
+        "yuan2",
+        "de5",
+        "ri4",
+        "zi5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "ye3",
+          "yi2"
+        ],
+        "1": [
+          "shi4",
+          "ti2"
+        ],
+        "3": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ],
+        "5": [
+          "tuan2",
+          "chuan2"
+        ],
+        "7": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "9": [
+          "zi5",
+          "zi3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "也有人利用這個假期去旅行",
+      "lexicalPinyin": [
+        "ye3",
+        "you3",
+        "ren2",
+        "li4",
+        "yong4",
+        "zhe4",
+        "ge4",
+        "jia4",
+        "qi1",
+        "qu4",
+        "lv3",
+        "xing2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "ye3",
+          "yi2"
+        ],
+        "1": [
+          "you3",
+          "you4",
+          "wei3"
+        ],
+        "5": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "6": [
+          "ge4",
+          "ge3"
+        ],
+        "7": [
+          "jia3",
+          "jia4",
+          "jie5",
+          "xia4",
+          "xia2",
+          "ge2"
+        ],
+        "8": [
+          "qi1",
+          "ji1"
+        ],
+        "9": [
+          "qu4",
+          "qu1"
+        ],
+        "11": [
+          "xing2",
+          "hang2",
+          "heng2",
+          "xing4",
+          "hang4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "互相說一些祝福的話",
+      "lexicalPinyin": [
+        "hu4",
+        "xiang1",
+        "shuo1",
+        "yi1",
+        "xie1",
+        "zhu4",
+        "fu2",
+        "de5",
+        "hua4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "xiang1",
+          "xiang4"
+        ],
+        "3": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "4": [
+          "xie1",
+          "suo4",
+          "suo1"
+        ],
+        "5": [
+          "zhu4",
+          "zhou4",
+          "chu4"
+        ],
+        "6": [
+          "fu2",
+          "fu4"
+        ],
+        "7": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "人們就要準備過年了",
+      "lexicalPinyin": [
+        "ren2",
+        "men5",
+        "jiu4",
+        "yao4",
+        "zhun3",
+        "bei4",
+        "guo4",
+        "nian2",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "men5",
+          "men4",
+          "men2"
+        ],
+        "3": [
+          "yao4",
+          "yao1",
+          "yao3"
+        ],
+        "4": [
+          "zhun3",
+          "zhuo2"
+        ],
+        "6": [
+          "guo4",
+          "guo1",
+          "guo5",
+          "huo4"
+        ],
+        "7": [
+          "nian2",
+          "ning4"
+        ],
+        "8": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "今天早上我有一節聽力課",
+      "lexicalPinyin": [
+        "jin1",
+        "tian1",
+        "zao3",
+        "shang5",
+        "wo3",
+        "you3",
+        "yi1",
+        "jie2",
+        "ting1",
+        "li4",
+        "ke4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "3": [
+          "shang4",
+          "shang3"
+        ],
+        "5": [
+          "you3",
+          "you4",
+          "wei3"
+        ],
+        "6": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "7": [
+          "jie2",
+          "jie1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 3,
+          "before": "shang4",
+          "after": "shang5",
+          "phrase": "早上",
+          "reason": "Morning; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "他個子很高比較胖",
+      "lexicalPinyin": [
+        "ta1",
+        "ge4",
+        "zi5",
+        "hen3",
+        "gao1",
+        "bi3",
+        "jiao4",
+        "pang4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "ta1",
+          "tuo2"
+        ],
+        "1": [
+          "ge4",
+          "ge3"
+        ],
+        "2": [
+          "zi5",
+          "zi3"
+        ],
+        "4": [
+          "gao1",
+          "gao4"
+        ],
+        "5": [
+          "bi3",
+          "bi4",
+          "pi2",
+          "pi3"
+        ],
+        "6": [
+          "jiao4",
+          "jue2",
+          "xiao4"
+        ],
+        "7": [
+          "pang4",
+          "pan2",
+          "pan4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "他們都很忙",
+      "lexicalPinyin": [
+        "ta1",
+        "men5",
+        "dou1",
+        "hen3",
+        "mang2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "ta1",
+          "tuo2"
+        ],
+        "1": [
+          "men5",
+          "men4",
+          "men2"
+        ],
+        "2": [
+          "dou1",
+          "du1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "他們都非常忙",
+      "lexicalPinyin": [
+        "ta1",
+        "men5",
+        "dou1",
+        "fei1",
+        "chang2",
+        "mang2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "ta1",
+          "tuo2"
+        ],
+        "1": [
+          "men5",
+          "men4",
+          "men2"
+        ],
+        "2": [
+          "dou1",
+          "du1"
+        ],
+        "3": [
+          "fei1",
+          "fei3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "他就不讓我進教室了",
+      "lexicalPinyin": [
+        "ta1",
+        "jiu4",
+        "bu4",
+        "rang4",
+        "wo3",
+        "jin4",
+        "jiao4",
+        "shi4",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "ta1",
+          "tuo2"
+        ],
+        "2": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "6": [
+          "jiao4",
+          "jiao1"
+        ],
+        "8": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "他的同學都叫他胖子",
+      "lexicalPinyin": [
+        "ta1",
+        "de5",
+        "tong2",
+        "xue2",
+        "dou1",
+        "jiao4",
+        "ta1",
+        "pang4",
+        "zi5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "ta1",
+          "tuo2"
+        ],
+        "1": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "2": [
+          "tong2",
+          "tong4"
+        ],
+        "3": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "4": [
+          "dou1",
+          "du1"
+        ],
+        "6": [
+          "ta1",
+          "tuo2"
+        ],
+        "7": [
+          "pang4",
+          "pan2",
+          "pan4"
+        ],
+        "8": [
+          "zi5",
+          "zi3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "他的女朋友很漂亮是日本人",
+      "lexicalPinyin": [
+        "ta1",
+        "de5",
+        "nv3",
+        "peng2",
+        "you5",
+        "hen3",
+        "piao4",
+        "liang5",
+        "shi4",
+        "ri4",
+        "ben3",
+        "ren2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "ta1",
+          "tuo2"
+        ],
+        "1": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "2": [
+          "nv3",
+          "nv4",
+          "ru3"
+        ],
+        "6": [
+          "piao1",
+          "piao4",
+          "piao3",
+          "biao1"
+        ],
+        "7": [
+          "liang4",
+          "liang2"
+        ],
+        "8": [
+          "shi4",
+          "ti2"
+        ],
+        "10": [
+          "ben3",
+          "ben1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 4,
+          "before": "you3",
+          "after": "you5",
+          "phrase": "朋友",
+          "reason": "Friend; neutral/full variation flagged"
+        },
+        {
+          "index": 7,
+          "before": "liang4",
+          "after": "liang5",
+          "phrase": "漂亮",
+          "reason": "Beautiful; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "你看這是我們家",
+      "lexicalPinyin": [
+        "ni3",
+        "kan4",
+        "zhe4",
+        "shi4",
+        "wo3",
+        "men5",
+        "jia1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "kan4",
+          "kan1"
+        ],
+        "2": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "3": [
+          "shi4",
+          "ti2"
+        ],
+        "5": [
+          "men5",
+          "men4",
+          "men2"
+        ],
+        "6": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "使全家人一年平安",
+      "lexicalPinyin": [
+        "shi3",
+        "quan2",
+        "jia1",
+        "ren2",
+        "yi1",
+        "nian2",
+        "ping2",
+        "an1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "2": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ],
+        "4": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "5": [
+          "nian2",
+          "ning4"
+        ],
+        "6": [
+          "ping2",
+          "pian2",
+          "bing4",
+          "beng1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "先得把屋子打掃得乾乾淨淨",
+      "lexicalPinyin": [
+        "xian1",
+        "dei3",
+        "ba3",
+        "wu1",
+        "zi5",
+        "da3",
+        "sao3",
+        "de5",
+        "gan1",
+        "gan1",
+        "jing4",
+        "jing4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "de2",
+          "de5",
+          "dei3"
+        ],
+        "2": [
+          "ba3",
+          "ba4",
+          "pa2"
+        ],
+        "4": [
+          "zi5",
+          "zi3"
+        ],
+        "5": [
+          "da3",
+          "da2"
+        ],
+        "6": [
+          "sao3",
+          "sao4"
+        ],
+        "7": [
+          "de2",
+          "de5",
+          "dei3"
+        ],
+        "8": [
+          "qian2",
+          "gan1"
+        ],
+        "9": [
+          "qian2",
+          "gan1"
+        ],
+        "10": [
+          "jing4",
+          "cheng2"
+        ],
+        "11": [
+          "jing4",
+          "cheng2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 8,
+          "before": "qian2",
+          "after": "gan1",
+          "phrase": "乾乾淨淨",
+          "reason": "Clean, not surname or Qian hexagram"
+        },
+        {
+          "index": 9,
+          "before": "qian2",
+          "after": "gan1",
+          "phrase": "乾乾淨淨",
+          "reason": "Clean, not surname or Qian hexagram"
+        },
+        {
+          "index": 7,
+          "before": "de2",
+          "after": "de5",
+          "phrase": "打掃得",
+          "reason": "Complement particle after cleaning verb"
+        },
+        {
+          "index": 1,
+          "before": "de2",
+          "after": "dei3",
+          "phrase": "先得",
+          "reason": "Necessity modal: must first"
+        }
+      ]
+    },
+    {
+      "text": "只是看著我笑",
+      "lexicalPinyin": [
+        "zhi3",
+        "shi4",
+        "kan4",
+        "zhe5",
+        "wo3",
+        "xiao4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "zhi3",
+          "zhi1"
+        ],
+        "1": [
+          "shi4",
+          "ti2"
+        ],
+        "2": [
+          "kan4",
+          "kan1"
+        ],
+        "3": [
+          "zhu4",
+          "zhuo2",
+          "chu2",
+          "zhao1",
+          "zhao2",
+          "zhe5"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 3,
+          "before": "zhu4",
+          "after": "zhe5",
+          "phrase": "看著",
+          "reason": "Aspect particle"
+        }
+      ]
+    },
+    {
+      "text": "只要用手機發幾條短信就行了",
+      "lexicalPinyin": [
+        "zhi3",
+        "yao4",
+        "yong4",
+        "shou3",
+        "ji1",
+        "fa1",
+        "ji3",
+        "tiao2",
+        "duan3",
+        "xin4",
+        "jiu4",
+        "xing2",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "zhi3",
+          "zhi1"
+        ],
+        "1": [
+          "yao4",
+          "yao1",
+          "yao3"
+        ],
+        "5": [
+          "fa1",
+          "bo1"
+        ],
+        "6": [
+          "ji3",
+          "ji1",
+          "ji4",
+          "qi2"
+        ],
+        "7": [
+          "tiao2",
+          "tiao1"
+        ],
+        "9": [
+          "xin4",
+          "shen1"
+        ],
+        "11": [
+          "xing2",
+          "hang2",
+          "heng2",
+          "xing4",
+          "hang4"
+        ],
+        "12": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "叮鈴鈴上課鈴響了",
+      "lexicalPinyin": [
+        "ding1",
+        "ling2",
+        "ling2",
+        "shang4",
+        "ke4",
+        "ling2",
+        "xiang3",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "3": [
+          "shang4",
+          "shang3"
+        ],
+        "7": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "可是安靜極了連一點兒聲音也沒有",
+      "lexicalPinyin": [
+        "ke3",
+        "shi4",
+        "an1",
+        "jing4",
+        "ji2",
+        "le5",
+        "lian2",
+        "yi1",
+        "dian3",
+        "er2",
+        "sheng1",
+        "yin1",
+        "ye3",
+        "mei2",
+        "you3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [
+          "ERHUA_PRECEDING_SYLLABLE"
+        ],
+        [
+          "ERHUA_SUFFIX_REQUIRES_JOINT_SYLLABLE_POLICY"
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "ke3",
+          "ke4",
+          "ge1"
+        ],
+        "1": [
+          "shi4",
+          "ti2"
+        ],
+        "4": [
+          "ji2",
+          "ji3"
+        ],
+        "5": [
+          "le5",
+          "liao3",
+          "liao4"
+        ],
+        "6": [
+          "lian2",
+          "lian3",
+          "lian4",
+          "lan4"
+        ],
+        "7": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "8": [
+          "dian3",
+          "zhan1",
+          "duo4"
+        ],
+        "9": [
+          "er2",
+          "ni2"
+        ],
+        "12": [
+          "ye3",
+          "yi2"
+        ],
+        "14": [
+          "you3",
+          "you4",
+          "wei3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "和一個倒著的福字表示福到了",
+      "lexicalPinyin": [
+        "he2",
+        "yi1",
+        "ge4",
+        "dao4",
+        "zhe5",
+        "de5",
+        "fu2",
+        "zi4",
+        "biao3",
+        "shi4",
+        "fu2",
+        "dao4",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "he2",
+          "he4",
+          "hu2",
+          "huo2",
+          "huo4",
+          "huo5"
+        ],
+        "1": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "2": [
+          "ge4",
+          "ge3"
+        ],
+        "3": [
+          "dao4",
+          "dao3"
+        ],
+        "4": [
+          "zhu4",
+          "zhuo2",
+          "chu2",
+          "zhao1",
+          "zhao2",
+          "zhe5"
+        ],
+        "5": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "6": [
+          "fu2",
+          "fu4"
+        ],
+        "9": [
+          "shi4",
+          "qi2",
+          "zhi4",
+          "shi2"
+        ],
+        "10": [
+          "fu2",
+          "fu4"
+        ],
+        "12": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 4,
+          "before": "zhu4",
+          "after": "zhe5",
+          "phrase": "倒著",
+          "reason": "Upside-down 福 character and aspect particle"
+        }
+      ]
+    },
+    {
+      "text": "和一隻大花貓",
+      "lexicalPinyin": [
+        "he2",
+        "yi1",
+        "zhi1",
+        "da4",
+        "hua1",
+        "mao1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "he2",
+          "he4",
+          "hu2",
+          "huo2",
+          "huo4",
+          "huo5"
+        ],
+        "1": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "2": [
+          "zhi1",
+          "huo4"
+        ],
+        "3": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "5": [
+          "mao1",
+          "mao2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "和西方的聖誕節一樣",
+      "lexicalPinyin": [
+        "he2",
+        "xi1",
+        "fang1",
+        "de5",
+        "sheng4",
+        "dan4",
+        "jie2",
+        "yi1",
+        "yang4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "he2",
+          "he4",
+          "hu2",
+          "huo2",
+          "huo4",
+          "huo5"
+        ],
+        "2": [
+          "fang1",
+          "fang2",
+          "fang3",
+          "pang2",
+          "wang3",
+          "feng1"
+        ],
+        "3": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "6": [
+          "jie2",
+          "jie1"
+        ],
+        "7": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "8": [
+          "yang4",
+          "xiang4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "哎洗澡間的燈怎麼不亮了",
+      "lexicalPinyin": [
+        "ai1",
+        "xi3",
+        "zao3",
+        "jian1",
+        "de5",
+        "deng1",
+        "zen3",
+        "me5",
+        "bu4",
+        "liang4",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "AMBIGUOUS_INTERJECTION_READING"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "xi3",
+          "xian3"
+        ],
+        "2": [
+          "zao3",
+          "cao1"
+        ],
+        "3": [
+          "jian1",
+          "jian4",
+          "jian3"
+        ],
+        "4": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "8": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "9": [
+          "liang4",
+          "liang2"
+        ],
+        "10": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "因為開學才半個多月",
+      "lexicalPinyin": [
+        "yin1",
+        "wei4",
+        "kai1",
+        "xue2",
+        "cai2",
+        "ban4",
+        "ge4",
+        "duo1",
+        "yue4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "wei4",
+          "wei2"
+        ],
+        "2": [
+          "kai1",
+          "qian1"
+        ],
+        "3": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "4": [
+          "cai2",
+          "zai1"
+        ],
+        "5": [
+          "ban4",
+          "pan4"
+        ],
+        "6": [
+          "ge4",
+          "ge3"
+        ],
+        "8": [
+          "yue4",
+          "ru4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "夜裡十二點大人和孩子都跑到外邊去放鞭炮",
+      "lexicalPinyin": [
+        "ye4",
+        "li3",
+        "shi2",
+        "er4",
+        "dian3",
+        "da4",
+        "ren2",
+        "he2",
+        "hai2",
+        "zi5",
+        "dou1",
+        "pao3",
+        "dao4",
+        "wai4",
+        "bian1",
+        "qu4",
+        "fang4",
+        "bian1",
+        "pao4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "4": [
+          "dian3",
+          "zhan1",
+          "duo4"
+        ],
+        "5": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "7": [
+          "he2",
+          "he4",
+          "hu2",
+          "huo2",
+          "huo4",
+          "huo5"
+        ],
+        "9": [
+          "zi5",
+          "zi3"
+        ],
+        "10": [
+          "dou1",
+          "du1"
+        ],
+        "11": [
+          "pao3",
+          "pao2",
+          "bo2"
+        ],
+        "14": [
+          "bian1",
+          "bian5"
+        ],
+        "15": [
+          "qu4",
+          "qu1"
+        ],
+        "16": [
+          "fang4",
+          "fang3",
+          "fang1"
+        ],
+        "18": [
+          "pao4",
+          "bao1",
+          "pao2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "大中小學也都在這個時候開始放寒假",
+      "lexicalPinyin": [
+        "da4",
+        "zhong1",
+        "xiao3",
+        "xue2",
+        "ye3",
+        "dou1",
+        "zai4",
+        "zhe4",
+        "ge4",
+        "shi2",
+        "hou5",
+        "kai1",
+        "shi3",
+        "fang4",
+        "han2",
+        "jia4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "1": [
+          "zhong1",
+          "zhong4"
+        ],
+        "3": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "4": [
+          "ye3",
+          "yi2"
+        ],
+        "5": [
+          "dou1",
+          "du1"
+        ],
+        "7": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "8": [
+          "ge4",
+          "ge3"
+        ],
+        "11": [
+          "kai1",
+          "qian1"
+        ],
+        "13": [
+          "fang4",
+          "fang3",
+          "fang1"
+        ],
+        "15": [
+          "jia3",
+          "jia4",
+          "jie5",
+          "xia4",
+          "xia2",
+          "ge2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 10,
+          "before": "hou4",
+          "after": "hou5",
+          "phrase": "時候",
+          "reason": "Time; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "大年三十晚上全家人坐在一起",
+      "lexicalPinyin": [
+        "da4",
+        "nian2",
+        "san1",
+        "shi2",
+        "wan3",
+        "shang4",
+        "quan2",
+        "jia1",
+        "ren2",
+        "zuo4",
+        "zai4",
+        "yi1",
+        "qi3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "1": [
+          "nian2",
+          "ning4"
+        ],
+        "5": [
+          "shang4",
+          "shang3"
+        ],
+        "7": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ],
+        "11": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 11,
+          "before": "yi4",
+          "after": "yi1",
+          "phrase": "一",
+          "reason": "Lexical citation tone only; surface sandhi is not adjudicated"
+        }
+      ]
+    },
+    {
+      "text": "大概昨天夜裡沒睡好",
+      "lexicalPinyin": [
+        "da4",
+        "gai4",
+        "zuo2",
+        "tian1",
+        "ye4",
+        "li3",
+        "mei2",
+        "shui4",
+        "hao3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "1": [
+          "gai4",
+          "gui4",
+          "jie2"
+        ],
+        "8": [
+          "hao3",
+          "hao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "太奇怪了這節課不是聽力嗎",
+      "lexicalPinyin": [
+        "tai4",
+        "qi2",
+        "guai4",
+        "le5",
+        "zhe4",
+        "jie2",
+        "ke4",
+        "bu4",
+        "shi4",
+        "ting1",
+        "li4",
+        "ma5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "tai4",
+          "ta1"
+        ],
+        "1": [
+          "qi2",
+          "ji1",
+          "ai3",
+          "yi3"
+        ],
+        "3": [
+          "le5",
+          "liao3",
+          "liao4"
+        ],
+        "4": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "5": [
+          "jie2",
+          "jie1"
+        ],
+        "7": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "8": [
+          "shi4",
+          "ti2"
+        ],
+        "11": [
+          "ma5",
+          "ma4",
+          "ma2",
+          "ma3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 7,
+          "before": "bu2",
+          "after": "bu4",
+          "phrase": "不",
+          "reason": "Lexical citation tone only; surface sandhi is not adjudicated"
+        }
+      ]
+    },
+    {
+      "text": "孩子們還可以從大人那裡得到裝著錢的小紅包",
+      "lexicalPinyin": [
+        "hai2",
+        "zi5",
+        "men5",
+        "hai2",
+        "ke3",
+        "yi3",
+        "cong2",
+        "da4",
+        "ren2",
+        "na4",
+        "li3",
+        "de2",
+        "dao4",
+        "zhuang1",
+        "zhe5",
+        "qian2",
+        "de5",
+        "xiao3",
+        "hong2",
+        "bao1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "zi5",
+          "zi3"
+        ],
+        "2": [
+          "men5",
+          "men4",
+          "men2"
+        ],
+        "3": [
+          "hai2",
+          "huan2",
+          "xuan2"
+        ],
+        "4": [
+          "ke3",
+          "ke4",
+          "ge1"
+        ],
+        "5": [
+          "yi3",
+          "si4"
+        ],
+        "6": [
+          "cong2",
+          "zong4",
+          "zong1",
+          "cong1",
+          "zong3"
+        ],
+        "7": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "9": [
+          "na4",
+          "na1",
+          "nuo2",
+          "nuo4",
+          "nei4",
+          "na3",
+          "nei3",
+          "ne2",
+          "nai3",
+          "ne4"
+        ],
+        "11": [
+          "de2",
+          "de5",
+          "dei3"
+        ],
+        "14": [
+          "zhu4",
+          "zhuo2",
+          "chu2",
+          "zhao1",
+          "zhao2",
+          "zhe5"
+        ],
+        "15": [
+          "qian2",
+          "jian3"
+        ],
+        "16": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "18": [
+          "hong2",
+          "gong1",
+          "jiang4"
+        ],
+        "19": [
+          "bao1",
+          "pao2",
+          "fu2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 14,
+          "before": "zhu4",
+          "after": "zhe5",
+          "phrase": "裝著",
+          "reason": "Aspect particle"
+        }
+      ]
+    },
+    {
+      "text": "小貓的名字呢是花花",
+      "lexicalPinyin": [
+        "xiao3",
+        "mao1",
+        "de5",
+        "ming2",
+        "zi5",
+        "ne5",
+        "shi4",
+        "hua1",
+        "hua1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "mao1",
+          "mao2"
+        ],
+        "2": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "3": [
+          "ming2",
+          "ming4"
+        ],
+        "5": [
+          "ne5",
+          "ni2",
+          "ni3",
+          "ni1"
+        ],
+        "6": [
+          "shi4",
+          "ti2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 4,
+          "before": "zi4",
+          "after": "zi5",
+          "phrase": "名字",
+          "reason": "Name; optional full/neutral tone flagged"
+        }
+      ]
+    },
+    {
+      "text": "就把年夜飯搬到餐館裡去吃",
+      "lexicalPinyin": [
+        "jiu4",
+        "ba3",
+        "nian2",
+        "ye4",
+        "fan4",
+        "ban1",
+        "dao4",
+        "can1",
+        "guan3",
+        "li3",
+        "qu4",
+        "chi1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "ba3",
+          "ba4",
+          "pa2"
+        ],
+        "2": [
+          "nian2",
+          "ning4"
+        ],
+        "5": [
+          "ban1",
+          "su4"
+        ],
+        "7": [
+          "can1",
+          "sun1"
+        ],
+        "10": [
+          "qu4",
+          "qu1"
+        ],
+        "11": [
+          "chi1",
+          "qi1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "就連拜年也變得簡單了",
+      "lexicalPinyin": [
+        "jiu4",
+        "lian2",
+        "bai4",
+        "nian2",
+        "ye3",
+        "bian4",
+        "de5",
+        "jian3",
+        "dan1",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "lian2",
+          "lian3",
+          "lian4",
+          "lan4"
+        ],
+        "2": [
+          "bai4",
+          "bai2"
+        ],
+        "3": [
+          "nian2",
+          "ning4"
+        ],
+        "4": [
+          "ye3",
+          "yi2"
+        ],
+        "6": [
+          "de2",
+          "de5",
+          "dei3"
+        ],
+        "8": [
+          "dan1",
+          "dan3",
+          "chan2",
+          "shan4",
+          "chan3",
+          "dan4",
+          "zhan4",
+          "tan2"
+        ],
+        "9": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 6,
+          "before": "de2",
+          "after": "de5",
+          "phrase": "變得",
+          "reason": "Complement particle"
+        }
+      ]
+    },
+    {
+      "text": "帶著水果或點心去親友家拜年",
+      "lexicalPinyin": [
+        "dai4",
+        "zhe5",
+        "shui3",
+        "guo3",
+        "huo4",
+        "dian3",
+        "xin1",
+        "qu4",
+        "qin1",
+        "you3",
+        "jia1",
+        "bai4",
+        "nian2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "zhu4",
+          "zhuo2",
+          "chu2",
+          "zhao1",
+          "zhao2",
+          "zhe5"
+        ],
+        "3": [
+          "guo3",
+          "luo3",
+          "guan4"
+        ],
+        "4": [
+          "huo4",
+          "yu4"
+        ],
+        "5": [
+          "dian3",
+          "zhan1",
+          "duo4"
+        ],
+        "7": [
+          "qu4",
+          "qu1"
+        ],
+        "8": [
+          "qin1",
+          "qing4"
+        ],
+        "10": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ],
+        "11": [
+          "bai4",
+          "bai2"
+        ],
+        "12": [
+          "nian2",
+          "ning4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 1,
+          "before": "zhu4",
+          "after": "zhe5",
+          "phrase": "帶著",
+          "reason": "Aspect particle"
+        }
+      ]
+    },
+    {
+      "text": "從陰曆十二月初開始",
+      "lexicalPinyin": [
+        "cong2",
+        "yin1",
+        "li4",
+        "shi2",
+        "er4",
+        "yue4",
+        "chu1",
+        "kai1",
+        "shi3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "cong2",
+          "zong4",
+          "zong1",
+          "cong1",
+          "zong3"
+        ],
+        "1": [
+          "yin1",
+          "yin4",
+          "an1"
+        ],
+        "5": [
+          "yue4",
+          "ru4"
+        ],
+        "7": [
+          "kai1",
+          "qian1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "心裡得意地想今天肯定不會遲到了",
+      "lexicalPinyin": [
+        "xin1",
+        "li3",
+        "de2",
+        "yi4",
+        "de5",
+        "xiang3",
+        "jin1",
+        "tian1",
+        "ken3",
+        "ding4",
+        "bu4",
+        "hui4",
+        "chi2",
+        "dao4",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "2": [
+          "de2",
+          "de5",
+          "dei3"
+        ],
+        "3": [
+          "yi4",
+          "yi1"
+        ],
+        "4": [
+          "di4",
+          "de5"
+        ],
+        "10": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "11": [
+          "hui4",
+          "kuai4",
+          "kuo4"
+        ],
+        "12": [
+          "chi2",
+          "zhi4"
+        ],
+        "14": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 4,
+          "before": "di4",
+          "after": "de5",
+          "phrase": "得意地",
+          "reason": "Adverbial particle after 得意"
+        }
+      ]
+    },
+    {
+      "text": "怎麼又變成我最討厭的高中數學課呢",
+      "lexicalPinyin": [
+        "zen3",
+        "me5",
+        "you4",
+        "bian4",
+        "cheng2",
+        "wo3",
+        "zui4",
+        "tao3",
+        "yan4",
+        "de5",
+        "gao1",
+        "zhong1",
+        "shu4",
+        "xue2",
+        "ke4",
+        "ne5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "6": [
+          "zui4",
+          "cuo1"
+        ],
+        "8": [
+          "yan4",
+          "ya1",
+          "yan3",
+          "yan1",
+          "yi4"
+        ],
+        "9": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "10": [
+          "gao1",
+          "gao4"
+        ],
+        "11": [
+          "zhong1",
+          "zhong4"
+        ],
+        "12": [
+          "shu4",
+          "shu3",
+          "shuo4"
+        ],
+        "13": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "15": [
+          "ne5",
+          "ni2",
+          "ni3",
+          "ni1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "怎麼會變成我最討厭的高中數學課呢",
+      "lexicalPinyin": [
+        "zen3",
+        "me5",
+        "hui4",
+        "bian4",
+        "cheng2",
+        "wo3",
+        "zui4",
+        "tao3",
+        "yan4",
+        "de5",
+        "gao1",
+        "zhong1",
+        "shu4",
+        "xue2",
+        "ke4",
+        "ne5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "2": [
+          "hui4",
+          "kuai4",
+          "kuo4"
+        ],
+        "6": [
+          "zui4",
+          "cuo1"
+        ],
+        "8": [
+          "yan4",
+          "ya1",
+          "yan3",
+          "yan1",
+          "yi4"
+        ],
+        "9": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "10": [
+          "gao1",
+          "gao4"
+        ],
+        "11": [
+          "zhong1",
+          "zhong4"
+        ],
+        "12": [
+          "shu4",
+          "shu3",
+          "shuo4"
+        ],
+        "13": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "15": [
+          "ne5",
+          "ni2",
+          "ni3",
+          "ni1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我一下子就醒了",
+      "lexicalPinyin": [
+        "wo3",
+        "yi1",
+        "xia4",
+        "zi5",
+        "jiu4",
+        "xing3",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "3": [
+          "zi5",
+          "zi3"
+        ],
+        "5": [
+          "xing3",
+          "cheng2",
+          "jing1"
+        ],
+        "6": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我們家的房子不大也不小",
+      "lexicalPinyin": [
+        "wo3",
+        "men5",
+        "jia1",
+        "de5",
+        "fang2",
+        "zi5",
+        "bu4",
+        "da4",
+        "ye3",
+        "bu4",
+        "xiao3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "men5",
+          "men4",
+          "men2"
+        ],
+        "2": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ],
+        "3": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "4": [
+          "fang2",
+          "pang2"
+        ],
+        "5": [
+          "zi5",
+          "zi3"
+        ],
+        "6": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "7": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "8": [
+          "ye3",
+          "yi2"
+        ],
+        "9": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我又穿上昨天脫下的那身衣服",
+      "lexicalPinyin": [
+        "wo3",
+        "you4",
+        "chuan1",
+        "shang4",
+        "zuo2",
+        "tian1",
+        "tuo1",
+        "xia4",
+        "de5",
+        "na4",
+        "shen1",
+        "yi1",
+        "fu5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "2": [
+          "chuan1",
+          "chuan4",
+          "yuan1"
+        ],
+        "3": [
+          "shang4",
+          "shang3"
+        ],
+        "8": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "9": [
+          "na4",
+          "na1",
+          "nuo2",
+          "nuo4",
+          "nei4",
+          "na3",
+          "nei3",
+          "ne2",
+          "nai3",
+          "ne4"
+        ],
+        "10": [
+          "shen1",
+          "juan1"
+        ],
+        "11": [
+          "yi1",
+          "yi4"
+        ],
+        "12": [
+          "fu2",
+          "fu4",
+          "bi4",
+          "bo2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 12,
+          "before": "fu2",
+          "after": "fu5",
+          "phrase": "衣服",
+          "reason": "Clothes; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "我呼吸了一口新鮮空氣",
+      "lexicalPinyin": [
+        "wo3",
+        "hu1",
+        "xi1",
+        "le5",
+        "yi1",
+        "kou3",
+        "xin1",
+        "xian1",
+        "kong1",
+        "qi4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "hu1",
+          "xiao1",
+          "xu1",
+          "he4",
+          "xia4"
+        ],
+        "3": [
+          "le5",
+          "liao3",
+          "liao4"
+        ],
+        "4": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "7": [
+          "xian1",
+          "xian3",
+          "xian4"
+        ],
+        "8": [
+          "kong1",
+          "kong4",
+          "kong3"
+        ],
+        "9": [
+          "qi4",
+          "xi4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我哥哥是大學生學中文",
+      "lexicalPinyin": [
+        "wo3",
+        "ge1",
+        "ge5",
+        "shi4",
+        "da4",
+        "xue2",
+        "sheng1",
+        "xue2",
+        "zhong1",
+        "wen2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "3": [
+          "shi4",
+          "ti2"
+        ],
+        "4": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "5": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "7": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "8": [
+          "zhong1",
+          "zhong4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 2,
+          "before": "ge1",
+          "after": "ge5",
+          "phrase": "哥哥",
+          "reason": "Kinship reduplication; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "我家有四口人",
+      "lexicalPinyin": [
+        "wo3",
+        "jia1",
+        "you3",
+        "si4",
+        "kou3",
+        "ren2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ],
+        "2": [
+          "you3",
+          "you4",
+          "wei3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我家還有一隻小黑狗",
+      "lexicalPinyin": [
+        "wo3",
+        "jia1",
+        "hai2",
+        "you3",
+        "yi1",
+        "zhi1",
+        "xiao3",
+        "hei1",
+        "gou3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ],
+        "2": [
+          "hai2",
+          "huan2",
+          "xuan2"
+        ],
+        "3": [
+          "you3",
+          "you4",
+          "wei3"
+        ],
+        "4": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "5": [
+          "zhi1",
+          "huo4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我已經遲到過兩次了",
+      "lexicalPinyin": [
+        "wo3",
+        "yi3",
+        "jing1",
+        "chi2",
+        "dao4",
+        "guo4",
+        "liang3",
+        "ci4",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "yi3",
+          "si4"
+        ],
+        "2": [
+          "jing1",
+          "jing4"
+        ],
+        "3": [
+          "chi2",
+          "zhi4"
+        ],
+        "5": [
+          "guo4",
+          "guo1",
+          "guo5",
+          "huo4"
+        ],
+        "6": [
+          "liang3",
+          "liang4"
+        ],
+        "7": [
+          "ci4",
+          "zi1",
+          "ci2"
+        ],
+        "8": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我想去洗洗臉",
+      "lexicalPinyin": [
+        "wo3",
+        "xiang3",
+        "qu4",
+        "xi3",
+        "xi3",
+        "lian3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "2": [
+          "qu4",
+          "qu1"
+        ],
+        "3": [
+          "xi3",
+          "xian3"
+        ],
+        "4": [
+          "xi3",
+          "xian3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我打開窗戶天還沒亮呢",
+      "lexicalPinyin": [
+        "wo3",
+        "da3",
+        "kai1",
+        "chuang1",
+        "hu5",
+        "tian1",
+        "hai2",
+        "mei2",
+        "liang4",
+        "ne5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "da3",
+          "da2"
+        ],
+        "2": [
+          "kai1",
+          "qian1"
+        ],
+        "3": [
+          "chuang1",
+          "cong1"
+        ],
+        "6": [
+          "hai2",
+          "huan2",
+          "xuan2"
+        ],
+        "8": [
+          "liang4",
+          "liang2"
+        ],
+        "9": [
+          "ne5",
+          "ni2",
+          "ni3",
+          "ni1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 4,
+          "before": "hu4",
+          "after": "hu5",
+          "phrase": "窗戶",
+          "reason": "Window; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "我母親是中學英語老師",
+      "lexicalPinyin": [
+        "wo3",
+        "mu3",
+        "qin1",
+        "shi4",
+        "zhong1",
+        "xue2",
+        "ying1",
+        "yu3",
+        "lao3",
+        "shi1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "mu3",
+          "mu2",
+          "wu3",
+          "wu2"
+        ],
+        "2": [
+          "qin1",
+          "qing4"
+        ],
+        "3": [
+          "shi4",
+          "ti2"
+        ],
+        "4": [
+          "zhong1",
+          "zhong4"
+        ],
+        "5": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "6": [
+          "ying1",
+          "yang1"
+        ],
+        "7": [
+          "yu3",
+          "yu4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我父親是一個有名的大夫",
+      "lexicalPinyin": [
+        "wo3",
+        "fu4",
+        "qin1",
+        "shi4",
+        "yi1",
+        "ge4",
+        "you3",
+        "ming2",
+        "de5",
+        "dai4",
+        "fu5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "REGIONAL_LEXICAL_READING_VARIANT"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE",
+          "REGIONAL_LEXICAL_READING_VARIANT"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "fu4",
+          "fu3"
+        ],
+        "2": [
+          "qin1",
+          "qing4"
+        ],
+        "3": [
+          "shi4",
+          "ti2"
+        ],
+        "4": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "5": [
+          "ge4",
+          "ge3"
+        ],
+        "6": [
+          "you3",
+          "you4",
+          "wei3"
+        ],
+        "7": [
+          "ming2",
+          "ming4"
+        ],
+        "8": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "9": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "10": [
+          "fu1",
+          "fu2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 9,
+          "before": "da4",
+          "after": "dai4",
+          "phrase": "大夫",
+          "reason": "Physician in 有名的大夫; Mainland lexical reading, regional variation flagged"
+        },
+        {
+          "index": 10,
+          "before": "fu1",
+          "after": "fu5",
+          "phrase": "大夫",
+          "reason": "Physician in 有名的大夫; Mainland lexical reading, regional variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "我的小狗叫黑黑",
+      "lexicalPinyin": [
+        "wo3",
+        "de5",
+        "xiao3",
+        "gou3",
+        "jiao4",
+        "hei1",
+        "hei1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我的房間不太大",
+      "lexicalPinyin": [
+        "wo3",
+        "de5",
+        "fang2",
+        "jian1",
+        "bu4",
+        "tai4",
+        "da4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "2": [
+          "fang2",
+          "pang2"
+        ],
+        "3": [
+          "jian1",
+          "jian4",
+          "jian3"
+        ],
+        "4": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "5": [
+          "tai4",
+          "ta1"
+        ],
+        "6": [
+          "da4",
+          "dai4",
+          "tai4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "我趕快找到一個空座位坐好",
+      "lexicalPinyin": [
+        "wo3",
+        "gan3",
+        "kuai4",
+        "zhao3",
+        "dao4",
+        "yi1",
+        "ge4",
+        "kong4",
+        "zuo4",
+        "wei4",
+        "zuo4",
+        "hao3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "3": [
+          "zhao3",
+          "hua2"
+        ],
+        "5": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "6": [
+          "ge4",
+          "ge3"
+        ],
+        "7": [
+          "kong1",
+          "kong4",
+          "kong3"
+        ],
+        "9": [
+          "wei4",
+          "li4"
+        ],
+        "11": [
+          "hao3",
+          "hao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 7,
+          "before": "kong1",
+          "after": "kong4",
+          "phrase": "空座位",
+          "reason": "Unoccupied seat; not empty space noun"
+        }
+      ]
+    },
+    {
+      "text": "所以出門在外的人必須在年前趕回家來",
+      "lexicalPinyin": [
+        "suo3",
+        "yi3",
+        "chu1",
+        "men2",
+        "zai4",
+        "wai4",
+        "de5",
+        "ren2",
+        "bi4",
+        "xu1",
+        "zai4",
+        "nian2",
+        "qian2",
+        "gan3",
+        "hui2",
+        "jia1",
+        "lai2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "yi3",
+          "si4"
+        ],
+        "6": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "11": [
+          "nian2",
+          "ning4"
+        ],
+        "12": [
+          "qian2",
+          "jian3"
+        ],
+        "15": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ],
+        "16": [
+          "lai2",
+          "lai4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "所以起晚了",
+      "lexicalPinyin": [
+        "suo3",
+        "yi3",
+        "qi3",
+        "wan3",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "yi3",
+          "si4"
+        ],
+        "4": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "所以這一天也叫除夕",
+      "lexicalPinyin": [
+        "suo3",
+        "yi3",
+        "zhe4",
+        "yi1",
+        "tian1",
+        "ye3",
+        "jiao4",
+        "chu2",
+        "xi1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "yi3",
+          "si4"
+        ],
+        "2": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "3": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "5": [
+          "ye3",
+          "yi2"
+        ],
+        "7": [
+          "chu2",
+          "zhu4",
+          "shu1"
+        ],
+        "8": [
+          "xi1",
+          "yi4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "所以這一天也叫除夕正月初一",
+      "lexicalPinyin": [
+        "suo3",
+        "yi3",
+        "zhe4",
+        "yi1",
+        "tian1",
+        "ye3",
+        "jiao4",
+        "chu2",
+        "xi1",
+        "zheng1",
+        "yue4",
+        "chu1",
+        "yi1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "yi3",
+          "si4"
+        ],
+        "2": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "3": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "5": [
+          "ye3",
+          "yi2"
+        ],
+        "7": [
+          "chu2",
+          "zhu4",
+          "shu1"
+        ],
+        "8": [
+          "xi1",
+          "yi4"
+        ],
+        "9": [
+          "zheng4",
+          "zheng1"
+        ],
+        "10": [
+          "yue4",
+          "ru4"
+        ],
+        "12": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "據說這是為了把一個名字叫夕的怪物嚇跑",
+      "lexicalPinyin": [
+        "ju4",
+        "shuo1",
+        "zhe4",
+        "shi4",
+        "wei4",
+        "le5",
+        "ba3",
+        "yi1",
+        "ge4",
+        "ming2",
+        "zi5",
+        "jiao4",
+        "xi1",
+        "de5",
+        "guai4",
+        "wu4",
+        "xia4",
+        "pao3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "2": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "3": [
+          "shi4",
+          "ti2"
+        ],
+        "4": [
+          "wei4",
+          "wei2"
+        ],
+        "5": [
+          "le5",
+          "liao3",
+          "liao4"
+        ],
+        "6": [
+          "ba3",
+          "ba4",
+          "pa2"
+        ],
+        "7": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "8": [
+          "ge4",
+          "ge3"
+        ],
+        "9": [
+          "ming2",
+          "ming4"
+        ],
+        "12": [
+          "xi1",
+          "yi4"
+        ],
+        "13": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "16": [
+          "xia4",
+          "he4"
+        ],
+        "17": [
+          "pao3",
+          "pao2",
+          "bo2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 10,
+          "before": "zi4",
+          "after": "zi5",
+          "phrase": "名字",
+          "reason": "Name; optional full/neutral tone flagged"
+        }
+      ]
+    },
+    {
+      "text": "教室裡坐著很多學生",
+      "lexicalPinyin": [
+        "jiao4",
+        "shi4",
+        "li3",
+        "zuo4",
+        "zhe5",
+        "hen3",
+        "duo1",
+        "xue2",
+        "sheng1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "jiao4",
+          "jiao1"
+        ],
+        "4": [
+          "zhu4",
+          "zhuo2",
+          "chu2",
+          "zhao1",
+          "zhao2",
+          "zhe5"
+        ],
+        "7": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 4,
+          "before": "zhu4",
+          "after": "zhe5",
+          "phrase": "坐著",
+          "reason": "Aspect particle"
+        }
+      ]
+    },
+    {
+      "text": "是中國人一年中最重要最熱鬧的節日",
+      "lexicalPinyin": [
+        "shi4",
+        "zhong1",
+        "guo2",
+        "ren2",
+        "yi1",
+        "nian2",
+        "zhong1",
+        "zui4",
+        "zhong4",
+        "yao4",
+        "zui4",
+        "re4",
+        "nao5",
+        "de5",
+        "jie2",
+        "ri4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "shi4",
+          "ti2"
+        ],
+        "1": [
+          "zhong1",
+          "zhong4"
+        ],
+        "4": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "5": [
+          "nian2",
+          "ning4"
+        ],
+        "6": [
+          "zhong1",
+          "zhong4"
+        ],
+        "7": [
+          "zui4",
+          "cuo1"
+        ],
+        "8": [
+          "zhong4",
+          "chong2",
+          "tong2"
+        ],
+        "9": [
+          "yao4",
+          "yao1",
+          "yao3"
+        ],
+        "10": [
+          "zui4",
+          "cuo1"
+        ],
+        "13": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "14": [
+          "jie2",
+          "jie1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 12,
+          "before": "nao4",
+          "after": "nao5",
+          "phrase": "熱鬧",
+          "reason": "Lively; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "最近這些年大城市裡的人",
+      "lexicalPinyin": [
+        "zui4",
+        "jin4",
+        "zhe4",
+        "xie1",
+        "nian2",
+        "da4",
+        "cheng2",
+        "shi4",
+        "li3",
+        "de5",
+        "ren2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "zui4",
+          "cuo1"
+        ],
+        "2": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "3": [
+          "xie1",
+          "suo4",
+          "suo1"
+        ],
+        "4": [
+          "nian2",
+          "ning4"
+        ],
+        "5": [
+          "da4",
+          "dai4",
+          "tai4"
+        ],
+        "7": [
+          "shi4",
+          "fu2"
+        ],
+        "9": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "有些人覺得在家做飯太麻煩",
+      "lexicalPinyin": [
+        "you3",
+        "xie1",
+        "ren2",
+        "jue2",
+        "de5",
+        "zai4",
+        "jia1",
+        "zuo4",
+        "fan4",
+        "tai4",
+        "ma2",
+        "fan5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "you3",
+          "you4",
+          "wei3"
+        ],
+        "1": [
+          "xie1",
+          "suo4",
+          "suo1"
+        ],
+        "3": [
+          "jue2",
+          "jiao4"
+        ],
+        "4": [
+          "de2",
+          "de5",
+          "dei3"
+        ],
+        "6": [
+          "jia1",
+          "jia5",
+          "jia4",
+          "jie5",
+          "gu1"
+        ],
+        "9": [
+          "tai4",
+          "ta1"
+        ],
+        "10": [
+          "ma2",
+          "ma1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 4,
+          "before": "de2",
+          "after": "de5",
+          "phrase": "覺得",
+          "reason": "Cognition verb 觉得, not sleep"
+        },
+        {
+          "index": 11,
+          "before": "fan2",
+          "after": "fan5",
+          "phrase": "麻煩",
+          "reason": "Troublesome; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "有四個房間",
+      "lexicalPinyin": [
+        "you3",
+        "si4",
+        "ge4",
+        "fang2",
+        "jian1"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "you3",
+          "you4",
+          "wei3"
+        ],
+        "2": [
+          "ge4",
+          "ge3"
+        ],
+        "3": [
+          "fang2",
+          "pang2"
+        ],
+        "4": [
+          "jian1",
+          "jian4",
+          "jian3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "正月初一人們穿上新衣服",
+      "lexicalPinyin": [
+        "zheng1",
+        "yue4",
+        "chu1",
+        "yi1",
+        "ren2",
+        "men5",
+        "chuan1",
+        "shang4",
+        "xin1",
+        "yi1",
+        "fu5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "zheng4",
+          "zheng1"
+        ],
+        "1": [
+          "yue4",
+          "ru4"
+        ],
+        "3": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "5": [
+          "men5",
+          "men4",
+          "men2"
+        ],
+        "6": [
+          "chuan1",
+          "chuan4",
+          "yuan1"
+        ],
+        "7": [
+          "shang4",
+          "shang3"
+        ],
+        "9": [
+          "yi1",
+          "yi4"
+        ],
+        "10": [
+          "fu2",
+          "fu4",
+          "bi4",
+          "bo2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 10,
+          "before": "fu2",
+          "after": "fu5",
+          "phrase": "衣服",
+          "reason": "Clothes; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "正當我不知道怎麼辦的時候",
+      "lexicalPinyin": [
+        "zheng4",
+        "dang1",
+        "wo3",
+        "bu4",
+        "zhi1",
+        "dao5",
+        "zen3",
+        "me5",
+        "ban4",
+        "de5",
+        "shi2",
+        "hou5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "zheng4",
+          "zheng1"
+        ],
+        "1": [
+          "dang1",
+          "dang4",
+          "dang5"
+        ],
+        "3": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "4": [
+          "zhi1",
+          "zhi4"
+        ],
+        "5": [
+          "dao4",
+          "dao3"
+        ],
+        "9": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 11,
+          "before": "hou4",
+          "after": "hou5",
+          "phrase": "時候",
+          "reason": "Time; neutral/full variation flagged"
+        },
+        {
+          "index": 5,
+          "before": "dao4",
+          "after": "dao5",
+          "phrase": "知道",
+          "reason": "Know; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "每個人的面前還擺著一本數學課本",
+      "lexicalPinyin": [
+        "mei3",
+        "ge4",
+        "ren2",
+        "de5",
+        "mian4",
+        "qian2",
+        "hai2",
+        "bai3",
+        "zhe5",
+        "yi1",
+        "ben3",
+        "shu4",
+        "xue2",
+        "ke4",
+        "ben3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "ge4",
+          "ge3"
+        ],
+        "3": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "5": [
+          "qian2",
+          "jian3"
+        ],
+        "6": [
+          "hai2",
+          "huan2",
+          "xuan2"
+        ],
+        "8": [
+          "zhu4",
+          "zhuo2",
+          "chu2",
+          "zhao1",
+          "zhao2",
+          "zhe5"
+        ],
+        "9": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "10": [
+          "ben3",
+          "ben1"
+        ],
+        "11": [
+          "shu4",
+          "shu3",
+          "shuo4"
+        ],
+        "12": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "14": [
+          "ben3",
+          "ben1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 8,
+          "before": "zhu4",
+          "after": "zhe5",
+          "phrase": "擺著",
+          "reason": "Aspect particle"
+        }
+      ]
+    },
+    {
+      "text": "比如身體健康恭喜發財萬事如意等等",
+      "lexicalPinyin": [
+        "bi3",
+        "ru2",
+        "shen1",
+        "ti3",
+        "jian4",
+        "kang1",
+        "gong1",
+        "xi3",
+        "fa1",
+        "cai2",
+        "wan4",
+        "shi4",
+        "ru2",
+        "yi4",
+        "deng3",
+        "deng3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "bi3",
+          "bi4",
+          "pi2",
+          "pi3"
+        ],
+        "2": [
+          "shen1",
+          "juan1"
+        ],
+        "3": [
+          "ti3",
+          "ti1"
+        ],
+        "5": [
+          "kang1",
+          "kang4"
+        ],
+        "7": [
+          "xi3",
+          "xi1",
+          "chi4"
+        ],
+        "8": [
+          "fa1",
+          "bo1"
+        ],
+        "11": [
+          "shi4",
+          "zi4"
+        ],
+        "13": [
+          "yi4",
+          "yi1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "然後在門口貼上一副紅色的對聯",
+      "lexicalPinyin": [
+        "ran2",
+        "hou4",
+        "zai4",
+        "men2",
+        "kou3",
+        "tie1",
+        "shang4",
+        "yi1",
+        "fu4",
+        "hong2",
+        "se4",
+        "de5",
+        "dui4",
+        "lian2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "6": [
+          "shang4",
+          "shang3"
+        ],
+        "7": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "8": [
+          "fu4",
+          "pi4"
+        ],
+        "9": [
+          "hong2",
+          "gong1",
+          "jiang4"
+        ],
+        "10": [
+          "se4",
+          "shai3"
+        ],
+        "11": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "爸爸媽媽哥哥和我",
+      "lexicalPinyin": [
+        "ba4",
+        "ba5",
+        "ma1",
+        "ma5",
+        "ge1",
+        "ge5",
+        "he2",
+        "wo3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "6": [
+          "he2",
+          "he4",
+          "hu2",
+          "huo2",
+          "huo4",
+          "huo5"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 1,
+          "before": "ba4",
+          "after": "ba5",
+          "phrase": "爸爸",
+          "reason": "Kinship reduplication; neutral/full variation flagged"
+        },
+        {
+          "index": 3,
+          "before": "ma1",
+          "after": "ma5",
+          "phrase": "媽媽",
+          "reason": "Kinship reduplication; neutral/full variation flagged"
+        },
+        {
+          "index": 5,
+          "before": "ge1",
+          "after": "ge5",
+          "phrase": "哥哥",
+          "reason": "Kinship reduplication; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "看來老師還沒到",
+      "lexicalPinyin": [
+        "kan4",
+        "lai2",
+        "lao3",
+        "shi1",
+        "hai2",
+        "mei2",
+        "dao4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "kan4",
+          "kan1"
+        ],
+        "1": [
+          "lai2",
+          "lai4"
+        ],
+        "4": [
+          "hai2",
+          "huan2",
+          "xuan2"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "睜開眼睛看了看床頭的鬧鐘六點半",
+      "lexicalPinyin": [
+        "zheng1",
+        "kai1",
+        "yan3",
+        "jing5",
+        "kan4",
+        "le5",
+        "kan4",
+        "chuang2",
+        "tou2",
+        "de5",
+        "nao4",
+        "zhong1",
+        "liu4",
+        "dian3",
+        "ban4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "kai1",
+          "qian1"
+        ],
+        "2": [
+          "yan3",
+          "wen3"
+        ],
+        "3": [
+          "jing1",
+          "jing3"
+        ],
+        "4": [
+          "kan4",
+          "kan1"
+        ],
+        "5": [
+          "le5",
+          "liao3",
+          "liao4"
+        ],
+        "6": [
+          "kan4",
+          "kan1"
+        ],
+        "8": [
+          "tou2",
+          "tou5"
+        ],
+        "9": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "12": [
+          "liu4",
+          "lu4"
+        ],
+        "13": [
+          "dian3",
+          "zhan1",
+          "duo4"
+        ],
+        "14": [
+          "ban4",
+          "pan4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 3,
+          "before": "jing1",
+          "after": "jing5",
+          "phrase": "眼睛",
+          "reason": "Eye; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "笑什麼是因為我沒洗臉沒梳頭也沒刮胡子",
+      "lexicalPinyin": [
+        "xiao4",
+        "shen2",
+        "me5",
+        "shi4",
+        "yin1",
+        "wei4",
+        "wo3",
+        "mei2",
+        "xi3",
+        "lian3",
+        "mei2",
+        "shu1",
+        "tou2",
+        "ye3",
+        "mei2",
+        "gua1",
+        "hu2",
+        "zi5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "shen2",
+          "shi2"
+        ],
+        "3": [
+          "shi4",
+          "ti2"
+        ],
+        "5": [
+          "wei4",
+          "wei2"
+        ],
+        "8": [
+          "xi3",
+          "xian3"
+        ],
+        "12": [
+          "tou2",
+          "tou5"
+        ],
+        "13": [
+          "ye3",
+          "yi2"
+        ],
+        "17": [
+          "zi5",
+          "zi3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "算了反正沒時間了",
+      "lexicalPinyin": [
+        "suan4",
+        "le5",
+        "fan3",
+        "zheng4",
+        "mei2",
+        "shi2",
+        "jian1",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "le5",
+          "liao3",
+          "liao4"
+        ],
+        "2": [
+          "fan3",
+          "fan4"
+        ],
+        "3": [
+          "zheng4",
+          "zheng1"
+        ],
+        "6": [
+          "jian1",
+          "jian4",
+          "jian3"
+        ],
+        "7": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "老師不但記住了我的名字",
+      "lexicalPinyin": [
+        "lao3",
+        "shi1",
+        "bu4",
+        "dan4",
+        "ji4",
+        "zhu4",
+        "le5",
+        "wo3",
+        "de5",
+        "ming2",
+        "zi5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "2": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "3": [
+          "dan4",
+          "tan3",
+          "yan4"
+        ],
+        "6": [
+          "le5",
+          "liao3",
+          "liao4"
+        ],
+        "8": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "9": [
+          "ming2",
+          "ming4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 10,
+          "before": "zi4",
+          "after": "zi5",
+          "phrase": "名字",
+          "reason": "Name; optional full/neutral tone flagged"
+        }
+      ]
+    },
+    {
+      "text": "而且還說下一次我要是再遲到的話",
+      "lexicalPinyin": [
+        "er2",
+        "qie3",
+        "hai2",
+        "shuo1",
+        "xia4",
+        "yi1",
+        "ci4",
+        "wo3",
+        "yao4",
+        "shi4",
+        "zai4",
+        "chi2",
+        "dao4",
+        "de5",
+        "hua4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "er2",
+          "neng2"
+        ],
+        "1": [
+          "qie3",
+          "ju1",
+          "cu2"
+        ],
+        "2": [
+          "hai2",
+          "huan2",
+          "xuan2"
+        ],
+        "5": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "6": [
+          "ci4",
+          "zi1",
+          "ci2"
+        ],
+        "8": [
+          "yao4",
+          "yao1",
+          "yao3"
+        ],
+        "9": [
+          "shi4",
+          "ti2"
+        ],
+        "11": [
+          "chi2",
+          "zhi4"
+        ],
+        "13": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "裡邊有一張小桌子兩把椅子和一張床",
+      "lexicalPinyin": [
+        "li3",
+        "bian1",
+        "you3",
+        "yi1",
+        "zhang1",
+        "xiao3",
+        "zhuo1",
+        "zi5",
+        "liang3",
+        "ba3",
+        "yi3",
+        "zi5",
+        "he2",
+        "yi1",
+        "zhang1",
+        "chuang2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "1": [
+          "bian1",
+          "bian5"
+        ],
+        "2": [
+          "you3",
+          "you4",
+          "wei3"
+        ],
+        "3": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "4": [
+          "zhang1",
+          "zhang4"
+        ],
+        "7": [
+          "zi5",
+          "zi3"
+        ],
+        "8": [
+          "liang3",
+          "liang4"
+        ],
+        "9": [
+          "ba3",
+          "ba4",
+          "pa2"
+        ],
+        "10": [
+          "yi3",
+          "yi1"
+        ],
+        "11": [
+          "zi5",
+          "zi3"
+        ],
+        "12": [
+          "he2",
+          "he4",
+          "hu2",
+          "huo2",
+          "huo4",
+          "huo5"
+        ],
+        "13": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "14": [
+          "zhang1",
+          "zhang4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "親親熱熱地吃一頓年夜飯",
+      "lexicalPinyin": [
+        "qin1",
+        "qin1",
+        "re4",
+        "re4",
+        "de5",
+        "chi1",
+        "yi1",
+        "dun4",
+        "nian2",
+        "ye4",
+        "fan4"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "qin1",
+          "qing4"
+        ],
+        "1": [
+          "qin1",
+          "qing4"
+        ],
+        "4": [
+          "di4",
+          "de5"
+        ],
+        "5": [
+          "chi1",
+          "qi1"
+        ],
+        "6": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "7": [
+          "dun4",
+          "du2"
+        ],
+        "8": [
+          "nian2",
+          "ning4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 4,
+          "before": "di4",
+          "after": "de5",
+          "phrase": "親親熱熱地",
+          "reason": "Adverbial particle"
+        }
+      ]
+    },
+    {
+      "text": "這下我急壞了",
+      "lexicalPinyin": [
+        "zhe4",
+        "xia4",
+        "wo3",
+        "ji2",
+        "huai4",
+        "le5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "4": [
+          "huai4",
+          "hui4",
+          "huai2"
+        ],
+        "5": [
+          "le5",
+          "liao3",
+          "liao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "這個時候我忽然發現周圍的人都是我的中學同學",
+      "lexicalPinyin": [
+        "zhe4",
+        "ge4",
+        "shi2",
+        "hou5",
+        "wo3",
+        "hu1",
+        "ran2",
+        "fa1",
+        "xian4",
+        "zhou1",
+        "wei2",
+        "de5",
+        "ren2",
+        "dou1",
+        "shi4",
+        "wo3",
+        "de5",
+        "zhong1",
+        "xue2",
+        "tong2",
+        "xue2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "zhe4",
+          "yan4",
+          "zhei4"
+        ],
+        "1": [
+          "ge4",
+          "ge3"
+        ],
+        "7": [
+          "fa1",
+          "bo1"
+        ],
+        "11": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "13": [
+          "dou1",
+          "du1"
+        ],
+        "14": [
+          "shi4",
+          "ti2"
+        ],
+        "16": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "17": [
+          "zhong1",
+          "zhong4"
+        ],
+        "18": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "19": [
+          "tong2",
+          "tong4"
+        ],
+        "20": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 3,
+          "before": "hou4",
+          "after": "hou5",
+          "phrase": "時候",
+          "reason": "Time; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "還是因為我又穿了兩只顏色不同的襪子",
+      "lexicalPinyin": [
+        "hai2",
+        "shi4",
+        "yin1",
+        "wei4",
+        "wo3",
+        "you4",
+        "chuan1",
+        "le5",
+        "liang3",
+        "zhi1",
+        "yan2",
+        "se4",
+        "bu4",
+        "tong2",
+        "de5",
+        "wa4",
+        "zi5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "hai2",
+          "huan2",
+          "xuan2"
+        ],
+        "1": [
+          "shi4",
+          "ti2"
+        ],
+        "3": [
+          "wei4",
+          "wei2"
+        ],
+        "6": [
+          "chuan1",
+          "chuan4",
+          "yuan1"
+        ],
+        "7": [
+          "le5",
+          "liao3",
+          "liao4"
+        ],
+        "8": [
+          "liang3",
+          "liang4"
+        ],
+        "9": [
+          "zhi3",
+          "zhi1"
+        ],
+        "11": [
+          "se4",
+          "shai3"
+        ],
+        "12": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "13": [
+          "tong2",
+          "tong4"
+        ],
+        "14": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ],
+        "16": [
+          "zi5",
+          "zi3"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 9,
+          "before": "zhi3",
+          "after": "zhi1",
+          "phrase": "兩只",
+          "reason": "Measure word for socks, not adverb only"
+        }
+      ]
+    },
+    {
+      "text": "還有一個非常好看的小花園",
+      "lexicalPinyin": [
+        "hai2",
+        "you3",
+        "yi1",
+        "ge4",
+        "fei1",
+        "chang2",
+        "hao3",
+        "kan4",
+        "de5",
+        "xiao3",
+        "hua1",
+        "yuan2"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "hai2",
+          "huan2",
+          "xuan2"
+        ],
+        "1": [
+          "you3",
+          "you4",
+          "wei3"
+        ],
+        "2": [
+          "yi1",
+          "yi2",
+          "yi4"
+        ],
+        "3": [
+          "ge4",
+          "ge3"
+        ],
+        "4": [
+          "fei1",
+          "fei3"
+        ],
+        "6": [
+          "hao3",
+          "hao4"
+        ],
+        "7": [
+          "kan4",
+          "kan1"
+        ],
+        "8": [
+          "de5",
+          "di1",
+          "di2",
+          "di4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    },
+    {
+      "text": "還有我跟同學們打招呼他們都不答應",
+      "lexicalPinyin": [
+        "hai2",
+        "you3",
+        "wo3",
+        "gen1",
+        "tong2",
+        "xue2",
+        "men5",
+        "da3",
+        "zhao1",
+        "hu5",
+        "ta1",
+        "men5",
+        "dou1",
+        "bu4",
+        "da1",
+        "ying5"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [
+          "THIRD_TONE_SANDHI_OR_PROSODIC_BOUNDARY"
+        ],
+        [],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ],
+        [],
+        [
+          "YI_BU_SURFACE_TONE_CONTEXT"
+        ],
+        [],
+        [
+          "NEUTRAL_TONE_OUTSIDE_FOUR_TONE_SCOPE"
+        ]
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "hai2",
+          "huan2",
+          "xuan2"
+        ],
+        "1": [
+          "you3",
+          "you4",
+          "wei3"
+        ],
+        "4": [
+          "tong2",
+          "tong4"
+        ],
+        "5": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "6": [
+          "men5",
+          "men4",
+          "men2"
+        ],
+        "7": [
+          "da3",
+          "da2"
+        ],
+        "8": [
+          "zhao1",
+          "qiao2",
+          "shao2"
+        ],
+        "9": [
+          "hu1",
+          "xiao1",
+          "xu1",
+          "he4",
+          "xia4"
+        ],
+        "10": [
+          "ta1",
+          "tuo2"
+        ],
+        "11": [
+          "men5",
+          "men4",
+          "men2"
+        ],
+        "12": [
+          "dou1",
+          "du1"
+        ],
+        "13": [
+          "bu4",
+          "fou3",
+          "fou1",
+          "fu1",
+          "bu2"
+        ],
+        "14": [
+          "da2",
+          "da1"
+        ],
+        "15": [
+          "ying1",
+          "ying4"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": [
+        {
+          "index": 14,
+          "before": "da2",
+          "after": "da1",
+          "phrase": "答應",
+          "reason": "Respond or agree; optional full/neutral tone flagged"
+        },
+        {
+          "index": 15,
+          "before": "ying1",
+          "after": "ying5",
+          "phrase": "答應",
+          "reason": "Respond or agree; optional full/neutral tone flagged"
+        },
+        {
+          "index": 9,
+          "before": "hu1",
+          "after": "hu5",
+          "phrase": "招呼",
+          "reason": "Greeting; neutral/full variation flagged"
+        }
+      ]
+    },
+    {
+      "text": "騎上車就往學校趕",
+      "lexicalPinyin": [
+        "qi2",
+        "shang4",
+        "che1",
+        "jiu4",
+        "wang3",
+        "xue2",
+        "xiao4",
+        "gan3"
+      ],
+      "labelPolicyFlagsByIndex": [
+        [],
+        [
+          "OPTIONAL_NEUTRAL_TONE"
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "contextualHeteronyms": {
+        "0": [
+          "qi2",
+          "ji4"
+        ],
+        "1": [
+          "shang4",
+          "shang3"
+        ],
+        "2": [
+          "che1",
+          "ju1"
+        ],
+        "4": [
+          "wang3",
+          "wang4"
+        ],
+        "5": [
+          "xue2",
+          "hua2",
+          "jiao4"
+        ],
+        "6": [
+          "xiao4",
+          "jiao4",
+          "jiao3",
+          "qiao1"
+        ]
+      },
+      "contextReview": "Modern Mandarin lexical reading selected from complete fixed sentence context; no acoustic decoder and no expert realized-phone transcription. Archaic heteronyms are not alternative labels for this sentence. Surface variation is flagged and not adjudicated.",
+      "draftCorrections": []
+    }
+  ],
+  "optionalNeutralContexts": {
+    "學生": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Student noun may use full or neutral 生 depending on region/style"
+    },
+    "父親": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Kinship noun has full/neutral style variation"
+    },
+    "母親": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Kinship noun has full/neutral style variation"
+    },
+    "裡邊": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Locative 邊 has full/neutral style variation"
+    },
+    "外邊": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Locative 邊 has full/neutral style variation"
+    },
+    "點心": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Snack noun 心 has full/neutral regional variation"
+    },
+    "遲到過": {
+      "relativeIndices": [
+        2
+      ],
+      "reason": "Experiential 過 can be unstressed/neutral"
+    },
+    "穿上": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Resultative directional suffix may be neutral"
+    },
+    "騎上": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Resultative directional suffix may be neutral"
+    },
+    "貼上": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Resultative directional suffix may be neutral"
+    },
+    "脫下": {
+      "relativeIndices": [
+        1
+      ],
+      "reason": "Resultative directional suffix may be neutral"
+    }
+  }
+}

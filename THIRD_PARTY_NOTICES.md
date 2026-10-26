@@ -45,8 +45,25 @@ SPEC-012新增Qwen3-ForcedAligner-0.6B，Apache-2.0；官方Qwen/Qwen3-ForcedAli
 
 用户授权将固定PinYinSound中缺少一声的10个音节在本机处理为一声并记录来源。现有来源录音的unknown许可不变；本地派生WAV不纳入代码MIT或Qwen Apache许可，不提交Git、不对外发布。来源SHA、PSOLA参数在content/daily-reading-policy.json，结果SHA与配置摘要在private/pinyinsound/daily-first-tones.json。显式准备使用既有afconvert（macOS）或ffmpeg（Linux）及Python标准库，无新依赖；音高分析复用uv.lock维护组的librosa 1.0.0/numpy 2.5.3/scipy 1.18.1。
 
+## 2026-10-26 预训练拼音匹配比较（SPEC-018 MATCH-07～09）
+
+本轮为本地底层研究，权重与公开语音保存在忽略目录，不随代码再分发；固定版本、下载 URL、大小、SHA256 和已知许可边界见 `content/pronunciation-pretrained-models.json`，核验说明见 `docs/research/pretrained-matcher-model-audit.md`。不以模型卡准确率或汉字转写正确替代发音效果验证。
+
+- HanziFlow V2.1：`thin-nwe-soe/hanziflow-v2-1-multihead-wav2vec2@93c4b3f185f67b2f82135b34ca0397ddf8254de1`，模型卡声明 Apache-2.0；保留 AISHELL-1 及中文 XLSR 基础检查点归属，卡片不含逐句训练清单。
+- Charsiu：权重 `charsiu/zh_xlsr_fc_10ms@2d274d10cce1dd66818c0706abbc4cc20d4ef710`；官方项目 `lingjzhu/charsiu@13a69f2a22ca0c0962b75cc693399b0ae23a12c9` 声明 MIT，版权 2021 jzhu，完整文本为 `resources/licenses/Charsiu-MIT.txt`。HF 权重仓库未单独声明许可证，故保留独立权重许可不确定性，不宣称已获得统一 Apache-2.0 权重许可。
+- SenseVoiceSmall：`FunAudioLLM/SenseVoiceSmall@3847d57b6bdf2dd8875cb1508d2af43d80a16bf7` 的权重适用 **FunASR Model Open Source License Agreement 1.1**；完整固定文本为 `resources/licenses/SenseVoice-FunASR-Model-License-1.1.txt`，来源 FunASR `fbbfe01800a8c4c9103cb2150fb1a5d06cc64758`。其 HF 模型卡标记 `other`，不能用代码 MIT 代替权重条款。
+- 本地 SenseVoice SANM 推理实现参考并改写 QwenAudio/SenseVoice `586bbdb2b052f4fe19322581825228b6810a9fb3` 的 MIT 代码；保留官方完整版权和 MIT 文本于 `resources/licenses/SenseVoice-MIT.txt`。
+
+新增研究依赖只在 `tools/pinyin-pretrained/pyproject.toml` 与其 `uv.lock` 精确锁定，应用运行依赖不变；实际安装和 CPU 运行结果记录在本轮研究报告。
+
 ## 2026-10-26 独立音高前端（SPEC-018 MATCH-05）
 
 SwiftF0 0.3.0，Copyright (c) 2025–2026 Lars Nieradzik，MIT；来源 https://github.com/lars76/swift-f0 ，完整许可保留于 `resources/licenses/SwiftF0-MIT.txt`。本地显式安装的135090字节ONNX摘要为 `6385e8c2ebc3872e82c9ff5946228de44cd3be77a750ea53698b7dbfe94b0a22`，权重留忽略目录；部署包复制模型时同时复制许可并核对摘要。适配器不自动下载、不加载通用ASR。
 
 Praat-Parselmouth 0.4.7（GPL-3.0-or-later）仅为隔离工具环境内的离线音高诊断对照，不进入推理包、不包含于应用发布；实际arm64 wheel安装记录与锁定摘要见 `docs/research/matcher-pitch-swift.md` 及 `tools/pinyin-matcher/uv.lock`。
+
+## 2026-10-26 真实拼音研究语料（SPEC-018 MATCH-08）
+
+ManDi：Liang Zhao、Eleanor Chodroff，_The ManDi Corpus: A Spoken Corpus of Mandarin Regional Dialects_，LREC 2022，1985–1990；[原论文](https://aclanthology.org/2022.lrec-1.213/)、[原始语料](https://osf.io/fgv4w/)，**CC BY-NC 3.0**，仅非商业用途。固定 OSF 文件 ID、版本及 SHA256 见 `content/pronunciation-pretrained-data.json`，本机音频、派生片段和原始 TextGrid 不进入 Git；代码 MIT 不覆盖语料及其非商业限制。
+
+OMPAL：Wen-Wei Hsieh、Hao-Wei Chi、Kuan-Chen Wang、Ping-Cheng Yeh、Te-hsin Liu、Chen-Yu Chiang，_OMPAL: Bridging Speech and Learning with an Open-Source Mandarin Pronunciation Assessment Corpus for Global Learners_，Interspeech 2025，2415–2419，DOI [10.21437/Interspeech.2025-983](https://doi.org/10.21437/Interspeech.2025-983)。[官方仓库固定修订](https://github.com/phantomhsieh/OMPAL-corpus/tree/c3aaa9e892e4b1c2a25b637401f52f6e35b53e74)，**CC BY 4.0**，原许可全文保存在 `resources/licenses/OMPAL-CC-BY-4.0.txt`。音频及完整专家注释保存在忽略目录；本仓库的拼音上下文政策保留原语料词句及 CC BY 4.0 归属，另附本地的变调/歧义范围标记；旧注释 ID 到 WAV ID 的映射由官方注释完整身份重建，不修改专家票数。固定来源、Git blob SHA、元数据 SHA256 见 `content/pronunciation-ompal-data.json`，实际下载 WAV SHA256 记在本机可复现的清单中。以上许可不代表已经验证儿童发音效果。

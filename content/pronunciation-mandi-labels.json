@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "source": "https://osf.io/download/bksxr/",
+  "labels": {
+    "猜": {
+      "syllable": "cai1",
+      "onset": "c",
+      "rime": "ai",
+      "tone": 1
+    },
+    "才": {
+      "syllable": "cai2",
+      "onset": "c",
+      "rime": "ai",
+      "tone": 2
+    },
+    "彩": {
+      "syllable": "cai3",
+      "onset": "c",
+      "rime": "ai",
+      "tone": 3
+    },
+    "菜": {
+      "syllable": "cai4",
+      "onset": "c",
+      "rime": "ai",
+      "tone": 4
+    },
+    "八": {
+      "syllable": "ba1",
+      "onset": "b",
+      "rime": "a",
+      "tone": 1
+    },
+    "拔": {
+      "syllable": "ba2",
+      "onset": "b",
+      "rime": "a",
+      "tone": 2
+    },
+    "把": {
+      "syllable": "ba3",
+      "onset": "b",
+      "rime": "a",
+      "tone": 3
+    },
+    "爸": {
+      "syllable": "ba4",
+      "onset": "b",
+      "rime": "a",
+      "tone": 4
+    },
+    "夫": {
+      "syllable": "fu1",
+      "onset": "f",
+      "rime": "u",
+      "tone": 1
+    },
+    "服": {
+      "syllable": "fu2",
+      "onset": "f",
+      "rime": "u",
+      "tone": 2
+    },
+    "腐": {
+      "syllable": "fu3",
+      "onset": "f",
+      "rime": "u",
+      "tone": 3
+    },
+    "复": {
+      "syllable": "fu4",
+      "onset": "f",
+      "rime": "u",
+      "tone": 4
+    },
+    "遮": {
+      "syllable": "zhe1",
+      "onset": "zh",
+      "rime": "e",
+      "tone": 1
+    },
+    "哲": {
+      "syllable": "zhe2",
+      "onset": "zh",
+      "rime": "e",
+      "tone": 2
+    },
+    "者": {
+      "syllable": "zhe3",
+      "onset": "zh",
+      "rime": "e",
+      "tone": 3
+    },
+    "这": {
+      "syllable": "zhe4",
+      "onset": "zh",
+      "rime": "e",
+      "tone": 4
+    },
+    "吃": {
+      "syllable": "chi1",
+      "onset": "ch",
+      "rime": "i-retroflex",
+      "tone": 1
+    },
+    "池": {
+      "syllable": "chi2",
+      "onset": "ch",
+      "rime": "i-retroflex",
+      "tone": 2
+    },
+    "齿": {
+      "syllable": "chi3",
+      "onset": "ch",
+      "rime": "i-retroflex",
+      "tone": 3
+    },
+    "赤": {
+      "syllable": "chi4",
+      "onset": "ch",
+      "rime": "i-retroflex",
+      "tone": 4
+    },
+    "汤": {
+      "syllable": "tang1",
+      "onset": "t",
+      "rime": "ang",
+      "tone": 1
+    },
+    "糖": {
+      "syllable": "tang2",
+      "onset": "t",
+      "rime": "ang",
+      "tone": 2
+    },
+    "躺": {
+      "syllable": "tang3",
+      "onset": "t",
+      "rime": "ang",
+      "tone": 3
+    },
+    "烫": {
+      "syllable": "tang4",
+      "onset": "t",
+      "rime": "ang",
+      "tone": 4
+    },
+    "懵": {
+      "syllable": "meng1",
+      "onset": "m",
+      "rime": "eng",
+      "tone": 1
+    },
+    "萌": {
+      "syllable": "meng2",
+      "onset": "m",
+      "rime": "eng",
+      "tone": 2
+    },
+    "猛": {
+      "syllable": "meng3",
+      "onset": "m",
+      "rime": "eng",
+      "tone": 3
+    },
+    "梦": {
+      "syllable": "meng4",
+      "onset": "m",
+      "rime": "eng",
+      "tone": 4
+    },
+    "身": {
+      "syllable": "shen1",
+      "onset": "sh",
+      "rime": "en",
+      "tone": 1
+    },
+    "神": {
+      "syllable": "shen2",
+      "onset": "sh",
+      "rime": "en",
+      "tone": 2
+    },
+    "审": {
+      "syllable": "shen3",
+      "onset": "sh",
+      "rime": "en",
+      "tone": 3
+    },
+    "慎": {
+      "syllable": "shen4",
+      "onset": "sh",
+      "rime": "en",
+      "tone": 4
+    },
+    "香": {
+      "syllable": "xiang1",
+      "onset": "x",
+      "rime": "iang",
+      "tone": 1
+    },
+    "祥": {
+      "syllable": "xiang2",
+      "onset": "x",
+      "rime": "iang",
+      "tone": 2
+    },
+    "想": {
+      "syllable": "xiang3",
+      "onset": "x",
+      "rime": "iang",
+      "tone": 3
+    },
+    "向": {
+      "syllable": "xiang4",
+      "onset": "x",
+      "rime": "iang",
+      "tone": 4
+    },
+    "优": {
+      "syllable": "you1",
+      "onset": "",
+      "rime": "iou",
+      "tone": 1
+    },
+    "油": {
+      "syllable": "you2",
+      "onset": "",
+      "rime": "iou",
+      "tone": 2
+    },
+    "有": {
+      "syllable": "you3",
+      "onset": "",
+      "rime": "iou",
+      "tone": 3
+    },
+    "又": {
+      "syllable": "you4",
+      "onset": "",
+      "rime": "iou",
+      "tone": 4
+    },
+    "一": {
+      "syllable": "yi1",
+      "onset": "",
+      "rime": "i",
+      "tone": 1
+    },
+    "姨": {
+      "syllable": "yi2",
+      "onset": "",
+      "rime": "i",
+      "tone": 2
+    },
+    "已": {
+      "syllable": "yi3",
+      "onset": "",
+      "rime": "i",
+      "tone": 3
+    },
+    "毅": {
+      "syllable": "yi4",
+      "onset": "",
+      "rime": "i",
+      "tone": 4
+    }
+  }
+}

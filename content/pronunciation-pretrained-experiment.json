@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "seed": 3182026,
+  "cpuThreads": 2,
+  "maximumEpochs": 120,
+  "batchSize": 64,
+  "learningRate": 0.001,
+  "weightDecay": 0.01,
+  "hiddenSize": 256,
+  "dropout": 0.2,
+  "variants": ["linear", "multihead"],
+  "acceptProbabilities": [0.35, 0.5, 0.65, 0.8, 0.9],
+  "acceptMargins": [0.0, 0.1, 0.2],
+  "qualityLimits": {
+    "negativeFalseAcceptance": 0.05,
+    "positiveExplicitRejection": 0.1,
+    "clearPositiveAbstention": 0.2
+  },
+  "features": {
+    "version": "pretrained-pool5-f0-32-v1",
+    "pitchFrames": 32,
+    "poolBins": 3,
+    "minimumSpeechSeconds": 0.15,
+    "maximumSpeechSeconds": 4,
+    "extraSyllablePauseSeconds": 0.18
+  },
+  "nativeRimeAliases": {
+    "i-dental": "ii",
+    "i-retroflex": "iii",
+    "ü": "v",
+    "üe": "ve",
+    "üan": "van",
+    "ün": "vn"
+  },
+  "neutralTone": 5,
+  "claims": {
+    "realChildAccuracyEstablished": false,
+    "phoneticGroundTruthIsNotGuaranteedByCorpusLexicon": true,
+    "modelPretrainingOverlapUnknown": true
+  },
+  "nativeRimeAliasesByModel": {
+    "hanziflow": {
+      "i-dental": "iii",
+      "i-retroflex": "ii",
+      "ü": "v",
+      "üe": "ve",
+      "üan": "van",
+      "ün": "vn"
+    },
+    "charsiu": {
+      "i-dental": "ii",
+      "i-retroflex": "iii",
+      "ü": "v",
+      "üe": "ve",
+      "üan": "van",
+      "ün": "vn"
+    }
+  }
+}

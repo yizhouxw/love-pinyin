@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "mode": "pcm-frame-window",
+  "purpose": "length-only CPU benchmark; not pronunciation quality evidence",
+  "sourceCorpus": "OMPAL",
+  "sourceRevision": "c3aaa9e892e4b1c2a25b637401f52f6e35b53e74",
+  "sourceLicense": "CC-BY-4.0",
+  "sourceSplit": "calibration",
+  "sourceId": "ompal-00200706",
+  "sourcePath": "wav/SPEAKER02007/00200706.wav",
+  "sourceSha256": "9c2dc7b84a2ff20c0255380872b272d5e9b51b3dc980349c4217bbf7c92a13ca",
+  "sourcePcmFrameRange": [28000, 92000],
+  "payloadSha256": "6d2ecbfa74b82a45326b7de100395406283db5ea35f1e5ce50b92197018f1cfc",
+  "samples": 64000,
+  "sampleRate": 16000,
+  "method": "Exact source PCM16 frames [28000,92000), mono 16k WAV header; no resampling or repetition",
+  "selection": "Calibration utterance ID ascending; first 64000-frame window passing numerical signal_guard; start0 stride160; no model predictions used"
+}

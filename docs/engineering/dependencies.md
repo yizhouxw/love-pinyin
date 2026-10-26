@@ -145,3 +145,7 @@ DOCKER-05的Windows x86-64宿主运行Linux amd64容器，不新增Windows原生
 ### KEY-01 / LEVEL-01～04（2026-10-25）
 
 本切片无新增依赖，基于DEPS-02已合并的锁文件运行；使用既有Pydantic严格校验关卡快照、浏览器键盘/RAF和SVG。24段关卡故事、5段修订玩法与1段短检查点反馈，按既有固定Qwen/Serena配置实际生成，manifest记录摘要、版本与既有Apache-2.0独立许可。运行时不生成声音或下载模型。
+
+### SPEC-018 MATCH-07～09 预训练匹配（2026-10-26）
+
+底层研究依赖独立锁在 `tools/pinyin-pretrained/pyproject.toml` 与 `uv.lock`，应用依赖不变。[预训练工具文档](pretrained-pronunciation-matcher.md)列出固定直接版本、官方来源、许可证、安装与复现命令；[完整机器清单](pretrained-python-dependency-inventory.json)区分 55 个跨平台锁条目和本机实际安装的 38 个 distribution，含许可证元数据/文件摘要。SenseVoice 代码 MIT 与权重 FunASR Model License 1.1 分别保留；Charsiu 独立权重许可不确定性、HanziFlow 卡片声明与数据许可见[候选核验](../research/pretrained-matcher-model-audit.md)，权重不随 Git 再分发。
