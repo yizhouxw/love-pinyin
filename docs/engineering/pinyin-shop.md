@@ -1,21 +1,35 @@
 # 拼音小卖部接入与维护
 
-SPEC-019 SHOP-01～03、ADR-0035。入口：学习首页 → 游戏乐园 → 拼音小卖部。
+当前以 SPEC-019 SHOP-04～06 与 ADR-0035 修订为准。入口：学习首页 → 游戏乐园 → 拼音小卖部。
 
-商品目录在 `content/pinyin-shop.json`，每个 targetId 引用 `content/illustrations.json` 的拼音、课序和标准音；教学答案不写在 React。发布校验检查商品ID/目标引用/去重/规则。每柜六件，每篮最多六件，首课三个单韵母礼盒；篮子、录音及识别结果都只在本轮内存，退出清除，不计入客观题掌握度。家庭游戏短租约沿用原 heartbeat，不增加数据库迁移。
+## 商品、练习与金额
 
-## 开发演示
+`content/pinyin-shop.json` 维护八个货架，每架十二件，共九十六件商品。所有商品从首课可浏览；每件有商品名、整数分价格和唯一图集格号，绝不绑定拼音。价格只为虚拟购物趣味，没有真实购买或支付，也不参与匹配、解锁或掌握度。
 
-运行 `npm run dev`，打开开发服务器地址并添加 `?shopRecognition=mock`，再进入小卖部。仅 `import.meta.env.DEV` 允许这个显式参数；生产构建即使有同名参数也不会启用模拟。页面始终标记“开发模拟演示”，清单标记“模拟购物清单”，不判断声音或声调。
+独立 targetIds 目录引用 `content/illustrations.json` 的77个去重拼音与真实示范；运行时仅取当前已学课，优先当前课再轮换此前内容。选不同商品依次取独立练习目标；重试保持当前目标。首课虽只有三个练习音，仍可逛全部九十六件商品。
 
-录音需 localhost 或受信任 HTTPS，显式点击后请求麦克风。读完点完成，30秒安全上限只保护内存，没有作答倒计时。开发 mock 端口本身忽略音频；场景仍完整走采音、转换和取消链路。
+每篮最多六件，每件只入车一次，随时可结算；合计用整数分求和，最后统一格式化为元，空篮为 ¥0.00。结算展示商品图、单价、件数与总金额。篮子与音频仅在本轮内存，退出清除，不写客观题成绩。
 
-## 替换真实服务
+商品图片位于 `public/shop/products-atlas.png`，1536×1024，十二列八行，每格128像素。由内置 image_gen 工具生成，浏览器按格显示，不使用 emoji 代替商品图、不访问远程素材；生成说明与提示见同目录 README。发布门禁验证八架/九十六件、每架十二件、唯一商品/图片、价格、独立目标引用、PNG实物及格尺寸。
 
-组装入口为 `src/platform/audio/shop-pronunciation.ts`。实现 `PronunciationService` 后返回 `{ service, mock: false, configured: true }`，并让 PinyinShop 使用该配置。默认工厂返回 `configured: false` 和 unavailable 端口，禁止假成功。React 组件还提供 `recognition` 属性作为显式依赖注入点，测试专用场景位于 `tests/support/shop-harness.*`，不进入生产构建。
+## 自动录音与五秒窗口
 
-输入为 MATCH-10 的 requestId、可信目录 targetId、内存 WAV Blob、AbortSignal。采音转换在 `recording-wav.ts`，与天天练共用既有转换逻辑，16kHz/单声道/PCM16，不持久化音频。当前未注册模型HTTP路由，也不调用旧Whisper或暂停的小模型。
+点商品立即显示独立拼音，并从点击手势打开麦克风，无开始/完成录音按钮。窄屏自动滚到拼音区。首轮浏览器权限等待不记为孩子超时；麦克风就绪起，采音和识别共享严格五秒截止时间，没有额外推理等待。
 
-匹配结果须版本/请求/目标一致；正式模式的 matched/retry 仅接受 acoustic 证据。mock 仅在显式演示中接受；uncertain/unavailable/异常/超时不判错。15秒超时取消，切商品、重听、取消、暂停、额度到期、退出或后台取消所有旧请求；旧实现即使忽略 AbortSignal 也不能用迟到响应入篮。toneAssessed=false 时不宣称声调准确度。
+`BrowserShopRecorder` 使用原生 Web Audio 单声道 PCM 回调，只在内存保留最多五秒数据；输出静音，不监听回放麦克风。首次650毫秒后取累积快照，`ShopReadingSession` 串行调用 MATCH-10 `match`，每次返回后450毫秒再取更长的音频；转换为16kHz单声道PCM16 WAV。不并发排队，不把 MediaRecorder 不完整媒体块送给解码器。原天天练 MediaRecorder 与录音转换行为不变。
 
-浏览器专项包含真实录音转换 + 受控接口分支，不能用它证明真实儿童识别有效性。模型质量、实体移动设备、家庭LAN与儿童试用独立验收。
+匹配结果必须版本/请求/目标一致；正式 matched/retry 必须有 acoustic 证据。matched立即停麦并入车；retry明确提示重试；uncertain继续听，五秒仍无成功则提示超时，不记错误。unavailable/异常立即说明不可用。截止时间会取消卡住的推理；服务即使忽略取消或延迟返回，也不能入车。没有发音分数，toneAssessed=false不声称声调正确。
+
+切商品、换货架、重听、取消、暂停、额度、后台与退出都清除 PCM、流、音频图、定时器和请求。界面有“再读一次”“听示范”帮助；示范先停止采音，播放后由孩子主动重试，避免设备把自己的声音录成答案。
+
+## 全局引导
+
+店铺顶部只放一个全局语音引导开关，接收App已解析的家庭默认/设备偏好；返回首页与天天练沿用同一选择。没有逐条“听操作提示”。开启时自动读入店、结果、故障和结算说明；关闭即时停音，状态文字仍显示。选择商品先停止声音并直接录音，采音期间不播放引导或示范。
+
+## 开发演示与真实服务
+
+运行 `npm run dev`，开发服务器地址加 `?shopRecognition=mock`，再进入小卖部。只有 `import.meta.env.DEV` 接受这个参数，生产构建始终忽略。模拟页面和清单明确标记，不判断声音或写学习成绩；场景仍走真实麦克风、PCM快照与取消流程。
+
+服务组装入口 `src/platform/audio/shop-pronunciation.ts`，真实实现应返回 `{service, mock:false, configured:true}` 并实现 `PronunciationService`；React的recognition属性支持显式测试注入。默认仍返回未配置端口，选商品录音后如实提示不可用，不自动转mock或Whisper。仓库已有课程/天天练专用HTTP适配器，真实模型质量仍独立验收；本场景不暗中接入未通过的模型。
+
+家庭游戏时长复用原heartbeat，没有新数据库迁移或依赖。录音需localhost或受信任HTTPS，拒绝权限、设备不可用、网络和模型故障不判孩子错。浏览器受控接口用例只证明交互与格式，真实儿童识别、移动真机、家庭LAN与儿童理解度仍独立验收。

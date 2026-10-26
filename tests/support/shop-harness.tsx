@@ -9,9 +9,21 @@ import '../../src/app/styles.css';
 
 const parameters = new URLSearchParams(location.search);
 const mock = parameters.get('evidence') === 'mock';
+let calls = 0;
+const probe = { sizes: [] as number[], aborted: 0 };
+Object.defineProperty(window, '__shopProbe', { value: probe });
 const service: PronunciationService = {
   async match(request) {
     const mode = parameters.get('result') ?? 'matched';
+    calls += 1;
+    probe.sizes.push(request.audio.size);
+    request.signal?.addEventListener(
+      'abort',
+      () => {
+        probe.aborted += 1;
+      },
+      { once: true },
+    );
     const delay = Number(parameters.get('delay') ?? '0');
     if (delay) await new Promise((resolve) => setTimeout(resolve, delay));
     if (mode === 'exception') throw new Error('TEST_NETWORK_FAILURE');
@@ -31,6 +43,8 @@ const service: PronunciationService = {
       header.getUint16(34, true) !== 16
     )
       throw new Error('INVALID_TEST_WAV');
+    if (mode === 'growing' && calls < 3)
+      return { ...context, status: 'uncertain', reason: 'insufficient-evidence' };
     if (mode === 'uncertain' || mode === 'unavailable')
       return { ...context, status: mode, reason: 'insufficient-evidence' };
     return { ...context, status: mode === 'retry' ? 'retry' : 'matched', reason: null };
@@ -41,12 +55,15 @@ const service: PronunciationService = {
 };
 function Harness() {
   const [open, setOpen] = useState(true);
+  const [guidance, setGuidance] = useState(false);
   return (
     <main className="home-page">
       {open ? (
         <PinyinShop
+          guidanceEnabled={guidance}
+          onGuidanceChange={setGuidance}
           curriculum={curriculum as unknown as Curriculum}
-          lessonId={parameters.get('lesson') ?? 'lesson-14'}
+          lessonId={parameters.get('lesson') ?? 'lesson-01'}
           recognition={{ service, mock }}
           onExit={() => setOpen(false)}
         />

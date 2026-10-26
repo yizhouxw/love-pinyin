@@ -2,7 +2,14 @@ import { describe, expect, it } from 'vitest';
 import curriculum from '../../content/curriculum.json';
 import illustrations from '../../content/illustrations.json';
 import shop from '../../content/pinyin-shop.json';
-import { addShopProduct, shopOutcome, shopProducts } from '../../src/domain/pinyin-shop';
+import {
+  addShopProduct,
+  shopOutcome,
+  shopProducts,
+  shopTargets,
+  shopPrice,
+  shopTotalCents,
+} from '../../src/domain/pinyin-shop';
 import type { Curriculum } from '../../src/domain/learning-api';
 import type { PronunciationMatchResult } from '../../src/domain/pronunciation';
 
@@ -17,21 +24,38 @@ const result: PronunciationMatchResult = {
   reason: null,
 };
 describe('SHOP-01/02: bounded basket and correlated pronunciation decisions', () => {
-  it('keeps products in learned lessons and supports initial vowel gift packaging', () => {
-    const first = shopProducts(course, 'lesson-01');
+  it('offers all 96 goods independently of the learned reading deck', () => {
+    expect(shopProducts()).toHaveLength(96);
+    expect(
+      shop.shelves.every((s) => shopProducts().filter((p) => p.shelfId === s.id).length === 12),
+    ).toBe(true);
+    expect(shopProducts().every((p) => !('targetId' in p))).toBe(true);
+    expect(new Set(shopProducts().map((p) => p.imageIndex)).size).toBe(96);
+    const first = shopTargets(course, 'lesson-01');
     expect(first).toHaveLength(3);
     expect(first.every((p) => p.target.task === 'final')).toBe(true);
-    expect(shopProducts(course, 'unknown')).toEqual([]);
-    const all = shopProducts(course, 'lesson-14');
-    expect(all).toHaveLength(shop.products.length);
-    expect(new Set(all.map((p) => p.target.id)).size).toBe(all.length);
-    for (const product of all) {
-      expect(product.audioRef).toBe(
-        illustrations.items[product.targetId as keyof typeof illustrations.items].audioRef,
+    expect(shopTargets(course, 'unknown')).toEqual([]);
+    expect(shopTargets(course, 'lesson-14')).toHaveLength(shop.targetIds.length);
+    for (const task of shopTargets(course, 'lesson-14')) {
+      expect(task.audioRef).toBe(
+        illustrations.items[task.target.id as keyof typeof illustrations.items].audioRef,
       );
-      expect(product.target.pinyin).toBe(product.target.pinyin.normalize('NFC'));
+      expect(task.target.pinyin).toBe(task.target.pinyin.normalize('NFC'));
     }
-    expect(shopProducts(course, 'lesson-02').some((p) => p.target.pinyin === 'ü')).toBe(true);
+    expect(shopTargets(course, 'lesson-02').some((t) => t.target.pinyin === 'ü')).toBe(true);
+  });
+  it('totals decorative integer prices exactly without involving pronunciation', () => {
+    const ids = shopProducts()
+      .slice(0, 6)
+      .map((p) => p.id);
+    expect(shopTotalCents(ids)).toBe(
+      shopProducts()
+        .slice(0, 6)
+        .reduce((sum, p) => sum + p.priceCents, 0),
+    );
+    expect(shopTotalCents([])).toBe(0);
+    expect(shopPrice(105)).toBe('¥1.05');
+    expect(shopPrice(0)).toBe('¥0.00');
   });
   it('rejects late, wrong-target and wrong-version matches', () => {
     expect(shopOutcome(result, 'new-request', 'target', false)).toBe('stale');

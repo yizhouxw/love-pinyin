@@ -41,63 +41,77 @@ async function guest(page: Page, url: string) {
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
   await expect(page.getByRole('button', { name: '进入游戏乐园', exact: false })).toBeVisible();
 }
-async function record(page: Page) {
-  await expect(page.getByRole('button', { name: '开始录音', exact: false })).toBeEnabled({
-    timeout: 20000,
-  });
-  await page.getByRole('button', { name: '开始录音', exact: false }).click();
-  await expect(page.getByRole('button', { name: '完成录音', exact: false })).toBeVisible();
-  await page.waitForTimeout(450);
-  await page.getByRole('button', { name: '完成录音', exact: false }).click();
+
+async function openHarness(page: Page, devUrl: string, query = '') {
+  await guest(page, devUrl);
+  await page.goto(`${devUrl}tests/support/shop-harness.html?${query}`);
+  await expect(page.getByRole('button', { name: '选择薯片', exact: true })).toBeEnabled();
 }
 
-test('SHOP-01/03: production entry, actual guidance/standard audio, narrow shelf, shared pause and exit', async ({
+test('SHOP-04/06: eight shelves, 96 unique pictures/prices, global guidance, keyboard and empty checkout', async ({
   page,
   appUrl,
 }) => {
   await guest(page, new URL('/?shopRecognition=mock', appUrl).href);
   await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
   await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
-  await expect(page.getByRole('heading', { name: '拼音小卖部', exact: true })).toBeVisible();
-  await expect(page.getByText('真实识别尚未配置。', { exact: false })).toBeVisible();
-  const sound = page.waitForResponse((r) => r.url().includes('/voice/ui-shop_ready') && r.ok());
-  await page.getByRole('button', { name: '选择啊音礼盒', exact: true }).focus();
+  await expect(page.getByRole('heading', { name: /拼音小卖部/ })).toBeVisible();
+  await expect(page.getByRole('checkbox', { name: '语音引导', exact: true })).toBeChecked();
+  await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
+  const names: string[] = [];
+  for (let index = 0; index < 8; index++) {
+    await page.getByLabel('切换货架').getByRole('button').nth(index).click();
+    await expect(page.locator('.shop-product')).toHaveCount(12);
+    names.push(
+      ...(await page
+        .locator('.shop-product img')
+        .evaluateAll((images) => images.map((image) => image.getAttribute('alt')!))),
+    );
+    await expect
+      .poll(() =>
+        page
+          .locator('.shop-product img')
+          .evaluateAll((images) =>
+            images.every(
+              (img) =>
+                (img as HTMLImageElement).complete &&
+                (img as HTMLImageElement).naturalWidth === 1536,
+            ),
+          ),
+      )
+      .toBe(true);
+    await expect(page.locator('.shop-price-tag strong').first()).toContainText('¥');
+  }
+  expect(new Set(names).size).toBe(96);
+  await page.getByLabel('切换货架').getByRole('button').first().focus();
   await page.keyboard.press('Enter');
-  await sound;
-  await expect(page.getByRole('button', { name: '停止听操作提示', exact: true })).toHaveCount(0, {
-    timeout: 20000,
-  });
-  await expect(page.locator('.shop-target')).toHaveText('a');
-  await expect(page.locator('.shop-target')).toHaveCSS('font-family', /Andika Pinyin/);
-  await expect(page.getByRole('button', { name: '开始录音', exact: false })).toBeDisabled();
+  await expect(page.getByRole('button', { name: '选择薯片', exact: true })).toBeVisible();
+  expect(await page.getByRole('button', { name: '听操作提示', exact: true }).count()).toBe(0);
   for (const width of [1280, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
-    await page.screenshot({ path: test.info().outputPath(`shop-${width}.png`), fullPage: true });
+    await page.screenshot({ path: test.info().outputPath(`shop2-${width}.png`), fullPage: true });
   }
-  await page.getByRole('button', { name: '暂停', exact: false }).click();
-  await expect(page.getByLabel('游戏已暂停')).toBeVisible();
-  await page.getByRole('button', { name: '继续游戏', exact: true }).click();
-  await expect(page.getByLabel('拼音小卖部', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: '结束本次购物', exact: true }).click();
-  await expect(
-    page.getByText('购物篮装好啦！看看你的收获，休息一下吧。', { exact: true }),
-  ).toBeVisible();
+  await page.getByRole('button', { name: '结算购物车', exact: false }).click();
+  await expect(page.getByText('结算总金额', { exact: true })).toBeVisible();
+  await expect(page.locator('.shop-total strong')).toHaveText('¥0.00');
   await page.getByRole('button', { name: '休息，回游戏乐园', exact: false }).click();
-  await expect(page.getByLabel('拼音游戏乐园')).toBeVisible();
+  await page.getByRole('button', { name: '回到学习', exact: false }).click();
+  await expect(page.getByRole('checkbox', { name: '语音引导', exact: true })).not.toBeChecked();
 });
 
 for (const mode of [
   'matched',
+  'growing',
   'retry',
   'uncertain',
   'unavailable',
   'exception',
   'stale',
 ] as const) {
-  test(`SHOP-02: captured WAV and controlled contract ${mode}`, async ({
+  test(`SHOP-05: automatic live capture and controlled ${mode}`, async ({
     page,
     devUrl,
     browserName,
@@ -105,126 +119,169 @@ for (const mode of [
   }) => {
     test.skip(
       browserName !== 'chromium',
-      'Chromium fake microphone exercises real capture; controlled port does not validate acoustic quality.',
+      'Chromium synthetic microphone exercises capture; controlled matcher is not accuracy evidence.',
     );
     await context.grantPermissions(['microphone']);
-    await guest(page, devUrl);
-    await page.goto(`${devUrl}tests/support/shop-harness.html?result=${mode}`);
-    await page.getByRole('button', { name: '下一柜', exact: false }).click();
-    await page.getByRole('button', { name: '选择米', exact: true }).click();
-    await record(page);
-    const feedback = page.locator('.shop-feedback');
-    if (mode === 'matched') {
-      await expect(page.getByLabel('我的购物篮')).toContainText('米');
-      await expect(page.getByRole('button', { name: '选择米', exact: true })).toBeDisabled();
+    await openHarness(page, devUrl, `result=${mode}`);
+    const before = Date.now();
+    await page.getByRole('button', { name: '选择薯片', exact: true }).focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('.shop-target')).toHaveText('a');
+    await expect(page.locator('.shop-target')).toHaveCSS('font-family', /Andika Pinyin/);
+    await expect(page.getByRole('button', { name: '完成录音', exact: false })).toHaveCount(0);
+    if (mode === 'matched' || mode === 'growing') {
+      await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(1, { timeout: 6000 });
+      expect(Date.now() - before).toBeLessThan(5000);
+      await expect(page.getByRole('button', { name: '选择薯片', exact: true })).toBeDisabled();
+      if (mode === 'growing') {
+        const sizes = await page.evaluate(
+          () => (window as unknown as { __shopProbe: { sizes: number[] } }).__shopProbe.sizes,
+        );
+        expect(sizes.length).toBe(3);
+        expect(sizes[1]!).toBeGreaterThan(sizes[0]!);
+        expect(sizes[2]!).toBeGreaterThan(sizes[1]!);
+      }
     } else {
-      await expect(feedback).toContainText(
-        mode === 'retry' ? '没有匹配' : mode === 'uncertain' ? '没有听清楚' : '暂不可用',
+      await expect(page.locator('.shop-feedback')).toContainText(
+        mode === 'retry' ? '没有匹配' : mode === 'uncertain' ? '等待结束' : '暂不可用',
+        { timeout: 6500 },
       );
-      await expect(page.getByLabel('我的购物篮')).toContainText('0 / 6');
-      await expect(page.getByRole('button', { name: '选择米', exact: true })).toBeEnabled();
+      await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+      await expect(page.getByRole('button', { name: '再读一次', exact: false })).toBeEnabled();
     }
   });
 }
 
-test('SHOP-02/03: late response after switching product, pause and timeout cannot add an item', async ({
+test('SHOP-05/06: six automatic additions and exact decorative checkout total', async ({
   page,
   devUrl,
   browserName,
   context,
 }) => {
-  test.skip(browserName !== 'chromium', 'Requires Chromium fake microphone.');
+  test.skip(browserName !== 'chromium', 'Requires synthetic Chromium microphone.');
   await context.grantPermissions(['microphone']);
-  await guest(page, devUrl);
-  await page.goto(`${devUrl}tests/support/shop-harness.html?delay=2200`);
-  await page.getByRole('button', { name: '下一柜', exact: false }).click();
-  await page.getByRole('button', { name: '选择米', exact: true }).click();
-  await record(page);
-  await expect(page.locator('.shop-feedback')).toContainText('正在核对');
-  await page.getByRole('button', { name: '选择布', exact: true }).click();
-  await page.waitForTimeout(2600);
-  await expect(page.getByLabel('我的购物篮')).toContainText('0 / 6');
-  await expect(page.locator('.shop-target')).toHaveText('bù');
-  await record(page);
-  await page.getByRole('button', { name: '暂停', exact: false }).click();
-  await page.waitForTimeout(2500);
-  await page.getByRole('button', { name: '继续游戏', exact: true }).click();
-  await expect(page.getByLabel('我的购物篮')).toContainText('0 / 6');
-  await page.goto(`${devUrl}tests/support/shop-harness.html?delay=20000`);
-  await page.getByRole('button', { name: '下一柜', exact: false }).click();
-  await page.getByRole('button', { name: '选择米', exact: true }).click();
-  await record(page);
-  await expect(page.locator('.shop-feedback')).toContainText('暂不可用', { timeout: 19000 });
-  await expect(page.getByLabel('我的购物篮')).toContainText('0 / 6');
-});
-
-test('SHOP-01/02: six-item basket completes once and mock remains explicitly marked', async ({
-  page,
-  devUrl,
-  browserName,
-  context,
-}) => {
-  test.skip(browserName !== 'chromium', 'Requires Chromium fake microphone.');
-  await context.grantPermissions(['microphone']);
-  await guest(page, devUrl);
-  await page.goto(`${devUrl}tests/support/shop-harness.html?evidence=mock`);
+  await openHarness(page, devUrl, 'evidence=mock');
   await expect(page.getByText('开发模拟演示', { exact: true })).toBeVisible();
-  const products = page.locator('.shop-product');
-  for (let index = 0; index < 6; index++) {
-    await products.nth(index).click();
-    await record(page);
-    await expect(page.getByLabel('我的购物篮').locator('li')).toHaveCount(index + 1);
+  const goods = page.locator('.shop-product');
+  for (let i = 0; i < 6; i++) {
+    await goods.nth(i).click();
+    await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(i + 1, { timeout: 6000 });
   }
+  await expect(goods.nth(6)).toBeDisabled();
+  await expect(page.locator('.shop-total strong')).toHaveText('¥30.00');
+  await page.getByRole('button', { name: '结算购物车', exact: false }).click();
+  await expect(page.getByText('结算总金额', { exact: true })).toBeVisible();
+  await expect(page.locator('.shop-total strong')).toHaveText('¥30.00');
   await expect(page.getByText('模拟购物清单', { exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: '休息，回游戏乐园', exact: false })).toBeVisible();
-  await expect(products.nth(5)).toBeDisabled();
+  await page.screenshot({ path: test.info().outputPath('shop2-checkout.png'), fullPage: true });
 });
 
-test('SHOP-03: microphone rejection recovers and game lease failure cancels a pending match', async ({
+test('SHOP-05: switching goods/shelves and pause invalidate a slow response; five seconds aborts inference', async ({
   page,
   devUrl,
   browserName,
   context,
 }) => {
-  test.skip(browserName !== 'chromium', 'Requires Chromium fake microphone.');
+  test.skip(browserName !== 'chromium', 'Requires synthetic Chromium microphone.');
+  await context.grantPermissions(['microphone']);
+  await openHarness(page, devUrl, 'delay=2500');
+  await page.getByRole('button', { name: '选择薯片', exact: true }).click();
+  await page.waitForTimeout(850);
+  await page.getByRole('button', { name: '选择方便面', exact: true }).click();
+  await expect(page.locator('.shop-target')).toHaveText('o');
+  await page.getByLabel('切换货架').getByRole('button').nth(1).click();
+  await page.waitForTimeout(3000);
+  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+  await page.getByRole('button', { name: '选择牛奶', exact: true }).click();
+  await page.getByRole('button', { name: '暂停', exact: false }).click();
+  await expect(page.getByLabel('游戏已暂停')).toBeVisible();
+  await page.waitForTimeout(3000);
+  await page.getByRole('button', { name: '继续游戏', exact: true }).click();
+  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+  await page.goto(`${devUrl}tests/support/shop-harness.html?delay=9000`);
+  await page.getByRole('button', { name: '选择薯片', exact: true }).click();
+  await expect(page.locator('.shop-feedback')).toContainText('等待结束', { timeout: 6500 });
+  await page.waitForTimeout(4500);
+  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+});
+
+test('SHOP-05/06: microphone denial recovers and global feedback never speaks while recording', async ({
+  page,
+  devUrl,
+  browserName,
+  context,
+}) => {
+  test.skip(browserName !== 'chromium', 'Requires synthetic Chromium microphone.');
   await context.grantPermissions(['microphone']);
   await guest(page, devUrl);
   await page.addInitScript(() => {
     const original = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-    let rejected = false;
+    let denied = false;
     navigator.mediaDevices.getUserMedia = (constraints) => {
-      if (!rejected) {
-        rejected = true;
+      if (!denied) {
+        denied = true;
         return Promise.reject(new DOMException('test denied', 'NotAllowedError'));
       }
       return original(constraints);
     };
   });
-  await page.goto(`${devUrl}tests/support/shop-harness.html?delay=10000`);
-  await page.getByRole('button', { name: '下一柜', exact: false }).click();
-  await page.getByRole('button', { name: '选择米', exact: true }).click();
-  await expect(page.getByRole('button', { name: '开始录音', exact: false })).toBeEnabled({
-    timeout: 20000,
+  await page.goto(`${devUrl}tests/support/shop-harness.html?result=uncertain`);
+  await page.getByRole('button', { name: '选择薯片', exact: true }).click();
+  await expect(page.locator('.shop-feedback')).toContainText('麦克风没有准备好');
+  await page.getByRole('checkbox', { name: '语音引导', exact: true }).check();
+  const voices: string[] = [];
+  page.on('request', (r) => {
+    if (r.url().includes('/voice/')) voices.push(r.url());
   });
-  await page.getByRole('button', { name: '开始录音', exact: false }).click();
-  await expect(page.locator('.shop-feedback')).toContainText('没有录到声音');
-  await record(page);
-  await page.route('**/api/v1/guest/operate', async (route) => {
-    const response = await route.fetch();
-    const body = await response.json();
-    const operation = route.request().postDataJSON() as { path: string };
-    await route.fulfill({
-      response,
-      json:
-        operation.path === '/games/heartbeat'
-          ? { ...body, result: { ...body.result, reason: 'GAME_DAILY_LIMIT', leaseSeconds: 0 } }
-          : body,
-    });
+  await page.getByRole('button', { name: '再读一次', exact: false }).click();
+  await expect(page.locator('.shop-feedback')).toContainText('我在听');
+  await page.waitForTimeout(1500);
+  expect(voices).toHaveLength(0);
+  await expect(page.locator('.shop-feedback')).toContainText('等待结束', { timeout: 6000 });
+  await expect.poll(() => voices.some((url) => url.endsWith('/voice/ui-shop_timeout'))).toBe(true);
+  await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
+  voices.length = 0;
+  await page.getByRole('button', { name: '再读一次', exact: false }).click();
+  await expect(page.locator('.shop-feedback')).toContainText('我在听');
+  await page.getByRole('button', { name: '取消本次录音', exact: true }).click();
+  await page.waitForTimeout(5500);
+  expect(voices).toHaveLength(0);
+});
+
+test('SHOP-05: narrow selection brings the live target into view and cancels real microphone tracks', async ({
+  page,
+  devUrl,
+  browserName,
+  context,
+}) => {
+  test.skip(browserName !== 'chromium', 'Requires synthetic Chromium microphone.');
+  await context.grantPermissions(['microphone']);
+  await page.addInitScript(() => {
+    const tracks: MediaStreamTrack[] = [];
+    Object.defineProperty(window, '__shopTracks', { value: tracks });
+    const original = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+    navigator.mediaDevices.getUserMedia = async (constraints) => {
+      const stream = await original(constraints);
+      tracks.push(...stream.getTracks());
+      return stream;
+    };
   });
-  await expect(page.getByLabel('游戏已暂停')).toBeVisible({ timeout: 10000 });
-  await expect(page.getByText('该休息一下啦', { exact: true })).toBeVisible();
-  await page.unroute('**/api/v1/guest/operate');
-  await page.waitForTimeout(10500);
-  await page.getByRole('button', { name: '休息后检查时间', exact: true }).click();
-  await expect(page.getByLabel('我的购物篮')).toContainText('0 / 6');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openHarness(page, devUrl, 'result=uncertain');
+  await page.getByRole('button', { name: '选择薯片', exact: true }).click();
+  await expect(page.locator('.shop-feedback')).toContainText('我在听');
+  await expect(page.locator('.shop-target')).toBeInViewport();
+  await page.screenshot({ path: test.info().outputPath('shop2-live-390.png'), fullPage: true });
+  await page.getByRole('button', { name: '取消本次录音', exact: true }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        (window as unknown as { __shopTracks: MediaStreamTrack[] }).__shopTracks.every(
+          (track) => track.readyState === 'ended',
+        ),
+      ),
+    )
+    .toBe(true);
+  await page.waitForTimeout(5500);
+  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
 });

@@ -19,6 +19,7 @@ errors.push(
   ...validatePinyinShop(
     await readJson('content/pinyin-shop.json'),
     await readJson('content/illustrations.json'),
+    (src) => readFileSync(`public${src}`),
   ),
 );
 if (release) {

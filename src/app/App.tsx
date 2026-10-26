@@ -943,6 +943,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     return (
       <main className="home-page">
         <GameZone
+          guidanceEnabled={guidanceEnabled}
+          onGuidanceChange={changeGuidance}
           curriculum={curriculum}
           lessonId={progress.selectedLessonId}
           voice={voice}

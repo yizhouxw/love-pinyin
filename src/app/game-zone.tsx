@@ -65,11 +65,15 @@ export function GameZone({
   busy,
   onStart,
   onBack,
+  guidanceEnabled,
+  onGuidanceChange,
 }: {
   curriculum: Curriculum;
   lessonId: string;
   voice: Voice;
   busy: boolean;
+  guidanceEnabled: boolean;
+  onGuidanceChange: (enabled: boolean) => void;
   onStart: (id: string, levelId: string) => void;
   onBack: () => void;
 }) {
@@ -111,6 +115,8 @@ export function GameZone({
       <PinyinShop
         curriculum={curriculum}
         lessonId={lessonId}
+        guidanceEnabled={guidanceEnabled}
+        onGuidanceChange={onGuidanceChange}
         onExit={() => {
           setShopOpen(false);
           setRevision((v) => v + 1);
@@ -163,7 +169,7 @@ export function GameZone({
           <span className="eyebrow">新场景 · 口头拼读</span>
           <h2>拼音小卖部</h2>
           <VoiceButton id="ui-shop_welcome" voice={voice} label="听小卖部怎么玩" />
-          <p>选一件喜欢的商品，读包装上的拼音，匹配后自动入篮。每篮最多六件。</p>
+          <p>八个货架，九十六件带图商品。挑喜欢的，读右边的拼音，自动入车，还能结算总金额。</p>
           <p className="adult-hint">真实识别待接入，当前可听示范与跟读；开发模拟不计学习成绩。</p>
         </div>
         <button

@@ -1,175 +1,808 @@
 {
-  "version": 1,
+  "version": 2,
   "basketLimit": 6,
-  "recognitionTimeoutMs": 15000,
+  "recognitionTimeoutMs": 5000,
+  "minimumAudioMs": 650,
+  "pollIntervalMs": 450,
+  "image": {
+    "src": "/shop/products-atlas.png",
+    "columns": 12,
+    "rows": 8,
+    "license": "generated-project-asset"
+  },
+  "shelves": [
+    {
+      "id": "snacks",
+      "name": "零食货架"
+    },
+    {
+      "id": "drinks",
+      "name": "饮料货架"
+    },
+    {
+      "id": "fruit",
+      "name": "水果货架"
+    },
+    {
+      "id": "bakery",
+      "name": "面包货架"
+    },
+    {
+      "id": "vegetables",
+      "name": "蔬菜货架"
+    },
+    {
+      "id": "toys",
+      "name": "玩具货架"
+    },
+    {
+      "id": "play",
+      "name": "趣玩货架"
+    },
+    {
+      "id": "stationery",
+      "name": "文具货架"
+    }
+  ],
+  "targetIds": [
+    "v1-rice",
+    "v1-soil",
+    "v1-melon",
+    "v1-chicken",
+    "v1-seed",
+    "v1-pig",
+    "v1-fish",
+    "v1-water",
+    "v1-cat",
+    "v1-moon",
+    "v1-mountain",
+    "v1-star",
+    "v2-openmouth",
+    "v2-rooster",
+    "v2-goose",
+    "v2-shirt",
+    "v2-crow",
+    "v2-vowelfish",
+    "v2-eight",
+    "v2-horse",
+    "v2-cloth",
+    "v2-wave",
+    "v2-rabbit",
+    "v2-deer",
+    "v2-pear",
+    "v2-girl",
+    "v2-drum",
+    "v2-river",
+    "v2-tiger",
+    "v2-pot",
+    "v2-flower",
+    "v2-fire",
+    "v2-seven",
+    "v2-flag",
+    "v2-orange",
+    "v2-shrimp",
+    "v2-wash",
+    "v2-four",
+    "v2-silk",
+    "v2-wipe",
+    "v2-rope",
+    "v2-lock",
+    "v2-sun",
+    "v2-tea",
+    "v2-sand",
+    "v2-desk",
+    "v2-book",
+    "v2-shirtword",
+    "v2-crowword",
+    "v2-rain",
+    "v2-jade",
+    "v2-tooth",
+    "v2-whitecloud",
+    "v2-cabbage",
+    "v2-cup",
+    "v2-leg",
+    "v2-turtle",
+    "v2-cow",
+    "v2-dog",
+    "v2-bridge",
+    "v2-bean",
+    "v2-ball",
+    "v2-snow",
+    "v2-leaf",
+    "v2-ear",
+    "v2-coconut",
+    "v2-calendar",
+    "v2-cloud",
+    "v2-forest",
+    "v2-door",
+    "v2-silkworm",
+    "v2-round",
+    "v2-wind",
+    "v2-lamp",
+    "v2-clock",
+    "v2-eagle",
+    "v2-bear"
+  ],
   "products": [
     {
-      "id": "gift-a",
-      "targetId": "v2-openmouth",
-      "name": "啊音礼盒",
-      "icon": "🎁",
-      "color": "coral"
+      "id": "snacks-a",
+      "shelfId": "snacks",
+      "name": "薯片",
+      "priceCents": 350,
+      "imageIndex": 0
     },
     {
-      "id": "gift-o",
-      "targetId": "v2-rooster",
-      "name": "喔音礼盒",
-      "icon": "🎁",
-      "color": "gold"
+      "id": "snacks-b",
+      "shelfId": "snacks",
+      "name": "方便面",
+      "priceCents": 550,
+      "imageIndex": 1
     },
     {
-      "id": "gift-e",
-      "targetId": "v2-goose",
-      "name": "鹅音礼盒",
-      "icon": "🎁",
-      "color": "mint"
+      "id": "snacks-c",
+      "shelfId": "snacks",
+      "name": "奶糖",
+      "priceCents": 200,
+      "imageIndex": 2
     },
     {
-      "id": "gift-i",
-      "targetId": "v2-shirt",
-      "name": "衣音礼盒",
-      "icon": "🎁",
-      "color": "mint"
+      "id": "snacks-d",
+      "shelfId": "snacks",
+      "name": "米饼",
+      "priceCents": 450,
+      "imageIndex": 3
     },
     {
-      "id": "gift-u",
-      "targetId": "v2-crow",
-      "name": "乌音礼盒",
-      "icon": "🎁",
-      "color": "coral"
+      "id": "snacks-e",
+      "shelfId": "snacks",
+      "name": "曲奇饼干",
+      "priceCents": 650,
+      "imageIndex": 4
     },
     {
-      "id": "gift-v",
-      "targetId": "v2-vowelfish",
-      "name": "迂音礼盒",
-      "icon": "🎁",
-      "color": "gold"
+      "id": "snacks-f",
+      "shelfId": "snacks",
+      "name": "巧克力",
+      "priceCents": 800,
+      "imageIndex": 5
     },
     {
-      "id": "rice",
-      "targetId": "v1-rice",
-      "name": "米",
-      "icon": "🍚",
-      "color": "gold"
+      "id": "snacks-g",
+      "shelfId": "snacks",
+      "name": "果冻",
+      "priceCents": 250,
+      "imageIndex": 6
     },
     {
-      "id": "cloth",
-      "targetId": "v2-cloth",
-      "name": "布",
-      "icon": "🧣",
-      "color": "coral"
+      "id": "snacks-h",
+      "shelfId": "snacks",
+      "name": "爆米花",
+      "priceCents": 500,
+      "imageIndex": 7
     },
     {
-      "id": "horse",
-      "targetId": "v2-horse",
-      "name": "小马玩偶",
-      "icon": "🐴",
-      "color": "mint"
+      "id": "snacks-i",
+      "shelfId": "snacks",
+      "name": "甜甜圈",
+      "priceCents": 600,
+      "imageIndex": 8
     },
     {
-      "id": "pear",
-      "targetId": "v2-pear",
+      "id": "snacks-j",
+      "shelfId": "snacks",
+      "name": "布丁",
+      "priceCents": 450,
+      "imageIndex": 9
+    },
+    {
+      "id": "snacks-k",
+      "shelfId": "snacks",
+      "name": "威化饼",
+      "priceCents": 350,
+      "imageIndex": 10
+    },
+    {
+      "id": "snacks-l",
+      "shelfId": "snacks",
+      "name": "棒棒糖",
+      "priceCents": 150,
+      "imageIndex": 11
+    },
+    {
+      "id": "drinks-a",
+      "shelfId": "drinks",
+      "name": "牛奶",
+      "priceCents": 400,
+      "imageIndex": 12
+    },
+    {
+      "id": "drinks-b",
+      "shelfId": "drinks",
+      "name": "酸奶",
+      "priceCents": 600,
+      "imageIndex": 13
+    },
+    {
+      "id": "drinks-c",
+      "shelfId": "drinks",
+      "name": "橘子汽水",
+      "priceCents": 250,
+      "imageIndex": 14
+    },
+    {
+      "id": "drinks-d",
+      "shelfId": "drinks",
+      "name": "苹果汁",
+      "priceCents": 500,
+      "imageIndex": 15
+    },
+    {
+      "id": "drinks-e",
+      "shelfId": "drinks",
+      "name": "草莓牛奶",
+      "priceCents": 700,
+      "imageIndex": 16
+    },
+    {
+      "id": "drinks-f",
+      "shelfId": "drinks",
+      "name": "矿泉水",
+      "priceCents": 850,
+      "imageIndex": 17
+    },
+    {
+      "id": "drinks-g",
+      "shelfId": "drinks",
+      "name": "可可奶",
+      "priceCents": 300,
+      "imageIndex": 18
+    },
+    {
+      "id": "drinks-h",
+      "shelfId": "drinks",
+      "name": "椰奶",
+      "priceCents": 550,
+      "imageIndex": 19
+    },
+    {
+      "id": "drinks-i",
+      "shelfId": "drinks",
+      "name": "柠檬茶",
+      "priceCents": 650,
+      "imageIndex": 20
+    },
+    {
+      "id": "drinks-j",
+      "shelfId": "drinks",
+      "name": "桃汁",
+      "priceCents": 500,
+      "imageIndex": 21
+    },
+    {
+      "id": "drinks-k",
+      "shelfId": "drinks",
+      "name": "葡萄汁",
+      "priceCents": 400,
+      "imageIndex": 22
+    },
+    {
+      "id": "drinks-l",
+      "shelfId": "drinks",
+      "name": "香蕉牛奶",
+      "priceCents": 200,
+      "imageIndex": 23
+    },
+    {
+      "id": "fruit-a",
+      "shelfId": "fruit",
+      "name": "苹果",
+      "priceCents": 450,
+      "imageIndex": 24
+    },
+    {
+      "id": "fruit-b",
+      "shelfId": "fruit",
+      "name": "香蕉",
+      "priceCents": 650,
+      "imageIndex": 25
+    },
+    {
+      "id": "fruit-c",
+      "shelfId": "fruit",
+      "name": "橘子",
+      "priceCents": 300,
+      "imageIndex": 26
+    },
+    {
+      "id": "fruit-d",
+      "shelfId": "fruit",
       "name": "梨",
-      "icon": "🍐",
-      "color": "gold"
+      "priceCents": 550,
+      "imageIndex": 27
     },
     {
-      "id": "rabbit",
-      "targetId": "v2-rabbit",
+      "id": "fruit-e",
+      "shelfId": "fruit",
+      "name": "西瓜",
+      "priceCents": 750,
+      "imageIndex": 28
+    },
+    {
+      "id": "fruit-f",
+      "shelfId": "fruit",
+      "name": "草莓",
+      "priceCents": 900,
+      "imageIndex": 29
+    },
+    {
+      "id": "fruit-g",
+      "shelfId": "fruit",
+      "name": "葡萄",
+      "priceCents": 350,
+      "imageIndex": 30
+    },
+    {
+      "id": "fruit-h",
+      "shelfId": "fruit",
+      "name": "桃子",
+      "priceCents": 600,
+      "imageIndex": 31
+    },
+    {
+      "id": "fruit-i",
+      "shelfId": "fruit",
+      "name": "菠萝",
+      "priceCents": 700,
+      "imageIndex": 32
+    },
+    {
+      "id": "fruit-j",
+      "shelfId": "fruit",
+      "name": "芒果",
+      "priceCents": 550,
+      "imageIndex": 33
+    },
+    {
+      "id": "fruit-k",
+      "shelfId": "fruit",
+      "name": "猕猴桃",
+      "priceCents": 450,
+      "imageIndex": 34
+    },
+    {
+      "id": "fruit-l",
+      "shelfId": "fruit",
+      "name": "樱桃",
+      "priceCents": 250,
+      "imageIndex": 35
+    },
+    {
+      "id": "bakery-a",
+      "shelfId": "bakery",
+      "name": "面包",
+      "priceCents": 500,
+      "imageIndex": 36
+    },
+    {
+      "id": "bakery-b",
+      "shelfId": "bakery",
+      "name": "牛角包",
+      "priceCents": 700,
+      "imageIndex": 37
+    },
+    {
+      "id": "bakery-c",
+      "shelfId": "bakery",
+      "name": "馒头",
+      "priceCents": 350,
+      "imageIndex": 38
+    },
+    {
+      "id": "bakery-d",
+      "shelfId": "bakery",
+      "name": "吐司",
+      "priceCents": 600,
+      "imageIndex": 39
+    },
+    {
+      "id": "bakery-e",
+      "shelfId": "bakery",
+      "name": "法棍",
+      "priceCents": 800,
+      "imageIndex": 40
+    },
+    {
+      "id": "bakery-f",
+      "shelfId": "bakery",
+      "name": "纸杯蛋糕",
+      "priceCents": 950,
+      "imageIndex": 41
+    },
+    {
+      "id": "bakery-g",
+      "shelfId": "bakery",
+      "name": "蛋糕卷",
+      "priceCents": 400,
+      "imageIndex": 42
+    },
+    {
+      "id": "bakery-h",
+      "shelfId": "bakery",
+      "name": "蛋挞",
+      "priceCents": 650,
+      "imageIndex": 43
+    },
+    {
+      "id": "bakery-i",
+      "shelfId": "bakery",
+      "name": "三明治",
+      "priceCents": 750,
+      "imageIndex": 44
+    },
+    {
+      "id": "bakery-j",
+      "shelfId": "bakery",
+      "name": "汉堡",
+      "priceCents": 600,
+      "imageIndex": 45
+    },
+    {
+      "id": "bakery-k",
+      "shelfId": "bakery",
+      "name": "披萨",
+      "priceCents": 500,
+      "imageIndex": 46
+    },
+    {
+      "id": "bakery-l",
+      "shelfId": "bakery",
+      "name": "热狗",
+      "priceCents": 300,
+      "imageIndex": 47
+    },
+    {
+      "id": "vegetables-a",
+      "shelfId": "vegetables",
+      "name": "胡萝卜",
+      "priceCents": 550,
+      "imageIndex": 48
+    },
+    {
+      "id": "vegetables-b",
+      "shelfId": "vegetables",
+      "name": "西兰花",
+      "priceCents": 750,
+      "imageIndex": 49
+    },
+    {
+      "id": "vegetables-c",
+      "shelfId": "vegetables",
+      "name": "番茄",
+      "priceCents": 400,
+      "imageIndex": 50
+    },
+    {
+      "id": "vegetables-d",
+      "shelfId": "vegetables",
+      "name": "玉米",
+      "priceCents": 650,
+      "imageIndex": 51
+    },
+    {
+      "id": "vegetables-e",
+      "shelfId": "vegetables",
+      "name": "土豆",
+      "priceCents": 850,
+      "imageIndex": 52
+    },
+    {
+      "id": "vegetables-f",
+      "shelfId": "vegetables",
+      "name": "茄子",
+      "priceCents": 1000,
+      "imageIndex": 53
+    },
+    {
+      "id": "vegetables-g",
+      "shelfId": "vegetables",
+      "name": "黄瓜",
+      "priceCents": 450,
+      "imageIndex": 54
+    },
+    {
+      "id": "vegetables-h",
+      "shelfId": "vegetables",
+      "name": "白菜",
+      "priceCents": 700,
+      "imageIndex": 55
+    },
+    {
+      "id": "vegetables-i",
+      "shelfId": "vegetables",
+      "name": "南瓜",
+      "priceCents": 800,
+      "imageIndex": 56
+    },
+    {
+      "id": "vegetables-j",
+      "shelfId": "vegetables",
+      "name": "蘑菇",
+      "priceCents": 650,
+      "imageIndex": 57
+    },
+    {
+      "id": "vegetables-k",
+      "shelfId": "vegetables",
+      "name": "甜椒",
+      "priceCents": 550,
+      "imageIndex": 58
+    },
+    {
+      "id": "vegetables-l",
+      "shelfId": "vegetables",
+      "name": "豌豆",
+      "priceCents": 350,
+      "imageIndex": 59
+    },
+    {
+      "id": "toys-a",
+      "shelfId": "toys",
+      "name": "小熊玩偶",
+      "priceCents": 600,
+      "imageIndex": 60
+    },
+    {
+      "id": "toys-b",
+      "shelfId": "toys",
       "name": "兔子玩偶",
-      "icon": "🐰",
-      "color": "coral"
+      "priceCents": 800,
+      "imageIndex": 61
     },
     {
-      "id": "melon",
-      "targetId": "v1-melon",
-      "name": "瓜",
-      "icon": "🍉",
-      "color": "mint"
+      "id": "toys-c",
+      "shelfId": "toys",
+      "name": "小猫玩偶",
+      "priceCents": 450,
+      "imageIndex": 62
     },
     {
-      "id": "pot",
-      "targetId": "v2-pot",
-      "name": "锅",
-      "icon": "🍲",
-      "color": "gold"
+      "id": "toys-d",
+      "shelfId": "toys",
+      "name": "恐龙玩具",
+      "priceCents": 700,
+      "imageIndex": 63
     },
     {
-      "id": "flower",
-      "targetId": "v2-flower",
-      "name": "花",
-      "icon": "🌸",
-      "color": "coral"
+      "id": "toys-e",
+      "shelfId": "toys",
+      "name": "机器人",
+      "priceCents": 900,
+      "imageIndex": 64
     },
     {
-      "id": "orange",
-      "targetId": "v2-orange",
-      "name": "橘",
-      "icon": "🍊",
-      "color": "gold"
+      "id": "toys-f",
+      "shelfId": "toys",
+      "name": "小汽车",
+      "priceCents": 1050,
+      "imageIndex": 65
     },
     {
-      "id": "shrimp",
-      "targetId": "v2-shrimp",
-      "name": "虾",
-      "icon": "🦐",
-      "color": "coral"
+      "id": "toys-g",
+      "shelfId": "toys",
+      "name": "小飞机",
+      "priceCents": 500,
+      "imageIndex": 66
     },
     {
-      "id": "tea",
-      "targetId": "v2-tea",
-      "name": "茶",
-      "icon": "🍵",
-      "color": "mint"
+      "id": "toys-h",
+      "shelfId": "toys",
+      "name": "小帆船",
+      "priceCents": 750,
+      "imageIndex": 67
     },
     {
-      "id": "book",
-      "targetId": "v2-book",
-      "name": "书",
-      "icon": "📚",
-      "color": "coral"
+      "id": "toys-i",
+      "shelfId": "toys",
+      "name": "小火箭",
+      "priceCents": 850,
+      "imageIndex": 68
     },
     {
-      "id": "cabbage",
-      "targetId": "v2-cabbage",
-      "name": "菜",
-      "icon": "🥬",
-      "color": "mint"
+      "id": "toys-j",
+      "shelfId": "toys",
+      "name": "小火车",
+      "priceCents": 700,
+      "imageIndex": 69
     },
     {
-      "id": "cup",
-      "targetId": "v2-cup",
-      "name": "杯",
-      "icon": "🥤",
-      "color": "coral"
+      "id": "toys-k",
+      "shelfId": "toys",
+      "name": "小黄鸭",
+      "priceCents": 600,
+      "imageIndex": 70
     },
     {
-      "id": "bean",
-      "targetId": "v2-bean",
-      "name": "豆",
-      "icon": "🫘",
-      "color": "gold"
+      "id": "toys-l",
+      "shelfId": "toys",
+      "name": "小木马",
+      "priceCents": 400,
+      "imageIndex": 71
     },
     {
-      "id": "ball",
-      "targetId": "v2-ball",
-      "name": "球",
-      "icon": "⚽",
-      "color": "mint"
+      "id": "play-a",
+      "shelfId": "play",
+      "name": "足球",
+      "priceCents": 650,
+      "imageIndex": 72
     },
     {
-      "id": "coconut",
-      "targetId": "v2-coconut",
-      "name": "椰",
-      "icon": "🥥",
-      "color": "gold"
+      "id": "play-b",
+      "shelfId": "play",
+      "name": "篮球",
+      "priceCents": 850,
+      "imageIndex": 73
     },
     {
-      "id": "lamp",
-      "targetId": "v2-lamp",
-      "name": "灯",
-      "icon": "💡",
-      "color": "gold"
+      "id": "play-c",
+      "shelfId": "play",
+      "name": "沙滩球",
+      "priceCents": 500,
+      "imageIndex": 74
+    },
+    {
+      "id": "play-d",
+      "shelfId": "play",
+      "name": "羽毛球拍",
+      "priceCents": 750,
+      "imageIndex": 75
+    },
+    {
+      "id": "play-e",
+      "shelfId": "play",
+      "name": "跳绳",
+      "priceCents": 950,
+      "imageIndex": 76
+    },
+    {
+      "id": "play-f",
+      "shelfId": "play",
+      "name": "陀螺",
+      "priceCents": 1100,
+      "imageIndex": 77
+    },
+    {
+      "id": "play-g",
+      "shelfId": "play",
+      "name": "风筝",
+      "priceCents": 550,
+      "imageIndex": 78
+    },
+    {
+      "id": "play-h",
+      "shelfId": "play",
+      "name": "小鼓",
+      "priceCents": 800,
+      "imageIndex": 79
+    },
+    {
+      "id": "play-i",
+      "shelfId": "play",
+      "name": "小喇叭",
+      "priceCents": 900,
+      "imageIndex": 80
+    },
+    {
+      "id": "play-j",
+      "shelfId": "play",
+      "name": "小钢琴",
+      "priceCents": 750,
+      "imageIndex": 81
+    },
+    {
+      "id": "play-k",
+      "shelfId": "play",
+      "name": "小风车",
+      "priceCents": 650,
+      "imageIndex": 82
+    },
+    {
+      "id": "play-l",
+      "shelfId": "play",
+      "name": "望远镜",
+      "priceCents": 450,
+      "imageIndex": 83
+    },
+    {
+      "id": "stationery-a",
+      "shelfId": "stationery",
+      "name": "蜡笔",
+      "priceCents": 700,
+      "imageIndex": 84
+    },
+    {
+      "id": "stationery-b",
+      "shelfId": "stationery",
+      "name": "彩色铅笔",
+      "priceCents": 900,
+      "imageIndex": 85
+    },
+    {
+      "id": "stationery-c",
+      "shelfId": "stationery",
+      "name": "水彩颜料",
+      "priceCents": 550,
+      "imageIndex": 86
+    },
+    {
+      "id": "stationery-d",
+      "shelfId": "stationery",
+      "name": "笔记本",
+      "priceCents": 800,
+      "imageIndex": 87
+    },
+    {
+      "id": "stationery-e",
+      "shelfId": "stationery",
+      "name": "故事书",
+      "priceCents": 1000,
+      "imageIndex": 88
+    },
+    {
+      "id": "stationery-f",
+      "shelfId": "stationery",
+      "name": "文具盒",
+      "priceCents": 1150,
+      "imageIndex": 89
+    },
+    {
+      "id": "stationery-g",
+      "shelfId": "stationery",
+      "name": "书包",
+      "priceCents": 600,
+      "imageIndex": 90
+    },
+    {
+      "id": "stationery-h",
+      "shelfId": "stationery",
+      "name": "尺子",
+      "priceCents": 850,
+      "imageIndex": 91
+    },
+    {
+      "id": "stationery-i",
+      "shelfId": "stationery",
+      "name": "橡皮",
+      "priceCents": 950,
+      "imageIndex": 92
+    },
+    {
+      "id": "stationery-j",
+      "shelfId": "stationery",
+      "name": "胶棒",
+      "priceCents": 800,
+      "imageIndex": 93
+    },
+    {
+      "id": "stationery-k",
+      "shelfId": "stationery",
+      "name": "剪刀",
+      "priceCents": 700,
+      "imageIndex": 94
+    },
+    {
+      "id": "stationery-l",
+      "shelfId": "stationery",
+      "name": "画笔",
+      "priceCents": 500,
+      "imageIndex": 95
     }
+  ],
+  "vowelTargetIds": [
+    "v2-openmouth",
+    "v2-rooster",
+    "v2-goose",
+    "v2-shirt",
+    "v2-crow",
+    "v2-vowelfish"
   ]
 }
