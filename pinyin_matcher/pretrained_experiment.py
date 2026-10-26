@@ -58,10 +58,15 @@ def cache_identity(name, model_path=None):
         }
         adapter = "pretrained_finetune.py"
         if name == "sensevoice":
-            if metadata.get("architecture") != "sensevoice-50-ctc-v1":
+            architecture = metadata.get("architecture")
+            if architecture not in {"sensevoice-50-ctc-v1", "sensevoice-70-native-sequence-v1"}:
                 raise ValueError("DERIVATIVE_ARCHITECTURE_UNSUPPORTED")
-            identity["derivative"]["architecture"] = metadata["architecture"]
-            adapter = "pretrained_sensevoice_finetune.py"
+            identity["derivative"]["architecture"] = architecture
+            adapter = (
+                "pretrained_native_sequence.py"
+                if architecture == "sensevoice-70-native-sequence-v1"
+                else "pretrained_sensevoice_finetune.py"
+            )
         identity["code"][adapter] = fingerprint(Path(__file__).with_name(adapter))
     return identity
 
@@ -147,9 +152,14 @@ def cache_features(
     identity_sha = fingerprint(identity_path)
     if identity.get("derivative"):
         if name == "sensevoice":
-            from pinyin_matcher.pretrained_sensevoice_finetune import TunedSenseVoiceEvidence
+            if identity["derivative"].get("architecture") == "sensevoice-70-native-sequence-v1":
+                from pinyin_matcher.pretrained_native_sequence import NativeSequenceEvidence
 
-            model = TunedSenseVoiceEvidence(model_path, device=device)
+                model = NativeSequenceEvidence(model_path, device=device)
+            else:
+                from pinyin_matcher.pretrained_sensevoice_finetune import TunedSenseVoiceEvidence
+
+                model = TunedSenseVoiceEvidence(model_path, device=device)
         else:
             from pinyin_matcher.pretrained_finetune import TunedHanziFlowEvidence
 
@@ -654,6 +664,12 @@ def train(
         "schemaVersion": 1,
         "model": name,
         "variant": variant,
+        "acousticProbe": {
+            **acoustic_identity["intermediateProbe"],
+            "selectedDepth": acoustic_identity["selectedDepth"],
+        }
+        if "intermediateProbe" in acoustic_identity
+        else None,
         "regularizationConfigSha256": fingerprint(
             ROOT / "content/pronunciation-pretrained-mixup.json"
         )

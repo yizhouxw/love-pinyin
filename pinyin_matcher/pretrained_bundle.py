@@ -15,6 +15,12 @@ def bundle(heads: Path, acoustic: Path, output: Path, *, backend="int8", pitch_m
         raise ValueError("BUNDLE_DESTINATION_ALREADY_EXISTS")
     comparison = (heads / "comparison.json").is_file()
     metadata = json.loads((heads / ("comparison.json" if comparison else "model.json")).read_text())
+    if metadata.get("acousticProbe"):
+        raise ValueError("INTERMEDIATE_PROBE_REQUIRES_BOUND_ENCODER_EXPORT")
+    if (metadata.get("acousticDerivative") or {}).get("architecture") == (
+        "sensevoice-70-native-sequence-v1"
+    ):
+        raise ValueError("NATIVE_SEQUENCE_POOLED_READOUT_REQUIRES_BOUND_ENCODER_BACKEND")
     if comparison:
         metadata["headKind"] = "native-comparison"
         calibration = json.loads((heads / "calibration.json").read_text())

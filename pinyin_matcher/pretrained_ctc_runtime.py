@@ -9,6 +9,7 @@ the original SenseVoice model has no native phonetic/tone matching output.
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import math
 import shutil
@@ -28,6 +29,32 @@ from pinyin_matcher.pretrained_runtime import PretrainedMatcher, component_decis
 
 COMPONENTS = ("onset", "rime", "tone")
 HEADS = ("initial", "final", "tone")
+SENSEVOICE_NATIVE_ADAPTERS = {
+    "sensevoice-50-ctc-v1": (
+        "pretrained_sensevoice_finetune",
+        "TunedSenseVoiceEvidence",
+    ),
+    "sensevoice-50-ctc-int8-v1": (
+        "pretrained_sensevoice_export",
+        "OnnxSenseVoiceEvidence",
+    ),
+    "sensevoice-70-native-sequence-v1": (
+        "pretrained_native_sequence",
+        "NativeSequenceEvidence",
+    ),
+    "sensevoice-70-native-sequence-int8-v1": (
+        "pretrained_native_sequence_export",
+        "OnnxNativeSequenceEvidence",
+    ),
+}
+QUANTIZED_NATIVE_PARENTS = {
+    "sensevoice-50-ctc-int8-v1": "sensevoice-50-ctc-v1",
+    "sensevoice-70-native-sequence-int8-v1": "sensevoice-70-native-sequence-v1",
+}
+
+
+def is_quantized_native_architecture(architecture):
+    return architecture in QUANTIZED_NATIVE_PARENTS
 
 
 def load_encoder(name: str, directory: Path):
@@ -35,14 +62,14 @@ def load_encoder(name: str, directory: Path):
     tuned_path = directory / "tuned.json"
     if tuned_path.is_file():
         tuned = json.loads(tuned_path.read_text())
-        if name == "sensevoice" and tuned.get("architecture") == "sensevoice-50-ctc-int8-v1":
-            from pinyin_matcher.pretrained_sensevoice_export import OnnxSenseVoiceEvidence
-
-            return OnnxSenseVoiceEvidence(directory, threads=2)
-        if name == "sensevoice" and tuned.get("architecture") == "sensevoice-50-ctc-v1":
-            from pinyin_matcher.pretrained_sensevoice_finetune import TunedSenseVoiceEvidence
-
-            return TunedSenseVoiceEvidence(directory, device="cpu", threads=2)
+        architecture = tuned.get("architecture")
+        if name == "sensevoice" and architecture in SENSEVOICE_NATIVE_ADAPTERS:
+            module, adapter = SENSEVOICE_NATIVE_ADAPTERS[architecture]
+            constructor = getattr(importlib.import_module("pinyin_matcher." + module), adapter)
+            options = {"threads": 2}
+            if not is_quantized_native_architecture(architecture):
+                options["device"] = "cpu"
+            return constructor(directory, **options)
         if name == "hanziflow" and not tuned.get("architecture"):
             from pinyin_matcher.pretrained_finetune import TunedHanziFlowEvidence
 
@@ -164,10 +191,8 @@ class NativeCTCMatcher(PretrainedMatcher):
             if self.native_vocabulary != metadata["nativeVocabularies"]:
                 raise ValueError("NATIVE_CTC_VOCABULARY_DIGEST_MISMATCH")
             tuned_path = self.directory / "encoder/tuned.json"
-            quantized = (
-                tuned_path.is_file()
-                and json.loads(tuned_path.read_text()).get("architecture")
-                == "sensevoice-50-ctc-int8-v1"
+            quantized = tuned_path.is_file() and is_quantized_native_architecture(
+                json.loads(tuned_path.read_text()).get("architecture")
             )
             if quantized != (metadata["encoderBackend"] == "sensevoice-ctc-int8"):
                 raise ValueError("NATIVE_CTC_BACKEND_METADATA_MISMATCH")
@@ -263,7 +288,8 @@ def calibrate(name: str, manifest: Path, cache: Path, model: Path, output: Path)
         raise ValueError("CTC_CALIBRATION_CACHE_MANIFEST_MISMATCH")
     if (
         name == "sensevoice"
-        and not identity.get("derivative", {}).get("architecture") == "sensevoice-50-ctc-v1"
+        and identity.get("derivative", {}).get("architecture")
+        not in QUANTIZED_NATIVE_PARENTS.values()
     ):
         raise ValueError("ORIGINAL_SENSEVOICE_HAS_NO_PHONETIC_HEAD")
     rows = read_rows(manifest, verify_splits=("calibration",))
@@ -300,7 +326,12 @@ def calibrate(name: str, manifest: Path, cache: Path, model: Path, output: Path)
         "nativeVocabularies": native_vocabulary,
         "coveredTargets": targets,
         "nativeRimeAliases": native_rime_aliases("hanziflow"),
-        "phoneticHeadOrigin": "project-trained-SenseVoice50-CTC"
+        "phoneticHeadOrigin": (
+            "project-trained-SenseVoice70-native-sequence-CTC"
+            if identity.get("derivative", {}).get("architecture")
+            == "sensevoice-70-native-sequence-v1"
+            else "project-trained-SenseVoice50-CTC"
+        )
         if name == "sensevoice"
         else "HanziFlow-native-CTC-with-declared-derivative",
         "manifestSha256": fingerprint(manifest),
@@ -440,9 +471,10 @@ def bundle(calibration: Path, model: Path, output: Path, *, quantized_model: Pat
         quantized = json.loads((quantized_model / "tuned.json").read_text())
         parent = quantized_model / "parent-tuned.json"
         if (
-            quantized.get("architecture") != "sensevoice-50-ctc-int8-v1"
+            not is_quantized_native_architecture(quantized.get("architecture"))
             or fingerprint(parent) != metadata["acousticDerivative"]["metadataSha256"]
             or quantized.get("parentTunedMetadataSha256") != fingerprint(parent)
+            or QUANTIZED_NATIVE_PARENTS[quantized["architecture"]] != tuned.get("architecture")
             or quantized.get("parentTunedWeightSha256")
             != tuned["files"]["tuned.safetensors"]["sha256"]
             or quantized["sourceRevision"] != identity["model"]["revision"]

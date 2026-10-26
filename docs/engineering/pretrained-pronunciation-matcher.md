@@ -1,6 +1,6 @@
 # 预训练拼音匹配底层工具
 
-对应 SPEC-018 MATCH-07～09。本工具独立于课程、跟读录音、HTTP 和家庭进度；模型包仅作本机研究，预训练质量结论与剩余门禁见[实测记录](../research/target-pronunciation-pretrained-results.md)。[候选核验](../research/pretrained-matcher-model-audit.md)说明实际权重、直接声学输出、许可及已知训练来源。下列命令不会替代独立真人或儿童验证。
+对应 SPEC-018 MATCH-07～13。本工具独立于课程、跟读录音、HTTP 和家庭进度；模型包仅作本机研究，预训练质量结论与剩余门禁见[实测记录](../research/target-pronunciation-pretrained-results.md)。[候选核验](../research/pretrained-matcher-model-audit.md)说明实际权重、直接声学输出、许可及已知训练来源。下列命令不会替代独立真人或儿童验证。
 
 当前交付包括实际运行过的比较、训练/微调、导出与CPU命令行工具；**质量门槛尚未通过，持续优化到约定质量的目标仍未完成**。尚需取得与孤立四声任务一致且可靠的实际发音标签、完成达到原门槛的模型优化，再冻结模型/参数/代码并开启最终评测。2026-10-26交付审阅只查元数据和路径：OMPAL预留10位说话人的494份WAV在预期目录和本轮忽略目录均未出现；现有公开结果为校准/诊断。儿童验证缺失不是当前唯一未完成项；应用层按本次范围不接入。
 
@@ -473,3 +473,161 @@ tools/pinyin-pretrained/run.sh ensemble \
 集成固定平均三个成员的完整类别概率，编码器只执行一次；不能混用不同清单、归一化或声学缓存。使用相同 `bundle` 命令导出，随后对每包执行前文 `evaluate --split calibration`、`stress evaluate`、`benchmark --exact-four-seconds` 和 `cold`。当前五包位于 `models/pinyin-pretrained/bundles/{sensevoice-independent-v1,sensevoice-temporal-v1,sensevoice50-temporal-v1,sensevoice-mixup-v1,sensevoice-ensemble-v1}`；四秒测速文件为 `private/pretrained-matcher/cpu-pressure-continuous.wav`，目标 `pm-ba1`。端到端评测逐条运行波形，不以缓存读出替代量化后的质量。
 
 `run.sh readout-diagnostics --help` 提供仅校准缓存的分量混淆与时长诊断，明确不构成完整 CPU 评测。`run.sh iteration-report` 严格从本轮已完成的训练、全量校准、压力、暖机和冷启动文件重建[结果](../research/sensevoice-iteration-results.md)，核对模型、数据、压力波形摘要，缺失实验会失败。详细每轮曲线、区间及来源摘要在对应 JSON。494 份最终 WAV 未启用，结果仍为研发校准，未通过质量门槛，不替换应用 mock。
+
+## MATCH-13：活动检测、边界、分量监督与原生序列
+
+本轮保持 v1 应用匹配/识别接口和显式 mock 行为。底层研究返回原有状态；`uncertain` 仍表示证据不足，不转成匹配或明确读错。原始模型与失败轮次保留。活动检测改用10ms块RMS累计声音时长，测试周期过零、短脉冲、安静和削波边界；该修复不改变识别置信度门槛。
+
+以下输出采用独立 `rebuild` 名称。已有正确摘要的数据可复用；训练、缓存、导出输出不能覆盖既有目录。重建会绑定当前代码SHA，因此不伪称与历史产物逐字节相同。GPU仅用于离线阶段，部署及评测仍是CPU两线程。
+
+```sh
+# 前20/35/50层使用同一波形；每层缓存身份绑定所选层与归一化方式。
+./tools/pinyin-pretrained/run.sh layer-probe \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --model models/pinyin-pretrained/sensevoice \
+  --output private/pretrained-matcher/sensevoice-layer-probes-rebuild --device mps
+
+for matcher_depth in 20 35 50; do
+  ./tools/pinyin-pretrained/run.sh train --name sensevoice --variant multihead \
+    --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+    --cache "private/pretrained-matcher/sensevoice-layer-probes-rebuild/$matcher_depth" \
+    --output "private/pretrained-matcher/sensevoice-layer${matcher_depth}-rebuild" --device cpu
+done
+
+# 边界v3保留全部根ID、专家票、来源和旧边界；不按预测删难例。
+./tools/pinyin-pretrained/run.sh alignment-v3 \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --output private/pretrained-matcher/ompal-clips-v3-rebuild
+./tools/pinyin-pretrained/run.sh cache --name sensevoice \
+  --manifest private/pretrained-matcher/ompal-clips-v3-rebuild/manifest.json \
+  --model models/pinyin-pretrained/sensevoice \
+  --output private/pretrained-matcher/ompal-v3-sensevoice-cache-rebuild --device mps
+./tools/pinyin-pretrained/run.sh factorized \
+  --manifest private/pretrained-matcher/ompal-clips-v3-rebuild/manifest.json \
+  --cache private/pretrained-matcher/ompal-v3-sensevoice-cache-rebuild \
+  --output private/pretrained-matcher/ompal-v3-factorized-rebuild
+```
+
+`factorized` 的身份分支只用专家正确分量；有效性分支保留已知错误期待分量和按根平衡的替代类负例。此轮将两分支乘积归一化为完整分布，不能将其解释成独立校准的绝对正确概率。原v2消融使用相同命令改回v2清单与对应缓存。20/35/50中间层探针只作缓存诊断，普通打包器明确拒绝它们；没有对应编码器导出时不能包装成原70层CPU模型。
+
+```sh
+# 为尾层实验先重建同一v2边界的原始编码器factorized初始化头。
+./tools/pinyin-pretrained/run.sh cache --name sensevoice \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --model models/pinyin-pretrained/sensevoice \
+  --output private/pretrained-matcher/ompal-v2-sensevoice-cache-rebuild --device mps
+./tools/pinyin-pretrained/run.sh factorized \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --cache private/pretrained-matcher/ompal-v2-sensevoice-cache-rebuild \
+  --output private/pretrained-matcher/sensevoice-factorized-rebuild
+
+# 前64层常量缓存；最后6层与分量头实际梯度更新。
+./tools/pinyin-pretrained/run.sh tail-finetune cache \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --model models/pinyin-pretrained/sensevoice \
+  --output private/pretrained-matcher/sensevoice64-prefix-rebuild --device mps
+./tools/pinyin-pretrained/run.sh tail-finetune train \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --model models/pinyin-pretrained/sensevoice \
+  --cache private/pretrained-matcher/sensevoice64-prefix-rebuild \
+  --initializer private/pretrained-matcher/sensevoice-factorized-rebuild \
+  --output private/pretrained-matcher/sensevoice-tail-rebuild --device mps
+
+# 显式下载固定AISHELL-3部分库存，逐文件SHA；仅外部训练补充。
+./tools/pinyin-pretrained/run.sh aishell3 \
+  --output private/pretrained-matcher/aishell3 --workers 8
+./tools/pinyin-pretrained/run.sh native-sequence cache \
+  --manifest private/pretrained-matcher/aishell3/manifest.json \
+  --model models/pinyin-pretrained/sensevoice \
+  --vocabulary models/pinyin-pretrained/hanziflow \
+  --output private/pretrained-matcher/native-prefix-rebuild --device mps
+./tools/pinyin-pretrained/run.sh native-sequence train \
+  --native-cache private/pretrained-matcher/native-prefix-rebuild \
+  --source-manifest private/pretrained-matcher/aishell3/manifest.json \
+  --calibration-manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --calibration-cache private/pretrained-matcher/sensevoice64-prefix-rebuild \
+  --model models/pinyin-pretrained/sensevoice \
+  --vocabulary models/pinyin-pretrained/hanziflow \
+  --output models/pinyin-pretrained/native-sequence-rebuild --device mps
+```
+
+固定配置 `content/pronunciation-aishell3-data.json` 包含修订、许可来源、说话人选择、音频与原拼音标注行的摘要；不是完整原语料。44.1kHz原音只在准备阶段明确重采样为16kHz，原音和派生音分别记SHA。作者提供的实际拼音作为完整CTC序列，HanziFlow只提供符号词表，未用其权重充当新头；不能表达的儿化等整句隔离，分母和理由保留。训练入口重新绑定原音、原人工标注、缓存标签及排除清单，防止标签缓存被改写。原生训练固定12轮；所选检查点取已有OMPAL校准损失，不读最终音频。
+
+原生70层CPU包需显式完成导出、标准缓存校准、打包及逐条复评：
+
+```sh
+./tools/pinyin-pretrained/run.sh native-sequence-export \
+  --model models/pinyin-pretrained/native-sequence-rebuild \
+  --source models/pinyin-pretrained/sensevoice \
+  --output models/pinyin-pretrained/native-sequence-int8-rebuild
+./tools/pinyin-pretrained/run.sh cache --name sensevoice \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --model models/pinyin-pretrained/native-sequence-rebuild \
+  --output private/pretrained-matcher/native-sequence-calibration-cache-rebuild --device mps
+./tools/pinyin-pretrained/run.sh ctc calibrate --name sensevoice \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --cache private/pretrained-matcher/native-sequence-calibration-cache-rebuild \
+  --model models/pinyin-pretrained/native-sequence-rebuild \
+  --output private/pretrained-matcher/native-sequence-calibration-rebuild.json
+./tools/pinyin-pretrained/run.sh ctc bundle \
+  --calibration private/pretrained-matcher/native-sequence-calibration-rebuild.json \
+  --model models/pinyin-pretrained/native-sequence-rebuild \
+  --quantized-model models/pinyin-pretrained/native-sequence-int8-rebuild \
+  --output models/pinyin-pretrained/bundles/native-sequence-int8-rebuild
+./tools/pinyin-pretrained/run.sh evaluate \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --model models/pinyin-pretrained/bundles/native-sequence-int8-rebuild \
+  --split calibration --output private/pretrained-matcher/native-sequence-cpu-rebuild.json
+```
+
+省略 `ctc bundle --quantized-model` 并使用另一输出目录建立FP32对照。FP32研究加载器需要原固定SenseVoice底座加可训练增量，报告大小必须加上底座；INT8包完整包含编码器、三个CTC头、词表、前端资源及许可证，不依赖原模型目录。ONNX数值对齐检查不是质量证明。导出后的完整四秒两线程测量沿用上文 `benchmark`、`cold` 命令和固定连续音频。
+
+单/双包压力诊断须显式加 `stress prepare --allow-single-model-diagnostic`；该选项仅允许calibration，三包比较默认要求不变。对v3清单还必须提供 `--source-parent-manifest` 及原v2 SHA/管线证据，逐根核验来源和专家票一致。活动检测/边界改变会改变压力锚点，比较报告必须给出相同case和波形比例，不把不同压力波形写成完全相同输入。
+
+混合域训练从原生序列所选检查点开始，保留全句序列回放，并引入OMPAL短片的已知正确/错误分量。每步两个域各一批、损失各0.5；OMPAL每分量按批内实际出现的正负组取均值，不等于整个数据集正负各占50%。实际曝光次数、有效组权重、所有8轮及初始化epoch0均保存，不把重复原生句当作新增独立样本。
+
+```sh
+# 重建产物的路径/源码SHA会改变，先显式绑定到新的独立配置；预算不变。
+./tools/pinyin-pretrained/run.sh sequence-adapt-config \
+  --initializer models/pinyin-pretrained/native-sequence-rebuild \
+  --native-manifest private/pretrained-matcher/aishell3/manifest.json \
+  --ompal-manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --output private/pretrained-matcher/sequence-adapt-rebuild-config.json
+./tools/pinyin-pretrained/run.sh sequence-adapt \
+  --config private/pretrained-matcher/sequence-adapt-rebuild-config.json \
+  --initializer models/pinyin-pretrained/native-sequence-rebuild \
+  --native-cache private/pretrained-matcher/native-prefix-rebuild \
+  --native-manifest private/pretrained-matcher/aishell3/manifest.json \
+  --ompal-cache private/pretrained-matcher/sensevoice64-prefix-rebuild \
+  --ompal-manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --source models/pinyin-pretrained/sensevoice \
+  --output models/pinyin-pretrained/native-sequence-adapt-rebuild --device mps
+```
+
+随后沿用 `native-sequence-export`、`cache`、`ctc calibrate/bundle`、`evaluate`，将原生模型路径替换成混合模型，并为每份输出另取新目录。新包中的 `adaptation-config.json` 和 `training-data.json` 分别绑定混合配置、初始化与两份训练源；导出资源不可覆盖图/身份文件。INT8运行前核验父资源及摘要，缺失或损坏返回不可用，不静默回退到网络或原目录。
+
+固定混合编码器的两项读出消融复用上述标准缓存（包含pool5表示和68维音高），沿用原120轮预算。下列命令用于缓存诊断；本轮结果不足，普通打包器明确拒绝将native70读出错误配成原始70层或旧50层后端。
+
+```sh
+./tools/pinyin-pretrained/run.sh train --name sensevoice --variant multihead \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --cache private/pretrained-matcher/ompal-v2-native-sequence-adapt-v1-cache \
+  --output private/pretrained-matcher/adapt-multihead-rebuild --device cpu
+./tools/pinyin-pretrained/run.sh factorized \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --cache private/pretrained-matcher/ompal-v2-native-sequence-adapt-v1-cache \
+  --output private/pretrained-matcher/adapt-factorized-rebuild
+```
+
+`ompal-v2-native-sequence-adapt-v1-cache` 是本轮历史混合编码器缓存；干净复现先按上文 `cache` 使用自己重建的混合模型生成新缓存，再将这两个命令一起指向该缓存。factorized严格绑定派生架构、父模型修订/权重/元数据和缓存身份，不移除身份来绕过校验。历史训练脚本在输入校验加固前后的SHA分别保留；当前命令复现数值流程，不承诺更换绝对路径、元数据或源码后仍生成逐字节相同的历史产物。
+
+本轮完整记录由以下命令从实际本地产物生成，缺少任一完整评测或性能记录会报错；逐根录音/标签/结果保持本地忽略，Git结果仅含聚合统计、训练曲线和来源SHA：
+
+```sh
+./tools/pinyin-pretrained/run.sh reconstruction-report
+./node_modules/.bin/prettier --write \
+  docs/research/sensevoice-reconstruction-results.md \
+  docs/research/sensevoice-reconstruction-results.json
+```
+
+报告生成依赖本轮保存的历史实验目录；训练的干净重建使用上文独立输出路径，不自动替换已记录证据。`run.sh test`包含活动检测、预训练管线和数据/资源身份边界；完整工程仍执行`npm run verify:all`与`npm run validate:release`，都不能替代声音质量验收。

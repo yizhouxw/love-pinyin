@@ -83,6 +83,38 @@ def test_calibration_rejects_reserved_test_before_cache_or_audio(tmp_path):
         )
 
 
+@pytest.mark.parametrize(
+    ("architecture", "expected_error"),
+    [
+        ("sensevoice-50-ctc-v1", "CTC_TRAIN_CALIBRATION_INVENTORY_REQUIRED"),
+        ("sensevoice-70-native-sequence-v1", "CTC_TRAIN_CALIBRATION_INVENTORY_REQUIRED"),
+        (None, "ORIGINAL_SENSEVOICE_HAS_NO_PHONETIC_HEAD"),
+        ("sensevoice-70-native-sequence-int8-v1", "ORIGINAL_SENSEVOICE_HAS_NO_PHONETIC_HEAD"),
+    ],
+)
+def test_calibration_accepts_only_declared_unquantized_phonetic_derivatives(
+    tmp_path, monkeypatch, architecture, expected_error
+):
+    import pinyin_matcher.pretrained_ctc_runtime as runtime
+    import pinyin_matcher.pretrained_experiment as experiment
+    from pinyin_matcher.catalog import fingerprint
+
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps({"items": []}))
+    cache = tmp_path / "cache"
+    cache.mkdir()
+    identity = {"derivative": {"architecture": architecture}}
+    (cache / "identity.json").write_text(json.dumps(identity))
+    (cache / "cache.json").write_text(
+        json.dumps({"manifestSha256": fingerprint(manifest), "testIncluded": False})
+    )
+    monkeypatch.setattr(experiment, "cache_identity", lambda *args: identity)
+    monkeypatch.setattr(experiment, "read_rows", lambda *args, **kwargs: [])
+    monkeypatch.setattr(runtime, "verify_source", lambda *args: None)
+    with pytest.raises(ValueError, match=expected_error):
+        calibrate("sensevoice", manifest, cache, tmp_path / "model", tmp_path / "output")
+
+
 def test_native_ctc_bad_package_never_loads_encoder(tmp_path, monkeypatch):
     import pinyin_matcher.pretrained_ctc_runtime as runtime
 

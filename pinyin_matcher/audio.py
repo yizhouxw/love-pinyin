@@ -55,7 +55,14 @@ def quality_check(samples: np.ndarray) -> dict:
     if not 2400 <= len(samples) <= SAMPLE_RATE * MAX_SECONDS:
         raise AudioRejected("AUDIO_DURATION_INVALID")
     rms = float(np.sqrt(np.mean(samples * samples)))
-    if rms < 0.002 or np.count_nonzero(np.abs(samples) > 0.005) < 1600:
+    # Count activity in 10ms blocks, not individual samples: voiced periods
+    # necessarily cross zero, which must not shorten their active duration.
+    # Keep the 100ms minimum and absolute energy floor; this is a numerical
+    # input guard, not evidence that the sound is speech or correctly pronounced.
+    block_size = SAMPLE_RATE // 100
+    complete = samples[: len(samples) // block_size * block_size].reshape(-1, block_size)
+    block_rms = np.sqrt(np.mean(complete * complete, axis=1))
+    if rms < 0.002 or np.count_nonzero(block_rms > 0.005) < 10:
         raise AudioRejected("SILENCE_OR_TOO_QUIET")
     if float(np.mean(np.abs(samples) >= 0.99)) > 0.05:
         raise AudioRejected("CLIPPED_AUDIO")

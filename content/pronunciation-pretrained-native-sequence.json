@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "sensevoice-70-native-sequence-v1",
+  "seed": 3182026,
+  "nativeTrainingDataset": "aishell3-training-supplement-v1",
+  "warmupEpochs": 2,
+  "fineTuneEpochs": 10,
+  "batchSize": 32,
+  "cacheBatchSize": 32,
+  "tailLearningRate": 0.00001,
+  "headLearningRate": 0.001,
+  "weightDecay": 0.01,
+  "gradientClip": 5.0,
+  "frozenEncoderLayers": 64,
+  "trainableTaskEncoderLayers": 6,
+  "prompts": [3, 1, 2, 15],
+  "dither": 0,
+  "trainingLoss": "Three complete native phonetic CTC sequence negative log likelihoods, normalized by sequence target length for gradient averaging only; CPU float64 dynamic program with MPS gradients.",
+  "labels": "Provided realized pinyin only, including neutral T5; no Hanzi conversion or forced word crops. Unsupported phonetic tokens quarantine the whole training utterance with explicit counts.",
+  "checkpointSelection": "OMPAL v2 calibration balanced expert signed single-label CTC loss; no OMPAL gradient updates and no final audio.",
+  "finalTestUsed": false
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "version": "ompal-median-ctc-energy-v3",
+  "sampleRate": 16000,
+  "energyWindowMilliseconds": 20,
+  "energyHopMilliseconds": 10,
+  "interiorSearchFraction": 0.8,
+  "midpointPenalty": 0.1,
+  "maximumValleyToAnchorEnergyRatio": 0.7,
+  "outerSearchSeconds": 0.5,
+  "outerRelativeEnergy": 0.01,
+  "outerAbsoluteEnergy": 0.00000001,
+  "outerMarginMilliseconds": 20,
+  "minimumClipSeconds": 0.15,
+  "minimumAcousticSeconds": 0.08,
+  "maximumClipSeconds": 4,
+  "finalTestUsed": false,
+  "correctnessLabelsUsedForBoundaries": false
+}

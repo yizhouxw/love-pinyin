@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "sensevoice-70-factorized-tail-v1",
+  "seed": 3182026,
+  "retainedEncoderLayers": 70,
+  "frozenEncoderLayers": 64,
+  "trainableTaskEncoderLayers": 6,
+  "warmupEpochs": 2,
+  "fineTuneEpochs": 10,
+  "batchSize": 32,
+  "cacheBatchSize": 32,
+  "tailLearningRate": 0.00001,
+  "headLearningRate": 0.001,
+  "weightDecay": 0.01,
+  "gradientClip": 5.0,
+  "prompts": [3, 1, 2, 15],
+  "dither": 0,
+  "headInitialization": "Existing v2 factorized identity/validity selected checkpoint and its train-only normalization, with file and manifest digests checked.",
+  "prefixCache": "Main 50 layers including after_norm, then first 14 TP layers; all four prompts and every valid acoustic frame retained.",
+  "checkpointSelection": "Full calibration factorized identity/validity loss; no final speech read.",
+  "finalTestUsed": false
+}

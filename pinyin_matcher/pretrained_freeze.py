@@ -44,6 +44,7 @@ def protocol_files() -> list[Path]:
         {
             *content.glob("pronunciation-pretrained-*.json"),
             *content.glob("pronunciation-ompal-*.json"),
+            *content.glob("pronunciation-aishell3-*.json"),
             *(ROOT / "resources/licenses").glob("SenseVoice-*.txt"),
             *(ROOT / "resources/licenses").glob("Charsiu-MIT.txt"),
             *(ROOT / "resources/licenses").glob("SwiftF0-MIT.txt"),

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "sensevoice-factorized-identity-validity-v1",
+  "seed": 3182026,
+  "maximumEpochs": 120,
+  "cpuThreads": 2,
+  "validityLossWeight": 1.0,
+  "identitySupervision": "Cross entropy only for expert-correct components; expert-error and ambiguous components do not invent an identity label.",
+  "validitySupervision": "For a correct component: expected-class positive BCE and mean other-class negative BCE, each half per root. For an expert-error component: expected-class negative BCE only. Correct/error group means receive equal weight; ambiguous components are masked.",
+  "checkpointSelection": "calibration-factorized-identity-validity-loss",
+  "outputCombination": "log-softmax identity plus log-sigmoid validity; runtime softmax normalizes the full-class product and does not preserve absolute validity.",
+  "finalTestUsed": false
+}

@@ -52,7 +52,18 @@ def _key(row: dict) -> tuple[str, str, str]:
     return tuple(str(row[k]) for k in ("onset", "rime", "tone"))
 
 
-def common_targets(packages: list[Path], manifest_sha: str) -> tuple[dict, list[dict]]:
+def common_targets(
+    packages: list[Path], manifest_sha: str, *, allow_single_model_diagnostic: bool = False
+) -> tuple[dict, list[dict]]:
+    if len({p.resolve() for p in packages}) != len(packages):
+        raise ValueError("STRESS_DUPLICATE_PACKAGES")
+    minimum = 1 if allow_single_model_diagnostic else 3
+    if len(packages) < minimum:
+        raise ValueError(
+            "STRESS_DIAGNOSTIC_REQUIRES_A_PACKAGE"
+            if allow_single_model_diagnostic
+            else "STRESS_COMPARISON_REQUIRES_AT_LEAST_THREE_PACKAGES"
+        )
     records, mappings = [], []
     for package in packages:
         path = package / "model.json"
@@ -68,8 +79,6 @@ def common_targets(packages: list[Path], manifest_sha: str) -> tuple[dict, list[
                 "metadataSha256": fingerprint(path),
             }
         )
-    if len(mappings) < 3:
-        raise ValueError("STRESS_COMPARISON_REQUIRES_AT_LEAST_THREE_PACKAGES")
     keys = set.intersection(*(set(m) for m in mappings))
     # Every model must expose the same canonical target ID for each source.
     return {k: mappings[0][k] for k in keys if len({m[k] for m in mappings}) == 1}, records
@@ -191,7 +200,7 @@ def wrong_rate_payload(samples: np.ndarray, rate: int) -> bytes:
     return out.getvalue()
 
 
-def source_lineage(source: dict, pipeline_snapshot: Path | None) -> dict:
+def _v2_source_lineage(source: dict, pipeline_snapshot: Path | None) -> dict:
     """Bind actual preparation code while checking corrected phonetic semantics."""
     from pinyin_matcher.pretrained_native import native_rime_aliases
 
@@ -241,6 +250,81 @@ def source_lineage(source: dict, pipeline_snapshot: Path | None) -> dict:
     }
 
 
+def source_lineage(
+    source: dict, pipeline_snapshot: Path | None, source_parent_manifest: Path | None = None
+) -> dict:
+    if source.get("version") != "ompal-median-ctc-energy-v3":
+        if source_parent_manifest is not None:
+            raise ValueError("STRESS_PARENT_MANIFEST_ONLY_FOR_V3")
+        return _v2_source_lineage(source, pipeline_snapshot)
+    if source_parent_manifest is None:
+        raise ValueError("STRESS_V3_PARENT_MANIFEST_REQUIRED")
+    parent_sha = fingerprint(source_parent_manifest)
+    if parent_sha != source.get("sourceManifestSha256"):
+        raise ValueError("STRESS_V3_PARENT_MANIFEST_DIGEST_MISMATCH")
+    parent = json.loads(source_parent_manifest.read_text())
+    if any(
+        data.get("frozenTestIncluded")
+        or any(row.get("split") == "test" for row in data.get("items", []))
+        for data in (source, parent)
+    ):
+        raise ValueError("STRESS_V3_MUST_NOT_INCLUDE_FROZEN_TEST_COHORT")
+    original_lineage = _v2_source_lineage(parent, pipeline_snapshot)
+    pipeline = Path(__file__).with_name("pretrained_alignment_v3.py")
+    config = ROOT / "content/pronunciation-pretrained-alignment-v3.json"
+    configuration = json.loads(config.read_text())
+    if (
+        source.get("pipelineSha256") != fingerprint(pipeline)
+        or source.get("configurationSha256") != fingerprint(config)
+        or configuration.get("version") != source["version"]
+        or configuration.get("finalTestUsed") is not False
+        or configuration.get("correctnessLabelsUsedForBoundaries") is not False
+        or source.get("alignmentMapping") != parent.get("alignmentMapping")
+        or source.get("alignerSha256") != parent.get("alignerSha256")
+    ):
+        raise ValueError("STRESS_V3_PIPELINE_OR_CONFIGURATION_MISMATCH")
+    original_rows = {r["id"]: r for r in parent["items"]}
+    current_rows = {r["id"]: r for r in source["items"]}
+    if (
+        not original_rows
+        or original_rows.keys() != current_rows.keys()
+        or len(original_rows) != len(parent["items"])
+        or len(current_rows) != len(source["items"])
+    ):
+        raise ValueError("STRESS_V3_ROOT_IDENTITIES_CHANGED")
+    mutable = {
+        "file",
+        "sha256",
+        "bounds",
+        "numericalQualityFlags",
+        "placeholder",
+        "durationSeconds",
+        "boundaryV3",
+    }
+    for identifier, original in original_rows.items():
+        current = current_rows[identifier]
+        if {k: v for k, v in original.items() if k not in mutable} != {
+            k: v for k, v in current.items() if k not in mutable
+        }:
+            raise ValueError("STRESS_V3_LABEL_OR_LINEAGE_CHANGED:" + identifier)
+    return {
+        "pipelineSha256AtPreparation": fingerprint(pipeline),
+        "currentPipelineSha256": fingerprint(pipeline),
+        "pipelineChangedSincePreparation": False,
+        "pipelineSnapshot": original_lineage["pipelineSnapshot"],
+        "pipelineSnapshotSha256": original_lineage["pipelineSnapshotSha256"],
+        "sourceParentManifest": str(source_parent_manifest.resolve()),
+        "sourceParentManifestSha256": parent_sha,
+        "parentCodeLineage": original_lineage,
+        "boundaryConfigurationSha256": fingerprint(config),
+        "unchangedLabelAndLineageRoots": len(original_rows),
+        "provenanceNote": (
+            "V3 boundaries change audio only; all root identities and non-boundary labels "
+            "match the SHA-bound V2 parent. This remains calibration diagnostics."
+        ),
+    }
+
+
 def prepare(
     manifest: Path,
     packages: list[Path],
@@ -249,6 +333,8 @@ def prepare(
     expected_source_sha: str,
     protocol_path: Path = PROTOCOL,
     source_pipeline_snapshot: Path | None = None,
+    source_parent_manifest: Path | None = None,
+    allow_single_model_diagnostic: bool = False,
 ) -> dict:
     protocol = load_protocol(protocol_path)
     if (output / "manifest.json").exists():
@@ -258,8 +344,12 @@ def prepare(
     source = json.loads(manifest.read_text())
     if source.get("frozenTestIncluded"):
         raise ValueError("STRESS_MUST_NOT_OPEN_FROZEN_TEST_COHORT")
-    lineage = source_lineage(source, source_pipeline_snapshot)
-    targets, package_records = common_targets(packages, expected_source_sha)
+    lineage = source_lineage(source, source_pipeline_snapshot, source_parent_manifest)
+    targets, package_records = common_targets(
+        packages,
+        expected_source_sha,
+        allow_single_model_diagnostic=allow_single_model_diagnostic,
+    )
     selected, selection_info = select_sources(source["items"], protocol, targets, manifest.parent)
     cases, source_records = [], {}
     rules = protocol["cases"]
@@ -414,6 +504,7 @@ def prepare(
         "alignerSha256": source["alignerSha256"],
         "sourceCodeLineage": lineage,
         "packagesAtPreparation": package_records,
+        "allowSingleModelDiagnostic": allow_single_model_diagnostic,
         "selection": selection_info,
         "sources": list(source_records.values()),
         "cases": cases,
@@ -592,6 +683,18 @@ def evaluate(manifest: Path, package: Path, output: Path) -> dict:
         c["split"] != "calibration" for c in data["cases"]
     ):
         raise ValueError("STRESS_EVALUATION_IS_CALIBRATION_ONLY")
+    opt_in = data.get("allowSingleModelDiagnostic", False)
+    if type(opt_in) is not bool or len(data["packagesAtPreparation"]) < (1 if opt_in else 3):
+        raise ValueError("STRESS_PACKAGE_COUNT_REQUIRES_EXPLICIT_DIAGNOSTIC_OPT_IN")
+    if lineage.get("sourceParentManifest"):
+        source = json.loads(Path(data["sourceManifest"]).read_text())
+        verified = source_lineage(
+            source,
+            Path(lineage["pipelineSnapshot"]) if lineage["pipelineSnapshot"] else None,
+            Path(lineage["sourceParentManifest"]),
+        )
+        if verified != lineage:
+            raise ValueError("STRESS_V3_LINEAGE_CHANGED_SINCE_PREPARATION")
     if data["protocolSha256"] != fingerprint(PROTOCOL):
         raise ValueError("STRESS_PROTOCOL_DIGEST_MISMATCH")
     metadata_path = package / "model.json"
@@ -632,6 +735,7 @@ def evaluate(manifest: Path, package: Path, output: Path) -> dict:
             "package": str(package.resolve()),
             "metadataSha256": metadata_sha,
             "sourceManifestSha256": data["sourceManifestSha256"],
+            "allowSingleModelDiagnostic": opt_in,
             "modelInfo": matcher.info(),
             "elapsedSeconds": time.perf_counter() - started,
             "device": "cpu",
@@ -655,6 +759,8 @@ def main() -> None:
     prep.add_argument("--package", type=Path, action="append", required=True)
     prep.add_argument("--output", type=Path, required=True)
     prep.add_argument("--source-pipeline-snapshot", type=Path)
+    prep.add_argument("--source-parent-manifest", type=Path)
+    prep.add_argument("--allow-single-model-diagnostic", action="store_true")
     run = sub.add_parser("evaluate")
     run.add_argument("--manifest", type=Path, required=True)
     run.add_argument("--package", type=Path, required=True)
@@ -667,6 +773,8 @@ def main() -> None:
             args.output,
             expected_source_sha=args.expected_source_sha256,
             source_pipeline_snapshot=args.source_pipeline_snapshot,
+            source_parent_manifest=args.source_parent_manifest,
+            allow_single_model_diagnostic=args.allow_single_model_diagnostic,
         )
         if args.action == "prepare"
         else evaluate(args.manifest, args.package, args.output)
