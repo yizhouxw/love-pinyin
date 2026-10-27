@@ -22,7 +22,7 @@ MAX_BYTES = 4 * 1_048_576
 class GuestOperation(BaseModel):
     model_config = ConfigDict(extra="forbid")
     path: str = Field(max_length=200)
-    method: str = Field(default="GET", pattern="^(GET|POST|PUT)$")
+    method: str = Field(default="GET", pattern="^(GET|POST|PUT|PATCH)$")
     body: dict = Field(default_factory=dict)
     state: dict | None = None
 
@@ -45,6 +45,12 @@ def dispatch(operation: GuestOperation, device: dict):
             return progress.progress(device)
         if path == "/sessions/current":
             return sessions.current_session(device)
+    if method == "PATCH":
+        match = re.fullmatch(r"/sessions/([\w-]+)/game-settings", path)
+        if match:
+            return sessions.change_game_settings(
+                match[1], sessions.SceneSettingsChange.model_validate(body), device
+            )
     if method == "PUT":
         if path == "/household/current-lesson":
             return profiles.select_lesson(profiles.LessonChoice.model_validate(body), device)

@@ -4,7 +4,7 @@ const messages: Record<string, string> = {
   GAME_CLOCK_ROLLBACK: '家庭 Mac 的时间发生回退，游戏已暂停。请家长校准系统时间后再继续。',
   GAME_PAUSED: '游戏时间需要重新确认。检查家庭 Mac 连接后，点继续游戏。',
   GAME_LEVEL_NOT_FOUND: '这个关卡暂时不存在，请返回游戏乐园重新选择。',
-  GAME_LEVEL_CONTENT_INSUFFICIENT: '本关需要12个不同的已学任务。请家长检查标准音是否安装完整。',
+  GAME_LEVEL_CONTENT_INSUFFICIENT: '已学范围内的有声任务不足，请减少每关题量，或请家长检查标准音。',
   GAME_NOT_FOUND: '这个游戏暂时不可用，请返回游戏乐园重新选择。',
   MAC_UNREACHABLE:
     '暂时无法连接家庭 Mac。检查 Mac 是否运行、设备是否连着家庭网络，再重新连接；本次操作尚未确认，重试不会重复计分。',

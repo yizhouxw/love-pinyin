@@ -6,7 +6,7 @@ from datetime import UTC, datetime
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from server.api_dependencies import mutable, paired
 from server.content import load_curriculum, map_by_id
@@ -20,7 +20,7 @@ from server.domain import (
 )
 from server.game_adaptation import plan_game, settings_for
 from server.game_levels import freeze_run, level_for
-from server.game_policy import GAMES
+from server.game_policy import CATALOG, GAMES
 from server.game_service import clock_status
 from server.learning_state import (
     _available_standard_audio,
@@ -41,6 +41,12 @@ class StartSession(BaseModel):
     gameLevelId: str | None = None
     gameDifficulty: Literal["auto", "gentle", "steady", "challenge"] = "auto"
     gameSpeed: Literal["auto", "slow", "normal", "fast"] = "auto"
+    gameTaskCount: int = Field(
+        default=CATALOG["play"]["defaultTasks"],
+        ge=CATALOG["play"]["minTasks"],
+        le=CATALOG["play"]["maxTasks"],
+        strict=True,
+    )
 
 
 @router.post("/reviews/{knowledge_id}/sessions")
@@ -236,7 +242,7 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
                 route_level = level_for(body.gameId, body.gameLevelId, game_settings["level"])
             except ValueError as error:
                 raise HTTPException(422, detail={"code": str(error)}) from error
-            route_size = sum(len(chapter["segments"]) for chapter in route_level["chapters"])
+            route_size = body.gameTaskCount
             if len(questions) < route_size:
                 raise HTTPException(409, detail={"code": "GAME_LEVEL_CONTENT_INSUFFICIENT"})
             # Genre preference is a stable tie-break, never a filter that traps
@@ -320,6 +326,47 @@ def start_session(body: StartSession, device: dict = Depends(mutable)) -> dict:
         "audioAvailable": any(task["exercise"].get("audioRef") in audio_ids for task in tasks),
         "revision": revision,
     }
+
+
+class SceneSettingsChange(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    difficulty: Literal["auto", "gentle", "steady", "challenge"]
+    speed: Literal["auto", "slow", "normal", "fast"]
+
+
+@router.patch("/sessions/{session_id}/game-settings")
+def change_game_settings(
+    session_id: str, body: SceneSettingsChange, device: dict = Depends(mutable)
+) -> dict:
+    with transaction() as db:
+        row = db.execute(
+            "SELECT * FROM sessions WHERE id=? AND household_id=? "
+            "AND status='active' AND game_id IS NOT NULL",
+            (session_id, device["household_id"]),
+        ).fetchone()
+        if row is None:
+            raise HTTPException(404, detail={"code": "SESSION_NOT_FOUND"})
+        budget = clock_status(db, device["household_id"], "heartbeat")
+        if budget["reason"]:
+            raise HTTPException(409, detail={"code": budget["reason"]})
+        settings = json.loads(row["game_settings_json"])
+        if not settings:
+            settings = settings_for({}, "auto", "auto")
+        match = settings["recommendation"]
+        settings.update(
+            {
+                "level": match["level"] if body.difficulty == "auto" else body.difficulty,
+                "speed": match["speed"] if body.speed == "auto" else body.speed,
+                "requestedDifficulty": body.difficulty,
+                "requestedSpeed": body.speed,
+            }
+        )
+        db.execute(
+            "UPDATE sessions SET game_settings_json=? WHERE id=?",
+            (json.dumps(settings), session_id),
+        )
+        db.execute("UPDATE household SET revision=revision+1 WHERE id=?", (device["household_id"],))
+    return settings
 
 
 @router.get("/sessions/current")

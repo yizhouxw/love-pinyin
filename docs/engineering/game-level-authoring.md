@@ -1,6 +1,6 @@
 # 场景关卡数据与维护
 
-对应SPEC-017 KEY-01 / LEVEL-01～04、ADR-0033。游戏的一整关是三个章节和十二个任务，单个拼音命中只是检查点；每种游戏六关，共24关、72章、288个任务槽。通过后短语音反馈并自动续段，P键或“连续旅程”可停留。
+对应 SPEC-017 PLAY-01～04、ADR-0033/0036。每款六关，共24关。目录保留72章、288个路线模板槽，新会话按3～20题（默认6）均衡分配至三章节；单个拼音命中只是检查点。通过后短语音反馈并自动续段，P键或“连续旅程”可停留。
 
 ## 三层边界
 
@@ -37,7 +37,7 @@ src/domain/scene-game.ts只接收EngineConfig、时间和输入，输出运动/�
 
 ## 教学绑定与恢复
 
-POST /sessions选择gameId和gameLevelId；服务器按当前课与之前的真实可用题目安排十二道不同任务，优先当前课/待巩固并轮转历史。题选项完整保留，答案只在服务器。gameRun冻结level、用到的patterns、theme和逐段instanceId绑定；SQLite迁移10和schema5可选字段保存同一数据。刷新接续尚未完成检查点；旧版六题会话显示兼容旅程，可退出重新选择完整关卡。
+POST /sessions选择gameId、gameLevelId与gameTaskCount（整数3～20，默认6）；服务器按当前课与之前的真实可用题目分散知识点，优先当前课/待巩固并轮转历史。题选项完整保留，答案只在服务器。gameRun version=2冻结按题量分配后的level、缩短接近距离的patterns、theme和逐段instanceId绑定；旧version=1保持12题严格兼容。SQLite迁移10和schema5可选字段保存同一数据。刷新接续尚未完成检查点；旧版六题会话显示兼容旅程，可退出重新选择完整关卡。
 
 家庭导入限制16MiB、访客快照4MiB，仍有结构校验和事件数边界；不把运动轨迹、儿童录音或身份写入关卡数据。
 
@@ -46,3 +46,5 @@ POST /sessions选择gameId和gameLevelId；服务器按当前课与之前的真�
 执行`uv run --locked python -m scripts.validate_game_levels --release`全量检查；`validate:content`与`validate:release`已集成同一检查。`tests/server/test_game_levels.py`逐关验证12道真实已学任务、至少3个知识点和声音目标、冻结/恢复/恶意绑定/迁移回滚与超过旧容量的档案往返。物理边界与四路目标可达在scene-game.test.ts；实际键盘焦点、跨任务和完整12段通关在product用例验证。
 
 这证明软件功能，不替代真机操作、儿童理解和家庭LAN试用。
+
+PLAY 设置集中在content/games.json的play字段：题量上下限/默认值、接近航段上限、续题停顿、逐关速度增量。游戏内PATCH /sessions/{id}/game-settings原子保存当前物理设置，不改题单/首次结果；题量用于下次启动。页面放大与辅助偏好保留在标签页，原生dialog负责设置焦点，指针长按由use-game-pointer释放捕获。新软件证据与剩余门禁见SPEC-017 PLAY实装记录。

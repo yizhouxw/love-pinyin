@@ -68,7 +68,7 @@ for (const game of catalog.games) {
     expect(restored.tasks).toEqual(session.tasks);
     await expect(page.getByLabel('本关任务')).toBeVisible();
     expect(restored.gameRun).toEqual(session.gameRun);
-    await expect(page.locator('.scene-nav')).toContainText('任务 2 / 12');
+    await expect(page.locator('.scene-nav')).toContainText('任务 2 / 6');
     const second = curriculum.exercises.find((q) => q.id === session.tasks[1].exercise.id)!;
     await playScene(page, second.answer.optionId!);
     await expect(page.locator('.feedback')).toContainText('拼音答对');

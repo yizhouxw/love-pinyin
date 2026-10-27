@@ -119,24 +119,27 @@ export function VoiceButton({
   label = '听一听',
   className = '',
   kind = 'private',
+  alwaysReplay = false,
 }: {
   id: string;
   voice: LearningVoice;
   label?: string;
   className?: string;
   kind?: 'private' | 'standard' | 'daily';
+  alwaysReplay?: boolean;
 }) {
   const playing = voice.playingId === id;
+  const canStop = playing && !alwaysReplay;
   const failed = voice.failedIds.has(id);
   return (
     <button
       type="button"
       className={`voice-button ${className}`}
-      aria-label={playing ? `停止${label}` : label}
+      aria-label={canStop ? `停止${label}` : label}
       aria-pressed={playing}
       aria-description={failed ? '这段声音没有播放成功，点这里重试。' : undefined}
       onClick={() =>
-        playing
+        canStop
           ? voice.stop()
           : kind === 'standard'
             ? voice.playStandard(id)
@@ -145,8 +148,10 @@ export function VoiceButton({
               : voice.play(id)
       }
     >
-      <span aria-hidden="true">{playing ? '■' : voice.failedIds.has(id) ? '↻' : '🔊'}</span>
-      {playing ? '停止' : label}
+      <span aria-hidden="true">
+        {canStop ? '■' : playing ? '♪' : voice.failedIds.has(id) ? '↻' : '🔊'}
+      </span>
+      {canStop ? '停止' : label}
     </button>
   );
 }

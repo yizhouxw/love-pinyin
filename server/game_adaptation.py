@@ -95,4 +95,28 @@ def plan_game(
     if len(chosen) < limit:
         remaining = [q["id"] for q in questions if q["id"] not in chosen]
         chosen += plan_practice(remaining, completions, limit=limit - len(chosen))
-    return chosen
+    # Spread phonetic targets before taking another authored variant of one target.
+    ranked = chosen + plan_practice(
+        [q["id"] for q in questions if q["lessonId"] == lesson_id and q["id"] not in chosen],
+        completions,
+        limit=len(questions),
+    )
+    by_id = {q["id"]: q for q in questions}
+    result, seen = [], set()
+    while ranked and len(result) < limit:
+        remaining = []
+        for qid in ranked:
+            key = by_id[qid]["primaryKnowledgeId"]
+            if key not in seen and len(result) < limit:
+                result.append(qid)
+                seen.add(key)
+            else:
+                remaining.append(qid)
+        ranked, seen = remaining, set()
+    if len(result) < limit:
+        result += plan_practice(
+            [q["id"] for q in questions if q["id"] not in result],
+            completions,
+            limit=limit - len(result),
+        )
+    return result

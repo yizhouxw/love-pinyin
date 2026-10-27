@@ -34,7 +34,7 @@ export type RouteLevel = {
   chapters: { id: string; title: string; segments: { id: string; patternId: string }[] }[];
 };
 export type GameRun = {
-  version: 1;
+  version: 1 | 2;
   catalogVersion: 1;
   level: RouteLevel;
   theme: RouteTheme;

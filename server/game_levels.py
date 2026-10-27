@@ -1,10 +1,13 @@
 """Versioned, authored routes, independent from questions and physical runtime."""
 
 import json
+from copy import deepcopy
 from pathlib import Path
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
+
+from server.game_policy import CATALOG
 
 Scene = Literal["runner", "boat", "drum", "space"]
 
@@ -15,7 +18,7 @@ class Data(BaseModel):
 
 class Obstacle(Data):
     id: str = Field(min_length=1, max_length=50)
-    at: float = Field(ge=60, le=1800)
+    at: float = Field(ge=20, le=1800)
     lane: int = Field(ge=-1, le=3)
     kind: Literal["root", "bush", "reef", "asteroid"]
     size: float = Field(ge=20, le=60)
@@ -30,8 +33,8 @@ class Pickup(Data):
 class Pattern(Data):
     id: str = Field(min_length=1, max_length=60)
     scene: Scene
-    length: float = Field(ge=400, le=1800)
-    choiceAt: float = Field(ge=300, le=1800)
+    length: float = Field(ge=200, le=1800)
+    choiceAt: float = Field(ge=150, le=1800)
     choiceGap: float = Field(ge=100, le=220)
     currentStrength: float = Field(ge=0, le=40)
     travelScale: float = Field(ge=0.7, le=1.5)
@@ -79,7 +82,7 @@ class Segment(Data):
 class Chapter(Data):
     id: str = Field(min_length=1, max_length=50)
     title: str = Field(min_length=1, max_length=40)
-    segments: list[Segment] = Field(min_length=4, max_length=4)
+    segments: list[Segment] = Field(min_length=1, max_length=7)
 
 
 class Level(Data):
@@ -101,23 +104,35 @@ class Binding(Data):
 
 
 class Run(Data):
-    version: Literal[1]
+    version: Literal[1, 2]
     catalogVersion: Literal[1]
     level: Level
     patterns: dict[str, Pattern] = Field(min_length=1, max_length=12)
     theme: Theme
-    bindings: list[Binding] = Field(min_length=12, max_length=12)
+    bindings: list[Binding] = Field(min_length=3, max_length=20)
 
     @model_validator(mode="after")
     def references(self):
         segments = [s for c in self.level.chapters for s in c.segments]
         if self.level.themeId != self.theme.id:
             raise ValueError("theme reference")
-        if len({c.id for c in self.level.chapters}) != 3 or len({s.id for s in segments}) != 12:
+        size = len(segments)
+        if self.version == 1 and (
+            size != 12 or any(len(c.segments) != 4 for c in self.level.chapters)
+        ):
+            raise ValueError("legacy route size")
+        if self.version == 2 and (
+            not CATALOG["play"]["minTasks"] <= size <= CATALOG["play"]["maxTasks"]
+            or max(len(c.segments) for c in self.level.chapters)
+            - min(len(c.segments) for c in self.level.chapters)
+            > 1
+        ):
+            raise ValueError("configured route size")
+        if len({c.id for c in self.level.chapters}) != 3 or len({s.id for s in segments}) != size:
             raise ValueError("duplicate chapter/segment IDs")
         if [b.segmentId for b in self.bindings] != [s.id for s in segments]:
             raise ValueError("binding order")
-        if len({b.instanceId for b in self.bindings}) != 12:
+        if len({b.instanceId for b in self.bindings}) != size:
             raise ValueError("duplicate bound instance")
         if set(self.patterns) != {s.patternId for s in segments}:
             raise ValueError("pattern references")
@@ -150,11 +165,26 @@ def level_for(game_id: str, level_id: str | None, difficulty: str) -> dict:
     return next(item for item in levels if item["recommendedDifficulty"] == difficulty)
 
 
-def freeze_run(level: dict, tasks: list[dict]) -> dict:
+def freeze_run(level: dict, tasks: list[dict], *, version: int = 2) -> dict:
     source = catalog()
+    level = deepcopy(level)
+    if version == 2:
+        size = len(tasks)
+        if not CATALOG["play"]["minTasks"] <= size <= CATALOG["play"]["maxTasks"]:
+            raise ValueError("configured task count")
+        for i, chapter in enumerate(level["chapters"]):
+            templates = chapter["segments"]
+            count = size // 3 + (i < size % 3)
+            chapter["segments"] = [
+                {
+                    "id": f"play-{i + 1}-{j + 1}",
+                    "patternId": templates[j % len(templates)]["patternId"],
+                }
+                for j in range(count)
+            ]
     segments = [segment for chapter in level["chapters"] for segment in chapter["segments"]]
     value = {
-        "version": 1,
+        "version": version,
         "catalogVersion": source["version"],
         "level": level,
         "patterns": {s["patternId"]: source["patterns"][s["patternId"]] for s in segments},
@@ -164,6 +194,23 @@ def freeze_run(level: dict, tasks: list[dict]) -> dict:
             for s, t in zip(segments, tasks, strict=True)
         ],
     }
+    if version == 2:
+        # Freeze a shorter approach without dropping any authored obstacle/beat.
+        for key, original in list(value["patterns"].items()):
+            pattern = deepcopy(original)
+            factor = min(1, CATALOG["play"]["approachDistance"] / pattern["choiceAt"])
+            pattern["choiceAt"] *= factor
+            pattern["length"] = max(
+                400,
+                pattern["choiceAt"]
+                + (3 * pattern["choiceGap"] if pattern["scene"] == "drum" else 0),
+            )
+            for item in pattern["obstacles"]:
+                item["at"] = 40 + item["at"] / original["choiceAt"] * (pattern["choiceAt"] - 180)
+            for item in pattern["pickups"]:
+                item["at"] *= factor
+            pattern["beats"] = [at * factor for at in pattern["beats"]]
+            value["patterns"][key] = pattern
     return Run.model_validate(value).model_dump()
 
 
@@ -197,7 +244,7 @@ def validate_catalog() -> dict:
         ):
             raise ValueError("six levels per game")
     for level in source["levels"]:
-        freeze_run(level, [{"instanceId": f"check-{i}"} for i in range(12)])
+        freeze_run(level, [{"instanceId": f"check-{i}"} for i in range(12)], version=1)
     # Validate even unused patterns/themes so dead data cannot hide a broken route.
     for key, value in source["patterns"].items():
         if Pattern.model_validate(value).id != key:

@@ -25,6 +25,20 @@ function step(w: World, c: EngineConfig, seconds: number) {
   return w;
 }
 describe('data-driven physical routes', () => {
+  it('shows every candidate at entry without producing a learning hit', () => {
+    for (const pattern of Object.values(levelCatalog.patterns)) {
+      const c = config(pattern.id);
+      const w = initialWorld();
+      for (let i = 0; i < c.count; i++) {
+        const p = targetPosition(i, w, c);
+        expect(p.x).toBeGreaterThan(45);
+        expect(p.x).toBeLessThan(770);
+        expect(p.y).toBeGreaterThan(30);
+        expect(p.y).toBeLessThan(400);
+      }
+      expect(w.hit).toBeNull();
+    }
+  });
   it('changing route data moves obstacles and the target, without changing the engine', () => {
     const c = config('runner-route-01');
     let w = step(initialWorld(), c, 5);
@@ -58,6 +72,8 @@ describe('data-driven physical routes', () => {
               w = advanceWorld(w, 0, c, w.x < 500 ? 'right' : 'left');
           } else if (!o && Math.abs(w.x - laneX(target, 4)) > 20)
             w = advanceWorld(w, 0, c, w.x < laneX(target, 4) ? 'right' : 'left');
+          if (!o && w.distance >= pattern.choiceAt - 65 && Math.abs(w.x - laneX(target, 4)) < 20)
+            w = advanceWorld(w, 0, c, 'act');
           w = advanceWorld(w, 0.02, c);
         }
         expect(w.hit, `${pattern.id} target ${target}`).toBe(target);

@@ -76,10 +76,16 @@ export function targetPosition(index: number, w: World, c: EngineConfig) {
   if (scene === 'runner' || scene === 'boat')
     return {
       x: x + (scene === 'boat' ? Math.sin(w.time * 0.7 + index) * c.targetMotion : 0),
-      y: routeY(c.pattern.choiceAt, w),
+      y: Math.max(90, routeY(c.pattern.choiceAt, w)),
     };
   if (scene === 'drum')
-    return { x: 180 + c.pattern.choiceAt + index * c.pattern.choiceGap - w.distance, y: 190 };
+    return {
+      x: Math.min(
+        410 + index * 105,
+        180 + c.pattern.choiceAt + index * c.pattern.choiceGap - w.distance,
+      ),
+      y: 190,
+    };
   return {
     x: x + Math.sin(w.time * 0.8 + index) * c.targetMotion,
     y: 120 + Math.sin(w.time + index) * 12,
@@ -241,6 +247,13 @@ export function advanceWorld(
         w.collected.push(pickup.id);
         w.flash = 0.25;
       }
+    if (scene === 'runner' && c.assist) {
+      // A beginner can choose a lane without the conveyor committing an answer.
+      w.distance =
+        previous >= p.choiceAt - 65 && action === 'act'
+          ? p.choiceAt
+          : Math.min(w.distance, p.choiceAt - 65);
+    }
     if ((scene === 'runner' || scene === 'boat') && w.distance >= p.choiceAt) {
       const hit = Array.from({ length: c.count }, (_, i) => ({
         i,

@@ -67,7 +67,7 @@
   "levels": {
     "gentle": {
       "label": "启蒙",
-      "travel": 62,
+      "travel": 100,
       "assist": true,
       "targetRadius": 42,
       "targetMotion": 0,
@@ -75,7 +75,7 @@
     },
     "steady": {
       "label": "熟练",
-      "travel": 86,
+      "travel": 120,
       "assist": false,
       "targetRadius": 35,
       "targetMotion": 18,
@@ -83,7 +83,7 @@
     },
     "challenge": {
       "label": "挑战",
-      "travel": 112,
+      "travel": 140,
       "assist": false,
       "targetRadius": 28,
       "targetMotion": 36,
@@ -93,7 +93,7 @@
   "speeds": {
     "slow": {
       "label": "慢速",
-      "factor": 0.7
+      "factor": 0.85
     },
     "normal": {
       "label": "标准",
@@ -111,5 +111,13 @@
     "pass": ["ArrowDown", "KeyS"],
     "pause": ["KeyP", "Escape"],
     "repeatMilliseconds": 180
+  },
+  "play": {
+    "minTasks": 3,
+    "maxTasks": 20,
+    "defaultTasks": 6,
+    "levelSpeedStep": 0.12,
+    "approachDistance": 360,
+    "continueMilliseconds": 350
   }
 }

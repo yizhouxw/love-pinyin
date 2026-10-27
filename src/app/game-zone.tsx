@@ -132,7 +132,7 @@ export function GameZone({
       <header className="game-zone-heading">
         <span className="eyebrow">听一听 · 玩一玩 · 学一点</span>
         <h1>拼音游戏乐园</h1>
-        <p>24 段完整旅程，每关 3 个章节、12 个拼音任务。选好路线，一路玩到目的地。</p>
+        <p>24 段拼音旅程，每关 3～20 题，默认 6 题。选好布景，越往后越快。</p>
         <VoiceButton id="ui-game_welcome" voice={voice} label="听游戏怎么玩" />
         <VoiceFailure voice={voice} />
       </header>
@@ -236,7 +236,9 @@ export function GameZone({
                 </label>
                 <p>{chosen.subtitle}</p>
                 <span>
-                  3 章节 · 12 任务 · {gameCatalog.levels[chosen.recommendedDifficulty].label}路线
+                  3 章节 · {preferences[game.id]?.taskCount ?? gameCatalog.play.defaultTasks}{' '}
+                  个拼音任务 · 第 {chosen.number} 关速度 ×
+                  {(1 + (chosen.number - 1) * gameCatalog.play.levelSpeedStep).toFixed(2)}
                 </span>
                 <VoiceButton
                   id={chosen.voiceId}
@@ -245,6 +247,25 @@ export function GameZone({
                 />
               </div>
               <div className="game-preferences">
+                <label>
+                  每关题量
+                  <select
+                    aria-label={`${game.title}每关题量`}
+                    value={preferences[game.id]?.taskCount ?? gameCatalog.play.defaultTasks}
+                    onChange={(e) =>
+                      changePreference(game.id, { taskCount: Number(e.target.value) })
+                    }
+                  >
+                    {Array.from(
+                      { length: gameCatalog.play.maxTasks - gameCatalog.play.minTasks + 1 },
+                      (_, i) => gameCatalog.play.minTasks + i,
+                    ).map((n) => (
+                      <option key={n} value={n}>
+                        {n} 个拼音
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <label>
                   难度
                   <select

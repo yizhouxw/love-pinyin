@@ -335,7 +335,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   useEffect(() => {
     if (autoVoiceId && voiceStarted.current && autoStandardId) {
       playSequence([
-        ...(guidanceEnabled ? [{ id: autoVoiceId, kind: 'private' as const, optional: true }] : []),
+        ...(guidanceEnabled && !active?.gameId
+          ? [{ id: autoVoiceId, kind: 'private' as const, optional: true }]
+          : []),
         { id: autoStandardId, kind: 'standard' },
       ]);
     } else if (autoVoiceId && voiceStarted.current && guidanceEnabled) playVoice(autoVoiceId);
@@ -344,6 +346,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   }, [
     autoVoiceId,
     autoStandardId,
+    active?.gameId,
     playSequence,
     playVoice,
     stopVoice,
@@ -373,7 +376,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
 
   async function beginLesson(lessonId: string, gameId?: string, gameLevelId?: string) {
     voiceStarted.current = true;
-    if (guidanceEnabled) playVoice('ui-start');
+    if (guidanceEnabled && !gameId) playVoice('ui-start');
+    else stopVoice();
     const started = (await api('/sessions', {
       method: 'POST',
       body: JSON.stringify({
@@ -384,6 +388,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               gameLevelId,
               gameDifficulty: readScenePreference(gameId).difficulty,
               gameSpeed: readScenePreference(gameId).speed,
+              gameTaskCount: readScenePreference(gameId).taskCount,
             }
           : {}),
       }),
@@ -558,6 +563,30 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           voiceStarted.current = true;
         }}
         onAnswer={submitOption}
+        onSettings={async (preference) => {
+          const controller = new AbortController();
+          const timer = window.setTimeout(
+            () => controller.abort(),
+            gameCatalog.policy.requestTimeoutSeconds * 1000,
+          );
+          try {
+            const saved = await api(`/sessions/${active.id}/game-settings`, {
+              method: 'PATCH',
+              signal: controller.signal,
+              body: JSON.stringify({ difficulty: preference.difficulty, speed: preference.speed }),
+            });
+            setSession((current) =>
+              current?.id === active.id
+                ? {
+                    ...current,
+                    gameSettings: saved as unknown as import('../domain/scene-game').GameSettings,
+                  }
+                : current,
+            );
+          } finally {
+            window.clearTimeout(timer);
+          }
+        }}
         onExit={() => void act(exitGame)}
         onNext={() =>
           void act(async () => {

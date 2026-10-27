@@ -108,7 +108,7 @@ def test_game_sessions_use_learned_content_and_freeze_recovery(
     assert response.status_code == 200, response.text
     session = response.json()
     assert session["gameId"] == game_id
-    assert len(session["tasks"]) == 12
+    assert len(session["tasks"]) == 6
     assert len({t["exercise"]["id"] for t in session["tasks"]}) == len(session["tasks"])
     lesson_ids = {"lesson-01", "lesson-02", "lesson-03"}
     for task in session["tasks"]:

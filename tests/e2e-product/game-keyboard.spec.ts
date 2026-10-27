@@ -43,6 +43,7 @@ test('KEY-01: keyboard works after start, mouse actions and voice; held keys sto
   await page.keyboard.press('p');
   await expect(page.getByRole('button', { name: '发射 ↑', exact: true })).toBeEnabled();
   // A keyboard user can still focus a voice button and activate it with Space.
+  await page.getByText('故事与说明', { exact: true }).click();
   await page.getByRole('button', { name: '听本关故事', exact: true }).focus();
   await page.keyboard.press('Space');
   await expect(page.getByRole('button', { name: '停止听本关故事', exact: true })).toBeVisible();

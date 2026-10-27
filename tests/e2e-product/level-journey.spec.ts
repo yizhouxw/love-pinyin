@@ -18,6 +18,7 @@ test('LEVEL-01/KEY-01: play one complete twelve-task forest journey using normal
   await page.getByLabel('森林跑酷难度').selectOption('gentle');
   await page.getByLabel('森林跑酷速度').selectOption('fast');
   await page.getByLabel('森林跑酷关卡').selectOption('runner-01');
+  await page.getByLabel('森林跑酷每关题量').selectOption('12');
   const created = page.waitForResponse(
     (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
   );

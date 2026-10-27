@@ -98,5 +98,5 @@ def test_scene_genre_does_not_trap_later_learners_in_first_lesson(
         == 200
     )
     session = request(client, "/sessions", {"gameId": game_id}).json()
-    assert len(session["tasks"]) == 12
+    assert len(session["tasks"]) == 6
     assert all(t["exercise"]["lessonId"] == "lesson-03" for t in session["tasks"])

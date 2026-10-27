@@ -35,7 +35,9 @@ def test_every_level_binds_twelve_real_different_learned_tasks(
     paired_client, registered_audio_catalog, level
 ):
     response = request(
-        paired_client, "/sessions", {"gameId": level["gameId"], "gameLevelId": level["id"]}
+        paired_client,
+        "/sessions",
+        {"gameId": level["gameId"], "gameLevelId": level["id"], "gameTaskCount": 12},
     )
     assert response.status_code == 200, response.text
     session = response.json()
@@ -137,7 +139,11 @@ def test_many_complete_routes_backup_roundtrips_past_old_one_mebibyte_limit(
     client = paired_client
     # Real session creation and route snapshots, with no child data or fabricated scores.
     for _ in range(125):
-        response = request(client, "/sessions", {"gameId": "sound", "gameLevelId": "runner-06"})
+        response = request(
+            client,
+            "/sessions",
+            {"gameId": "sound", "gameLevelId": "runner-06", "gameTaskCount": 12},
+        )
         assert response.status_code == 200
     backup = client.get("/api/v1/profiles/export").json()
     assert len(json.dumps(backup).encode()) > 1_048_576

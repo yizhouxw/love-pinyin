@@ -106,3 +106,5 @@ LEVEL-01～04：`POST /sessions`可选`gameLevelId`（如runner-01），须与ga
 ## 专用拼读应用接口（MATCH-13～15）
 
 `POST /api/v1/pronunciation/{targetId}/assess` 使用配对、同源/CSRF 与 X-LP-Request-Id，接收有界内存 PCM WAV，返回 MATCH-10 match/recognition 与保存回执。`GET /api/v1/pronunciation/{targetId}/history` 返回本家庭最近20条及完整状态计数。访客 POST 前缀为 `/api/v1/guest`，不写家庭库。默认专用模型未配置，返回 unavailable，不产生成绩。仅可信服务端 acoustic 摘要可写库；不接受客户端自报准确结果。目标白名单、格式/大小、幂等与备份字段详见[拼读应用契约](engineering/pronunciation-interface.md#应用组装与摘要match1315)。原 Whisper 音节匹配接口独立保留。
+
+PLAY-01/02：POST `/sessions`可选`gameTaskCount`（严格整数3～20，默认6），新`gameRun.version=2`按题量均衡分配三章且绑定精确等于冻结题单。version=1保留十二绑定/各章四段兼容。PATCH `/sessions/{sessionId}/game-settings`需要CSRF及同家庭活动游戏，body为`difficulty`（auto/gentle/steady/challenge）、`speed`（auto/slow/normal/fast）；校验游戏额度后仅更新并返回gameSettings，保留原推荐依据、题单、路线和成绩。访客operate仅新增对此路径的PATCH白名单，同样保存至临时快照。游戏内修改题量是本设备下次开局偏好，不改变当前题单。

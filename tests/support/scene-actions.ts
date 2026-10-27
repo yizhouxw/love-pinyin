@@ -54,6 +54,13 @@ export async function playScene(
         if (Math.abs(snapshot.x - x) > 20)
           await page.keyboard.press(snapshot.x < x ? 'ArrowRight' : 'ArrowLeft');
       }
+      if (
+        snapshot.distance >= goal - 65 &&
+        !snapshot.obstacles.some((o) => o.at > snapshot.distance)
+      ) {
+        const x = 120 + (index * 560) / Math.max(1, snapshot.count - 1);
+        if (Math.abs(snapshot.x - x) < 20) await page.keyboard.press('Space');
+      }
       await page.waitForTimeout(100);
       if (await stage.getAttribute('data-world-hit')) break;
     }
