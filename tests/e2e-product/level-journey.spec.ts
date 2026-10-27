@@ -1,3 +1,4 @@
+import { openGameSettings } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { playScene } from '../support/scene-actions';
@@ -15,6 +16,7 @@ test('LEVEL-01/KEY-01: play one complete twelve-task forest journey using normal
   await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
+  await openGameSettings(page, '森林跑酷');
   await page.getByLabel('森林跑酷难度').selectOption('gentle');
   await page.getByLabel('森林跑酷速度').selectOption('fast');
   await page.getByLabel('森林跑酷关卡').selectOption('runner-01');

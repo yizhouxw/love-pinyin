@@ -90,10 +90,17 @@ export function GameZone({
   }
   const [data, setData] = useState<GameOverview | null>(null);
   const [error, setError] = useState('');
+  const [settledRevision, setSettledRevision] = useState(-1);
   const [revision, setRevision] = useState(0);
+  const loading = settledRevision !== revision;
   useEffect(() => {
     let alive = true;
-    void api('/games')
+    const controller = new AbortController();
+    const timeout = window.setTimeout(
+      () => controller.abort(),
+      gameCatalog.policy.requestTimeoutSeconds * 1000,
+    );
+    void api('/games', { signal: controller.signal })
       .then((value) => {
         if (alive) {
           setData(value as GameOverview);
@@ -101,10 +108,16 @@ export function GameZone({
         }
       })
       .catch((reason: Error) => {
-        if (alive) setError(reason.message);
+        if (alive) setError(controller.signal.aborted ? 'MAC_UNREACHABLE' : reason.message);
+      })
+      .finally(() => {
+        window.clearTimeout(timeout);
+        if (alive) setSettledRevision(revision);
       });
     return () => {
       alive = false;
+      window.clearTimeout(timeout);
+      controller.abort();
     };
   }, [revision]);
   const order = curriculum.lessons.find((item) => item.id === lessonId)?.order ?? 0;
@@ -126,75 +139,85 @@ export function GameZone({
     );
   return (
     <section className="game-zone" aria-label="拼音游戏乐园">
-      <button className="quiet" onClick={onBack}>
-        ← 回到学习
-      </button>
       <header className="game-zone-heading">
-        <span className="eyebrow">听一听 · 玩一玩 · 学一点</span>
-        <h1>拼音游戏乐园</h1>
-        <p>24 段拼音旅程，每关 3～20 题，默认 6 题。选好布景，越往后越快。</p>
-        <VoiceButton id="ui-game_welcome" voice={voice} label="听游戏怎么玩" />
-        <VoiceFailure voice={voice} />
-      </header>
-      {data && (
-        <aside className="game-budget" aria-label="游戏时长约定">
-          <strong>
-            每次最多 {data.clock.sessionMinutes} 分钟 · 每天最多 {data.clock.dailyMinutes} 分钟
-          </strong>
-          <span>
-            今天已玩 {Math.ceil(data.clock.dailySeconds / 60)} 分钟。连续休息 10
-            分钟，才算新的一次。
-          </span>
-          {data.clock.reason && (
-            <p role="status">
-              {errorMessage(data.clock.reason)}
-              {data.clock.reason === 'GAME_SESSION_LIMIT'
-                ? ` 还需休息约 ${Math.ceil(data.clock.breakRemainingSeconds / 60)} 分钟。`
-                : ''}
-            </p>
-          )}
-          <button className="quiet" onClick={() => setRevision((value) => value + 1)}>
-            刷新可玩时间
-          </button>
-        </aside>
-      )}
-      {isGuest() && (
-        <p className="adult-hint">
-          访客时长仅暂存在此标签页；清除访客会重置。请连接家庭，使用跨设备共享的时长约定。
-        </p>
-      )}
-      <Notice error={error} onReconnect={() => setRevision((value) => value + 1)} />
-      <article className="shop-entry">
-        <span aria-hidden="true">🍊 🧺</span>
         <div>
-          <span className="eyebrow">新场景 · 口头拼读</span>
-          <h2>拼音小卖部</h2>
+          <span className="eyebrow">听一听 · 玩一玩</span>
+          <h1>拼音游戏乐园</h1>
+          <p>选一款喜欢的游戏，听清拼音就出发。</p>
+        </div>
+        <nav className="game-zone-nav" aria-label="乐园导航">
+          <button className="quiet" onClick={onBack}>
+            ← 回到学习
+          </button>
+          <VoiceButton id="ui-game_welcome" voice={voice} label="听游戏怎么玩" text="听介绍" />
+        </nav>
+      </header>
+      <VoiceFailure voice={voice} />
+      <aside className="game-budget" aria-label="游戏时长约定" aria-busy={loading}>
+        <div className="game-budget-status">
+          {data ? (
+            <>
+              <strong>今天已玩 {Math.ceil(data.clock.dailySeconds / 60)} 分钟</strong>
+              <span>
+                每次最多 {data.clock.sessionMinutes} 分钟 · 每天最多 {data.clock.dailyMinutes} 分钟
+              </span>
+            </>
+          ) : (
+            <span role="status">{error ? '可玩时间暂未确认' : '正在确认可玩时间…'}</span>
+          )}
+        </div>
+        <button
+          className="quiet"
+          aria-label="刷新可玩时间"
+          disabled={loading}
+          onClick={() => setRevision((v) => v + 1)}
+        >
+          {loading ? '正在刷新…' : '↻ 刷新时间'}
+        </button>
+        {data?.clock.reason && (
+          <p className="game-budget-reason" role="status">
+            {errorMessage(data.clock.reason)}
+            {data.clock.reason === 'GAME_SESSION_LIMIT'
+              ? ` 还需休息约 ${Math.ceil(data.clock.breakRemainingSeconds / 60)} 分钟。`
+              : ''}
+          </p>
+        )}
+      </aside>
+      <Notice error={error} onReconnect={() => setRevision((v) => v + 1)} />
+      <article className="shop-entry">
+        <span className="shop-entry-icon" aria-hidden="true">
+          🍊
+        </span>
+        <div>
+          <div className="shop-entry-title">
+            <h2>拼音小卖部</h2>
+            <span className="shop-mode-badge">
+              {shopRules.recognitionMode === 'mock' ? '模拟体验 · 非真实识别' : '口头拼读'}
+            </span>
+          </div>
+          <p>
+            {shopRules.shelves.length} 个货架 · {shopRules.products.length} 件商品 ·{' '}
+            {shopRules.recognitionMode === 'mock' ? '模拟入车，不计学习成绩' : '读拼音，装满购物篮'}
+          </p>
+        </div>
+        <div className="shop-entry-actions">
           <VoiceButton
             id={shopRules.recognitionMode === 'mock' ? 'ui-shop_mock_welcome' : 'ui-shop_welcome'}
             voice={voice}
             label="听小卖部怎么玩"
+            text="听玩法"
           />
-          <p>
-            八个货架，九十六件带图商品。
-            {shopRules.recognitionMode === 'mock'
-              ? '挑喜欢的，模拟成功后自动入车，还能结算总金额。'
-              : '挑喜欢的，读右边的拼音，匹配后自动入车，还能结算总金额。'}
-          </p>
-          <p className="adult-hint">
-            {shopRules.recognitionMode === 'mock'
-              ? '当前为模拟识别，不是真实识别；选商品会自动入车，不记录学习成绩。'
-              : '真实识别服务需通过验收后接入；不可用时不会自动切换模拟。'}
-          </p>
+          <button
+            aria-label="进入拼音小卖部"
+            disabled={busy || loading || !!error || !data || !!data.clock.reason}
+            onClick={() => {
+              voice.stop();
+              setShopOpen(true);
+            }}
+          >
+            逛小卖部 →
+          </button>
         </div>
-        <button
-          disabled={busy || !data || !!data.clock.reason}
-          onClick={() => {
-            voice.stop();
-            setShopOpen(true);
-          }}
-        >
-          进入拼音小卖部 →
-        </button>
       </article>
       <div className="game-grid">
         {gameCatalog.games.map((game) => {
@@ -202,24 +225,33 @@ export function GameZone({
             (q) => ids.has(q.id) && game.modes.includes(q.type) && !!q.audioRef,
           );
           const routes = levelCatalog.levels.filter((l) => l.gameId === game.id);
+          const preference = preferences[game.id]!;
           const match =
-            preferences[game.id]?.difficulty === 'auto'
+            preference.difficulty === 'auto'
               ? (data?.recommendation?.level ?? 'gentle')
-              : preferences[game.id]?.difficulty;
+              : preference.difficulty;
+          const speed =
+            preference.speed === 'auto'
+              ? (data?.recommendation?.speed ?? 'slow')
+              : preference.speed;
           const chosen =
             routes.find((l) => l.id === selectedLevels[game.id]) ??
             routes.find((l) => l.recommendedDifficulty === match) ??
             routes[0]!;
           return (
             <article className={`game-card game-${game.id}`} key={game.id}>
-              <div className="game-card-icon" aria-hidden="true">
-                {game.icon}
-              </div>
-              <h2>{game.title}</h2>
-              <p>{game.description}</p>
-              <div className="game-level-picker">
+              <header className="game-card-heading">
+                <span className="game-card-icon" aria-hidden="true">
+                  {game.icon}
+                </span>
+                <div>
+                  <h2>{game.title}</h2>
+                  <p>{game.description}</p>
+                </div>
+              </header>
+              <div className="game-card-pickers">
                 <label>
-                  选择完整关卡
+                  关卡
                   <select
                     aria-label={`${game.title}关卡`}
                     value={chosen.id}
@@ -234,19 +266,6 @@ export function GameZone({
                     ))}
                   </select>
                 </label>
-                <p>{chosen.subtitle}</p>
-                <span>
-                  3 章节 · {preferences[game.id]?.taskCount ?? gameCatalog.play.defaultTasks}{' '}
-                  个拼音任务 · 第 {chosen.number} 关速度 ×
-                  {(1 + (chosen.number - 1) * gameCatalog.play.levelSpeedStep).toFixed(2)}
-                </span>
-                <VoiceButton
-                  id={chosen.voiceId}
-                  voice={voice}
-                  label={`听关卡故事：${chosen.title}`}
-                />
-              </div>
-              <div className="game-preferences">
                 <label>
                   每关题量
                   <select
@@ -266,65 +285,126 @@ export function GameZone({
                     ))}
                   </select>
                 </label>
-                <label>
-                  难度
-                  <select
-                    aria-label={`${game.title}难度`}
-                    value={preferences[game.id]?.difficulty ?? 'auto'}
-                    onChange={(event) =>
-                      changePreference(game.id, {
-                        difficulty: event.target.value as ScenePreference['difficulty'],
-                      })
-                    }
-                  >
-                    <option value="auto">按进度匹配</option>
-                    {Object.entries(gameCatalog.levels).map(([key, value]) => (
-                      <option key={key} value={key}>
-                        {value.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  速度
-                  <select
-                    aria-label={`${game.title}速度`}
-                    value={preferences[game.id]?.speed ?? 'auto'}
-                    onChange={(event) =>
-                      changePreference(game.id, {
-                        speed: event.target.value as ScenePreference['speed'],
-                      })
-                    }
-                  >
-                    <option value="auto">自动</option>
-                    {Object.entries(gameCatalog.speeds).map(([key, value]) => (
-                      <option key={key} value={key}>
-                        {value.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
               </div>
-              <p className="game-recommendation">
-                当前推荐：{gameCatalog.levels[data?.recommendation?.level ?? 'gentle'].label} ·{' '}
-                {gameCatalog.speeds[data?.recommendation?.speed ?? 'slow'].label}
-                。依据已学范围内最近有效作答（{data?.recommendation?.sampleSize ?? 0}{' '}
-                个样本）；操作快慢不计掌握度。
-              </p>
-              <VoiceButton id={game.voiceId} voice={voice} label={`听玩法：${game.title}`} />
-              <button
-                className="game-start"
-                disabled={busy || !data || !!data.clock.reason || !available}
-                onClick={() => onStart(game.id, chosen.id)}
-              >
-                开始{game.title} →
-              </button>
-              {!available && <p>学到相关课程后开放</p>}
+              <details className="game-card-settings">
+                <summary aria-label={`${game.title}设置`}>
+                  <span>
+                    难度{' '}
+                    {preference.difficulty === 'auto' && !data
+                      ? '自动'
+                      : gameCatalog.levels[match].label}{' '}
+                    · 速度{' '}
+                    {preference.speed === 'auto' && !data
+                      ? '自动'
+                      : gameCatalog.speeds[speed].label}
+                  </span>
+                  <span className="game-card-adjust">
+                    调整 <span aria-hidden="true">⌄</span>
+                  </span>
+                </summary>
+                <div className="game-preferences">
+                  <label>
+                    难度
+                    <select
+                      aria-label={`${game.title}难度`}
+                      value={preferences[game.id]?.difficulty ?? 'auto'}
+                      onChange={(event) => {
+                        setSelectedLevels((prior) => ({ ...prior, [game.id]: chosen.id }));
+                        changePreference(game.id, {
+                          difficulty: event.target.value as ScenePreference['difficulty'],
+                        });
+                      }}
+                    >
+                      <option value="auto">按进度匹配</option>
+                      {Object.entries(gameCatalog.levels).map(([key, value]) => (
+                        <option key={key} value={key}>
+                          {value.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    速度
+                    <select
+                      aria-label={`${game.title}速度`}
+                      value={preferences[game.id]?.speed ?? 'auto'}
+                      onChange={(event) =>
+                        changePreference(game.id, {
+                          speed: event.target.value as ScenePreference['speed'],
+                        })
+                      }
+                    >
+                      <option value="auto">自动</option>
+                      {Object.entries(gameCatalog.speeds).map(([key, value]) => (
+                        <option key={key} value={key}>
+                          {value.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+                <div className="game-level-story">
+                  <p>{chosen.subtitle}</p>
+                  <span>
+                    3 个章节 · 第 {chosen.number} 关速度 ×
+                    {(1 + (chosen.number - 1) * gameCatalog.play.levelSpeedStep).toFixed(2)}
+                  </span>
+                  <VoiceButton
+                    id={chosen.voiceId}
+                    voice={voice}
+                    label={`听关卡故事：${chosen.title}`}
+                    text="听关卡故事"
+                  />
+                </div>
+              </details>
+              <div className="game-card-actions">
+                <VoiceButton
+                  id={game.voiceId}
+                  voice={voice}
+                  label={`听玩法：${game.title}`}
+                  text="听玩法"
+                />
+                <button
+                  className="game-start"
+                  disabled={
+                    busy || loading || !!error || !data || !!data.clock.reason || !available
+                  }
+                  onClick={() => onStart(game.id, chosen.id)}
+                >
+                  开始{game.title} →
+                </button>
+              </div>
+              {!available && <p className="game-unavailable">学到相关课程后开放</p>}
             </article>
           );
         })}
       </div>
-      {data && <GameEvidence data={data} curriculum={curriculum} />}
+      <div className="game-home-details">
+        <details className="game-home-info">
+          <summary>时长与难度推荐说明</summary>
+          <p>
+            连续休息 10 分钟，才算新的一次。每关可选 3～20 个拼音任务，默认 6
+            个，游戏内也能调难度和速度。
+          </p>
+          <p>
+            当前推荐：{gameCatalog.levels[data?.recommendation?.level ?? 'gentle'].label} ·{' '}
+            {gameCatalog.speeds[data?.recommendation?.speed ?? 'slow'].label}
+            。依据已学范围内最近有效作答（{data?.recommendation?.sampleSize ?? 0}{' '}
+            个样本），操作快慢不计掌握度。
+          </p>
+          {isGuest() && (
+            <p>访客时长仅暂存在此标签页，清除访客会重置。连接家庭后，使用跨设备共享的时长约定。</p>
+          )}
+        </details>
+        {data && (
+          <details className="game-home-evidence">
+            <summary>
+              查看学习记录 <span>近 7 天 · {data.report.answered} 次作答</span>
+            </summary>
+            <GameEvidence data={data} curriculum={curriculum} />
+          </details>
+        )}
+      </div>
     </section>
   );
 }

@@ -117,6 +117,7 @@ export function VoiceButton({
   id,
   voice,
   label = '听一听',
+  text = label,
   className = '',
   kind = 'private',
   alwaysReplay = false,
@@ -124,6 +125,7 @@ export function VoiceButton({
   id: string;
   voice: LearningVoice;
   label?: string;
+  text?: string;
   className?: string;
   kind?: 'private' | 'standard' | 'daily';
   alwaysReplay?: boolean;
@@ -151,7 +153,7 @@ export function VoiceButton({
       <span aria-hidden="true">
         {canStop ? '■' : playing ? '♪' : voice.failedIds.has(id) ? '↻' : '🔊'}
       </span>
-      {canStop ? '停止' : label}
+      {canStop ? '停止' : text}
     </button>
   );
 }

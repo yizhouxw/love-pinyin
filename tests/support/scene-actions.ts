@@ -13,6 +13,12 @@ export async function playScene(
   const actions = page.getByRole('group', { name: '场景动作' }).getByRole('button');
   await expect(actions.nth(1)).toBeEnabled({ timeout: 20000 });
   const scene = await stage.getAttribute('data-scene');
+  // Rowing needs fine docking across shuffled targets; use the real child-facing
+  // slow-motion aid rather than letting the pilot's repeated strokes overrun a buoy.
+  if (scene === 'boat') {
+    const assist = page.getByRole('button', { name: /辅助慢动作/ });
+    if ((await assist.getAttribute('aria-pressed')) === 'false') await assist.click();
+  }
   const goal = Number(await stage.getAttribute('data-choice-at'));
   let index = -1;
   const targets = stage.locator('[data-scene-target]');
@@ -90,13 +96,20 @@ export async function playScene(
       const next = snapshot.obstacles.find(
         (o) => o.at > snapshot.distance && o.at - snapshot.distance < 100,
       );
-      const targetX = next
-        ? 120 + (((next.lane + 1) % count) * 560) / Math.max(1, count - 1)
-        : 120 + (index * 560) / Math.max(1, count - 1);
+      const lane = (i: number) => 120 + (i * 560) / Math.max(1, count - 1);
+      // Keep aiming for the actual buoy unless that lane is blocked. Arbitrarily
+      // steering to every reef's next lane can force a cross-river dash at docking.
+      const safeLane =
+        next && next.lane % count === index
+          ? [index - 1, index + 1]
+              .filter((i) => i >= 0 && i < count)
+              .sort((a, b) => Math.abs(lane(a) - snapshot.x) - Math.abs(lane(b) - snapshot.x))[0]!
+          : index;
+      const targetX = lane(safeLane);
       const projected = snapshot.x + snapshot.vx * 0.35;
       if (Math.abs(targetX - projected) > 35)
         await page.keyboard.press(targetX < projected ? 'ArrowLeft' : 'ArrowRight');
-      await page.keyboard.press('Space');
+      if (Math.abs(targetX - snapshot.x) < 55) await page.keyboard.press('Space');
       await page.waitForTimeout(120);
       if (await stage.getAttribute('data-world-hit')) break;
     }

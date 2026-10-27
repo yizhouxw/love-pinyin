@@ -1,3 +1,4 @@
+import { openGameSettings } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { playScene } from '../support/scene-actions';
@@ -20,6 +21,7 @@ for (const game of catalog.games) {
     await expect(page.getByLabel(`${game.title}每关题量`)).toHaveValue('6');
     const count = game.id === 'sound' ? 6 : 3;
     await page.getByLabel(`${game.title}每关题量`).selectOption(String(count));
+    await openGameSettings(page, game.title);
     await page.getByLabel(`${game.title}难度`).selectOption('challenge');
     await page.getByLabel(`${game.title}关卡`).selectOption(`${game.scene}-01`);
     const voices: string[] = [];
@@ -155,6 +157,7 @@ test('PLAY-02/04: failed settings keep the draft; pointer holds release and late
   expect(await stage.getAttribute('data-world-distance')).toBe(stopped);
   await page.getByRole('button', { name: '保存并退出游戏' }).click();
   await page.getByLabel('河湾划船关卡').selectOption('boat-06');
+  await openGameSettings(page, '河湾划船');
   await page.getByLabel('河湾划船速度').selectOption('slow');
   await page.getByRole('button', { name: '开始河湾划船' }).click();
   await expect(stage).toBeVisible();

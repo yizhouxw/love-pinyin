@@ -1,3 +1,4 @@
+import { openGameSettings } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { playScene } from '../support/scene-actions';
@@ -20,6 +21,7 @@ for (const game of catalog.games) {
     await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
     await page.getByRole('button', { name: '连接家庭' }).click();
     await page.getByRole('button', { name: '进入游戏乐园' }).click();
+    await openGameSettings(page, game.title);
     await page.getByLabel(`${game.title}难度`).selectOption('gentle');
     await page.getByLabel(`${game.title}速度`).selectOption('fast');
     const created = page.waitForResponse(
