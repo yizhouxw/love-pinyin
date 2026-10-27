@@ -38,7 +38,15 @@ class HanziFlow(nn.Module):
 
 class Wav2VecEvidence:
     def __init__(self, name: str, directory: Path, *, device="cpu", threads=2, check=True):
-        if name not in {"hanziflow", "charsiu"}:
+        if name not in {
+            "hanziflow",
+            "charsiu",
+            "tencent-zh-base",
+            "tencent-zh-tail-v1",
+            "tencent-zh-raw",
+            "chinese-xlsr-asr",
+            "chinese-xlsr-tail-v1",
+        }:
             raise ValueError("UNKNOWN_ACOUSTIC_MODEL")
         if threads != 2 and device == "cpu":
             raise ValueError("COMPARISON_REQUIRES_TWO_CPU_THREADS")
@@ -50,7 +58,22 @@ class Wav2VecEvidence:
         if check:
             verify(name, directory)
         config = json.loads((directory / "config.json").read_text())
-        if name == "hanziflow":
+        if name in {"tencent-zh-base", "tencent-zh-tail-v1", "tencent-zh-raw"}:
+            self.model = Wav2Vec2Model.from_pretrained(
+                str(directory), local_files_only=True, use_safetensors=name == "tencent-zh-tail-v1"
+            )
+            self.vocabularies = {}
+        elif name == "chinese-xlsr-tail-v1":
+            self.model = Wav2Vec2Model.from_pretrained(
+                str(directory), local_files_only=True, use_safetensors=True
+            )
+            self.vocabularies = {}
+        elif name == "chinese-xlsr-asr":
+            self.model = Wav2Vec2ForCTC.from_pretrained(
+                str(directory), local_files_only=True, use_safetensors=False
+            )
+            self.vocabularies = {}
+        elif name == "hanziflow":
             with torch.device("meta"):
                 self.model = HanziFlow(config)
             self.model.load_state_dict(
@@ -69,16 +92,26 @@ class Wav2VecEvidence:
             self.model.load_state_dict(state, strict=True, assign=True)
             self.vocabularies = {"phone": json.loads((directory / "vocab.json").read_text())}
         self.model.eval().to(device)
-        self.dimensions = 1024
+        self.dimensions = 768 if name.startswith("tencent-zh-") else 1024
 
     @torch.inference_mode()
     def evidence(self, samples: np.ndarray) -> dict:
         samples = np.asarray(samples, dtype=np.float32)
         if samples.ndim != 1 or len(samples) < 400 or not np.isfinite(samples).all():
             raise ValueError("INVALID_WAVEFORM")
-        normalized = (samples - samples.mean()) / np.sqrt(samples.var() + 1e-7)
+        normalized = (
+            samples
+            if self.name == "tencent-zh-raw"
+            else (samples - samples.mean()) / np.sqrt(samples.var() + 1e-7)
+        )
         waveform = torch.from_numpy(normalized).unsqueeze(0).to(self.device)
-        if self.name == "hanziflow":
+        if self.name.startswith("tencent-zh-") or self.name == "chinese-xlsr-tail-v1":
+            frames = self.model(waveform).last_hidden_state
+            native = {}
+        elif self.name == "chinese-xlsr-asr":
+            frames = self.model.wav2vec2(waveform).last_hidden_state
+            native = {}
+        elif self.name == "hanziflow":
             frames, initial, final, tone = self.model(waveform)
             native = {"initial": initial, "final": final, "tone": tone}
         else:
@@ -95,6 +128,8 @@ class Wav2VecEvidence:
     @torch.inference_mode()
     def evidence_batch(self, samples: list[np.ndarray]) -> list[dict]:
         """Offline padded extraction with explicit masks and true frame lengths."""
+        if self.name.startswith("tencent-zh-"):
+            return self._chinese_masked_batch(samples)
         normalized = [(s - s.mean()) / np.sqrt(s.var() + 1e-7) for s in samples]
         lengths = [len(s) for s in normalized]
         waveform = torch.zeros(len(samples), max(lengths), device=self.device)
@@ -102,9 +137,17 @@ class Wav2VecEvidence:
         for i, sample in enumerate(normalized):
             waveform[i, : len(sample)] = torch.from_numpy(sample).to(self.device)
             mask[i, : len(sample)] = 1
-        acoustic = self.model.encoder if self.name == "hanziflow" else self.model.wav2vec2
+        acoustic = (
+            self.model.encoder
+            if self.name == "hanziflow"
+            else self.model
+            if self.name == "chinese-xlsr-tail-v1"
+            else self.model.wav2vec2
+        )
         frames = acoustic(waveform, attention_mask=mask).last_hidden_state
-        if self.name == "hanziflow":
+        if self.name in {"chinese-xlsr-asr", "chinese-xlsr-tail-v1"}:
+            native = {}
+        elif self.name == "hanziflow":
             native = {
                 "initial": self.model.initial_head(frames),
                 "final": self.model.final_head(frames),
@@ -119,4 +162,44 @@ class Wav2VecEvidence:
                 "native": {k: v[i, :n].cpu().numpy() for k, v in native.items()},
             }
             for i, n in enumerate(counts)
+        ]
+
+    def _chinese_masked_batch(self, samples: list[np.ndarray]) -> list[dict]:
+        """Apply the first per-channel group norm over each unpadded signal only."""
+        normalized = [
+            s if self.name == "tencent-zh-raw" else (s - s.mean()) / np.sqrt(s.var() + 1e-7)
+            for s in samples
+        ]
+        lengths = torch.tensor([len(s) for s in normalized], device=self.device)
+        waveform = torch.zeros(len(samples), int(lengths.max()), device=self.device)
+        for index, sample in enumerate(normalized):
+            waveform[index, : len(sample)] = torch.from_numpy(sample).to(self.device)
+        hidden = waveform[:, None, :]
+        for layer in self.model.feature_extractor.conv_layers:
+            conv = layer.conv
+            if conv.padding != (0,) or conv.dilation != (1,):
+                raise ValueError("CHINESE_BATCH_UNSUPPORTED_CONVOLUTION")
+            hidden = conv(hidden)
+            lengths = (lengths - conv.kernel_size[0]) // conv.stride[0] + 1
+            mask = torch.arange(hidden.shape[-1], device=self.device)[None, :] < lengths[:, None]
+            if hasattr(layer, "layer_norm"):
+                norm = layer.layer_norm
+                if not isinstance(norm, nn.GroupNorm) or norm.num_groups != hidden.shape[1]:
+                    raise ValueError("CHINESE_BATCH_UNSUPPORTED_NORMALIZATION")
+                valid = mask[:, None, :]
+                mean = (hidden * valid).sum(-1, keepdim=True) / lengths[:, None, None]
+                variance = ((hidden - mean).square() * valid).sum(-1, keepdim=True) / lengths[
+                    :, None, None
+                ]
+                hidden = (hidden - mean) * torch.rsqrt(variance + norm.eps)
+                hidden = hidden * norm.weight[None, :, None] + norm.bias[None, :, None]
+            hidden = layer.activation(hidden) * mask[:, None, :]
+        hidden = hidden.transpose(1, 2)
+        hidden, _ = self.model.feature_projection(hidden)
+        hidden = self.model.encoder(hidden, attention_mask=mask).last_hidden_state
+        if self.model.adapter is not None:
+            raise ValueError("CHINESE_BATCH_ADAPTER_UNSUPPORTED")
+        return [
+            {"frames": hidden[i, : int(length)].cpu().numpy(), "native": {}}
+            for i, length in enumerate(lengths)
         ]

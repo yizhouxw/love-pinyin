@@ -184,7 +184,9 @@ def cache_features(
             try:
                 sample = decode_wav(Path(row["file"]).read_bytes())
             except AudioRejected as error:
-                dimensions = 512 if name == "sensevoice" else 1024
+                dimensions = (
+                    512 if name == "sensevoice" else 768 if name.startswith("tencent-zh-") else 1024
+                )
                 invalid = {
                     "pooled": np.zeros(dimensions * 5, dtype=np.float32),
                     "pitch": np.zeros(68, dtype=np.float32),
@@ -236,7 +238,13 @@ def arrays(rows, cache, vocab, *, temporal=False):
     pooled, pitch, labels = [], [], []
     identity = fingerprint(cache / "identity.json")
     repository = json.loads((cache / "identity.json").read_text())["model"]["repository"]
-    dimensions = 2560 if "SenseVoice" in repository else 5120
+    dimensions = (
+        2560
+        if "SenseVoice" in repository
+        else 3840
+        if repository == "TencentGameMate/chinese-wav2vec2-base"
+        else 5120
+    )
     if temporal:
         from pinyin_matcher.pretrained_temporal import TEMPORAL_BINS, temporal_vector
 
@@ -724,7 +732,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="action", required=True)
     cache = sub.add_parser("cache")
-    cache.add_argument("--name", required=True, choices=["hanziflow", "charsiu", "sensevoice"])
+    cache.add_argument(
+        "--name",
+        required=True,
+        choices=[
+            "hanziflow",
+            "charsiu",
+            "sensevoice",
+            "tencent-zh-base",
+            "tencent-zh-tail-v1",
+            "tencent-zh-raw",
+            "chinese-xlsr-asr",
+            "chinese-xlsr-tail-v1",
+        ],
+    )
     cache.add_argument("--model", type=Path, required=True)
     cache.add_argument("--manifest", type=Path, required=True)
     cache.add_argument("--output", type=Path, required=True)

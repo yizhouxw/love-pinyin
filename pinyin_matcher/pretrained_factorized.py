@@ -146,17 +146,14 @@ def acoustic_derivative(cache, cache_metadata):
     return derivative
 
 
-def train(manifest: Path, cache: Path, output: Path):
+def train(manifest: Path, cache: Path, output: Path, *, name="sensevoice"):
     if output.exists():
         raise ValueError("FACTORIZED_OUTPUT_EXISTS")
     protocol, config = factorized_configuration(), configuration()
     if config["seed"] != protocol["seed"] or config["maximumEpochs"] != protocol["maximumEpochs"]:
         raise ValueError("FACTORIZED_BASE_BUDGET_MISMATCH")
     cache_metadata = json.loads((cache / "cache.json").read_text())
-    if (
-        cache_metadata["manifestSha256"] != fingerprint(manifest)
-        or cache_metadata["model"] != "sensevoice"
-    ):
+    if cache_metadata["manifestSha256"] != fingerprint(manifest) or cache_metadata["model"] != name:
         raise ValueError("FACTORIZED_CACHE_MANIFEST_MISMATCH")
     derivative = acoustic_derivative(cache, cache_metadata)
     rows = read_rows(manifest)
@@ -265,7 +262,7 @@ def train(manifest: Path, cache: Path, output: Path):
     )
     metadata = {
         "schemaVersion": 1,
-        "model": "sensevoice",
+        "model": name,
         "variant": "factorized-identity-validity",
         "acousticProbe": None,
         "acousticDerivative": derivative,
@@ -313,8 +310,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for field in ("manifest", "cache", "output"):
         parser.add_argument("--" + field, type=Path, required=True)
+    parser.add_argument(
+        "--name",
+        choices=(
+            "sensevoice",
+            "tencent-zh-base",
+            "tencent-zh-tail-v1",
+            "tencent-zh-raw",
+            "chinese-xlsr-asr",
+        ),
+        default="sensevoice",
+    )
     args = parser.parse_args()
-    result = train(args.manifest, args.cache, args.output)
+    result = train(args.manifest, args.cache, args.output, name=args.name)
     print(json.dumps({k: result[k] for k in ("variant", "selectedEpoch", "trainingSeconds")}))
 
 

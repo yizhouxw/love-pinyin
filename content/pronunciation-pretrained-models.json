@@ -208,6 +208,207 @@
           "sizeBytes": 5306
         }
       ]
+    },
+    "tencent-zh-base": {
+      "repository": "TencentGameMate/chinese-wav2vec2-base",
+      "revision": "3991242c806928916fff4a8c0e4f76acf661b743",
+      "lastModified": "2022-06-24T01:53:18Z",
+      "license": "MIT (Hugging Face model card)",
+      "licenseEvidence": "Pinned model card declares MIT; pretrained source speech license and speaker overlap not individually verified.",
+      "source": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base",
+      "sourceRepository": "https://github.com/TencentGameMate/chinese_speech_pretrain",
+      "trainingData": "WenetSpeech train L, approximately 10000 hours Mandarin, self-supervised pretraining; no phone transcription head. Speaker overlap with assessment corpus unknown.",
+      "outputs": "768-dimensional acoustic frames. Project trains its own target-independent onset, rime and tone heads. No character decoding.",
+      "runtime": "Wav2Vec2Model, normalized 16k waveform, local ONNX CPU; training uses frozen encoder or explicitly recorded fine-tuning.",
+      "files": [
+        {
+          "path": "pytorch_model.bin",
+          "url": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/3991242c806928916fff4a8c0e4f76acf661b743/pytorch_model.bin",
+          "sha256": "be2da40c9e7ae26bfc904a3ed79ebb9e8f060bec6dba85d6a6ae86114bc38901",
+          "sizeBytes": 380261837
+        },
+        {
+          "path": "config.json",
+          "url": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/3991242c806928916fff4a8c0e4f76acf661b743/config.json",
+          "sha256": "dc2cd2f989104b9510ce9e43a343a6f1fe55aa60baa1fcfca0c5908e6590b8b6",
+          "sizeBytes": 1951
+        },
+        {
+          "path": "preprocessor_config.json",
+          "url": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/3991242c806928916fff4a8c0e4f76acf661b743/preprocessor_config.json",
+          "sha256": "c1707926644954affc391ab09ccfaf470ccd80af218d11350991090711441c09",
+          "sizeBytes": 160
+        },
+        {
+          "path": "README.md",
+          "url": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/3991242c806928916fff4a8c0e4f76acf661b743/README.md",
+          "sha256": "fcc08e87ab74a235c489cf0cfde474a501b4217a701d2ef96b05fb49e1f667cb",
+          "sizeBytes": 1923
+        }
+      ]
+    },
+    "chinese-xlsr-asr": {
+      "repository": "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+      "revision": "99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd",
+      "lastModified": "2022-12-14T01:58:32Z",
+      "license": "Apache-2.0 (Hugging Face model card)",
+      "licenseEvidence": "Pinned official model card declares Apache-2.0; source corpus terms and natural-person overlap require independent review.",
+      "source": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+      "trainingData": "XLSR-53 pretrained encoder fine-tuned on Common Voice 6.1 Chinese, CSS10 and ST-CMDS. Source speaker overlap with OMPAL cannot be excluded.",
+      "outputs": "1024-dimensional acoustic frames. Project trains target-independent onset, rime and tone heads. Character CTC head and text decoding never used.",
+      "runtime": "Wav2Vec2Model frame encoder from a local CTC checkpoint; normalized 16k waveform; local CPU ONNX inference.",
+      "files": [
+        {
+          "path": "pytorch_model.bin",
+          "url": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn/resolve/99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd/pytorch_model.bin",
+          "sha256": "de031fd4b29e0c0667e5346450fadfe1326c89936b888b59c4ede608db763ee4",
+          "sizeBytes": 1276296151
+        },
+        {
+          "path": "config.json",
+          "url": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn/resolve/99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd/config.json",
+          "sha256": "9af98614e322a5300c75605227d93c98af0c8f78754aba1dfc279166688afddd",
+          "sizeBytes": 1567
+        },
+        {
+          "path": "preprocessor_config.json",
+          "url": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn/resolve/99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd/preprocessor_config.json",
+          "sha256": "c403ce09975b90dff0dd8302c42d422e9de1f166cd7772df23490069893cb0cf",
+          "sizeBytes": 158
+        },
+        {
+          "path": "README.md",
+          "url": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn/resolve/99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd/README.md",
+          "sha256": "9b14283ce428f729bfbf8a82313f61e76d83c760b5a72f2fadf516523ff412b7",
+          "sizeBytes": 7722
+        }
+      ]
+    },
+    "tencent-zh-raw": {
+      "repository": "TencentGameMate/chinese-wav2vec2-base",
+      "revision": "3991242c806928916fff4a8c0e4f76acf661b743",
+      "lastModified": "2022-06-24T01:53:18Z",
+      "license": "MIT (Hugging Face model card)",
+      "licenseEvidence": "Pinned model card declares MIT; pretrained source speech license and speaker overlap not individually verified.",
+      "source": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base",
+      "sourceRepository": "https://github.com/TencentGameMate/chinese_speech_pretrain",
+      "trainingData": "WenetSpeech train L, approximately 10000 hours Mandarin, self-supervised pretraining; no phone transcription head. Speaker overlap with assessment corpus unknown.",
+      "outputs": "768-dimensional acoustic frames. Project trains its own target-independent onset, rime and tone heads. No character decoding.",
+      "runtime": "Official do_normalize=false: raw 16k PCM floating point samples, target-independent local acoustic frames and two-thread CPU ONNX.",
+      "files": [
+        {
+          "path": "pytorch_model.bin",
+          "url": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/3991242c806928916fff4a8c0e4f76acf661b743/pytorch_model.bin",
+          "sha256": "be2da40c9e7ae26bfc904a3ed79ebb9e8f060bec6dba85d6a6ae86114bc38901",
+          "sizeBytes": 380261837
+        },
+        {
+          "path": "config.json",
+          "url": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/3991242c806928916fff4a8c0e4f76acf661b743/config.json",
+          "sha256": "dc2cd2f989104b9510ce9e43a343a6f1fe55aa60baa1fcfca0c5908e6590b8b6",
+          "sizeBytes": 1951
+        },
+        {
+          "path": "preprocessor_config.json",
+          "url": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/3991242c806928916fff4a8c0e4f76acf661b743/preprocessor_config.json",
+          "sha256": "c1707926644954affc391ab09ccfaf470ccd80af218d11350991090711441c09",
+          "sizeBytes": 160
+        },
+        {
+          "path": "README.md",
+          "url": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/3991242c806928916fff4a8c0e4f76acf661b743/README.md",
+          "sha256": "fcc08e87ab74a235c489cf0cfde474a501b4217a701d2ef96b05fb49e1f667cb",
+          "sizeBytes": 1923
+        }
+      ],
+      "inputNormalization": "none-official-preprocessor"
+    },
+    "tencent-zh-tail-v1": {
+      "repository": "TencentGameMate/chinese-wav2vec2-base",
+      "revision": "3991242c806928916fff4a8c0e4f76acf661b743",
+      "lastModified": "2022-06-24T01:53:18Z",
+      "license": "MIT (Hugging Face model card)",
+      "licenseEvidence": "Pinned model card declares MIT; pretrained source speech license and speaker overlap not individually verified.",
+      "source": "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base",
+      "sourceRepository": "https://github.com/TencentGameMate/chinese_speech_pretrain",
+      "trainingData": "WenetSpeech train L, approximately 10000 hours Mandarin, self-supervised pretraining; no phone transcription head. Speaker overlap with assessment corpus unknown. OMPAL CC BY 4.0 expert training components; last-layer fine-tune; see training.json.",
+      "outputs": "768-dimensional acoustic frames. Project trains its own target-independent onset, rime and tone heads. No character decoding.",
+      "runtime": "Locally trained derivative; pinned source and checkpoint; no downloads.",
+      "parentWeightSha256": "be2da40c9e7ae26bfc904a3ed79ebb9e8f060bec6dba85d6a6ae86114bc38901",
+      "trainingReportSha256": "defc41b646b04202cc7311ea80a7f79782a0d8519dcd1648e11ae68b01dc6db0",
+      "configurationSha256": "fa8848ed8ec7ebcdab66953be2d4f6d21f4e77bc26bbd66edca12139c568a4f8",
+      "sourceCodeSha256": "6ad19219b6573582f9ac9e5378454c4e41157876b53749cc313a5abbbc116a04",
+      "localDerivative": true,
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "fcc08e87ab74a235c489cf0cfde474a501b4217a701d2ef96b05fb49e1f667cb",
+          "sizeBytes": 1923
+        },
+        {
+          "path": "config.json",
+          "sha256": "dc2cd2f989104b9510ce9e43a343a6f1fe55aa60baa1fcfca0c5908e6590b8b6",
+          "sizeBytes": 1951
+        },
+        {
+          "path": "model.safetensors",
+          "sha256": "3a5eafd46c96fb1551b21d4ac333074123c1f489ffd1cd8c1786900649e4990a",
+          "sizeBytes": 377510600
+        },
+        {
+          "path": "preprocessor_config.json",
+          "sha256": "c1707926644954affc391ab09ccfaf470ccd80af218d11350991090711441c09",
+          "sizeBytes": 160
+        },
+        {
+          "path": "training.json",
+          "sha256": "defc41b646b04202cc7311ea80a7f79782a0d8519dcd1648e11ae68b01dc6db0",
+          "sizeBytes": 2333
+        }
+      ]
+    },
+    "chinese-xlsr-tail-v1": {
+      "repository": "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+      "revision": "99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd",
+      "lastModified": "2022-12-14T01:58:32Z",
+      "license": "Apache-2.0 (Hugging Face model card)",
+      "licenseEvidence": "Pinned official model card declares Apache-2.0; source corpus terms and natural-person overlap require independent review.",
+      "source": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+      "trainingData": "XLSR-53 pretrained encoder fine-tuned on Common Voice 6.1 Chinese, CSS10 and ST-CMDS. Source speaker overlap with OMPAL cannot be excluded. OMPAL CC BY 4.0 expert training components; last-layer fine-tune; see training.json.",
+      "outputs": "1024-dimensional acoustic frames. Project trains target-independent onset, rime and tone heads. Character CTC head and text decoding never used.",
+      "runtime": "Locally trained derivative; pinned source and checkpoint; no downloads.",
+      "parentWeightSha256": "de031fd4b29e0c0667e5346450fadfe1326c89936b888b59c4ede608db763ee4",
+      "trainingReportSha256": "0ba84ca4863a0c6a321c68dd85bd5b1ddb35bc6aa4f6f54201c4f5172ad5e736",
+      "configurationSha256": "bf8fdad4504232bec881aa3eaf9c95fed5b66f364aa5d560c7599bce945d4bac",
+      "sourceCodeSha256": "e244f5a44629adb6e69745c87475c5eb6f713db22c5c84bd9412a179401d4f0c",
+      "localDerivative": true,
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "9b14283ce428f729bfbf8a82313f61e76d83c760b5a72f2fadf516523ff412b7",
+          "sizeBytes": 7722
+        },
+        {
+          "path": "config.json",
+          "sha256": "9af98614e322a5300c75605227d93c98af0c8f78754aba1dfc279166688afddd",
+          "sizeBytes": 1567
+        },
+        {
+          "path": "model.safetensors",
+          "sha256": "018c09a12d6b6bca4b4c0cb4eb8c5d500aa917c69505bb2236dad64bbc70627e",
+          "sizeBytes": 1261803488
+        },
+        {
+          "path": "preprocessor_config.json",
+          "sha256": "c403ce09975b90dff0dd8302c42d422e9de1f166cd7772df23490069893cb0cf",
+          "sizeBytes": 158
+        },
+        {
+          "path": "training.json",
+          "sha256": "0ba84ca4863a0c6a321c68dd85bd5b1ddb35bc6aa4f6f54201c4f5172ad5e736",
+          "sizeBytes": 2343
+        }
+      ]
     }
   }
 }

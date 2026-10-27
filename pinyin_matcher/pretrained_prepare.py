@@ -24,6 +24,8 @@ def prepare(name: str, destination: Path | None = None) -> dict:
             if path.stat().st_size == item["sizeBytes"] and fingerprint(path) == item["sha256"]:
                 continue
             raise ValueError("EXISTING_RESOURCE_DIGEST_MISMATCH: " + item["path"])
+        if not item.get("url"):
+            raise ValueError("DERIVED_RESOURCE_REQUIRES_LOCAL_TRAINING: " + item["path"])
         path.parent.mkdir(parents=True, exist_ok=True)
         temporary = path.with_name(path.name + ".part")
         for attempt in range(4):

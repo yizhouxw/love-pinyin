@@ -736,3 +736,83 @@ tools/pinyin-pretrained/run.sh hard-negative-eduhk train \
 ```
 
 报告生成依赖本轮保存的历史实验目录；训练的干净重建使用上文独立输出路径，不自动替换已记录证据。`run.sh test`包含活动检测、预训练管线和数据/资源身份边界；完整工程仍执行`npm run verify:all`与`npm run validate:release`，都不能替代声音质量验收。
+
+## MATCH-16：中文编码器与尾层微调
+
+两个新增模型使用 `content/pronunciation-pretrained-models.json` 中固定修订、逐文件 SHA 及许可声明，显式执行下载，推理不联网。继续使用上文已准备的 OMPAL v2 清单；只读取训练和校准，不能将此清单或历史诊断作最终验收。旧包不覆盖。下面是新建输出的命令；`chinese-xlsr-asr` 换成 `tencent-zh-base` 可构建自监督中文编码器对照。前者 cache 使用 batch 16，后者可使用 24。
+
+```sh
+tools/pinyin-pretrained/run.sh prepare chinese-xlsr-asr
+tools/pinyin-pretrained/run.sh export chinese-xlsr-asr \
+  --model models/pinyin-pretrained/chinese-xlsr-asr
+tools/pinyin-pretrained/run.sh cache --name chinese-xlsr-asr \
+  --model models/pinyin-pretrained/chinese-xlsr-asr \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --output private/pretrained-matcher/rebuild-chinese-xlsr-cache --device mps --batch-size 16
+tools/pinyin-pretrained/run.sh factorized --name chinese-xlsr-asr \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --cache private/pretrained-matcher/rebuild-chinese-xlsr-cache \
+  --output private/pretrained-matcher/rebuild-chinese-xlsr-heads
+tools/pinyin-pretrained/run.sh bundle \
+  --heads private/pretrained-matcher/rebuild-chinese-xlsr-heads \
+  --encoder models/pinyin-pretrained/chinese-xlsr-asr --backend int8 \
+  --output models/pinyin-pretrained/bundles/rebuild-chinese-xlsr
+tools/pinyin-pretrained/run.sh evaluate \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --model models/pinyin-pretrained/bundles/rebuild-chinese-xlsr \
+  --split calibration --output private/pretrained-matcher/rebuild-chinese-xlsr-calibration.json
+```
+
+常规多头对照使用 `run.sh train --name tencent-zh-base --variant multihead --device cpu`，其它输入与对应 factorized 相同。腾讯模型的卷积使用时间维组归一化，缓存批处理按每条音频真实长度归一化；代码中的回归测试将批处理与单条未补零推理对照。中文 ASR 的字符头没有用于目标判断。
+
+尾层训练先从同一腾讯缓存训练出 factorized 初始化头，按固定配置和说话人平衡种子选 1,200 个 OMPAL 训练根：
+
+```sh
+tools/pinyin-pretrained/run.sh chinese-tail \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --cache private/pretrained-matcher/tencent-zh-base-ompal-v2-cache-masked \
+  --initializer private/pretrained-matcher/tencent-zh-base-factorized-v1 \
+  --model-dir models/pinyin-pretrained/tencent-zh-base --device mps \
+  --output private/pretrained-matcher/rebuild-chinese-tail
+```
+
+训练记录冻结层和尾层张量变化；可用 `chinese-register` 显式将该本机检查点绑定为独立模型，随后沿用 `export`、`cache`、`factorized`、`bundle`、`evaluate`。注册不会覆盖已有模型，重建新检查点的 SHA 不保证与历史运行逐字节一致，也不能默认为原历史检查点。CPU 四秒压力和冷启动使用上文 `benchmark` 与 `cold`，测试数据与模型权重均留在 Git 忽略目录。
+
+绑定与联合头重放使用以下参数，清单中如果已经绑定同名历史 SHA，重建检查点必须字节一致；不同检查点需另立版本而非覆盖历史结果。
+
+```sh
+tools/pinyin-pretrained/run.sh chinese-register \
+  --checkpoint private/pretrained-matcher/tencent-zh-tail-v1 \
+  --source models/pinyin-pretrained/tencent-zh-base \
+  --output models/pinyin-pretrained/tencent-zh-tail-v1
+tools/pinyin-pretrained/run.sh export tencent-zh-tail-v1 \
+  --model models/pinyin-pretrained/tencent-zh-tail-v1
+tools/pinyin-pretrained/run.sh cache --name tencent-zh-tail-v1 \
+  --model models/pinyin-pretrained/tencent-zh-tail-v1 \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --output private/pretrained-matcher/rebuild-chinese-tail-cache --device mps --batch-size 24
+tools/pinyin-pretrained/run.sh chinese-joint-head \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --cache private/pretrained-matcher/rebuild-chinese-tail-cache \
+  --initializer private/pretrained-matcher/tencent-zh-base-factorized-v1 \
+  --checkpoint private/pretrained-matcher/tencent-zh-tail-v1 \
+  --encoder models/pinyin-pretrained/tencent-zh-tail-v1 \
+  --output private/pretrained-matcher/rebuild-chinese-tail-joint-heads
+```
+
+中文 ASR 编码器的尾层复用相同抽样与预算：将上一命令中的程序改为 `xlsr-tail`，缓存改为 `private/pretrained-matcher/chinese-xlsr-asr-ompal-v2-cache`，初始化头改为 `private/pretrained-matcher/chinese-xlsr-asr-factorized-v1`，原模型改为 `models/pinyin-pretrained/chinese-xlsr-asr`，输出改为新的 `private/pretrained-matcher/chinese-xlsr-tail-v1`。上游启用梯度检查点会阻断冻结前层后的尾层梯度；该训练入口显式关闭并检查尾层权重实际变化。之后分别使用 `xlsr-register` 和 `xlsr-joint-head`，参数与对应中文自监督入口相同。所有来源模型的字符头都不会进入匹配图。
+
+历史腾讯缓存和中文 ASR 缓存生成时使用的适配器源码快照分别保存在 `tools/pinyin-pretrained/snapshots/match16-wav2vec-base.py` 与 `tools/pinyin-pretrained/snapshots/match16-chinese-xlsr.py`。后续为新模型增加名称和输入策略，不改历史缓存身份；用当前代码重建会生成新的源码身份 SHA，不冒充历史缓存字节一致。
+
+尾层训练结束后，入口进一步加固为缺失专家分量标注时不得参与监督；原实验的 1,200 个训练根和 3,117 个参与校准损失的根均有标注，新旧选择的训练根 SHA 相同。历史实际训练源码分别保存在 `tools/pinyin-pretrained/snapshots/match16-tencent-tail-training.py` 和 `tools/pinyin-pretrained/snapshots/match16-xlsr-tail-training.py`，原权重及结果没有重写。
+
+将本轮各包、原对照的完整质量、压力和性能结果汇总前，保留各自 `*-full-calibration.json`、`*-stress.json`、`*-cpu.json`、`*-cold.json` 和压力清单；汇总器核验模型摘要、4202 根分母及 312 个压力病例音频/目标一致性：
+
+```sh
+tools/pinyin-pretrained/run.sh chinese-report \
+  --root private/pretrained-matcher \
+  --bundles models/pinyin-pretrained/bundles \
+  --output docs/research/matcher-chinese-encoder-results-rebuild.json
+```
+
+如果 `tencent-zh-raw` 本地权重尚未准备，显式运行 `run.sh prepare tencent-zh-raw`；它与原腾讯权重摘要相同，但输入策略、特征缓存和导出包独立，训练时不得混用。历史数据的中间模型和录音仍保存在 Git 忽略目录；缺少它们时报告汇总命令会失败，而不会产生模拟结果。

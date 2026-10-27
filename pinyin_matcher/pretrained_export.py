@@ -26,6 +26,8 @@ def _digest(path: Path) -> str:
 
 
 def _native_names(name: str) -> list[str]:
+    if name.startswith("tencent-zh-") or name.startswith("chinese-xlsr-"):
+        return []
     return ["initial", "final", "tone"] if name == "hanziflow" else ["phone"]
 
 
@@ -44,6 +46,12 @@ def export_wav2vec(name: str, directory: str | Path) -> dict:
             self.name = adapter.name
 
         def forward(self, waveform):
+            if self.name.startswith("tencent-zh-"):
+                return (self.model(waveform).last_hidden_state,)
+            if self.name == "chinese-xlsr-tail-v1":
+                return (self.model(waveform).last_hidden_state,)
+            if self.name == "chinese-xlsr-asr":
+                return (self.model.wav2vec2(waveform).last_hidden_state,)
             if self.name == "hanziflow":
                 return self.model(waveform)
             frames = self.model.wav2vec2(waveform).last_hidden_state
@@ -52,7 +60,13 @@ def export_wav2vec(name: str, directory: str | Path) -> dict:
     directory = Path(directory)
     adapter = Wav2VecEvidence(name, directory, device="cpu", threads=2)
     model = _ExportWav2Vec(adapter).eval()
-    encoder = adapter.model.encoder if name == "hanziflow" else adapter.model.wav2vec2
+    encoder = (
+        adapter.model
+        if name.startswith("tencent-zh-") or name == "chinese-xlsr-tail-v1"
+        else adapter.model.encoder
+        if name == "hanziflow"
+        else adapter.model.wav2vec2
+    )
     # Torch legacy ONNX supports eager attention consistently across dynamic time.
     encoder.set_attn_implementation("eager")
     output_names = ["frames", *_native_names(name)]
@@ -117,7 +131,15 @@ class OnnxWav2VecEvidence:
         quantized: bool = True,
         check: bool = True,
     ):
-        if name not in {"hanziflow", "charsiu"}:
+        if name not in {
+            "hanziflow",
+            "charsiu",
+            "tencent-zh-base",
+            "tencent-zh-tail-v1",
+            "tencent-zh-raw",
+            "chinese-xlsr-asr",
+            "chinese-xlsr-tail-v1",
+        }:
             raise ValueError("UNKNOWN_ACOUSTIC_MODEL")
         directory = Path(directory)
         self.name = name
@@ -139,11 +161,10 @@ class OnnxWav2VecEvidence:
             raise ValueError("WAV2VEC_ONNX_INTEGRITY_MISMATCH")
         if check:
             needed = {"config.json"}
-            needed.update(
-                {f"v2_1_{key}_vocabulary.json" for key in _native_names(name)}
-                if name == "hanziflow"
-                else {"vocab.json"}
-            )
+            if name == "hanziflow":
+                needed.update({f"v2_1_{key}_vocabulary.json" for key in _native_names(name)})
+            elif name == "charsiu":
+                needed.add("vocab.json")
             originals = {item["path"]: item for item in parent["files"]}
             for path in needed:
                 if _digest(directory / path) != originals[path]["sha256"]:
@@ -152,7 +173,10 @@ class OnnxWav2VecEvidence:
         options.intra_op_num_threads = 2
         options.inter_op_num_threads = 1
         self.session = ort.InferenceSession(str(graph), options, providers=["CPUExecutionProvider"])
-        if name == "hanziflow":
+        if name.startswith("tencent-zh-") or name.startswith("chinese-xlsr-"):
+            self.vocabularies = {}
+            self.dimensions = 1024 if name.startswith("chinese-xlsr-") else 768
+        elif name == "hanziflow":
             self.vocabularies = {
                 key: json.loads((directory / f"v2_1_{key}_vocabulary.json").read_text())
                 for key in _native_names(name)
@@ -164,7 +188,11 @@ class OnnxWav2VecEvidence:
         samples = np.asarray(samples, dtype=np.float32)
         if samples.ndim != 1 or len(samples) < 400 or not np.isfinite(samples).all():
             raise ValueError("INVALID_WAVEFORM")
-        normalized = (samples - samples.mean()) / np.sqrt(samples.var() + 1e-7)
+        normalized = (
+            samples
+            if self.name == "tencent-zh-raw"
+            else (samples - samples.mean()) / np.sqrt(samples.var() + 1e-7)
+        )
         outputs = self.session.run(None, {"waveform": normalized[None]})
         return {
             "frames": outputs[0][0],
@@ -180,7 +208,19 @@ class OnnxWav2VecEvidence:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("name", choices=["hanziflow", "charsiu", "sensevoice"])
+    parser.add_argument(
+        "name",
+        choices=[
+            "hanziflow",
+            "charsiu",
+            "sensevoice",
+            "tencent-zh-base",
+            "tencent-zh-tail-v1",
+            "tencent-zh-raw",
+            "chinese-xlsr-asr",
+            "chinese-xlsr-tail-v1",
+        ],
+    )
     parser.add_argument("--model", required=True, type=Path)
     args = parser.parse_args()
     start = time.perf_counter()

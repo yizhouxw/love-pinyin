@@ -98,6 +98,11 @@ class PretrainedMatcher:
                 "hanziflow",
                 "charsiu",
                 "sensevoice",
+                "tencent-zh-base",
+                "tencent-zh-tail-v1",
+                "tencent-zh-raw",
+                "chinese-xlsr-asr",
+                "chinese-xlsr-tail-v1",
             }:
                 raise ValueError("MODEL_METADATA_INVALID")
             if metadata["configuration"] != configuration():

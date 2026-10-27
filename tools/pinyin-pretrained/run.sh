@@ -20,6 +20,13 @@ case "${1:-help}" in
   layer-probe) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_layer_probe "$@" ;;
   alignment-v3) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_alignment_v3 "$@" ;;
   factorized) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_factorized "$@" ;;
+  chinese-tail) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_chinese_tail "$@" ;;
+  chinese-register) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_chinese_register "$@" ;;
+  chinese-joint-head) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_chinese_joint_head "$@" ;;
+  chinese-report) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_chinese_report "$@" ;;
+  xlsr-tail) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_xlsr_tail "$@" ;;
+  xlsr-register) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_xlsr_register "$@" ;;
+  xlsr-joint-head) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_xlsr_joint_head "$@" ;;
   hard-negative) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_hard_negative "$@" ;;
   hard-negative-strong) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_hard_negative_strong "$@" ;;
   hard-negative-native) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_hard_negative_native "$@" ;;
@@ -47,5 +54,5 @@ case "${1:-help}" in
   sensevoice-finetune) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_sensevoice_finetune "$@" ;;
   sensevoice-export) shift; exec "$pretrained_python" -m pinyin_matcher.pretrained_sensevoice_export "$@" ;;
   test) exec "$pretrained_python" -m pytest tests/pretrained tests/matcher/test_pretrained_*.py tests/matcher/test_preserved_baseline_cli.py tests/matcher/test_audio.py -q ;;
-  *) printf '%s\n' 'Usage: run.sh setup | prepare NAME | data prepare | ompal prepare | clips | cache | train | export | bundle | info | match | evaluate | freeze | benchmark | ensemble | readout-diagnostics | layer-probe | alignment-v3 | factorized | hard-negative | hard-negative-strong | hard-negative-native | hard-negative-eduhk | native-uniform | native-clips | tail-finetune | aishell3 | native-sequence | native-sequence-export | sequence-adapt-config | sequence-adapt | native | comparison | finetune | sensevoice-finetune | sensevoice-export | coverage | pressure | ctc | stress | cold | report | iteration-report | reconstruction-report | test' ;;
+  *) printf '%s\n' 'Usage: run.sh setup | prepare NAME | data prepare | ompal prepare | clips | cache | train | export | bundle | info | match | evaluate | freeze | benchmark | ensemble | readout-diagnostics | layer-probe | alignment-v3 | factorized | chinese-tail | chinese-register | chinese-joint-head | chinese-report | xlsr-tail | xlsr-register | xlsr-joint-head | hard-negative | hard-negative-strong | hard-negative-native | hard-negative-eduhk | native-uniform | native-clips | tail-finetune | aishell3 | native-sequence | native-sequence-export | sequence-adapt-config | sequence-adapt | native | comparison | finetune | sensevoice-finetune | sensevoice-export | coverage | pressure | ctc | stress | cold | report | iteration-report | reconstruction-report | test' ;;
 esac

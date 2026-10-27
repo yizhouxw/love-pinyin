@@ -18,3 +18,5 @@ content/pronunciation-ompal-policy.json
 content/pronunciation-pretrained-pitch.json
 # Byte-pinned source inventory used by the MATCH-14 research manifests.
 content/pronunciation-eduhk-data.json
+# Exact configuration SHA is bound to the trained MATCH-16 checkpoint.
+content/pronunciation-pretrained-xlsr-tail.json
