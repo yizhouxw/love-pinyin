@@ -45,6 +45,7 @@ def protocol_files() -> list[Path]:
             *content.glob("pronunciation-pretrained-*.json"),
             *content.glob("pronunciation-ompal-*.json"),
             *content.glob("pronunciation-aishell3-*.json"),
+            *content.glob("pronunciation-eduhk-*.json"),
             *(ROOT / "resources/licenses").glob("SenseVoice-*.txt"),
             *(ROOT / "resources/licenses").glob("Charsiu-MIT.txt"),
             *(ROOT / "resources/licenses").glob("SwiftF0-MIT.txt"),
@@ -57,6 +58,8 @@ def assert_source_splits(rows: list[dict]) -> None:
     known = {
         "ompal-v1": ("pronunciation-ompal-data.json", "files"),
         "mandi-cmn-wl1": ("pronunciation-pretrained-data.json", "recordings"),
+        "aishell3-supplementary-native-2000-v1": ("pronunciation-aishell3-data.json", "files"),
+        "eduhk-mandarin-task1-training-v1": ("pronunciation-eduhk-data.json", "files"),
     }
     tables = {}
     for name in {row.get("source") for row in rows} & known.keys():

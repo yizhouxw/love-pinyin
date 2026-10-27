@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "sensevoice-hard-negative-human-native-v1",
+  "seed": 3182026,
+  "maximumEpochs": 120,
+  "cpuThreads": 2,
+  "validityLossWeight": 1.0,
+  "hardNegativeCount": 3,
+  "identitySupervision": "Expert-correct components only; unknown components are masked.",
+  "validitySupervision": "Correct components pair the true class with each alternative vocabulary class; train on the three highest-scoring alternatives. Expert errors deny the expected component, without guessing actual identity.",
+  "checkpointSelection": "calibration-hard-factorized-loss",
+  "outputCombination": "Normalized identity probability times validity, retaining the full vocabulary.",
+  "finalTestUsed": false,
+  "supplementSource": "aishell3-supplementary-native-2000-v1",
+  "nativeClipManifestSha256": "36aa1f208896fa01a2bd34e7b88f6e5b731aa8615fb24622c48bcbf42cdfe311",
+  "baselineMetadataSha256": "ab600f90886eda82c723d8579c2527defc16d31268942404fec124feeafe6f39",
+  "nativeClipPolicy": "Only source-transcribed realized pinyin with unflagged candidate boundary and target inside baseline vocabulary; training only.",
+  "mixedManifestSha256": "b319c80601272060f6c5b2f5cec776ee476eb82cbe79d8d3c5be55f5fa01d2df"
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "aishell3-human-pinyin-clips-v1",
+  "seed": 20261027,
+  "utterancesPerSpeaker": 25,
+  "nativeManifestSha256": "de41adcb3e419818d1a31da8b0b20317d7963eb8b867b239e6b55041c65d257c",
+  "nativeCacheMetadataSha256": "51fb489fed083db4ea7d6de6cd284413edeb7aa4ec1187dd11fe0a55ca743ad6",
+  "ompalManifestSha256": "2e1259602b83a2d1445f8a58dfba28c21d2e83213993fc6cdb3b4fbc38ceff01",
+  "alignmentModel": "hanziflow",
+  "trainingOnly": true,
+  "finalTestUsed": false,
+  "boundaryPolicy": "Three-head forced alignment is a candidate boundary, never correctness proof. Exclude weak, overlapping, unavailable and numerically invalid clips from training; preserve every attempted root and flags.",
+  "labelPolicy": "Use provided human-transcribed realized pinyin, not dictionary or generated-text labels; neutral tone is excluded from this four-tone ablation."
+}

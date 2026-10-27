@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "sensevoice-hard-negative-v1",
+  "seed": 3182026,
+  "maximumEpochs": 120,
+  "cpuThreads": 2,
+  "validityLossWeight": 1.0,
+  "hardNegativeCount": 3,
+  "identitySupervision": "Expert-correct components only; unknown components are masked.",
+  "validitySupervision": "Correct components pair the true class with each alternative vocabulary class; train on the three highest-scoring alternatives. Expert errors deny the expected component, without guessing actual identity.",
+  "checkpointSelection": "calibration-hard-factorized-loss",
+  "outputCombination": "Normalized identity probability times validity, retaining the full vocabulary.",
+  "finalTestUsed": false
+}

@@ -16,3 +16,5 @@ content/pronunciation-training-v5.json
 content/pronunciation-ompal-detail-id-map.json
 content/pronunciation-ompal-policy.json
 content/pronunciation-pretrained-pitch.json
+# Byte-pinned source inventory used by the MATCH-14 research manifests.
+content/pronunciation-eduhk-data.json

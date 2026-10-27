@@ -621,6 +621,111 @@ done
 
 `ompal-v2-native-sequence-adapt-v1-cache` 是本轮历史混合编码器缓存；干净复现先按上文 `cache` 使用自己重建的混合模型生成新缓存，再将这两个命令一起指向该缓存。factorized严格绑定派生架构、父模型修订/权重/元数据和缓存身份，不移除身份来绕过校验。历史训练脚本在输入校验加固前后的SHA分别保留；当前命令复现数值流程，不承诺更换绝对路径、元数据或源码后仍生成逐字节相同的历史产物。
 
+## MATCH-14：错配训练与真实语音补充
+
+以下命令重放已固定的本机输入。`prepare` 会重算、核对每个源音频和错配关系；它不能将一个原音频的多个目标当作多个独立录音。先按本文前面章节准备 OMPAL v2 清单和缓存，以及 AISHELL-3 来源数据。所有新输出须使用不存在的目录。完整指标与局限见 [MATCH-14 结果](../research/matcher-hard-negative-results.md)。
+
+```sh
+tools/pinyin-pretrained/run.sh hard-negative prepare \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --output private/pretrained-matcher/rebuild-hard-pairs
+tools/pinyin-pretrained/run.sh hard-negative train \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --cache private/pretrained-matcher/ompal-v2-bound-sensevoice \
+  --evidence private/pretrained-matcher/rebuild-hard-pairs \
+  --output private/pretrained-matcher/rebuild-hard-heads
+tools/pinyin-pretrained/run.sh bundle \
+  --heads private/pretrained-matcher/rebuild-hard-heads \
+  --encoder models/pinyin-pretrained/sensevoice --backend int8 \
+  --output models/pinyin-pretrained/bundles/rebuild-hard
+tools/pinyin-pretrained/run.sh evaluate \
+  --manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --model models/pinyin-pretrained/bundles/rebuild-hard --split calibration \
+  --output private/pretrained-matcher/rebuild-hard-calibration.json
+```
+
+`hard-negative-strong` 的 `prepare`、`train` 参数相同，读取独立固定配置，训练时屏蔽已记录的弱对齐分量。真实语音补充通过 `native-clips`、`hard-negative-native` 生成；`hard-negative-native --help` 的 `rebind-config` / `bind-manifest` 用于为新产生的、逐字节可能不同的清单绑定 SHA，然后再 `prepare` 和 `train`；均匀负例对照使用 `native-uniform`。这些命令均不打开最终音频，不改变校准清单。
+
+在已准备固定 AISHELL-3 语料清单及其 64 层缓存后，生成、绑定新真人片段并训练的完整命令如下。绑定步骤仅接受指定来源、基线和预算，不能用它来改动训练协议。
+
+```sh
+tools/pinyin-pretrained/run.sh native-clips \
+  --source-manifest private/pretrained-matcher/aishell3/manifest.json \
+  --native-cache private/pretrained-matcher/aishell3-sensevoice64-prefix-v2 \
+  --ompal-manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --model models/pinyin-pretrained/hanziflow --device mps \
+  --output private/pretrained-matcher/rebuild-native-clips
+tools/pinyin-pretrained/run.sh hard-negative-native rebind-config \
+  --native-clips private/pretrained-matcher/rebuild-native-clips/manifest.json \
+  --baseline private/pretrained-matcher/sensevoice-factorized-v1 \
+  --output private/pretrained-matcher/rebuild-native-config.json
+tools/pinyin-pretrained/run.sh hard-negative-native manifest \
+  --native-clips private/pretrained-matcher/rebuild-native-clips/manifest.json \
+  --native-manifest private/pretrained-matcher/aishell3/manifest.json \
+  --native-cache private/pretrained-matcher/aishell3-sensevoice64-prefix-v2 \
+  --ompal-manifest private/pretrained-matcher/ompal-clips-v2/manifest.json \
+  --baseline private/pretrained-matcher/sensevoice-factorized-v1 \
+  --config private/pretrained-matcher/rebuild-native-config.json \
+  --output private/pretrained-matcher/rebuild-native-mixed.json
+tools/pinyin-pretrained/run.sh hard-negative-native bind-manifest \
+  --manifest private/pretrained-matcher/rebuild-native-mixed.json \
+  --config private/pretrained-matcher/rebuild-native-config.json \
+  --output private/pretrained-matcher/rebuild-native-bound.json
+tools/pinyin-pretrained/run.sh hard-negative-native prepare \
+  --manifest private/pretrained-matcher/rebuild-native-mixed.json \
+  --config private/pretrained-matcher/rebuild-native-bound.json \
+  --output private/pretrained-matcher/rebuild-native-pairs
+tools/pinyin-pretrained/run.sh cache --name sensevoice \
+  --manifest private/pretrained-matcher/rebuild-native-mixed.json \
+  --model models/pinyin-pretrained/sensevoice --device mps --batch-size 8 \
+  --output private/pretrained-matcher/rebuild-native-cache
+tools/pinyin-pretrained/run.sh hard-negative-native train \
+  --manifest private/pretrained-matcher/rebuild-native-mixed.json \
+  --cache private/pretrained-matcher/rebuild-native-cache \
+  --evidence private/pretrained-matcher/rebuild-native-pairs \
+  --config private/pretrained-matcher/rebuild-native-bound.json \
+  --output private/pretrained-matcher/rebuild-native-heads
+```
+
+EdUHK 只取得研究用途许可，本次声学切片的顺序和边界尚未经独立人工复核。复现以下历史实验需要保留被忽略的固定元数据快照、原始混合清单、来源录音和原始基线；没有元数据快照时这些命令不能独立恢复它。先显式使用 `uv run --locked --group assessment-poc python -m pinyin_matcher.pretrained_eduhk_data prepare --help` 依固定来源清单下载训练录音；推理不下载。生成切片使用根项目已锁定的 soundfile：
+
+```sh
+uv run --locked --group assessment-poc python -m pinyin_matcher.pretrained_eduhk_clips \
+  --data-config content/pronunciation-eduhk-data.json \
+  --parsed private/pretrained-matcher/corpus-research-mdd/eduhk/parsed-roots.json \
+  --mixed-manifest private/pretrained-matcher/ompal-aishell3-mixed-match14-v1.json \
+  --baseline private/pretrained-matcher/sensevoice-factorized-v1 \
+  --raw-directory private/pretrained-matcher/eduhk-train-match14/raw \
+  --output private/pretrained-matcher/rebuild-eduhk-clips
+```
+
+历史实验将该固定切片清单与原混合清单合并，原始版本的清单、候选和配置 SHA 分别固定为 `08777072077f20f44b41457c9c66188bd5e7bf6490d722392f0a96930ce6c027`、`efd7d4724bbe738191ba31d6d1b265d30683279fd2be576b7bf3a747da519062` 和 `c7c67f662e1b037872ae838a7e6f85a24cd30ba9d1ba86c537c3ebeb80c643ef`；不同路径或生成器版本产生不同字节时不能静默冒充此历史实验。
+
+```sh
+tools/pinyin-pretrained/run.sh hard-negative-eduhk prepare \
+  --manifest private/pretrained-matcher/eduhk-clips-match14-v2/manifest.json \
+  --parent private/pretrained-matcher/ompal-aishell3-mixed-match14-v1.json \
+  --candidates private/pretrained-matcher/eduhk-clips-match14-v2/candidates.json \
+  --parsed private/pretrained-matcher/corpus-research-mdd/eduhk/parsed-roots.json \
+  --data-config content/pronunciation-eduhk-data.json \
+  --output private/pretrained-matcher/rebuild-eduhk-pairs
+tools/pinyin-pretrained/run.sh cache --name sensevoice \
+  --manifest private/pretrained-matcher/eduhk-clips-match14-v2/manifest.json \
+  --model models/pinyin-pretrained/sensevoice --device mps --batch-size 8 \
+  --output private/pretrained-matcher/rebuild-eduhk-cache
+tools/pinyin-pretrained/run.sh hard-negative-eduhk train \
+  --manifest private/pretrained-matcher/eduhk-clips-match14-v2/manifest.json \
+  --parent private/pretrained-matcher/ompal-aishell3-mixed-match14-v1.json \
+  --candidates private/pretrained-matcher/eduhk-clips-match14-v2/candidates.json \
+  --parsed private/pretrained-matcher/corpus-research-mdd/eduhk/parsed-roots.json \
+  --data-config content/pronunciation-eduhk-data.json \
+  --cache private/pretrained-matcher/rebuild-eduhk-cache \
+  --evidence private/pretrained-matcher/rebuild-eduhk-pairs \
+  --output private/pretrained-matcher/rebuild-eduhk-heads
+```
+
+导出、校准、压力集、四秒两线程暖机及独立进程冷启动沿用本节之前的 `bundle`、`evaluate`、`stress`、`benchmark`、`cold` 命令，换用对应输出目录。上述研究模型不进入应用；数据授权、边界核验和最终验收均不能因成功生成模型而省略。
+
 本轮完整记录由以下命令从实际本地产物生成，缺少任一完整评测或性能记录会报错；逐根录音/标签/结果保持本地忽略，Git结果仅含聚合统计、训练曲线和来源SHA：
 
 ```sh
