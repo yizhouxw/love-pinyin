@@ -36,6 +36,15 @@ case "${1:-help}" in
   train|evaluate|merge)
     "$matcher_python" -m pinyin_matcher.train "$@"
     ;;
+  gmm)
+    shift
+    "$matcher_python" -m pinyin_matcher.gmm_shop "$@"
+    ;;
+  gmm-adapt|gmm-benchmark|gmm-stress)
+    matcher_action=${1#gmm-}
+    shift
+    "$matcher_python" -m "pinyin_matcher.gmm_shop_${matcher_action}" "$@"
+    ;;
   traditional)
     shift
     "$matcher_python" -m pinyin_matcher.traditional_shop "$@"
@@ -49,6 +58,6 @@ case "${1:-help}" in
     "$matcher_python" -m pytest tests/matcher -q
     ;;
   *)
-    printf '%s\n' 'Usage: run.sh setup | setup-runtime | prepare-generators | install --source DIR --destination DIR | targets | info --model DIR | match --model DIR --target ID --wav FILE | build --manifest FILE --output DIR --cache-dir DIR | train --manifest FILE --output DIR | evaluate --manifest FILE --output DIR | merge INPUTS --output FILE | traditional {train|match} ... | traditional-evaluate ... | traditional-stress ... | traditional-baseline ... | traditional-benchmark ... | test'
+    printf '%s\n' 'Usage: run.sh setup | setup-runtime | prepare-generators | install --source DIR --destination DIR | targets | info --model DIR | match --model DIR --target ID --wav FILE | build --manifest FILE --output DIR --cache-dir DIR | train --manifest FILE --output DIR | evaluate --manifest FILE --output DIR | merge INPUTS --output FILE | gmm {train|match} ... | gmm-adapt ... | gmm-benchmark ... | gmm-stress ... | traditional {train|match} ... | traditional-evaluate ... | traditional-stress ... | traditional-baseline ... | traditional-benchmark ... | test'
     ;;
 esac
