@@ -36,10 +36,19 @@ case "${1:-help}" in
   train|evaluate|merge)
     "$matcher_python" -m pinyin_matcher.train "$@"
     ;;
+  traditional)
+    shift
+    "$matcher_python" -m pinyin_matcher.traditional_shop "$@"
+    ;;
+  traditional-evaluate|traditional-stress|traditional-baseline|traditional-benchmark)
+    matcher_action=${1#traditional-}
+    shift
+    "$matcher_python" -m "pinyin_matcher.traditional_shop_${matcher_action}" "$@"
+    ;;
   test)
     "$matcher_python" -m pytest tests/matcher -q
     ;;
   *)
-    printf '%s\n' 'Usage: run.sh setup | setup-runtime | prepare-generators | install --source DIR --destination DIR | targets | info --model DIR | match --model DIR --target ID --wav FILE | build --manifest FILE --output DIR --cache-dir DIR | train --manifest FILE --output DIR | evaluate --manifest FILE --output DIR | merge INPUTS --output FILE | test'
+    printf '%s\n' 'Usage: run.sh setup | setup-runtime | prepare-generators | install --source DIR --destination DIR | targets | info --model DIR | match --model DIR --target ID --wav FILE | build --manifest FILE --output DIR --cache-dir DIR | train --manifest FILE --output DIR | evaluate --manifest FILE --output DIR | merge INPUTS --output FILE | traditional {train|match} ... | traditional-evaluate ... | traditional-stress ... | traditional-baseline ... | traditional-benchmark ... | test'
     ;;
 esac

@@ -225,6 +225,7 @@ dependencies = [
     { name = "numpy" },
     { name = "onnxruntime" },
     { name = "scipy" },
+    { name = "threadpoolctl" },
 ]
 
 [package.dev-dependencies]
@@ -237,6 +238,8 @@ train = [
     { name = "librosa" },
     { name = "onnx" },
     { name = "praat-parselmouth" },
+    { name = "scikit-learn" },
+    { name = "soundfile" },
     { name = "swift-f0" },
     { name = "torch" },
 ]
@@ -246,6 +249,7 @@ requires-dist = [
     { name = "numpy", specifier = "==2.5.4" },
     { name = "onnxruntime", specifier = "==1.31.0" },
     { name = "scipy", specifier = "==1.18.1" },
+    { name = "threadpoolctl", specifier = "==3.7.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -258,6 +262,8 @@ train = [
     { name = "librosa", specifier = "==1.0.0" },
     { name = "onnx", specifier = "==1.23.2" },
     { name = "praat-parselmouth", specifier = "==0.4.7" },
+    { name = "scikit-learn", specifier = "==1.9.1" },
+    { name = "soundfile", specifier = "==0.14.0" },
     { name = "swift-f0", specifier = "==0.3.0" },
     { name = "torch", specifier = "==2.8.0" },
 ]

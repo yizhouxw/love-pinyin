@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "traditional-shop-pilot-v1",
+  "seed": 3182026,
+  "featureFrames": 20,
+  "cepstralDimensions": 13,
+  "dtwBand": 5,
+  "templatesPerTarget": 6,
+  "templatesPerGenerator": 3,
+  "standardTemplatePolicy": "replace-last-cosy-when-available",
+  "nearestTemplates": 3,
+  "negativeTargetsPerTrainRoot": 4,
+  "acceptThresholds": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+  "rejectThreshold": 0.05,
+  "svmC": 1.0,
+  "boostingTrees": 80,
+  "boostingDepth": 2,
+  "boostingLearningRate": 0.05,
+  "cpuThreads": 2,
+  "qualityLimits": {
+    "negativeFalseAcceptance": 0.05,
+    "positiveExplicitRejection": 0.1,
+    "clearPositiveAbstention": 0.2
+  },
+  "finalTestUsed": false
+}
