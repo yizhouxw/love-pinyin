@@ -20,6 +20,8 @@ with tempfile.TemporaryDirectory() as directory:
     env = os.environ.copy()
     env["PYTHONUTF8"] = "1"
     env.update(LOVE_PINYIN_DATA_DIR=directory, LOVE_PINYIN_MODEL_PATH=f"{directory}/model.bin")
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    log = tempfile.TemporaryFile()
     process = subprocess.Popen(
         [
             str(python),
@@ -35,18 +37,16 @@ with tempfile.TemporaryDirectory() as directory:
         cwd=root,
         env=env,
         stdout=subprocess.DEVNULL,
-        stderr=subprocess.PIPE,
+        stderr=log,
     )
     try:
         for _ in range(100):
             if process.poll() is not None:
-                raise RuntimeError(process.stderr.read().decode())
+                raise RuntimeError("Bundled server exited early")
             try:
-                with urllib.request.urlopen(
-                    f"http://127.0.0.1:{port}/api/v1/health", timeout=1
-                ) as response:
+                with opener.open(f"http://127.0.0.1:{port}/api/v1/health", timeout=1) as response:
                     assert response.status == 200
-                with urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=1) as response:
+                with opener.open(f"http://127.0.0.1:{port}/", timeout=1) as response:
                     assert b"<!doctype html>" in response.read().lower()
                 break
             except (OSError, urllib.error.URLError):
@@ -56,4 +56,7 @@ with tempfile.TemporaryDirectory() as directory:
     finally:
         process.terminate()
         process.wait(timeout=10)
+        log.seek(0)
+        print(log.read().decode("utf-8", errors="replace"))
+        log.close()
 print("Bundled Python, HTTP health and frontend passed.")
