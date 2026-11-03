@@ -8,6 +8,7 @@ rm -rf "$output"
 app="$output/爱拼音.app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources/app"
 cp deploy/macos/Info.plist "$app/Contents/Info.plist"
+cp deploy/macos/AppIcon.icns "$app/Contents/Resources/AppIcon.icns"
 swiftc -O deploy/macos/main.swift -framework AppKit -framework WebKit -o "$app/Contents/MacOS/LovePinyin"
 npm ci --no-audit --no-fund
 uv sync --locked

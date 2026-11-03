@@ -1015,7 +1015,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
         )}
         <div className="brand">
-          <span className="brand-mark">拼</span>
+          <img className="brand-mark" src="/logo.svg" alt="" />
           <span>爱拼音</span>
         </div>
         {boot.isLocalHost && (

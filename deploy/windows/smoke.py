@@ -3,13 +3,14 @@
 import os
 import socket
 import subprocess
+import sys
 import tempfile
 import time
 import urllib.error
 import urllib.request
 from pathlib import Path
 
-bundle = Path("build/windows/app").resolve()
+bundle = Path(sys.argv[1] if len(sys.argv) > 1 else "build/windows/app").resolve()
 root = bundle / "app"
 python = bundle / "python/python.exe"
 subprocess.run([str(python), "-c", "import numpy; import pywhispercpp.model"], check=True)

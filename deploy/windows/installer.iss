@@ -2,6 +2,7 @@
 #define MyAppVersion "0.6.1"
 [Setup]
 AppId={{26AF9A06-6C12-4893-9F59-908F75E8E003}
+SetupIconFile=AppIcon.ico
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 DefaultDirName={localappdata}\Programs\LovePinyin
