@@ -35,7 +35,11 @@
     },
     {
       "name": "cffi",
-      "status": "not-installed-on-this-platform"
+      "version": "2.1.1",
+      "licenseExpression": "MIT-0",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "charset-normalizer",
@@ -55,7 +59,11 @@
     },
     {
       "name": "cloudpickle",
-      "status": "not-installed-on-this-platform"
+      "version": "3.1.2",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["BSD-3-Clause"],
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "colorama",
@@ -63,7 +71,11 @@
     },
     {
       "name": "decorator",
-      "status": "not-installed-on-this-platform"
+      "version": "5.3.1",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["BSD-2-Clause"],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE.txt"]
     },
     {
       "name": "fastapi",
@@ -75,11 +87,19 @@
     },
     {
       "name": "filelock",
-      "status": "not-installed-on-this-platform"
+      "version": "4.1.1",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "fsspec",
-      "status": "not-installed-on-this-platform"
+      "version": "2026.9.0",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "h11",
@@ -91,7 +111,11 @@
     },
     {
       "name": "hf-xet",
-      "status": "not-installed-on-this-platform"
+      "version": "1.7.0",
+      "licenseExpression": "Apache-2.0",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: Apache Software License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "httpcore",
@@ -103,7 +127,11 @@
     },
     {
       "name": "httpcore2",
-      "status": "not-installed-on-this-platform"
+      "version": "2.13.1",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "licenseFiles": ["LICENSE.md"]
     },
     {
       "name": "httpx",
@@ -115,11 +143,19 @@
     },
     {
       "name": "httpx2",
-      "status": "not-installed-on-this-platform"
+      "version": "2.13.1",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "licenseFiles": ["LICENSE.md"]
     },
     {
-      "name": "huggingface-hub",
-      "status": "not-installed-on-this-platform"
+      "name": "huggingface_hub",
+      "version": "2.2.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["Apache-2.0"],
+      "licenseClassifiers": ["License :: OSI Approved :: Apache Software License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "idna",
@@ -139,55 +175,107 @@
     },
     {
       "name": "joblib",
-      "status": "not-installed-on-this-platform"
+      "version": "1.6.0",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE.txt"]
     },
     {
       "name": "lazy-loader",
-      "status": "not-installed-on-this-platform"
+      "version": "0.5",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE.md"]
     },
     {
       "name": "librosa",
-      "status": "not-installed-on-this-platform"
+      "version": "1.0.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["ISC"],
+      "licenseClassifiers": ["License :: OSI Approved :: ISC License (ISCL)"],
+      "licenseFiles": ["LICENSE.md"]
     },
     {
       "name": "llvmlite",
-      "status": "not-installed-on-this-platform"
+      "version": "0.49.0",
+      "licenseExpression": "BSD-2-Clause AND Apache-2.0 WITH LLVM-exception",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE", "LICENSE.thirdparty"]
     },
     {
       "name": "markdown-it-py",
-      "status": "not-installed-on-this-platform"
+      "version": "4.2.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE", "LICENSE.markdown-it"]
     },
     {
       "name": "mdurl",
-      "status": "not-installed-on-this-platform"
+      "version": "0.1.2",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": []
     },
     {
       "name": "miniaudio",
-      "status": "not-installed-on-this-platform"
+      "version": "1.71",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "mlx",
-      "status": "not-installed-on-this-platform"
+      "version": "0.32.3",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "mlx-audio",
-      "status": "not-installed-on-this-platform"
+      "version": "0.5.8",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "mlx-metal",
-      "status": "not-installed-on-this-platform"
+      "version": "0.32.3",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "msgpack",
-      "status": "not-installed-on-this-platform"
+      "version": "1.2.2",
+      "licenseExpression": "Apache-2.0",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["COPYING"]
     },
     {
       "name": "narwhals",
-      "status": "not-installed-on-this-platform"
+      "version": "2.26.0",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE.md"]
     },
     {
       "name": "numba",
-      "status": "not-installed-on-this-platform"
+      "version": "0.67.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["BSD"],
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "licenseFiles": ["LICENSE", "LICENSES.third-party"]
     },
     {
       "name": "numpy",
@@ -249,11 +337,19 @@
     },
     {
       "name": "pooch",
-      "status": "not-installed-on-this-platform"
+      "version": "1.9.0",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE.txt", "AUTHORS.md"]
     },
     {
       "name": "pycparser",
-      "status": "not-installed-on-this-platform"
+      "version": "3.0",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "pydantic",
@@ -304,12 +400,20 @@
       "licenseFiles": ["LICENSE"]
     },
     {
-      "name": "pyyaml",
-      "status": "not-installed-on-this-platform"
+      "name": "PyYAML",
+      "version": "6.0.3",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "regex",
-      "status": "not-installed-on-this-platform"
+      "version": "2026.9.29",
+      "licenseExpression": "Apache-2.0 AND CNRI-Python",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE.txt"]
     },
     {
       "name": "requests",
@@ -321,7 +425,11 @@
     },
     {
       "name": "rich",
-      "status": "not-installed-on-this-platform"
+      "version": "15.0.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["MIT"],
+      "licenseClassifiers": ["License :: OSI Approved :: MIT License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "ruff",
@@ -333,31 +441,61 @@
     },
     {
       "name": "safetensors",
-      "status": "not-installed-on-this-platform"
+      "version": "0.8.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: Apache Software License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "scikit-learn",
-      "status": "not-installed-on-this-platform"
+      "version": "1.9.1",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["COPYING"]
     },
     {
       "name": "scipy",
-      "status": "not-installed-on-this-platform"
+      "version": "1.18.1",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": [
+        "Copyright (c) 2001-2002 Enthought, Inc. 2003, SciPy Developers."
+      ],
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "licenseFiles": []
     },
     {
       "name": "shellingham",
-      "status": "not-installed-on-this-platform"
+      "version": "1.5.4",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["ISC License"],
+      "licenseClassifiers": ["License :: OSI Approved :: ISC License (ISCL)"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "sounddevice",
-      "status": "not-installed-on-this-platform"
+      "version": "0.5.6",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "soundfile",
-      "status": "not-installed-on-this-platform"
+      "version": "0.14.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["BSD 3-Clause License"],
+      "licenseClassifiers": ["License :: OSI Approved :: BSD License"],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "soxr",
-      "status": "not-installed-on-this-platform"
+      "version": "1.1.0",
+      "licenseExpression": "LGPL-2.1-or-later",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": []
     },
     {
       "name": "starlette",
@@ -369,11 +507,19 @@
     },
     {
       "name": "threadpoolctl",
-      "status": "not-installed-on-this-platform"
+      "version": "3.7.0",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "tokenizers",
-      "status": "not-installed-on-this-platform"
+      "version": "0.23.3",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": ["License :: OSI Approved :: Apache Software License"],
+      "licenseFiles": []
     },
     {
       "name": "tqdm",
@@ -385,20 +531,24 @@
     },
     {
       "name": "transformers",
-      "status": "not-installed-on-this-platform"
+      "version": "5.19.0",
+      "licenseExpression": null,
+      "licenseMetadataFirstLine": ["Apache 2.0 License"],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "truststore",
-      "status": "not-installed-on-this-platform"
+      "version": "0.10.5",
+      "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
     },
     {
       "name": "typer",
-      "status": "not-installed-on-this-platform"
-    },
-    {
-      "name": "typing_extensions",
-      "version": "4.16.0",
-      "licenseExpression": "PSF-2.0",
+      "version": "0.27.3",
+      "licenseExpression": "MIT",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
       "licenseFiles": ["LICENSE"]
@@ -407,6 +557,14 @@
       "name": "typing-inspection",
       "version": "0.4.4",
       "licenseExpression": "MIT",
+      "licenseMetadataFirstLine": [],
+      "licenseClassifiers": [],
+      "licenseFiles": ["LICENSE"]
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "licenseExpression": "PSF-2.0",
       "licenseMetadataFirstLine": [],
       "licenseClassifiers": [],
       "licenseFiles": ["LICENSE"]
