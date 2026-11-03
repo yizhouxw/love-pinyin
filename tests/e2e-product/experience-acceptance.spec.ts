@@ -72,7 +72,7 @@ test('UX-06: a required standard sample follows the optional prompt automaticall
     };
   });
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();

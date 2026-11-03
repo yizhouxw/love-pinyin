@@ -69,7 +69,7 @@ export function App() {
       {!isGuest() && household?.paired && (
         <aside className="guest-banner family-banner" aria-label="家庭模式">
           <span>
-            <strong>家庭学习</strong> · 进度已连接家庭 Mac
+            <strong>家庭学习</strong> · 进度已连接家庭电脑
           </span>
         </aside>
       )}
@@ -295,7 +295,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     answer && (answer.correct || corrected)
       ? '这题已经完成，点“继续”进入下一题。'
       : busy
-        ? '正在连接家庭 Mac、保存练习，请稍等。'
+        ? '正在连接家庭电脑、保存练习，请稍等。'
         : picturesPending
           ? picturesFailed
             ? '答案暂时不能选：图片未加载好，请点“重试图片”。'
@@ -452,8 +452,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       <main className="loading">
         {error ? (
           <>
-            <h1>暂时连不上家庭 Mac Studio</h1>
-            <p>检查 Mac 和家庭局域网后，可以在这里重新连接。</p>
+            <h1>暂时连不上家庭电脑 Studio</h1>
+            <p>检查家庭电脑和家庭局域网后，可以在这里重新连接。</p>
             <Notice error={error} onReconnect={() => void act(refresh)} />
           </>
         ) : (
@@ -1102,8 +1102,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           )}
           {!parentOpen && progress.clockSkewDetected && (
             <div className="error-notice" role="alert">
-              Mac Studio
-              时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度；请家长检查服务器时间。
+              家庭电脑时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度；请家长检查服务器时间。
             </div>
           )}
           {parentOpen && !/^(BACKUP_|IMPORT_)/.test(error) && (

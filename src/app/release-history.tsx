@@ -27,7 +27,7 @@ export function ReleaseHistory({ contentVersion }: { contentVersion?: string }) 
         </div>
         <p>产品版本 {product.version}</p>
         {contentVersion && <p>教学内容版本：{contentVersion}</p>}
-        <p>产品版本记录功能变化；教学内容版本单独管理。更新说明保存在家庭 Mac，无需联网查看。</p>
+        <p>产品版本记录功能变化；教学内容版本单独管理。更新说明保存在家庭电脑，无需联网查看。</p>
         {changelog.releases.map((release) => (
           <section key={release.version}>
             <h3>

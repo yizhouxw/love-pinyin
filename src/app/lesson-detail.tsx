@@ -163,7 +163,7 @@ export function LessonDetail({
               />
               {courseError && (
                 <p className="audio-error" role="alert">
-                  课程录音未能播放，请重试；仍未播放时请家长检查 Mac 上的家庭音频。
+                  课程录音未能播放，请重试；仍未播放时请家长检查家庭电脑上的家庭音频。
                 </p>
               )}
               <details>
@@ -173,7 +173,7 @@ export function LessonDetail({
                 </p>
                 {familyAudio?.title && <p>{familyAudio.title}</p>}
                 {!familyAudio?.available && (
-                  <p>尚未读取到本课录音，请在 Mac 上完成家庭学习音频准备后重试。</p>
+                  <p>尚未读取到本课录音，请在家庭电脑上完成音频准备后重试。</p>
                 )}
               </details>
             </div>
@@ -267,7 +267,7 @@ export function LessonDetail({
                   ) : null}
                   {audioFailureId === audio?.id && (
                     <p className="audio-error" role="alert">
-                      标准音暂时无法播放，请检查家庭 Mac 上的音频资源。
+                      标准音暂时无法播放，请检查家庭电脑 上的音频资源。
                     </p>
                   )}
                   <details>

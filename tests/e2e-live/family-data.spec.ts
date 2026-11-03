@@ -9,7 +9,7 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
   expect(code).toBeTruthy();
   await page.getByLabel('家长配对码').fill(code!);

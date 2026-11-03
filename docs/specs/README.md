@@ -55,3 +55,5 @@
 新增 [018 目标拼音匹配器](SPEC-018-target-pronunciation-matcher.md)：按2026-10-25用户新需求重启双TTS合成训练与CPU专用声学匹配研究，后续接入小卖部游戏。当前仅方案确定，尚未训练或接入产品；旧000继续暂停，新研究不阻塞现有课程交付。
 
 新增 [020 学习路径与天天练拼读交互](SPEC-020-pronunciation-application.md)：基于018的MATCH-10，按MATCH-13～15验收课程/每日录音交互和独立家庭结果摘要。默认专用模型仍未配置，真实质量另行验收；不以mock生成学习成绩。
+
+桌面应用：[SPEC-020 macOS 本地应用](SPEC-020-macos-app.md)（与历史拼读接口 SPEC-020 分别命名）、[SPEC-021 Windows 本地应用](SPEC-021-windows-app.md)。

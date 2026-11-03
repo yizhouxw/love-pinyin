@@ -70,7 +70,7 @@ export function KnowledgeProgress({
     <section className="parent-progress" aria-labelledby="parent-progress-title">
       <h3 id="parent-progress-title">按知识点查看进度</h3>
       <p className="parent-progress-note">
-        状态由 Mac 根据最近练习记录计算；“独立答对”只统计首次作答且未用提示的客观题，不是考试成绩。
+        状态由家庭电脑根据最近练习记录计算；“独立答对”只统计首次作答且未用提示的客观题，不是考试成绩。
       </p>
       {curriculum.lessons.map((lesson: Lesson) => {
         const items = curriculum.knowledgeItems.filter(
@@ -141,7 +141,7 @@ export function KnowledgeProgress({
                       {history?.loading && <p role="status">正在读取这项知识点的记录…</p>}
                       {history?.error && (
                         <div>
-                          <p role="alert">暂时无法读取记录，请检查 Mac Studio 连接后重试。</p>
+                          <p role="alert">暂时无法读取记录，请检查 家庭电脑 连接后重试。</p>
                           <button
                             className="quiet"
                             disabled={history.loading}

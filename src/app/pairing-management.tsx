@@ -26,7 +26,7 @@ export function PairingManagement() {
         if (!cancelled) setAccess(value as Bootstrap);
       })
       .catch(() => {
-        if (!cancelled) setError('无法读取配对状态，请检查 Mac 服务后重试。');
+        if (!cancelled) setError('无法读取配对状态，请检查家庭电脑服务后重试。');
       });
     return () => {
       cancelled = true;
@@ -73,7 +73,7 @@ export function PairingManagement() {
       setError(
         cause instanceof Error && cause.message === 'PAIRING_CODE_INVALID'
           ? '配对码无效、已使用或已过期，请重新生成。访客记录仍然保留。'
-          : '连接家庭失败，请检查 Mac 连接后重试。访客记录仍然保留。',
+          : '连接家庭失败，请检查家庭电脑连接后重试。访客记录仍然保留。',
       );
       setBusy(false);
     }
@@ -98,18 +98,14 @@ export function PairingManagement() {
         </>
       ) : (
         <>
-          <p>请在服务器 Mac 的本机入口生成配对码，或由服务器 Mac 的本机家长入口生成。</p>
+          <p>请在家庭电脑的本机入口生成配对码，或由家庭电脑的本机家长入口生成。</p>
           <button className="quiet" onClick={() => setShowHelp(true)}>
-            如何在 Mac 上生成配对码
+            如何在家庭电脑上生成配对码
           </button>
           {showHelp && (
             <p>
-              在服务器 Mac 打开{' '}
-              <a href="http://127.0.0.1:8000/" target="_blank" rel="noreferrer">
-                http://127.0.0.1:8000/
-              </a>
-              ，进入家长管理的“配对码管理”；未连接时可直接点“在 Mac 上生成家长配对码”。iPad 上的
-              127.0.0.1 指向 iPad，请在 Mac 上操作。
+              在家庭电脑打开爱拼音，进入家长管理的“配对码管理”；未连接时可直接点“在本机生成家长配对码”。
+              请在运行爱拼音的电脑上操作。
             </p>
           )}
           {!access && (
@@ -118,7 +114,7 @@ export function PairingManagement() {
               onClick={() =>
                 void loadAccess()
                   .then(() => setError(''))
-                  .catch(() => setError('无法读取配对状态，请检查 Mac 服务后重试。'))
+                  .catch(() => setError('无法读取配对状态，请检查家庭电脑服务后重试。'))
               }
             >
               重新检查配对权限

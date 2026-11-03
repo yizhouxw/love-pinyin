@@ -151,19 +151,18 @@ export function ParentPanel({
           </p>
           <p>
             中文引导由本地开源模型生成，只读中文操作提示；拼音示范使用独立音频文件。跟读录音留在家庭
-            Mac 和浏览器内存中临时处理，不保存。
+            电脑和浏览器内存中临时处理，不保存。
           </p>
           <p>
             拼音标准音：
             {audioRequirements.filter((asset) => asset.available).length} 项可播放。
             {audioRequirements.some((asset) => asset.standardSource) &&
-              '标准音来源：cmguo/PinYinSound，已安装到家庭 Mac。'}
+              '标准音来源：cmguo/PinYinSound，已安装到家庭电脑。'}
           </p>
           {(!learningAudio ||
             Object.values(learningAudio.narration ?? {}).some((ready) => !ready)) && (
             <p className="audio-error">
-              学习音频尚未全部就绪。请在 Mac 项目目录运行 <code>npm run prepare:voice</code>，
-              再点重新检查；音频未就绪时不适合孩子独立使用。
+              学习音频尚未全部就绪。请检查应用安装，再点重新检查；音频未就绪时不适合孩子独立使用。
             </p>
           )}
           <button className="quiet" disabled={busy} onClick={() => void act(refresh)}>
@@ -229,7 +228,7 @@ export function ParentPanel({
             <strong>服务器时间与待校时练习</strong>
             <p>
               {progress.clockSkewDetected
-                ? 'Mac Studio 时间比先前记录回退超过 5 分钟。请先校准系统时间；期间的新练习不会计入掌握度。'
+                ? '家庭电脑时间比先前记录回退超过 5 分钟。请先校准系统时间；期间的新练习不会计入掌握度。'
                 : '系统时间已恢复。请决定如何处理待校时练习；保留的记录始终不计入掌握度。'}
             </p>
             <p>待处理练习：{progress.pendingClockAttempts ?? 0} 条</p>
@@ -482,7 +481,7 @@ export function ParentPanel({
         <div className="parent-setting import-setting">
           <div>
             <strong>从家庭备份恢复</strong>
-            <p>备份只发送到此 Mac Studio 的家庭网络服务，不会发送给第三方。</p>
+            <p>备份只发送到这台家庭电脑的服务，不会发送给第三方。</p>
           </div>
           <label className="file-control">
             选择 JSON 备份
@@ -610,7 +609,7 @@ export function ParentPanel({
             <strong>重置家庭档案</strong>
             <p>
               将删除全家的学习记录和家长设置，并撤销所有浏览器配对、清除未使用的配对码。完成后需在
-              Mac 本机重新配对。课程与应用不会卸载；已下载的备份无法远程删除。
+              家庭电脑本机重新配对。课程与应用不会卸载；已下载的备份无法远程删除。
             </p>
           </div>
           <input

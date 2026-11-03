@@ -26,7 +26,7 @@ export function PairingPage({
   return (
     <main className="pair-page">
       <header className="brand">
-        <span className="brand-mark">拼</span>
+        <img className="brand-mark" src="/logo.svg" alt="" />
         <span>爱拼音</span>
       </header>
       <section className="hero-card">
@@ -35,7 +35,7 @@ export function PairingPage({
         </div>
         <p className="eyebrow">陪孩子慢慢学 · 每次几分钟</p>
         <h1>一起学拼音</h1>
-        <p>在这台 Mac Studio 上运行的家庭学习空间。配对后，学习记录只保存在这台电脑里。</p>
+        <p>在家庭电脑上运行的学习空间。配对后，学习记录只保存在家庭电脑里。</p>
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -88,7 +88,7 @@ export function PairingPage({
                   })
                 }
               >
-                在 Mac 上生成家长配对码
+                在本机生成家长配对码
               </button>
               {pairCode && (
                 <div className="pair-code">
@@ -99,10 +99,7 @@ export function PairingPage({
               )}
             </>
           ) : (
-            <p>
-              请在服务器 Mac 上打开 <strong>http://127.0.0.1:8000</strong>，点击“在 Mac
-              上生成家长配对码”； 或在服务器 Mac 本机的“家长管理”中生成配对码，再回到这里输入。
-            </p>
+            <p>请在运行爱拼音的家庭电脑上生成家长配对码，再回到这里输入。</p>
           )}
         </div>
         <div className="local-pair">
@@ -119,8 +116,7 @@ export function PairingPage({
             访客体验
           </button>
           <p>
-            无需配对。进度仅缓存在当前标签页，刷新可继续；退出会清除，不跨设备同步。仍需连接家庭
-            Mac。
+            无需配对。进度仅缓存在当前标签页，刷新可继续；退出会清除，不跨设备同步。仍需连接家庭电脑。
           </p>
         </div>
         <p className="privacy-note">

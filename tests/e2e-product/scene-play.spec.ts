@@ -15,7 +15,7 @@ for (const game of catalog.games) {
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto(appUrl);
-    await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+    await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
     await page.getByRole('button', { name: '连接家庭' }).click();
     await page.getByRole('button', { name: '进入游戏乐园' }).click();
     await expect(page.getByLabel(`${game.title}每关题量`)).toHaveValue('6');

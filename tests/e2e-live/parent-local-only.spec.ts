@@ -8,7 +8,7 @@ test('ACCESS-03: non-127 host cannot open parent management even with an existin
   context,
 }) => {
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '家长管理' })).toBeVisible();
   const remoteUrl = appUrl.replace('127.0.0.1', 'localhost');
@@ -22,7 +22,7 @@ test('ACCESS-03: non-127 host cannot open parent management even with an existin
     await remote.goto(remoteUrl);
     await expect(remote.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
     await expect(remote.getByLabel('家庭模式', { exact: true })).toContainText(
-      '进度已连接家庭 Mac',
+      '进度已连接家庭电脑',
     );
     expect(
       (await (await remote.request.get(new URL('/api/v1/bootstrap', remote.url()).href)).json())
@@ -42,7 +42,7 @@ test('ACCESS-03: non-127 host cannot open parent management even with an existin
     ).toBe(403);
     await remoteContext.clearCookies();
     await remote.reload();
-    await expect(remote.getByRole('button', { name: '在 Mac 上生成家长配对码' })).toHaveCount(0);
+    await expect(remote.getByRole('button', { name: '在本机生成家长配对码' })).toHaveCount(0);
     await remote.getByRole('button', { name: '访客体验' }).click();
     await expect(remote.getByLabel('访客模式', { exact: true })).toBeVisible();
     await expect(remote.getByRole('button', { name: '家长管理' })).toHaveCount(0);

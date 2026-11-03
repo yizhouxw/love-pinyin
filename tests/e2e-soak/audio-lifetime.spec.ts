@@ -154,7 +154,7 @@ test('SOAK-01: sustained real learning releases media and records playback laten
   const cdp = browserName === 'chromium' ? await page.context().newCDPSession(page) : null;
   await cdp?.send('Performance.enable');
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeEnabled();
   const startedAt = Date.now();

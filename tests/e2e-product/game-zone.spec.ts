@@ -9,7 +9,7 @@ test.use({ selectedPinyinSource: true });
 
 async function pair(page: Page, url: string) {
   await page.goto(url);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '进入游戏乐园' })).toBeVisible();
 }

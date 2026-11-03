@@ -160,7 +160,7 @@ export function DailyReadingPage({
       )}
       {error && (
         <div role="alert">
-          暂时连不上每日练习。请检查家庭 Mac。<button onClick={load}>重新连接</button>
+          暂时连不上每日练习。请检查家庭电脑。<button onClick={load}>重新连接</button>
         </div>
       )}
       {!data && !error && <p role="status">正在读取每日练习…</p>}
@@ -888,7 +888,7 @@ function ReadingSession({
             )}
           </div>
           <p className="daily-privacy">
-            录音仅在浏览器和家庭 Mac
+            录音仅在浏览器和家庭电脑
             内存处理，不保存；换条、退出或后台会清除。识别只匹配音节，不判四声。每次识别最多三十秒，录音两分钟自动停止。
           </p>
           {recordError && <p role="alert">{recordError}</p>}
@@ -1033,6 +1033,6 @@ function readingAudioFailure(error: unknown): string {
   if (code === 'AUDIO_DECODE_FAILED') return '这段声音暂时无法解码，请重试；仍然失败时请家长检查。';
   if (code === 'AUDIO_TIMEOUT' || code === 'AUDIO_NETWORK' || code === 'AUDIO_STALLED')
     return '这段声音下载或播放中断了，请点“重试示范”。已经准备好的声音可以继续播放。';
-  if (code.startsWith('AUDIO_HTTP_')) return '这段声音暂时不可用，请重新连接家庭 Mac 后重试。';
-  return '示范声音还没响起来，请重试。仍然失败时请家长检查 Mac 上的每日练习音频。';
+  if (code.startsWith('AUDIO_HTTP_')) return '这段声音暂时不可用，请重新连接家庭电脑 后重试。';
+  return '示范声音还没响起来，请重试。仍然失败时请家长检查家庭电脑上的每日练习音频。';
 }

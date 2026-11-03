@@ -13,7 +13,7 @@ test('HOME-01/02: compact home, independent settings, keyboard, saved choices an
   page.on('pageerror', (error) => errors.push(error.message));
   await page.setViewportSize({ width: 1280, height: 1100 });
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   const forest = page.locator('.game-sound');
@@ -97,7 +97,7 @@ test('HOME-02: loading and failed real clock status disable starts and retry rec
   appUrl,
 }) => {
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   let release!: () => void;
   const gate = new Promise<void>((resolve) => {

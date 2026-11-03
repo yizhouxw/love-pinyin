@@ -3,7 +3,7 @@ import { test } from '../support/real-server';
 
 async function finishSixTasks(page: Page, appUrl: string) {
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭', exact: true }).click();
   await page.getByRole('button', { name: '开始今天的练习', exact: true }).click();
   for (let index = 1; index <= 6; index++) {
@@ -92,7 +92,7 @@ test('SUMMARY-01D: exit waits for the real answer progress refresh before anothe
   appUrl,
 }) => {
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭', exact: true }).click();
   await page.getByRole('button', { name: '开始今天的练习', exact: true }).click();
   const choice = page.getByRole('group', { name: '选择答案' }).getByRole('button').first();

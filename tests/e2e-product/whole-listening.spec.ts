@@ -19,7 +19,7 @@ test('BANK-06: whole syllables connect recorded tones to spelling across taught 
     if (r.url().startsWith('http') && new URL(r.url()).origin !== appUrl) external.push(r.url());
   });
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)![0];
   await page.getByLabel('家长配对码').fill(code);
   await page.getByRole('button', { name: '连接家庭' }).click();

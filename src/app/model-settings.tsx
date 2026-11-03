@@ -27,7 +27,8 @@ export function ModelSettings() {
       <div>
         <strong>天天练本地识别模型</strong>
         <p>
-          可选 Whisper small，约 488 MB。下载后在此 Mac 本地识别，不评判四声；不下载也可听读和练习。
+          可选 Whisper small，约 488
+          MB。下载后在这台电脑本地识别，不评判四声；不下载也可听读和练习。
         </p>
         <p role="status">
           {state === 'installed'

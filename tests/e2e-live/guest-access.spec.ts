@@ -31,7 +31,7 @@ with connect() as db:
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto(appUrl);
   await expect(page.getByRole('heading', { name: '没有配对码？' })).toBeVisible();
-  await expect(page.getByRole('button', { name: '在 Mac 上生成家长配对码' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '在本机生成家长配对码' })).toBeVisible();
   await page.screenshot({ path: test.info().outputPath('pairing-home.png'), fullPage: true });
   await page.getByRole('button', { name: '访客体验' }).click();
   await expect(page.getByLabel('访客模式')).toBeVisible();
@@ -96,7 +96,7 @@ test('ACCESS-01: expired pairing cookie still shows generation and generated cod
 }) => {
   await context.addCookies([{ name: 'lp_session', value: 'expired', url: appUrl }]);
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await expect(page.getByLabel('家长配对码')).toHaveValue(/^[A-Z2-9]{8}$/);
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
@@ -132,7 +132,7 @@ test('ACCESS-02: guest mode stays visible and local pairing management connects 
     fullPage: true,
   });
   await management.getByRole('button', { name: '连接家庭' }).click();
-  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭 Mac');
+  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭电脑');
   expect(
     (await (await page.request.get(new URL('/api/v1/bootstrap', page.url()).href)).json()).device
       .isParent,
@@ -154,9 +154,9 @@ test('ACCESS-02: second local paired device can generate a code from parent mana
   browser,
 }) => {
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
-  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭 Mac');
+  await expect(page.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭电脑');
   expect(
     (await (await page.request.get(new URL('/api/v1/bootstrap', page.url()).href)).json()).device
       .isParent,
@@ -165,9 +165,9 @@ test('ACCESS-02: second local paired device can generate a code from parent mana
   try {
     const child = await childContext.newPage();
     await child.goto(appUrl);
-    await child.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+    await child.getByRole('button', { name: '在本机生成家长配对码' }).click();
     await child.getByRole('button', { name: '连接家庭' }).click();
-    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭 Mac');
+    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭电脑');
     expect(
       (await (await child.request.get(new URL('/api/v1/bootstrap', child.url()).href)).json())
         .device.isParent,

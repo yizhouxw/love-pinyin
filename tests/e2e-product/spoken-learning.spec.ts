@@ -20,7 +20,7 @@ test('VOICE-05: actual narration and course audio decode, replay and separate fr
     if (request.url().includes('/voice/')) voiceRequests.push(request.url());
   });
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
   expect(code).toBeTruthy();
   await page.getByLabel('家长配对码').fill(code!);
@@ -162,7 +162,7 @@ test('ANSWER-READY-02: missing narration status and failed optional prompt do no
   await page.route('**/api/v1/learning-audio', (route) => route.abort('failed'));
   await page.route('**/api/v1/voice/prompt-*', (route) => route.abort('failed'));
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
   expect(code).toBeTruthy();
   await page.getByLabel('家长配对码').fill(code!);
@@ -199,7 +199,7 @@ test('FEEDBACK-01: spoken correction retries without another answer or hint cred
     if (request.url().endsWith('/hint')) hintRequests.push(request.url());
   });
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
   expect(code).toBeTruthy();
   await page.getByLabel('家长配对码').fill(code!);
@@ -257,7 +257,7 @@ test('BANK-01: the former two-question nasal lesson completes six spoken tasks',
   appUrl,
 }) => {
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
   expect(code).toBeTruthy();
   await page.getByLabel('家长配对码').fill(code!);
@@ -332,7 +332,7 @@ test('HINT-VOICE-01: specific hint speaks, retries and replays without independe
     if (request.url().includes('/voice/hint-')) media.push(request.url());
   });
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
   expect(code).toBeTruthy();
   await page.getByLabel('家长配对码').fill(code!);

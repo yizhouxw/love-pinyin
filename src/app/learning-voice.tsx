@@ -162,7 +162,9 @@ export function VoiceFailure({ voice }: { voice: LearningVoice }) {
   if (!voice.failureId) return null;
   return (
     <div className="voice-failure" role="alert">
-      <span>🔊 声音还没有响起来，请点一下重试。仍然没有声音时，请家长检查 Mac 上的学习音频。</span>
+      <span>
+        🔊 声音还没有响起来，请点一下重试。仍然没有声音时，请家长检查家庭电脑上的学习音频。
+      </span>
       <button className="quiet" onClick={voice.retry}>
         ↻ 重试声音
       </button>

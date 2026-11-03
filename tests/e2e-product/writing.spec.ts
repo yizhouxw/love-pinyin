@@ -112,7 +112,7 @@ test('WRITE-01: graphical grid questions are reached and stored through real les
 }) => {
   test.setTimeout(180_000);
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)![0];
   await page.getByLabel('家长配对码').fill(code);
   await page.getByRole('button', { name: '连接家庭' }).click();

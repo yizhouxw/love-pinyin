@@ -44,7 +44,7 @@ test('READ-01: family interval is saved, bounded, restored and retained across o
   appUrl,
 }) => {
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)![0];
   await page.getByLabel('家长配对码').fill(code);
   await page.getByRole('button', { name: '连接家庭' }).click();
@@ -410,7 +410,7 @@ test('READ-06: a real learning device remembers its own gap without parent write
   browser,
 }) => {
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
@@ -439,7 +439,7 @@ test('READ-06: a real learning device remembers its own gap without parent write
     await learning.getByLabel('家长配对码', { exact: true }).fill(code);
     await learning.getByRole('button', { name: '连接家庭' }).click();
     await expect(learning.getByLabel('家庭模式', { exact: true })).toContainText(
-      '进度已连接家庭 Mac',
+      '进度已连接家庭电脑',
     );
     expect(
       (await (await learning.request.get(new URL('/api/v1/bootstrap', learning.url()).href)).json())

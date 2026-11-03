@@ -14,7 +14,7 @@ test('RECOVERY-01: real server restart preserves saved work and replays one pend
       answers.push({ path: new URL(request.url()).pathname, body: request.postDataJSON() });
   });
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '开始今天的练习' }).click();
   const choice = page.getByRole('group', { name: '选择答案' }).getByRole('button').first();

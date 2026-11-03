@@ -472,7 +472,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(
     page.getByText('🔒 课程练习不使用麦克风。每日跟读可自愿录音，电脑本地识别，不保存。'),
   ).toBeVisible();
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByLabel('家长配对码').fill('23456789');
   await page.getByRole('button', { name: '连接家庭' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
@@ -744,10 +744,10 @@ test('首次连接家庭 Mac 失败后可在加载页原地重试', async ({ pag
   });
 
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: '暂时连不上家庭 Mac Studio' })).toBeVisible();
-  await expect(page.getByRole('alert')).toContainText('暂时无法连接家庭 Mac');
+  await expect(page.getByRole('heading', { name: '暂时连不上家庭电脑' })).toBeVisible();
+  await expect(page.getByRole('alert')).toContainText('暂时无法连接家庭电脑');
   await page.getByRole('button', { name: '重新连接并恢复' }).click();
-  await expect(page.getByText('在 Mac 上生成家长配对码')).toBeVisible();
+  await expect(page.getByText('在本机生成家长配对码')).toBeVisible();
   expect(bootstrapRequests).toBe(2);
 });
 

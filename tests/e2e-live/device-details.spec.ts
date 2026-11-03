@@ -9,7 +9,7 @@ test('DEVICE-01: real paired devices show editable model, consumed code, connect
   await page.goto(appUrl);
   await page.getByText('设备详情（可选）', { exact: true }).click();
   await page.getByLabel('设备型号（可修改）').fill('Mac Studio 家长电脑');
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await expect(page.getByLabel('家长配对码', { exact: true })).toHaveValue(/^[A-Z2-9]{8}$/);
   const parentCode = await page.getByLabel('家长配对码', { exact: true }).inputValue();
   await page.getByRole('button', { name: '连接家庭' }).click();
@@ -45,7 +45,7 @@ test('DEVICE-01: real paired devices show editable model, consumed code, connect
     await child.getByText('设备详情（可选）', { exact: true }).click();
     await child.getByLabel('设备型号（可修改）').fill('iPad Air 5');
     await child.getByRole('button', { name: '连接家庭' }).click();
-    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭 Mac');
+    await expect(child.getByLabel('家庭模式', { exact: true })).toContainText('进度已连接家庭电脑');
     expect(
       (await (await child.request.get(new URL('/api/v1/bootstrap', child.url()).href)).json())
         .device.isParent,

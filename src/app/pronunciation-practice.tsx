@@ -191,7 +191,7 @@ export function PronunciationResults({
           <p>{result.match.toneAssessed ? '本次包含声调判断' : '本次未判断实际声调'}</p>
           <small>
             {result.saved
-              ? '摘要已保存到家庭 Mac；录音不保存。'
+              ? '摘要已保存到家庭电脑；录音不保存。'
               : result.match.evidence === 'acoustic' && isGuest()
                 ? '访客记录仅保留本次页面。'
                 : '本次没有保存真实识别成绩。'}

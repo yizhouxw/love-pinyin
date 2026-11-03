@@ -284,7 +284,7 @@ test('DAILY-05: parent opt-out reaches daily practice and nearby shortcuts share
     (await playedReading(page, 'voice')).filter((id) => /^daily-(instruction-|ui-follow)/.test(id));
   const entry = await page.goto(appUrl);
   expect(entry?.headers()['cache-control']).toBe('no-store');
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
   await page.getByLabel('家长配对码').fill(code!);
   await page.getByRole('button', { name: '连接家庭' }).click();

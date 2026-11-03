@@ -18,7 +18,7 @@ for (const game of catalog.games) {
       if (request.url().includes('/voice/')) voices.push(request.url());
     });
     await page.goto(appUrl);
-    await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+    await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
     await page.getByRole('button', { name: '连接家庭' }).click();
     await page.getByRole('button', { name: '进入游戏乐园' }).click();
     await openGameSettings(page, game.title);
@@ -88,7 +88,7 @@ test('SCENE-05: an unconfirmed collision stays frozen and reload replays only th
   appUrl,
 }) => {
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   const created = page.waitForResponse(

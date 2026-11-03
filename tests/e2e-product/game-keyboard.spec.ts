@@ -9,7 +9,7 @@ test('KEY-01: keyboard works after start, mouse actions and voice; held keys sto
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto(appUrl);
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByRole('button', { name: '开始星际投递' }).click();

@@ -11,7 +11,7 @@ for (const guest of [false, true]) {
     await page.goto(appUrl);
     if (guest) await page.getByRole('button', { name: '访客体验', exact: true }).click();
     else {
-      await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+      await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
       await page.getByRole('button', { name: '连接家庭' }).click();
     }
     await page.getByRole('button', { name: '进入游戏乐园' }).click();

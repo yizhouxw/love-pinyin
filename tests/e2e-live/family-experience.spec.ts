@@ -43,7 +43,7 @@ test('SPEC016 UX01/08: optional pairing detail stays folded and invalid code giv
   await expect(error.getByText('PAIRING_CODE_INVALID', { exact: true })).not.toBeVisible();
   await error.getByText('技术详情', { exact: true }).click();
   await expect(error.getByText('PAIRING_CODE_INVALID', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: '在 Mac 上生成家长配对码' }).click();
+  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭', exact: true }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
   await page.getByRole('button', { name: '家长管理', exact: true }).click();
