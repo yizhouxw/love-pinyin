@@ -109,7 +109,7 @@
 
 ## macOS 应用（Apple Silicon）
 
-GitHub Actions 仅在仓库为私有时于 `main` 构建 DMG；创建 `v` 开头的版本标签后，将构建结果发布到私有仓库的 Releases。当前 GitHub 仓库为公开状态，自动构建及发布会跳过，以免公开发行素材。下载 `LovePinyin-arm64.dmg`，打开后将“爱拼音”拖入“应用程序”，再启动。当前安装包没有 Apple 开发者签名和公证，macOS 可能阻止打开；请仅从可信的私有仓库下载，并按系统安全提示操作。Intel Mac 尚未提供安装包。
+GitHub Actions 在 `main` 构建 DMG；创建 `v` 开头的版本标签后，将构建结果发布到 GitHub Releases。用户于 2026-11-03 授权公开发布安装包，素材仍保留各自许可。下载 `LovePinyin-arm64.dmg`，打开后将“爱拼音”拖入“应用程序”，再启动。当前安装包没有 Apple 开发者签名和公证，macOS 可能阻止打开；请仅从本项目的官方仓库下载，并按系统安全提示操作。Intel Mac 尚未提供安装包。
 
 应用包含本地 Python、服务、页面和声音，日常学习无需安装开发工具。天天练语音识别的 Whisper small 模型是可选的：在本机家长管理中选择“下载模型”，需联网和约 488 MB 磁盘空间；下载后校验固定摘要，失败可重试。没有模型仍可听读和练习。家庭进度与模型保存在 `~/Library/Application Support/LovePinyin/`，更新或替换应用不会覆盖；卸载应用也不会删除该目录。与仓库启动的服务使用独立数据，可通过家长管理的 JSON 备份恢复迁移。
 
@@ -207,7 +207,7 @@ HTTP默认8000，HTTPS默认8443，可独立配置。`private/server.env`使用�
 - [架构](docs/architecture.md)、[API](docs/api-contract.md)、[技术选型](docs/research/technology.md)、[声音与素材](docs/research/audio-and-assets.md)
 - [贡献约定](CONTRIBUTING.md)、[开发流程](docs/engineering/workflow.md)、[隐私边界](docs/engineering/privacy.md)
 
-代码、文档与原创题目采用 [MIT](LICENSE)。教材、外部录音、Qwen生成声音、Andika字体与第三方依赖按各自许可处理，不因代码MIT而改变，见[第三方说明](THIRD_PARTY_NOTICES.md)。仓库已提交至 [yizhouxw/love-pinyin](https://github.com/yizhouxw/love-pinyin)，目前 GitHub 显示为公开仓库，默认分支 `main`；安装包尚未公开发行。
+代码、文档与原创题目采用 [MIT](LICENSE)。教材、外部录音、Qwen生成声音、Andika字体与第三方依赖按各自许可处理，不因代码MIT而改变，见[第三方说明](THIRD_PARTY_NOTICES.md)。仓库已提交至 [yizhouxw/love-pinyin](https://github.com/yizhouxw/love-pinyin)，目前 GitHub 显示为公开仓库，默认分支 `main`；安装包发布状态以 GitHub Releases 为准。
 
 ## 天天练拼音
 
