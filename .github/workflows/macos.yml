@@ -28,9 +28,41 @@ jobs:
             build/macos/*.dmg
             build/macos/*.sha256
           if-no-files-found: error
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: pinned-standard-audio
+          path: private/pinyinsound/
+          if-no-files-found: error
+  windows:
+    needs: build
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm install --global npm@11.16.0
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          version: '0.12.5'
+          enable-cache: true
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: pinned-standard-audio
+          path: private/pinyinsound
+      - run: ./deploy/windows/build.ps1
+        shell: pwsh
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: LovePinyin-windows-x64
+          path: |
+            build/windows/*-setup.exe
+            build/windows/*-setup.exe.sha256
+          if-no-files-found: error
   release:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: build
+    needs: [build, windows]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -39,9 +71,13 @@ jobs:
         with:
           name: LovePinyin-macos-arm64
           path: release
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: LovePinyin-windows-x64
+          path: release
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" release/* --title "$TAG" --notes 'macOS Apple Silicon 安装包；未签名或公证。请参阅 README。'
+        run: gh release create "$TAG" release/* --title "$TAG" --notes 'macOS Apple Silicon 与 Windows x64 安装包；均未签名。macOS 未公证。请参阅 README。'

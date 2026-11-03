@@ -77,3 +77,5 @@ SPEC-013的DOCKER-05/06补充Windows x86-64宿主的linux/amd64部署及CPU Whis
 2026-10-27补充SPEC-017 HOME-01/02：乐园首页改为紧凑双列/窄屏单列卡片，关卡、题量、听玩法与开始直接可达，难度/速度/故事按需展开；时长摘要与推荐/学习记录集中呈现。保持至少48px触摸、键盘、200%文字与真实启动偏好，加载/失败/超时可恢复。沿用ADR-0029/0036，无新增依赖或数据迁移，版本0.6.1。
 
 2026-11-03新增 [SPEC-020](specs/SPEC-020-macos-app.md)：Mac 原生窗口与随包 Python/服务/声音，Whisper 在家长设置显式下载，GitHub Actions 构建发布（用户已授权公开安装包），见 [ADR-0037](adr/0037-macos-app.md)。
+
+2026-11-03新增 [SPEC-021](specs/SPEC-021-windows-app.md)：Windows x64 本地应用与安装包，沿用可选模型和本地数据边界，见 [ADR-0038](adr/0038-windows-app.md)。

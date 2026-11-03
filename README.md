@@ -115,6 +115,12 @@ GitHub Actions 在 `main` 构建 DMG；创建 `v` 开头的版本标签后，将
 
 开发者在 macOS 上可运行 `deploy/macos/build.sh`，生成 `build/macos/LovePinyin-arm64.dmg` 和 SHA-256 文件。构建联网安装锁定依赖并准备固定标准音；安装包不包含家庭数据或识别模型。此模式仅启动本机窗口，家庭 LAN 与 HTTPS 仍使用下述服务器部署。实际签名、公证及家庭设备验收另行进行。
 
+## Windows 应用（x64）
+
+GitHub Actions 同时构建 Windows x64 安装程序，版本标签对应的 [Releases](https://github.com/yizhouxw/love-pinyin/releases) 包含 `LovePinyin-windows-x64-setup.exe` 和 SHA-256 校验文件。安装包尚未签名，Windows SmartScreen 可能提示未知发布者；请从项目官方 Releases 下载。需要 Windows 10/11 x64 和已安装的 Microsoft Edge；首次实际 Windows 家庭设备验收仍待完成。
+
+运行安装程序后从开始菜单打开爱拼音，关闭应用窗口会停止本地服务。后端与课程声音随包；可选 Whisper small 在家长设置中主动下载并校验。进度、模型及窗口设置保存在 `%LOCALAPPDATA%\LovePinyin`，卸载或更新不会删除该目录；可通过家长备份恢复迁移。Windows 应用只提供本机入口，不自动配置家庭 LAN。
+
 ## 安装与启动
 
 macOS 开发者 clone 后，在项目目录执行：
