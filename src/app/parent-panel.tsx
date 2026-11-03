@@ -12,6 +12,7 @@ import { ReducedMotionControl } from './management-controls';
 import { PlaybackGapControl } from './playback-gap-control';
 import { ReleaseHistory } from './release-history';
 import { Notice } from './notice';
+import { ModelSettings } from './model-settings';
 
 export function ParentPanel({
   boot,
@@ -636,6 +637,7 @@ export function ParentPanel({
           </button>
         </div>
       </details>
+      {isParent && <ModelSettings />}
       <ReleaseHistory contentVersion={curriculum.contentVersion} />
       <button
         className="quiet"

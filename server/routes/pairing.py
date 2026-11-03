@@ -196,3 +196,19 @@ def revoke_device(device_id: str, device: dict = Depends(parent)) -> dict:
             (device["household_id"],),
         ).fetchone()["revision"]
     return {"revoked": True, "revision": revision}
+
+
+@local_router.get("/recognition-model")
+def recognition_model_status(request: Request, device: dict = Depends(parent_read)) -> dict:
+    _require_parent_entry(request)
+    from server.model_install import status
+
+    return status()
+
+
+@local_router.post("/recognition-model")
+def install_recognition_model(request: Request, device: dict = Depends(parent)) -> dict:
+    _require_parent_entry(request)
+    from server.model_install import start
+
+    return start()

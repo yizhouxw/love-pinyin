@@ -19,3 +19,5 @@ __pycache__/
 *.sqlite*
 certs/
 models/
+
+build/

@@ -18,7 +18,9 @@ from scripts.asr_model import validate_model
 from server.daily_reading import load
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL_PATH = ROOT / "models" / "whisper-small" / "ggml-small.bin"
+MODEL_PATH = Path(
+    os.environ.get("LOVE_PINYIN_MODEL_PATH", ROOT / "models" / "whisper-small" / "ggml-small.bin")
+)
 CONFIG_PATH = ROOT / "content" / "reading-recognition.json"
 MAX_BYTES = 960_044
 _LOCK = threading.Lock()
@@ -105,8 +107,21 @@ def match_transcript(item: dict, transcript: str) -> dict:
     }
 
 
+@lru_cache(maxsize=4)
+def _valid_model(path: Path, size: int, modified: int) -> bool:
+    try:
+        validate_model(path)
+        return True
+    except (ValueError, OSError):
+        return False
+
+
 def status() -> dict:
-    available = MODEL_PATH.is_file() and MODEL_PATH.stat().st_size == 487_601_967
+    try:
+        stat = MODEL_PATH.stat()
+        available = _valid_model(MODEL_PATH, stat.st_size, stat.st_mtime_ns)
+    except OSError:
+        available = False
     return {"available": available, "mode": "asr-syllable-match", "toneAssessed": False}
 
 

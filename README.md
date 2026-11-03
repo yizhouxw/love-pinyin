@@ -107,6 +107,14 @@
 
 </details>
 
+## macOS 应用（Apple Silicon）
+
+GitHub Actions 在 `main` 构建 DMG；仓库创建 `v` 开头的版本标签后，将构建结果发布到**私有仓库**的 Releases。下载 `LovePinyin-arm64.dmg`，打开后将“爱拼音”拖入“应用程序”，再启动。当前安装包没有 Apple 开发者签名和公证，macOS 可能阻止打开；请仅从可信的私有仓库下载，并按系统安全提示操作。Intel Mac 尚未提供安装包。
+
+应用包含本地 Python、服务、页面和声音，日常学习无需安装开发工具。天天练语音识别的 Whisper small 模型是可选的：在本机家长管理中选择“下载模型”，需联网和约 488 MB 磁盘空间；下载后校验固定摘要，失败可重试。没有模型仍可听读和练习。家庭进度与模型保存在 `~/Library/Application Support/LovePinyin/`，更新或替换应用不会覆盖；卸载应用也不会删除该目录。与仓库启动的服务使用独立数据，可通过家长管理的 JSON 备份恢复迁移。
+
+开发者在 macOS 上可运行 `deploy/macos/build.sh`，生成 `build/macos/LovePinyin-arm64.dmg` 和 SHA-256 文件。构建联网安装锁定依赖并准备固定标准音；安装包不包含家庭数据或识别模型。此模式仅启动本机窗口，家庭 LAN 与 HTTPS 仍使用下述服务器部署。实际签名、公证及家庭设备验收另行进行。
+
 ## 安装与启动
 
 macOS 开发者 clone 后，在项目目录执行：
