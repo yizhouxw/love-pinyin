@@ -27,7 +27,7 @@ $launcher = Join-Path $bundle 'LovePinyin.exe'
 & $csc /nologo /codepage:65001 /target:winexe /platform:x64 /reference:System.Windows.Forms.dll "/out:$launcher" (Join-Path $PSScriptRoot 'Launcher.cs')
 & (Join-Path $bundle 'python/python.exe') deploy/windows/smoke.py
 $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6/ISCC.exe'
-$innoVersion = (Get-Item $iscc).VersionInfo.ProductVersion
+$innoVersion = (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1').DisplayVersion
 if ($innoVersion -notmatch '^6\.7\.1(?:\.|$)') { throw "Expected Inno Setup 6.7.1, found $innoVersion" }
 & $iscc deploy/windows/installer.iss
 $installer = Join-Path $output 'LovePinyin-windows-x64-setup.exe'
