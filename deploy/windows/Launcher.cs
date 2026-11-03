@@ -41,6 +41,7 @@ internal static class Launcher {
                 start.EnvironmentVariables["LOVE_PINYIN_MODEL_PATH"] = Path.Combine(data, "models", "whisper-small", "ggml-small.bin");
                 start.EnvironmentVariables["LOVE_PINYIN_ASR_CPU_ONLY"] = "1";
                 start.EnvironmentVariables["PYTHONDONTWRITEBYTECODE"] = "1";
+                start.EnvironmentVariables["PYTHONUTF8"] = "1";
                 server = Process.Start(start);
                 bool ready = false;
                 for (int i = 0; i < 100 && !server.HasExited; i++) {

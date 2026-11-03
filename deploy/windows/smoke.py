@@ -18,6 +18,7 @@ with tempfile.TemporaryDirectory() as directory:
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]
     env = os.environ.copy()
+    env["PYTHONUTF8"] = "1"
     env.update(LOVE_PINYIN_DATA_DIR=directory, LOVE_PINYIN_MODEL_PATH=f"{directory}/model.bin")
     process = subprocess.Popen(
         [
