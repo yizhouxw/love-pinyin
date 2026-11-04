@@ -17,6 +17,7 @@ import {
   saveGuidancePreference,
 } from '../platform/guidance-preference';
 import { api } from '../platform/api-client';
+import { isMacApp } from '../platform/mac-app';
 import {
   readPlaybackPreference,
   resolvePlaybackGap,
@@ -223,17 +224,23 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             : '',
         );
       })
-      .catch((reason: Error) => {
+      .catch(async (reason: Error) => {
         if (!cancelled) {
-          if (reason.message === 'SESSION_EXPIRED' || reason.message === 'PAIRING_REQUIRED')
-            setBoot({ paired: false, isLocalHost: false });
-          else setError(reason.message);
+          if (reason.message === 'SESSION_EXPIRED' || reason.message === 'PAIRING_REQUIRED') {
+            if (isMacApp()) {
+              try {
+                await refresh();
+              } catch (error) {
+                setError(error instanceof Error ? error.message : '连接失败，请重试。');
+              }
+            } else setBoot({ paired: false, isLocalHost: false });
+          } else setError(reason.message);
         }
       });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [refresh]);
   const lessons = useMemo(() => curriculum?.lessons ?? [], [curriculum]);
   const lessonById = useMemo(() => new Map(lessons.map((item) => [item.id, item])), [lessons]);
   const currentLesson = progress?.selectedLessonId
@@ -367,7 +374,13 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       const message = reason instanceof Error ? reason.message : '操作失败，请重试。';
       if (message === 'SESSION_EXPIRED' || message === 'PAIRING_REQUIRED') {
         setSession(null);
-        setBoot({ paired: false, isLocalHost: false });
+        if (isMacApp()) {
+          try {
+            await refresh();
+          } catch (error) {
+            setError(error instanceof Error ? error.message : '连接失败，请重试。');
+          }
+        } else setBoot({ paired: false, isLocalHost: false });
       } else setError(message);
     } finally {
       setBusy(false);
@@ -1275,7 +1288,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               )}
             </>
           )}
-          {parentOpen && (
+          {parentOpen && !isMacApp() && (
             <details className="management-section">
               <summary>连接其他设备</summary>
               <PairingManagement />

@@ -9,7 +9,7 @@ import changelog from '../../content/changelog.json';
 describe('family operation feedback', () => {
   it('explains pairing, permission and restore failures with specific next steps', () => {
     expect(errorMessage('PAIRING_CODE_INVALID')).toContain('重新生成');
-    expect(errorMessage('PARENT_LOCAL_REQUIRED')).toContain('127.0.0.1');
+    expect(errorMessage('PARENT_LOCAL_REQUIRED')).toContain('家庭电脑');
     expect(errorMessage('IMPORT_PREVIEW_EXPIRED')).toContain('重新选择');
     expect(errorMessage('BACKUP_ATTEMPT_INVALID')).toContain('JSON');
     expect(errorMessage('SOME_UNKNOWN_ERROR')).not.toContain('SOME_UNKNOWN_ERROR');

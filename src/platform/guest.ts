@@ -1,9 +1,12 @@
+import { isMacApp } from './mac-app';
+
 /** Per-tab temporary progress. No cookies, localStorage or server guest account. */
 const CACHE_KEY = 'lp.guest.v1';
 let guestMode: boolean | undefined;
 let leaving = false;
 
 export function isGuest(): boolean {
+  if (isMacApp()) return false;
   if (guestMode !== undefined) return guestMode;
   try {
     guestMode = sessionStorage.getItem(CACHE_KEY) !== null;

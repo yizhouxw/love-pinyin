@@ -1,5 +1,7 @@
 """HTTP endpoints for resources."""
 
+import os
+
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Request, Response
 
 from server import source_audio
@@ -15,7 +17,10 @@ router = APIRouter()
 @router.get("/health")
 def health() -> dict:
     data = load_curriculum()
-    return {"status": "ok", "contentVersion": data["contentVersion"], "storage": "sqlite"}
+    result = {"status": "ok", "contentVersion": data["contentVersion"], "storage": "sqlite"}
+    if instance := os.environ.get("LOVE_PINYIN_INSTANCE_ID"):
+        result["instanceId"] = instance
+    return result
 
 
 @router.get("/capabilities")

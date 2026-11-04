@@ -6,13 +6,14 @@ final class App: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     var web: WKWebView!
     var server: Process?
     var port: UInt16 = 0
+    let instanceID = UUID().uuidString
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let socketFD = socket(AF_INET, SOCK_STREAM, 0)
         var address = sockaddr_in()
         address.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
         address.sin_family = sa_family_t(AF_INET)
-        address.sin_port = UInt16(18765).bigEndian
+        address.sin_port = 0
         address.sin_addr = in_addr(s_addr: in_addr_t(0x0100007f))
         let bound = withUnsafePointer(to: &address) { ptr in
             ptr.withMemoryRebound(to: sockaddr.self, capacity: 1) { Darwin.bind(socketFD, $0, socklen_t(MemoryLayout<sockaddr_in>.size)) }
@@ -22,7 +23,7 @@ final class App: NSObject, NSApplicationDelegate, WKNavigationDelegate {
             ptr.withMemoryRebound(to: sockaddr.self, capacity: 1) { getsockname(socketFD, $0, &size) }
         }
         close(socketFD)
-        guard bound == 0 else { fail("本机端口 18765 已被占用，请关闭占用该端口的程序后重试。") ; return }
+        guard bound == 0 else { fail("无法分配本机端口，请重新打开应用。") ; return }
         port = UInt16(bigEndian: address.sin_port)
         let root = Bundle.main.resourceURL!.appendingPathComponent("app")
         let data = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("LovePinyin")
@@ -35,12 +36,14 @@ final class App: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         var env = ProcessInfo.processInfo.environment
         env["LOVE_PINYIN_DATA_DIR"] = data.appendingPathComponent("data").path
         env["LOVE_PINYIN_MODEL_PATH"] = data.appendingPathComponent("models/whisper-small/ggml-small.bin").path
+        env["LOVE_PINYIN_INSTANCE_ID"] = instanceID
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         process.environment = env
         process.standardOutput = FileHandle.nullDevice
         process.standardError = FileHandle.nullDevice
         do { try process.run(); server = process } catch { fail("无法启动本地服务：\(error.localizedDescription)"); return }
         let config = WKWebViewConfiguration()
+        config.userContentController.addUserScript(WKUserScript(source: "window.__LOVE_PINYIN_MAC_APP__ = true;", injectionTime: .atDocumentStart, forMainFrameOnly: true))
         web = WKWebView(frame: .zero, configuration: config)
         web.navigationDelegate = self
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1100, height: 800), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
@@ -54,9 +57,10 @@ final class App: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     func awaitReady(attempt: Int) {
         guard let server = server, server.isRunning else { fail("本地服务启动失败，请重新打开应用。"); return }
         let url = URL(string: "http://127.0.0.1:\(port)/api/v1/health")!
-        URLSession.shared.dataTask(with: url) { _, response, _ in
+        URLSession.shared.dataTask(with: url) { data, response, _ in
+            let payload = data.flatMap { try? JSONSerialization.jsonObject(with: $0) as? [String: Any] }
             DispatchQueue.main.async {
-                if (response as? HTTPURLResponse)?.statusCode == 200 {
+                if (response as? HTTPURLResponse)?.statusCode == 200 && payload?["instanceId"] as? String == self.instanceID {
                     self.web.load(URLRequest(url: URL(string: "http://127.0.0.1:\(self.port)/")!))
                 } else if attempt < 100 {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { self.awaitReady(attempt: attempt + 1) }

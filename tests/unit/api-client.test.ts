@@ -14,6 +14,40 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('same-origin API transport', () => {
+  it('connects an unpaired Mac app and reloads its household bootstrap', async () => {
+    vi.stubGlobal('window', { __LOVE_PINYIN_MAC_APP__: true });
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(Response.json({ paired: false }))
+      .mockResolvedValueOnce(Response.json({ code: 'ABCDEFGH' }))
+      .mockResolvedValueOnce(Response.json({ paired: true }))
+      .mockResolvedValueOnce(Response.json({ paired: true, device: { isParent: true } }));
+    expect(await api('/bootstrap')).toMatchObject({ paired: true, device: { isParent: true } });
+    expect(vi.mocked(fetch).mock.calls.map(([url]) => url)).toEqual([
+      '/api/v1/bootstrap',
+      '/api/v1/local/pairing-code',
+      '/api/v1/pair',
+      '/api/v1/bootstrap',
+    ]);
+  });
+
+  it('does not automatically connect a browser', async () => {
+    vi.mocked(fetch).mockResolvedValue(Response.json({ paired: false }));
+    expect(await api('/bootstrap')).toEqual({ paired: false });
+    expect(fetch).toHaveBeenCalledOnce();
+  });
+
+  it('reuses a valid Mac session and surfaces connection failures', async () => {
+    vi.stubGlobal('window', { __LOVE_PINYIN_MAC_APP__: true });
+    vi.mocked(fetch).mockResolvedValueOnce(Response.json({ paired: true }));
+    expect(await api('/bootstrap')).toEqual({ paired: true });
+    expect(fetch).toHaveBeenCalledOnce();
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(Response.json({ paired: false }))
+      .mockResolvedValueOnce(
+        Response.json({ detail: { code: 'PARENT_LOCAL_REQUIRED' } }, { status: 403 }),
+      );
+    await expect(api('/bootstrap')).rejects.toThrow('PARENT_LOCAL_REQUIRED');
+  });
   it('preserves caller headers and attaches device metadata, credentials and write CSRF', async () => {
     await api('/household/settings', {
       method: 'PUT',

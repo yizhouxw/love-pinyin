@@ -1,6 +1,17 @@
 import type { Json } from '../domain/learning-api';
 import { suggestedDeviceModel } from './device-info';
 import { guestApi, isGuest } from './guest';
+import { isMacApp } from './mac-app';
+
+let macConnection: Promise<void> | undefined;
+
+async function connectMacApp(): Promise<void> {
+  const code = await householdApi('/local/pairing-code', { method: 'POST' });
+  await householdApi('/pair', {
+    method: 'POST',
+    body: JSON.stringify({ code: code.code, label: 'Mac 应用', model: 'Mac' }),
+  });
+}
 
 export async function api(path: string, options: RequestInit = {}): Promise<Json> {
   if (isGuest()) {
@@ -11,7 +22,15 @@ export async function api(path: string, options: RequestInit = {}): Promise<Json
       throw error;
     }
   }
-  return householdApi(path, options);
+  const result = await householdApi(path, options);
+  if (path === '/bootstrap' && isMacApp() && !result.paired) {
+    macConnection ??= connectMacApp().finally(() => {
+      macConnection = undefined;
+    });
+    await macConnection;
+    return householdApi(path, options);
+  }
+  return result;
 }
 
 export async function householdApi(path: string, options: RequestInit = {}): Promise<Json> {

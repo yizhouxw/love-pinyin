@@ -4,6 +4,7 @@ import type { LearningSettingsProps } from './settings-types';
 import playback from '../../content/playback.json';
 import type { AudioRequirement, Bootstrap, Json, Lesson } from '../domain/learning-api';
 import { api } from '../platform/api-client';
+import { isMacApp } from '../platform/mac-app';
 import { GameSettings } from './game-settings';
 import { CopyCode } from './copy-code';
 import { KnowledgeProgress } from './knowledge-progress';
@@ -311,121 +312,123 @@ export function ParentPanel({
           />
         </div>
       </details>
-      <details className="parent-section">
-        <summary>已连接设备</summary>
-        {isParent && (
-          <div className="device-management">
-            <div>
-              <strong>已连接设备</strong>
-              <button className="quiet" disabled={busy} onClick={() => void act(reloadDevices)}>
-                刷新设备列表
-              </button>
-              <p>撤销后，该设备下次连接时需要重新配对；学习记录会保留。</p>
-            </div>
-            <ul className="device-list">
-              {devices.map((device) => (
-                <li key={device.id}>
-                  <div>
-                    <strong>{device.label}</strong>
-                    <small>
-                      {device.current ? '本机家长设备' : '家庭设备'} · 配对时间：
-                      {formatAttemptTime(device.createdAt)}
-                    </small>
-                    <p>设备型号：{device.model || '尚未记录，可填写具体型号'}</p>
-                    <p>
-                      最后连接服务：
-                      {device.lastConnectedAt
-                        ? formatAttemptTime(device.lastConnectedAt)
-                        : '尚未记录'}
-                    </p>
-                    {device.pairingCode ? (
-                      <>
-                        <small>配对码（已使用，不能再次配对）</small>
-                        <CopyCode
-                          key={device.pairingCode}
-                          code={device.pairingCode}
-                          label={`${device.label}的已用配对码`}
-                        />
-                      </>
-                    ) : (
-                      <p>配对码：历史记录未保存</p>
-                    )}
-                    <details>
-                      <summary>修改设备型号</summary>
-                      <label>
-                        设备型号
-                        <input
-                          value={deviceModels[device.id] ?? device.model ?? ''}
-                          maxLength={80}
-                          placeholder="例如：iPad Air 5"
-                          onChange={(event) =>
-                            setDeviceModels((current) => ({
-                              ...current,
-                              [device.id]: event.target.value,
-                            }))
-                          }
-                        />
-                      </label>
-                      <button
-                        className="quiet"
-                        disabled={busy || !(deviceModels[device.id] ?? device.model ?? '').trim()}
-                        onClick={() =>
-                          void act(async () => {
-                            await api(`/devices/${device.id}`, {
-                              method: 'PUT',
-                              body: JSON.stringify({
-                                model: deviceModels[device.id] ?? device.model,
-                              }),
-                            });
-                            await reloadDevices();
-                          })
-                        }
-                      >
-                        保存设备型号
-                      </button>
-                    </details>
-                  </div>
-                  {!device.current &&
-                    (revokeDeviceId === device.id ? (
-                      <div className="device-actions">
+      {!isMacApp() && (
+        <details className="parent-section">
+          <summary>已连接设备</summary>
+          {isParent && (
+            <div className="device-management">
+              <div>
+                <strong>已连接设备</strong>
+                <button className="quiet" disabled={busy} onClick={() => void act(reloadDevices)}>
+                  刷新设备列表
+                </button>
+                <p>撤销后，该设备下次连接时需要重新配对；学习记录会保留。</p>
+              </div>
+              <ul className="device-list">
+                {devices.map((device) => (
+                  <li key={device.id}>
+                    <div>
+                      <strong>{device.label}</strong>
+                      <small>
+                        {device.current ? '本机家长设备' : '家庭设备'} · 配对时间：
+                        {formatAttemptTime(device.createdAt)}
+                      </small>
+                      <p>设备型号：{device.model || '尚未记录，可填写具体型号'}</p>
+                      <p>
+                        最后连接服务：
+                        {device.lastConnectedAt
+                          ? formatAttemptTime(device.lastConnectedAt)
+                          : '尚未记录'}
+                      </p>
+                      {device.pairingCode ? (
+                        <>
+                          <small>配对码（已使用，不能再次配对）</small>
+                          <CopyCode
+                            key={device.pairingCode}
+                            code={device.pairingCode}
+                            label={`${device.label}的已用配对码`}
+                          />
+                        </>
+                      ) : (
+                        <p>配对码：历史记录未保存</p>
+                      )}
+                      <details>
+                        <summary>修改设备型号</summary>
+                        <label>
+                          设备型号
+                          <input
+                            value={deviceModels[device.id] ?? device.model ?? ''}
+                            maxLength={80}
+                            placeholder="例如：iPad Air 5"
+                            onChange={(event) =>
+                              setDeviceModels((current) => ({
+                                ...current,
+                                [device.id]: event.target.value,
+                              }))
+                            }
+                          />
+                        </label>
                         <button
-                          className="danger-button"
+                          className="quiet"
+                          disabled={busy || !(deviceModels[device.id] ?? device.model ?? '').trim()}
                           onClick={() =>
                             void act(async () => {
-                              await api(`/devices/${device.id}`, { method: 'DELETE' });
-                              setRevokeDeviceId('');
+                              await api(`/devices/${device.id}`, {
+                                method: 'PUT',
+                                body: JSON.stringify({
+                                  model: deviceModels[device.id] ?? device.model,
+                                }),
+                              });
                               await reloadDevices();
-                              await refresh();
                             })
                           }
                         >
-                          确认撤销
+                          保存设备型号
                         </button>
-                        <button className="quiet" onClick={() => setRevokeDeviceId('')}>
-                          取消
+                      </details>
+                    </div>
+                    {!device.current &&
+                      (revokeDeviceId === device.id ? (
+                        <div className="device-actions">
+                          <button
+                            className="danger-button"
+                            onClick={() =>
+                              void act(async () => {
+                                await api(`/devices/${device.id}`, { method: 'DELETE' });
+                                setRevokeDeviceId('');
+                                await reloadDevices();
+                                await refresh();
+                              })
+                            }
+                          >
+                            确认撤销
+                          </button>
+                          <button className="quiet" onClick={() => setRevokeDeviceId('')}>
+                            取消
+                          </button>
+                        </div>
+                      ) : (
+                        <button className="quiet" onClick={() => setRevokeDeviceId(device.id)}>
+                          撤销设备
                         </button>
-                      </div>
-                    ) : (
-                      <button className="quiet" onClick={() => setRevokeDeviceId(device.id)}>
-                        撤销设备
-                      </button>
-                    ))}
-                </li>
-              ))}
-            </ul>
-            {devices.length === 0 && <p>目前没有已配对设备。</p>}
-            <Notice
-              error={deviceError}
-              onReconnect={() =>
-                void act(async () => {
-                  await reloadDevices();
-                  setDeviceError('');
-                })
-              }
-            />
-          </div>
-        )}
-      </details>
+                      ))}
+                  </li>
+                ))}
+              </ul>
+              {devices.length === 0 && <p>目前没有已配对设备。</p>}
+              <Notice
+                error={deviceError}
+                onReconnect={() =>
+                  void act(async () => {
+                    await reloadDevices();
+                    setDeviceError('');
+                  })
+                }
+              />
+            </div>
+          )}
+        </details>
+      )}
       <details className="parent-section">
         <summary>备份与恢复</summary>
         <Notice
@@ -608,8 +611,9 @@ export function ParentPanel({
           <div>
             <strong>重置家庭档案</strong>
             <p>
-              将删除全家的学习记录和家长设置，并撤销所有浏览器配对、清除未使用的配对码。完成后需在
-              家庭电脑本机重新配对。课程与应用不会卸载；已下载的备份无法远程删除。
+              将删除全家的学习记录和家长设置，并撤销所有浏览器配对、清除未使用的配对码。
+              {isMacApp() ? '应用将自动重新连接。' : '完成后需在家庭电脑本机重新配对。'}
+              课程与应用不会卸载；已下载的备份无法远程删除。
             </p>
           </div>
           <input
@@ -638,17 +642,19 @@ export function ParentPanel({
       </details>
       {isParent && <ModelSettings />}
       <ReleaseHistory contentVersion={curriculum.contentVersion} />
-      <button
-        className="quiet"
-        onClick={() =>
-          void act(async () => {
-            await api('/session', { method: 'DELETE' });
-            window.location.reload();
-          })
-        }
-      >
-        退出此设备配对
-      </button>
+      {!isMacApp() && (
+        <button
+          className="quiet"
+          onClick={() =>
+            void act(async () => {
+              await api('/session', { method: 'DELETE' });
+              window.location.reload();
+            })
+          }
+        >
+          退出此设备配对
+        </button>
+      )}
       {!boot.device?.isParent && <p className="adult-hint">此设备尚未取得家长管理权限。</p>}
     </section>
   );

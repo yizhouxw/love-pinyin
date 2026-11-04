@@ -15,3 +15,10 @@ def test_api_docs_do_not_load_external_cdn_scripts(test_client):
     assert "swagger-ui" not in test_client.get("/docs").text.lower()
     assert "redoc" not in test_client.get("/redoc").text.lower()
     assert test_client.get("/openapi.json").status_code == 200
+
+
+def test_health_exposes_instance_only_when_configured(test_client, monkeypatch):
+    monkeypatch.delenv("LOVE_PINYIN_INSTANCE_ID", raising=False)
+    assert "instanceId" not in test_client.get("/api/v1/health").json()
+    monkeypatch.setenv("LOVE_PINYIN_INSTANCE_ID", "desktop-test-instance")
+    assert test_client.get("/api/v1/health").json()["instanceId"] == "desktop-test-instance"
