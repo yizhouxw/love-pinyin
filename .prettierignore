@@ -20,3 +20,6 @@ content/pronunciation-pretrained-pitch.json
 content/pronunciation-eduhk-data.json
 # Exact configuration SHA is bound to the trained MATCH-16 checkpoint.
 content/pronunciation-pretrained-xlsr-tail.json
+
+# Original generated word scenes are SHA-bound to their explicit content recipes.
+public/word-illustrations

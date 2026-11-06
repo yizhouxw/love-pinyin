@@ -3,7 +3,9 @@
 import argparse
 import hashlib
 import json
+import re
 import unicodedata
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from server import learning_audio, word_practice
@@ -31,6 +33,29 @@ def validate(release: bool = False) -> None:
             assert lesson["passages"]
         for passage in lesson["passages"]:
             assert 1 <= passage["page"] <= 104 and passage["paragraphs"]
+    images = json.loads((word_practice.CONTENT.parent / "images.json").read_text())["items"]
+    words = {word["text"] for lesson in lessons for word in lesson["read"] + lesson["write"]}
+    assert images.keys() == words
+    assert len({item["id"] for item in images.values()}) == len(words)
+    for word, item in images.items():
+        assert re.fullmatch(r"[0-9a-f]{16}", item["id"])
+        assert item["description"] and item["scene"] and item["variant"]
+        image = word_practice.CONTENT.parents[2] / "public/word-illustrations" / f"{item['id']}.svg"
+        raw = image.read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == item["sha256"]
+        root = ET.fromstring(raw)
+        assert root.attrib["viewBox"] == "0 0 360 240"
+        assert root.find("{http://www.w3.org/2000/svg}title").text == word
+        assert (
+            sum(
+                node.tag.rsplit("}", 1)[-1] in {"path", "circle", "rect", "ellipse"}
+                for node in root.iter()
+            )
+            > 1
+        )
+        assert not any(
+            node.tag.endswith(("script", "image", "foreignObject")) for node in root.iter()
+        )
     scripts = word_practice.scripts()
     assert scripts.keys() <= learning_audio.narration_scripts().keys()
     if release:

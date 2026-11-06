@@ -1,68 +1,342 @@
+.home-page:has(> .word-practice) {
+  padding-block: 16px 32px;
+}
 .word-practice {
   max-width: 1050px;
   margin: auto;
 }
-.word-practice select {
-  max-width: 100%;
-  min-height: 48px;
+.word-practice button,
+.word-course-dialog button {
+  border: 1px solid #cadac2;
+  border-radius: 12px;
+  background: #fffefa;
+  color: #285946;
+  padding: 10px 14px;
   font: inherit;
-  padding: 8px;
+  font-weight: 650;
+  min-height: 48px;
+  cursor: pointer;
 }
-.word-course-nav,
-.word-modes {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 18px 0;
-}
-.word-modes button[aria-pressed='true'] {
-  background: #24634b;
-  color: white;
-}
-.word-grid {
+.word-header {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
-  gap: 16px;
-  margin: 28px 0;
+  grid-template-columns: 86px 1fr 86px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
 }
-.word-grid button {
-  min-height: 100px;
+.word-header h1 {
+  font-size: 1.45rem;
+  text-align: center;
+  margin: 0;
+}
+.word-header button {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.word-course-bar {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px 48px;
+  gap: 8px;
+  align-items: stretch;
+}
+.word-course-bar > button:not(.word-course-trigger) {
+  padding: 4px;
+  font-size: 1.4rem;
+}
+.word-practice .word-course-trigger {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 7px 14px;
+  justify-content: center;
+  min-width: 0;
+}
+.word-course-trigger > span {
+  font-size: 0.75rem;
+  color: #62766a;
+}
+.word-course-trigger strong {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  font-size: 1.1rem;
+}
+.word-course-trigger strong > span {
+  flex-shrink: 0;
+}
+.word-modes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.word-practice .word-modes button {
+  padding: 10px 5px;
+  transition: none;
+}
+.word-mode-mark {
+  display: inline-block;
+  width: 1em;
+}
+.word-practice .word-modes button[aria-pressed='true'],
+.word-practice .word-continuous[aria-pressed='true'] {
+  background: #285946;
+  color: #fffefa;
+}
+.word-toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.word-toolbar .guidance-switch {
+  min-height: 48px;
+  padding: 8px 12px;
+  margin: 0;
+  font-size: 0.85rem;
+}
+.word-toolbar .daily-gap-trigger {
+  min-height: 48px;
+  padding: 8px 10px;
+}
+.word-toolbar .daily-gap-trigger > span {
+  display: none;
+}
+.word-toolbar > button {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+.word-audio-status {
+  display: grid;
+  align-items: center;
+  min-height: 48px;
+  margin: 4px 0;
+}
+.word-playback,
+.word-audio-error {
+  grid-area: 1/1;
+}
+.word-playback {
+  min-height: 3.1em;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 0.85rem;
+  color: #5d7464;
+}
+.word-audio-error {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  background: #f4f7ed;
+  font-size: 0.85rem;
+}
+.word-audio-error button {
+  min-height: 40px;
+  padding: 6px 12px;
+}
+.word-invisible {
+  visibility: hidden;
+}
+.word-help {
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+}
+.word-help summary,
+.word-about summary,
+.word-vocabulary summary {
+  cursor: pointer;
+  min-height: 36px;
+  display: list-item;
+  padding-block: 7px;
+}
+.word-help p {
+  margin: 8px 0;
+}
+.word-reading-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.word-selected-picture {
+  margin: 0;
+  border: 1px solid #dce4d1;
+  border-radius: 18px;
+  padding: 10px;
+  background: #fffefa;
+}
+.word-image-frame {
+  aspect-ratio: 3/2;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #f8f5e9;
+}
+.word-image-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.word-selected-picture figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 60px;
+  padding-top: 12px;
+}
+.word-selected-picture ruby {
   font-size: 1.6rem;
-  padding-top: 24px;
+}
+.word-selected-picture small {
+  font-size: 0.7rem;
+  color: #718275;
 }
 .word-practice rt {
   font-size: 0.85rem;
-  font-weight: normal;
+  font-weight: 400;
 }
-.word-dictation,
-.word-passage,
-.word-vocabulary {
-  padding: 20px;
-  border-radius: 18px;
-  background: #fffdf5;
-  border: 1px solid #d9decf;
-  margin: 20px 0;
-}
-.word-answer {
-  min-height: 95px;
+.word-image-failure {
+  position: absolute;
+  inset: 0;
+  background: #f8f5e9;
   display: grid;
   place-content: center;
-  font-size: 1.7rem;
-  padding-top: 20px;
+  gap: 8px;
+  text-align: center;
+}
+.word-image-concealed {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  color: #69826d;
+}
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+.word-practice .word-grid button {
+  padding: 20px 6px 10px;
+  min-height: 84px;
+  font-size: 1.45rem;
+}
+.word-practice .word-grid button[aria-pressed='true'] {
+  background: #e4f2d6;
+  border-color: #69987b;
+}
+.word-practice .word-grid button[aria-current='true'] {
+  outline: 3px solid #498363;
+  outline-offset: -3px;
+}
+.word-dictation {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  align-items: center;
+  gap: 18px;
+  background: #fffefa;
+  border: 1px solid #dce4d1;
+  border-radius: 18px;
+  padding: 16px;
+}
+.word-dictation-main {
+  text-align: center;
+}
+.word-dictation-main > p:first-child {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+}
+.word-answer {
+  height: 6em;
+  min-height: 6em;
+  display: grid;
+  place-content: center;
+  font-size: 1.6rem;
+  padding: 12px 0;
+  margin: 0;
+}
+.word-dictation-controls {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.word-dictation-main small {
+  font-size: 0.8rem;
+  color: #63786a;
+}
+.word-recite-toolbar {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.word-recite-toolbar > span {
+  font-size: 0.85rem;
+}
+.word-passage {
+  background: #fffefa;
+  border: 1px solid #dce4d1;
+  padding: 16px;
+  border-radius: 18px;
+  margin-bottom: 12px;
+}
+.word-passage > header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.word-passage h2 {
+  font-size: 1.2rem;
+  margin: 0 0 4px;
+}
+.word-passage header small {
+  font-size: 0.75rem;
+  color: #6b806f;
 }
 .word-paragraph {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: start;
-  margin-top: 20px;
-}
-.word-paragraph p {
-  font-size: 1.5rem;
-  line-height: 2.2;
-  margin: 0;
+  margin-top: 14px;
 }
 .word-paragraph button {
   flex-shrink: 0;
+  padding: 8px;
+  min-width: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.word-paragraph p {
+  font-size: 1.4rem;
+  line-height: 2;
+  margin: 0;
+}
+.word-text-space {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+.word-hidden-text {
+  visibility: hidden;
+}
+.word-hidden-prompt {
+  position: absolute;
+  inset: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 .word-mark-word {
   background: #d7efdf;
@@ -70,65 +344,293 @@
 }
 .word-mark-character {
   background: #ffe3b5;
-  font-weight: bold;
+  font-weight: 700;
+}
+.word-vocabulary {
+  background: #fffefa;
+  border: 1px solid #dce4d1;
+  border-radius: 14px;
+  padding: 8px 14px;
+}
+.word-vocabulary h3 {
+  font-size: 1rem;
+  margin: 12px 0 8px;
 }
 .word-character-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 .word-character-list button {
   min-width: 48px;
-  min-height: 48px;
+  font-size: 1.1rem;
+}
+.word-footer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+  margin: 18px 0 10px;
+}
+.word-practice .word-complete {
+  background: #285946;
+  color: #fffefa;
+  font-size: 0.9rem;
+}
+.word-save-status {
+  min-height: 3.2em;
+  font-size: 0.8rem;
+}
+.word-about {
+  font-size: 0.8rem;
+  color: #6b7c70;
+}
+.word-empty {
+  min-height: 100px;
+  padding: 20px;
+  background: #fffefa;
+  border-radius: 16px;
+}
+.word-course-dialog {
+  width: min(760px, calc(100% - 32px));
+  max-height: 85dvh;
+  border: 1px solid #d1ddc7;
+  border-radius: 22px;
+  padding: 0;
+  color: #253a31;
+  background: #f7f8ef;
+}
+.word-course-dialog::backdrop {
+  background: #1e382f70;
+}
+.word-course-dialog > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  gap: 10px;
+}
+.word-course-dialog h2 {
+  margin: 0;
   font-size: 1.3rem;
 }
-.word-complete {
-  margin-top: 24px;
+.word-course-dialog header p {
+  font-size: 0.85rem;
+  margin: 5px 0 0;
 }
-.word-record-note {
+.word-unit-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 0 16px 12px;
+}
+.word-unit-tabs button[aria-pressed='true'] {
+  background: #285946;
+  color: #fffefa;
+}
+.word-course-list {
+  padding: 0 16px 18px;
+  max-height: 52dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.word-course-list h3 {
   font-size: 0.9rem;
-  color: #59665d;
+  color: #67806b;
+  margin: 4px 0 10px;
 }
-@media (max-width: 480px) {
-  .word-paragraph {
-    flex-direction: column;
+.word-course-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.word-course-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px;
+  border: 1px solid #d6e0ce;
+  border-radius: 12px;
+  background: #fffefa;
+}
+.word-course-dialog .word-course-option button {
+  border: 0;
+  text-align: left;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+}
+.word-course-option button > span {
+  font-size: 0.8rem;
+  color: #7b8a7b;
+}
+.word-course-option strong {
+  font-size: 1rem;
+}
+.word-course-option small {
+  font-size: 0.7rem;
+  color: #43775c;
+  margin-left: auto;
+}
+.word-course-option:has([aria-current='true']) {
+  background: #e4efda;
+  border-color: #729b79;
+}
+@media (max-width: 600px) {
+  .word-header {
+    grid-template-columns: 68px 1fr 68px;
+  }
+  .word-header h1 {
+    font-size: 1.25rem;
+  }
+  .word-header button {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+  .word-course-bar {
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+  }
+  .word-course-bar > button:last-child {
+    display: none;
+  }
+  .word-course-trigger > span {
+    font-size: 0.7rem;
+  }
+  .word-course-trigger strong {
+    font-size: 1rem;
   }
   .word-modes {
     gap: 6px;
   }
   .word-modes button {
-    flex: 1;
-    padding: 10px 6px;
+    font-size: 0.9rem;
+  }
+  .word-toolbar {
+    gap: 6px;
+  }
+  .word-toolbar > button {
+    padding-inline: 10px;
+  }
+  .word-reading-layout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .word-selected-picture {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9em), 1fr));
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+  }
+  .word-image-frame {
+    max-height: 136px;
+  }
+  .word-selected-picture figcaption {
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 0;
+    min-width: 0;
+  }
+  .word-selected-picture ruby {
+    font-size: 1.5rem;
+  }
+  .word-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .word-practice .word-grid button {
+    font-size: 1.25rem;
+    min-height: 76px;
+  }
+  .word-dictation {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 12px;
+  }
+  .word-dictation > .word-selected-picture {
+    grid-row: 1;
+  }
+  .word-recite-toolbar {
+    flex-wrap: wrap;
+  }
+  .word-paragraph {
+    gap: 8px;
+  }
+  .word-paragraph p {
+    font-size: 1.2rem;
+  }
+  .word-passage {
+    padding: 12px;
+  }
+  .word-passage > header {
+    flex-wrap: wrap;
+  }
+  .word-footer {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .word-save-status {
+    min-height: 3.2em;
+  }
+  .word-course-dialog {
+    position: fixed;
+    inset: auto 0 0;
+    width: 100%;
+    margin: 0;
+    border-radius: 22px 22px 0 0;
+  }
+  .word-course-options {
+    grid-template-columns: 1fr;
+  }
+  .word-unit-tabs button {
+    padding: 8px 3px;
+    font-size: 0.85rem;
   }
 }
-.word-practice button {
-  border: 1px solid #c6d9bd;
-  border-radius: 14px;
-  background: #fffefa;
-  color: #285946;
-  padding: 12px 18px;
-  font-weight: 650;
+.word-selected-picture figcaption {
+  position: relative;
 }
-.word-practice .section-heading {
-  flex-wrap: wrap;
-  gap: 12px;
+.word-caption-concealed {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
 }
+.word-toolbar .guidance-switch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.word-toolbar .guidance-switch input {
+  flex-shrink: 0;
+}
+.word-toolbar .guidance-switch span {
+  white-space: nowrap;
+}
+.word-unit-tabs button,
 .word-practice .word-grid button {
-  padding-top: 28px;
-  background: #fffefa;
-  box-shadow: 0 3px 0 #e3e8d9;
-}
-.word-practice .word-complete {
-  background: #285946;
-  color: #fffefa;
-}
-.word-practice .word-modes button[aria-pressed='true'] {
-  background: #285946;
-  color: #fffefa;
-}
-.word-practice .word-character-list button {
-  padding: 8px 14px;
-}
-.word-practice .word-modes button {
   transition: none;
+}
+@media (max-width: 600px) {
+  .word-intro span {
+    display: none;
+  }
+  .word-course-dialog {
+    max-width: 100%;
+  }
+}
+.word-footer {
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+.word-toolbar .guidance-switch {
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+.word-toolbar .guidance-switch input {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 18px;
 }

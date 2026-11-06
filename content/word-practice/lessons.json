@@ -101,7 +101,9 @@
           "audioId": "word-say-8b7b91e0001c6971",
           "example": "他"
         }
-      ]
+      ],
+      "unit": 1,
+      "unitTitle": "识字起步"
     },
     {
       "title": "金木水火土",
@@ -220,7 +222,9 @@
           "audioId": "word-say-13c12b064b635e06",
           "example": "下"
         }
-      ]
+      ],
+      "unit": 1,
+      "unitTitle": "识字起步"
     },
     {
       "title": "口耳目手足",
@@ -352,7 +356,9 @@
           "audioId": "word-say-4247f1a43b8230cb",
           "example": "坐"
         }
-      ]
+      ],
+      "unit": 1,
+      "unitTitle": "识字起步"
     },
     {
       "title": "日月山川",
@@ -489,7 +495,9 @@
           "audioId": "word-say-d1e45402fb550553",
           "example": "禾"
         }
-      ]
+      ],
+      "unit": 1,
+      "unitTitle": "识字起步"
     },
     {
       "title": "语文园地一",
@@ -598,7 +606,9 @@
           "audioId": "word-say-fc7edd399a5c4b93",
           "example": "十"
         }
-      ]
+      ],
+      "unit": 1,
+      "unitTitle": "识字起步"
     },
     {
       "title": "拼音 bpmf",
@@ -634,7 +644,9 @@
           "audioId": "word-say-e331d617554b0f37",
           "example": "妈"
         }
-      ]
+      ],
+      "unit": 2,
+      "unitTitle": "拼音起步"
     },
     {
       "title": "拼音 dtnl",
@@ -732,7 +744,9 @@
           "audioId": "word-say-7c18dba3144b6dcd",
           "example": "土"
         }
-      ]
+      ],
+      "unit": 2,
+      "unitTitle": "拼音起步"
     },
     {
       "title": "语文园地二",
@@ -866,7 +880,9 @@
           "audioId": "word-say-3399a0e651ad104c",
           "example": "王"
         }
-      ]
+      ],
+      "unit": 2,
+      "unitTitle": "拼音起步"
     },
     {
       "title": "拼音 gkh",
@@ -975,7 +991,9 @@
           "audioId": "word-say-b0a1eab5f902df03",
           "example": "花"
         }
-      ]
+      ],
+      "unit": 3,
+      "unitTitle": "声母与词语"
     },
     {
       "title": "拼音 jqx",
@@ -1063,7 +1081,9 @@
           "audioId": "word-say-9213ab05890bafa2",
           "example": "木"
         }
-      ]
+      ],
+      "unit": 3,
+      "unitTitle": "声母与词语"
     },
     {
       "title": "拼音 zcs",
@@ -1145,7 +1165,9 @@
           "audioId": "word-say-a6b71dae843e3e0a",
           "example": "子"
         }
-      ]
+      ],
+      "unit": 3,
+      "unitTitle": "声母与词语"
     },
     {
       "title": "拼音 zh ch sh r",
@@ -1242,7 +1264,9 @@
           "audioId": "word-say-1be968f125240969",
           "example": "书"
         }
-      ]
+      ],
+      "unit": 3,
+      "unitTitle": "声母与词语"
     },
     {
       "title": "拼音 y w",
@@ -1334,7 +1358,9 @@
           "audioId": "word-say-8ba28b5c53491a01",
           "example": "鸦"
         }
-      ]
+      ],
+      "unit": 3,
+      "unitTitle": "声母与词语"
     },
     {
       "title": "语文园地三",
@@ -1506,7 +1532,9 @@
           "audioId": "word-say-5ba1e3c0eb636161",
           "example": "会"
         }
-      ]
+      ],
+      "unit": 3,
+      "unitTitle": "声母与词语"
     },
     {
       "title": "拼音 ai ei ui",
@@ -1648,7 +1676,9 @@
           "audioId": "word-say-fb8866222f9da0b0",
           "example": "果"
         }
-      ]
+      ],
+      "unit": 4,
+      "unitTitle": "韵母与词语"
     },
     {
       "title": "拼音 ao ou iu",
@@ -1760,7 +1790,9 @@
           "audioId": "word-say-ee222b9d0f8aaab8",
           "example": "柳"
         }
-      ]
+      ],
+      "unit": 4,
+      "unitTitle": "韵母与词语"
     },
     {
       "title": "拼音 ie üe er",
@@ -1883,7 +1915,9 @@
           "audioId": "word-say-4e187edb730066cd",
           "example": "美"
         }
-      ]
+      ],
+      "unit": 4,
+      "unitTitle": "韵母与词语"
     },
     {
       "title": "拼音 an en in un ün",
@@ -1991,7 +2025,9 @@
           "audioId": "word-say-5f8e490558897efa",
           "example": "森"
         }
-      ]
+      ],
+      "unit": 4,
+      "unitTitle": "韵母与词语"
     },
     {
       "title": "拼音 ang eng ing ong",
@@ -2104,7 +2140,9 @@
           "audioId": "word-say-b1f8107ec8163500",
           "example": "车"
         }
-      ]
+      ],
+      "unit": 4,
+      "unitTitle": "韵母与词语"
     },
     {
       "title": "语文园地四",
@@ -2253,7 +2291,9 @@
           "audioId": "word-say-62ef900a8f5d5bff",
           "example": "年"
         }
-      ]
+      ],
+      "unit": 4,
+      "unitTitle": "韵母与词语"
     },
     {
       "title": "秋天",
@@ -2536,7 +2576,9 @@
           "audioId": "word-say-270102d52eac1cae",
           "example": "飞"
         }
-      ]
+      ],
+      "unit": 5,
+      "unitTitle": "秋天与四季"
     },
     {
       "title": "江南",
@@ -2775,7 +2817,9 @@
           "audioId": "word-say-01bc01b32975b903",
           "example": "北"
         }
-      ]
+      ],
+      "unit": 5,
+      "unitTitle": "秋天与四季"
     },
     {
       "title": "雪地里的小画家",
@@ -3102,7 +3146,9 @@
           "audioId": "word-say-f0f0327bc55750d6",
           "example": "加"
         }
-      ]
+      ],
+      "unit": 5,
+      "unitTitle": "秋天与四季"
     },
     {
       "title": "四季",
@@ -3409,7 +3455,9 @@
           "audioId": "word-say-0868fbc8c0bd7ea3",
           "example": "冬"
         }
-      ]
+      ],
+      "unit": 5,
+      "unitTitle": "秋天与四季"
     },
     {
       "title": "语文园地五",
@@ -3668,7 +3716,9 @@
           "audioId": "word-say-0e826095b60ccf03",
           "example": "外"
         }
-      ]
+      ],
+      "unit": 5,
+      "unitTitle": "秋天与四季"
     },
     {
       "title": "对韵歌",
@@ -3892,7 +3942,9 @@
           "audioId": "word-say-0eb7ee7e38effcf3",
           "example": "红"
         }
-      ]
+      ],
+      "unit": 6,
+      "unitTitle": "识字与生活"
     },
     {
       "title": "日月明",
@@ -4154,7 +4206,9 @@
           "audioId": "word-say-3c1e31a193cda379",
           "example": "金"
         }
-      ]
+      ],
+      "unit": 6,
+      "unitTitle": "识字与生活"
     },
     {
       "title": "小书包",
@@ -4402,7 +4456,9 @@
           "audioId": "word-say-e7c7fb50f3db8408",
           "example": "早"
         }
-      ]
+      ],
+      "unit": 6,
+      "unitTitle": "识字与生活"
     },
     {
       "title": "升国旗",
@@ -4672,7 +4728,9 @@
           "audioId": "word-say-fc651d3c3ad56c96",
           "example": "立"
         }
-      ]
+      ],
+      "unit": 6,
+      "unitTitle": "识字与生活"
     },
     {
       "title": "语文园地六",
@@ -4916,7 +4974,9 @@
           "audioId": "word-say-9971297206c91c86",
           "example": "卫"
         }
-      ]
+      ],
+      "unit": 6,
+      "unitTitle": "识字与生活"
     },
     {
       "title": "小小的船",
@@ -5190,7 +5250,9 @@
           "audioId": "word-say-02c6f46a33fa8e3a",
           "example": "闪"
         }
-      ]
+      ],
+      "unit": 7,
+      "unitTitle": "课文与家人"
     },
     {
       "title": "影子",
@@ -5449,7 +5511,9 @@
           "audioId": "word-say-23fa6f37cdf00853",
           "example": "友"
         }
-      ]
+      ],
+      "unit": 7,
+      "unitTitle": "课文与家人"
     },
     {
       "title": "两件宝",
@@ -5767,7 +5831,9 @@
           "audioId": "word-say-413c06bcef7c934d",
           "example": "能"
         }
-      ]
+      ],
+      "unit": 7,
+      "unitTitle": "课文与家人"
     },
     {
       "title": "语文园地七",
@@ -6014,7 +6080,9 @@
           "audioId": "word-say-219c2f148bcece14",
           "example": "妹"
         }
-      ]
+      ],
+      "unit": 7,
+      "unitTitle": "课文与家人"
     },
     {
       "title": "比尾巴",
@@ -6251,7 +6319,9 @@
           "audioId": "word-say-9b67720a9243f02a",
           "example": "公"
         }
-      ]
+      ],
+      "unit": 8,
+      "unitTitle": "动物与自然"
     },
     {
       "title": "乌鸦喝水",
@@ -6543,7 +6613,9 @@
           "audioId": "word-say-b1c27820fec23edb",
           "example": "高"
         }
-      ]
+      ],
+      "unit": 8,
+      "unitTitle": "动物与自然"
     },
     {
       "title": "雨点儿",
@@ -6804,7 +6876,9 @@
           "audioId": "word-say-6edcbb95dac1e004",
           "example": "长大"
         }
-      ]
+      ],
+      "unit": 8,
+      "unitTitle": "动物与自然"
     },
     {
       "title": "语文园地八",
@@ -6963,7 +7037,9 @@
           "audioId": "word-say-bec69dd92eb83823",
           "example": "音"
         }
-      ]
+      ],
+      "unit": 8,
+      "unitTitle": "动物与自然"
     }
   ],
   "ui": {

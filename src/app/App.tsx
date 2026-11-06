@@ -1011,6 +1011,10 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     return (
       <main className="home-page">
         <WordPractice
+          guidanceEnabled={guidanceEnabled}
+          onGuidanceChange={changeGuidance}
+          gapSeconds={gapSeconds}
+          onGapChange={changePlaybackGap}
           onBack={() => {
             window.location.hash = '';
             setWordsOpen(false);
@@ -1214,22 +1218,20 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             />
           ) : (
             <>
-              <section className="daily-entry games-entry">
+              <section className="daily-entry">
                 <div>
-                  <span className="eyebrow">边玩边学 · 每次短一点</span>
-                  <h2>拼音游戏乐园</h2>
-                  <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
+                  <span className="eyebrow">每天读一点</span>
+                  <h2>天天练拼音</h2>
+                  <p>听一听，跟着读。</p>
                 </div>
                 <button
                   onClick={() => {
                     stopVoice();
-                    voiceStarted.current = true;
-                    window.location.hash = 'games';
-                    setGamesOpen(true);
-                    if (guidanceEnabled) playVoice('ui-game_welcome');
+                    window.location.hash = 'daily-reading';
+                    setDailyOpen(true);
                   }}
                 >
-                  进入游戏乐园 →
+                  进入天天练拼音 →
                 </button>
               </section>
               <section className="daily-entry">
@@ -1248,20 +1250,22 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                   进入词语天天练 →
                 </button>
               </section>
-              <section className="daily-entry">
+              <section className="daily-entry games-entry">
                 <div>
-                  <span className="eyebrow">每天读一点</span>
-                  <h2>天天练拼音</h2>
-                  <p>听一听，跟着读。</p>
+                  <span className="eyebrow">边玩边学 · 每次短一点</span>
+                  <h2>拼音游戏乐园</h2>
+                  <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
                 </div>
                 <button
                   onClick={() => {
                     stopVoice();
-                    window.location.hash = 'daily-reading';
-                    setDailyOpen(true);
+                    voiceStarted.current = true;
+                    window.location.hash = 'games';
+                    setGamesOpen(true);
+                    if (guidanceEnabled) playVoice('ui-game_welcome');
                   }}
                 >
-                  进入天天练拼音 →
+                  进入游戏乐园 →
                 </button>
               </section>
               <details className="course-browser">

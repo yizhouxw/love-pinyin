@@ -11,3 +11,5 @@
 声音通过 `npm run prepare:voice` 的既有固定本地Qwen流程生成并登记manifest，运行时不合成、不下载。`npm run validate:content` 校验来源/结构，`npm run validate:release` 额外核对所有音频的登记、实际文件和SHA。变更文字须重新生成声音，禁止沿用旧文本摘要。
 
 新模块无新增依赖。教材文字、作者作品和家长材料保留独立权利，见THIRD_PARTY_NOTICES.md；不能把产品工程检查当成教材公开再发行授权。
+
+`images.json`为全部736个不同读/写词目的显式情景插图清单，包含稳定ID、场景、变体、说明与输出SHA256；插图是原创MIT矢量图，相近词义可共用构图，抽象词用人物、数量、方位或动作情景表达，不冒充字典释义。`uv run --locked python -m scripts.build_word_images`从明确登记的配方重建public/word-illustrations，普通启动直接使用已提交SVG，不下载或调用外部图片服务。修改配方或绘图后须重建，校验器拒绝缺图、摘要不符及外部脚本/图片引用。听写未揭晓时图片与词语标签对视觉和辅助技术隐藏，但保留布局尺寸；图片失败独立重试。

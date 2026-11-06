@@ -1,0 +1,5159 @@
+{
+  "version": 1,
+  "license": "MIT",
+  "style": "原创本地矢量情景示意；同义或相近词可复用构图；非字典释义",
+  "items": {
+    "天上": {
+      "scene": "sky",
+      "variant": "day",
+      "description": "“天上”情景示意：太阳、白云在高高的蓝天上。",
+      "id": "59d1c376fb2a7fd9",
+      "sha256": "af6d6109913047c220a453733171452902b41640af3ca6ab10f8db0e7ee7ecf2"
+    },
+    "天空": {
+      "scene": "sky",
+      "variant": "day",
+      "description": "“天空”情景示意：太阳、白云在高高的蓝天上。",
+      "id": "6c8c7a77cdfd4fd3",
+      "sha256": "32a5e3084fdaebac818b40fa82b37c67f8665a7c70f95f0e712958cbc13e097b"
+    },
+    "蓝天": {
+      "scene": "sky",
+      "variant": "day",
+      "description": "“蓝天”情景示意：太阳、白云在高高的蓝天上。",
+      "id": "59ce7b21b155e652",
+      "sha256": "38568d980ca30a880c0b7a065178ef86e4a8d22d25232a0087d98fc9262c8608"
+    },
+    "白云": {
+      "scene": "sky",
+      "variant": "day",
+      "description": "“白云”情景示意：太阳、白云在高高的蓝天上。",
+      "id": "5b60cf3c57e8afec",
+      "sha256": "faec67528dffd8d5757fb26fe9f1d28bba9f7de21eade0e3cc307831e719b64e"
+    },
+    "一片云": {
+      "scene": "sky",
+      "variant": "day",
+      "description": "“一片云”情景示意：太阳、白云在高高的蓝天上。",
+      "id": "c9ee0426f280afb1",
+      "sha256": "d323d4e39a82a8e236d94f1451f2c7f163029783f90fe596c919a778a41f6e85"
+    },
+    "云": {
+      "scene": "sky",
+      "variant": "day",
+      "description": "“云”情景示意：太阳、白云在高高的蓝天上。",
+      "id": "32d42b97294a1365",
+      "sha256": "7ecdeb91b289ce165fe146de32fab401887a8b614314ca511c3af08555fa78ab"
+    },
+    "云朵": {
+      "scene": "sky",
+      "variant": "day",
+      "description": "“云朵”情景示意：太阳、白云在高高的蓝天上。",
+      "id": "6064a9108356b7c4",
+      "sha256": "f14e75f30c95ccbbf45cd92a30183249ee02eb954a7b982c6a94ca8232371fa2"
+    },
+    "日夜": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“日夜”情景示意：深色夜空中的月亮和星星。",
+      "id": "0784a0b5f37107ec",
+      "sha256": "d90d73154a4814863d2260c0d1c67d4d2e211a978351549a04f1c3546fe098ba"
+    },
+    "夜晚": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“夜晚”情景示意：深色夜空中的月亮和星星。",
+      "id": "b77ea2b347b83247",
+      "sha256": "16454d10f5587adc69ae9f2c55414a7d1c33f58db0eeafa7d083873d5237db7a"
+    },
+    "夜色美": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“夜色美”情景示意：深色夜空中的月亮和星星。",
+      "id": "3fd8f684cf5217fe",
+      "sha256": "f346221d308e787b1564bf4f9cd24a4494f3c2b398c0ff49024486e737d10759"
+    },
+    "晚上": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“晚上”情景示意：深色夜空中的月亮和星星。",
+      "id": "a9b1124b34615118",
+      "sha256": "140639420d01d196def7dcbe7046290a2176238428d88e010b7c926bf599b940"
+    },
+    "明晚": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“明晚”情景示意：深色夜空中的月亮和星星。",
+      "id": "571a23d618bb6d4d",
+      "sha256": "ddb5fbe0f7be1ac8d8541994d509b30a452a52500800dcd096249a5141b18485"
+    },
+    "昨晚": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“昨晚”情景示意：深色夜空中的月亮和星星。",
+      "id": "59ae28caf7a9a166",
+      "sha256": "46f34f73a8eddf899e38d8ffcb6bc2504729434e9732e25b48642a9a16be6b86"
+    },
+    "月亮": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“月亮”情景示意：深色夜空中的月亮和星星。",
+      "id": "917705b6ba5e02dd",
+      "sha256": "b5cb5da477c2f741541a40a26a067aa9d029cb45808d2abb44bd88010f42a7f9"
+    },
+    "月儿": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“月儿”情景示意：深色夜空中的月亮和星星。",
+      "id": "d978d12fb480a41b",
+      "sha256": "476e03cf629714a4a0940cd9a5425c1a0563d532c169c856619a8f5656b45784"
+    },
+    "月牙": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“月牙”情景示意：深色夜空中的月亮和星星。",
+      "id": "8b3e0785a3aec46e",
+      "sha256": "71633196091848302bb951f3eede6ae47628871d5d2d31084608c16a74a06431"
+    },
+    "弯月": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“弯月”情景示意：深色夜空中的月亮和星星。",
+      "id": "88911eba12dbff95",
+      "sha256": "a0400f808a929e3c84d3dca5005d43b106d5f6037f392f715ff01f3a4b57c337"
+    },
+    "星星": {
+      "scene": "sky",
+      "variant": "night",
+      "description": "“星星”情景示意：深色夜空中的月亮和星星。",
+      "id": "6a9fec7faf975f2e",
+      "sha256": "5d0f1feda6ede4491831459238f54a13380b57d0a1529c6cc02c0768a9ab22fa"
+    },
+    "太阳": {
+      "scene": "sky",
+      "variant": "sun",
+      "description": "“太阳”情景示意：太阳从地平线上升起来。",
+      "id": "5c313602f7beb485",
+      "sha256": "a55dfb5a3dedf3ed52ff8f4b8fd44ec7d88eb72ac24f241954ffc921db549d95"
+    },
+    "上升": {
+      "scene": "sky",
+      "variant": "sun",
+      "description": "“上升”情景示意：太阳从地平线上升起来。",
+      "id": "13a33ae5bd1ea1b3",
+      "sha256": "3024298e15f3ba3bea0414674030d614cd45214e67fb09ed7c50bfcf725b5820"
+    },
+    "升起": {
+      "scene": "sky",
+      "variant": "sun",
+      "description": "“升起”情景示意：太阳从地平线上升起来。",
+      "id": "e7a9170807e92634",
+      "sha256": "51844dffc29f96f5ddec24aeee7504215a023bcd5fb2050e475b781f2eb5515f"
+    },
+    "上午": {
+      "scene": "clock",
+      "variant": "morning",
+      "description": "“上午”情景示意：钟表和太阳表示一天中的时间。",
+      "id": "298336ec2c0e2e37",
+      "sha256": "06f40bc320e075b6b32b2c6d702bb3cb4cb4de8b78f2d0030fe96cdc9dccda6e"
+    },
+    "早上": {
+      "scene": "clock",
+      "variant": "morning",
+      "description": "“早上”情景示意：钟表和太阳表示一天中的时间。",
+      "id": "c6fe2eb2c986c383",
+      "sha256": "d7f114bb51b6f3cb450d41a6211fe92471f5876238618a37ce39437d57f2f49f"
+    },
+    "早晨": {
+      "scene": "clock",
+      "variant": "morning",
+      "description": "“早晨”情景示意：钟表和太阳表示一天中的时间。",
+      "id": "119af509ad0770c5",
+      "sha256": "727671840d54a6aea1c8fb95737e6d30c1ffd4ef66719e6671a1d0c3bc87512d"
+    },
+    "明日": {
+      "scene": "sky",
+      "variant": "sun",
+      "description": "“明日”情景示意：太阳从地平线上升起来。",
+      "id": "6450d5f86685fd01",
+      "sha256": "27522acf8a8fe9dc90d1e9c2bacad7614871da1060981b32e1e965358f0b0691"
+    },
+    "下雨": {
+      "scene": "sky",
+      "variant": "rain",
+      "description": "“下雨”情景示意：云层落下雨点，雨水流到地面。",
+      "id": "024b2708ed8e3ffc",
+      "sha256": "99dbb98dc68c24c542b4ceff4c870a7bba04b57e25d96a127c25fe85318415a8"
+    },
+    "云雨": {
+      "scene": "sky",
+      "variant": "rain",
+      "description": "“云雨”情景示意：云层落下雨点，雨水流到地面。",
+      "id": "980a1ce42761e190",
+      "sha256": "bc833e0e3aeaf55fb0c4443bbd497c4459a5d262342d9d880dded4a82e62feb7"
+    },
+    "雨水": {
+      "scene": "sky",
+      "variant": "rain",
+      "description": "“雨水”情景示意：云层落下雨点，雨水流到地面。",
+      "id": "0c25944364ccf26f",
+      "sha256": "d8e9a295eee45ba2c3225463ae83e8f5d9b8430b3b3d732198f537a15028ecb1"
+    },
+    "春雨": {
+      "scene": "sky",
+      "variant": "rain",
+      "description": "“春雨”情景示意：云层落下雨点，雨水流到地面。",
+      "id": "35d377242c037765",
+      "sha256": "3d14f7f2a7f10948208f676dd501aecd7e6c4572af0881d5d3004aa06f175620"
+    },
+    "秋雨": {
+      "scene": "sky",
+      "variant": "rain",
+      "description": "“秋雨”情景示意：云层落下雨点，雨水流到地面。",
+      "id": "fa2270ae98721a71",
+      "sha256": "070105d5d77a86d3ed9d3b784e59aae82fc444867e7cfd82f536e90f1c58825f"
+    },
+    "风雨": {
+      "scene": "sky",
+      "variant": "rain",
+      "description": "“风雨”情景示意：云层落下雨点，雨水流到地面。",
+      "id": "720650f842fda421",
+      "sha256": "e88d640f57ad2d843c3e4a5f7421198faa7c7ec8e8ab9989bf125c8cb8164b66"
+    },
+    "雨里": {
+      "scene": "sky",
+      "variant": "rain",
+      "description": "“雨里”情景示意：云层落下雨点，雨水流到地面。",
+      "id": "34b147f10fc1e0de",
+      "sha256": "b9572ce92a5d92925e402633ce32fa6c9ccf9bd5ae151f28f0d71c2af3844603"
+    },
+    "乌云": {
+      "scene": "sky",
+      "variant": "rain",
+      "description": "“乌云”情景示意：云层落下雨点，雨水流到地面。",
+      "id": "3999ce0b9ebb3fa6",
+      "sha256": "4a0a1cba14733522b0a1fcc0416e2fbccd2dd3d35f07952e8ee89f15dbf9cd88"
+    },
+    "彩云": {
+      "scene": "sky",
+      "variant": "colorful-cloud",
+      "description": "“彩云”情景示意：夕阳把天空的云朵染成粉色和金色。",
+      "id": "7ac06c55ca5b1bae",
+      "sha256": "a484b771dbc28c1728212b444f50b15f142675f19bcd07e1171a6a23abf48d1b"
+    },
+    "下雪": {
+      "scene": "sky",
+      "variant": "snow",
+      "description": "“下雪”情景示意：雪花飘落，地上铺着白雪。",
+      "id": "8f92983d8b1f7638",
+      "sha256": "4ca1f3c48d3aeb3cd792d9b0fe4b37116a7d8eb7bdb786d70161c864e982c9b4"
+    },
+    "大雪": {
+      "scene": "sky",
+      "variant": "snow",
+      "description": "“大雪”情景示意：雪花飘落，地上铺着白雪。",
+      "id": "bc4e5aec66495ad8",
+      "sha256": "d132f5ec960ade41df3016c12470338d208affa67e884c45e90fe9b2eb1ed406"
+    },
+    "雪花飘": {
+      "scene": "sky",
+      "variant": "snow",
+      "description": "“雪花飘”情景示意：雪花飘落，地上铺着白雪。",
+      "id": "cf6c024a2baaf2b0",
+      "sha256": "3679649251f41704f8885685e0d4542608537a6132235d4b21985640883fdde7"
+    },
+    "冰雪": {
+      "scene": "sky",
+      "variant": "snow",
+      "description": "“冰雪”情景示意：雪花飘落，地上铺着白雪。",
+      "id": "a911660275c7fd68",
+      "sha256": "9f2ee3a31434dcf288074253facecdbe814042bf09f8d4a8b1d87a70c8a86c3e"
+    },
+    "冬天": {
+      "scene": "sky",
+      "variant": "snow",
+      "description": "“冬天”情景示意：雪花飘落，地上铺着白雪。",
+      "id": "7a6cc29740a72c4c",
+      "sha256": "f3107fa92627c0c635d737d70fd022fdac4709fefe9f5b3b411520f1c6cb0b7f"
+    },
+    "冬季": {
+      "scene": "sky",
+      "variant": "snow",
+      "description": "“冬季”情景示意：雪花飘落，地上铺着白雪。",
+      "id": "0ae780e1bafa59e5",
+      "sha256": "a11d770c51da5d070b7cdf006c64dfbec5fc1d7549bd53766044c129733b661d"
+    },
+    "过冬": {
+      "scene": "sky",
+      "variant": "snow",
+      "description": "“过冬”情景示意：雪花飘落，地上铺着白雪。",
+      "id": "a9769934684d594c",
+      "sha256": "5bccaf4cd2da4182ab286cd8434f1d96154b469740f7531b6c26cb82dea7addc"
+    },
+    "大风": {
+      "scene": "sky",
+      "variant": "wind",
+      "description": "“大风”情景示意：风吹动树叶和小旗。",
+      "id": "bc37c6ec9f64a3bc",
+      "sha256": "5d90d5f6795b3acbc1a0b0e24b8c20628d8d201983c9d0f975b104f0a2a632bf"
+    },
+    "刮风": {
+      "scene": "sky",
+      "variant": "wind",
+      "description": "“刮风”情景示意：风吹动树叶和小旗。",
+      "id": "03ce8aed5ebc351e",
+      "sha256": "7d10a062567ee9b118ad6dfc0fd6903c1c8bcf8d4a1b4b9f31a002f7c8532df5"
+    },
+    "台风": {
+      "scene": "sky",
+      "variant": "wind",
+      "description": "“台风”情景示意：风吹动树叶和小旗。",
+      "id": "d946d47a800e4dc3",
+      "sha256": "93e6f4ffc74eea6102c3fb118d36db3ac63dc96ac62f35b3ae7af123158cdd9e"
+    },
+    "西风": {
+      "scene": "sky",
+      "variant": "wind",
+      "description": "“西风”情景示意：风吹动树叶和小旗。",
+      "id": "ece6f15b1ecf06e1",
+      "sha256": "9da35544699fce5e583de129d51ec4c655138eb966757c93e15973db991aec75"
+    },
+    "春风": {
+      "scene": "sky",
+      "variant": "wind",
+      "description": "“春风”情景示意：风吹动树叶和小旗。",
+      "id": "a002c23fd8f99a3d",
+      "sha256": "72f26216c5bc0122bf0decf8754da7bb2728ddb92919a370c691a7deef8dcd6b"
+    },
+    "秋风": {
+      "scene": "sky",
+      "variant": "wind",
+      "description": "“秋风”情景示意：风吹动树叶和小旗。",
+      "id": "f48aef16090914eb",
+      "sha256": "47c1f4b57b562a8e07eb8dfe121a03b930f32f7f714a69030a1384e288631d68"
+    },
+    "闪电": {
+      "scene": "sky",
+      "variant": "lightning",
+      "description": "“闪电”情景示意：深色云朵下面闪过一道电光。",
+      "id": "a8c1b5b5b172b128",
+      "sha256": "5b834ddce0c5afd4e8751dbcecf3c5d653782f42da17d507c6f89b8b60be5c1b"
+    },
+    "闪光": {
+      "scene": "sky",
+      "variant": "lightning",
+      "description": "“闪光”情景示意：深色云朵下面闪过一道电光。",
+      "id": "c687c64eecc48c5d",
+      "sha256": "c20354350e8efdc4fa34a413c437969619e9727cc788586b19ec0f004ddadcdc"
+    },
+    "闪亮": {
+      "scene": "sky",
+      "variant": "lightning",
+      "description": "“闪亮”情景示意：深色云朵下面闪过一道电光。",
+      "id": "bb78295186a64610",
+      "sha256": "3084d96099fd67edd0e78ead79731827a3f685c404ae2faa897444db8981dd9a"
+    },
+    "气体": {
+      "scene": "sky",
+      "variant": "air",
+      "description": "“气体”情景示意：气流用弯曲箭头表示。",
+      "id": "bc4fbda3a12d3a15",
+      "sha256": "f5ab61a2ba50d565f72345af386fee10f17298e3f18ebd97a4ebcea7d9943138"
+    },
+    "天气": {
+      "scene": "sky",
+      "variant": "air",
+      "description": "“天气”情景示意：气流用弯曲箭头表示。",
+      "id": "4d947325473f5b57",
+      "sha256": "9756b91a86e04351fd1934179e934c6efe2efbc5f7d4126f75e118a06668690c"
+    },
+    "天天": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“天天”情景示意：日历上的日期被圈出来。",
+      "id": "a9cc60e7724d0394",
+      "sha256": "8d0d2275cfec2992a5eda8ca9eb128b4aa9c857f4a883ecd9ff6271558b67d82"
+    },
+    "今天": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“今天”情景示意：日历上的日期被圈出来。",
+      "id": "d5f5a7a010731feb",
+      "sha256": "cb4bc83d1c5f676ad0be1a8517aa23cb828b18cec4dde63aa641908adf736519"
+    },
+    "昨天": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“昨天”情景示意：日历上的日期被圈出来。",
+      "id": "0c184871f658375a",
+      "sha256": "7ba8790a13fa4123b71fae8587288edd6aed4b251ec8f8c7f4f9c7944115729f"
+    },
+    "明天": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“明天”情景示意：日历上的日期被圈出来。",
+      "id": "b1d841b978fb524c",
+      "sha256": "1fbf329f336168abc68d8019ff1441350356dc4f088472c00204913ae69d48d4"
+    },
+    "一日": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“一日”情景示意：日历上的日期被圈出来。",
+      "id": "2617b02faa0cb915",
+      "sha256": "8118635808d098fa2aa0ff48dd26278f71735d92e74f34badec2a025a8b20985"
+    },
+    "十日": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“十日”情景示意：日历中的日期被标出。",
+      "id": "6878b2d7befea83f",
+      "sha256": "34021bea501aefccbce34ac7d9dec765ac4a7fa763868fe047e53394397f1205"
+    },
+    "四日": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“四日”情景示意：日历中的日期被标出。",
+      "id": "5bfc00165d9b70c7",
+      "sha256": "4e1e6cb13728183b45bee9b8e546d9000b2cbb7d02386dfd8a9bb3bcf0369d24"
+    },
+    "半日": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“半日”情景示意：日历上的日期被圈出来。",
+      "id": "3d5d1aa59f33124b",
+      "sha256": "1d76bf06f07d080a3edc9796b68328ce22941c0cc75aa87ba656c3efc1ed85b9"
+    },
+    "日子": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“日子”情景示意：日历上的日期被圈出来。",
+      "id": "4cfbc3082a9982cf",
+      "sha256": "5b8e760e13d28987e9e4e4072cc9565f471b6e4dc1ba5ab307051f68ad65222d"
+    },
+    "一旦": {
+      "scene": "calendar",
+      "variant": "day",
+      "description": "“一旦”情景示意：日历上的日期被圈出来。",
+      "id": "03cacbff31c50e09",
+      "sha256": "e0ac4b8fef54ff118e4e16038188d6800f165d3f5dbe552f50df17840902595c"
+    },
+    "五月": {
+      "scene": "calendar",
+      "variant": "month",
+      "description": "“五月”情景示意：月份日历上有不同的日期。",
+      "id": "5ae5cbaf179a4c24",
+      "sha256": "e9a510203a461ec20d150a6bdb203f70d7facadf2994e6739d54fc44d98978ad"
+    },
+    "八月": {
+      "scene": "calendar",
+      "variant": "month",
+      "description": "“八月”情景示意：月份日历上有不同的日期。",
+      "id": "affa2599cd5f2789",
+      "sha256": "0373c24d8987cddade06c56a9af9406a742778137756d67008e97f14376449d0"
+    },
+    "星期": {
+      "scene": "calendar",
+      "variant": "month",
+      "description": "“星期”情景示意：月份日历上有不同的日期。",
+      "id": "c398134d7d1f58e7",
+      "sha256": "dc8d81285daeb221ff5bb989f80c07efbd678cb9dbe633026706d5ea0e6d78e3"
+    },
+    "七天": {
+      "scene": "calendar",
+      "variant": "month",
+      "description": "“七天”情景示意：月份日历上有不同的日期。",
+      "id": "36776e0a26ba8758",
+      "sha256": "cc14decf31427315df62e15cfb9236c9b9414888c7ba32d62173e5bde076d441"
+    },
+    "几天": {
+      "scene": "calendar",
+      "variant": "month",
+      "description": "“几天”情景示意：月份日历上有不同的日期。",
+      "id": "edac00244e8fa5a3",
+      "sha256": "5d539713c07d1495d8171447551fe16218ba39ae6cafd70cf44543066d5e0318"
+    },
+    "十年": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“十年”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "1dc47bdd661a24c2",
+      "sha256": "3e7c9440149d8d47216776a299da86cc2c14d46bba48d6fec6a079ee7afb7ba0"
+    },
+    "三年": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“三年”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "b13f0b14f6bd5842",
+      "sha256": "a4eb1a006b984fb2549135ad3408d4d2b0967915398eb78ca2e8aefa6e0c6641"
+    },
+    "四年": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“四年”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "57f5281cbbe04a45",
+      "sha256": "afeeae45c68c09712a00163fef501504faaba718c7c5323c7c284be7a246f806"
+    },
+    "几年": {
+      "scene": "number",
+      "variant": "each",
+      "description": "“几年”情景示意：几个小物体各占一个格子。",
+      "id": "ef1b1f5254579e8a",
+      "sha256": "cd7faa74df1f3c3137f310d19af64ba7a74b37301d6ab39b163a8fac53d1d428"
+    },
+    "去年": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“去年”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "c5c593d385bf5696",
+      "sha256": "9db2d4c8799f0ae92a4346e7691b3d3e8fd26c296c24ab38a6935df3df2de303"
+    },
+    "新年": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“新年”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "3dc45bf582a4cb31",
+      "sha256": "3459633e51b5b0d0d507027be50ef3391c97c2419e645ca97307f4f64fcd23a9"
+    },
+    "又一年": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“又一年”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "f520791fff899dd3",
+      "sha256": "a5e6a48cb89befb33eb6c5295aa6b7749ff065a2b6d057e8595959a014a07609"
+    },
+    "久远": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“久远”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "0bfcab25f638a616",
+      "sha256": "dbd9a976ea5793ad255cbe26818bd5ecac24271513945c85e890a07d4d81158d"
+    },
+    "长久": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“长久”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "80d60b4f325dba90",
+      "sha256": "66c4236a4710243446ad9fb07f6bcac1dabe1f8b963c242c8cdedc0ccfb5d069"
+    },
+    "从前": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“从前”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "eaa1d1456b664cfc",
+      "sha256": "d8384fcb18ee68813966412fbb071eb9a34b0553e283edc0a35e0e543d680184"
+    },
+    "以后": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“以后”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "e6ad7a1dbc1ede22",
+      "sha256": "45440b8e85409ca478cc5baf768535bfe1f230af70fb6278eb5548002231688c"
+    },
+    "后来": {
+      "scene": "house",
+      "variant": "leave",
+      "description": "“后来”情景示意：孩子挥手，沿箭头离开家门。",
+      "id": "5ff5a4de18dc7cd2",
+      "sha256": "d2207d3ba6fecbc8cf6d1dc70dabeb715536156294d62bc9f5b8124828b12a52"
+    },
+    "自从": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“自从”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "813d8b9fe6ef0e52",
+      "sha256": "382a5e47402e0dfa9c4bff7c04134fabbeb28b3e54f0ca3ff52bca90e3fd5aba"
+    },
+    "从来": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“从来”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "0f79c70b625c8d89",
+      "sha256": "60a64a589f279a5b7f82509b8a50ae1d9609ab177d7b31c3297590e2b95872ce"
+    },
+    "本来": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“本来”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "0c75d89282e0f00f",
+      "sha256": "d474fa29c91869d50ec3dfb58e2dc483eef9a21f425e8e9f53b11512d4cfcc45"
+    },
+    "原来": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“原来”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "d4b26dcd0f0022d9",
+      "sha256": "76ddb6fe523b3465ce28d2b43ab7daabc898a1f7aed702058ef2f80c7e58c210"
+    },
+    "过去": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“过去”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "3774af744856e7f5",
+      "sha256": "47da67c55534e6383be0e763a4d11e3efbebfbe1dca9e36a431398c9167d25c2"
+    },
+    "过期": {
+      "scene": "calendar",
+      "variant": "year",
+      "description": "“过期”情景示意：日历一页页翻过，表示年份变化。",
+      "id": "97399bd88226cf7f",
+      "sha256": "4a121f22bb2021843dca83dc4303f0fc85869217f04847054b2f59e483fecef4"
+    },
+    "元旦": {
+      "scene": "calendar",
+      "variant": "festival",
+      "description": "“元旦”情景示意：新年日历旁挂着红灯笼。",
+      "id": "d3da90a864b8126c",
+      "sha256": "f8a6bd2c198a6a9cea8fb9834a8077b8e368e69e2b645a964edcd37bbdc3f5ec"
+    },
+    "春节": {
+      "scene": "calendar",
+      "variant": "festival",
+      "description": "“春节”情景示意：新年日历旁挂着红灯笼。",
+      "id": "48eb870b394f4a33",
+      "sha256": "472ca6695a7d3f754a912e2a9b257237f789bdbeedb6ce274e3ad64b6a29a549"
+    },
+    "早点": {
+      "scene": "clock",
+      "variant": "morning",
+      "description": "“早点”情景示意：钟表和太阳表示一天中的时间。",
+      "id": "6ebd143f636a16b9",
+      "sha256": "b39d108327876d585333cd7902bf8e48afbb4b90a022885757de10288f70ec5a"
+    },
+    "早到": {
+      "scene": "direction",
+      "variant": "frontback",
+      "description": "“早到”情景示意：前后排列的队伍，前后位置被突出。",
+      "id": "63043e1b6c54c786",
+      "sha256": "7ba2a0aa4b3db8f45d2b6bea9b518d3d0e65fdb283750323a32c04e2741c32ed"
+    },
+    "早就": {
+      "scene": "clock",
+      "variant": "morning",
+      "description": "“早就”情景示意：钟表和太阳表示一天中的时间。",
+      "id": "9400fdacbb30ab50",
+      "sha256": "d0027bbf2ff99500d95030e7cfa82f83938f0ec5b386104ef33438df424b1089"
+    },
+    "下午": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“下午”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "af81dcf37aa86091",
+      "sha256": "b0d42b7609b9eb832d214cc40226d3ab843d99f8e504099573a39d1afbdff978"
+    },
+    "时间": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“时间”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "8b6ff498515bcc2f",
+      "sha256": "189e1945c7ff110ab3f120c8aa2855094d2deb3f8af116edfe6370a953f2ed48"
+    },
+    "第几": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“第几”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "b0c7c807a4a20200",
+      "sha256": "02be027e80442d765b0be80458065ca38a4798b739f5cd6cd1d14a2fd612a552"
+    },
+    "一会儿": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“一会儿”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "45569fc063406280",
+      "sha256": "67973aeb92b3b324e42f57aedbf6c70d0e7e4d10099fa69f8fdc435576a3709b"
+    },
+    "正在": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“正在”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "e6b02a08e69a342d",
+      "sha256": "8629bbbdf69e87b53df9d7f3e1e4d9c00d3164e2d8bf86a7590ce99e82657043"
+    },
+    "现在": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“现在”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "43584f37c1f4932f",
+      "sha256": "542b1a1941399f71baa27cf461ad3925c02e77aa7d4fb6430b98289c2c6462da"
+    },
+    "总是": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“总是”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "1d325d8445bd7783",
+      "sha256": "9fb3d64d67efba6f5c34799c753f377447da43aeb1865368b55867baf93d99d0"
+    },
+    "常常": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“常常”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "cfd3e2c41de90c5a",
+      "sha256": "a1997bd621a8d5e0ec3b2eff6f32880f559a7723e332c7d8fbf4da204ca1c1aa"
+    },
+    "经常": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“经常”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "1c49d48df5599c11",
+      "sha256": "fe009a6b0093780a9dc1d975f9f0d3bcc91a37ae55f274c7cccabf15e202875c"
+    },
+    "常用": {
+      "scene": "clock",
+      "variant": "afternoon",
+      "description": "“常用”情景示意：钟表指向下午，太阳仍在天上。",
+      "id": "4563c57b5143deaa",
+      "sha256": "272c49ef18a0a54c9553755027a46a5df89c65e883bf558227aaf0e5ee0af79b"
+    },
+    "土地": {
+      "scene": "land",
+      "variant": "soil",
+      "description": "“土地”情景示意：地面下有棕色土层与小石块。",
+      "id": "c214ddf69f944931",
+      "sha256": "2db6fabd55381877d406516d256fb6e4425ad77c96551bb93293355449b6e849"
+    },
+    "大地": {
+      "scene": "land",
+      "variant": "soil",
+      "description": "“大地”情景示意：地面下有棕色土层与小石块。",
+      "id": "36cfbaeae8cbc373",
+      "sha256": "e14e3a6e075c9b3dc6b651745db31c2cc8814767cfa522509734b7ebc7db3b49"
+    },
+    "地下": {
+      "scene": "land",
+      "variant": "soil",
+      "description": "“地下”情景示意：地面下有棕色土层与小石块。",
+      "id": "03876ed80d3e816c",
+      "sha256": "422955cef3540b3c78f195b9854ee45dd58c59ca6899cade95342538281e6d4f"
+    },
+    "泥土": {
+      "scene": "land",
+      "variant": "soil",
+      "description": "“泥土”情景示意：地面下有棕色土层与小石块。",
+      "id": "9c448c90a5b044fd",
+      "sha256": "00344625cbdb02787ff53d6f5fcdadc85e726f00c34a900a544f22c9dc54d3b3"
+    },
+    "水土": {
+      "scene": "land",
+      "variant": "soil",
+      "description": "“水土”情景示意：地面下有棕色土层与小石块。",
+      "id": "6670b8188ff79e4a",
+      "sha256": "9b4b4dadb5a2e54069f05e6a0f6fdaa2b0f429a45f56b4579fc045d7a6a706e0"
+    },
+    "土里": {
+      "scene": "land",
+      "variant": "soil",
+      "description": "“土里”情景示意：地面下有棕色土层与小石块。",
+      "id": "4d7c3f3fd13264eb",
+      "sha256": "724b775e8d989f12b6b9b7620556475e8b8c3713c4b7253ea0586a09e23e5c60"
+    },
+    "尘土": {
+      "scene": "land",
+      "variant": "soil",
+      "description": "“尘土”情景示意：地面下有棕色土层与小石块。",
+      "id": "a5fa17d4bbb0ecbd",
+      "sha256": "d58cdc7d15c44afa5123ef228fc783b54f4f715329325a01fe63401efe6d97c4"
+    },
+    "灰尘": {
+      "scene": "land",
+      "variant": "soil",
+      "description": "“灰尘”情景示意：地面下有棕色土层与小石块。",
+      "id": "5acbfc8fbf85b18c",
+      "sha256": "60a828a9effa1d384e172025d7bb0e38f74409343f7e0aaa25fa446b87e9643f"
+    },
+    "大山": {
+      "scene": "land",
+      "variant": "mountain",
+      "description": "“大山”情景示意：远处的山峰和近处的河流。",
+      "id": "3a77460a2b254ba4",
+      "sha256": "89bba7b5d98a61e0d69c9db8ac632b51634e2cb32bf0e770289ad04d3cc0b86b"
+    },
+    "上山": {
+      "scene": "land",
+      "variant": "mountain",
+      "description": "“上山”情景示意：远处的山峰和近处的河流。",
+      "id": "3860ba1683e63d62",
+      "sha256": "9add602c6822b128686a56deda065b1030d9c4fa7b7e5d99613030b2be7b8e47"
+    },
+    "山中": {
+      "scene": "direction",
+      "variant": "center",
+      "description": "“山中”情景示意：圆形中心有一个突出的小点。",
+      "id": "efdcf8e1544c4dfc",
+      "sha256": "9bf3aa888dd0cb1c2b78194a904598f94b2014322282637bbf6f8f64a180da87"
+    },
+    "山川": {
+      "scene": "land",
+      "variant": "mountain",
+      "description": "“山川”情景示意：远处的山峰和近处的河流。",
+      "id": "78464b20767b49ea",
+      "sha256": "9b2f4959489c1b591ff4ce6bf61f7ffbbe7ea22ee55e803cff5eb689ee5f0b2f"
+    },
+    "山水": {
+      "scene": "land",
+      "variant": "mountain",
+      "description": "“山水”情景示意：远处的山峰和近处的河流。",
+      "id": "41ce59d238e251f8",
+      "sha256": "5bbb0e1d49a4738b61d6f4261c01e459ebe5c86083be903cbce641b926ac7b32"
+    },
+    "四川": {
+      "scene": "land",
+      "variant": "mountain",
+      "description": "“四川”情景示意：远处的山峰和近处的河流。",
+      "id": "981aae92d74e28dd",
+      "sha256": "f75ea1625d74085d961278377059f85291b78c8a0d0beb2fa7cdab0af74393c4"
+    },
+    "青山绿水": {
+      "scene": "land",
+      "variant": "mountain",
+      "description": "“青山绿水”情景示意：远处的山峰和近处的河流。",
+      "id": "c24d36c52116b93d",
+      "sha256": "83a5211235203e2664b46517d409d2a0adf6dcad9b31ddfac1d4c0e3c58e9782"
+    },
+    "山清水秀": {
+      "scene": "land",
+      "variant": "mountain",
+      "description": "“山清水秀”情景示意：远处的山峰和近处的河流。",
+      "id": "be5f1f1d579e5282",
+      "sha256": "33ab602703d894cab35a39ae0e20e97ea8e23db9360b52658452867e8f2a8949"
+    },
+    "火山": {
+      "scene": "land",
+      "variant": "volcano",
+      "description": "“火山”情景示意：山口冒出火光和烟。",
+      "id": "dc749837f4e08a5a",
+      "sha256": "0f211065e6e1cb12f3ca1beb0d69248863c4d57a6ba90f5a9aef5a500d4234d9"
+    },
+    "流水": {
+      "scene": "land",
+      "variant": "river",
+      "description": "“流水”情景示意：一条河从山间流向远方。",
+      "id": "0fb688b74cfb39c8",
+      "sha256": "4e7447b3c8b8ab22fec8275a760d42c4aa274d0386f866294f6cad0e14d9cd9c"
+    },
+    "流动": {
+      "scene": "land",
+      "variant": "river",
+      "description": "“流动”情景示意：一条河从山间流向远方。",
+      "id": "5169c53f099e3387",
+      "sha256": "2869ec830aa10e559551a2f79e2c4a1f66ca6b40d7440c7a05fdbc19575b4c62"
+    },
+    "河流": {
+      "scene": "land",
+      "variant": "river",
+      "description": "“河流”情景示意：一条河从山间流向远方。",
+      "id": "eebe4a446561e818",
+      "sha256": "28a3d41ab4bb545d144ce94cbc99fd3ef245e77ee8a1148518996b349189d9fc"
+    },
+    "江河": {
+      "scene": "land",
+      "variant": "river",
+      "description": "“江河”情景示意：一条河从山间流向远方。",
+      "id": "707c331ca6cd856b",
+      "sha256": "3b628eeff37cb82abf4bf2ad9c0c7de00b2af356aa521ff1ed91a40cf6311f87"
+    },
+    "长江": {
+      "scene": "land",
+      "variant": "river",
+      "description": "“长江”情景示意：一条河从山间流向远方。",
+      "id": "2751a560b39913e2",
+      "sha256": "a8acdc6a40eefcbb465f006ac8df8ee1ee975377d232fa740c040596a90ed0b4"
+    },
+    "江南": {
+      "scene": "land",
+      "variant": "river",
+      "description": "“江南”情景示意：一条河从山间流向远方。",
+      "id": "1374de673a904f65",
+      "sha256": "dfabdaed2f659cd217480b1ae93922ac656c4a8570b15db9c216abcd98281487"
+    },
+    "江海": {
+      "scene": "land",
+      "variant": "river",
+      "description": "“江海”情景示意：一条河从山间流向远方。",
+      "id": "f83f1336da79f09c",
+      "sha256": "84d3831bf757b6f532414c9ec95f7b5cec8e0b0e80439d9b8af6c7a4a8e55412"
+    },
+    "水中": {
+      "scene": "land",
+      "variant": "river",
+      "description": "“水中”情景示意：一条河从山间流向远方。",
+      "id": "6fd237b93acb5538",
+      "sha256": "c83694dd7c34ca5e8691e1e65221f50a36d457189aa94085853650b497274b4a"
+    },
+    "田": {
+      "scene": "land",
+      "variant": "field",
+      "description": "“田”情景示意：一行行农田里长着禾苗。",
+      "id": "c313bfaa8f635a30",
+      "sha256": "f95770afdda401836fb0089be4eb35a706d8b7523c54a447e5798be694bfae9f"
+    },
+    "田地": {
+      "scene": "land",
+      "variant": "field",
+      "description": "“田地”情景示意：一行行农田里长着禾苗。",
+      "id": "9905046198836ad4",
+      "sha256": "38ddbe7cafa2406522246b533c37faa8f073bffda0c2657326e9acaa430640e3"
+    },
+    "农田": {
+      "scene": "land",
+      "variant": "field",
+      "description": "“农田”情景示意：一行行农田里长着禾苗。",
+      "id": "6775846d1067b1f6",
+      "sha256": "eb5fde4eaec888589e73e8152053f2615b012fee5c259f0f8ad1426b137c28de"
+    },
+    "农业": {
+      "scene": "land",
+      "variant": "field",
+      "description": "“农业”情景示意：一行行农田里长着禾苗。",
+      "id": "b2acdef8f2efe1fb",
+      "sha256": "bee5ec2df22223a925708efcc8b8b7ce27b65af03c408dd576e2224077988457"
+    },
+    "禾": {
+      "scene": "land",
+      "variant": "field",
+      "description": "“禾”情景示意：一行行农田里长着禾苗。",
+      "id": "d1e45402fb550553",
+      "sha256": "14446600ce009501d2c228be3e0f67e85a7146861d17a2a62e3cee250a0c8c4a"
+    },
+    "禾苗": {
+      "scene": "land",
+      "variant": "field",
+      "description": "“禾苗”情景示意：一行行农田里长着禾苗。",
+      "id": "12cc462dfa09e883",
+      "sha256": "2d247c544123e16c8cf883e4807e8ca148148095d5cf1eeec6c721805b207362"
+    },
+    "青草": {
+      "scene": "land",
+      "variant": "grass",
+      "description": "“青草”情景示意：绿色草地上有许多小草。",
+      "id": "c97aac1ec961a216",
+      "sha256": "b6813df8330f2e87f1e072da4af0dc014b43118c93bd1d736d01aeb94b07bb2d"
+    },
+    "小草": {
+      "scene": "land",
+      "variant": "grass",
+      "description": "“小草”情景示意：绿色草地上有许多小草。",
+      "id": "8e3160e60f23efbf",
+      "sha256": "07e867acd91843b4c89d35b382c9e20f928357766732270afcdd090bc2e5cec7"
+    },
+    "草地": {
+      "scene": "land",
+      "variant": "grass",
+      "description": "“草地”情景示意：绿色草地上有许多小草。",
+      "id": "cca5bb81dd0436e7",
+      "sha256": "fd4ccd93cf80039d9a317b0c9d978c0693b1c3ccb9321a1f9fef370228a39472"
+    },
+    "绿草": {
+      "scene": "land",
+      "variant": "grass",
+      "description": "“绿草”情景示意：绿色草地上有许多小草。",
+      "id": "4202d8f6d2164ca3",
+      "sha256": "dfd5cc6c82c1b2429f60bb2dadd35c37d0857ed4535c3baca455c6674c662c53"
+    },
+    "草原": {
+      "scene": "land",
+      "variant": "grass",
+      "description": "“草原”情景示意：绿色草地上有许多小草。",
+      "id": "1621d3c7d730ff52",
+      "sha256": "b720dc6ad745df7d46501412b793e6932bd604d35df769df8e3a71313721c950"
+    },
+    "树林": {
+      "scene": "tree",
+      "variant": "forest",
+      "description": "“树林”情景示意：几棵大树并排形成树林。",
+      "id": "d5def885722ba5c2",
+      "sha256": "76dfdb253eae053ed140c719eafc1e29fee3181e1fcabb086912eba554de7051"
+    },
+    "林子": {
+      "scene": "tree",
+      "variant": "forest",
+      "description": "“林子”情景示意：几棵大树并排形成树林。",
+      "id": "0df6dc485ddf13f7",
+      "sha256": "2cac22c8dd57907e900f7ea8d6a3e209929bad1090e32382d72a483f75ce5a6e"
+    },
+    "森林": {
+      "scene": "tree",
+      "variant": "forest",
+      "description": "“森林”情景示意：几棵大树并排形成树林。",
+      "id": "3bfbf21e2f002bc2",
+      "sha256": "a199984399eb9f43f74af270fdc299ed2fdee9c6c6af022092bc8d433a0f8044"
+    },
+    "丛林": {
+      "scene": "tree",
+      "variant": "forest",
+      "description": "“丛林”情景示意：几棵大树并排形成树林。",
+      "id": "af322392f20369f4",
+      "sha256": "10d0072e3dd2d83fe443d0dcdc877c3811e5f2f53076f768fd663d884a4af474"
+    },
+    "绿树": {
+      "scene": "tree",
+      "variant": "forest",
+      "description": "“绿树”情景示意：几棵大树并排形成树林。",
+      "id": "28db7fe6fa937b98",
+      "sha256": "d726ea71336b5fbcbafe71af4ff84521fa8b05adbc038967d2d56a625a4302ba"
+    },
+    "大树": {
+      "scene": "tree",
+      "variant": "forest",
+      "description": "“大树”情景示意：几棵大树并排形成树林。",
+      "id": "a832fdbd2369aff7",
+      "sha256": "13cdd8fb55c7abb0ef9a5d400f84752e5765911ad7b43e941b14ee712b762148"
+    },
+    "参天大树": {
+      "scene": "tree",
+      "variant": "forest",
+      "description": "“参天大树”情景示意：几棵大树并排形成树林。",
+      "id": "24992a558a517332",
+      "sha256": "7bbce556761ed2a52ccdf5580260a13a0bcde14d2c90e262dce41cfad356a637"
+    },
+    "垂柳": {
+      "scene": "tree",
+      "variant": "willow",
+      "description": "“垂柳”情景示意：柳树垂下细长枝条和柳叶。",
+      "id": "bf2b2624418b69aa",
+      "sha256": "b8157f93db8a34a5527d090b305ecb2340f763ff8f6f80ba5517216a0a3d1ef4"
+    },
+    "柳树": {
+      "scene": "tree",
+      "variant": "willow",
+      "description": "“柳树”情景示意：柳树垂下细长枝条和柳叶。",
+      "id": "126bfa9e956c2c50",
+      "sha256": "7983e2d5d3b143909601e08d48b0a697c1bf18f793aaf41ee0b4a520cee771df"
+    },
+    "柳叶": {
+      "scene": "tree",
+      "variant": "willow",
+      "description": "“柳叶”情景示意：柳树垂下细长枝条和柳叶。",
+      "id": "a30b642fa7f79826",
+      "sha256": "c670df360b8ebd586dba5759786d8c44a8796fa9f31d3af0a0b8e4df209f096d"
+    },
+    "叶子": {
+      "scene": "tree",
+      "variant": "leaf",
+      "description": "“叶子”情景示意：枝头上有绿色叶片。",
+      "id": "c6dfb2b17bb07929",
+      "sha256": "16ec3386af5ca509318c1bda4a08be6096243baf9b9f9fb5368235669c56b44c"
+    },
+    "绿叶": {
+      "scene": "tree",
+      "variant": "leaf",
+      "description": "“绿叶”情景示意：枝头上有绿色叶片。",
+      "id": "a54ce53d9984199c",
+      "sha256": "9fa7d5d0dd10cde5e5d8ffc7cacd12af99518bedb0e512dd519af7e34398aaa1"
+    },
+    "树叶": {
+      "scene": "tree",
+      "variant": "leaf",
+      "description": "“树叶”情景示意：枝头上有绿色叶片。",
+      "id": "bbfaaaf9df2f72d9",
+      "sha256": "9e2fa379caf1bc2903dc20588e65ceef78f4fe7f958fa130b6744aa1199e2c4b"
+    },
+    "一片叶子": {
+      "scene": "tree",
+      "variant": "leaf",
+      "description": "“一片叶子”情景示意：枝头上有绿色叶片。",
+      "id": "400140460a37d84f",
+      "sha256": "9afb3f52d80c1a101dd6b6c0ca463573e9344be05ad871319b4d1a414af4e470"
+    },
+    "秋天": {
+      "scene": "tree",
+      "variant": "autumn",
+      "description": "“秋天”情景示意：树叶变黄，一片片落到地上。",
+      "id": "21691f1b8e10ff5b",
+      "sha256": "71604cf6e82b2cbba341e73aec1d6712f96966e82c133a6d92be414bc562f4a1"
+    },
+    "落叶": {
+      "scene": "tree",
+      "variant": "autumn",
+      "description": "“落叶”情景示意：树叶变黄，一片片落到地上。",
+      "id": "3ce777d39b5e8fb5",
+      "sha256": "af2364674a328f0a0d30b9432257cea462591cf102803db2c7e9cc034736268a"
+    },
+    "一片片": {
+      "scene": "tree",
+      "variant": "autumn",
+      "description": "“一片片”情景示意：树叶变黄，一片片落到地上。",
+      "id": "93824f64b85b0fb3",
+      "sha256": "2120c3aadd1edfb47187c47b18920c829b9c8aa9c1113b7765713a9280589a0e"
+    },
+    "金黄": {
+      "scene": "tree",
+      "variant": "autumn",
+      "description": "“金黄”情景示意：树叶变黄，一片片落到地上。",
+      "id": "29497ec0b98a8f4e",
+      "sha256": "cfdf312f8c1ae2a0e07c6dcdb5ce5b7d32f825c87e3eaee6da713d83b07b8b07"
+    },
+    "种树": {
+      "scene": "tree",
+      "variant": "plant",
+      "description": "“种树”情景示意：孩子把小树苗栽进土里并浇水。",
+      "id": "6c64c2d6b01f0fdf",
+      "sha256": "b94f51d4e1cfc8045a3415ee3a895f1b8689c69511c331ee7d9bfba32ae4d980"
+    },
+    "栽树": {
+      "scene": "tree",
+      "variant": "plant",
+      "description": "“栽树”情景示意：孩子把小树苗栽进土里并浇水。",
+      "id": "71e3b4dc50fd717a",
+      "sha256": "a0ad8245b2c40b4335376f9f91354d0e2326b69ccf1858480a4c4e4ded06d787"
+    },
+    "乘凉": {
+      "scene": "tree",
+      "variant": "shade",
+      "description": "“乘凉”情景示意：人在大树的阴凉下面休息。",
+      "id": "9143ffacfe329d90",
+      "sha256": "477a9cff2e19ac1478e1f2ae3aaefd3338667ef4b360ae6a0a222063ba78de0b"
+    },
+    "竹子": {
+      "scene": "tree",
+      "variant": "bamboo",
+      "description": "“竹子”情景示意：竹竿上长着细长竹叶。",
+      "id": "ebb0f4b8661e9004",
+      "sha256": "5c612e54ee841aa327e1e37a470b54082dc47282f05669c2d8c0acbbf7484105"
+    },
+    "毛竹": {
+      "scene": "tree",
+      "variant": "bamboo",
+      "description": "“毛竹”情景示意：竹竿上长着细长竹叶。",
+      "id": "f820182b4765d5f9",
+      "sha256": "e342b654fc70e637d93eb9461139518a2c7c3938f0ec1e00cf21f2531799a553"
+    },
+    "竹竿": {
+      "scene": "tree",
+      "variant": "bamboo",
+      "description": "“竹竿”情景示意：竹竿上长着细长竹叶。",
+      "id": "f0fdd6e3a83f8bfb",
+      "sha256": "22ad2f4a5bd2439cdb97c5954e42fe01b52a8c41e33adb944a78526df937f82c"
+    },
+    "竹叶": {
+      "scene": "tree",
+      "variant": "bamboo",
+      "description": "“竹叶”情景示意：竹竿上长着细长竹叶。",
+      "id": "38289e27b3a6ad45",
+      "sha256": "192bb39b27b7bdac16521077541674a41aa959895cb596e442d3d9f5f41c4cca"
+    },
+    "花朵": {
+      "scene": "flower",
+      "variant": "red",
+      "description": "“花朵”情景示意：一朵红花开在绿色花茎上。",
+      "id": "b0b3497bcf85ecd7",
+      "sha256": "a91d74d2de58ccbe373af21bd8585115c1efbfea99c915f777effb50d35c5e94"
+    },
+    "红花": {
+      "scene": "flower",
+      "variant": "red",
+      "description": "“红花”情景示意：一朵红花开在绿色花茎上。",
+      "id": "68f43f20a362b172",
+      "sha256": "069f44c9f7723d50fcc84a98fc01cf869475ab6bdfc742b75f3603487a86bb3e"
+    },
+    "开花": {
+      "scene": "flower",
+      "variant": "red",
+      "description": "“开花”情景示意：一朵红花开在绿色花茎上。",
+      "id": "0be1f248cf96b92c",
+      "sha256": "0db646b1e60f596eee91cf866687d154011d34306861a88f872e7cdab773a0d3"
+    },
+    "采花": {
+      "scene": "flower",
+      "variant": "red",
+      "description": "“采花”情景示意：一朵红花开在绿色花茎上。",
+      "id": "6914d9787088759b",
+      "sha256": "25c9e6b85def04e3da6f4e32a465bd8e9f1f967b2a0df4fbe2512a08cfdec6b6"
+    },
+    "桃花": {
+      "scene": "flower",
+      "variant": "pink",
+      "description": "“桃花”情景示意：粉色桃花开满枝头。",
+      "id": "f5c627b7d0bffaff",
+      "sha256": "8c07f9bcd8bab2227a30291842042ab591690ba1996673dce51ae05466032097"
+    },
+    "桃红柳绿": {
+      "scene": "flower",
+      "variant": "pink",
+      "description": "“桃红柳绿”情景示意：粉色桃花开满枝头。",
+      "id": "7124a99963ed0b64",
+      "sha256": "453c36cb54df8d616f7ddd44a8255ecdf08eeaf08ca473ddb308eee914ae29db"
+    },
+    "春天": {
+      "scene": "flower",
+      "variant": "pink",
+      "description": "“春天”情景示意：粉色桃花开满枝头。",
+      "id": "9eaa6d08fa0ccc5c",
+      "sha256": "92d0165d2aec526cd82d7bc4b637924013711e39fd7f3a7ee5dd1cf6e93eb657"
+    },
+    "美丽": {
+      "scene": "flower",
+      "variant": "pink",
+      "description": "“美丽”情景示意：粉色桃花开满枝头。",
+      "id": "25ea0fccec28454f",
+      "sha256": "e8932e55777b877d0309cdd4b55f24ad6460dd33ae1538bd64eac7f138a2ba5f"
+    },
+    "美好": {
+      "scene": "flower",
+      "variant": "pink",
+      "description": "“美好”情景示意：粉色桃花开满枝头。",
+      "id": "144977c9e5405ca1",
+      "sha256": "ca66be2021365b9b8bb0c88ffd0acaa1a11719f2cb0cc42e6ea1f9a9983587d1"
+    },
+    "梅花开": {
+      "scene": "flower",
+      "variant": "plum",
+      "description": "“梅花开”情景示意：梅花开在枝条上。",
+      "id": "4e200ca4e1edf8da",
+      "sha256": "4e0ce2d1ac459330ed41bb1e330c9d4fbabb55cee9bb71d327afeb1dca541e35"
+    },
+    "荷花": {
+      "scene": "flower",
+      "variant": "lotus",
+      "description": "“荷花”情景示意：水面上的荷花、荷叶和莲蓬。",
+      "id": "626f66d969140d50",
+      "sha256": "18e28aac734607febf8d488f348007956d72713a206c892b3c16cb0390007b2a"
+    },
+    "莲花": {
+      "scene": "flower",
+      "variant": "lotus",
+      "description": "“莲花”情景示意：水面上的荷花、荷叶和莲蓬。",
+      "id": "f2f491398295b1b9",
+      "sha256": "799f38b4163400b67854db811f04b0a57e163655f3b0024028943559278dbfe0"
+    },
+    "荷叶": {
+      "scene": "flower",
+      "variant": "lotus",
+      "description": "“荷叶”情景示意：水面上的荷花、荷叶和莲蓬。",
+      "id": "3c80bc55614a9a12",
+      "sha256": "764dd81a0349f37c9d8a92737dfd5fe6cbbf24d4d67edc397d4cad2556a606ed"
+    },
+    "莲叶": {
+      "scene": "flower",
+      "variant": "lotus",
+      "description": "“莲叶”情景示意：水面上的荷花、荷叶和莲蓬。",
+      "id": "cadc102850f1893b",
+      "sha256": "332d15d97d45a7bcdba9f6568ebadc449326d206ce0d003545c26564d9a87545"
+    },
+    "莲子": {
+      "scene": "food",
+      "variant": "seeds",
+      "description": "“莲子”情景示意：莲蓬旁放着几粒莲子。",
+      "id": "f7d6f172cb4a8d1a",
+      "sha256": "abfcb9631b769ee13474a8ac6ed374d888165369703395155a8c92ffe8838667"
+    },
+    "采莲": {
+      "scene": "flower",
+      "variant": "lotus",
+      "description": "“采莲”情景示意：水面上的荷花、荷叶和莲蓬。",
+      "id": "3f588950c88706fe",
+      "sha256": "93abc19b1fa6a0c596f0bc77a448b8d08c44cd6543db43596db39bdde625ab1d"
+    },
+    "夏天": {
+      "scene": "flower",
+      "variant": "summer",
+      "description": "“夏天”情景示意：夏天水塘里荷花开放。",
+      "id": "0c27fe7382e1aac3",
+      "sha256": "bd57d97bded1460f93597e57cf0909939eb36755347e62a46dddef0020b1a168"
+    },
+    "夏季": {
+      "scene": "flower",
+      "variant": "summer",
+      "description": "“夏季”情景示意：夏天水塘里荷花开放。",
+      "id": "6e9abee0fe977420",
+      "sha256": "57eeaef6caca2a49a9342b58aa570ad4370c67337a8170b4cc77ade1ece46850"
+    },
+    "苹果": {
+      "scene": "food",
+      "variant": "apple",
+      "description": "“苹果”情景示意：红苹果旁有绿色叶子。",
+      "id": "50537dab76505dfc",
+      "sha256": "75f15e3e62d193f664e87a8365536e2777c6cb127e7dcb4495b5f3b2e6943ff4"
+    },
+    "水果": {
+      "scene": "food",
+      "variant": "apple",
+      "description": "“水果”情景示意：红苹果旁有绿色叶子。",
+      "id": "27c180751ad60f8c",
+      "sha256": "cc340b2a0233a8140e3a4320d96d0ef889db597dc673e0c728986b248004305f"
+    },
+    "瓜果": {
+      "scene": "food",
+      "variant": "apple",
+      "description": "“瓜果”情景示意：红苹果旁有绿色叶子。",
+      "id": "9ac3ec6b6dd1f205",
+      "sha256": "b99d78e4a6a2de40dc5c58c2462fad8af2603722344e98afe86a92e64b4939d8"
+    },
+    "西瓜": {
+      "scene": "food",
+      "variant": "melon",
+      "description": "“西瓜”情景示意：绿皮红瓤的西瓜切成两半。",
+      "id": "3e3f03caa0435a00",
+      "sha256": "0f960f8825a00ac9fe8ae3fb098eb67d6678d84ad592380c677f8137996ee454"
+    },
+    "两半": {
+      "scene": "food",
+      "variant": "melon",
+      "description": "“两半”情景示意：绿皮红瓤的西瓜切成两半。",
+      "id": "5927ca0563e8e662",
+      "sha256": "829a95c14cf294df8ef8709f433e1fe2f33389bada1268b933a65fa43a7c9341"
+    },
+    "半个": {
+      "scene": "food",
+      "variant": "melon",
+      "description": "“半个”情景示意：绿皮红瓤的西瓜切成两半。",
+      "id": "abd3aa25a3b626d1",
+      "sha256": "c076b3dfda47f2211b1ee7b3fb67b31e01dc0ccda425b85b368e7444c2deb0dd"
+    },
+    "南瓜": {
+      "scene": "food",
+      "variant": "pumpkin",
+      "description": "“南瓜”情景示意：圆圆的南瓜有粗粗的瓜柄。",
+      "id": "85bc0873e2450c0b",
+      "sha256": "1593bda827f8e62f99ac6ff0bda8c41dd1faabdd80b7971178792a288cdc816c"
+    },
+    "黄瓜": {
+      "scene": "food",
+      "variant": "cucumber",
+      "description": "“黄瓜”情景示意：细长的黄瓜表皮有小突起。",
+      "id": "e1337e15ca73d20d",
+      "sha256": "835175bdff5175623cb65a12821f2411f7f037b88989bcc025481e3f551283dd"
+    },
+    "冬瓜": {
+      "scene": "food",
+      "variant": "wintermelon",
+      "description": "“冬瓜”情景示意：一只表皮浅绿的大冬瓜。",
+      "id": "4404ea8981d2fc02",
+      "sha256": "c60c5e77cc2f93aa6828cd3da923c7cbc9df8354642a5514a9f8850e199f8187"
+    },
+    "鸭梨": {
+      "scene": "food",
+      "variant": "pear",
+      "description": "“鸭梨”情景示意：黄绿色的梨上面细、下面圆。",
+      "id": "9959c870a173342b",
+      "sha256": "ab999d7b5fda45540123bdbe8007d531659f683aa476243e05a2781fdbf92cc6"
+    },
+    "桃子": {
+      "scene": "food",
+      "variant": "peach",
+      "description": "“桃子”情景示意：一只粉红色的桃子。",
+      "id": "0fe9ed3a6b78600f",
+      "sha256": "43be4ccd0eb53ba9ab854994124007f3cc21d88ed4a1d4db30ae13716549e081"
+    },
+    "萝卜": {
+      "scene": "food",
+      "variant": "carrot",
+      "description": "“萝卜”情景示意：一根萝卜有绿色叶子。",
+      "id": "99528d06ca8ae2d3",
+      "sha256": "074cb15a3aa4d8a59a1416dabb7c7c36deb8899603133dd352103a58dd329d05"
+    },
+    "白菜": {
+      "scene": "food",
+      "variant": "cabbage",
+      "description": "“白菜”情景示意：一棵蔬菜有层层绿色叶片。",
+      "id": "9b8bc1b61d692685",
+      "sha256": "9e72c8fdea49741a08f955c82e08d06080cf4e6a5f6f13e3d236c01beecd09f7"
+    },
+    "青菜": {
+      "scene": "food",
+      "variant": "cabbage",
+      "description": "“青菜”情景示意：一棵蔬菜有层层绿色叶片。",
+      "id": "a540f6b31df5ec9c",
+      "sha256": "6cd878e33098cb76b38c5a0f1b51aa4b4b61390ea72ccdcd597a8ffa4a4cbd5a"
+    },
+    "蔬菜": {
+      "scene": "food",
+      "variant": "cabbage",
+      "description": "“蔬菜”情景示意：一棵蔬菜有层层绿色叶片。",
+      "id": "eb8380a9846591af",
+      "sha256": "66f54a64f4d80766c55da9b79121702a946be009ac96706080744eb4e8717196"
+    },
+    "包心菜": {
+      "scene": "food",
+      "variant": "cabbage",
+      "description": "“包心菜”情景示意：一棵蔬菜有层层绿色叶片。",
+      "id": "1698aadcde920bd9",
+      "sha256": "8967b3e89484cc899c8c3a57121610773c2d9f6a5e5d87c5792f2e92def48523"
+    },
+    "买菜": {
+      "scene": "food",
+      "variant": "cabbage",
+      "description": "“买菜”情景示意：一棵蔬菜有层层绿色叶片。",
+      "id": "8e2c3a749fcfbac1",
+      "sha256": "56e552183a097fb26e9921145d8f48142e858c967416488030f36ac2d0d91633"
+    },
+    "牛奶": {
+      "scene": "food",
+      "variant": "milk",
+      "description": "“牛奶”情景示意：牛奶装在杯子和奶盒里。",
+      "id": "b892a42b9695881d",
+      "sha256": "76ebadfbc38c34bd0c53c68377cadd29bbf57325d1322fb639143345e15cf0fa"
+    },
+    "包子": {
+      "scene": "food",
+      "variant": "bun",
+      "description": "“包子”情景示意：蒸好的包子放在盘子上。",
+      "id": "787d89bb2ba8a2c6",
+      "sha256": "ab65ce897507a89ba433aadc180ccedd9f11f2062f62133a7116d9bdf0ec09c0"
+    },
+    "可口": {
+      "scene": "food",
+      "variant": "bun",
+      "description": "“可口”情景示意：蒸好的包子放在盘子上。",
+      "id": "7616ad9f09869c32",
+      "sha256": "8492bf1bc4fd439f4b094348c5225728b82ab298859ce760dc3ec3c84cb3c105"
+    },
+    "喝茶": {
+      "scene": "food",
+      "variant": "tea",
+      "description": "“喝茶”情景示意：热茶盛在杯子里。",
+      "id": "cb79e0cecd8e9392",
+      "sha256": "c00fffcbcdb8a71b3321e2b37ff6c2bf9fa5ec7c78636f1c8a8947e34a48ae35"
+    },
+    "喝水": {
+      "scene": "food",
+      "variant": "water",
+      "description": "“喝水”情景示意：孩子拿起杯子喝水。",
+      "id": "a8720cdfc7de0556",
+      "sha256": "c1698e8071901627331a553b6b1bc63249ff4777a70d231ff478b63c283d81b3"
+    },
+    "开水": {
+      "scene": "food",
+      "variant": "water",
+      "description": "“开水”情景示意：孩子拿起杯子喝水。",
+      "id": "f50e0aa301a7f4e9",
+      "sha256": "f076346bed62f1b58aefdad137aa9c7376eb6789da76db899ca9a9b3ad8050ed"
+    },
+    "可乐": {
+      "scene": "food",
+      "variant": "cola",
+      "description": "“可乐”情景示意：一杯带气泡的饮料。",
+      "id": "dbe286d922bc4d31",
+      "sha256": "efc79a41cc692d0aeaef24330da21dbc852381d66c1d5d31f634cd54327cfa0a"
+    },
+    "木耳": {
+      "scene": "food",
+      "variant": "fungus",
+      "description": "“木耳”情景示意：几朵深棕色木耳。",
+      "id": "deb9acd8cdce75ec",
+      "sha256": "55a0f6637b97c8f7478a0e3568dbde363902541db4c9269e64f4639be80d97d7"
+    },
+    "小鸟": {
+      "scene": "animal",
+      "variant": "bird",
+      "description": "“小鸟”情景示意：小鸟张开翅膀，有尖尖的嘴和两只脚。",
+      "id": "31159146a4d5197c",
+      "sha256": "b0105d1746d9fca68b8f08c6a65463139da4a2771ffbfcb4a3773049b31809ee"
+    },
+    "飞鸟": {
+      "scene": "animal",
+      "variant": "bird",
+      "description": "“飞鸟”情景示意：小鸟张开翅膀，有尖尖的嘴和两只脚。",
+      "id": "0205c4fee990cedb",
+      "sha256": "c42358d5f1bf4ad4db4b06170ce1d33fed1080984e59fef06e3dfb2f8f620950"
+    },
+    "飞来飞去": {
+      "scene": "animal",
+      "variant": "bird",
+      "description": "“飞来飞去”情景示意：小鸟张开翅膀，有尖尖的嘴和两只脚。",
+      "id": "51c28e47e6428bef",
+      "sha256": "be8783b6ff1a4fa797e0b67f6dc2678bf902a979445b7d203064cad05d9e8328"
+    },
+    "乌鸦": {
+      "scene": "animal",
+      "variant": "crow",
+      "description": "“乌鸦”情景示意：一只黑色乌鸦有尖嘴、翅膀和两只脚。",
+      "id": "14d073cf0c56bb4f",
+      "sha256": "c8eed7de6065226e623a30c9b467ceb393253620651a2a1ae2301904c068fd22"
+    },
+    "乌黑": {
+      "scene": "animal",
+      "variant": "crow",
+      "description": "“乌黑”情景示意：一只黑色乌鸦站在树枝上。",
+      "id": "6e21b837d3392377",
+      "sha256": "66b73f04fed4f51bc4b2071a9fe36e0acf4e69e62db6c1d11aa908b09a9edd70"
+    },
+    "小鸡": {
+      "scene": "animal",
+      "variant": "chicken",
+      "description": "“小鸡”情景示意：小鸡有尖嘴、翅膀和两只脚。",
+      "id": "b74e668fc7928507",
+      "sha256": "4528642aa910499933a3cf53c9f0ebff0536e996589bdf4d4b9fa15be33575f2"
+    },
+    "黄鸡": {
+      "scene": "animal",
+      "variant": "chicken",
+      "description": "“黄鸡”情景示意：小鸡有尖嘴、翅膀和两只脚。",
+      "id": "ca933a18d925e55d",
+      "sha256": "a1ad7082f98d99b29db61b2a8ccf94ddeac575816a9710c2c14ac6a0ee8a2938"
+    },
+    "公鸡": {
+      "scene": "animal",
+      "variant": "chicken",
+      "description": "“公鸡”情景示意：小鸡有尖嘴、翅膀和两只脚。",
+      "id": "e62503dbd7636b52",
+      "sha256": "32eb0d21cd69efc29adee41133adfa6e5f5e267b5840d9d1ee9b284089fd4a13"
+    },
+    "鸡毛": {
+      "scene": "animal",
+      "variant": "chicken",
+      "description": "“鸡毛”情景示意：小鸡有尖嘴、翅膀和两只脚。",
+      "id": "b9c9f6f0ce1c72d9",
+      "sha256": "64a595b1d179284c8b78f1bdf93594589ee434122d31aa4961bb3bcc22443fc0"
+    },
+    "鸭子": {
+      "scene": "animal",
+      "variant": "duck",
+      "description": "“鸭子”情景示意：鸭子有扁嘴，正在水里游。",
+      "id": "a2b1abc5a1cbc967",
+      "sha256": "fc5c6d91c4b3ae6f231a61ed1284ff2eba93cb7d3811e102129257da7351eb1d"
+    },
+    "小鱼": {
+      "scene": "animal",
+      "variant": "fish",
+      "description": "“小鱼”情景示意：鱼有鳍和尾巴，正在水中游动。",
+      "id": "494bdb83fab6673e",
+      "sha256": "bad4441aa420c788f046046de05470275ddabd5ad6e340dea9d724b0ebe6f24a"
+    },
+    "鱼儿": {
+      "scene": "animal",
+      "variant": "fish",
+      "description": "“鱼儿”情景示意：鱼有鳍和尾巴，正在水中游动。",
+      "id": "f4f0ecd1b52e9198",
+      "sha256": "490b611e64d1ba80c906d2ab30029a0105c28e6e04cc6b3e277e47c41a6ba3f6"
+    },
+    "一条鱼": {
+      "scene": "animal",
+      "variant": "fish",
+      "description": "“一条鱼”情景示意：一条鱼在水里游。",
+      "id": "d86de1131adab6ef",
+      "sha256": "db8b67245579d62d5f19f59291da1897ffd909d6d1312ca9b9582253e2fcc3bf"
+    },
+    "戏水": {
+      "scene": "animal",
+      "variant": "fish",
+      "description": "“戏水”情景示意：鱼有鳍和尾巴，正在水中游动。",
+      "id": "84019d19dc5fe5fd",
+      "sha256": "317a476117ffb265c16d6f4ae2789f5232dd379aabe02a77a5f10f3f6d296261"
+    },
+    "青蛙": {
+      "scene": "animal",
+      "variant": "frog",
+      "description": "“青蛙”情景示意：绿色青蛙蹲在荷叶上。",
+      "id": "1d70fe1c42fde24a",
+      "sha256": "8d824d304830441ae025cb738cff15fa5dc3f165151b7b9ad5eb4a79ad48180e"
+    },
+    "树蛙": {
+      "scene": "animal",
+      "variant": "frog",
+      "description": "“树蛙”情景示意：绿色青蛙蹲在荷叶上。",
+      "id": "34d89d581de03e8f",
+      "sha256": "0d2582511523a479613d458de83b253b2419b888c1e2b3a54aeff747322eb9fc"
+    },
+    "牛蛙": {
+      "scene": "animal",
+      "variant": "frog",
+      "description": "“牛蛙”情景示意：绿色青蛙蹲在荷叶上。",
+      "id": "00e1e90feee2e342",
+      "sha256": "ff5dd700ec06635889928d6caee621eeb0d7ffac63393b04051cd0e88edddebc"
+    },
+    "蛙声": {
+      "scene": "animal",
+      "variant": "frog",
+      "description": "“蛙声”情景示意：绿色青蛙蹲在荷叶上。",
+      "id": "80bf2580a57c9185",
+      "sha256": "d102a75b4780cb61a2b0787a2287b1b555e3d0c0dbafb77ddb3612e5b003b3d9"
+    },
+    "兔子": {
+      "scene": "animal",
+      "variant": "rabbit",
+      "description": "“兔子”情景示意：兔子有长耳朵和短尾巴。",
+      "id": "02ea6e1b01e9fc52",
+      "sha256": "85f41ee22222a591ebf6785042775d581a0227e10abd578eef312629bf7e0145"
+    },
+    "白兔": {
+      "scene": "animal",
+      "variant": "rabbit",
+      "description": "“白兔”情景示意：兔子有长耳朵和短尾巴。",
+      "id": "519285e2df000741",
+      "sha256": "ce775f0af5304e544d8b3d0844fa8c559726fa9c8fdabe451dbe77689e959327"
+    },
+    "小狗": {
+      "scene": "animal",
+      "variant": "dog",
+      "description": "“小狗”情景示意：小狗有耳朵、四条腿和尾巴。",
+      "id": "291b0888f1c619c3",
+      "sha256": "65d675d7a01a8f6e5732de95121ab1d655ec71ee70c67076bb4d0dbf5168bca3"
+    },
+    "一条狗": {
+      "scene": "animal",
+      "variant": "dog",
+      "description": "“一条狗”情景示意：一只小狗。",
+      "id": "0bd9c5b4a5d55f92",
+      "sha256": "c2330747eca904dd6fe7e06f243abcdb7bf694780627c08084f041aa6c8892d4"
+    },
+    "狗毛": {
+      "scene": "animal",
+      "variant": "dog",
+      "description": "“狗毛”情景示意：小狗有耳朵、四条腿和尾巴。",
+      "id": "d90819c707ce5bdc",
+      "sha256": "7f4a623b8eca4e466970338c3236f75df7d6e7e9a7599d13353256e1f191f5c4"
+    },
+    "黄狗": {
+      "scene": "animal",
+      "variant": "yellow-dog",
+      "description": "“黄狗”情景示意：一只黄色的小狗。",
+      "id": "946ca1d4aba4f2fe",
+      "sha256": "6c44f490856e77db6601803ba73817277973d0ad0bb93df69cdce11d2df9c253"
+    },
+    "黑狗": {
+      "scene": "animal",
+      "variant": "black-dog",
+      "description": "“黑狗”情景示意：一只黑色的小狗。",
+      "id": "a8bf7428ccab5767",
+      "sha256": "b5509fd1d6047ffa4b2026fa1d4f6e2bb7dacfc49a27327c11e801d1e3ac4a68"
+    },
+    "小羊": {
+      "scene": "animal",
+      "variant": "sheep",
+      "description": "“小羊”情景示意：羊有弯弯的角和毛茸茸的身体。",
+      "id": "eba0cf05d8e4dbd0",
+      "sha256": "870b1c4da4273a56fbc661b0195cbdde412b6ef874265367d1bd3f97089ba968"
+    },
+    "山羊": {
+      "scene": "animal",
+      "variant": "sheep",
+      "description": "“山羊”情景示意：羊有弯弯的角和毛茸茸的身体。",
+      "id": "549836293a1a788c",
+      "sha256": "b5cb506a9aadd126b5ab9ac333e20de6fec697a41003b6446ed427fa998ac5a2"
+    },
+    "牛羊": {
+      "scene": "animal",
+      "variant": "herd",
+      "description": "“牛羊”情景示意：一头牛和一只羊站在草地上。",
+      "id": "0f3c31c7f495c4fa",
+      "sha256": "ea267daea3b584b44badf712e2f278e724db6de170f54800a921d453a834af00"
+    },
+    "公牛": {
+      "scene": "animal",
+      "variant": "cow",
+      "description": "“公牛”情景示意：牛有两只角，站在草地上。",
+      "id": "5b09713ac5aea670",
+      "sha256": "fa6d6b46a0281df360f8ce3eec95925706d3b3bb2619f0bbb4a95cc6d5b061ea"
+    },
+    "蚂蚁": {
+      "scene": "animal",
+      "variant": "ant",
+      "description": "“蚂蚁”情景示意：小蚂蚁有触角和六条腿。",
+      "id": "7853225b8ee4cd6c",
+      "sha256": "d6a2421fdacc5154679e148d5866c58c7f37adff89a3964891396626e6b60f05"
+    },
+    "小虫": {
+      "scene": "animal",
+      "variant": "worm",
+      "description": "“小虫”情景示意：一只小虫有分节的身体。",
+      "id": "809c90c2665e7f62",
+      "sha256": "8f3c355988fcaac94c2fb3977b06417d9cda26454688e335223c31ed3c7fb9af"
+    },
+    "虫子": {
+      "scene": "animal",
+      "variant": "worm",
+      "description": "“虫子”情景示意：一只小虫有分节的身体。",
+      "id": "224749f7ec5568b9",
+      "sha256": "b7cc7c41bbda7c1a407779508a3eae4a7613056fe9a494b217a018ce2d25c58e"
+    },
+    "一只虫": {
+      "scene": "animal",
+      "variant": "worm",
+      "description": "“一只虫”情景示意：一只身体分节的小虫。",
+      "id": "853116df3c5fd5b1",
+      "sha256": "5b2413f6cc879759e40e166621a9e0ea3648a9cb38da3ce74bd2528f0b936d3a"
+    },
+    "木马": {
+      "scene": "animal",
+      "variant": "wooden-horse",
+      "description": "“木马”情景示意：带着弧形摇座的木马玩具。",
+      "id": "5fb84439c13a147f",
+      "sha256": "db35a3f2113742a2e02ef6d373f8b88beb849b7f4a0dd7fc62469cf6c585df61"
+    },
+    "白马": {
+      "scene": "animal",
+      "variant": "horse",
+      "description": "“白马”情景示意：一匹马有鬃毛和四条腿。",
+      "id": "146d79287d4cf29a",
+      "sha256": "246fd5a10131de090a759168686d3372b01e01b7d24209aae322fa71b5a37a16"
+    },
+    "双手": {
+      "scene": "body",
+      "variant": "hands",
+      "description": "“双手”情景示意：张开的手掌和五根手指。",
+      "id": "e54550a82a667a4a",
+      "sha256": "bd0d946eb111a1843e4a5cab6d69df4bcfa69305b5ee1aeed3e4d6439ad909d3"
+    },
+    "小手": {
+      "scene": "body",
+      "variant": "hands",
+      "description": "“小手”情景示意：张开的手掌和五根手指。",
+      "id": "ec110dfc64e5866e",
+      "sha256": "18307196d7f1b4f0bd05ce6bec2339f8817a84e9d30b996633a2b09706017ef7"
+    },
+    "大手": {
+      "scene": "compare",
+      "variant": "big",
+      "description": "“大手”情景示意：一个大球和一个小球并排，大球被突出。",
+      "id": "6d8f1c6c65aeb97d",
+      "sha256": "3c435937de498ec5f8d41f9663bad7d9214afdb04b740d61c47816020213f4b6"
+    },
+    "左手": {
+      "scene": "body",
+      "variant": "hands",
+      "description": "“左手”情景示意：张开的手掌和五根手指。",
+      "id": "dd393f37630429c3",
+      "sha256": "2222c19004de5f6795f6ac208c6152620a25936b9fc6b01b9c9b26d24a87386b"
+    },
+    "手上": {
+      "scene": "body",
+      "variant": "hands",
+      "description": "“手上”情景示意：张开的手掌和五根手指。",
+      "id": "475253b04c5de84f",
+      "sha256": "1e5ddc9a31ea457c100ccb9a9a0071fe5fbdd60424074dfd393d5e6e3b5279b1"
+    },
+    "手头": {
+      "scene": "body",
+      "variant": "hands",
+      "description": "“手头”情景示意：张开的手掌和五根手指。",
+      "id": "5082d89ef4541b6c",
+      "sha256": "97cee5a0f700bc1af3d8a6f46dad9c0675ead6ca398c873831fbe7dabe2c5a41"
+    },
+    "用力": {
+      "scene": "action",
+      "variant": "effort",
+      "description": "“用力”情景示意：孩子努力推一个大箱子。",
+      "id": "a7c68b0b65afa488",
+      "sha256": "9957aa9ac80106974259f55e5145a505457aee53619515f5aa9a747865997d5e"
+    },
+    "大力": {
+      "scene": "action",
+      "variant": "effort",
+      "description": "“大力”情景示意：孩子努力推一个大箱子。",
+      "id": "ba57e3ccc5f5e8ce",
+      "sha256": "484921f04a120abaa592dba7879eb46327d862009571134e733dbebc76d8f978"
+    },
+    "力气": {
+      "scene": "body",
+      "variant": "hands",
+      "description": "“力气”情景示意：张开的手掌和五根手指。",
+      "id": "87291f2b64f42ac1",
+      "sha256": "9b2d3daff7349c47ad23d1cd8103e114ac4b967a51c20605abd46e988e6c8a85"
+    },
+    "大力士": {
+      "scene": "body",
+      "variant": "hands",
+      "description": "“大力士”情景示意：张开的手掌和五根手指。",
+      "id": "6b92175db394743b",
+      "sha256": "228c8e5774673ef33c1b1b88a8a1cf08153b002a96d74257b6a9cce01e9231f7"
+    },
+    "能手": {
+      "scene": "body",
+      "variant": "hands",
+      "description": "“能手”情景示意：张开的手掌和五根手指。",
+      "id": "e105aaf971084258",
+      "sha256": "c8e71429e1ec7c85e543b3928a84ce02284d8dd228a742f4f8e532732f2e1d15"
+    },
+    "双足": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“双足”情景示意：两只脚和向前走的脚印。",
+      "id": "ea5652225fb53d8e",
+      "sha256": "93904704c2519d57d998e4836a155f8f5b503a7a8da2aea524db0f3bf4705559"
+    },
+    "手足": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“手足”情景示意：两只脚和向前走的脚印。",
+      "id": "62f8780d8762b979",
+      "sha256": "b72518a5cdd075458f9933f181e854c4090c33ea7a6ff45bbefd17f2d64ea993"
+    },
+    "足球": {
+      "scene": "sport",
+      "variant": "football",
+      "description": "“足球”情景示意：孩子用脚踢足球。",
+      "id": "27a60fa44a5333bf",
+      "sha256": "1c8fe5a2f88f272a46ee8130c9faa4c4391f6c13166f38f5c28f6bc53abd5c86"
+    },
+    "脚步": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“脚步”情景示意：两只脚和向前走的脚印。",
+      "id": "200171dd4e0b9588",
+      "sha256": "cf2574c31a05b088410f0106059d14334cc8b0ca990ad21fe551d62908946295"
+    },
+    "步行": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“步行”情景示意：两只脚和向前走的脚印。",
+      "id": "3a8b5cef5790719f",
+      "sha256": "9084089c35b213c0c0dda6319fec7cb517bc0dd123b8d7903336929f42e287d1"
+    },
+    "行人": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“行人”情景示意：两只脚和向前走的脚印。",
+      "id": "77dbe8fa77598bf5",
+      "sha256": "03981f0625e3de364a1ba8f4efe5e368990e1fcc8f35f317174f175eab4e2597"
+    },
+    "行动": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“行动”情景示意：两只脚和向前走的脚印。",
+      "id": "253fb75906c692ba",
+      "sha256": "092da87cad7047f03f83c1fdd80eeb1d8ec806c96f08526efe7ffb46396a6d6e"
+    },
+    "走着": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“走着”情景示意：两只脚和向前走的脚印。",
+      "id": "6000ddd650249ba5",
+      "sha256": "a19b5fdb8a68589453c1ab441de7c21da5b886e15ae4675a6c82db57b4b09281"
+    },
+    "跑步": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“跑步”情景示意：两只脚和向前走的脚印。",
+      "id": "591052c733499bad",
+      "sha256": "dffe27e94cd612e442a2e8c48a727d7a255d44a3fc9d9a2f577e31d8785f2e74"
+    },
+    "短跑": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“短跑”情景示意：两只脚和向前走的脚印。",
+      "id": "6ed385a27a30f1f1",
+      "sha256": "5a5eefec6a0a613d74c3073bcbdb5d0bcfcdb25218e36102d39e16fe500ef791"
+    },
+    "进步": {
+      "scene": "body",
+      "variant": "feet",
+      "description": "“进步”情景示意：两只脚和向前走的脚印。",
+      "id": "3cd4b73afa842451",
+      "sha256": "cbf7a04233d43d18904079acaa2a7c4bbb8d807e2f6a2ae4831ac675cdc4b6bd"
+    },
+    "耳朵": {
+      "scene": "body",
+      "variant": "ears",
+      "description": "“耳朵”情景示意：头部两边长着耳朵。",
+      "id": "86d7bf2d358bd82c",
+      "sha256": "ecdc04b9c42428ec1351e7b03fa004de5b063fc15d7eab9bbd841204dfefa5a0"
+    },
+    "双耳": {
+      "scene": "body",
+      "variant": "ears",
+      "description": "“双耳”情景示意：头部两边长着耳朵。",
+      "id": "dd6547f30ff7ea90",
+      "sha256": "238c9847ccd87ae5e07671c9fbc983e03fb4c0d83cc41851e1fedd0f33f95028"
+    },
+    "右耳": {
+      "scene": "body",
+      "variant": "ears",
+      "description": "“右耳”情景示意：头部两边长着耳朵。",
+      "id": "ebb778c56e18e09f",
+      "sha256": "c8f59a272a1910da281e30a1c2209f7fca2db969a61e15e9bfe374070d5f3db7"
+    },
+    "耳目": {
+      "scene": "body",
+      "variant": "ears",
+      "description": "“耳目”情景示意：头部两边长着耳朵。",
+      "id": "8dd93cf2196d2b08",
+      "sha256": "228a00b8d7e83a8b9017d2ec9de031d414befa1da81002d25bf70087979f1dbf"
+    },
+    "双目": {
+      "scene": "body",
+      "variant": "eyes",
+      "description": "“双目”情景示意：孩子睁大眼睛仔细看。",
+      "id": "7aa4c5f82324619e",
+      "sha256": "8896e66c15ce1b1aa88181adfcd87b76d94452b7671573bd284b0c082bc9f10b"
+    },
+    "看见": {
+      "scene": "body",
+      "variant": "eyes",
+      "description": "“看见”情景示意：孩子睁大眼睛仔细看。",
+      "id": "7205426737a8c37c",
+      "sha256": "2d9a2f91296bbaa2cbdc09906cf1ada130a6041788a4ce6c8ec324435dd2bb40"
+    },
+    "可见": {
+      "scene": "body",
+      "variant": "eyes",
+      "description": "“可见”情景示意：孩子睁大眼睛仔细看。",
+      "id": "41417f490b88b05f",
+      "sha256": "a8d457e0c38dffe9f09947b249b07b8cef5987f0538ef5650c00f1ed73eda6bf"
+    },
+    "不见": {
+      "scene": "body",
+      "variant": "missing",
+      "description": "“不见”情景示意：孩子寻找原来放在桌上的物品，物品位置以虚线标出。",
+      "id": "a3fdf059d4ffb9a2",
+      "sha256": "f7bd7eaf5553efafbb8c58b1393b880f692a7130ecc0c1d6ea140dc04b029db3"
+    },
+    "看着": {
+      "scene": "body",
+      "variant": "eyes",
+      "description": "“看着”情景示意：孩子睁大眼睛仔细看。",
+      "id": "cc1c03a248429098",
+      "sha256": "0ff22b0d580dbeddee79731e25cbe3128d6c6db789a734b5798c97fcde8a6fe0"
+    },
+    "一口": {
+      "scene": "body",
+      "variant": "mouth",
+      "description": "“一口”情景示意：张开的嘴巴。",
+      "id": "545f960f7516365c",
+      "sha256": "9d7c973476ea28d0ebb84fd165832acd83d98226806f4da51012e29f3f3bcac2"
+    },
+    "开口": {
+      "scene": "body",
+      "variant": "mouth",
+      "description": "“开口”情景示意：张开的嘴巴和下巴。",
+      "id": "ea58b24f97650715",
+      "sha256": "71a9426c6417b4226ad022cf5cb8c07da898ab1f0fa4d718533ca446402320ed"
+    },
+    "嘴巴": {
+      "scene": "body",
+      "variant": "mouth",
+      "description": "“嘴巴”情景示意：张开的嘴巴和下巴。",
+      "id": "cbb4c198e88c338d",
+      "sha256": "4ead0fb617d1712ea4343630c6aa0fccaaf24012a2d3a7586449efeef5508fa0"
+    },
+    "下巴": {
+      "scene": "body",
+      "variant": "mouth",
+      "description": "“下巴”情景示意：张开的嘴巴和下巴。",
+      "id": "ace5bba2aed53e6a",
+      "sha256": "4f884b35eb729ef4bce5adc3783e69cb9a6105f57e3fe430a9092b2a3fe4a2c8"
+    },
+    "牙口": {
+      "scene": "body",
+      "variant": "teeth",
+      "description": "“牙口”情景示意：张开的嘴里有一排白牙。",
+      "id": "d79457ef1472c52b",
+      "sha256": "608807969cfcbafc6acb318b7f0add0cefe725b847185f2baf07f0fba3c15806"
+    },
+    "大牙": {
+      "scene": "body",
+      "variant": "teeth",
+      "description": "“大牙”情景示意：张开的嘴里有一排白牙。",
+      "id": "34e8d39c0bbc7c7b",
+      "sha256": "11d91d26fd7e7a2b6257e19382c6f983525f21a104a18bf0fba64d5ea98022c0"
+    },
+    "门牙": {
+      "scene": "body",
+      "variant": "teeth",
+      "description": "“门牙”情景示意：张开的嘴里有一排白牙。",
+      "id": "ec48a1aa4550236b",
+      "sha256": "1cac87a978a55bf54d723e51fa72bdd831789fc7b5760e55c1b86213685b6196"
+    },
+    "牙齿": {
+      "scene": "body",
+      "variant": "teeth",
+      "description": "“牙齿”情景示意：张开的嘴里有一排白牙。",
+      "id": "7ee56603f63d6423",
+      "sha256": "5a5eb93e2707b1f288e69d3f3fdc7224fb26f3d5d0115a2c5ebc691652601248"
+    },
+    "尖牙": {
+      "scene": "body",
+      "variant": "teeth",
+      "description": "“尖牙”情景示意：张开的嘴里有一排白牙。",
+      "id": "2cee6eeb80202c91",
+      "sha256": "3760440260ab143243e43a1252e0f6dc540df943bfc3b4b85cf09a25f36f5b48"
+    },
+    "头上": {
+      "scene": "body",
+      "variant": "head",
+      "description": "“头上”情景示意：孩子的头部和头顶位置。",
+      "id": "72de5d88d27d9f7a",
+      "sha256": "026d3b08ae030f5b69020013ead21bc7bbf30f106d9d557d6373201dd12c6c15"
+    },
+    "两头": {
+      "scene": "body",
+      "variant": "head",
+      "description": "“两头”情景示意：孩子的头部和头顶位置。",
+      "id": "d9af552c06be931c",
+      "sha256": "71de7ea75f58be5fde19d03a6c0eb69403f4ab03873c863fd43c5099b436b2c6"
+    },
+    "头发": {
+      "scene": "body",
+      "variant": "head",
+      "description": "“头发”情景示意：孩子的头部和头顶位置。",
+      "id": "476627a8c1b83505",
+      "sha256": "caad1718e4c801ad9db24832bd03a4f06bc9b0cf2a0c2da1f39e9463a636f2b3"
+    },
+    "短发": {
+      "scene": "body",
+      "variant": "head",
+      "description": "“短发”情景示意：孩子的头部和头顶位置。",
+      "id": "46f0228db71cbc3d",
+      "sha256": "d86cfa8cac13d0079f1648155c7e02cf6bf16494c376bb3e4979875ecb969580"
+    },
+    "尾巴": {
+      "scene": "body",
+      "variant": "tail",
+      "description": "“尾巴”情景示意：小动物身后的尾巴位置被突出。",
+      "id": "797d828e8c3167e9",
+      "sha256": "21b64f750a599a00b18e2b5509bb8bc70a3a4403b334d29a5b21e89dd9820262"
+    },
+    "尾部": {
+      "scene": "body",
+      "variant": "tail",
+      "description": "“尾部”情景示意：小动物身后的尾巴位置被突出。",
+      "id": "88d9071fe844d444",
+      "sha256": "9a5cea6884e464a6be96cd9738ff50974bb5c5a11b4f55abf99cfc7ee01458ca"
+    },
+    "爪子": {
+      "scene": "body",
+      "variant": "claw",
+      "description": "“爪子”情景示意：小动物伸出爪子。",
+      "id": "8e3039eac77018f0",
+      "sha256": "d4276857788b865f63423d87d5a181cabeeb2291dbc8c5ad11ee9435a4cec930"
+    },
+    "爸爸": {
+      "scene": "family",
+      "variant": "father",
+      "description": "“爸爸”情景示意：一位成年男子和孩子站在一起。",
+      "id": "d45ce71dd359d0e7",
+      "sha256": "ca5d75c011d19b2990bf30bbeac62e09962a59462d8beb45ea5e5142b7291471"
+    },
+    "大人": {
+      "scene": "family",
+      "variant": "father",
+      "description": "“大人”情景示意：一位成年男子和孩子站在一起。",
+      "id": "44dd6014a532924b",
+      "sha256": "3a6df97f1e7260ec6631b92ed27c2340b15baef6da48e8d26c4b2a732aaae013"
+    },
+    "男人": {
+      "scene": "family",
+      "variant": "father",
+      "description": "“男人”情景示意：一位成年男子和孩子站在一起。",
+      "id": "a68402d40477a82d",
+      "sha256": "1651b3aeeedd4a5f3850f00b73ff601e94fc8b28a1b070817f81b98be3b682d1"
+    },
+    "男子": {
+      "scene": "family",
+      "variant": "father",
+      "description": "“男子”情景示意：一位成年男子和孩子站在一起。",
+      "id": "a5f1b174c65912ac",
+      "sha256": "2d42c0672e7c2845b4af7f4736c5f85b20659cb23dbac68b364a6e4505f65682"
+    },
+    "先生": {
+      "scene": "family",
+      "variant": "father",
+      "description": "“先生”情景示意：一位成年男子和孩子站在一起。",
+      "id": "cd98e43da31bb1b9",
+      "sha256": "f4c431f0b6567d83ce14a9522853302d7a857d084b62b25596b1da00eeb24016"
+    },
+    "长工": {
+      "scene": "family",
+      "variant": "father",
+      "description": "“长工”情景示意：一位成年男子和孩子站在一起。",
+      "id": "8f432d83e21f03c2",
+      "sha256": "a4aa2e9c8b077c7bbce75ace6e3bece46c66fc8993ab2babfe80a0435cc010af"
+    },
+    "妈妈": {
+      "scene": "family",
+      "variant": "mother",
+      "description": "“妈妈”情景示意：一位成年女子和孩子站在一起。",
+      "id": "45f1364f08aed165",
+      "sha256": "221c00b74739d2607d61fc54f118c6911533f75124d8cef4fce7b7e4fb6d2bba"
+    },
+    "女人": {
+      "scene": "family",
+      "variant": "mother",
+      "description": "“女人”情景示意：一位成年女子和孩子站在一起。",
+      "id": "7148666b21d61397",
+      "sha256": "6f75188300a5b966ce38a0c7072b3502225e6542f4ea0a795a42b0a2817c85bb"
+    },
+    "女子": {
+      "scene": "family",
+      "variant": "mother",
+      "description": "“女子”情景示意：一位成年女子和孩子站在一起。",
+      "id": "b396cd1ea694635d",
+      "sha256": "ebafd895a9f8827fd24822e0c91af4a7fad26bf453e0251b083b7347e7495150"
+    },
+    "女孩": {
+      "scene": "family",
+      "variant": "mother",
+      "description": "“女孩”情景示意：一位成年女子和孩子站在一起。",
+      "id": "4877acf85fb70148",
+      "sha256": "c04b9c693cdf59e4bce775b0a2327d9ffe207edf0e57bdfd27427c874c157726"
+    },
+    "才女": {
+      "scene": "family",
+      "variant": "mother",
+      "description": "“才女”情景示意：一位成年女子和孩子站在一起。",
+      "id": "0c4d70c81e56e63d",
+      "sha256": "1cb47c44802065e82e7ace84a805cfdf38bc69fae86700f30fcf2a694e3cb91f"
+    },
+    "男孩": {
+      "scene": "family",
+      "variant": "boy",
+      "description": "“男孩”情景示意：一个男孩子站在画面中。",
+      "id": "2788bd5e6dcae4e3",
+      "sha256": "0028fb715c712a9db808661671afceada290939bc3bbd770cec1eb47f704fb9c"
+    },
+    "男生": {
+      "scene": "family",
+      "variant": "boy",
+      "description": "“男生”情景示意：一个男孩子站在画面中。",
+      "id": "ef08455cb3062a7b",
+      "sha256": "db3d45b9e55c4d03addea6788f9846df974c8d1e79017b7925fa850a43777588"
+    },
+    "儿子": {
+      "scene": "family",
+      "variant": "boy",
+      "description": "“儿子”情景示意：一个男孩子站在画面中。",
+      "id": "9231b93fd67f48d7",
+      "sha256": "3e53332a3aabf44c6468004add113efd02ce10aad69d0df6931f6d2056182f70"
+    },
+    "男儿": {
+      "scene": "family",
+      "variant": "boy",
+      "description": "“男儿”情景示意：一个男孩子站在画面中。",
+      "id": "05b9ef6e49cf9c69",
+      "sha256": "31966a790b0e47a687032719dc0d9185b70b1b6d63cbe88a7ebdd34ede51af96"
+    },
+    "公子": {
+      "scene": "family",
+      "variant": "boy",
+      "description": "“公子”情景示意：一个男孩子站在画面中。",
+      "id": "bbad731e97448987",
+      "sha256": "5d9c003086e4e51f3f5d24a49b73467f6df35dc632eedd444fc1b514ab4acb66"
+    },
+    "才子": {
+      "scene": "family",
+      "variant": "boy",
+      "description": "“才子”情景示意：一个男孩子站在画面中。",
+      "id": "5bbd9d415b80be14",
+      "sha256": "206f4520ac49dfc0afc64591c39136a87affdeeabdcc3a8cf6a5a42bffbf6417"
+    },
+    "小二": {
+      "scene": "family",
+      "variant": "boy",
+      "description": "“小二”情景示意：一个男孩子站在画面中。",
+      "id": "58ff091771ec287b",
+      "sha256": "52f126c399efc0c5f8f675fb33dbaa709cd66fdee24a6b6a00f01d5185225568"
+    },
+    "女儿": {
+      "scene": "family",
+      "variant": "girl",
+      "description": "“女儿”情景示意：一个女孩子站在画面中。",
+      "id": "115425d59e4ae5f5",
+      "sha256": "15a99e475854ec7ae4eea96caa5a856fb9f7ab9cc1070023f5590994afe5da16"
+    },
+    "女生": {
+      "scene": "family",
+      "variant": "girl",
+      "description": "“女生”情景示意：一个女孩子站在画面中。",
+      "id": "79cdb978c703640a",
+      "sha256": "6ddad414e90e86f76e7b1e9d55f45671274b46bd1ee4bc0ec3dd95ba17162f50"
+    },
+    "公主": {
+      "scene": "family",
+      "variant": "princess",
+      "description": "“公主”情景示意：戴着小王冠的公主。",
+      "id": "d7f5fdf60724707b",
+      "sha256": "95e95050da77c850f52efbe98083b6657e578b4d42585c77594c6d0705420fc7"
+    },
+    "爷爷": {
+      "scene": "family",
+      "variant": "grandfather",
+      "description": "“爷爷”情景示意：一位头发花白的爷爷和孩子。",
+      "id": "05a394a5779b1ee5",
+      "sha256": "eeda72d6ba11ece69ba47f53b495c578513664768d11d40bf564c2814c88c8a5"
+    },
+    "姥爷": {
+      "scene": "family",
+      "variant": "grandfather",
+      "description": "“姥爷”情景示意：一位头发花白的爷爷和孩子。",
+      "id": "ab4901dc09bd2a0c",
+      "sha256": "45b30d109485f57dce03d0694ced3005be746d057fb644292c8efb4b88703c0c"
+    },
+    "公公": {
+      "scene": "family",
+      "variant": "grandfather",
+      "description": "“公公”情景示意：一位头发花白的爷爷和孩子。",
+      "id": "16f6af47cc85c75d",
+      "sha256": "ef12affca8d0d8130e7bf399ffaa75ac74d92e0aa6fbfa67221dc2f59ef9d30b"
+    },
+    "老人": {
+      "scene": "family",
+      "variant": "grandfather",
+      "description": "“老人”情景示意：一位头发花白的爷爷和孩子。",
+      "id": "94c14736de4ee0f7",
+      "sha256": "c701799d6082e34d0596510858cb7d6ca9544af0dc135471fbcd0af3b505d04c"
+    },
+    "先人": {
+      "scene": "family",
+      "variant": "grandfather",
+      "description": "“先人”情景示意：一位头发花白的爷爷和孩子。",
+      "id": "b6576beac7e944d3",
+      "sha256": "e6a8a59e07fb99a05ae77e8e30820c553e6d3f84dde7e3a2b7c3e4cca0251495"
+    },
+    "奶奶": {
+      "scene": "family",
+      "variant": "grandmother",
+      "description": "“奶奶”情景示意：一位头发花白的奶奶和孩子。",
+      "id": "b50dde9bb88540ba",
+      "sha256": "f889747857eb4f06f2e6dfac538e4057c4a4f3fcc964f337d1b8e397f327a735"
+    },
+    "姥姥": {
+      "scene": "family",
+      "variant": "grandmother",
+      "description": "“姥姥”情景示意：一位头发花白的奶奶和孩子。",
+      "id": "92cbb2701ad6b5b9",
+      "sha256": "557eb6303f7795e4e5a9568dec4b9ffc2f577821a73c9bf1347c959130f21460"
+    },
+    "哥哥": {
+      "scene": "family",
+      "variant": "brother",
+      "description": "“哥哥”情景示意：两个年龄不同的男孩子。",
+      "id": "6cf70b7c4fa3c4b4",
+      "sha256": "34884b1a808ff36fe8e54028e3673b17dedd1944a1759ce91b3232dfea68b64f"
+    },
+    "弟弟": {
+      "scene": "family",
+      "variant": "brother",
+      "description": "“弟弟”情景示意：两个年龄不同的男孩子。",
+      "id": "cf0af76ceb03b3ad",
+      "sha256": "a65c49e1cc24d86265c77ffe27d42e53e580128ef508ac7e7188c92862eb3feb"
+    },
+    "姐姐": {
+      "scene": "family",
+      "variant": "sister",
+      "description": "“姐姐”情景示意：两个年龄不同的女孩子。",
+      "id": "d25622289ef32c86",
+      "sha256": "48a2a711fba78ad293e3748f1572352fca960cfab582aedf70ce5008538adcfe"
+    },
+    "妹妹": {
+      "scene": "family",
+      "variant": "sister",
+      "description": "“妹妹”情景示意：两个年龄不同的女孩子。",
+      "id": "dd663fa55681eed7",
+      "sha256": "471ae1f48a76863e69e3a8a7195238464c14a4245fd23bd05436f71fbdfca3d7"
+    },
+    "叔叔": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“叔叔”情景示意：家里的大人和孩子在一起。",
+      "id": "3aea6dc123efe59a",
+      "sha256": "cf25e25e299902f6e0240797fa98f68b0008040b2fb965c6b93660c1629a7aa1"
+    },
+    "姑姑": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“姑姑”情景示意：家里的大人和孩子在一起。",
+      "id": "2605e3afd09d8413",
+      "sha256": "1a40c9b7415574b9a909b838624ebfa747b647c7d9edb6e262c4259196523729"
+    },
+    "舅舅": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“舅舅”情景示意：家里的大人和孩子在一起。",
+      "id": "bf665739f1689a68",
+      "sha256": "0606b8cd7d150382df5ff11cc3bd7461c6767ccb5fd939bb2f39a3f3c1e109fc"
+    },
+    "姨妈": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“姨妈”情景示意：家里的大人和孩子在一起。",
+      "id": "9dcbe12a5bcaa496",
+      "sha256": "75700db3ac7b27e5d57d5e39cf77460ed60fbc4d68eab8c881ce61fcd964022c"
+    },
+    "你们": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“你们”情景示意：家里的大人和孩子在一起。",
+      "id": "8a5d477bdaf612a9",
+      "sha256": "8b7f2afce58bf6dd0d0d79677c8ff1e8a4549d716e743bcfce1dfdca30ef5a6f"
+    },
+    "人们": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“人们”情景示意：家里的大人和孩子在一起。",
+      "id": "1ec687a275e8803b",
+      "sha256": "61b60227b555e96db29fac524850fea84542654063be658b3652d1fabdf562ec"
+    },
+    "大家": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“大家”情景示意：家里的大人和孩子在一起。",
+      "id": "16b54b7ab3b5e984",
+      "sha256": "0bef1cec9b9c3012a9e585f12877d2ba88e91986492dec3d5a0245ca5eb89423"
+    },
+    "众人": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“众人”情景示意：家里的大人和孩子在一起。",
+      "id": "20835cc9cb04571c",
+      "sha256": "46ca3b7a82934858bb6139ef89a42552d84b1ee74a8b7159e82a99025d57705e"
+    },
+    "众多": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“众多”情景示意：家里的大人和孩子在一起。",
+      "id": "67229c07bde3409f",
+      "sha256": "30a5ab496e5686ef27c31b33f42aaa7a1e5908988d16746d98ffc922316631dd"
+    },
+    "大众": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“大众”情景示意：家里的大人和孩子在一起。",
+      "id": "4c0c7cf20f89df60",
+      "sha256": "9f73ee23f25e2c55570e210526ad755b9b4eef3334e581c201470c2f78073435"
+    },
+    "男女": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“男女”情景示意：家里的大人和孩子在一起。",
+      "id": "6dc016a79a4e669d",
+      "sha256": "a4b1a8ea43df88aebae71bebd9f48ad96850643019e8314afbeedfd2b3d1ee55"
+    },
+    "两人": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“两人”情景示意：家里的大人和孩子在一起。",
+      "id": "af344ece36cdbd7e",
+      "sha256": "db9a29e3db975b1d2a2598e692f587b3a95726eaf6b66f904bb9d57da812b788"
+    },
+    "我们": {
+      "scene": "family",
+      "variant": "we",
+      "description": "“我们”情景示意：说话的孩子和同伴站在同一个圈里。",
+      "id": "bcacb40df81b94b7",
+      "sha256": "fdae977096ab1117027fcacb7f7fd13e75eb30b9abab09e329e58cd57df02b35"
+    },
+    "共有": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“共有”情景示意：家里的大人和孩子在一起。",
+      "id": "a8d79a099242cdc7",
+      "sha256": "28eb10d295449f32715f3c58872b4af4581d9226bea8729f37510e18b1fb1e52"
+    },
+    "友人": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“友人”情景示意：家里的大人和孩子在一起。",
+      "id": "797d0fd6e5e3d3dd",
+      "sha256": "e990aede85a0573140a3fc7477df65912165fb5ef29bb97ff9b4d4dd739948ec"
+    },
+    "朋友": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“朋友”情景示意：家里的大人和孩子在一起。",
+      "id": "677aad1a0ee44cd6",
+      "sha256": "73d104a2ffada1afbd6b6deb76cc13605edee7616d6968812d008b7365c0d051"
+    },
+    "友谊": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“友谊”情景示意：家里的大人和孩子在一起。",
+      "id": "edc4eb15573c056e",
+      "sha256": "ccd9d294bb90def86bfb698f65d52455edbd97cedb070c6345b7832a3c2227e1"
+    },
+    "友好": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“友好”情景示意：家里的大人和孩子在一起。",
+      "id": "b09958f8d9bd99ee",
+      "sha256": "94247011940a87bc4472382a3c13c51b7e97ff9cb74436400446e9760b0ea736"
+    },
+    "友善": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“友善”情景示意：家里的大人和孩子在一起。",
+      "id": "16e3b4c5c04a244b",
+      "sha256": "068f12f16c12ffb27356c4c4fdca90865db92e8714eafe564f1ba40c746febc4"
+    },
+    "见面": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“见面”情景示意：家里的大人和孩子在一起。",
+      "id": "65a7e6d1d31fc4b9",
+      "sha256": "126a988df9a506d689f3b13c6a373d206e09a35af92fb04afed688c5d603b1e3"
+    },
+    "和好": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“和好”情景示意：家里的大人和孩子在一起。",
+      "id": "bd7b17f82dd07a23",
+      "sha256": "2fca70f08bcd72821b5faf5e6013232440ec38793fcc8a907e704b970111d86b"
+    },
+    "和平": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“和平”情景示意：家里的大人和孩子在一起。",
+      "id": "c38b401e2062ca88",
+      "sha256": "d36628f899854d6bd9fb4e35826a6fbda05295b91e89c91e104b3eff0e32ac3e"
+    },
+    "和气": {
+      "scene": "family",
+      "variant": "relatives",
+      "description": "“和气”情景示意：家里的大人和孩子在一起。",
+      "id": "08bceeeda8a88414",
+      "sha256": "9278e32eee223b639a2018336c57bea5eee9bc5c979fdd22955b8734eb618bd1"
+    },
+    "自己": {
+      "scene": "family",
+      "variant": "self",
+      "description": "“自己”情景示意：被圆圈标出的孩子表示说话的人。",
+      "id": "fb43354d2aaece51",
+      "sha256": "b68b9d90dcaaeb12fc77c57a45ffee7b1dde002026f70167907dacfb6d0a6db2"
+    },
+    "自我": {
+      "scene": "family",
+      "variant": "self",
+      "description": "“自我”情景示意：被圆圈标出的孩子表示说话的人。",
+      "id": "80e59a53614003c8",
+      "sha256": "84bda1b160c35d3f2b7971018e427e603fe701fb18a19345044e7846fd961ff9"
+    },
+    "我在": {
+      "scene": "family",
+      "variant": "self",
+      "description": "“我在”情景示意：被圆圈标出的孩子表示说话的人。",
+      "id": "33f40475f82bfe08",
+      "sha256": "30ed96d03dee3dee6d01d1aa020325c3f76b3bf2e6377df9e8c23bb420086be1"
+    },
+    "我是": {
+      "scene": "family",
+      "variant": "self",
+      "description": "“我是”情景示意：被圆圈标出的孩子表示说话的人。",
+      "id": "06ba27715e2633b7",
+      "sha256": "057b641f506ec238fe488481318dc2c3ba35bedab46b02925228f160ab695a61"
+    },
+    "我的": {
+      "scene": "family",
+      "variant": "mine",
+      "description": "“我的”情景示意：说话的孩子拿着自己的书包。",
+      "id": "7f1d9dd04cd1c7b8",
+      "sha256": "93ecdc26f971894d71032e923dc69819fc60ef63cf5115c43c31b89209488d03"
+    },
+    "我家": {
+      "scene": "house",
+      "variant": "home",
+      "description": "“我家”情景示意：一座有屋顶、门和窗的房子。",
+      "id": "63d1ec2336dd3972",
+      "sha256": "6bafc30d467ca599d8a9897463a40432cd8b07ce43324a50c3acb967d2e555b9"
+    },
+    "家里": {
+      "scene": "house",
+      "variant": "home",
+      "description": "“家里”情景示意：一座有屋顶、门和窗的房子。",
+      "id": "e97022d759e9ed55",
+      "sha256": "a9f54bb35ef3c246424b0f5a50bdda91ed828ea2daac3e3df9e9287c984a8cf8"
+    },
+    "内心": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“内心”情景示意：人物胸前的心形表示内心感受。",
+      "id": "307cbdffe01c47fc",
+      "sha256": "1db739413a45a6b65a2696661c0793fc4013d32c63e0a3d6ac7983d5a574d54f"
+    },
+    "心中": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“心中”情景示意：人物胸前的心形表示内心感受。",
+      "id": "864bf1aa86550915",
+      "sha256": "f8c2a7ccb43a539fb228e86619daa181096fbc878e95215b791c88c8ab76b514"
+    },
+    "心里": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“心里”情景示意：人物胸前的心形表示内心感受。",
+      "id": "dcee9a614a00ca82",
+      "sha256": "b38941efcb6f96495ea7d5b9d560b357d3bfe3df93dbbfd8209d45194d4f2b44"
+    },
+    "你的": {
+      "scene": "family",
+      "variant": "yours",
+      "description": "“你的”情景示意：箭头指向对面的孩子和他的书包。",
+      "id": "c84459f0729f445c",
+      "sha256": "27a9fbf11a0c2de6af26a45a690eecba94aa4be628957657f1abcb52b6828cf3"
+    },
+    "他的": {
+      "scene": "family",
+      "variant": "theirs",
+      "description": "“他的”情景示意：箭头指向另一位男孩和他的书包。",
+      "id": "6b46510edc43c83d",
+      "sha256": "5e51f2bf86d808cf4efbcd35b130963a5c34fbf9639e3f8e055a0d78a3d60270"
+    },
+    "谁的": {
+      "scene": "family",
+      "variant": "yours",
+      "description": "“谁的”情景示意：箭头指向对面的孩子和他的书包。",
+      "id": "b6fb75fdf2cc058f",
+      "sha256": "923322cf0cd952b73427d1bf56d8f06804ecd90b4881d53a2a85c8844617a84f"
+    },
+    "你我": {
+      "scene": "family",
+      "variant": "youme",
+      "description": "“你我”情景示意：面对面的两个孩子分别表示我和你。",
+      "id": "9ba624fa9e6dbaa4",
+      "sha256": "2fa81564ccb5c8ebd290b826d9ecb86ba8c2565f3577bfdf7b07c54630453ef2"
+    },
+    "它们": {
+      "scene": "animal",
+      "variant": "herd",
+      "description": "“它们”情景示意：两只动物在一起，可以用它们来称呼。",
+      "id": "c40b3d28802c0caa",
+      "sha256": "c82e3bdf15370cb738a0d277bbd8a28e5efa77ebf6dccb94837868f7ee2d70b8"
+    },
+    "学校": {
+      "scene": "school",
+      "variant": "school",
+      "description": "“学校”情景示意：学校门口有校舍、旗杆和孩子。",
+      "id": "dc6e2aafeb9e125b",
+      "sha256": "e614527aa4e024b9226bdb318da0e6a2cebc5098242206ed7308e549f034f31a"
+    },
+    "学生": {
+      "scene": "school",
+      "variant": "school",
+      "description": "“学生”情景示意：学校门口有校舍、旗杆和孩子。",
+      "id": "13a58ec2074e014a",
+      "sha256": "deaad2a2764c77e8629c25f6b47814adcd542cf157c777345dcf1569d3327287"
+    },
+    "上学": {
+      "scene": "school",
+      "variant": "school",
+      "description": "“上学”情景示意：学校门口有校舍、旗杆和孩子。",
+      "id": "9a04b4b6dfffbfe9",
+      "sha256": "6339397d9577fcd2f310d34957b9195661bc1c55170987f146b5b22c54505484"
+    },
+    "就学": {
+      "scene": "school",
+      "variant": "school",
+      "description": "“就学”情景示意：学校门口有校舍、旗杆和孩子。",
+      "id": "bd3851762f9793b2",
+      "sha256": "090e7670c871cd6b30fc4b8f576b4bf7583bdb290b0d45343b0d10cb6513cb17"
+    },
+    "放学": {
+      "scene": "school",
+      "variant": "school",
+      "description": "“放学”情景示意：学校门口有校舍、旗杆和孩子。",
+      "id": "9f1415b044b5e48b",
+      "sha256": "e78343631ed24987e4029edaa6559fcc7e7de1bfa2b84d8e77bcfeac6a3eaa1b"
+    },
+    "老师": {
+      "scene": "school",
+      "variant": "class",
+      "description": "“老师”情景示意：老师在黑板前带孩子上课。",
+      "id": "c9a31a3f670b7f99",
+      "sha256": "51dd7c00942c95745070438268c1c5e5ad5e7536896c872210de841888aebae8"
+    },
+    "上课": {
+      "scene": "school",
+      "variant": "class",
+      "description": "“上课”情景示意：老师在黑板前带孩子上课。",
+      "id": "b6a5b00f8db545dc",
+      "sha256": "53488c427f39d5de2e24a38455e7a179968ac65e7c9692cffd23036d7283f7cb"
+    },
+    "下课": {
+      "scene": "school",
+      "variant": "class",
+      "description": "“下课”情景示意：老师在黑板前带孩子上课。",
+      "id": "fd0b4036e8b231ad",
+      "sha256": "42410808fd7360a88a42bab33cd9a119e413bd5d6d491c2e3e32964350be0b2f"
+    },
+    "课间": {
+      "scene": "school",
+      "variant": "class",
+      "description": "“课间”情景示意：老师在黑板前带孩子上课。",
+      "id": "9652bab3872e6b83",
+      "sha256": "e36af6f451f01234151118c091cc2d2f78803b29718fc63ebc07f958af39eced"
+    },
+    "班级": {
+      "scene": "school",
+      "variant": "class",
+      "description": "“班级”情景示意：老师在黑板前带孩子上课。",
+      "id": "d46e95e81219840c",
+      "sha256": "fcb90bf21b9dfbdf88c1e968c2a9b9a586ad16aa3f911d897ff009b683b32aa7"
+    },
+    "语文": {
+      "scene": "school",
+      "variant": "class",
+      "description": "“语文”情景示意：老师在黑板前带孩子上课。",
+      "id": "bb651061c153bcbb",
+      "sha256": "54ed212f9e87097060501b68b80cadad0ad5ede056342e54c58165a95a996ea0"
+    },
+    "医院": {
+      "scene": "school",
+      "variant": "hospital",
+      "description": "“医院”情景示意：医院门口有医务人员和医疗标记。",
+      "id": "1f6835c0d878fa0e",
+      "sha256": "12f791c829f2cc17fc398a4df44066764a8cafc34dc5f8fe3defe18240588f5b"
+    },
+    "医生": {
+      "scene": "school",
+      "variant": "hospital",
+      "description": "“医生”情景示意：医院门口有医务人员和医疗标记。",
+      "id": "e8ec877c8da553d3",
+      "sha256": "c5be96f5b3dfe08207d2d95b58db9c6ad598149d294b6871938975ac7d9f20b9"
+    },
+    "就医": {
+      "scene": "school",
+      "variant": "hospital",
+      "description": "“就医”情景示意：医院门口有医务人员和医疗标记。",
+      "id": "f72fa04076812e42",
+      "sha256": "b39b0fd94c71f9a148e9a4c72d6186676ef11c18ca3132dbcbf62f274fa58648"
+    },
+    "工厂": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“工厂”情景示意：工厂有厂房，工人在工作。",
+      "id": "5c331171b102d001",
+      "sha256": "389a95b38c767d1e03f19076779d0322e4ddb7325d2542bb28dfe75e8d2b4244"
+    },
+    "工业": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“工业”情景示意：工厂有厂房，工人在工作。",
+      "id": "af5a32367776a90c",
+      "sha256": "f3082317aa43ed9aa563f2f90c3e82d22bc032f6ad3cfaf4b9e44e995c564e8f"
+    },
+    "厂里": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“厂里”情景示意：工厂有厂房，工人在工作。",
+      "id": "469775ca2afd799a",
+      "sha256": "e055bd6218d4d90bb76aa574f524fdd5532bfb7cbbe0a91d4a21d0877b4f74e4"
+    },
+    "工人": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“工人”情景示意：工厂有厂房，工人在工作。",
+      "id": "bff01f9cc7b66c85",
+      "sha256": "a0642631ed9ce29891fe055498cd74d99e0ec4059adfd926c0038f1cf2ba0d06"
+    },
+    "做工": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“做工”情景示意：工厂有厂房，工人在工作。",
+      "id": "8ed3d92576b2d2cc",
+      "sha256": "f51a17509f30701d26ffc6d20857ad3caf9797d05f693fdb3cdf34a538120d9f"
+    },
+    "做事": {
+      "scene": "action",
+      "variant": "allwork",
+      "description": "“做事”情景示意：孩子处理桌面上的任务。",
+      "id": "4f7f5752e418e024",
+      "sha256": "bb97c694ff0c77e612e15d8e52cef5fe05dd2d7f9aad14a9ba9ca44b50d407cb"
+    },
+    "做家务": {
+      "scene": "tool",
+      "variant": "mop",
+      "description": "“做家务”情景示意：孩子拿拖把清洁地面。",
+      "id": "c61e5b066ff14adf",
+      "sha256": "da822bac293758d393b611cbbc52edbc4c6f098474d7a515a577a108ed8f1a26"
+    },
+    "做作业": {
+      "scene": "book",
+      "variant": "write",
+      "description": "“做作业”情景示意：用笔在作业本上写字。",
+      "id": "ad905cb6e5ac8db8",
+      "sha256": "3311f1da28642e96216c14a446a31200461cf5f23f4290a6959e5381c8034f7c"
+    },
+    "办事": {
+      "scene": "action",
+      "variant": "allwork",
+      "description": "“办事”情景示意：按任务清单完成事情。",
+      "id": "9ca6185efdaa0f35",
+      "sha256": "a29666f48bbf252901a798c0c3cf171528eda22934a9d472c428a7c85fdcd052"
+    },
+    "能干": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“能干”情景示意：工厂有厂房，工人在工作。",
+      "id": "bff02a6131f86a8d",
+      "sha256": "9f8f44c47185a0f268e01b2bb1e79675417bb96c473cac3f0dd59aaeb561bdc1"
+    },
+    "能力": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“能力”情景示意：工厂有厂房，工人在工作。",
+      "id": "5c5374dd958bcb79",
+      "sha256": "0634edfe937e29ce766f20807a17d7c375d12a606ad0e00961275693119c6549"
+    },
+    "才能": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“才能”情景示意：工厂有厂房，工人在工作。",
+      "id": "9bc2ebe0cb790711",
+      "sha256": "2e436a6a65f42aebd236ad27e641bfc53a20af85e4bcd9a506c2ec5fbdd49775"
+    },
+    "采用": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“采用”情景示意：从不同的办法中选择一个使用。",
+      "id": "6f6004072ae719c7",
+      "sha256": "ed5a3aaedec1e2b451d8561338784beb4cd8c741ce2273e597b1b54565bef309"
+    },
+    "作用": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“作用”情景示意：工厂有厂房，工人在工作。",
+      "id": "40f6d6bab7e54cc4",
+      "sha256": "c4e2d5fd40da3cf77994cf3318552197c948b7ae5c251a57442b65e087c847a4"
+    },
+    "用来": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“用来”情景示意：工厂有厂房，工人在工作。",
+      "id": "7dd7d265115bd580",
+      "sha256": "5db691c8f9b5921a146e2f13e8e68f2e650629b75f5fa2d936fb9ff25e8b8379"
+    },
+    "可用": {
+      "scene": "school",
+      "variant": "factory",
+      "description": "“可用”情景示意：工厂有厂房，工人在工作。",
+      "id": "4d99c976beb8827e",
+      "sha256": "3538af68cdcecf2a87ac7366f2d6766aeb94f6662a40b5aebf7b06ab44cbe0af"
+    },
+    "门卫": {
+      "scene": "school",
+      "variant": "gate",
+      "description": "“门卫”情景示意：门卫站在门口旁边。",
+      "id": "e47883fa23c51eaa",
+      "sha256": "0b0e218f0b8cc29ea25b52be9769d55ad04067da752933af4fa79771746e8f96"
+    },
+    "门口": {
+      "scene": "school",
+      "variant": "gate",
+      "description": "“门口”情景示意：门卫站在门口旁边。",
+      "id": "726c7da129e6e4a6",
+      "sha256": "5eeed898339bc72a6f7145873dd9cce42620d142700132e8eb55e107c2b123e4"
+    },
+    "传达室": {
+      "scene": "school",
+      "variant": "gate",
+      "description": "“传达室”情景示意：门卫站在门口旁边。",
+      "id": "303dd5d3a4c23044",
+      "sha256": "28065584df7fb329823b374199accd22e0b45650d3a2799897e13bde5dd00c96"
+    },
+    "开会": {
+      "scene": "school",
+      "variant": "meeting",
+      "description": "“开会”情景示意：几个人围桌坐着轮流说话。",
+      "id": "b406359aa585c4bc",
+      "sha256": "f6e89e2549ffc4e5b01513c959304925e185f56c0cd119770d491a58db3d5114"
+    },
+    "参加": {
+      "scene": "school",
+      "variant": "meeting",
+      "description": "“参加”情景示意：几个人围桌坐着轮流说话。",
+      "id": "041ef3e9eb873e90",
+      "sha256": "768949df7d6b15df34c6c9a09ee308842f6278a81227bbc280e09253be520962"
+    },
+    "参赛": {
+      "scene": "school",
+      "variant": "meeting",
+      "description": "“参赛”情景示意：几个人围桌坐着轮流说话。",
+      "id": "255f183ba4274d08",
+      "sha256": "a76876a4e3598315211965a874c0094c6c07945c238e9d27817e40e940473184"
+    },
+    "回家": {
+      "scene": "house",
+      "variant": "home",
+      "description": "“回家”情景示意：一座有屋顶、门和窗的房子。",
+      "id": "9a6ce4cf2cab6307",
+      "sha256": "0d556705eef52d564e1e3b412de3eede9a5e4821a0f9d4d72f9dd3226b2a6b52"
+    },
+    "房间": {
+      "scene": "house",
+      "variant": "home",
+      "description": "“房间”情景示意：一座有屋顶、门和窗的房子。",
+      "id": "96b2d406041bbf38",
+      "sha256": "b2e7d27e071a0276ecc32c1a424f226e0020e65c8253eda29008c4b35fcb836e"
+    },
+    "里面": {
+      "scene": "direction",
+      "variant": "inout",
+      "description": "“里面”情景示意：盒子的里面和外面分别放着小球。",
+      "id": "0111930eba211e33",
+      "sha256": "11855f68fe165ea6a8e7a9aefe98b4b2c0e9f4e934d2bc66861d55e4850c15d5"
+    },
+    "里头": {
+      "scene": "direction",
+      "variant": "inout",
+      "description": "“里头”情景示意：盒子的里面和外面分别放着小球。",
+      "id": "4a397860f8e9bf32",
+      "sha256": "f7dbde9f1aa5e5197a001b8bee80b389dbd688910191244a3cdf7c6972543889"
+    },
+    "里外": {
+      "scene": "direction",
+      "variant": "inout",
+      "description": "“里外”情景示意：盒子的里面和外面分别放着小球。",
+      "id": "26086cb3d98f9874",
+      "sha256": "6d7c638772b3eb75a133c90d6fa77a38a49664067646b4341ab5d244871569cc"
+    },
+    "内外": {
+      "scene": "direction",
+      "variant": "inout",
+      "description": "“内外”情景示意：盒子的里面和外面分别放着小球。",
+      "id": "d8a7ebd775e9a68e",
+      "sha256": "41d8a08d950c56f23e2b2b062f15a1e5fe1a678848dfbc95f1cd14a1b9c3d3ef"
+    },
+    "开关": {
+      "scene": "house",
+      "variant": "open",
+      "description": "“开关”情景示意：门打开，孩子准备进出。",
+      "id": "92d9be0a0e94eb16",
+      "sha256": "a165e08ae716c2c6e53ed49877001ff3b3abc83ea66df78fc1a61a2de30dfd7c"
+    },
+    "开和关": {
+      "scene": "tool",
+      "variant": "switch",
+      "description": "“开和关”情景示意：两扇门分别打开和关闭。",
+      "id": "7f1037bf77d268f6",
+      "sha256": "c6fbd325987041801027be252d128517146692bebab7cada06e3b639de776174"
+    },
+    "打开": {
+      "scene": "house",
+      "variant": "open",
+      "description": "“打开”情景示意：门打开，孩子准备进出。",
+      "id": "c771248e511fbf93",
+      "sha256": "4a8ff8ecdbc8337fa2b3f66b75f030a5cdefc248367f5ed03fe37088cb9d0992"
+    },
+    "出门": {
+      "scene": "house",
+      "variant": "leave",
+      "description": "“出门”情景示意：孩子从家门走到外面。",
+      "id": "10809c4d0192c12a",
+      "sha256": "ad5736d194868eb35d69e8463e80f373b1111eb99f332c239b02de1d5a9c1ec4"
+    },
+    "出去": {
+      "scene": "house",
+      "variant": "leave",
+      "description": "“出去”情景示意：孩子沿箭头离开敞开的门。",
+      "id": "d1147b647ff1a523",
+      "sha256": "ee93c8b161084c13b2494990835bd8a79f175f97628f71f9220cc144b2dcf70d"
+    },
+    "出来": {
+      "scene": "house",
+      "variant": "leave",
+      "description": "“出来”情景示意：孩子从房子里面走到外面。",
+      "id": "8491cffebe6126ea",
+      "sha256": "1d23ecb5d91f5ac6ba417d8b383b700466617bf78515fee9c852070f069d1658"
+    },
+    "来到": {
+      "scene": "house",
+      "variant": "open",
+      "description": "“来到”情景示意：门打开，孩子准备进出。",
+      "id": "c1d8e67ad1987824",
+      "sha256": "e1a79245a5d63844cbb733707e007ca9b32b1cbf403bb2cb69bd3e85a5945338"
+    },
+    "来去": {
+      "scene": "house",
+      "variant": "open",
+      "description": "“来去”情景示意：门打开，孩子准备进出。",
+      "id": "e9f6f26f1fcfac03",
+      "sha256": "b32b646daceb8f68a5056ff38a6f30f17044a549a519c0e1cffbaf8d9501d30a"
+    },
+    "去了": {
+      "scene": "house",
+      "variant": "leave",
+      "description": "“去了”情景示意：孩子离开家门去往别处。",
+      "id": "dfa20f3be4f5288b",
+      "sha256": "cd80ac1b48bbaec2192f391ba6f6606b1131b49204429a598c291989e595f601"
+    },
+    "上去": {
+      "scene": "direction",
+      "variant": "updown",
+      "description": "“上去”情景示意：物体上下两侧用箭头标出。",
+      "id": "bd86a28aa0ff0ec4",
+      "sha256": "e31f1f69e40f77df81ec9c604db6aa369fc2923a9e81cd3cabfcd41f735954dd"
+    },
+    "下去": {
+      "scene": "direction",
+      "variant": "updown",
+      "description": "“下去”情景示意：物体上下两侧用箭头标出。",
+      "id": "3a8091eb7937e6ba",
+      "sha256": "2719343d25e09571b23294ded44cbe7dc8c1aadbe6246e6fc735bb6de4ad6f89"
+    },
+    "关门": {
+      "scene": "house",
+      "variant": "closed",
+      "description": "“关门”情景示意：门关上，与旁边打开的门对照。",
+      "id": "5f8439ffc8a91487",
+      "sha256": "9bcde2aa3527b9afe7e4b7fcd24b9087635bd9f761e18da1aa73e2dd0eb95cbf"
+    },
+    "进入": {
+      "scene": "direction",
+      "variant": "inout",
+      "description": "“进入”情景示意：盒子的里面和外面分别放着小球。",
+      "id": "f88182fcd575be3a",
+      "sha256": "2f5cb5073df20a2bf10d840bbea440bc37c37f6274a010cfd3c5ce763341b22f"
+    },
+    "进来": {
+      "scene": "house",
+      "variant": "enter",
+      "description": "“进来”情景示意：孩子朝着敞开的门走进去。",
+      "id": "5a490d99246de50a",
+      "sha256": "ddaa82c80bd6f5f25baf546a91390562af388cdd4f99a02045b8e5d30ad3ef57"
+    },
+    "放进": {
+      "scene": "direction",
+      "variant": "inout",
+      "description": "“放进”情景示意：盒子的里面和外面分别放着小球。",
+      "id": "30842609977fcf42",
+      "sha256": "503781f154229e8a4346c41e3272b1a76c2f1cc646c44a755a927a7cdf5bedad"
+    },
+    "站到": {
+      "scene": "house",
+      "variant": "enter",
+      "description": "“站到”情景示意：孩子朝着敞开的门走进去。",
+      "id": "e74eb7f51e5a1b59",
+      "sha256": "7bbcf865c93cad9be91cc5fe84b45c900d39b521aa62b82acaf3efec123122ca"
+    },
+    "先到": {
+      "scene": "direction",
+      "variant": "frontback",
+      "description": "“先到”情景示意：前后排列的队伍，前后位置被突出。",
+      "id": "16e59397dd7f4123",
+      "sha256": "1794b883a99133e0e4dff8a94a0ae9cac9b71ecc82efcaa8feb6f5a0d69ecaf1"
+    },
+    "飞到": {
+      "scene": "house",
+      "variant": "enter",
+      "description": "“飞到”情景示意：孩子朝着敞开的门走进去。",
+      "id": "04c9f88b4cda9b34",
+      "sha256": "235b1f0f35be59d71a56dc7526cd04be590012fafa6408757496bddd162fdcc3"
+    },
+    "回来": {
+      "scene": "house",
+      "variant": "enter",
+      "description": "“回来”情景示意：孩子朝着敞开的门走进去。",
+      "id": "b3ab908cef2352cd",
+      "sha256": "6671d115addac1bec9287ce20d8549887863d72cfa35902d21c30cd697f41754"
+    },
+    "回去": {
+      "scene": "house",
+      "variant": "enter",
+      "description": "“回去”情景示意：孩子朝着敞开的门走进去。",
+      "id": "8fa02ce7cc62b0cf",
+      "sha256": "cabd2f22c74d9e5d80cf0e0102b2bd8b6270686ba53159f403e9903e7d563eb4"
+    },
+    "找到": {
+      "scene": "house",
+      "variant": "enter",
+      "description": "“找到”情景示意：孩子朝着敞开的门走进去。",
+      "id": "0ccc285138ce0754",
+      "sha256": "ce686c16938eac0b2c4c810fea571909f42213b6230ffc50acbcca0e0a596f05"
+    },
+    "找着": {
+      "scene": "house",
+      "variant": "enter",
+      "description": "“找着”情景示意：孩子朝着敞开的门走进去。",
+      "id": "81db9a25b9b7785d",
+      "sha256": "9d893d024758c806ca7a3952c332ae50bc7e90d451d5ed860732a9b1b2e35616"
+    },
+    "放走": {
+      "scene": "house",
+      "variant": "leave",
+      "description": "“放走”情景示意：孩子挥手，沿箭头离开家门。",
+      "id": "1e665fe1b7dbde13",
+      "sha256": "6ea6f295b1ec9035b70ea205a1b99ec26b7a80d4e692526a3c10f5ff36aed098"
+    },
+    "再见": {
+      "scene": "house",
+      "variant": "leave",
+      "description": "“再见”情景示意：孩子挥手，沿箭头离开家门。",
+      "id": "c90a1cdb561d0269",
+      "sha256": "68dc3e6f9c03121c7bea6875e3093c9337d1deee75cc3e22bd55851e11635599"
+    },
+    "书本": {
+      "scene": "book",
+      "variant": "read",
+      "description": "“书本”情景示意：孩子翻开一本书阅读。",
+      "id": "3d8b66d6a9a5d97b",
+      "sha256": "43cb3d3013df46c674957823a1ff68050dd0d7440821e89b83ac326bdb32b60c"
+    },
+    "本子": {
+      "scene": "book",
+      "variant": "read",
+      "description": "“本子”情景示意：孩子翻开一本书阅读。",
+      "id": "42864ad27df88070",
+      "sha256": "b90643270fccaa63e243696751644429ebc57c0b21a5a304b98555617558fd66"
+    },
+    "课本": {
+      "scene": "book",
+      "variant": "read",
+      "description": "“课本”情景示意：孩子翻开一本书阅读。",
+      "id": "5aba39cfdf6ddf0e",
+      "sha256": "67d90364e5af20ea2203183f922e0490dcf689580135aa80083e2d3ac1584cf9"
+    },
+    "读书": {
+      "scene": "book",
+      "variant": "read",
+      "description": "“读书”情景示意：孩子翻开一本书阅读。",
+      "id": "6e7a814f678b1e0d",
+      "sha256": "8656ea3a000628390c860922f03471e11b5865343ca1bd22227487853846a2b9"
+    },
+    "看书": {
+      "scene": "book",
+      "variant": "read",
+      "description": "“看书”情景示意：孩子翻开一本书阅读。",
+      "id": "9f805978dd250981",
+      "sha256": "58cbe6ad0e051c47351ce6c55078ef2628906d3f38ca5b220c1dbf453003f77a"
+    },
+    "阅读": {
+      "scene": "book",
+      "variant": "read",
+      "description": "“阅读”情景示意：孩子翻开一本书阅读。",
+      "id": "ce9b12499c471759",
+      "sha256": "6ed947c6ff294f764187192121a86ad3fa91438737205ab4ef26a785435a4cf2"
+    },
+    "作业本": {
+      "scene": "book",
+      "variant": "read",
+      "description": "“作业本”情景示意：孩子翻开一本书阅读。",
+      "id": "c22680ed2809b0ce",
+      "sha256": "b93d0272211fa242f230c240b428fbdac65f0d1962deb410156fe09557d0df9a"
+    },
+    "书写": {
+      "scene": "book",
+      "variant": "write",
+      "description": "“书写”情景示意：孩子用笔在纸上写字。",
+      "id": "22b7acc14d3a73a1",
+      "sha256": "783f27a4b072db14a5e495632ac90a02590e3f71ff8f049381c7fa14681015e2"
+    },
+    "写字": {
+      "scene": "book",
+      "variant": "write",
+      "description": "“写字”情景示意：孩子用笔在纸上写字。",
+      "id": "15bbb9e233aeabfc",
+      "sha256": "1127cc58b182ff2ed47dbd5c6c096a2d71b832a267e46b76c5e487f31f3d33b1"
+    },
+    "字词": {
+      "scene": "book",
+      "variant": "write",
+      "description": "“字词”情景示意：孩子用笔在纸上写字。",
+      "id": "62d8fbdf838311d2",
+      "sha256": "942bce54400c74ad4a00fd07109866eae8442a50a4dd770f00a46d04dfd9984a"
+    },
+    "文字": {
+      "scene": "book",
+      "variant": "write",
+      "description": "“文字”情景示意：孩子用笔在纸上写字。",
+      "id": "14b69bd6eeb0839b",
+      "sha256": "ec6174f8ad086e1b0734fec8fd213b0bb32a39d2d8b7024e4c1071564f10be7d"
+    },
+    "拼写": {
+      "scene": "book",
+      "variant": "write",
+      "description": "“拼写”情景示意：孩子用笔在纸上写字。",
+      "id": "cee02cd8ae5c5e5e",
+      "sha256": "82e6df619168c471e140aa85dc27d800ff5e4cfc9fef014283cf4c824edf80fa"
+    },
+    "书画": {
+      "scene": "book",
+      "variant": "write",
+      "description": "“书画”情景示意：孩子用笔在纸上写字。",
+      "id": "419edf72209722a3",
+      "sha256": "45ab78e5409662b09428c5f77ebe9a2de51706d6ca3fdc108164e85f06f4f8ea"
+    },
+    "画画": {
+      "scene": "book",
+      "variant": "write",
+      "description": "“画画”情景示意：孩子用笔在纸上写字。",
+      "id": "0f7385593fb1b634",
+      "sha256": "cd3a419d2373dc81b1b043704f2134f2df71e4575b5a86fef12b65eab24f038b"
+    },
+    "画纸": {
+      "scene": "tool",
+      "variant": "paper",
+      "description": "“画纸”情景示意：一张等待画画的纸。",
+      "id": "e7202be6df957bb4",
+      "sha256": "2f49c072ba06951f3b25249c1bdb8db96a1f21a4488e63ad069e08b6ff594ec5"
+    },
+    "白纸": {
+      "scene": "tool",
+      "variant": "paper",
+      "description": "“白纸”情景示意：一张干净的白纸。",
+      "id": "0905b6829ea86d67",
+      "sha256": "e51a6173e0adad5c62d9f11da92b94f8488502bdffa5cb0698fcb499bc791e39"
+    },
+    "折纸": {
+      "scene": "tool",
+      "variant": "origami",
+      "description": "“折纸”情景示意：正方形纸的一角沿虚线折起。",
+      "id": "1acfcda43a3d609e",
+      "sha256": "1a6c613136e902dabe3f036cfd8a262612c3dbab98168e3ef8c2164d9bc16d30"
+    },
+    "姓名": {
+      "scene": "book",
+      "variant": "name",
+      "description": "“姓名”情景示意：学生证上有人像和姓名栏。",
+      "id": "50b5b1d2abefbca6",
+      "sha256": "f7afea314264d9577314aab45e75e029bb0e1032ad55f6523afe7ace4271f2f7"
+    },
+    "姓王": {
+      "scene": "book",
+      "variant": "name",
+      "description": "“姓王”情景示意：学生证上有人像和姓名栏。",
+      "id": "dcbdafdc9cb04e49",
+      "sha256": "12977aae1e963a25d5c772bf5a2db635b1968b9b2b44bd180424f34b23f1f876"
+    },
+    "大名": {
+      "scene": "book",
+      "variant": "name",
+      "description": "“大名”情景示意：学生证上有人像和姓名栏。",
+      "id": "2b153837ebb75d9b",
+      "sha256": "48278da5b60cf8d66e5c983dcb20914ed511b357d3cd04c9bdc4168fe6810ec0"
+    },
+    "名人": {
+      "scene": "book",
+      "variant": "name",
+      "description": "“名人”情景示意：学生证上有人像和姓名栏。",
+      "id": "3f1972678f8abe60",
+      "sha256": "2c37d06b39b1e793c96b4ca9873b17e4bc407a42e98f7f3bb08f79eb3013160b"
+    },
+    "点名": {
+      "scene": "book",
+      "variant": "name",
+      "description": "“点名”情景示意：学生证上有人像和姓名栏。",
+      "id": "855f3f1677f6c93b",
+      "sha256": "7c3d2b0de588bfb4b344d0b62c5dff8e0ee99413fd930640d064725199ea2786"
+    },
+    "词语": {
+      "scene": "book",
+      "variant": "language",
+      "description": "“词语”情景示意：书本中的文字和拼音练习。",
+      "id": "f3b5980f18ff903e",
+      "sha256": "4a86f1ef3c5b2d5d359fa6824fbead6d872d29ce9464ed1e0b2be9e3b803de00"
+    },
+    "语句": {
+      "scene": "book",
+      "variant": "language",
+      "description": "“语句”情景示意：书本中的文字和拼音练习。",
+      "id": "29c92e555b130e90",
+      "sha256": "9e78a8ffb61206b34835bc029480e03432ae5ddd04089cef1b18465d6bb03896"
+    },
+    "句子": {
+      "scene": "book",
+      "variant": "language",
+      "description": "“句子”情景示意：书本中的文字和拼音练习。",
+      "id": "ea3a456491382f60",
+      "sha256": "8565aea042c196a7ae021d1b4ccab3ecc3a66cddfc9fc66f67bb08a922bacb58"
+    },
+    "语言": {
+      "scene": "book",
+      "variant": "language",
+      "description": "“语言”情景示意：书本中的文字和拼音练习。",
+      "id": "9f6fee1aba17a565",
+      "sha256": "54132a095be850cba8f227192b1628b2b5cef11981c9ae65038fe2c9839490ce"
+    },
+    "拼音": {
+      "scene": "book",
+      "variant": "language",
+      "description": "“拼音”情景示意：书本中的文字和拼音练习。",
+      "id": "7cfb855571b48dea",
+      "sha256": "826692cf64999a3a18d1ce63773132c7e7739f61157109d990bd50ebd70b4aa7"
+    },
+    "说明": {
+      "scene": "book",
+      "variant": "language",
+      "description": "“说明”情景示意：书本中的文字和拼音练习。",
+      "id": "4262c45dc797bb0c",
+      "sha256": "b687d64c8e7d96d780ed970ae9b26eddf2fe23f24ce0fdb3117220b090dc129e"
+    },
+    "数字": {
+      "scene": "book",
+      "variant": "language",
+      "description": "“数字”情景示意：书本中的文字和拼音练习。",
+      "id": "c16ec9274e9d13d1",
+      "sha256": "c135d6c2e86a2752be1b73cfd4baf2764586d3a8f357023454d8f52108a68051"
+    },
+    "文化": {
+      "scene": "book",
+      "variant": "language",
+      "description": "“文化”情景示意：书本中的文字和拼音练习。",
+      "id": "b12e914c1f82d6ed",
+      "sha256": "ce78603ab4a161d85210fe5487efe5ee995d47b4f14297d703ba15f9cdbb1fa9"
+    },
+    "铅笔": {
+      "scene": "tool",
+      "variant": "pencil",
+      "description": "“铅笔”情景示意：铅笔、笔尖和纸张。",
+      "id": "f77e30ee1aed8819",
+      "sha256": "7d473eb67aec68bcacc81008a9da9b9d8c6aacc345889e3b2c9c2f4ff74818ce"
+    },
+    "毛笔": {
+      "scene": "tool",
+      "variant": "brush",
+      "description": "“毛笔”情景示意：笔杆一端有黑色柔软笔毛。",
+      "id": "12776fa4b6acea54",
+      "sha256": "c5d7f41e3be784ceeb7217ba90e626d54e2ea3423b6c9cc602c10600a61c3d07"
+    },
+    "水笔": {
+      "scene": "tool",
+      "variant": "pencil",
+      "description": "“水笔”情景示意：铅笔、笔尖和纸张。",
+      "id": "7030e523475d40fe",
+      "sha256": "021813723608509a024349e9b3f8fc09afa7a21f020f60edf1a68c52c5fe063e"
+    },
+    "画笔": {
+      "scene": "tool",
+      "variant": "paintbrush",
+      "description": "“画笔”情景示意：笔杆一端有带颜色的笔毛。",
+      "id": "05731b92ad31d178",
+      "sha256": "339d3f7a938abc38cf99d8aba77bd561c2fba719de783b266810e5a5755697ba"
+    },
+    "黑笔": {
+      "scene": "tool",
+      "variant": "black-pen",
+      "description": "“黑笔”情景示意：黑色的笔。",
+      "id": "b3a655bd441d0432",
+      "sha256": "8ba8066376c07499840062af0903313c04f35287014e1ec632e8d8f740abdd4f"
+    },
+    "尺子": {
+      "scene": "tool",
+      "variant": "ruler",
+      "description": "“尺子”情景示意：带刻度的尺子放在纸上。",
+      "id": "3e587e9a1742d5b4",
+      "sha256": "9d2e317edf08f1543336b4e0ecdb92d48a3f875f99b0d65b938d3230b7ba46e3"
+    },
+    "皮尺": {
+      "scene": "tool",
+      "variant": "tape",
+      "description": "“皮尺”情景示意：可卷起来的软尺。",
+      "id": "3c25fa2279870dec",
+      "sha256": "35f24679416f8705c01d9220ed08f94460c0c17afa594a41b61dbd3ee141049d"
+    },
+    "尺寸": {
+      "scene": "tool",
+      "variant": "ruler",
+      "description": "“尺寸”情景示意：带刻度的尺子放在纸上。",
+      "id": "246df7d8db841735",
+      "sha256": "21db7c074c47036b19a64f556c19d7f7a5fb036050a41c0618c1b8733e563bcf"
+    },
+    "长度": {
+      "scene": "tool",
+      "variant": "ruler",
+      "description": "“长度”情景示意：带刻度的尺子放在纸上。",
+      "id": "fcd53935fd79027b",
+      "sha256": "28778ddc0b5b2a0989e3ce7ff42aaba93e36d3b757e71549caf875801c8dc635"
+    },
+    "小刀": {
+      "scene": "tool",
+      "variant": "knife",
+      "description": "“小刀”情景示意：带手柄的刀，放在安全的桌面上。",
+      "id": "047a16fd089e1bad",
+      "sha256": "b88589002f67cb89de5f3be8c2dee3a38cf38b0cf820b1693f16d0f00084b011"
+    },
+    "菜刀": {
+      "scene": "tool",
+      "variant": "knife",
+      "description": "“菜刀”情景示意：带手柄的刀，放在安全的桌面上。",
+      "id": "7a3a25167cc4a4d5",
+      "sha256": "50fa6d43f9d893c3f3d4f8b47262279624282eda091aaf6b1f9aed65eb4c5935"
+    },
+    "转笔刀": {
+      "scene": "tool",
+      "variant": "sharpener",
+      "description": "“转笔刀”情景示意：带有圆孔的转笔刀和铅笔。",
+      "id": "1b1c7907fd10b251",
+      "sha256": "a6c9db4cead4b5577fea2ae1abceeedc88f34da47130b463dc636a7c79d89e92"
+    },
+    "刀山": {
+      "scene": "tool",
+      "variant": "knife",
+      "description": "“刀山”情景示意：带手柄的刀，放在安全的桌面上。",
+      "id": "b8ee7030343bc0af",
+      "sha256": "eadeb91ee258ae4a876343f0fa3ab0ffd695df67675c21365fb4f0d5b41cd98e"
+    },
+    "书包": {
+      "scene": "tool",
+      "variant": "bag",
+      "description": "“书包”情景示意：一个有提手、背带的书包。",
+      "id": "c48625607f03389a",
+      "sha256": "0451aea2e1d1ebf5eb99884559c69a37d367b228cf8094c042f783c5e85aaa3a"
+    },
+    "皮包": {
+      "scene": "tool",
+      "variant": "bag",
+      "description": "“皮包”情景示意：一个有提手、背带的书包。",
+      "id": "f542c8f985f5ca9b",
+      "sha256": "0e7f34ee550aa0110f8a972bd21ec152650dc85b020083ea03ebc157e76a70b0"
+    },
+    "书桌": {
+      "scene": "tool",
+      "variant": "table",
+      "description": "“书桌”情景示意：桌面上有书、纸和笔。",
+      "id": "3a377d4d385e0eb7",
+      "sha256": "ccfd071061d7e55db92e0c7f4df52be29cbeb5de1e7f51b39b9518c31d42100e"
+    },
+    "擦桌子": {
+      "scene": "tool",
+      "variant": "wipe",
+      "description": "“擦桌子”情景示意：孩子拿着抹布擦桌面。",
+      "id": "a7d27ac99282a94b",
+      "sha256": "9ac06ba94940d397df95811ca48b646c565b989336af175a984535903f97ade4"
+    },
+    "拖把": {
+      "scene": "tool",
+      "variant": "mop",
+      "description": "“拖把”情景示意：孩子拿拖把清洁地面。",
+      "id": "e6496838fd1eac32",
+      "sha256": "3df74b1aa6f192102c9d46138ff0febbc67ea7c28d2c60e64568a621d9b66bc8"
+    },
+    "卫生": {
+      "scene": "tool",
+      "variant": "mop",
+      "description": "“卫生”情景示意：孩子拿拖把清洁地面。",
+      "id": "1156fe3779e4a447",
+      "sha256": "d56bc333646e05a9b5ac8245e6722a27c9e72bf1527bc285eb05bef6b4b886a4"
+    },
+    "搭积木": {
+      "scene": "tool",
+      "variant": "block",
+      "description": "“搭积木”情景示意：孩子把积木一块块搭起来。",
+      "id": "da21302433142cfa",
+      "sha256": "7621d87a2d0ab217a499fda9c697ab87a597d4c2ad246d9b5dc1d5f75ce6639b"
+    },
+    "木头": {
+      "scene": "tool",
+      "variant": "block",
+      "description": "“木头”情景示意：孩子把积木一块块搭起来。",
+      "id": "3915f9fdd0acc2b1",
+      "sha256": "ae4637c626697e1fb86b78ed7027b7c7473487885718a7b70ad93fb485935e73"
+    },
+    "下棋": {
+      "scene": "tool",
+      "variant": "chess",
+      "description": "“下棋”情景示意：棋盘上有黑白棋子。",
+      "id": "76d98f431aba4043",
+      "sha256": "6cfd8f4575d7e9a7e6ba613eb652b7544b4088317cd7b3589c752dae800c026c"
+    },
+    "棋子": {
+      "scene": "tool",
+      "variant": "chess",
+      "description": "“棋子”情景示意：棋盘上有黑白棋子。",
+      "id": "ebafc5a4d7e252a1",
+      "sha256": "3146326b3312e81a69807e7ddae5f10b0cb4f2b01886cdbb8bb2a8f5207e72ba"
+    },
+    "游戏": {
+      "scene": "tool",
+      "variant": "chess",
+      "description": "“游戏”情景示意：棋盘上有黑白棋子。",
+      "id": "847c5f681ce955a0",
+      "sha256": "7a21a507dbd0cb69dd2c1ba6c981fa6ce74308d957d8108ae9d0272b52e5781e"
+    },
+    "大路": {
+      "scene": "transport",
+      "variant": "road",
+      "description": "“大路”情景示意：一条道路通向远处。",
+      "id": "e8f6e74b27abadd1",
+      "sha256": "baae845743dfd7cefdc47ba56ff875484d4971330c8a86bdaa3c7eef070b24fe"
+    },
+    "马路": {
+      "scene": "transport",
+      "variant": "road",
+      "description": "“马路”情景示意：一条道路通向远处。",
+      "id": "19f5a424bd5cbc8d",
+      "sha256": "93271cc741cb66364221014c453923e75cad280a7e7235e32f64c8978b577a16"
+    },
+    "方向": {
+      "scene": "transport",
+      "variant": "road",
+      "description": "“方向”情景示意：一条道路通向远处。",
+      "id": "1121471a0ff440f8",
+      "sha256": "0625fd0e15a2328caaa3a4a8bc0b697f22497e9e6d4132b56e59f6cff1226ef6"
+    },
+    "前进": {
+      "scene": "transport",
+      "variant": "road",
+      "description": "“前进”情景示意：一条道路通向远处。",
+      "id": "d681c6e2947ae79b",
+      "sha256": "3019e74593a6a14150bd97e80852adc2f1f003cafdb6a8c7934f72490adbb6e8"
+    },
+    "到处": {
+      "scene": "transport",
+      "variant": "road",
+      "description": "“到处”情景示意：一条道路通向远处。",
+      "id": "465be82399feacfb",
+      "sha256": "35638a5fc2e39a6b7ff590a171bdff41344ab1901ddc61c13447c489116faf61"
+    },
+    "处处": {
+      "scene": "transport",
+      "variant": "road",
+      "description": "“处处”情景示意：一条道路通向远处。",
+      "id": "9abffe74d500a779",
+      "sha256": "edbc368347bd973722f04f82a97b6dfbebed374a70be111e2c19719496e93b4f"
+    },
+    "四处": {
+      "scene": "transport",
+      "variant": "road",
+      "description": "“四处”情景示意：一条道路通向远处。",
+      "id": "6c4f9d77077083af",
+      "sha256": "63834641aa0564d46c330ce7239efed607dfabc190ef44d85a71a23f4384d924"
+    },
+    "找来找去": {
+      "scene": "transport",
+      "variant": "road",
+      "description": "“找来找去”情景示意：一条道路通向远处。",
+      "id": "fb440ca84df9cc35",
+      "sha256": "11507959a5c5f56322cc73b7f538afbc16d8abdc3c1e85305ec8fdb41c71633a"
+    },
+    "小桥": {
+      "scene": "transport",
+      "variant": "bridge",
+      "description": "“小桥”情景示意：一座桥连接河的两岸。",
+      "id": "68c21509a85637c1",
+      "sha256": "54b81a5a927c9ad6c8712dcc2c5d99b211dace337937653633ae3ea5eec93702"
+    },
+    "大桥": {
+      "scene": "transport",
+      "variant": "bridge",
+      "description": "“大桥”情景示意：一座桥连接河的两岸。",
+      "id": "f1297e48d2d1639b",
+      "sha256": "e99e2464ba6b2bf92a6597062758c55336861fc2b917d995c254805831eee2c5"
+    },
+    "木桥": {
+      "scene": "transport",
+      "variant": "bridge",
+      "description": "“木桥”情景示意：一座桥连接河的两岸。",
+      "id": "1cec864a435ecac9",
+      "sha256": "c97a259d0c75aaacc037e0634576c9338f957fb902ca0d0f658dc3dff229cc8a"
+    },
+    "石桥": {
+      "scene": "transport",
+      "variant": "bridge",
+      "description": "“石桥”情景示意：一座桥连接河的两岸。",
+      "id": "02afce39597c0217",
+      "sha256": "c903e3feab5f55aff54ba556e6b5a0456883cbe4e9409e61d66c75bffb925b16"
+    },
+    "火车": {
+      "scene": "transport",
+      "variant": "train",
+      "description": "“火车”情景示意：火车在轨道上行驶。",
+      "id": "228e2ed446e684a3",
+      "sha256": "66dc7500b58a9e6d72df515c4bcad0a6fd910cd674cb6bf23578d8b970a06a98"
+    },
+    "大巴": {
+      "scene": "transport",
+      "variant": "bus",
+      "description": "“大巴”情景示意：一辆公共汽车沿道路前进。",
+      "id": "aa1c9db36f135911",
+      "sha256": "ac8f5f7d01b7cb31f4268125801241fdcc4d9cd8fcd9e95bfbb3e1ab1ec354de"
+    },
+    "开车": {
+      "scene": "transport",
+      "variant": "bus",
+      "description": "“开车”情景示意：一辆公共汽车沿道路前进。",
+      "id": "e81b626b21aa722b",
+      "sha256": "7010c7cde3866b22c38bf3c4fa7ee9a2d94a0697ce6d07f88f306878fbe3dc24"
+    },
+    "飞机": {
+      "scene": "transport",
+      "variant": "plane",
+      "description": "“飞机”情景示意：飞机张开机翼飞在云朵上方。",
+      "id": "c05f7cd6ed3587a2",
+      "sha256": "12bb7161e4690fe10bad1d176bcf69d182b9189d738600b24e7d7dbd5907739e"
+    },
+    "起飞": {
+      "scene": "transport",
+      "variant": "plane",
+      "description": "“起飞”情景示意：飞机张开机翼飞在云朵上方。",
+      "id": "a7c75dfe163b8369",
+      "sha256": "cf7a16ac6684da6a331869438ee99b595a84f7df3b23227089822c06ca857b49"
+    },
+    "小船": {
+      "scene": "transport",
+      "variant": "boat",
+      "description": "“小船”情景示意：小船漂在水面上，船头朝前。",
+      "id": "f85b025d3f644e36",
+      "sha256": "fd6389ae32ee71c4c56eb6a5b89310f9d160148283ff1cf4b054f1237f067de0"
+    },
+    "大船": {
+      "scene": "transport",
+      "variant": "boat",
+      "description": "“大船”情景示意：小船漂在水面上，船头朝前。",
+      "id": "07ef83e3820d96b4",
+      "sha256": "8268419d16a425c130ece9f92254bf2287c1c7a7f4ef5d85fe470fe8f583b694"
+    },
+    "船头": {
+      "scene": "transport",
+      "variant": "boat",
+      "description": "“船头”情景示意：小船漂在水面上，船头朝前。",
+      "id": "f841b50f3fa147f2",
+      "sha256": "bb90e3e5a8bbe1b6f1615dcd79e2da8f3eec712fef156969eb03472a31ff6a95"
+    },
+    "船长": {
+      "scene": "transport",
+      "variant": "boat",
+      "description": "“船长”情景示意：小船漂在水面上，船头朝前。",
+      "id": "a024744b3ca71b0d",
+      "sha256": "963a591d4f2450209e17ec638d90813a0a78d31a3130c3c0714e2a38fb29e8cb"
+    },
+    "骑自行车": {
+      "scene": "sport",
+      "variant": "bike",
+      "description": "“骑自行车”情景示意：孩子骑着有两个轮子的自行车。",
+      "id": "92883f83be7c1e32",
+      "sha256": "0ed526ee69eea310e0fdb0b49dc66904f8ef199ecb6f6ad9ed8519728415dd43"
+    },
+    "游泳": {
+      "scene": "sport",
+      "variant": "swim",
+      "description": "“游泳”情景示意：孩子在水里伸展手臂游泳。",
+      "id": "f864303afb4e4a85",
+      "sha256": "11f55acc4d8a852f7228e22fa6a682125b13d85e5daa1bab47b01f991c630b05"
+    },
+    "蛙泳": {
+      "scene": "sport",
+      "variant": "swim",
+      "description": "“蛙泳”情景示意：孩子在水里伸展手臂游泳。",
+      "id": "c8641c3a1031e09c",
+      "sha256": "a8a150074e47aa4841017647a36bf30f3c6cb6e8126320830ce2d6c010ff3510"
+    },
+    "滑冰": {
+      "scene": "sport",
+      "variant": "skate",
+      "description": "“滑冰”情景示意：孩子穿着冰鞋在冰面上滑行。",
+      "id": "6ae9b614455e2e43",
+      "sha256": "4a52450fafbac115e3f7f4202cfacb86be43ac53ba798a07c324bf4bfa638b4b"
+    },
+    "冰凉": {
+      "scene": "sport",
+      "variant": "skate",
+      "description": "“冰凉”情景示意：孩子穿着冰鞋在冰面上滑行。",
+      "id": "e076eb582f630c2d",
+      "sha256": "b753c5e2a801b2c73c0a809d8057c1e9fea37a2406d03c11d9845bcedfb4135d"
+    },
+    "冰的": {
+      "scene": "sport",
+      "variant": "skate",
+      "description": "“冰的”情景示意：孩子穿着冰鞋在冰面上滑行。",
+      "id": "6a6f359257f37ec8",
+      "sha256": "acdbfed89f835240911292be6dad927974362b6bf832c2dc46381ee3ce3aa532"
+    },
+    "打乒乓球": {
+      "scene": "sport",
+      "variant": "ball",
+      "description": "“打乒乓球”情景示意：孩子用球拍击打乒乓球。",
+      "id": "d2136e5251fbfd67",
+      "sha256": "bd6a6eff7e5240d94fc68a5954a8d0dfcd70ef08d000bf9c75ac960b319c4d54"
+    },
+    "放风筝": {
+      "scene": "sport",
+      "variant": "kite",
+      "description": "“放风筝”情景示意：孩子牵着线，风筝飞在天空。",
+      "id": "2662eea552076136",
+      "sha256": "2c05846bf9c034fd9dcbe08396c49edb7492dfa0e69f00b57cec39156756e091"
+    },
+    "跳伞": {
+      "scene": "sport",
+      "variant": "parachute",
+      "description": "“跳伞”情景示意：张开的降落伞带着人慢慢下降。",
+      "id": "b427aac3025d3896",
+      "sha256": "0b22df7898a5afac241d567cc9ce4152ebc1ee1d3eb937f862b99f4ab3be74c5"
+    },
+    "雨伞": {
+      "scene": "tool",
+      "variant": "umbrella",
+      "description": "“雨伞”情景示意：雨伞撑开，挡住落下的雨点。",
+      "id": "a86eaeb98f4ced93",
+      "sha256": "209bb94b15b002d6781ee600bdccbc590eb0b7e9ebaeade2453fb4748462d260"
+    },
+    "上马": {
+      "scene": "sport",
+      "variant": "horse-up",
+      "description": "“上马”情景示意：孩子在大人的照看下准备骑马。",
+      "id": "a89c6a6dc6dc9f35",
+      "sha256": "45cecd3d67098042b7d85c0fed12737cd47cbc5f81755a799b20e8828fb78146"
+    },
+    "马上": {
+      "scene": "sport",
+      "variant": "horse-up",
+      "description": "“马上”情景示意：孩子在大人的照看下准备骑马。",
+      "id": "cc86c595a88aec0b",
+      "sha256": "26dfa6a47833e5d1ef605667d2e25ba6f0159a204db360975cf1b2a94e4cf164"
+    },
+    "下马": {
+      "scene": "sport",
+      "variant": "horse-down",
+      "description": "“下马”情景示意：孩子从马背下来，脚落到地面。",
+      "id": "923cb2384a860358",
+      "sha256": "7d889abb039690fc1c81930059861ff15f8503a97b609b41f22bfa2878c29d25"
+    },
+    "打鼓": {
+      "scene": "music",
+      "variant": "drum",
+      "description": "“打鼓”情景示意：鼓手用鼓槌敲鼓。",
+      "id": "e5c54bd7d19f70f5",
+      "sha256": "4aa6aded3f43f8b2ab4a0a554ad6c4c895535ee42929b562eb8e4eeb31da3b36"
+    },
+    "鼓手": {
+      "scene": "music",
+      "variant": "drum",
+      "description": "“鼓手”情景示意：鼓手用鼓槌敲鼓。",
+      "id": "00cc463f5b7a6747",
+      "sha256": "8b9b0d6f9ea47ad03985f1a58f5f63a9f6ad845fe9d6dbe082609abb988c48ae"
+    },
+    "唱歌": {
+      "scene": "music",
+      "variant": "sing",
+      "description": "“唱歌”情景示意：孩子张开嘴唱歌，旁边有音符。",
+      "id": "86d347aaa30d1b43",
+      "sha256": "b57025bbe9f9eb9b7181a0268b35c96e0269501f4f1a52d274b4e0faf8d8301e"
+    },
+    "儿歌": {
+      "scene": "music",
+      "variant": "sing",
+      "description": "“儿歌”情景示意：孩子张开嘴唱歌，旁边有音符。",
+      "id": "bd8e1a22990b1c27",
+      "sha256": "c8e7a1e8272c892b05029f5350e741b21d2708a0489f373fa166401fbb5d3b6e"
+    },
+    "歌声": {
+      "scene": "music",
+      "variant": "sing",
+      "description": "“歌声”情景示意：孩子张开嘴唱歌，旁边有音符。",
+      "id": "ae803572d7a68e73",
+      "sha256": "d1ddb1f143dea90e0ce6ae35acf1126563bc93056bbe1b151be4ac03fe4ecb7f"
+    },
+    "音乐": {
+      "scene": "music",
+      "variant": "sing",
+      "description": "“音乐”情景示意：孩子张开嘴唱歌，旁边有音符。",
+      "id": "db95142124934467",
+      "sha256": "1156dfac33b240d346422c0e83760c9adebd20606b143a980824745f2cad12fc"
+    },
+    "声音": {
+      "scene": "music",
+      "variant": "sing",
+      "description": "“声音”情景示意：孩子张开嘴唱歌，旁边有音符。",
+      "id": "473400815c0f687d",
+      "sha256": "b717e40ac29dbeac2a30905d5a671821e685bcc74ae31231a3089da676054e5b"
+    },
+    "有声有色": {
+      "scene": "music",
+      "variant": "sing",
+      "description": "“有声有色”情景示意：孩子张开嘴唱歌，旁边有音符。",
+      "id": "fc53738afd700889",
+      "sha256": "59e48c26d4ef7689138cf492b0fdf87d8f043745e9041318cd4d6eaa8b62205d"
+    },
+    "戏曲": {
+      "scene": "music",
+      "variant": "sing",
+      "description": "“戏曲”情景示意：孩子张开嘴唱歌，旁边有音符。",
+      "id": "24a87312e84ef589",
+      "sha256": "7fdfd9e32e1e69c48211ee462c64c4ff56c28ee816fcc54a5b02c25cebaa93bd"
+    },
+    "对韵": {
+      "scene": "book",
+      "variant": "language",
+      "description": "“对韵”情景示意：两排文字相互对应，帮助读出语句。",
+      "id": "1c0c115aa837f275",
+      "sha256": "bcbc16fb201337cee3db31bdccb088e31af99bedbbede5f7ff4dac79fe12c3bf"
+    },
+    "对子": {
+      "scene": "music",
+      "variant": "sing",
+      "description": "“对子”情景示意：孩子张开嘴唱歌，旁边有音符。",
+      "id": "97c3b9be4fc8a24c",
+      "sha256": "4681a1f8445d309b620621ad9e0acaa01e695899123b935fc01834a19f7b6bef"
+    },
+    "开心": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“开心”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "6e067999e2407ee3",
+      "sha256": "4f7f24b8d146d51f81c0706e974e3368c5956611f32d180ce1addaa42f856c05"
+    },
+    "高兴": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“高兴”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "5fcaf1452472773f",
+      "sha256": "0d2f5e977c4c4b617314f44df4e67aa583cae09c3b196a74c6c853f6c8f7c628"
+    },
+    "多好": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“多好”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "02d5351e80007a1c",
+      "sha256": "c5696a18b16ac8ef291a8cc3c8cff046dd0df1832c7aa21f33afeb442bca4139"
+    },
+    "好了": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“好了”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "e9934d5d82275b80",
+      "sha256": "a7ed961c45c122be424b2850953b6756e7c7528d3da407612b47e1ea1f8c3de4"
+    },
+    "好事": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“好事”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "6d0a309b590ce873",
+      "sha256": "38c5e0dd4b2220100fd5f9d754f6a80d3f4996c004324e8d9b3cb24c75294636"
+    },
+    "好人": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“好人”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "cbbc956826741471",
+      "sha256": "64a75e212c3d33c3e61b3523b73c0d786606d2b89e04469f716390158383375c"
+    },
+    "好吧": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“好吧”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "4feafb585b359d6b",
+      "sha256": "b85b8fd99b4ea3de6503f00750cd0492e5cccd1a70561ca034190833e3a495cb"
+    },
+    "好么": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“好么”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "816448486b7b942e",
+      "sha256": "3ec9d8926aeb7278cfc24750fd6aff972bb1ff0ee978f7d96f9fa88b713785c4"
+    },
+    "也好": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“也好”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "e962d35d6d1815ea",
+      "sha256": "b182e5fd265143220cc7e5b9e704e20f5bde4c6cbee4cda2a3891df20fb9778f"
+    },
+    "也是": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“也是”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "256c0476edd6eadd",
+      "sha256": "5d60fda3085090cdcbfc48065d28c4fb4e7c00233a0812c630a12b71b207d188"
+    },
+    "是的": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“是的”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "aa2a331d2dcf5668",
+      "sha256": "75569432e529970e531089e70839bba9ec52a198b53676569488d0b3d03f64a4"
+    },
+    "可爱": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“可爱”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "ae5412cf7235c807",
+      "sha256": "21d5701c3247a618abadf8fe4895cdd948aca1b65b12b3bee070581e78324af9"
+    },
+    "更好": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“更好”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "bd5a043855a4c7df",
+      "sha256": "435fd94a975994dfa203388966a04d60e062abe197bed131059da7f206ccd895"
+    },
+    "最好": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“最好”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "041e0910b5cc4e44",
+      "sha256": "c0054c1b9d6106f4dbcb6142a7ec67eb2bc2999a7f2a4e9e504f7a6fbc928875"
+    },
+    "正好": {
+      "scene": "emotion",
+      "variant": "happy",
+      "description": "“正好”情景示意：微笑的孩子，旁边有小爱心。",
+      "id": "e7247b6f56250521",
+      "sha256": "a01abe7f1f981276707363056b8d3bab61d08a62c0db9fe931d9b427b1e1f557"
+    },
+    "生气": {
+      "scene": "emotion",
+      "variant": "angry",
+      "description": "“生气”情景示意：孩子皱着眉，脸旁画出情绪线。",
+      "id": "1080332a28b0e082",
+      "sha256": "ee2666c1c13832d133a6ed838d7c4ca976601c56f8071270af3021a6db88f39b"
+    },
+    "不好": {
+      "scene": "emotion",
+      "variant": "angry",
+      "description": "“不好”情景示意：孩子皱着眉，脸旁画出情绪线。",
+      "id": "1641a06dd3454f2d",
+      "sha256": "b5af28522fc9200d55534a5d446bc0675a6d96c7fda082398bf7c05ecaf7c049"
+    },
+    "爱心": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“爱心”情景示意：孩子认真照顾伙伴，旁边有爱心。",
+      "id": "d04d7e3884010cec",
+      "sha256": "fcf2291aaab6c9fc076644c3d81a67d01cebd4e5810dd93a9cf80f834471cf0b"
+    },
+    "关心": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“关心”情景示意：孩子认真照顾伙伴，旁边有爱心。",
+      "id": "0b2df726920c8e73",
+      "sha256": "1fc9c8fc24bb85e78cacfe824a9ff04e09ea16ac832daac6e6f639edd0846046"
+    },
+    "有心": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“有心”情景示意：孩子认真照顾伙伴，旁边有爱心。",
+      "id": "a3eb877bb9ac932a",
+      "sha256": "1db2c60c331e0fefa076aef0513709e0e9a3fb02c913fe02f4a2bd0cb00042eb"
+    },
+    "专心": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“专心”情景示意：孩子认真照顾伙伴，旁边有爱心。",
+      "id": "81a8fc9575dd4b99",
+      "sha256": "d8f8f31a315f8adee09839b27c4969aabaeb7c0f7f9a38e2ef79cc3e652402fe"
+    },
+    "用心": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“用心”情景示意：孩子认真照顾伙伴，旁边有爱心。",
+      "id": "f6de39aec107fdaf",
+      "sha256": "41310e7ba7c083438b13dde0631e5f44a93bd1fa45cbb2cdb5ff214c4b01aeea"
+    },
+    "放心": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“放心”情景示意：孩子认真照顾伙伴，旁边有爱心。",
+      "id": "102f7d8002fe533f",
+      "sha256": "f19199bea315b2204b61fe306d48f7d70b96867a26f41432c34070584864856b"
+    },
+    "小心": {
+      "scene": "emotion",
+      "variant": "heart",
+      "description": "“小心”情景示意：孩子认真照顾伙伴，旁边有爱心。",
+      "id": "f5261ae14a3d7d90",
+      "sha256": "c59a0f55a27ac87ca0936bb600b582a24c7cf1768d07462e535601071c8e2e74"
+    },
+    "反思": {
+      "scene": "emotion",
+      "variant": "think",
+      "description": "“反思”情景示意：孩子停下来想办法，思考气泡里有线索。",
+      "id": "527dfb9cf6ed685d",
+      "sha256": "5417768480c99ffaf12afaa899644baccd2ebb867e48b126ce102036dcf9dc81"
+    },
+    "办法": {
+      "scene": "emotion",
+      "variant": "think",
+      "description": "“办法”情景示意：孩子停下来想办法，思考气泡里有线索。",
+      "id": "d2a92f0c9c91ab20",
+      "sha256": "51d8a83abe2a6b9f576eddd29f6786e0d8442a077c4002a6670e737783d83220"
+    },
+    "方法": {
+      "scene": "emotion",
+      "variant": "think",
+      "description": "“方法”情景示意：孩子停下来想办法，思考气泡里有线索。",
+      "id": "22b9f0b66212809c",
+      "sha256": "f3da45cbe70bb7aebb220c4dc60e775707a939ab1f61b700c60b37a12a438af4"
+    },
+    "怎么办": {
+      "scene": "emotion",
+      "variant": "think",
+      "description": "“怎么办”情景示意：孩子停下来想办法，思考气泡里有线索。",
+      "id": "11c128bc383dd7db",
+      "sha256": "ce5f0de99c0f0441d0f0d119bcbda454b4a3335fc6e118546a1657ca9e525b43"
+    },
+    "问题": {
+      "scene": "emotion",
+      "variant": "think",
+      "description": "“问题”情景示意：孩子停下来想办法，思考气泡里有线索。",
+      "id": "33a8618cb6710e43",
+      "sha256": "f141b0ecf0812bcca78729b0d8cd295d2911cf080f5c0385b02b1d4d0b313ba0"
+    },
+    "许愿": {
+      "scene": "emotion",
+      "variant": "think",
+      "description": "“许愿”情景示意：孩子停下来想办法，思考气泡里有线索。",
+      "id": "623834a3b5e49421",
+      "sha256": "d8d03337d0f04a4622313e89457e6febeb50eb6a431a237141f6c361f6c51175"
+    },
+    "有才": {
+      "scene": "emotion",
+      "variant": "think",
+      "description": "“有才”情景示意：孩子停下来想办法，思考气泡里有线索。",
+      "id": "285afa1f275365fd",
+      "sha256": "483d895818a3f9f1d53c9c5559f19463ed2b7d7f08aadb1a6bdfa272d9d617f6"
+    },
+    "天才": {
+      "scene": "emotion",
+      "variant": "clever",
+      "description": "“天才”情景示意：孩子迅速想出办法，灯泡和完成标记表示聪明才智。",
+      "id": "9fa8ca8b38302914",
+      "sha256": "a8ae2db20da6bc5b28a7e067ef447e43f87758ac2c9caa5b808fd1c11e61c283"
+    },
+    "才气": {
+      "scene": "emotion",
+      "variant": "think",
+      "description": "“才气”情景示意：孩子停下来想办法，思考气泡里有线索。",
+      "id": "c18adcf96518ed51",
+      "sha256": "c576c94731fd0830312ca2be77573b6d9c1cfad30c791f835b0145d9bf8ca187"
+    },
+    "你好": {
+      "scene": "speech",
+      "variant": "talk",
+      "description": "“你好”情景示意：两个人面对面轮流说话。",
+      "id": "670d9743542cae3e",
+      "sha256": "568cf9094986bff143565c2925e6a675e49c1766adcf14d4598cc8a7640dde1e"
+    },
+    "对话": {
+      "scene": "speech",
+      "variant": "talk",
+      "description": "“对话”情景示意：两个人面对面轮流说话。",
+      "id": "6bf6d3f3d6261b75",
+      "sha256": "d5e6bc45ae67e754135391d862fb57a8fd22538c2fd9204bd0d83ed6e9e04058"
+    },
+    "说话": {
+      "scene": "speech",
+      "variant": "talk",
+      "description": "“说话”情景示意：两个人面对面轮流说话。",
+      "id": "cc0dc791ff9c00c6",
+      "sha256": "6782f91cdf6e9005ed7e5800b80919fc1815db5f48cc5467230491e7e72d0a69"
+    },
+    "听说": {
+      "scene": "speech",
+      "variant": "talk",
+      "description": "“听说”情景示意：两个人面对面轮流说话。",
+      "id": "acb083253f353ed9",
+      "sha256": "7c05f38fd682dbe725710193f26ac9b50e56f3b48567f98b5ce2e94da12647d5"
+    },
+    "开心地说": {
+      "scene": "speech",
+      "variant": "talk",
+      "description": "“开心地说”情景示意：两个人面对面轮流说话。",
+      "id": "76d6eb09650a7e29",
+      "sha256": "f885184c54c63a2fd2225ceb15bc02a2b2a9cdc3979a2862a7d17d75164b58d6"
+    },
+    "回答": {
+      "scene": "speech",
+      "variant": "talk",
+      "description": "“回答”情景示意：两个人面对面轮流说话。",
+      "id": "f3f512648742020f",
+      "sha256": "cd7f6e784350a1f14fd8f69d538e655fac37974c1d77f9f333a59b6cbd8408ff"
+    },
+    "答复": {
+      "scene": "speech",
+      "variant": "talk",
+      "description": "“答复”情景示意：两个人面对面轮流说话。",
+      "id": "28275eff0e3fe3f6",
+      "sha256": "cb554aca5e13260e9503369ce17e4fe52da5f1ca3aac93504ba2d346d086bc98"
+    },
+    "问好": {
+      "scene": "speech",
+      "variant": "talk",
+      "description": "“问好”情景示意：两个人面对面轮流说话。",
+      "id": "ea81087e8e698485",
+      "sha256": "5b60b4e8a9bbeb453ee71afe30a6c709bd1c4f168f7dad26783df02a779b1b07"
+    },
+    "什么": {
+      "scene": "speech",
+      "variant": "question",
+      "description": "“什么”情景示意：孩子的气泡里有一个大问号。",
+      "id": "c1b52e0e64a33dea",
+      "sha256": "f454a916922d30ab2aec63527b28acae0299dec9077ecd1eaa72b02559dba868"
+    },
+    "是谁": {
+      "scene": "speech",
+      "variant": "question",
+      "description": "“是谁”情景示意：孩子的气泡里有一个大问号。",
+      "id": "e2968fbf764034e2",
+      "sha256": "1a038c51a6c5124171b444ad37acfe9a1a3d09e1bf4add3b0ab155fa6690fe64"
+    },
+    "多么": {
+      "scene": "speech",
+      "variant": "question",
+      "description": "“多么”情景示意：孩子的气泡里有一个大问号。",
+      "id": "ec687bc9f9bc3952",
+      "sha256": "0beb5f35646fe30518d75befaf5ad8cee61bc9e27635699db6d6c83f7a2ff043"
+    },
+    "要么": {
+      "scene": "speech",
+      "variant": "question",
+      "description": "“要么”情景示意：孩子的气泡里有一个大问号。",
+      "id": "f88c476613b4cbda",
+      "sha256": "a7bb7de434ea8c7f551b6c73d8b439229dd25e166309da427f61b4d87640151e"
+    },
+    "问号": {
+      "scene": "speech",
+      "variant": "question",
+      "description": "“问号”情景示意：孩子的气泡里有一个大问号。",
+      "id": "bcadaf2c56029821",
+      "sha256": "7b69071609e8d6f57242fbaf81beaa752e8b6e2eaa20506ee78c3603f0285674"
+    },
+    "对了": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“对了”情景示意：孩子点头，气泡中有勾号。",
+      "id": "6b66189491f90a3c",
+      "sha256": "5aa05c85d910e4121a2a4bbe4afa9c28b2b47ec0d6778408b53d51d0c61d5a96"
+    },
+    "可以": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“可以”情景示意：孩子点头，气泡中有勾号。",
+      "id": "0ef5c86fab94f13a",
+      "sha256": "0b407f89f8d290145fa427fcd888be7c8fa5bbd5ad28283cee63d519252fbb23"
+    },
+    "就是": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“就是”情景示意：孩子点头，气泡中有勾号。",
+      "id": "88aa006eb3d80a05",
+      "sha256": "38d0b32fa2062ed332a8a040c46d8398744294e4b4b43f5062e0fd619ae4f85f"
+    },
+    "只是": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“只是”情景示意：孩子点头，气泡中有勾号。",
+      "id": "3fb2673f8e43a434",
+      "sha256": "71415de3582c864e353c6846f801e3824e2c45b4965241cc754986dcdc2b0cf9"
+    },
+    "真正": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“真正”情景示意：孩子点头，气泡中有勾号。",
+      "id": "858755f4f1b3bd13",
+      "sha256": "f44c500b945ac7c59e94d8cc0a9c9a14555be4e4de2877f7b8893b07c09fd744"
+    },
+    "改正": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“改正”情景示意：孩子点头，气泡中有勾号。",
+      "id": "25413777e4d0e5a9",
+      "sha256": "0e11ed932a410aede267ea9cd1156c6124c06d2582d0e49c372dd6d00b7d5ab7"
+    },
+    "反正": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“反正”情景示意：孩子点头，气泡中有勾号。",
+      "id": "0caa298736bf5a85",
+      "sha256": "0497366bc676bc727d494989b153d95b3d969353627bebdbc5444f9eee30454e"
+    },
+    "办到": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“办到”情景示意：孩子点头，气泡中有勾号。",
+      "id": "97938634efdd007a",
+      "sha256": "a9c0e5c9b1df1ebebd10e852d3f6f8be23870694d134d941a16eb486ace85c6a"
+    },
+    "也有": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“也有”情景示意：孩子点头，气泡中有勾号。",
+      "id": "c534d05d4833e745",
+      "sha256": "4609348eb1dd1222efe95f15593d954526ebb35a9c3dee371febcd19c4233d9a"
+    },
+    "有人": {
+      "scene": "speech",
+      "variant": "yes",
+      "description": "“有人”情景示意：孩子点头，气泡中有勾号。",
+      "id": "53aee23080f13488",
+      "sha256": "e49427d29c18b8d1a0255add43ac187c0435ccfe042ce9f6b3d307b2e8faa415"
+    },
+    "不是": {
+      "scene": "speech",
+      "variant": "no",
+      "description": "“不是”情景示意：孩子摇头或摆手，气泡中有叉号。",
+      "id": "584cd0fcf368adcc",
+      "sha256": "2fa78032d7aa4376d2e7a2b7431ca9284b4cfe8a8a4f48f75c6c36354bc50d97"
+    },
+    "不要": {
+      "scene": "speech",
+      "variant": "no",
+      "description": "“不要”情景示意：孩子摇头或摆手，气泡中有叉号。",
+      "id": "77af2f337c1d4d74",
+      "sha256": "184a1d15c36cd1742c031427892d41d4e21d3942e6f796731c3688acab027753"
+    },
+    "不用": {
+      "scene": "speech",
+      "variant": "no",
+      "description": "“不用”情景示意：孩子摇头或摆手，气泡中有叉号。",
+      "id": "30a2338dfa5006d5",
+      "sha256": "534de95dc6f0b63d9f210721539801a51cd1e2e14e51f4b7e4281e00a12b0a05"
+    },
+    "没有": {
+      "scene": "speech",
+      "variant": "no",
+      "description": "“没有”情景示意：孩子摇头或摆手，气泡中有叉号。",
+      "id": "f127804b9227e152",
+      "sha256": "946decedd39a28022ce500a170756f3ec2aefe2b82b5e61cb5061b477853bbae"
+    },
+    "没人": {
+      "scene": "speech",
+      "variant": "no",
+      "description": "“没人”情景示意：孩子摇头或摆手，气泡中有叉号。",
+      "id": "4b611fcb53ad352c",
+      "sha256": "4eab51174234ea9cd970a9088efa020a857b758d504d676adc1a6237dd69d9b8"
+    },
+    "没用": {
+      "scene": "speech",
+      "variant": "no",
+      "description": "“没用”情景示意：孩子摇头或摆手，气泡中有叉号。",
+      "id": "f2407735eab64bd6",
+      "sha256": "b5f54b6966bb87794b2c009526833f6fbd2c5fbe367a3e670184805e78fbe03d"
+    },
+    "没空": {
+      "scene": "speech",
+      "variant": "no",
+      "description": "“没空”情景示意：孩子摇头或摆手，气泡中有叉号。",
+      "id": "b71a06c6108b441d",
+      "sha256": "9e954bb0899e5c51d4ecd2eab3d2c06d8f23c0327ccf4e42680e0263d4bd38b6"
+    },
+    "反对": {
+      "scene": "speech",
+      "variant": "no",
+      "description": "“反对”情景示意：孩子摇头或摆手，气泡中有叉号。",
+      "id": "454f03c968afb417",
+      "sha256": "309ffadedd2e804eb430c61bf54e63b72a82e955beb180ad3caa943da3a9a95a"
+    },
+    "可是": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“可是”情景示意：孩子面前有两个可选的物品。",
+      "id": "38ca4a9c76b13303",
+      "sha256": "83f5e01d51e79ed8383dedc2e209651a75d98d0851f92463f7652eab30cd89bf"
+    },
+    "比如": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“比如”情景示意：孩子面前有两个可选的物品。",
+      "id": "a201fc64552b4eac",
+      "sha256": "79f1c9f1f2633623dabdafb3e8a9023d34d73d03ef9e242244b4b5a808603bef"
+    },
+    "比方": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“比方”情景示意：孩子面前有两个可选的物品。",
+      "id": "48aff813e4138904",
+      "sha256": "2a0a29dc0e07b105823ef1174c515d2f33a6579eaf049b78e7b16314d9ebd96a"
+    },
+    "这个": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“这个”情景示意：孩子面前有两个可选的物品。",
+      "id": "979e2bc35b14bf4c",
+      "sha256": "5c7497ff4b7676538baf3121dc76c738b2a72cb306cf69338d62f4e3293119ac"
+    },
+    "这件": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“这件”情景示意：孩子面前有两个可选的物品。",
+      "id": "ba8e9f8c9017eacb",
+      "sha256": "5aef4954eaa61fe2af8804538a09317cdbdd907e06d55be3d07581d9aa335b7d"
+    },
+    "事件": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“事件”情景示意：孩子面前有两个可选的物品。",
+      "id": "c560201b331c5443",
+      "sha256": "43dc3bb021185a2872fe2251b0495f201738236539fd5628f2e6830abe6fe8ab"
+    },
+    "部件": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“部件”情景示意：孩子面前有两个可选的物品。",
+      "id": "a2345efc60006908",
+      "sha256": "9ba07516adcfad145c9ce5548cf2699149171691cfd84c83611f394f8ec4d07a"
+    },
+    "两件": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“两件”情景示意：孩子面前有两个可选的物品。",
+      "id": "12334ba65fcf8dca",
+      "sha256": "0e15fa3d6583b5d0ea46aa8aa9fe1ab36dd5b2b1fb08ec20af85430f5a520da1"
+    },
+    "包办": {
+      "scene": "action",
+      "variant": "allwork",
+      "description": "“包办”情景示意：一个人接下桌上全部任务，其他人在旁边等待。",
+      "id": "55479ad5c7b9b24e",
+      "sha256": "e3ed16422c30433dc7aa8a08e20df52f2ad4bfdebe9a6326730375b02ca732f0"
+    },
+    "开办": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“开办”情景示意：孩子面前有两个可选的物品。",
+      "id": "ee52bb04dd6d03f4",
+      "sha256": "bb50f13cde3f19cbf6c59005baa53cfe61219425a25cfd42d6bfdff7e7615acf"
+    },
+    "总和": {
+      "scene": "speech",
+      "variant": "choose",
+      "description": "“总和”情景示意：孩子面前有两个可选的物品。",
+      "id": "f74cddc929315622",
+      "sha256": "85f41c319058dad88e3b607cc77dec0ba3c8f09f1840cf4906162f8a996cf721"
+    },
+    "站立": {
+      "scene": "action",
+      "variant": "stand",
+      "description": "“站立”情景示意：孩子双脚站稳，身体挺直。",
+      "id": "464fbc400e8aa0fd",
+      "sha256": "c24b40272cc56eae7986a3c8b0a505cbe914148be209afc4752b246c1bc039b6"
+    },
+    "站着": {
+      "scene": "action",
+      "variant": "stand",
+      "description": "“站着”情景示意：孩子双脚站稳，身体挺直。",
+      "id": "0abf6bef080b015b",
+      "sha256": "04dc80b05c1b508483ab51de33a7171f08c362edd7feb175f0dc64615cb5bd8a"
+    },
+    "立正": {
+      "scene": "action",
+      "variant": "stand",
+      "description": "“立正”情景示意：孩子双脚站稳，身体挺直。",
+      "id": "ee1379a840fe0b96",
+      "sha256": "84e660d023d4a8e1bb8ca2b44b76e4ee4de8d59c75791384220902af51ece90e"
+    },
+    "起立": {
+      "scene": "action",
+      "variant": "stand",
+      "description": "“起立”情景示意：孩子双脚站稳，身体挺直。",
+      "id": "cd340341267de033",
+      "sha256": "c1c00912fe0d800df94c1b9656da91e1bbb92bb630944268e72e229e32b2585d"
+    },
+    "独立": {
+      "scene": "action",
+      "variant": "stand",
+      "description": "“独立”情景示意：孩子双脚站稳，身体挺直。",
+      "id": "05cdb30a5483d64d",
+      "sha256": "68347ca1759d2625a9267011a8bc3bafaccf1e635efdb5eeb482045ba483f162"
+    },
+    "坐下": {
+      "scene": "action",
+      "variant": "sit",
+      "description": "“坐下”情景示意：孩子坐在椅子上，双脚落地。",
+      "id": "30d4711445a2d3f9",
+      "sha256": "7dcaff562ddda0b950f9bea6f64103747041156b99a2562534993fcade5a6244"
+    },
+    "坐好": {
+      "scene": "action",
+      "variant": "sit",
+      "description": "“坐好”情景示意：孩子坐在椅子上，双脚落地。",
+      "id": "9917df3ab3240625",
+      "sha256": "4ee5860c07977efc382c33da137c20448ba75fefbea458298838f1e0b9449257"
+    },
+    "起床": {
+      "scene": "action",
+      "variant": "wake",
+      "description": "“起床”情景示意：孩子从床上起身，窗外太阳升起。",
+      "id": "96f512f980046bf6",
+      "sha256": "6212cf513eecd0808427aa103c474f9e4aa48c8295a5e810b905e1a216a19fa4"
+    },
+    "起来": {
+      "scene": "action",
+      "variant": "wake",
+      "description": "“起来”情景示意：孩子从床上起身，窗外太阳升起。",
+      "id": "b8a694b2df6db340",
+      "sha256": "078733a70a093c4bc5689dd8391e925918a5dd0694ae741ed2fe41e7dacc3fdf"
+    },
+    "开始": {
+      "scene": "action",
+      "variant": "wake",
+      "description": "“开始”情景示意：孩子从床上起身，窗外太阳升起。",
+      "id": "d2bb025a2e51c410",
+      "sha256": "fa1e3d61e38c864520889597dda8a707c359469bc003b5c86a3b180402ac8ce9"
+    },
+    "点头": {
+      "scene": "action",
+      "variant": "nod",
+      "description": "“点头”情景示意：孩子点头，箭头表示头部轻轻上下移动。",
+      "id": "68f8249523811e47",
+      "sha256": "5de7476ab7afdb55e51adefdd808b607bb40d09413ac736a17ff3c0e916adde1"
+    },
+    "尖叫": {
+      "scene": "action",
+      "variant": "shout",
+      "description": "“尖叫”情景示意：孩子张嘴喊，旁边有声音扩散线。",
+      "id": "e48607ed2453b106",
+      "sha256": "be2dc259442e52d39d3a30faae51d8b47266f9db2f7eae9558fa2f3440b0e692"
+    },
+    "成长": {
+      "scene": "action",
+      "variant": "grow",
+      "description": "“成长”情景示意：小苗和孩子从小到大的三阶段对照。",
+      "id": "16cc0bf3dd255549",
+      "sha256": "0280f6f3eaef1afaef19a7cde804016ab35c5192bafa6cdeb0b487ed786879ca"
+    },
+    "长大": {
+      "scene": "action",
+      "variant": "grow",
+      "description": "“长大”情景示意：小苗和孩子从小到大的三阶段对照。",
+      "id": "6edcbb95dac1e004",
+      "sha256": "682f5c52cbf91bea7a7412b2209bec1b1271c373a78f51d3c8cf568ffba611d7"
+    },
+    "加油": {
+      "scene": "action",
+      "variant": "effort",
+      "description": "“加油”情景示意：孩子努力推一个大箱子。",
+      "id": "890cf29801d2afcb",
+      "sha256": "73a9ee92f789fbdfd9c6cf5db1e0a1dc0e3964c1dc5203524424b5acd40182e0"
+    },
+    "力不从心": {
+      "scene": "action",
+      "variant": "weak",
+      "description": "“力不从心”情景示意：孩子伸手够高处的物品，还够不到。",
+      "id": "3fac148c538b5ac8",
+      "sha256": "460e87ee7647c321b11ea8fe9553a6fc7af68393c7a0c17633bd18073c3e3ccd"
+    },
+    "中国": {
+      "scene": "flag",
+      "variant": "china",
+      "description": "“中国”情景示意：红色五星旗在旗杆上飘扬。",
+      "id": "f0e9521611bb290d",
+      "sha256": "8c1c716009c62fe2cfabdb88bc9b7f26db11717b7991af689146fcfdd0d6b145"
+    },
+    "祖国": {
+      "scene": "flag",
+      "variant": "china",
+      "description": "“祖国”情景示意：红色五星旗在旗杆上飘扬。",
+      "id": "632c1d67933b811c",
+      "sha256": "6b66ef24ff9432a8acaec57d5db5c3564b6e61d1e636422cf776a3cb5a2e70e5"
+    },
+    "国旗": {
+      "scene": "flag",
+      "variant": "china",
+      "description": "“国旗”情景示意：红色五星旗在旗杆上飘扬。",
+      "id": "2ad57a3da04a8082",
+      "sha256": "fc148522c6d85c4ce32f466db0b25ae5a2420cfd17e14a5020affb6b2296f589"
+    },
+    "红旗": {
+      "scene": "flag",
+      "variant": "china",
+      "description": "“红旗”情景示意：红色五星旗在旗杆上飘扬。",
+      "id": "79ca28993323a433",
+      "sha256": "246b06dbd460c256d8bf75993b300cf29fd8cf2bb827051529ddf27db65640af"
+    },
+    "升旗": {
+      "scene": "flag",
+      "variant": "china",
+      "description": "“升旗”情景示意：红色五星旗在旗杆上飘扬。",
+      "id": "c8c37ebf1194f412",
+      "sha256": "eb4c975928a8d788ed1f8232b898350be7fbb0fb8e9c49e582569c9016f29507"
+    },
+    "队旗": {
+      "scene": "flag",
+      "variant": "team",
+      "description": "“队旗”情景示意：一面队旗在旗杆上飘扬。",
+      "id": "72a75ed74893233b",
+      "sha256": "386544c6fe614a98dfbf40ccee6b3005204bc9ecf0dec06210aa1cb1b7038e04"
+    },
+    "日本": {
+      "scene": "flag",
+      "variant": "japan",
+      "description": "“日本”情景示意：白色旗面正中有红色圆形。",
+      "id": "cf2abf0c5be326cb",
+      "sha256": "f3f17ad1703476b0e721f32b8378de671bd470d1ed417025cb429390836d365d"
+    },
+    "法国": {
+      "scene": "flag",
+      "variant": "france",
+      "description": "“法国”情景示意：蓝白红三色竖条旗。",
+      "id": "81678972842d4663",
+      "sha256": "ea643313ebe6a1094daa83752c811c86add7dd50651907a0bf155b3808c10547"
+    },
+    "北京": {
+      "scene": "school",
+      "variant": "capital",
+      "description": "“北京”情景示意：北京城市地标和红色城楼。",
+      "id": "68c77e155132565e",
+      "sha256": "265891ad02ac639265dbdc4b5cba42423653bd56582216469c87a24b730c2d46"
+    },
+    "法官": {
+      "scene": "school",
+      "variant": "judge",
+      "description": "“法官”情景示意：法官坐在审判桌后，桌上有法槌。",
+      "id": "dbfe337c8f9f6f4f",
+      "sha256": "320d96d2036de9698fde3381c84f9fb6627de55c26d0c26022713dfee5dab2f3"
+    },
+    "大火": {
+      "scene": "fire",
+      "variant": "flame",
+      "description": "“大火”情景示意：橙红色的火焰在安全示意区燃烧。",
+      "id": "0741cfe2d20c2f82",
+      "sha256": "62d878c305505262d07a2ccdf0ed90df366e0364bd2cedee9b1a30f38c3bec24"
+    },
+    "着火": {
+      "scene": "fire",
+      "variant": "flame",
+      "description": "“着火”情景示意：橙红色的火焰在安全示意区燃烧。",
+      "id": "2b4948a3f16f35c2",
+      "sha256": "bebe919000f9c7501bf2c1c2e1c5a1bdc3c316969170798d5c197ec1e940bfa7"
+    },
+    "水火": {
+      "scene": "fire",
+      "variant": "flame",
+      "description": "“水火”情景示意：橙红色的火焰在安全示意区燃烧。",
+      "id": "58b9ea72ad5614f8",
+      "sha256": "c5e48cedaf9aabc0a41d8cb0072e2c26e86a908d582f4da35c0ae67ae5e5b006"
+    },
+    "上火": {
+      "scene": "body",
+      "variant": "mouth-hot",
+      "description": "“上火”情景示意：孩子嘴边发红，旁边有一杯清水；上火并非真的着火。",
+      "id": "70849fe4cd0bd963",
+      "sha256": "f56e145c1b9221ff5eee3315ff8ccc645ed1586f7d3e5df9c9a6c69f9e6d3079"
+    },
+    "火把": {
+      "scene": "fire",
+      "variant": "torch",
+      "description": "“火把”情景示意：木柄上方有明亮的火焰。",
+      "id": "a05064959097cd37",
+      "sha256": "aae067e3c8405656f2e5805bb2352b5086c5daaa7a7e60a7182864217f4c260c"
+    },
+    "关火": {
+      "scene": "fire",
+      "variant": "off",
+      "description": "“关火”情景示意：炉火熄灭，开关拨到关闭一侧。",
+      "id": "bfc2db7681369f6a",
+      "sha256": "8b748db8abff2e0d27a732286ddad29228d2f05ea9772822d9ecb368c2c0f47f"
+    },
+    "白色": {
+      "scene": "color",
+      "variant": "white",
+      "description": "“白色”情景示意：白色物体和白色色卡。",
+      "id": "f56e7eff58bf730d",
+      "sha256": "567148a5085ff4c02b1ffc0c2913dc8cc7843cde1e269694d1d1a788a6bc2751"
+    },
+    "又大又白": {
+      "scene": "color",
+      "variant": "white",
+      "description": "“又大又白”情景示意：白色物体和白色色卡。",
+      "id": "6547ef1ae0fb0c5f",
+      "sha256": "14333e083ed7423e085b77bddd168b3bb75bb64e6fb1081fc319ee71eb1c035d"
+    },
+    "红色": {
+      "scene": "color",
+      "variant": "red",
+      "description": "“红色”情景示意：红色物体和红色色卡。",
+      "id": "789f61dbfcc7a2d2",
+      "sha256": "b63962e73f903a9868ba3adc4a83181f67367af13b7ae7911010fb4051b5953e"
+    },
+    "红灯": {
+      "scene": "tool",
+      "variant": "traffic-red",
+      "description": "“红灯”情景示意：信号灯中红灯亮起。",
+      "id": "b7ee4544c13f61c0",
+      "sha256": "f5dc1ba9c662c691705424ec3993ca177b8a7819f61e7d3ebf3132877dee434b"
+    },
+    "黄色": {
+      "scene": "color",
+      "variant": "yellow",
+      "description": "“黄色”情景示意：黄色物体和黄色色卡。",
+      "id": "d451c07d739b3306",
+      "sha256": "6e489daaf4585bdf1c0914c15421ba09039fa1c1fef5cdb3c7899114b5ef9fc4"
+    },
+    "绿色": {
+      "scene": "color",
+      "variant": "green",
+      "description": "“绿色”情景示意：绿色物体和绿色色卡。",
+      "id": "30c83dc25b12c32c",
+      "sha256": "f1774b5eef7633eaab3d5d5a7557fd294a366c3c1f74f5c7a4a84f97749dec4a"
+    },
+    "绿灯": {
+      "scene": "tool",
+      "variant": "traffic-green",
+      "description": "“绿灯”情景示意：信号灯中绿灯亮起。",
+      "id": "a796107713fcc22f",
+      "sha256": "054217a52cda50eff987846fa32cd11eb51e5076296ac96e2d7f5b53598222c2"
+    },
+    "蓝色": {
+      "scene": "color",
+      "variant": "blue",
+      "description": "“蓝色”情景示意：蓝色物体和蓝色色卡。",
+      "id": "67035e6b7f82acdb",
+      "sha256": "87c73673e861aa43a97d98eeb01b3ff954023f10aa81603b5d81c8e9c726c67d"
+    },
+    "黑色": {
+      "scene": "color",
+      "variant": "black",
+      "description": "“黑色”情景示意：黑色物体和黑色色卡。",
+      "id": "ed7d2c54184be5f5",
+      "sha256": "e8b0f5e7347c9e9467d466824d5b811884394c310937588f0b7ca4811154dd37"
+    },
+    "金子": {
+      "scene": "color",
+      "variant": "gold",
+      "description": "“金子”情景示意：金色的金块和金色色卡。",
+      "id": "3f73d64b759df799",
+      "sha256": "a48d2a188d3d0a503b2393e493301feea329c5e0b5dc9df7149b09a38dce5f3c"
+    },
+    "金色": {
+      "scene": "color",
+      "variant": "gold",
+      "description": "“金色”情景示意：金色的金块和金色色卡。",
+      "id": "45cb69888ebb4451",
+      "sha256": "5d2ba5552378e242449829b419122426363abdb7ce17c857b9a0c228b08e0eee"
+    },
+    "彩色": {
+      "scene": "color",
+      "variant": "rainbow",
+      "description": "“彩色”情景示意：几种不同颜色的物体并排放置。",
+      "id": "db57813f39b19aae",
+      "sha256": "a3a06cdc4f4fa8bbda742fd79a566ff32679e31935c7e48e43bbb8207ab229bf"
+    },
+    "五颜六色": {
+      "scene": "color",
+      "variant": "rainbow",
+      "description": "“五颜六色”情景示意：几种不同颜色的物体并排放置。",
+      "id": "7bc6b161927f0369",
+      "sha256": "8cf1759d4074877bd20c99a9379be26eb5a459a5584640d4856a707a2242b79c"
+    },
+    "大的": {
+      "scene": "compare",
+      "variant": "big",
+      "description": "“大的”情景示意：一个大球和一个小球并排，大球被突出。",
+      "id": "69000a8c134812ca",
+      "sha256": "8552fc74131eec351a4e9492fca017f420883b242e72946551f77dc563d5117a"
+    },
+    "大小": {
+      "scene": "compare",
+      "variant": "big",
+      "description": "“大小”情景示意：一个大球和一个小球并排，大球被突出。",
+      "id": "50db7447b966f5ef",
+      "sha256": "dbf06651ebe4ff8ac2dd5bbc799993e3a89e3188fae968f39c54dc256e5ead07"
+    },
+    "小的": {
+      "scene": "compare",
+      "variant": "small",
+      "description": "“小的”情景示意：一个大球和一个小球并排，小球被突出。",
+      "id": "d2ee2280d97cb167",
+      "sha256": "5a4df833506de24b6588872b70bbf53ada6de29a5d7a8ea6944c67af2f71bcbf"
+    },
+    "不少": {
+      "scene": "pattern",
+      "variant": "many",
+      "description": "“不少”情景示意：许多小物体排列在画面里。",
+      "id": "82e65dfb0dad9776",
+      "sha256": "002e76ea39dfa84cd0dd2a5fd65a75c5487ffd7a221588fa87781a2df61cb954"
+    },
+    "少数": {
+      "scene": "pattern",
+      "variant": "few",
+      "description": "“少数”情景示意：许多物体中只有少数被突出。",
+      "id": "b11257c985a7cf06",
+      "sha256": "c08f1f9b2c5788f23621ab6ebef5412d14d0cfbfcb2a0063ddb7f685395cdb0e"
+    },
+    "少有": {
+      "scene": "pattern",
+      "variant": "few",
+      "description": "“少有”情景示意：许多物体中只有少数被突出。",
+      "id": "58c47d3ca68f1397",
+      "sha256": "55dd654194db5313f24cdb8fb7904571f89fb14417ba88e7f53826ff50045917"
+    },
+    "长短": {
+      "scene": "compare",
+      "variant": "long",
+      "description": "“长短”情景示意：长短两根木棒并排，端点对齐。",
+      "id": "db9199a552fc87c8",
+      "sha256": "edc9e4c75bd594e4c804d2a854a45b42430364b70aeddf1dcee12ef6aee14177"
+    },
+    "对比": {
+      "scene": "compare",
+      "variant": "long",
+      "description": "“对比”情景示意：长短两根木棒并排，端点对齐。",
+      "id": "bc4b2dbbb77b9e5b",
+      "sha256": "39c0c4febaa8d1a4ab08247ae7dfec2feaf671e662b12a6d64dd6e1857d6ac41"
+    },
+    "一模一样": {
+      "scene": "pattern",
+      "variant": "same",
+      "description": "“一模一样”情景示意：三个形状、大小、颜色完全相同的物体。",
+      "id": "b4c5d26637517544",
+      "sha256": "db5620452139a0da8d0ff14e6f74f4b001ce851d4c8c72ccafedf40be690a0a8"
+    },
+    "独一无二": {
+      "scene": "pattern",
+      "variant": "unique",
+      "description": "“独一无二”情景示意：许多相同物体中只有一个不同的物体。",
+      "id": "b6e101afd3b5e9a4",
+      "sha256": "03dc99e50db148fe9a7ea347aa17afca896c8c1a0b19af410f707c8464245990"
+    },
+    "只有": {
+      "scene": "pattern",
+      "variant": "unique",
+      "description": "“只有”情景示意：许多相同物体中只有一个不同的物体。",
+      "id": "ba8bd7c8c9747b95",
+      "sha256": "4a8e8e5cf0d19f85c7b221ce6cdf8a44f1885fdec2d2a41c88b6aeb5d5c4e72f"
+    },
+    "许多": {
+      "scene": "pattern",
+      "variant": "many",
+      "description": "“许多”情景示意：许多小圆点排成整齐的行列。",
+      "id": "1df1ae654a196b96",
+      "sha256": "7eb216bd379a190254774c00091351813dda883f88a98f42ee3c4787bf2be767"
+    },
+    "数不清": {
+      "scene": "pattern",
+      "variant": "many",
+      "description": "“数不清”情景示意：许多小圆点排成整齐的行列。",
+      "id": "e342c032f333e305",
+      "sha256": "127a16aabad5332084a322d59b993be5d04035325629fe387aa6842b2b2ab9c2"
+    },
+    "多少": {
+      "scene": "pattern",
+      "variant": "many",
+      "description": "“多少”情景示意：许多小圆点排成整齐的行列。",
+      "id": "fb8f01cb6d4be28b",
+      "sha256": "d46c463d74ed84806b0ff1b8193a5124b4e098755d1a09a43bbe36ddb6d9ce77"
+    },
+    "更加": {
+      "scene": "pattern",
+      "variant": "many",
+      "description": "“更加”情景示意：许多小圆点排成整齐的行列。",
+      "id": "f70ea2031adfe9b5",
+      "sha256": "cfa6a1c3e8399b53391c3bc8a70066d3415fa8d354bf5542cfae9e3247fcf83d"
+    },
+    "一心一意": {
+      "scene": "emotion",
+      "variant": "focus",
+      "description": "“一心一意”情景示意：孩子专心看着打开的书本。",
+      "id": "46d61033f3d0a607",
+      "sha256": "ded4a1ed843375656c61289bebd1ac7c88d62864481d9750d56982cda62cab9b"
+    },
+    "一只": {
+      "scene": "pattern",
+      "variant": "one",
+      "description": "“一只”情景示意：一个目标被突出，旁边其他目标淡化。",
+      "id": "216a478784bc0a00",
+      "sha256": "e1224275a2e62267e12cf79e28e4a8ab10b71d14af1d50c021c53606ae94ddd2"
+    },
+    "十全十美": {
+      "scene": "pattern",
+      "variant": "perfect",
+      "description": "“十全十美”情景示意：十个格子全部完成，显示十个小勾。",
+      "id": "4ba7f043a2068f63",
+      "sha256": "f43f7e6891600ad87bd3dbe807bb9eae9212ab53491ba20d82675dad94494455"
+    },
+    "九牛一毛": {
+      "scene": "pattern",
+      "variant": "cow-hair",
+      "description": "“九牛一毛”情景示意：九头牛中的一根细毛被放大，表示非常少。",
+      "id": "01658f564ac4845c",
+      "sha256": "4ad76231d8e73ddf7b550eee9f0f159e87123073a7ae99f06cd4c8572943484b"
+    },
+    "三头六臂": {
+      "scene": "pattern",
+      "variant": "hero",
+      "description": "“三头六臂”情景示意：神话人物有三个头和六条手臂。",
+      "id": "252a58dec6bb2041",
+      "sha256": "bb487cf3ef331d1197e9ee683ce3b08717cb9a33644e89d2de02a8d1d996c59d"
+    },
+    "上": {
+      "scene": "direction",
+      "variant": "updown",
+      "description": "“上”情景示意：物体上下两侧用箭头标出。",
+      "id": "db5ba671d244ee82",
+      "sha256": "6ef831b996e7d644bcb4296803b6020e5db9a0b1ddf23364c94cd2f849e20dda"
+    },
+    "上下": {
+      "scene": "direction",
+      "variant": "updown",
+      "description": "“上下”情景示意：物体上下两侧用箭头标出。",
+      "id": "8284260058ddb4d7",
+      "sha256": "c63f3bb60b86977a3f455b1ee23d3eaf879d4b8231eb1b8f7f9b4ced76315fbe"
+    },
+    "先下": {
+      "scene": "direction",
+      "variant": "updown",
+      "description": "“先下”情景示意：物体上下两侧用箭头标出。",
+      "id": "0b919d9cc4412c54",
+      "sha256": "2aa65022c163b970e5f72552663333614dc4cc2aa1eafbc72caba2045d9a39d5"
+    },
+    "七上八下": {
+      "scene": "direction",
+      "variant": "updown",
+      "description": "“七上八下”情景示意：物体上下两侧用箭头标出。",
+      "id": "9ce7fd08ece2d182",
+      "sha256": "61cb7053a1ccb4c1cf039d975254d613901cf143a3d9bb5fdfba500d4621b92a"
+    },
+    "左右": {
+      "scene": "direction",
+      "variant": "leftright",
+      "description": "“左右”情景示意：孩子左右两侧各有一个物体。",
+      "id": "191e26b5d741e457",
+      "sha256": "decba971732c9409720de5a260b836a2e2d235f1d05a195e6811ed252f39b9ce"
+    },
+    "左和右": {
+      "scene": "direction",
+      "variant": "leftright",
+      "description": "“左和右”情景示意：孩子左右两侧各有一个物体。",
+      "id": "041d9f5678e6ac7b",
+      "sha256": "f56e2e921eabc024107baa965b2fd2c94ed202fc48ca1c8865a1be19a90ae7d4"
+    },
+    "中和": {
+      "scene": "direction",
+      "variant": "leftright",
+      "description": "“中和”情景示意：孩子左右两侧各有一个物体。",
+      "id": "fb3f2583e0f790fe",
+      "sha256": "c51f8de4f21ee144f7275dfdef525689eaff7c75b176b68233557bacd3241ea4"
+    },
+    "左边": {
+      "scene": "direction",
+      "variant": "leftright",
+      "description": "“左边”情景示意：孩子左右两侧各有一个物体。",
+      "id": "6a0ef384c814c9e5",
+      "sha256": "fcab3d5a07414e7e9e0a21a0539602c43e28ca622774b799b97af766bae0b8fc"
+    },
+    "右边": {
+      "scene": "direction",
+      "variant": "leftright",
+      "description": "“右边”情景示意：孩子左右两侧各有一个物体。",
+      "id": "0838dcc59823278c",
+      "sha256": "95d9baa23d94a0696dba10b7a8b6dc126a27775c9e180657d173722790d165a6"
+    },
+    "右下角": {
+      "scene": "direction",
+      "variant": "leftright",
+      "description": "“右下角”情景示意：孩子左右两侧各有一个物体。",
+      "id": "6897632c0ea9cf81",
+      "sha256": "18b6156c4c791d2e3308d4aa25f202fbf72ca82e3d277c89a99239cf0da1b78c"
+    },
+    "前面": {
+      "scene": "direction",
+      "variant": "frontback",
+      "description": "“前面”情景示意：前后排列的队伍，前后位置被突出。",
+      "id": "ad0a0abeab6bedf6",
+      "sha256": "24e7d3451cb81329cbd04986a924cc7b39421b2d59589f901cc5c03846d71fd4"
+    },
+    "前方": {
+      "scene": "direction",
+      "variant": "frontback",
+      "description": "“前方”情景示意：前后排列的队伍，前后位置被突出。",
+      "id": "22d07e5bf14e6f67",
+      "sha256": "27e7b448846d5f020a0296de3ccf810cfd07c79a6f690512fec3231a37d1efe7"
+    },
+    "先后": {
+      "scene": "direction",
+      "variant": "frontback",
+      "description": "“先后”情景示意：前后排列的队伍，前后位置被突出。",
+      "id": "7d4ff1d67f0cd16d",
+      "sha256": "a174b0489a77a98e32e18d963c8e3415bf4b2458e2e41ed99bdccdd6b6de60c1"
+    },
+    "先天": {
+      "scene": "family",
+      "variant": "baby",
+      "description": "“先天”情景示意：小宝宝和出生日期的日历，表示出生时已有。",
+      "id": "20cfb0c0923ad119",
+      "sha256": "3d93b544e8a582caa62359e4f2f36535dc29c5f3cf85cdcdf6d89cc90db42519"
+    },
+    "最后": {
+      "scene": "direction",
+      "variant": "frontback",
+      "description": "“最后”情景示意：前后排列的队伍，前后位置被突出。",
+      "id": "445905122e87b990",
+      "sha256": "ce1302b77bab8c16776f1104ef1bdc0d4534fc417f793c0854396fcd6977977a"
+    },
+    "后果": {
+      "scene": "action",
+      "variant": "consequence",
+      "description": "“后果”情景示意：前面的积木被推倒，后面的积木也依次倒下。",
+      "id": "00d94e443a5fb437",
+      "sha256": "3717bf08426e5d70b0e8a68d134255e64b5e727199a41a2a373036fdc49cd537"
+    },
+    "东北": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“东北”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "ddbc65483182cd8a",
+      "sha256": "ea0c525bbbe9cc04964bbaa66ff1ae743ebfd6b6021f1d56212ee9d180ce4d9c"
+    },
+    "东方": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“东方”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "67bad5bd2b80097d",
+      "sha256": "3b92d1fb145b71223f051ca79cd16d2a6e5954a14c8d3f71bdc538c7e9b7ff15"
+    },
+    "东西": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“东西”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "b1813501860b58c2",
+      "sha256": "db48debfdc4f99fd158b8404ac9cb3f67fe8a6f8e2955773cdd23ea06767e538"
+    },
+    "东边": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“东边”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "691b1216093d230f",
+      "sha256": "e5071a5705153946894a855a739e0cec5c436cc88c31c501cbaf7999f209c1a0"
+    },
+    "北方": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“北方”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "78e20875d600228f",
+      "sha256": "c185edd539296d67877bdb890df6daaa61002cbfac206ebfe77fe0c2d1663440"
+    },
+    "南方": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“南方”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "551ee9cf1235d598",
+      "sha256": "4a0268934edb8397b8e7803163ce6629d7e50bf3603555ecfdeebdd61460460b"
+    },
+    "南面": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“南面”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "3b5c4ad341f26340",
+      "sha256": "3159d066afadd74cdfe5c520c0f8d861704090fc6b4bc5a375b07bd091a2cd19"
+    },
+    "西方": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“西方”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "8257f728a0d6b552",
+      "sha256": "7256596505c8a21172b2db0e97f69fb60d1bba799280f331c9cc6b9942652b7c"
+    },
+    "面向": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“面向”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "2019f9645edcfe59",
+      "sha256": "436ca9976427eb38a057e64fdb7be8f5b6f91a72f45f0fbd5b37397838eb8bd0"
+    },
+    "指向": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“指向”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "59148003e99bbe46",
+      "sha256": "235e1eb2600334f0eac8b3f7e1faa5dc0a0d17ac400e876e3fc8c4b48348fcb1"
+    },
+    "方面": {
+      "scene": "direction",
+      "variant": "compass",
+      "description": "“方面”情景示意：太阳和方向盘表示东南西北的位置。",
+      "id": "3fc5b79e6d298d4a",
+      "sha256": "2e1d057327ea64c89d803ce912cd17453235b6e3e218fae1fbf16a9f3234f081"
+    },
+    "中央": {
+      "scene": "direction",
+      "variant": "center",
+      "description": "“中央”情景示意：圆形中心有一个突出的小点。",
+      "id": "b864a6a4edbf6130",
+      "sha256": "b603fb93f1ab7edcbf907614af8b5c2a37570334163fc240b879593149106413"
+    },
+    "中心": {
+      "scene": "direction",
+      "variant": "center",
+      "description": "“中心”情景示意：圆形中心有一个突出的小点。",
+      "id": "260cca3889c2a05c",
+      "sha256": "5634b1b054f333701430cbe64625058956f45fc30564f69a92e9bf04b8fb4db0"
+    },
+    "中间": {
+      "scene": "direction",
+      "variant": "center",
+      "description": "“中间”情景示意：圆形中心有一个突出的小点。",
+      "id": "79f883a9fb832c8b",
+      "sha256": "b3c1656f0f16c393dda547ec3d27d4a963176306013e3844f5c871f7e61ccb18"
+    },
+    "反面": {
+      "scene": "direction",
+      "variant": "reverse",
+      "description": "“反面”情景示意：一张卡片翻面，露出背面。",
+      "id": "9849101d62a2bb4c",
+      "sha256": "f845ecc765603008ce736ed62ef9ec2557567c8fc79a54de2b2fec86d888b810"
+    },
+    "高处": {
+      "scene": "direction",
+      "variant": "high",
+      "description": "“高处”情景示意：小山上方的物体和向上的箭头。",
+      "id": "e8c17d134439aa9f",
+      "sha256": "c719a4c0821a3c925f1518460f937f416159339b1fbf8bf1d3be10f1fe740a3d"
+    },
+    "方正": {
+      "scene": "shape",
+      "variant": "square",
+      "description": "“方正”情景示意：四条边平直、四个角端正的正方形。",
+      "id": "c073c0960cafda25",
+      "sha256": "8c0f0a6674e5d47e6b02406adf74b0213732ea69efbf2de6066290c7921f6d8b"
+    },
+    "弯曲": {
+      "scene": "shape",
+      "variant": "curve",
+      "description": "“弯曲”情景示意：一条线弯曲成弧形。",
+      "id": "bfd401809d15147f",
+      "sha256": "8e8ff36987a69ac2c3cab605cd63c440c0d12a74fa0b3e17a289218d91dd6020"
+    },
+    "影子": {
+      "scene": "shadow",
+      "variant": "shadow",
+      "description": "“影子”情景示意：太阳照着孩子，地上投下影子。",
+      "id": "337dbf6cb6f623df",
+      "sha256": "b383a7a9a533ca3222cdd12bdec6e1a4b10a469944c59e047f9f131e03f52cd8"
+    },
+    "人影": {
+      "scene": "shadow",
+      "variant": "shadow",
+      "description": "“人影”情景示意：太阳照着孩子，地上投下影子。",
+      "id": "6a5934c87d3572b0",
+      "sha256": "003d9cd367d4b2740b9e652b851c430ad501fdcd184234313b746e181c290520"
+    },
+    "电影": {
+      "scene": "shadow",
+      "variant": "movie",
+      "description": "“电影”情景示意：幕布上播放人物画面，前方有观众。",
+      "id": "03a3a327af684099",
+      "sha256": "361f3f2f1bf7e5bed072576e6c1b2948dc605323d426e88117c5a8de023e5524"
+    },
+    "过关": {
+      "scene": "school",
+      "variant": "tidy",
+      "description": "“过关”情景示意：孩子整理文具，把物品摆整齐。",
+      "id": "e4f684ed2862e35c",
+      "sha256": "6dede830c5d55256c86bf75f23dbc7bc8ca290efed87875cc7d0a11f780bcedd"
+    },
+    "数学": {
+      "scene": "number",
+      "variant": "math",
+      "description": "“数学”情景示意：小物体按数量排列，旁边有加号。",
+      "id": "872c1fa141b5ed8d",
+      "sha256": "90038717fdac86dd0cf9ea8676763b5b80338f0b3164d45889547eadca2cd098"
+    },
+    "加法": {
+      "scene": "number",
+      "variant": "math",
+      "description": "“加法”情景示意：小物体按数量排列，旁边有加号。",
+      "id": "fd189b0132aba825",
+      "sha256": "2479f0be1e7463903850fc0c9d47d46d1e68fcd1e73766daa8bff0aec4c523ea"
+    },
+    "加号": {
+      "scene": "number",
+      "variant": "math",
+      "description": "“加号”情景示意：小物体按数量排列，旁边有加号。",
+      "id": "3d5f3d36425cd744",
+      "sha256": "73589913285ca8c9f77c1561c6744abc302cd07b2a40067a44b8882b35fb340d"
+    },
+    "宝贝": {
+      "scene": "emotion",
+      "variant": "treasure",
+      "description": "“宝贝”情景示意：孩子珍惜地抱着一个心爱的物品。",
+      "id": "203f1a82599f3d1a",
+      "sha256": "35b9b79ee2e99a1c35be07cff8d98afdd259338fd66bff8f9643a6878eed90d7"
+    },
+    "内向": {
+      "scene": "family",
+      "variant": "introvert",
+      "description": "“内向”情景示意：孩子安静地站在书旁。",
+      "id": "f466d1e8a372fd21",
+      "sha256": "5e4881d2999a3f83b81e6b483cdd023c1defd0f3d397fc40ba9472afe8521b25"
+    },
+    "黑人": {
+      "scene": "family",
+      "variant": "dark-skin",
+      "description": "“黑人”情景示意：一个深肤色的人微笑站着。",
+      "id": "337ddf54b42b3256",
+      "sha256": "41ea1101bcc15a2b332a9c314f4052b99779af95cafdeacfb102465396fd55d3"
+    },
+    "一": {
+      "scene": "number",
+      "variant": "1",
+      "description": "“一”情景示意：1个小物体按行排列，帮助看清数量。",
+      "id": "51a75f4634dfa859",
+      "sha256": "e105b7c21f3aca1c0939d777b7e0fbc377a44100d525d88c12a01e6330d5b49a"
+    },
+    "一人": {
+      "scene": "family",
+      "variant": "self",
+      "description": "“一人”情景示意：一个人在画面中独自站着。",
+      "id": "45b3f27e3a97e2c1",
+      "sha256": "5ac456d044afdff0b38e0c1aaa35a042420c66247067494364031395dd8c403b"
+    },
+    "一个": {
+      "scene": "number",
+      "variant": "1",
+      "description": "“一个”情景示意：1个小物体按行排列，帮助看清数量。",
+      "id": "e1dbc1c99fb499ef",
+      "sha256": "5b8371ffd57c0e43179bd0d574b7dc543e1d7d504a5c19ca2c8167ba09d2c98c"
+    },
+    "二": {
+      "scene": "number",
+      "variant": "2",
+      "description": "“二”情景示意：2个小物体按行排列，帮助看清数量。",
+      "id": "084b42f6e95e4e65",
+      "sha256": "66916e1f3cf4abf442e17f8620afdf317e3ed6456c9a2bfb7f39e5f52f4698d1"
+    },
+    "三": {
+      "scene": "number",
+      "variant": "3",
+      "description": "“三”情景示意：3个小物体按行排列，帮助看清数量。",
+      "id": "a4c3313deb180960",
+      "sha256": "66306d8fc7dd01d18c1f176c7672696db7fb111897b4153586661a7198c0343d"
+    },
+    "三个": {
+      "scene": "number",
+      "variant": "3",
+      "description": "“三个”情景示意：3个小物体按行排列，帮助看清数量。",
+      "id": "b6d5fed885471e52",
+      "sha256": "a6ffffabbcd4ae146fa10f0f0f43f9cdbfff2a35d775566e963235b49416cef2"
+    },
+    "五个": {
+      "scene": "number",
+      "variant": "5",
+      "description": "“五个”情景示意：5个小物体按行排列，帮助看清数量。",
+      "id": "d64ed28f4d9eb0bb",
+      "sha256": "a693ed0607ca91e6a2c0a60934567981183dc91904d07c208567ea2d52940327"
+    },
+    "六": {
+      "scene": "number",
+      "variant": "6",
+      "description": "“六”情景示意：6个小物体按行排列，帮助看清数量。",
+      "id": "de07b5383874b2a3",
+      "sha256": "f7147126158e22fdfca63b19966cab5429f1483384df63ec4481eff6ece2b869"
+    },
+    "六个": {
+      "scene": "number",
+      "variant": "6",
+      "description": "“六个”情景示意：6个小物体按行排列，帮助看清数量。",
+      "id": "ea125b6dbc24c767",
+      "sha256": "0e6d82527568401627e702ca3ab3ce433902a8048468749503a97274644b2f8e"
+    },
+    "七": {
+      "scene": "number",
+      "variant": "7",
+      "description": "“七”情景示意：7个小物体按行排列，帮助看清数量。",
+      "id": "1b0542878c67f6cd",
+      "sha256": "6acdc554f80d84fcd64e6979edbc9928cd146a1aab1a4afc3f0bc143b21df153"
+    },
+    "七个": {
+      "scene": "number",
+      "variant": "7",
+      "description": "“七个”情景示意：7个小物体按行排列，帮助看清数量。",
+      "id": "560a430f06e28c0a",
+      "sha256": "c808939df4349be73ecce6bca47d12d4c6f4214b139193841308696ae93dd3a7"
+    },
+    "九": {
+      "scene": "number",
+      "variant": "9",
+      "description": "“九”情景示意：9个小物体按行排列，帮助看清数量。",
+      "id": "df897da6e02ecd30",
+      "sha256": "9f3e20a39f4de35973f1340cf02ad5e06d0a5e247fd433d965f81facfaca9bf9"
+    },
+    "十五": {
+      "scene": "number",
+      "variant": "ten",
+      "description": "“十五”情景示意：物体组成完整的一组。",
+      "id": "2f740e1769682233",
+      "sha256": "1840c061b706a9db1f49f4997ef5bdc80bc9e5d03d76c40472c412f8c3ff0267"
+    },
+    "四十": {
+      "scene": "number",
+      "variant": "40",
+      "description": "“四十”情景示意：40个小物体按行排列，帮助看清数量。",
+      "id": "f4d26ac94ae3b1c7",
+      "sha256": "30efb151e91fca957d92530dcfdc81a664ec8e28d58e160722701860d0997d6b"
+    },
+    "八十": {
+      "scene": "number",
+      "variant": "80",
+      "description": "“八十”情景示意：80个小物体按行排列，帮助看清数量。",
+      "id": "8469292dc4716140",
+      "sha256": "c06a366d5d61058a269e033c1342b53080df785e1714f60c53118814d2cdf420"
+    },
+    "个个": {
+      "scene": "number",
+      "variant": "each",
+      "description": "“个个”情景示意：几个小物体各占一个格子。",
+      "id": "b39fa522ebd3abb3",
+      "sha256": "e047377683ac027b2767a4bc8043490b6f112339f6ff8bae29e1296de9c26c2f"
+    },
+    "个人": {
+      "scene": "number",
+      "variant": "each",
+      "description": "“个人”情景示意：几个小物体各占一个格子。",
+      "id": "15dec507959ec950",
+      "sha256": "08fa9050ac6f14d27b32007169bae8e0120b12e25a3a27a17e99089436c4f274"
+    },
+    "几只": {
+      "scene": "number",
+      "variant": "each",
+      "description": "“几只”情景示意：几个小物体各占一个格子。",
+      "id": "5c6c81f7af11c2bf",
+      "sha256": "841d7a9d5e2f795ed2fac18a505a28609a2112c0d6c7cc1e16c16b98f632668f"
+    },
+    "几岁": {
+      "scene": "number",
+      "variant": "each",
+      "description": "“几岁”情景示意：几个小物体各占一个格子。",
+      "id": "9e5ac1667cbc9990",
+      "sha256": "d24d9575a41ec2ab9a213448a11b17037ad00ba3b21e5d614602bf93e67efaf9"
+    },
+    "四个": {
+      "scene": "number",
+      "variant": "4",
+      "description": "“四个”情景示意：四个物体排成一组。",
+      "id": "f93e9175c391119a",
+      "sha256": "5cf8be8535a44b75cd90bcc4e987f166302dca91c6fdb92445b0b269be718241"
+    },
+    "一双鞋": {
+      "scene": "tool",
+      "variant": "shoes",
+      "description": "“一双鞋”情景示意：一双鞋左右并排放着。",
+      "id": "d5dd5a0272ad5558",
+      "sha256": "9188e8331b155e92489dcfe4a405cd31f3b8dcebe66e4730418f3d93a8a263dd"
+    },
+    "公园": {
+      "scene": "land",
+      "variant": "park",
+      "description": "“公园”情景示意：公园里有树、长椅和花草。",
+      "id": "e852dca995be4432",
+      "sha256": "cbdf18d7be7c35fced23da88c9f20ae45e59714bbeee3355a3ceae928e2ccdbf"
+    },
+    "又来": {
+      "scene": "action",
+      "variant": "return",
+      "description": "“又来”情景示意：孩子沿着来时的路再次走来。",
+      "id": "fa7a47fbffe19674",
+      "sha256": "274acce2f6aeaabd5ea874a6132d46000a056bc0d3be0c94b1665f76ea541f14"
+    },
+    "报纸": {
+      "scene": "book",
+      "variant": "newspaper",
+      "description": "“报纸”情景示意：展开的报纸有标题、文字栏和配图。",
+      "id": "bdd34dcdbaa62120",
+      "sha256": "4b4f76f621c03ef7ebb43197928be3e23da6105bf0f93a9b46689fde02770383"
+    },
+    "数落": {
+      "scene": "speech",
+      "variant": "criticize",
+      "description": "“数落”情景示意：大人指出问题，孩子认真听。",
+      "id": "768854f43a9eccc0",
+      "sha256": "38bcb44c98817c6bb1a5065916ef6b6fc11b124d73ca0ac54f987b5d0530e48a"
+    },
+    "日月": {
+      "scene": "sky",
+      "variant": "both",
+      "description": "“日月”情景示意：太阳和月亮在天空中交替出现。",
+      "id": "0bccc088cc0bffa4",
+      "sha256": "c6d42ce5d6a3632958db595aaa94957e5dfdb5e8b50590ca9380aa0dc81c2deb"
+    },
+    "涂鸦": {
+      "scene": "book",
+      "variant": "paint",
+      "description": "“涂鸦”情景示意：孩子用彩笔在纸上自由画画。",
+      "id": "c444a8125ada23eb",
+      "sha256": "d6151ac81b3ed0474cd708017d310a11caa7b99eb469cc863818f313d3950b23"
+    },
+    "王": {
+      "scene": "family",
+      "variant": "king",
+      "description": "“王”情景示意：戴着王冠的人。",
+      "id": "3399a0e651ad104c",
+      "sha256": "d68acfd7db51a4f41f1ba3347bc7be9d9bff66f75665f888be602a2b8aef2a69"
+    },
+    "石头": {
+      "scene": "land",
+      "variant": "stone",
+      "description": "“石头”情景示意：几块形状不规则的石头放在地面上。",
+      "id": "a1aca9fd68a97328",
+      "sha256": "c984666bb26e566aa95f6b74f6cc111c2b3c27928d6c460a27bfb02cccd43bfa"
+    },
+    "石子": {
+      "scene": "land",
+      "variant": "stone",
+      "description": "“石子”情景示意：几块形状不规则的石头放在地面上。",
+      "id": "bd5984e61dc2d581",
+      "sha256": "06a618c5170c8b7de372a05759054ea2a2dffcb977774683316bb25b45148855"
+    },
+    "空间": {
+      "scene": "shape",
+      "variant": "space",
+      "description": "“空间”情景示意：盒子内部有可以容纳物品的空间。",
+      "id": "3347e052c0f17434",
+      "sha256": "d64e1c9cb8b9d5b4d3b33f8ee1b76de2e1be5a60a60959d81a801dfba4d33dc4"
+    }
+  }
+}
