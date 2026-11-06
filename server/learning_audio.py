@@ -66,6 +66,9 @@ def narration_scripts() -> dict[str, str]:
     from server.daily_reading import scripts as daily_scripts
 
     scripts.update(daily_scripts())
+    from server.word_practice import scripts as word_scripts
+
+    scripts.update(word_scripts())
     from server.reading_recognition import config as recognition_config
 
     scripts.update({f"recognition-{key}": text for key, text in recognition_config()["ui"].items()})

@@ -75,3 +75,7 @@ EdUHK 香港教育大学普通话语音学习语料（SPEC-018 MATCH-14）：来
 中文自监督声学编码器（SPEC-018 MATCH-16）：[TencentGameMate/chinese-wav2vec2-base](https://huggingface.co/TencentGameMate/chinese-wav2vec2-base) 模型卡声明 MIT；固定修订、文件 SHA 和来源见 `content/pronunciation-pretrained-models.json`。上游报告使用 WenetSpeech train L 的约一万小时中文语音自监督预训练，不含拼音识别头；预训练语音与本项目评测人群的交集未知。权重及衍生模型仅存本机忽略目录，推理不联网。
 
 中文 ASR 迁移声学编码器（SPEC-018 MATCH-16）：[jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn](https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn) 模型卡声明 Apache-2.0，上游报告在 Common Voice 6.1 中文、CSS10 和 ST-CMDS 微调；权重固定修订和 SHA 见同一清单，语料个人身份与评测集合的交集未知。本项目只用声学编码器帧，不使用上游字符解码、语言模型或字符识别正确性作评分。
+
+## 2026-11-06 词语天天练（SPEC-022）
+
+根目录《一年级上学期词语天天练-对应课文.pdf》由用户提供并授权用于本模块；词目整理及教材补充内容见 `content/word-practice/lessons.json`。补充来源为国家智慧教育平台的人民教育出版社《义务教育教科书 语文 一年级 上册》（2024修订），完整来源URL和材料SHA256保留于内容清单。教材课文、作者作品及练习材料保留原权利，不由代码MIT许可覆盖；此授权不代表取得教材面向公众再发行许可。未提交在线教材整本PDF。新增语音使用既有固定Qwen3-TTS本地生成流程，模型许可和参数沿用SPEC-011。

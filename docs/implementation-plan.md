@@ -79,3 +79,5 @@ SPEC-013的DOCKER-05/06补充Windows x86-64宿主的linux/amd64部署及CPU Whis
 2026-11-03新增 [SPEC-020](specs/SPEC-020-macos-app.md)：Mac 原生窗口与随包 Python/服务/声音，Whisper 在家长设置显式下载，GitHub Actions 构建发布（用户已授权公开安装包），见 [ADR-0037](adr/0037-macos-app.md)。
 
 2026-11-03新增 [SPEC-021](specs/SPEC-021-windows-app.md)：Windows x64 本地应用与安装包，沿用可选模型和本地数据边界，见 [ADR-0038](adr/0038-windows-app.md)。
+
+2026-11-06新增 [SPEC-022](specs/SPEC-022-word-practice.md)：WORD-01～03按家长提供PDF新增38课词语天天练，分为有声拼读、纸笔听写自核对与生字词高亮背诵。沿用本地Qwen音频，无新增依赖；练习标记仅设备保存，不影响家庭成绩。

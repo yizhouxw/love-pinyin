@@ -1,0 +1,134 @@
+.word-practice {
+  max-width: 1050px;
+  margin: auto;
+}
+.word-practice select {
+  max-width: 100%;
+  min-height: 48px;
+  font: inherit;
+  padding: 8px;
+}
+.word-course-nav,
+.word-modes {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+.word-modes button[aria-pressed='true'] {
+  background: #24634b;
+  color: white;
+}
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+.word-grid button {
+  min-height: 100px;
+  font-size: 1.6rem;
+  padding-top: 24px;
+}
+.word-practice rt {
+  font-size: 0.85rem;
+  font-weight: normal;
+}
+.word-dictation,
+.word-passage,
+.word-vocabulary {
+  padding: 20px;
+  border-radius: 18px;
+  background: #fffdf5;
+  border: 1px solid #d9decf;
+  margin: 20px 0;
+}
+.word-answer {
+  min-height: 95px;
+  display: grid;
+  place-content: center;
+  font-size: 1.7rem;
+  padding-top: 20px;
+}
+.word-paragraph {
+  display: flex;
+  gap: 16px;
+  align-items: start;
+  margin-top: 20px;
+}
+.word-paragraph p {
+  font-size: 1.5rem;
+  line-height: 2.2;
+  margin: 0;
+}
+.word-paragraph button {
+  flex-shrink: 0;
+}
+.word-mark-word {
+  background: #d7efdf;
+  text-decoration: underline;
+}
+.word-mark-character {
+  background: #ffe3b5;
+  font-weight: bold;
+}
+.word-character-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.word-character-list button {
+  min-width: 48px;
+  min-height: 48px;
+  font-size: 1.3rem;
+}
+.word-complete {
+  margin-top: 24px;
+}
+.word-record-note {
+  font-size: 0.9rem;
+  color: #59665d;
+}
+@media (max-width: 480px) {
+  .word-paragraph {
+    flex-direction: column;
+  }
+  .word-modes {
+    gap: 6px;
+  }
+  .word-modes button {
+    flex: 1;
+    padding: 10px 6px;
+  }
+}
+.word-practice button {
+  border: 1px solid #c6d9bd;
+  border-radius: 14px;
+  background: #fffefa;
+  color: #285946;
+  padding: 12px 18px;
+  font-weight: 650;
+}
+.word-practice .section-heading {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.word-practice .word-grid button {
+  padding-top: 28px;
+  background: #fffefa;
+  box-shadow: 0 3px 0 #e3e8d9;
+}
+.word-practice .word-complete {
+  background: #285946;
+  color: #fffefa;
+}
+.word-practice .word-modes button[aria-pressed='true'] {
+  background: #285946;
+  color: #fffefa;
+}
+.word-practice .word-character-list button {
+  padding: 8px 14px;
+}
+.word-practice .word-modes button {
+  transition: none;
+}

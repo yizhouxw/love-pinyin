@@ -1,6 +1,6 @@
 {
   "name": "love-pinyin",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": true,
   "description": "小学一年级汉语拼音学习应用：Mac 本地服务与语音引导练习",
   "license": "MIT",
@@ -19,8 +19,8 @@
     "lint": "eslint --config config/eslint.config.mjs . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate:content": "node scripts/validate-content.mjs && node scripts/validate-narration.mjs && node scripts/validate-writing.mjs && node scripts/validate-illustrations.mjs && uv run --locked python -m scripts.validate_daily_reading",
-    "validate:release": "node scripts/validate-content.mjs --release && uv run --locked python -m scripts.validate_daily_reading --release",
+    "validate:content": "node scripts/validate-content.mjs && node scripts/validate-narration.mjs && node scripts/validate-writing.mjs && node scripts/validate-illustrations.mjs && uv run --locked python -m scripts.validate_daily_reading && uv run --locked python -m scripts.validate_word_practice",
+    "validate:release": "node scripts/validate-content.mjs --release && uv run --locked python -m scripts.validate_daily_reading --release && uv run --locked python -m scripts.validate_word_practice --release",
     "licenses": "node scripts/dependency-inventory.mjs",
     "test": "vitest run --config config/vitest.config.ts",
     "test:watch": "vitest --config config/vitest.config.ts",

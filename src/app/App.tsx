@@ -30,6 +30,7 @@ import {
   replayPendingAnswer,
   savePendingAnswer,
 } from '../platform/pending-answer';
+import { WordPractice } from './word-practice';
 import { DailyReadingPage } from './daily-reading';
 import { gameCatalog } from '../domain/games';
 import { GameZone, GamePause } from './game-zone';
@@ -118,9 +119,11 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const blendConfirm = useRef<HTMLButtonElement | null>(null);
   const blendOptions = useRef(new Map<string, HTMLButtonElement>());
   const [gamesOpen, setGamesOpen] = useState(window.location.hash === '#games');
+  const [wordsOpen, setWordsOpen] = useState(window.location.hash === '#word-practice');
   const [dailyOpen, setDailyOpen] = useState(window.location.hash === '#daily-reading');
   useEffect(() => {
     const followHash = () => {
+      setWordsOpen(window.location.hash === '#word-practice');
       setDailyOpen(window.location.hash === '#daily-reading');
       setGamesOpen(window.location.hash === '#games');
     };
@@ -1004,6 +1007,18 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       </main>
     );
 
+  if (wordsOpen)
+    return (
+      <main className="home-page">
+        <WordPractice
+          onBack={() => {
+            window.location.hash = '';
+            setWordsOpen(false);
+          }}
+        />
+      </main>
+    );
+
   if (dailyOpen)
     return (
       <main className="home-page">
@@ -1215,6 +1230,22 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                   }}
                 >
                   进入游戏乐园 →
+                </button>
+              </section>
+              <section className="daily-entry">
+                <div>
+                  <span className="eyebrow">跟着课文天天练</span>
+                  <h2>词语天天练</h2>
+                  <p>词语拼读 · 词语听写 · 课文背诵</p>
+                </div>
+                <button
+                  onClick={() => {
+                    stopVoice();
+                    window.location.hash = 'word-practice';
+                    setWordsOpen(true);
+                  }}
+                >
+                  进入词语天天练 →
                 </button>
               </section>
               <section className="daily-entry">

@@ -1,0 +1,6984 @@
+{
+  "version": 1,
+  "source": {
+    "file": "一年级上学期词语天天练-对应课文.pdf",
+    "sha256": "1a39ee91b377369efa53114b1ca39da98fa0f68cff86db49e714d684892cedbf",
+    "textbook": "https://r2-ndr.ykt.cbern.com.cn/edu_product/esp/assets/1c73b348-e8b6-47d6-84b0-6dbacbe28268.pkg/义务教育教科书%20语文%20一年级%20上册_1725097498841.pdf",
+    "edition": "统编人教版一年级上册（2024修订）"
+  },
+  "lessons": [
+    {
+      "title": "天地人",
+      "page": 1,
+      "read": [
+        {
+          "text": "天上",
+          "pinyin": "tiān shàng",
+          "audioId": "word-say-59d1c376fb2a7fd9"
+        },
+        {
+          "text": "天天",
+          "pinyin": "tiān tiān",
+          "audioId": "word-say-a9cc60e7724d0394"
+        },
+        {
+          "text": "土地",
+          "pinyin": "tǔ dì",
+          "audioId": "word-say-c214ddf69f944931"
+        },
+        {
+          "text": "地下",
+          "pinyin": "dì xià",
+          "audioId": "word-say-03876ed80d3e816c"
+        },
+        {
+          "text": "人们",
+          "pinyin": "rén men",
+          "audioId": "word-say-1ec687a275e8803b"
+        },
+        {
+          "text": "大人",
+          "pinyin": "dà rén",
+          "audioId": "word-say-44dd6014a532924b"
+        },
+        {
+          "text": "你好",
+          "pinyin": "nǐ hǎo",
+          "audioId": "word-say-670d9743542cae3e"
+        },
+        {
+          "text": "你的",
+          "pinyin": "nǐ de",
+          "audioId": "word-say-c84459f0729f445c"
+        },
+        {
+          "text": "我的",
+          "pinyin": "wǒ de",
+          "audioId": "word-say-7f1d9dd04cd1c7b8"
+        },
+        {
+          "text": "他的",
+          "pinyin": "tā de",
+          "audioId": "word-say-6b46510edc43c83d"
+        }
+      ],
+      "write": [],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-01",
+      "characters": "天地人你我他",
+      "passages": [],
+      "audioId": "word-title-word-01",
+      "spokenTitle": "天地人",
+      "characterItems": [
+        {
+          "text": "天",
+          "audioId": "word-say-49da61ceeea2f271",
+          "example": "天"
+        },
+        {
+          "text": "地",
+          "audioId": "word-say-bdbd41e490e2e1d0",
+          "example": "地"
+        },
+        {
+          "text": "人",
+          "audioId": "word-say-50f5d65d57290f75",
+          "example": "人"
+        },
+        {
+          "text": "你",
+          "audioId": "word-say-a0c7716669b5ded0",
+          "example": "你"
+        },
+        {
+          "text": "我",
+          "audioId": "word-say-b70bb4acc0484cf0",
+          "example": "我"
+        },
+        {
+          "text": "他",
+          "audioId": "word-say-8b7b91e0001c6971",
+          "example": "他"
+        }
+      ]
+    },
+    {
+      "title": "金木水火土",
+      "page": 1,
+      "read": [
+        {
+          "text": "一人",
+          "pinyin": "yī rén",
+          "audioId": "word-say-45b3f27e3a97e2c1"
+        },
+        {
+          "text": "小二",
+          "pinyin": "xiǎo èr",
+          "audioId": "word-say-58ff091771ec287b"
+        },
+        {
+          "text": "三个",
+          "pinyin": "sān gè",
+          "audioId": "word-say-b6d5fed885471e52"
+        },
+        {
+          "text": "四个",
+          "pinyin": "sì gè",
+          "audioId": "word-say-f93e9175c391119a"
+        },
+        {
+          "text": "五个",
+          "pinyin": "wǔ gè",
+          "audioId": "word-say-d64ed28f4d9eb0bb"
+        },
+        {
+          "text": "上下",
+          "pinyin": "shàng xià",
+          "audioId": "word-say-8284260058ddb4d7"
+        }
+      ],
+      "write": [
+        {
+          "text": "一",
+          "pinyin": "yī",
+          "audioId": "word-say-51a75f4634dfa859"
+        },
+        {
+          "text": "二",
+          "pinyin": "èr",
+          "audioId": "word-say-084b42f6e95e4e65"
+        },
+        {
+          "text": "三",
+          "pinyin": "sān",
+          "audioId": "word-say-a4c3313deb180960"
+        },
+        {
+          "text": "上",
+          "pinyin": "shàng",
+          "audioId": "word-say-db5ba671d244ee82"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "课文《金木水火土》",
+      "id": "word-02",
+      "characters": "一二三四五上下",
+      "passages": [
+        {
+          "title": "金木水火土",
+          "page": 9,
+          "paragraphs": [
+            {
+              "text": "一二三四五，金木水火土。",
+              "audioId": "word-text-word-02-0"
+            },
+            {
+              "text": "天地分上下，日月照今古。",
+              "audioId": "word-text-word-02-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-02",
+      "spokenTitle": "金木水火土",
+      "characterItems": [
+        {
+          "text": "一",
+          "audioId": "word-say-51a75f4634dfa859",
+          "example": "一"
+        },
+        {
+          "text": "二",
+          "audioId": "word-say-084b42f6e95e4e65",
+          "example": "二"
+        },
+        {
+          "text": "三",
+          "audioId": "word-say-a4c3313deb180960",
+          "example": "三"
+        },
+        {
+          "text": "四",
+          "audioId": "word-say-754a9d5828d502f1",
+          "example": "四"
+        },
+        {
+          "text": "五",
+          "audioId": "word-say-c9b87f516a38ea36",
+          "example": "五"
+        },
+        {
+          "text": "上",
+          "audioId": "word-say-db5ba671d244ee82",
+          "example": "上"
+        },
+        {
+          "text": "下",
+          "audioId": "word-say-13c12b064b635e06",
+          "example": "下"
+        }
+      ]
+    },
+    {
+      "title": "口耳目手足",
+      "page": 1,
+      "read": [
+        {
+          "text": "一口",
+          "pinyin": "yī kǒu",
+          "audioId": "word-say-545f960f7516365c"
+        },
+        {
+          "text": "耳目",
+          "pinyin": "ěr mù",
+          "audioId": "word-say-8dd93cf2196d2b08"
+        },
+        {
+          "text": "耳朵",
+          "pinyin": "ěr duo",
+          "audioId": "word-say-86d7bf2d358bd82c"
+        },
+        {
+          "text": "双目",
+          "pinyin": "shuāng mù",
+          "audioId": "word-say-7aa4c5f82324619e"
+        },
+        {
+          "text": "双手",
+          "pinyin": "shuāng shǒu",
+          "audioId": "word-say-e54550a82a667a4a"
+        },
+        {
+          "text": "小手",
+          "pinyin": "xiǎo shǒu",
+          "audioId": "word-say-ec110dfc64e5866e"
+        },
+        {
+          "text": "手足",
+          "pinyin": "shǒu zú",
+          "audioId": "word-say-62f8780d8762b979"
+        },
+        {
+          "text": "足球",
+          "pinyin": "zú qiú",
+          "audioId": "word-say-27a60fa44a5333bf"
+        },
+        {
+          "text": "双足",
+          "pinyin": "shuāng zú",
+          "audioId": "word-say-ea5652225fb53d8e"
+        },
+        {
+          "text": "站立",
+          "pinyin": "zhàn lì",
+          "audioId": "word-say-464fbc400e8aa0fd"
+        },
+        {
+          "text": "站着",
+          "pinyin": "zhàn zhe",
+          "audioId": "word-say-0abf6bef080b015b"
+        },
+        {
+          "text": "坐下",
+          "pinyin": "zuò xià",
+          "audioId": "word-say-30d4711445a2d3f9"
+        },
+        {
+          "text": "坐好",
+          "pinyin": "zuò hǎo",
+          "audioId": "word-say-9917df3ab3240625"
+        }
+      ],
+      "write": [
+        {
+          "text": "一口",
+          "pinyin": "yī kǒu",
+          "audioId": "word-say-545f960f7516365c"
+        },
+        {
+          "text": "耳目",
+          "pinyin": "ěr mù",
+          "audioId": "word-say-8dd93cf2196d2b08"
+        },
+        {
+          "text": "手上",
+          "pinyin": "shǒu shàng",
+          "audioId": "word-say-475253b04c5de84f"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-03",
+      "characters": "口耳目手足站坐",
+      "passages": [],
+      "audioId": "word-title-word-03",
+      "spokenTitle": "口耳目手足",
+      "characterItems": [
+        {
+          "text": "口",
+          "audioId": "word-say-037bb71227fae848",
+          "example": "口"
+        },
+        {
+          "text": "耳",
+          "audioId": "word-say-6448195cd7a60caa",
+          "example": "耳"
+        },
+        {
+          "text": "目",
+          "audioId": "word-say-67220858d7f44bbc",
+          "example": "目"
+        },
+        {
+          "text": "手",
+          "audioId": "word-say-48e3a023f8997977",
+          "example": "手"
+        },
+        {
+          "text": "足",
+          "audioId": "word-say-5b76d055140807c3",
+          "example": "足"
+        },
+        {
+          "text": "站",
+          "audioId": "word-say-2978ed85cb04ac1b",
+          "example": "站"
+        },
+        {
+          "text": "坐",
+          "audioId": "word-say-4247f1a43b8230cb",
+          "example": "坐"
+        }
+      ]
+    },
+    {
+      "title": "日月山川",
+      "page": 1,
+      "read": [
+        {
+          "text": "日月",
+          "pinyin": "rì yuè",
+          "audioId": "word-say-0bccc088cc0bffa4"
+        },
+        {
+          "text": "月亮",
+          "pinyin": "yuè liang",
+          "audioId": "word-say-917705b6ba5e02dd"
+        },
+        {
+          "text": "山水",
+          "pinyin": "shān shuǐ",
+          "audioId": "word-say-41ce59d238e251f8"
+        },
+        {
+          "text": "山川",
+          "pinyin": "shān chuān",
+          "audioId": "word-say-78464b20767b49ea"
+        },
+        {
+          "text": "四川",
+          "pinyin": "sì chuān",
+          "audioId": "word-say-981aae92d74e28dd"
+        },
+        {
+          "text": "水火",
+          "pinyin": "shuǐ huǒ",
+          "audioId": "word-say-58b9ea72ad5614f8"
+        },
+        {
+          "text": "开水",
+          "pinyin": "kāi shuǐ",
+          "audioId": "word-say-f50e0aa301a7f4e9"
+        },
+        {
+          "text": "大火",
+          "pinyin": "dà huǒ",
+          "audioId": "word-say-0741cfe2d20c2f82"
+        },
+        {
+          "text": "火山",
+          "pinyin": "huǒ shān",
+          "audioId": "word-say-dc749837f4e08a5a"
+        },
+        {
+          "text": "田地",
+          "pinyin": "tián dì",
+          "audioId": "word-say-9905046198836ad4"
+        },
+        {
+          "text": "农田",
+          "pinyin": "nóng tián",
+          "audioId": "word-say-6775846d1067b1f6"
+        },
+        {
+          "text": "禾苗",
+          "pinyin": "hé miáo",
+          "audioId": "word-say-12cc462dfa09e883"
+        }
+      ],
+      "write": [
+        {
+          "text": "一日",
+          "pinyin": "yī rì",
+          "audioId": "word-say-2617b02faa0cb915"
+        },
+        {
+          "text": "上火",
+          "pinyin": "shàng huǒ",
+          "audioId": "word-say-70849fe4cd0bd963"
+        },
+        {
+          "text": "田",
+          "pinyin": "tián",
+          "audioId": "word-say-c313bfaa8f635a30"
+        },
+        {
+          "text": "禾",
+          "pinyin": "hé",
+          "audioId": "word-say-d1e45402fb550553"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-04",
+      "characters": "日月山川水火田禾",
+      "passages": [],
+      "audioId": "word-title-word-04",
+      "spokenTitle": "日月山川",
+      "characterItems": [
+        {
+          "text": "日",
+          "audioId": "word-say-85217f7aff778414",
+          "example": "日"
+        },
+        {
+          "text": "月",
+          "audioId": "word-say-1625179badc027f0",
+          "example": "月"
+        },
+        {
+          "text": "山",
+          "audioId": "word-say-4862540a299762b3",
+          "example": "山"
+        },
+        {
+          "text": "川",
+          "audioId": "word-say-b5aae693581d12c8",
+          "example": "川"
+        },
+        {
+          "text": "水",
+          "audioId": "word-say-327b54d04f71f212",
+          "example": "水"
+        },
+        {
+          "text": "火",
+          "audioId": "word-say-d4cfe8c82c9c3045",
+          "example": "火"
+        },
+        {
+          "text": "田",
+          "audioId": "word-say-c313bfaa8f635a30",
+          "example": "田"
+        },
+        {
+          "text": "禾",
+          "audioId": "word-say-d1e45402fb550553",
+          "example": "禾"
+        }
+      ]
+    },
+    {
+      "title": "语文园地一",
+      "page": 1,
+      "read": [
+        {
+          "text": "六个",
+          "pinyin": "liù gè",
+          "audioId": "word-say-ea125b6dbc24c767"
+        },
+        {
+          "text": "七天",
+          "pinyin": "qī tiān",
+          "audioId": "word-say-36776e0a26ba8758"
+        },
+        {
+          "text": "八月",
+          "pinyin": "bā yuè",
+          "audioId": "word-say-affa2599cd5f2789"
+        },
+        {
+          "text": "十年",
+          "pinyin": "shí nián",
+          "audioId": "word-say-1dc47bdd661a24c2"
+        },
+        {
+          "text": "九牛一毛",
+          "pinyin": "jiǔ niú yī máo",
+          "audioId": "word-say-01658f564ac4845c"
+        },
+        {
+          "text": "七上八下",
+          "pinyin": "qī shàng bā xià",
+          "audioId": "word-say-9ce7fd08ece2d182"
+        }
+      ],
+      "write": [
+        {
+          "text": "八十",
+          "pinyin": "bā shí",
+          "audioId": "word-say-8469292dc4716140"
+        },
+        {
+          "text": "十日",
+          "pinyin": "shí rì",
+          "audioId": "word-say-6878b2d7befea83f"
+        },
+        {
+          "text": "六",
+          "pinyin": "liù",
+          "audioId": "word-say-de07b5383874b2a3"
+        },
+        {
+          "text": "七",
+          "pinyin": "qī",
+          "audioId": "word-say-1b0542878c67f6cd"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "日积月累《咏鹅》",
+      "id": "word-05",
+      "characters": "六七八九十",
+      "passages": [
+        {
+          "title": "咏鹅",
+          "page": 16,
+          "paragraphs": [
+            {
+              "text": "鹅，鹅，鹅，曲项向天歌。",
+              "audioId": "word-text-word-05-0"
+            },
+            {
+              "text": "白毛浮绿水，红掌拨清波。",
+              "audioId": "word-text-word-05-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-05",
+      "spokenTitle": "语文园地一",
+      "characterItems": [
+        {
+          "text": "六",
+          "audioId": "word-say-de07b5383874b2a3",
+          "example": "六"
+        },
+        {
+          "text": "七",
+          "audioId": "word-say-1b0542878c67f6cd",
+          "example": "七"
+        },
+        {
+          "text": "八",
+          "audioId": "word-say-2c467d3673926b20",
+          "example": "八"
+        },
+        {
+          "text": "九",
+          "audioId": "word-say-df897da6e02ecd30",
+          "example": "九"
+        },
+        {
+          "text": "十",
+          "audioId": "word-say-fc7edd399a5c4b93",
+          "example": "十"
+        }
+      ]
+    },
+    {
+      "title": "拼音 bpmf",
+      "page": 1,
+      "read": [
+        {
+          "text": "爸爸",
+          "pinyin": "bà ba",
+          "audioId": "word-say-d45ce71dd359d0e7"
+        },
+        {
+          "text": "妈妈",
+          "pinyin": "mā ma",
+          "audioId": "word-say-45f1364f08aed165"
+        }
+      ],
+      "write": [],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-06",
+      "characters": "爸妈",
+      "passages": [],
+      "audioId": "word-title-word-06",
+      "spokenTitle": "拼音课，爸爸、妈妈",
+      "characterItems": [
+        {
+          "text": "爸",
+          "audioId": "word-say-e601bb9113eb5e57",
+          "example": "爸"
+        },
+        {
+          "text": "妈",
+          "audioId": "word-say-e331d617554b0f37",
+          "example": "妈"
+        }
+      ]
+    },
+    {
+      "title": "拼音 dtnl",
+      "page": 1,
+      "read": [
+        {
+          "text": "大地",
+          "pinyin": "dà dì",
+          "audioId": "word-say-36cfbaeae8cbc373"
+        },
+        {
+          "text": "马路",
+          "pinyin": "mǎ lù",
+          "audioId": "word-say-19f5a424bd5cbc8d"
+        },
+        {
+          "text": "木马",
+          "pinyin": "mù mǎ",
+          "audioId": "word-say-5fb84439c13a147f"
+        },
+        {
+          "text": "泥土",
+          "pinyin": "ní tǔ",
+          "audioId": "word-say-9c448c90a5b044fd"
+        },
+        {
+          "text": "土地",
+          "pinyin": "tǔ dì",
+          "audioId": "word-say-c214ddf69f944931"
+        },
+        {
+          "text": "大路",
+          "pinyin": "dà lù",
+          "audioId": "word-say-e8f6e74b27abadd1"
+        },
+        {
+          "text": "马上",
+          "pinyin": "mǎ shàng",
+          "audioId": "word-say-cc86c595a88aec0b"
+        },
+        {
+          "text": "下马",
+          "pinyin": "xià mǎ",
+          "audioId": "word-say-923cb2384a860358"
+        },
+        {
+          "text": "大人",
+          "pinyin": "dà rén",
+          "audioId": "word-say-44dd6014a532924b"
+        }
+      ],
+      "write": [],
+      "reading": ["小白兔"],
+      "reciteRequirement": "",
+      "id": "word-07",
+      "characters": "大马路土",
+      "passages": [
+        {
+          "title": "小白兔",
+          "page": 27,
+          "paragraphs": [
+            {
+              "text": "小白兔，穿皮袄，耳朵长，尾巴翘。",
+              "audioId": "word-text-word-07-0"
+            },
+            {
+              "text": "三瓣嘴，胡子动，一动一动总在笑。",
+              "audioId": "word-text-word-07-1"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-07",
+      "spokenTitle": "拼音课，大地、马路",
+      "characterItems": [
+        {
+          "text": "大",
+          "audioId": "word-say-7d4ca7f48effd602",
+          "example": "大"
+        },
+        {
+          "text": "马",
+          "audioId": "word-say-a25ee73c98d16172",
+          "example": "马"
+        },
+        {
+          "text": "路",
+          "audioId": "word-say-09c7804e4ff80d4f",
+          "example": "路"
+        },
+        {
+          "text": "土",
+          "audioId": "word-say-7c18dba3144b6dcd",
+          "example": "土"
+        }
+      ]
+    },
+    {
+      "title": "语文园地二",
+      "page": 1,
+      "read": [
+        {
+          "text": "书本",
+          "pinyin": "shū běn",
+          "audioId": "word-say-3d8b66d6a9a5d97b"
+        },
+        {
+          "text": "学校",
+          "pinyin": "xué xiào",
+          "audioId": "word-say-dc6e2aafeb9e125b"
+        },
+        {
+          "text": "班级",
+          "pinyin": "bān jí",
+          "audioId": "word-say-d46e95e81219840c"
+        },
+        {
+          "text": "姓名",
+          "pinyin": "xìng míng",
+          "audioId": "word-say-50b5b1d2abefbca6"
+        },
+        {
+          "text": "姓王",
+          "pinyin": "xìng wáng",
+          "audioId": "word-say-dcbdafdc9cb04e49"
+        },
+        {
+          "text": "本子",
+          "pinyin": "běn zi",
+          "audioId": "word-say-42864ad27df88070"
+        },
+        {
+          "text": "上学",
+          "pinyin": "shàng xué",
+          "audioId": "word-say-9a04b4b6dfffbfe9"
+        },
+        {
+          "text": "日本",
+          "pinyin": "rì běn",
+          "audioId": "word-say-cf2abf0c5be326cb"
+        },
+        {
+          "text": "名人",
+          "pinyin": "míng rén",
+          "audioId": "word-say-3f1972678f8abe60"
+        },
+        {
+          "text": "大名",
+          "pinyin": "dà míng",
+          "audioId": "word-say-2b153837ebb75d9b"
+        }
+      ],
+      "write": [
+        {
+          "text": "九",
+          "pinyin": "jiǔ",
+          "audioId": "word-say-df897da6e02ecd30"
+        },
+        {
+          "text": "王",
+          "pinyin": "wáng",
+          "audioId": "word-say-3399a0e651ad104c"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "日积月累《画》",
+      "id": "word-08",
+      "characters": "本学校班级姓名王",
+      "passages": [
+        {
+          "title": "画",
+          "page": 29,
+          "paragraphs": [
+            {
+              "text": "远看山有色，近听水无声。",
+              "audioId": "word-text-word-08-0"
+            },
+            {
+              "text": "春去花还在，人来鸟不惊。",
+              "audioId": "word-text-word-08-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-08",
+      "spokenTitle": "语文园地二",
+      "characterItems": [
+        {
+          "text": "本",
+          "audioId": "word-say-83831c3f910cf940",
+          "example": "本"
+        },
+        {
+          "text": "学",
+          "audioId": "word-say-8a6949a38384ceae",
+          "example": "学"
+        },
+        {
+          "text": "校",
+          "audioId": "word-say-ae06002f9a0af101",
+          "example": "校"
+        },
+        {
+          "text": "班",
+          "audioId": "word-say-12bd3e7d2bee2bbc",
+          "example": "班"
+        },
+        {
+          "text": "级",
+          "audioId": "word-say-6e2d7f7c077c9511",
+          "example": "级"
+        },
+        {
+          "text": "姓",
+          "audioId": "word-say-978d056de9ca8731",
+          "example": "姓"
+        },
+        {
+          "text": "名",
+          "audioId": "word-say-51a5d681a99c0e3b",
+          "example": "名"
+        },
+        {
+          "text": "王",
+          "audioId": "word-say-3399a0e651ad104c",
+          "example": "王"
+        }
+      ]
+    },
+    {
+      "title": "拼音 gkh",
+      "page": 1,
+      "read": [
+        {
+          "text": "画画",
+          "pinyin": "huà huà",
+          "audioId": "word-say-0f7385593fb1b634"
+        },
+        {
+          "text": "书画",
+          "pinyin": "shū huà",
+          "audioId": "word-say-419edf72209722a3"
+        },
+        {
+          "text": "画笔",
+          "pinyin": "huà bǐ",
+          "audioId": "word-say-05731b92ad31d178"
+        },
+        {
+          "text": "哥哥",
+          "pinyin": "gē ge",
+          "audioId": "word-say-6cf70b7c4fa3c4b4"
+        },
+        {
+          "text": "弟弟",
+          "pinyin": "dì di",
+          "audioId": "word-say-cf0af76ceb03b3ad"
+        },
+        {
+          "text": "荷花",
+          "pinyin": "hé huā",
+          "audioId": "word-say-626f66d969140d50"
+        },
+        {
+          "text": "荷叶",
+          "pinyin": "hé yè",
+          "audioId": "word-say-3c80bc55614a9a12"
+        },
+        {
+          "text": "花朵",
+          "pinyin": "huā duǒ",
+          "audioId": "word-say-b0b3497bcf85ecd7"
+        }
+      ],
+      "write": [],
+      "reading": ["说话"],
+      "reciteRequirement": "",
+      "id": "word-09",
+      "characters": "哥弟画花",
+      "passages": [
+        {
+          "title": "说话",
+          "page": 33,
+          "paragraphs": [
+            {
+              "text": "小溪流说话，哗哗，哗哗。",
+              "audioId": "word-text-word-09-0"
+            },
+            {
+              "text": "小雨点说话，沙沙，沙沙。",
+              "audioId": "word-text-word-09-1"
+            },
+            {
+              "text": "小鸽子说话，咕咕，咕咕。",
+              "audioId": "word-text-word-09-2"
+            },
+            {
+              "text": "小鸭子说话，嘎嘎，嘎嘎。",
+              "audioId": "word-text-word-09-3"
+            },
+            {
+              "text": "小花猫说话，喵喵，喵喵。",
+              "audioId": "word-text-word-09-4"
+            },
+            {
+              "text": "小青蛙说话，呱呱，呱呱。",
+              "audioId": "word-text-word-09-5"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-09",
+      "spokenTitle": "拼音课，画画、书画",
+      "characterItems": [
+        {
+          "text": "哥",
+          "audioId": "word-say-0fab08c0aaec69cd",
+          "example": "哥"
+        },
+        {
+          "text": "弟",
+          "audioId": "word-say-f1d9eb390e4a841e",
+          "example": "弟"
+        },
+        {
+          "text": "画",
+          "audioId": "word-say-de9f18b00a568611",
+          "example": "画"
+        },
+        {
+          "text": "花",
+          "audioId": "word-say-b0a1eab5f902df03",
+          "example": "花"
+        }
+      ]
+    },
+    {
+      "title": "拼音 jqx",
+      "page": 1,
+      "read": [
+        {
+          "text": "下棋",
+          "pinyin": "xià qí",
+          "audioId": "word-say-76d98f431aba4043"
+        },
+        {
+          "text": "棋子",
+          "pinyin": "qí zi",
+          "audioId": "word-say-ebafc5a4d7e252a1"
+        },
+        {
+          "text": "打开",
+          "pinyin": "dǎ kāi",
+          "audioId": "word-say-c771248e511fbf93"
+        },
+        {
+          "text": "打鼓",
+          "pinyin": "dǎ gǔ",
+          "audioId": "word-say-e5c54bd7d19f70f5"
+        },
+        {
+          "text": "鼓手",
+          "pinyin": "gǔ shǒu",
+          "audioId": "word-say-00cc463f5b7a6747"
+        },
+        {
+          "text": "木头",
+          "pinyin": "mù tou",
+          "audioId": "word-say-3915f9fdd0acc2b1"
+        },
+        {
+          "text": "搭积木",
+          "pinyin": "dā jī mù",
+          "audioId": "word-say-da21302433142cfa"
+        }
+      ],
+      "write": [],
+      "reading": ["在一起"],
+      "reciteRequirement": "",
+      "id": "word-10",
+      "characters": "打棋积木",
+      "passages": [
+        {
+          "title": "在一起",
+          "page": 35,
+          "paragraphs": [
+            {
+              "text": "小黄鸡，小黑鸡，欢欢喜喜在一起。",
+              "audioId": "word-text-word-10-0"
+            },
+            {
+              "text": "刨刨土，捉捉虫，青草地上做游戏。",
+              "audioId": "word-text-word-10-1"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-10",
+      "spokenTitle": "拼音课，下棋、棋子",
+      "characterItems": [
+        {
+          "text": "打",
+          "audioId": "word-say-c6d764df544b1719",
+          "example": "打"
+        },
+        {
+          "text": "棋",
+          "audioId": "word-say-3213f28b6b087a3e",
+          "example": "棋"
+        },
+        {
+          "text": "积",
+          "audioId": "word-say-ba4582d8ed82333c",
+          "example": "积"
+        },
+        {
+          "text": "木",
+          "audioId": "word-say-9213ab05890bafa2",
+          "example": "木"
+        }
+      ]
+    },
+    {
+      "title": "拼音 zcs",
+      "page": 1,
+      "read": [
+        {
+          "text": "字词",
+          "pinyin": "zì cí",
+          "audioId": "word-say-62d8fbdf838311d2"
+        },
+        {
+          "text": "写字",
+          "pinyin": "xiě zì",
+          "audioId": "word-say-15bbb9e233aeabfc"
+        },
+        {
+          "text": "词语",
+          "pinyin": "cí yǔ",
+          "audioId": "word-say-f3b5980f18ff903e"
+        },
+        {
+          "text": "语句",
+          "pinyin": "yǔ jù",
+          "audioId": "word-say-29c92e555b130e90"
+        },
+        {
+          "text": "句子",
+          "pinyin": "jù zi",
+          "audioId": "word-say-ea3a456491382f60"
+        }
+      ],
+      "write": [],
+      "reading": ["过桥"],
+      "reciteRequirement": "",
+      "id": "word-11",
+      "characters": "字词句子",
+      "passages": [
+        {
+          "title": "过桥",
+          "page": 37,
+          "paragraphs": [
+            {
+              "text": "数学题，一道道，等号好像一座桥。",
+              "audioId": "word-text-word-11-0"
+            },
+            {
+              "text": "做对了，走过桥，做错了，过不了。",
+              "audioId": "word-text-word-11-1"
+            },
+            {
+              "text": "想一想，算一算，快快乐乐过了桥。",
+              "audioId": "word-text-word-11-2"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-11",
+      "spokenTitle": "拼音课，字词、写字",
+      "characterItems": [
+        {
+          "text": "字",
+          "audioId": "word-say-c55038b272b109b8",
+          "example": "字"
+        },
+        {
+          "text": "词",
+          "audioId": "word-say-52ff1aedae10a898",
+          "example": "词"
+        },
+        {
+          "text": "句",
+          "audioId": "word-say-cd583bc65b686ec9",
+          "example": "句"
+        },
+        {
+          "text": "子",
+          "audioId": "word-say-a6b71dae843e3e0a",
+          "example": "子"
+        }
+      ]
+    },
+    {
+      "title": "拼音 zh ch sh r",
+      "page": 1,
+      "read": [
+        {
+          "text": "擦桌子",
+          "pinyin": "cā zhuō zi",
+          "audioId": "word-say-a7d27ac99282a94b"
+        },
+        {
+          "text": "书桌",
+          "pinyin": "shū zhuō",
+          "audioId": "word-say-3a377d4d385e0eb7"
+        },
+        {
+          "text": "白纸",
+          "pinyin": "bái zhǐ",
+          "audioId": "word-say-0905b6829ea86d67"
+        },
+        {
+          "text": "画纸",
+          "pinyin": "huà zhǐ",
+          "audioId": "word-say-e7202be6df957bb4"
+        },
+        {
+          "text": "折纸",
+          "pinyin": "zhé zhǐ",
+          "audioId": "word-say-1acfcda43a3d609e"
+        },
+        {
+          "text": "读书",
+          "pinyin": "dú shū",
+          "audioId": "word-say-6e7a814f678b1e0d"
+        },
+        {
+          "text": "阅读",
+          "pinyin": "yuè dú",
+          "audioId": "word-say-ce9b12499c471759"
+        },
+        {
+          "text": "书本",
+          "pinyin": "shū běn",
+          "audioId": "word-say-3d8b66d6a9a5d97b"
+        }
+      ],
+      "write": [],
+      "reading": ["绕口令"],
+      "reciteRequirement": "",
+      "id": "word-12",
+      "characters": "桌纸读书",
+      "passages": [
+        {
+          "title": "绕口令",
+          "page": 39,
+          "paragraphs": [
+            {
+              "text": "四是四，十是十。",
+              "audioId": "word-text-word-12-0"
+            },
+            {
+              "text": "十四是十四，四十是四十。",
+              "audioId": "word-text-word-12-1"
+            },
+            {
+              "text": "十四不是四十，四十不是十四。",
+              "audioId": "word-text-word-12-2"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-12",
+      "spokenTitle": "拼音课，擦桌子、书桌",
+      "characterItems": [
+        {
+          "text": "桌",
+          "audioId": "word-say-40ba45e6d266a4a0",
+          "example": "桌"
+        },
+        {
+          "text": "纸",
+          "audioId": "word-say-62e2af28ab4a412b",
+          "example": "纸"
+        },
+        {
+          "text": "读",
+          "audioId": "word-say-7c7a3cda2cb67d69",
+          "example": "读"
+        },
+        {
+          "text": "书",
+          "audioId": "word-say-1be968f125240969",
+          "example": "书"
+        }
+      ]
+    },
+    {
+      "title": "拼音 y w",
+      "page": 1,
+      "read": [
+        {
+          "text": "小鱼",
+          "pinyin": "xiǎo yú",
+          "audioId": "word-say-494bdb83fab6673e"
+        },
+        {
+          "text": "鱼儿",
+          "pinyin": "yúr",
+          "audioId": "word-say-f4f0ecd1b52e9198"
+        },
+        {
+          "text": "鸭子",
+          "pinyin": "yā zi",
+          "audioId": "word-say-a2b1abc5a1cbc967"
+        },
+        {
+          "text": "乌鸦",
+          "pinyin": "wū yā",
+          "audioId": "word-say-14d073cf0c56bb4f"
+        },
+        {
+          "text": "乌黑",
+          "pinyin": "wū hēi",
+          "audioId": "word-say-6e21b837d3392377"
+        },
+        {
+          "text": "涂鸦",
+          "pinyin": "tú yā",
+          "audioId": "word-say-c444a8125ada23eb"
+        },
+        {
+          "text": "蚂蚁",
+          "pinyin": "mǎ yǐ",
+          "audioId": "word-say-7853225b8ee4cd6c"
+        }
+      ],
+      "write": [],
+      "reading": ["哪座房子最漂亮"],
+      "reciteRequirement": "",
+      "id": "word-13",
+      "characters": "鱼鸭乌鸦",
+      "passages": [
+        {
+          "title": "哪座房子最漂亮",
+          "page": 41,
+          "paragraphs": [
+            {
+              "text": "一座房，两座房，青的瓦，白的墙。",
+              "audioId": "word-text-word-13-0"
+            },
+            {
+              "text": "三座房，四座房，房前花果香，屋后树成行。",
+              "audioId": "word-text-word-13-1"
+            },
+            {
+              "text": "哪座房子最漂亮？要数我们的小学堂。",
+              "audioId": "word-text-word-13-2"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-13",
+      "spokenTitle": "拼音课，小鱼、鱼儿",
+      "characterItems": [
+        {
+          "text": "鱼",
+          "audioId": "word-say-ac3069de682490ac",
+          "example": "鱼"
+        },
+        {
+          "text": "鸭",
+          "audioId": "word-say-c02b0f7edc7785bf",
+          "example": "鸭"
+        },
+        {
+          "text": "乌",
+          "audioId": "word-say-e1605303729ae698",
+          "example": "乌"
+        },
+        {
+          "text": "鸦",
+          "audioId": "word-say-8ba28b5c53491a01",
+          "example": "鸦"
+        }
+      ]
+    },
+    {
+      "title": "语文园地三",
+      "page": 1,
+      "read": [
+        {
+          "text": "下午",
+          "pinyin": "xià wǔ",
+          "audioId": "word-say-af81dcf37aa86091"
+        },
+        {
+          "text": "上午",
+          "pinyin": "shàng wǔ",
+          "audioId": "word-say-298336ec2c0e2e37"
+        },
+        {
+          "text": "星星",
+          "pinyin": "xīng xing",
+          "audioId": "word-say-6a9fec7faf975f2e"
+        },
+        {
+          "text": "星期",
+          "pinyin": "xīng qī",
+          "audioId": "word-say-c398134d7d1f58e7"
+        },
+        {
+          "text": "过期",
+          "pinyin": "guò qī",
+          "audioId": "word-say-97399bd88226cf7f"
+        },
+        {
+          "text": "语文",
+          "pinyin": "yǔ wén",
+          "audioId": "word-say-bb651061c153bcbb"
+        },
+        {
+          "text": "语言",
+          "pinyin": "yǔ yán",
+          "audioId": "word-say-9f6fee1aba17a565"
+        },
+        {
+          "text": "文字",
+          "pinyin": "wén zì",
+          "audioId": "word-say-14b69bd6eeb0839b"
+        },
+        {
+          "text": "文化",
+          "pinyin": "wén huà",
+          "audioId": "word-say-b12e914c1f82d6ed"
+        },
+        {
+          "text": "数字",
+          "pinyin": "shù zì",
+          "audioId": "word-say-c16ec9274e9d13d1"
+        },
+        {
+          "text": "数学",
+          "pinyin": "shù xué",
+          "audioId": "word-say-872c1fa141b5ed8d"
+        },
+        {
+          "text": "写字",
+          "pinyin": "xiě zì",
+          "audioId": "word-say-15bbb9e233aeabfc"
+        },
+        {
+          "text": "书写",
+          "pinyin": "shū xiě",
+          "audioId": "word-say-22b7acc14d3a73a1"
+        },
+        {
+          "text": "开会",
+          "pinyin": "kāi huì",
+          "audioId": "word-say-b406359aa585c4bc"
+        },
+        {
+          "text": "一会儿",
+          "pinyin": "yī huìr",
+          "audioId": "word-say-45569fc063406280"
+        },
+        {
+          "text": "一模一样",
+          "pinyin": "yī mú yī yàng",
+          "audioId": "word-say-b4c5d26637517544"
+        },
+        {
+          "text": "一心一意",
+          "pinyin": "yī xīn yī yì",
+          "audioId": "word-say-46d61033f3d0a607"
+        },
+        {
+          "text": "独一无二",
+          "pinyin": "dú yī wú èr",
+          "audioId": "word-say-b6e101afd3b5e9a4"
+        },
+        {
+          "text": "三头六臂",
+          "pinyin": "sān tóu liù bì",
+          "audioId": "word-say-252a58dec6bb2041"
+        },
+        {
+          "text": "五颜六色",
+          "pinyin": "wǔ yán liù sè",
+          "audioId": "word-say-7bc6b161927f0369"
+        },
+        {
+          "text": "十全十美",
+          "pinyin": "shí quán shí měi",
+          "audioId": "word-say-4ba7f043a2068f63"
+        }
+      ],
+      "write": [
+        {
+          "text": "下午",
+          "pinyin": "xià wǔ",
+          "audioId": "word-say-af81dcf37aa86091"
+        },
+        {
+          "text": "上午",
+          "pinyin": "shàng wǔ",
+          "audioId": "word-say-298336ec2c0e2e37"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-14",
+      "characters": "午星期语文数写会",
+      "passages": [],
+      "audioId": "word-title-word-14",
+      "spokenTitle": "语文园地三",
+      "characterItems": [
+        {
+          "text": "午",
+          "audioId": "word-say-577e4b04bc84d894",
+          "example": "午"
+        },
+        {
+          "text": "星",
+          "audioId": "word-say-83e9c51b3d7ade97",
+          "example": "星"
+        },
+        {
+          "text": "期",
+          "audioId": "word-say-c0ccb452d3bc7307",
+          "example": "期"
+        },
+        {
+          "text": "语",
+          "audioId": "word-say-759e16b81f75e638",
+          "example": "语"
+        },
+        {
+          "text": "文",
+          "audioId": "word-say-3677ef77b1574d16",
+          "example": "文"
+        },
+        {
+          "text": "数",
+          "audioId": "word-say-872c1fa141b5ed8d",
+          "example": "数学"
+        },
+        {
+          "text": "写",
+          "audioId": "word-say-eecaf7bb139f9c37",
+          "example": "写"
+        },
+        {
+          "text": "会",
+          "audioId": "word-say-5ba1e3c0eb636161",
+          "example": "会"
+        }
+      ]
+    },
+    {
+      "title": "拼音 ai ei ui",
+      "page": 1,
+      "read": [
+        {
+          "text": "白色",
+          "pinyin": "bái sè",
+          "audioId": "word-say-f56e7eff58bf730d"
+        },
+        {
+          "text": "白云",
+          "pinyin": "bái yún",
+          "audioId": "word-say-5b60cf3c57e8afec"
+        },
+        {
+          "text": "青菜",
+          "pinyin": "qīng cài",
+          "audioId": "word-say-a540f6b31df5ec9c"
+        },
+        {
+          "text": "菜刀",
+          "pinyin": "cài dāo",
+          "audioId": "word-say-7a3a25167cc4a4d5"
+        },
+        {
+          "text": "西方",
+          "pinyin": "xī fāng",
+          "audioId": "word-say-8257f728a0d6b552"
+        },
+        {
+          "text": "西风",
+          "pinyin": "xī fēng",
+          "audioId": "word-say-ece6f15b1ecf06e1"
+        },
+        {
+          "text": "黄瓜",
+          "pinyin": "huáng guā",
+          "audioId": "word-say-e1337e15ca73d20d"
+        },
+        {
+          "text": "南瓜",
+          "pinyin": "nán guā",
+          "audioId": "word-say-85bc0873e2450c0b"
+        },
+        {
+          "text": "苹果",
+          "pinyin": "píng guǒ",
+          "audioId": "word-say-50537dab76505dfc"
+        },
+        {
+          "text": "瓜果",
+          "pinyin": "guā guǒ",
+          "audioId": "word-say-9ac3ec6b6dd1f205"
+        },
+        {
+          "text": "萝卜",
+          "pinyin": "luó bo",
+          "audioId": "word-say-99528d06ca8ae2d3"
+        },
+        {
+          "text": "白菜",
+          "pinyin": "bái cài",
+          "audioId": "word-say-9b8bc1b61d692685"
+        },
+        {
+          "text": "蔬菜",
+          "pinyin": "shū cài",
+          "audioId": "word-say-eb8380a9846591af"
+        },
+        {
+          "text": "鸭梨",
+          "pinyin": "yā lí",
+          "audioId": "word-say-9959c870a173342b"
+        },
+        {
+          "text": "西瓜",
+          "pinyin": "xī guā",
+          "audioId": "word-say-3e3f03caa0435a00"
+        },
+        {
+          "text": "水果",
+          "pinyin": "shuǐ guǒ",
+          "audioId": "word-say-27c180751ad60f8c"
+        }
+      ],
+      "write": [],
+      "reading": ["洗手歌"],
+      "reciteRequirement": "",
+      "id": "word-15",
+      "characters": "白菜西瓜果",
+      "passages": [
+        {
+          "title": "洗手歌",
+          "page": 46,
+          "paragraphs": [
+            {
+              "text": "排着队，向前走，做什么？去洗手。",
+              "audioId": "word-text-word-15-0"
+            },
+            {
+              "text": "肥皂用来搓搓手，清水帮我冲冲手，毛巾给我擦擦手。",
+              "audioId": "word-text-word-15-1"
+            },
+            {
+              "text": "小手洗得真干净，大家一起笑开口。",
+              "audioId": "word-text-word-15-2"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-15",
+      "spokenTitle": "拼音课，白色、白云",
+      "characterItems": [
+        {
+          "text": "白",
+          "audioId": "word-say-3366645622a78090",
+          "example": "白"
+        },
+        {
+          "text": "菜",
+          "audioId": "word-say-45f0c2d97be1214d",
+          "example": "菜"
+        },
+        {
+          "text": "西",
+          "audioId": "word-say-b9f0c815459caa83",
+          "example": "西"
+        },
+        {
+          "text": "瓜",
+          "audioId": "word-say-2fbf0db8399c5b60",
+          "example": "瓜"
+        },
+        {
+          "text": "果",
+          "audioId": "word-say-fb8866222f9da0b0",
+          "example": "果"
+        }
+      ]
+    },
+    {
+      "title": "拼音 ao ou iu",
+      "page": 1,
+      "read": [
+        {
+          "text": "小桥",
+          "pinyin": "xiǎo qiáo",
+          "audioId": "word-say-68c21509a85637c1"
+        },
+        {
+          "text": "小鱼",
+          "pinyin": "xiǎo yú",
+          "audioId": "word-say-494bdb83fab6673e"
+        },
+        {
+          "text": "石桥",
+          "pinyin": "shí qiáo",
+          "audioId": "word-say-02afce39597c0217"
+        },
+        {
+          "text": "木桥",
+          "pinyin": "mù qiáo",
+          "audioId": "word-say-1cec864a435ecac9"
+        },
+        {
+          "text": "流动",
+          "pinyin": "liú dòng",
+          "audioId": "word-say-5169c53f099e3387"
+        },
+        {
+          "text": "河流",
+          "pinyin": "hé liú",
+          "audioId": "word-say-eebe4a446561e818"
+        },
+        {
+          "text": "流水",
+          "pinyin": "liú shuǐ",
+          "audioId": "word-say-0fb688b74cfb39c8"
+        },
+        {
+          "text": "垂柳",
+          "pinyin": "chuí liǔ",
+          "audioId": "word-say-bf2b2624418b69aa"
+        },
+        {
+          "text": "柳树",
+          "pinyin": "liǔ shù",
+          "audioId": "word-say-126bfa9e956c2c50"
+        },
+        {
+          "text": "柳叶",
+          "pinyin": "liǔ yè",
+          "audioId": "word-say-a30b642fa7f79826"
+        },
+        {
+          "text": "桃花",
+          "pinyin": "táo huā",
+          "audioId": "word-say-f5c627b7d0bffaff"
+        }
+      ],
+      "write": [],
+      "reading": ["欢迎台湾小朋友"],
+      "reciteRequirement": "",
+      "id": "word-16",
+      "characters": "小桥流柳",
+      "passages": [
+        {
+          "title": "欢迎台湾小朋友",
+          "page": 48,
+          "paragraphs": [
+            {
+              "text": "一只船，扬起帆，漂啊漂啊到台湾。",
+              "audioId": "word-text-word-16-0"
+            },
+            {
+              "text": "接来台湾小朋友，到我学校来参观。",
+              "audioId": "word-text-word-16-1"
+            },
+            {
+              "text": "伸出双手紧紧握，热情的话儿说不完。",
+              "audioId": "word-text-word-16-2"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-16",
+      "spokenTitle": "拼音课，小桥、小鱼",
+      "characterItems": [
+        {
+          "text": "小",
+          "audioId": "word-say-6a7339bb759788f3",
+          "example": "小"
+        },
+        {
+          "text": "桥",
+          "audioId": "word-say-a1e218ec8e11995a",
+          "example": "桥"
+        },
+        {
+          "text": "流",
+          "audioId": "word-say-d526fa6412c91a53",
+          "example": "流"
+        },
+        {
+          "text": "柳",
+          "audioId": "word-say-ee222b9d0f8aaab8",
+          "example": "柳"
+        }
+      ]
+    },
+    {
+      "title": "拼音 ie üe er",
+      "page": 2,
+      "read": [
+        {
+          "text": "开花",
+          "pinyin": "kāi huā",
+          "audioId": "word-say-0be1f248cf96b92c"
+        },
+        {
+          "text": "开心",
+          "pinyin": "kāi xīn",
+          "audioId": "word-say-6e067999e2407ee3"
+        },
+        {
+          "text": "下雪",
+          "pinyin": "xià xuě",
+          "audioId": "word-say-8f92983d8b1f7638"
+        },
+        {
+          "text": "大雪",
+          "pinyin": "dà xuě",
+          "audioId": "word-say-bc4e5aec66495ad8"
+        },
+        {
+          "text": "日夜",
+          "pinyin": "rì yè",
+          "audioId": "word-say-0784a0b5f37107ec"
+        },
+        {
+          "text": "夜晚",
+          "pinyin": "yè wǎn",
+          "audioId": "word-say-b77ea2b347b83247"
+        },
+        {
+          "text": "红色",
+          "pinyin": "hóng sè",
+          "audioId": "word-say-789f61dbfcc7a2d2"
+        },
+        {
+          "text": "黄色",
+          "pinyin": "huáng sè",
+          "audioId": "word-say-d451c07d739b3306"
+        },
+        {
+          "text": "美丽",
+          "pinyin": "měi lì",
+          "audioId": "word-say-25ea0fccec28454f"
+        },
+        {
+          "text": "美好",
+          "pinyin": "měi hǎo",
+          "audioId": "word-say-144977c9e5405ca1"
+        },
+        {
+          "text": "梅花开",
+          "pinyin": "méi huā kāi",
+          "audioId": "word-say-4e200ca4e1edf8da"
+        },
+        {
+          "text": "雪花飘",
+          "pinyin": "xuě huā piāo",
+          "audioId": "word-say-cf6c024a2baaf2b0"
+        },
+        {
+          "text": "夜色美",
+          "pinyin": "yè sè měi",
+          "audioId": "word-say-3fd8f684cf5217fe"
+        }
+      ],
+      "write": [],
+      "reading": ["月儿弯弯"],
+      "reciteRequirement": "",
+      "id": "word-17",
+      "characters": "开雪夜色美",
+      "passages": [
+        {
+          "title": "月儿弯弯",
+          "page": 50,
+          "paragraphs": [
+            {
+              "text": "月儿弯弯挂蓝天，小溪弯弯出青山。",
+              "audioId": "word-text-word-17-0"
+            },
+            {
+              "text": "大河弯弯流入海，山路弯弯到校园。",
+              "audioId": "word-text-word-17-1"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-17",
+      "spokenTitle": "拼音课，开花、开心",
+      "characterItems": [
+        {
+          "text": "开",
+          "audioId": "word-say-39eae64cfc41ef37",
+          "example": "开"
+        },
+        {
+          "text": "雪",
+          "audioId": "word-say-53058fe2e03c00d9",
+          "example": "雪"
+        },
+        {
+          "text": "夜",
+          "audioId": "word-say-a519542a5fb41635",
+          "example": "夜"
+        },
+        {
+          "text": "色",
+          "audioId": "word-say-2b3611f71ddd36fd",
+          "example": "色"
+        },
+        {
+          "text": "美",
+          "audioId": "word-say-4e187edb730066cd",
+          "example": "美"
+        }
+      ]
+    },
+    {
+      "title": "拼音 an en in un ün",
+      "page": 2,
+      "read": [
+        {
+          "text": "蓝色",
+          "pinyin": "lán sè",
+          "audioId": "word-say-67035e6b7f82acdb"
+        },
+        {
+          "text": "蓝天",
+          "pinyin": "lán tiān",
+          "audioId": "word-say-59ce7b21b155e652"
+        },
+        {
+          "text": "白云",
+          "pinyin": "bái yún",
+          "audioId": "word-say-5b60cf3c57e8afec"
+        },
+        {
+          "text": "云朵",
+          "pinyin": "yún duǒ",
+          "audioId": "word-say-6064a9108356b7c4"
+        },
+        {
+          "text": "乌云",
+          "pinyin": "wū yún",
+          "audioId": "word-say-3999ce0b9ebb3fa6"
+        },
+        {
+          "text": "小草",
+          "pinyin": "xiǎo cǎo",
+          "audioId": "word-say-8e3160e60f23efbf"
+        },
+        {
+          "text": "草地",
+          "pinyin": "cǎo dì",
+          "audioId": "word-say-cca5bb81dd0436e7"
+        },
+        {
+          "text": "草原",
+          "pinyin": "cǎo yuán",
+          "audioId": "word-say-1621d3c7d730ff52"
+        },
+        {
+          "text": "森林",
+          "pinyin": "sēn lín",
+          "audioId": "word-say-3bfbf21e2f002bc2"
+        },
+        {
+          "text": "原来",
+          "pinyin": "yuán lái",
+          "audioId": "word-say-d4b26dcd0f0022d9"
+        }
+      ],
+      "write": [],
+      "reading": ["家"],
+      "reciteRequirement": "",
+      "id": "word-18",
+      "characters": "蓝云草原森",
+      "passages": [
+        {
+          "title": "家",
+          "page": 53,
+          "paragraphs": [
+            {
+              "text": "蓝天是白云的家，树林是小鸟的家，小河是鱼儿的家，泥土是种子的家。",
+              "audioId": "word-text-word-18-0"
+            },
+            {
+              "text": "我们是祖国的花朵，祖国就是我们的家。",
+              "audioId": "word-text-word-18-1"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-18",
+      "spokenTitle": "拼音课，蓝色、蓝天",
+      "characterItems": [
+        {
+          "text": "蓝",
+          "audioId": "word-say-52f354ecfccbb8e6",
+          "example": "蓝"
+        },
+        {
+          "text": "云",
+          "audioId": "word-say-32d42b97294a1365",
+          "example": "云"
+        },
+        {
+          "text": "草",
+          "audioId": "word-say-91b246b5dbc05480",
+          "example": "草"
+        },
+        {
+          "text": "原",
+          "audioId": "word-say-109c3c1f43ae654d",
+          "example": "原"
+        },
+        {
+          "text": "森",
+          "audioId": "word-say-5f8e490558897efa",
+          "example": "森"
+        }
+      ]
+    },
+    {
+      "title": "拼音 ang eng ing ong",
+      "page": 2,
+      "read": [
+        {
+          "text": "冰雪",
+          "pinyin": "bīng xuě",
+          "audioId": "word-say-a911660275c7fd68"
+        },
+        {
+          "text": "冰凉",
+          "pinyin": "bīng liáng",
+          "audioId": "word-say-e076eb582f630c2d"
+        },
+        {
+          "text": "自己",
+          "pinyin": "zì jǐ",
+          "audioId": "word-say-fb43354d2aaece51"
+        },
+        {
+          "text": "自我",
+          "pinyin": "zì wǒ",
+          "audioId": "word-say-80e59a53614003c8"
+        },
+        {
+          "text": "行动",
+          "pinyin": "xíng dòng",
+          "audioId": "word-say-253fb75906c692ba"
+        },
+        {
+          "text": "行人",
+          "pinyin": "xíng rén",
+          "audioId": "word-say-77dbe8fa77598bf5"
+        },
+        {
+          "text": "火车",
+          "pinyin": "huǒ chē",
+          "audioId": "word-say-228e2ed446e684a3"
+        },
+        {
+          "text": "开车",
+          "pinyin": "kāi chē",
+          "audioId": "word-say-e81b626b21aa722b"
+        },
+        {
+          "text": "游泳",
+          "pinyin": "yóu yǒng",
+          "audioId": "word-say-f864303afb4e4a85"
+        },
+        {
+          "text": "滑冰",
+          "pinyin": "huá bīng",
+          "audioId": "word-say-6ae9b614455e2e43"
+        },
+        {
+          "text": "骑自行车",
+          "pinyin": "qí zì xíng chē",
+          "audioId": "word-say-92883f83be7c1e32"
+        },
+        {
+          "text": "打乒乓球",
+          "pinyin": "dǎ pīng pāng qiú",
+          "audioId": "word-say-d2136e5251fbfd67"
+        }
+      ],
+      "write": [],
+      "reading": ["两只羊"],
+      "reciteRequirement": "",
+      "id": "word-19",
+      "characters": "冰自行车",
+      "passages": [
+        {
+          "title": "两只羊",
+          "page": 55,
+          "paragraphs": [
+            {
+              "text": "桥东走来一只羊，桥西走来一只羊。",
+              "audioId": "word-text-word-19-0"
+            },
+            {
+              "text": "一起走到小桥上，你也不肯让，我也不肯让，扑通掉进河中央。",
+              "audioId": "word-text-word-19-1"
+            }
+          ],
+          "required": false,
+          "readingOnly": true
+        }
+      ],
+      "audioId": "word-title-word-19",
+      "spokenTitle": "拼音课，冰雪、冰凉",
+      "characterItems": [
+        {
+          "text": "冰",
+          "audioId": "word-say-ce1b85070022a3fd",
+          "example": "冰"
+        },
+        {
+          "text": "自",
+          "audioId": "word-say-b3e27dd13a7af053",
+          "example": "自"
+        },
+        {
+          "text": "行",
+          "audioId": "word-say-4cc7b00050cb1c21",
+          "example": "行"
+        },
+        {
+          "text": "车",
+          "audioId": "word-say-b1f8107ec8163500",
+          "example": "车"
+        }
+      ]
+    },
+    {
+      "title": "语文园地四",
+      "page": 2,
+      "read": [
+        {
+          "text": "晚上",
+          "pinyin": "wǎn shang",
+          "audioId": "word-say-a9b1124b34615118"
+        },
+        {
+          "text": "夜晚",
+          "pinyin": "yè wǎn",
+          "audioId": "word-say-b77ea2b347b83247"
+        },
+        {
+          "text": "昨天",
+          "pinyin": "zuó tiān",
+          "audioId": "word-say-0c184871f658375a"
+        },
+        {
+          "text": "今天",
+          "pinyin": "jīn tiān",
+          "audioId": "word-say-d5f5a7a010731feb"
+        },
+        {
+          "text": "明晚",
+          "pinyin": "míng wǎn",
+          "audioId": "word-say-571a23d618bb6d4d"
+        },
+        {
+          "text": "明日",
+          "pinyin": "míng rì",
+          "audioId": "word-say-6450d5f86685fd01"
+        },
+        {
+          "text": "个人",
+          "pinyin": "gè rén",
+          "audioId": "word-say-15dec507959ec950"
+        },
+        {
+          "text": "这个",
+          "pinyin": "zhè ge",
+          "audioId": "word-say-979e2bc35b14bf4c"
+        },
+        {
+          "text": "去年",
+          "pinyin": "qù nián",
+          "audioId": "word-say-c5c593d385bf5696"
+        },
+        {
+          "text": "过去",
+          "pinyin": "guò qù",
+          "audioId": "word-say-3774af744856e7f5"
+        },
+        {
+          "text": "新年",
+          "pinyin": "xīn nián",
+          "audioId": "word-say-3dc45bf582a4cb31"
+        }
+      ],
+      "write": [
+        {
+          "text": "上去",
+          "pinyin": "shàng qù",
+          "audioId": "word-say-bd86a28aa0ff0ec4"
+        },
+        {
+          "text": "下去",
+          "pinyin": "xià qù",
+          "audioId": "word-say-3a8091eb7937e6ba"
+        },
+        {
+          "text": "七个",
+          "pinyin": "qī gè",
+          "audioId": "word-say-560a430f06e28c0a"
+        },
+        {
+          "text": "六个",
+          "pinyin": "liù gè",
+          "audioId": "word-say-ea125b6dbc24c767"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "日积月累《悯农（其二）》",
+      "id": "word-20",
+      "characters": "晚昨今明个这去年",
+      "passages": [
+        {
+          "title": "悯农（其二）",
+          "page": 58,
+          "paragraphs": [
+            {
+              "text": "锄禾日当午，汗滴禾下土。",
+              "audioId": "word-text-word-20-0"
+            },
+            {
+              "text": "谁知盘中餐，粒粒皆辛苦。",
+              "audioId": "word-text-word-20-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-20",
+      "spokenTitle": "语文园地四",
+      "characterItems": [
+        {
+          "text": "晚",
+          "audioId": "word-say-1917a52c057aad5c",
+          "example": "晚"
+        },
+        {
+          "text": "昨",
+          "audioId": "word-say-de43089cdc95387b",
+          "example": "昨"
+        },
+        {
+          "text": "今",
+          "audioId": "word-say-7bafa8a1f2dc627d",
+          "example": "今"
+        },
+        {
+          "text": "明",
+          "audioId": "word-say-73b972d71b0aec48",
+          "example": "明"
+        },
+        {
+          "text": "个",
+          "audioId": "word-say-3a116815bc9da10d",
+          "example": "个"
+        },
+        {
+          "text": "这",
+          "audioId": "word-say-d409ab2ab3f8a04e",
+          "example": "这"
+        },
+        {
+          "text": "去",
+          "audioId": "word-say-99ae21ea6c39ccc1",
+          "example": "去"
+        },
+        {
+          "text": "年",
+          "audioId": "word-say-62ef900a8f5d5bff",
+          "example": "年"
+        }
+      ]
+    },
+    {
+      "title": "秋天",
+      "page": 2,
+      "read": [
+        {
+          "text": "秋天",
+          "pinyin": "qiū tiān",
+          "audioId": "word-say-21691f1b8e10ff5b"
+        },
+        {
+          "text": "秋风",
+          "pinyin": "qiū fēng",
+          "audioId": "word-say-f48aef16090914eb"
+        },
+        {
+          "text": "秋雨",
+          "pinyin": "qiū yǔ",
+          "audioId": "word-say-fa2270ae98721a71"
+        },
+        {
+          "text": "天气",
+          "pinyin": "tiān qì",
+          "audioId": "word-say-4d947325473f5b57"
+        },
+        {
+          "text": "生气",
+          "pinyin": "shēng qì",
+          "audioId": "word-say-1080332a28b0e082"
+        },
+        {
+          "text": "气体",
+          "pinyin": "qì tǐ",
+          "audioId": "word-say-bc4fbda3a12d3a15"
+        },
+        {
+          "text": "好了",
+          "pinyin": "hǎo le",
+          "audioId": "word-say-e9934d5d82275b80"
+        },
+        {
+          "text": "对了",
+          "pinyin": "duì le",
+          "audioId": "word-say-6b66189491f90a3c"
+        },
+        {
+          "text": "大树",
+          "pinyin": "dà shù",
+          "audioId": "word-say-a832fdbd2369aff7"
+        },
+        {
+          "text": "种树",
+          "pinyin": "zhòng shù",
+          "audioId": "word-say-6c64c2d6b01f0fdf"
+        },
+        {
+          "text": "树叶",
+          "pinyin": "shù yè",
+          "audioId": "word-say-bbfaaaf9df2f72d9"
+        },
+        {
+          "text": "绿树",
+          "pinyin": "lǜ shù",
+          "audioId": "word-say-28db7fe6fa937b98"
+        },
+        {
+          "text": "绿叶",
+          "pinyin": "lǜ yè",
+          "audioId": "word-say-a54ce53d9984199c"
+        },
+        {
+          "text": "落叶",
+          "pinyin": "luò yè",
+          "audioId": "word-say-3ce777d39b5e8fb5"
+        },
+        {
+          "text": "一片叶子",
+          "pinyin": "yī piàn yè zi",
+          "audioId": "word-say-400140460a37d84f"
+        },
+        {
+          "text": "黄色",
+          "pinyin": "huáng sè",
+          "audioId": "word-say-d451c07d739b3306"
+        },
+        {
+          "text": "黄瓜",
+          "pinyin": "huáng guā",
+          "audioId": "word-say-e1337e15ca73d20d"
+        },
+        {
+          "text": "金黄",
+          "pinyin": "jīn huáng",
+          "audioId": "word-say-29497ec0b98a8f4e"
+        },
+        {
+          "text": "一片片",
+          "pinyin": "yī piàn piàn",
+          "audioId": "word-say-93824f64b85b0fb3"
+        },
+        {
+          "text": "一片云",
+          "pinyin": "yī piàn yún",
+          "audioId": "word-say-c9ee0426f280afb1"
+        },
+        {
+          "text": "从来",
+          "pinyin": "cóng lái",
+          "audioId": "word-say-0f79c70b625c8d89"
+        },
+        {
+          "text": "从前",
+          "pinyin": "cóng qián",
+          "audioId": "word-say-eaa1d1456b664cfc"
+        },
+        {
+          "text": "自从",
+          "pinyin": "zì cóng",
+          "audioId": "word-say-813d8b9fe6ef0e52"
+        },
+        {
+          "text": "来去",
+          "pinyin": "lái qù",
+          "audioId": "word-say-e9f6f26f1fcfac03"
+        },
+        {
+          "text": "起来",
+          "pinyin": "qǐ lái",
+          "audioId": "word-say-b8a694b2df6db340"
+        },
+        {
+          "text": "来到",
+          "pinyin": "lái dào",
+          "audioId": "word-say-c1d8e67ad1987824"
+        },
+        {
+          "text": "原来",
+          "pinyin": "yuán lái",
+          "audioId": "word-say-d4b26dcd0f0022d9"
+        },
+        {
+          "text": "回来",
+          "pinyin": "huí lái",
+          "audioId": "word-say-b3ab908cef2352cd"
+        },
+        {
+          "text": "后来",
+          "pinyin": "hòu lái",
+          "audioId": "word-say-5ff5a4de18dc7cd2"
+        },
+        {
+          "text": "本来",
+          "pinyin": "běn lái",
+          "audioId": "word-say-0c75d89282e0f00f"
+        },
+        {
+          "text": "飞机",
+          "pinyin": "fēi jī",
+          "audioId": "word-say-c05f7cd6ed3587a2"
+        },
+        {
+          "text": "飞鸟",
+          "pinyin": "fēi niǎo",
+          "audioId": "word-say-0205c4fee990cedb"
+        },
+        {
+          "text": "起飞",
+          "pinyin": "qǐ fēi",
+          "audioId": "word-say-a7c75dfe163b8369"
+        },
+        {
+          "text": "飞来飞去",
+          "pinyin": "fēi lái fēi qù",
+          "audioId": "word-say-51c28e47e6428bef"
+        }
+      ],
+      "write": [
+        {
+          "text": "去了",
+          "pinyin": "qù le",
+          "audioId": "word-say-dfa20f3be4f5288b"
+        },
+        {
+          "text": "日子",
+          "pinyin": "rì zi",
+          "audioId": "word-say-4cfbc3082a9982cf"
+        },
+        {
+          "text": "大人",
+          "pinyin": "dà rén",
+          "audioId": "word-say-44dd6014a532924b"
+        },
+        {
+          "text": "大手",
+          "pinyin": "dà shǒu",
+          "audioId": "word-say-6d8f1c6c65aeb97d"
+        },
+        {
+          "text": "大火",
+          "pinyin": "dà huǒ",
+          "audioId": "word-say-0741cfe2d20c2f82"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "课文《秋天》",
+      "id": "word-21",
+      "characters": "秋气了树叶黄片从来飞",
+      "passages": [
+        {
+          "title": "秋天",
+          "page": 60,
+          "paragraphs": [
+            {
+              "text": "天气凉了，树叶黄了，一片片叶子从树上落下来。",
+              "audioId": "word-text-word-21-0"
+            },
+            {
+              "text": "天空那么蓝，那么高。一群大雁往南飞，一会儿排成个“人”字，一会儿排成个“一”字。",
+              "audioId": "word-text-word-21-1"
+            },
+            {
+              "text": "啊！秋天来了！",
+              "audioId": "word-text-word-21-2"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-21",
+      "spokenTitle": "秋天",
+      "characterItems": [
+        {
+          "text": "秋",
+          "audioId": "word-say-5a2e5e4b12a42eb0",
+          "example": "秋"
+        },
+        {
+          "text": "气",
+          "audioId": "word-say-9eac93b2a1ca498a",
+          "example": "气"
+        },
+        {
+          "text": "了",
+          "audioId": "word-say-e9934d5d82275b80",
+          "example": "好了"
+        },
+        {
+          "text": "树",
+          "audioId": "word-say-635643d28367e5e0",
+          "example": "树"
+        },
+        {
+          "text": "叶",
+          "audioId": "word-say-2bdcf003d4c7714b",
+          "example": "叶"
+        },
+        {
+          "text": "黄",
+          "audioId": "word-say-c732e4d7e3805bf4",
+          "example": "黄"
+        },
+        {
+          "text": "片",
+          "audioId": "word-say-43991cbbf5ea0e83",
+          "example": "片"
+        },
+        {
+          "text": "从",
+          "audioId": "word-say-2719a8ea304b8cbf",
+          "example": "从"
+        },
+        {
+          "text": "来",
+          "audioId": "word-say-6d8229118caa20c2",
+          "example": "来"
+        },
+        {
+          "text": "飞",
+          "audioId": "word-say-270102d52eac1cae",
+          "example": "飞"
+        }
+      ]
+    },
+    {
+      "title": "江南",
+      "page": 2,
+      "read": [
+        {
+          "text": "长江",
+          "pinyin": "cháng jiāng",
+          "audioId": "word-say-2751a560b39913e2"
+        },
+        {
+          "text": "江河",
+          "pinyin": "jiāng hé",
+          "audioId": "word-say-707c331ca6cd856b"
+        },
+        {
+          "text": "江海",
+          "pinyin": "jiāng hǎi",
+          "audioId": "word-say-f83f1336da79f09c"
+        },
+        {
+          "text": "江南",
+          "pinyin": "jiāng nán",
+          "audioId": "word-say-1374de673a904f65"
+        },
+        {
+          "text": "南方",
+          "pinyin": "nán fāng",
+          "audioId": "word-say-551ee9cf1235d598"
+        },
+        {
+          "text": "南面",
+          "pinyin": "nán miàn",
+          "audioId": "word-say-3b5c4ad341f26340"
+        },
+        {
+          "text": "可以",
+          "pinyin": "kě yǐ",
+          "audioId": "word-say-0ef5c86fab94f13a"
+        },
+        {
+          "text": "可是",
+          "pinyin": "kě shì",
+          "audioId": "word-say-38ca4a9c76b13303"
+        },
+        {
+          "text": "可乐",
+          "pinyin": "kě lè",
+          "audioId": "word-say-dbe286d922bc4d31"
+        },
+        {
+          "text": "可爱",
+          "pinyin": "kě ài",
+          "audioId": "word-say-ae5412cf7235c807"
+        },
+        {
+          "text": "采花",
+          "pinyin": "cǎi huā",
+          "audioId": "word-say-6914d9787088759b"
+        },
+        {
+          "text": "采莲",
+          "pinyin": "cǎi lián",
+          "audioId": "word-say-3f588950c88706fe"
+        },
+        {
+          "text": "采用",
+          "pinyin": "cǎi yòng",
+          "audioId": "word-say-6f6004072ae719c7"
+        },
+        {
+          "text": "莲花",
+          "pinyin": "lián huā",
+          "audioId": "word-say-f2f491398295b1b9"
+        },
+        {
+          "text": "莲子",
+          "pinyin": "lián zi",
+          "audioId": "word-say-f7d6f172cb4a8d1a"
+        },
+        {
+          "text": "莲叶",
+          "pinyin": "lián yè",
+          "audioId": "word-say-cadc102850f1893b"
+        },
+        {
+          "text": "戏水",
+          "pinyin": "xì shuǐ",
+          "audioId": "word-say-84019d19dc5fe5fd"
+        },
+        {
+          "text": "戏曲",
+          "pinyin": "xì qǔ",
+          "audioId": "word-say-24a87312e84ef589"
+        },
+        {
+          "text": "游戏",
+          "pinyin": "yóu xì",
+          "audioId": "word-say-847c5f681ce955a0"
+        },
+        {
+          "text": "中间",
+          "pinyin": "zhōng jiān",
+          "audioId": "word-say-79f883a9fb832c8b"
+        },
+        {
+          "text": "时间",
+          "pinyin": "shí jiān",
+          "audioId": "word-say-8b6ff498515bcc2f"
+        },
+        {
+          "text": "课间",
+          "pinyin": "kè jiān",
+          "audioId": "word-say-9652bab3872e6b83"
+        },
+        {
+          "text": "房间",
+          "pinyin": "fáng jiān",
+          "audioId": "word-say-96b2d406041bbf38"
+        },
+        {
+          "text": "东西",
+          "pinyin": "dōng xī",
+          "audioId": "word-say-b1813501860b58c2"
+        },
+        {
+          "text": "东方",
+          "pinyin": "dōng fāng",
+          "audioId": "word-say-67bad5bd2b80097d"
+        },
+        {
+          "text": "东边",
+          "pinyin": "dōng biān",
+          "audioId": "word-say-691b1216093d230f"
+        },
+        {
+          "text": "北京",
+          "pinyin": "běi jīng",
+          "audioId": "word-say-68c77e155132565e"
+        },
+        {
+          "text": "北方",
+          "pinyin": "běi fāng",
+          "audioId": "word-say-78e20875d600228f"
+        },
+        {
+          "text": "东北",
+          "pinyin": "dōng běi",
+          "audioId": "word-say-ddbc65483182cd8a"
+        }
+      ],
+      "write": [
+        {
+          "text": "可口",
+          "pinyin": "kě kǒu",
+          "audioId": "word-say-7616ad9f09869c32"
+        },
+        {
+          "text": "叶子",
+          "pinyin": "yè zi",
+          "audioId": "word-say-c6dfb2b17bb07929"
+        },
+        {
+          "text": "东西",
+          "pinyin": "dōng xī",
+          "audioId": "word-say-b1813501860b58c2"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "课文《江南》",
+      "id": "word-22",
+      "characters": "江南可采莲戏间东北",
+      "passages": [
+        {
+          "title": "江南",
+          "page": 62,
+          "paragraphs": [
+            {
+              "text": "江南可采莲，莲叶何田田，鱼戏莲叶间。",
+              "audioId": "word-text-word-22-0"
+            },
+            {
+              "text": "鱼戏莲叶东，鱼戏莲叶西，鱼戏莲叶南，鱼戏莲叶北。",
+              "audioId": "word-text-word-22-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-22",
+      "spokenTitle": "江南",
+      "characterItems": [
+        {
+          "text": "江",
+          "audioId": "word-say-d5c4cb326eec6a3b",
+          "example": "江"
+        },
+        {
+          "text": "南",
+          "audioId": "word-say-b2f94b1034506f37",
+          "example": "南"
+        },
+        {
+          "text": "可",
+          "audioId": "word-say-8b9cefa38e83e2fd",
+          "example": "可"
+        },
+        {
+          "text": "采",
+          "audioId": "word-say-0b79ffa0fd810a74",
+          "example": "采"
+        },
+        {
+          "text": "莲",
+          "audioId": "word-say-974e2444291e482d",
+          "example": "莲"
+        },
+        {
+          "text": "戏",
+          "audioId": "word-say-10e08c3891bbd35e",
+          "example": "戏"
+        },
+        {
+          "text": "间",
+          "audioId": "word-say-f5b64b1a64978737",
+          "example": "间"
+        },
+        {
+          "text": "东",
+          "audioId": "word-say-5469a6af4ceaad28",
+          "example": "东"
+        },
+        {
+          "text": "北",
+          "audioId": "word-say-01bc01b32975b903",
+          "example": "北"
+        }
+      ]
+    },
+    {
+      "title": "雪地里的小画家",
+      "page": 2,
+      "read": [
+        {
+          "text": "小的",
+          "pinyin": "xiǎo de",
+          "audioId": "word-say-d2ee2280d97cb167"
+        },
+        {
+          "text": "大的",
+          "pinyin": "dà de",
+          "audioId": "word-say-69000a8c134812ca"
+        },
+        {
+          "text": "冰的",
+          "pinyin": "bīng de",
+          "audioId": "word-say-6a6f359257f37ec8"
+        },
+        {
+          "text": "大家",
+          "pinyin": "dà jiā",
+          "audioId": "word-say-16b54b7ab3b5e984"
+        },
+        {
+          "text": "我家",
+          "pinyin": "wǒ jiā",
+          "audioId": "word-say-63d1ec2336dd3972"
+        },
+        {
+          "text": "回家",
+          "pinyin": "huí jiā",
+          "audioId": "word-say-9a6ce4cf2cab6307"
+        },
+        {
+          "text": "小鸡",
+          "pinyin": "xiǎo jī",
+          "audioId": "word-say-b74e668fc7928507"
+        },
+        {
+          "text": "黄鸡",
+          "pinyin": "huáng jī",
+          "audioId": "word-say-ca933a18d925e55d"
+        },
+        {
+          "text": "鸡毛",
+          "pinyin": "jī máo",
+          "audioId": "word-say-b9c9f6f0ce1c72d9"
+        },
+        {
+          "text": "竹子",
+          "pinyin": "zhú zi",
+          "audioId": "word-say-ebb0f4b8661e9004"
+        },
+        {
+          "text": "毛竹",
+          "pinyin": "máo zhú",
+          "audioId": "word-say-f820182b4765d5f9"
+        },
+        {
+          "text": "竹叶",
+          "pinyin": "zhú yè",
+          "audioId": "word-say-38289e27b3a6ad45"
+        },
+        {
+          "text": "月牙",
+          "pinyin": "yuè yá",
+          "audioId": "word-say-8b3e0785a3aec46e"
+        },
+        {
+          "text": "门牙",
+          "pinyin": "mén yá",
+          "audioId": "word-say-ec48a1aa4550236b"
+        },
+        {
+          "text": "牙齿",
+          "pinyin": "yá chǐ",
+          "audioId": "word-say-7ee56603f63d6423"
+        },
+        {
+          "text": "用力",
+          "pinyin": "yòng lì",
+          "audioId": "word-say-a7c68b0b65afa488"
+        },
+        {
+          "text": "用来",
+          "pinyin": "yòng lái",
+          "audioId": "word-say-7dd7d265115bd580"
+        },
+        {
+          "text": "不用",
+          "pinyin": "bù yòng",
+          "audioId": "word-say-30a2338dfa5006d5"
+        },
+        {
+          "text": "用心",
+          "pinyin": "yòng xīn",
+          "audioId": "word-say-f6de39aec107fdaf"
+        },
+        {
+          "text": "作用",
+          "pinyin": "zuò yòng",
+          "audioId": "word-say-40f6d6bab7e54cc4"
+        },
+        {
+          "text": "第几",
+          "pinyin": "dì jǐ",
+          "audioId": "word-say-b0c7c807a4a20200"
+        },
+        {
+          "text": "几年",
+          "pinyin": "jǐ nián",
+          "audioId": "word-say-ef1b1f5254579e8a"
+        },
+        {
+          "text": "几岁",
+          "pinyin": "jǐ suì",
+          "audioId": "word-say-9e5ac1667cbc9990"
+        },
+        {
+          "text": "跑步",
+          "pinyin": "pǎo bù",
+          "audioId": "word-say-591052c733499bad"
+        },
+        {
+          "text": "脚步",
+          "pinyin": "jiǎo bù",
+          "audioId": "word-say-200171dd4e0b9588"
+        },
+        {
+          "text": "步行",
+          "pinyin": "bù xíng",
+          "audioId": "word-say-3a8b5cef5790719f"
+        },
+        {
+          "text": "进步",
+          "pinyin": "jìn bù",
+          "audioId": "word-say-3cd4b73afa842451"
+        },
+        {
+          "text": "没有",
+          "pinyin": "méi yǒu",
+          "audioId": "word-say-f127804b9227e152"
+        },
+        {
+          "text": "没人",
+          "pinyin": "méi rén",
+          "audioId": "word-say-4b611fcb53ad352c"
+        },
+        {
+          "text": "没用",
+          "pinyin": "méi yòng",
+          "audioId": "word-say-f2407735eab64bd6"
+        },
+        {
+          "text": "没空",
+          "pinyin": "méi kòng",
+          "audioId": "word-say-b71a06c6108b441d"
+        },
+        {
+          "text": "参加",
+          "pinyin": "cān jiā",
+          "audioId": "word-say-041ef3e9eb873e90"
+        },
+        {
+          "text": "参天大树",
+          "pinyin": "cān tiān dà shù",
+          "audioId": "word-say-24992a558a517332"
+        },
+        {
+          "text": "参赛",
+          "pinyin": "cān sài",
+          "audioId": "word-say-255f183ba4274d08"
+        },
+        {
+          "text": "加法",
+          "pinyin": "jiā fǎ",
+          "audioId": "word-say-fd189b0132aba825"
+        },
+        {
+          "text": "加号",
+          "pinyin": "jiā hào",
+          "audioId": "word-say-3d5f3d36425cd744"
+        },
+        {
+          "text": "加油",
+          "pinyin": "jiā yóu",
+          "audioId": "word-say-890cf29801d2afcb"
+        }
+      ],
+      "write": [
+        {
+          "text": "竹子",
+          "pinyin": "zhú zi",
+          "audioId": "word-say-ebb0f4b8661e9004"
+        },
+        {
+          "text": "竹叶",
+          "pinyin": "zhú yè",
+          "audioId": "word-say-38289e27b3a6ad45"
+        },
+        {
+          "text": "上马",
+          "pinyin": "shàng mǎ",
+          "audioId": "word-say-a89c6a6dc6dc9f35"
+        },
+        {
+          "text": "马上",
+          "pinyin": "mǎ shàng",
+          "audioId": "word-say-cc86c595a88aec0b"
+        },
+        {
+          "text": "下马",
+          "pinyin": "xià mǎ",
+          "audioId": "word-say-923cb2384a860358"
+        },
+        {
+          "text": "牙口",
+          "pinyin": "yá kǒu",
+          "audioId": "word-say-d79457ef1472c52b"
+        },
+        {
+          "text": "大牙",
+          "pinyin": "dà yá",
+          "audioId": "word-say-34e8d39c0bbc7c7b"
+        },
+        {
+          "text": "可用",
+          "pinyin": "kě yòng",
+          "audioId": "word-say-4d99c976beb8827e"
+        },
+        {
+          "text": "几年",
+          "pinyin": "jǐ nián",
+          "audioId": "word-say-ef1b1f5254579e8a"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "课文《雪地里的小画家》",
+      "id": "word-23",
+      "characters": "的家鸡竹牙用几步没参加",
+      "passages": [
+        {
+          "title": "雪地里的小画家",
+          "page": 64,
+          "paragraphs": [
+            {
+              "text": "下雪啦，下雪啦！雪地里来了一群小画家。",
+              "audioId": "word-text-word-23-0"
+            },
+            {
+              "text": "小鸡画竹叶，小狗画梅花，小鸭画枫叶，小马画月牙。",
+              "audioId": "word-text-word-23-1"
+            },
+            {
+              "text": "不用颜料不用笔，几步就成一幅画。",
+              "audioId": "word-text-word-23-2"
+            },
+            {
+              "text": "青蛙为什么没参加？他在洞里睡着啦。",
+              "audioId": "word-text-word-23-3"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-23",
+      "spokenTitle": "雪地里的小画家",
+      "characterItems": [
+        {
+          "text": "的",
+          "audioId": "word-say-8af2350cfd65805b",
+          "example": "的"
+        },
+        {
+          "text": "家",
+          "audioId": "word-say-c8ae97be80f3867c",
+          "example": "家"
+        },
+        {
+          "text": "鸡",
+          "audioId": "word-say-6d93a4fb838143c5",
+          "example": "鸡"
+        },
+        {
+          "text": "竹",
+          "audioId": "word-say-0ede0734dd4ab09c",
+          "example": "竹"
+        },
+        {
+          "text": "牙",
+          "audioId": "word-say-4977b12bc74eb4e4",
+          "example": "牙"
+        },
+        {
+          "text": "用",
+          "audioId": "word-say-04e45efb3be890e7",
+          "example": "用"
+        },
+        {
+          "text": "几",
+          "audioId": "word-say-bb0d9c666fa88969",
+          "example": "几"
+        },
+        {
+          "text": "步",
+          "audioId": "word-say-a621b7cd7ae31a1c",
+          "example": "步"
+        },
+        {
+          "text": "没",
+          "audioId": "word-say-279e8b3573607d17",
+          "example": "没"
+        },
+        {
+          "text": "参",
+          "audioId": "word-say-562ac777223f47fe",
+          "example": "参"
+        },
+        {
+          "text": "加",
+          "audioId": "word-say-f0f0327bc55750d6",
+          "example": "加"
+        }
+      ]
+    },
+    {
+      "title": "四季",
+      "page": 2,
+      "read": [
+        {
+          "text": "小鸟",
+          "pinyin": "xiǎo niǎo",
+          "audioId": "word-say-31159146a4d5197c"
+        },
+        {
+          "text": "飞鸟",
+          "pinyin": "fēi niǎo",
+          "audioId": "word-say-0205c4fee990cedb"
+        },
+        {
+          "text": "说话",
+          "pinyin": "shuō huà",
+          "audioId": "word-say-cc0dc791ff9c00c6"
+        },
+        {
+          "text": "说明",
+          "pinyin": "shuō míng",
+          "audioId": "word-say-4262c45dc797bb0c"
+        },
+        {
+          "text": "听说",
+          "pinyin": "tīng shuō",
+          "audioId": "word-say-acb083253f353ed9"
+        },
+        {
+          "text": "可是",
+          "pinyin": "kě shì",
+          "audioId": "word-say-38ca4a9c76b13303"
+        },
+        {
+          "text": "就是",
+          "pinyin": "jiù shì",
+          "audioId": "word-say-88aa006eb3d80a05"
+        },
+        {
+          "text": "只是",
+          "pinyin": "zhǐ shì",
+          "audioId": "word-say-3fb2673f8e43a434"
+        },
+        {
+          "text": "总是",
+          "pinyin": "zǒng shì",
+          "audioId": "word-say-1d325d8445bd7783"
+        },
+        {
+          "text": "是的",
+          "pinyin": "shì de",
+          "audioId": "word-say-aa2a331d2dcf5668"
+        },
+        {
+          "text": "春天",
+          "pinyin": "chūn tiān",
+          "audioId": "word-say-9eaa6d08fa0ccc5c"
+        },
+        {
+          "text": "春风",
+          "pinyin": "chūn fēng",
+          "audioId": "word-say-a002c23fd8f99a3d"
+        },
+        {
+          "text": "春雨",
+          "pinyin": "chūn yǔ",
+          "audioId": "word-say-35d377242c037765"
+        },
+        {
+          "text": "春节",
+          "pinyin": "chūn jié",
+          "audioId": "word-say-48eb870b394f4a33"
+        },
+        {
+          "text": "青菜",
+          "pinyin": "qīng cài",
+          "audioId": "word-say-a540f6b31df5ec9c"
+        },
+        {
+          "text": "青草",
+          "pinyin": "qīng cǎo",
+          "audioId": "word-say-c97aac1ec961a216"
+        },
+        {
+          "text": "青蛙",
+          "pinyin": "qīng wā",
+          "audioId": "word-say-1d70fe1c42fde24a"
+        },
+        {
+          "text": "青山绿水",
+          "pinyin": "qīng shān lǜ shuǐ",
+          "audioId": "word-say-c24d36c52116b93d"
+        },
+        {
+          "text": "蛙泳",
+          "pinyin": "wā yǒng",
+          "audioId": "word-say-c8641c3a1031e09c"
+        },
+        {
+          "text": "蛙声",
+          "pinyin": "wā shēng",
+          "audioId": "word-say-80bf2580a57c9185"
+        },
+        {
+          "text": "牛蛙",
+          "pinyin": "niú wā",
+          "audioId": "word-say-00e1e90feee2e342"
+        },
+        {
+          "text": "树蛙",
+          "pinyin": "shù wā",
+          "audioId": "word-say-34d89d581de03e8f"
+        },
+        {
+          "text": "夏天",
+          "pinyin": "xià tiān",
+          "audioId": "word-say-0c27fe7382e1aac3"
+        },
+        {
+          "text": "夏季",
+          "pinyin": "xià jì",
+          "audioId": "word-say-6e9abee0fe977420"
+        },
+        {
+          "text": "看着",
+          "pinyin": "kàn zhe",
+          "audioId": "word-say-cc1c03a248429098"
+        },
+        {
+          "text": "走着",
+          "pinyin": "zǒu zhe",
+          "audioId": "word-say-6000ddd650249ba5"
+        },
+        {
+          "text": "开心地说",
+          "pinyin": "kāi xīn de shuō",
+          "audioId": "word-say-76d6eb09650a7e29"
+        },
+        {
+          "text": "就医",
+          "pinyin": "jiù yī",
+          "audioId": "word-say-f72fa04076812e42"
+        },
+        {
+          "text": "就学",
+          "pinyin": "jiù xué",
+          "audioId": "word-say-bd3851762f9793b2"
+        },
+        {
+          "text": "冬天",
+          "pinyin": "dōng tiān",
+          "audioId": "word-say-7a6cc29740a72c4c"
+        },
+        {
+          "text": "冬瓜",
+          "pinyin": "dōng guā",
+          "audioId": "word-say-4404ea8981d2fc02"
+        },
+        {
+          "text": "冬季",
+          "pinyin": "dōng jì",
+          "audioId": "word-say-0ae780e1bafa59e5"
+        },
+        {
+          "text": "过冬",
+          "pinyin": "guò dōng",
+          "audioId": "word-say-a9769934684d594c"
+        }
+      ],
+      "write": [
+        {
+          "text": "四十",
+          "pinyin": "sì shí",
+          "audioId": "word-say-f4d26ac94ae3b1c7"
+        },
+        {
+          "text": "四日",
+          "pinyin": "sì rì",
+          "audioId": "word-say-5bfc00165d9b70c7"
+        },
+        {
+          "text": "小鸟",
+          "pinyin": "xiǎo niǎo",
+          "audioId": "word-say-31159146a4d5197c"
+        },
+        {
+          "text": "大小",
+          "pinyin": "dà xiǎo",
+          "audioId": "word-say-50db7447b966f5ef"
+        },
+        {
+          "text": "可是",
+          "pinyin": "kě shì",
+          "audioId": "word-say-38ca4a9c76b13303"
+        },
+        {
+          "text": "天上",
+          "pinyin": "tiān shàng",
+          "audioId": "word-say-59d1c376fb2a7fd9"
+        },
+        {
+          "text": "七天",
+          "pinyin": "qī tiān",
+          "audioId": "word-say-36776e0a26ba8758"
+        },
+        {
+          "text": "几天",
+          "pinyin": "jǐ tiān",
+          "audioId": "word-say-edac00244e8fa5a3"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-24",
+      "characters": "鸟说是春青蛙夏着皮地就冬",
+      "passages": [
+        {
+          "title": "四季",
+          "page": 66,
+          "paragraphs": [
+            {
+              "text": "草芽尖尖，他对小鸟说：“我是春天。”",
+              "audioId": "word-text-word-24-0"
+            },
+            {
+              "text": "荷叶圆圆，他对青蛙说：“我是夏天。”",
+              "audioId": "word-text-word-24-1"
+            },
+            {
+              "text": "谷穗弯弯，他鞠着躬说：“我是秋天。”",
+              "audioId": "word-text-word-24-2"
+            },
+            {
+              "text": "雪人大肚子一挺，他顽皮地说：“我就是冬天。”",
+              "audioId": "word-text-word-24-3"
+            }
+          ],
+          "required": false,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-24",
+      "spokenTitle": "四季",
+      "characterItems": [
+        {
+          "text": "鸟",
+          "audioId": "word-say-02d9cb10ca808b8a",
+          "example": "鸟"
+        },
+        {
+          "text": "说",
+          "audioId": "word-say-ccca74461399d2a0",
+          "example": "说"
+        },
+        {
+          "text": "是",
+          "audioId": "word-say-b5141d3d19e9a048",
+          "example": "是"
+        },
+        {
+          "text": "春",
+          "audioId": "word-say-b3c33b7abaf01360",
+          "example": "春"
+        },
+        {
+          "text": "青",
+          "audioId": "word-say-dc06463a46eb5685",
+          "example": "青"
+        },
+        {
+          "text": "蛙",
+          "audioId": "word-say-9ef1f376159357da",
+          "example": "蛙"
+        },
+        {
+          "text": "夏",
+          "audioId": "word-say-8482432c0274b8ee",
+          "example": "夏"
+        },
+        {
+          "text": "着",
+          "audioId": "word-say-9e5bf0d2d993accb",
+          "example": "着"
+        },
+        {
+          "text": "皮",
+          "audioId": "word-say-04b2c97c0094fb45",
+          "example": "皮"
+        },
+        {
+          "text": "地",
+          "audioId": "word-say-76d6eb09650a7e29",
+          "example": "开心地说"
+        },
+        {
+          "text": "就",
+          "audioId": "word-say-2f9d9872e5f920d0",
+          "example": "就"
+        },
+        {
+          "text": "冬",
+          "audioId": "word-say-0868fbc8c0bd7ea3",
+          "example": "冬"
+        }
+      ]
+    },
+    {
+      "title": "语文园地五",
+      "page": 2,
+      "read": [
+        {
+          "text": "男人",
+          "pinyin": "nán rén",
+          "audioId": "word-say-a68402d40477a82d"
+        },
+        {
+          "text": "男孩",
+          "pinyin": "nán hái",
+          "audioId": "word-say-2788bd5e6dcae4e3"
+        },
+        {
+          "text": "男子",
+          "pinyin": "nán zi",
+          "audioId": "word-say-a5f1b174c65912ac"
+        },
+        {
+          "text": "男女",
+          "pinyin": "nán nǚ",
+          "audioId": "word-say-6dc016a79a4e669d"
+        },
+        {
+          "text": "女人",
+          "pinyin": "nǚ rén",
+          "audioId": "word-say-7148666b21d61397"
+        },
+        {
+          "text": "女孩",
+          "pinyin": "nǚ hái",
+          "audioId": "word-say-4877acf85fb70148"
+        },
+        {
+          "text": "关门",
+          "pinyin": "guān mén",
+          "audioId": "word-say-5f8439ffc8a91487"
+        },
+        {
+          "text": "关心",
+          "pinyin": "guān xīn",
+          "audioId": "word-say-0b2df726920c8e73"
+        },
+        {
+          "text": "开关",
+          "pinyin": "kāi guān",
+          "audioId": "word-say-92d9be0a0e94eb16"
+        },
+        {
+          "text": "过关",
+          "pinyin": "guò guān",
+          "audioId": "word-say-e4f684ed2862e35c"
+        },
+        {
+          "text": "正在",
+          "pinyin": "zhèng zài",
+          "audioId": "word-say-e6b02a08e69a342d"
+        },
+        {
+          "text": "正好",
+          "pinyin": "zhèng hǎo",
+          "audioId": "word-say-e7247b6f56250521"
+        },
+        {
+          "text": "立正",
+          "pinyin": "lì zhèng",
+          "audioId": "word-say-ee1379a840fe0b96"
+        },
+        {
+          "text": "真正",
+          "pinyin": "zhēn zhèng",
+          "audioId": "word-say-858755f4f1b3bd13"
+        },
+        {
+          "text": "改正",
+          "pinyin": "gǎi zhèng",
+          "audioId": "word-say-25413777e4d0e5a9"
+        },
+        {
+          "text": "反正",
+          "pinyin": "fǎn zhèng",
+          "audioId": "word-say-0caa298736bf5a85"
+        },
+        {
+          "text": "反思",
+          "pinyin": "fǎn sī",
+          "audioId": "word-say-527dfb9cf6ed685d"
+        },
+        {
+          "text": "反面",
+          "pinyin": "fǎn miàn",
+          "audioId": "word-say-9849101d62a2bb4c"
+        },
+        {
+          "text": "反对",
+          "pinyin": "fǎn duì",
+          "audioId": "word-say-454f03c968afb417"
+        },
+        {
+          "text": "先后",
+          "pinyin": "xiān hòu",
+          "audioId": "word-say-7d4ff1d67f0cd16d"
+        },
+        {
+          "text": "先天",
+          "pinyin": "xiān tiān",
+          "audioId": "word-say-20cfb0c0923ad119"
+        },
+        {
+          "text": "先生",
+          "pinyin": "xiān sheng",
+          "audioId": "word-say-cd98e43da31bb1b9"
+        },
+        {
+          "text": "后来",
+          "pinyin": "hòu lái",
+          "audioId": "word-say-5ff5a4de18dc7cd2"
+        },
+        {
+          "text": "以后",
+          "pinyin": "yǐ hòu",
+          "audioId": "word-say-e6ad7a1dbc1ede22"
+        },
+        {
+          "text": "后果",
+          "pinyin": "hòu guǒ",
+          "audioId": "word-say-00d94e443a5fb437"
+        },
+        {
+          "text": "内外",
+          "pinyin": "nèi wài",
+          "audioId": "word-say-d8a7ebd775e9a68e"
+        },
+        {
+          "text": "内心",
+          "pinyin": "nèi xīn",
+          "audioId": "word-say-307cbdffe01c47fc"
+        },
+        {
+          "text": "内向",
+          "pinyin": "nèi xiàng",
+          "audioId": "word-say-f466d1e8a372fd21"
+        }
+      ],
+      "write": [
+        {
+          "text": "女人",
+          "pinyin": "nǚ rén",
+          "audioId": "word-say-7148666b21d61397"
+        },
+        {
+          "text": "女子",
+          "pinyin": "nǚ zǐ",
+          "audioId": "word-say-b396cd1ea694635d"
+        },
+        {
+          "text": "开关",
+          "pinyin": "kāi guān",
+          "audioId": "word-say-92d9be0a0e94eb16"
+        },
+        {
+          "text": "开口",
+          "pinyin": "kāi kǒu",
+          "audioId": "word-say-ea58b24f97650715"
+        },
+        {
+          "text": "关火",
+          "pinyin": "guān huǒ",
+          "audioId": "word-say-bfc2db7681369f6a"
+        },
+        {
+          "text": "先天",
+          "pinyin": "xiān tiān",
+          "audioId": "word-say-20cfb0c0923ad119"
+        },
+        {
+          "text": "先人",
+          "pinyin": "xiān rén",
+          "audioId": "word-say-b6576beac7e944d3"
+        },
+        {
+          "text": "先下",
+          "pinyin": "xiān xià",
+          "audioId": "word-say-0b919d9cc4412c54"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "日积月累谚语",
+      "id": "word-25",
+      "characters": "男女关正反先后内外",
+      "passages": [
+        {
+          "title": "语文园地五",
+          "page": 69,
+          "paragraphs": [
+            {
+              "text": "一年之计在于春，一日之计在于晨。",
+              "audioId": "word-text-word-25-0"
+            },
+            {
+              "text": "一寸光阴一寸金，寸金难买寸光阴。",
+              "audioId": "word-text-word-25-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-25",
+      "spokenTitle": "语文园地五",
+      "characterItems": [
+        {
+          "text": "男",
+          "audioId": "word-say-4e79758a99006223",
+          "example": "男"
+        },
+        {
+          "text": "女",
+          "audioId": "word-say-0ab4610b9257c298",
+          "example": "女"
+        },
+        {
+          "text": "关",
+          "audioId": "word-say-5d0ae622f61f8ebf",
+          "example": "关"
+        },
+        {
+          "text": "正",
+          "audioId": "word-say-d657ee1d4abbab42",
+          "example": "正"
+        },
+        {
+          "text": "反",
+          "audioId": "word-say-dcfb4541e0fd64e2",
+          "example": "反"
+        },
+        {
+          "text": "先",
+          "audioId": "word-say-27250da81c0a763a",
+          "example": "先"
+        },
+        {
+          "text": "后",
+          "audioId": "word-say-60be66d61586b95c",
+          "example": "后"
+        },
+        {
+          "text": "内",
+          "audioId": "word-say-b2126ce9c100bff0",
+          "example": "内"
+        },
+        {
+          "text": "外",
+          "audioId": "word-say-0e826095b60ccf03",
+          "example": "外"
+        }
+      ]
+    },
+    {
+      "title": "对韵歌",
+      "page": 3,
+      "read": [
+        {
+          "text": "对子",
+          "pinyin": "duì zi",
+          "audioId": "word-say-97c3b9be4fc8a24c"
+        },
+        {
+          "text": "对韵",
+          "pinyin": "duì yùn",
+          "audioId": "word-say-1c0c115aa837f275"
+        },
+        {
+          "text": "对话",
+          "pinyin": "duì huà",
+          "audioId": "word-say-6bf6d3f3d6261b75"
+        },
+        {
+          "text": "儿歌",
+          "pinyin": "ér gē",
+          "audioId": "word-say-bd8e1a22990b1c27"
+        },
+        {
+          "text": "唱歌",
+          "pinyin": "chàng gē",
+          "audioId": "word-say-86d347aaa30d1b43"
+        },
+        {
+          "text": "歌声",
+          "pinyin": "gē shēng",
+          "audioId": "word-say-ae803572d7a68e73"
+        },
+        {
+          "text": "下雨",
+          "pinyin": "xià yǔ",
+          "audioId": "word-say-024b2708ed8e3ffc"
+        },
+        {
+          "text": "雨水",
+          "pinyin": "yǔ shuǐ",
+          "audioId": "word-say-0c25944364ccf26f"
+        },
+        {
+          "text": "雨伞",
+          "pinyin": "yǔ sǎn",
+          "audioId": "word-say-a86eaeb98f4ced93"
+        },
+        {
+          "text": "大风",
+          "pinyin": "dà fēng",
+          "audioId": "word-say-bc37c6ec9f64a3bc"
+        },
+        {
+          "text": "台风",
+          "pinyin": "tái fēng",
+          "audioId": "word-say-d946d47a800e4dc3"
+        },
+        {
+          "text": "刮风",
+          "pinyin": "guā fēng",
+          "audioId": "word-say-03ce8aed5ebc351e"
+        },
+        {
+          "text": "虫子",
+          "pinyin": "chóng zi",
+          "audioId": "word-say-224749f7ec5568b9"
+        },
+        {
+          "text": "小虫",
+          "pinyin": "xiǎo chóng",
+          "audioId": "word-say-809c90c2665e7f62"
+        },
+        {
+          "text": "山清水秀",
+          "pinyin": "shān qīng shuǐ xiù",
+          "audioId": "word-say-be5f1f1d579e5282"
+        },
+        {
+          "text": "绿色",
+          "pinyin": "lǜ sè",
+          "audioId": "word-say-30c83dc25b12c32c"
+        },
+        {
+          "text": "绿叶",
+          "pinyin": "lǜ yè",
+          "audioId": "word-say-a54ce53d9984199c"
+        },
+        {
+          "text": "绿灯",
+          "pinyin": "lǜ dēng",
+          "audioId": "word-say-a796107713fcc22f"
+        },
+        {
+          "text": "桃花",
+          "pinyin": "táo huā",
+          "audioId": "word-say-f5c627b7d0bffaff"
+        },
+        {
+          "text": "桃子",
+          "pinyin": "táo zi",
+          "audioId": "word-say-0fe9ed3a6b78600f"
+        },
+        {
+          "text": "桃红柳绿",
+          "pinyin": "táo hóng liǔ lǜ",
+          "audioId": "word-say-7124a99963ed0b64"
+        },
+        {
+          "text": "红色",
+          "pinyin": "hóng sè",
+          "audioId": "word-say-789f61dbfcc7a2d2"
+        },
+        {
+          "text": "红灯",
+          "pinyin": "hóng dēng",
+          "audioId": "word-say-b7ee4544c13f61c0"
+        },
+        {
+          "text": "红花",
+          "pinyin": "hóng huā",
+          "audioId": "word-say-68f43f20a362b172"
+        }
+      ],
+      "write": [
+        {
+          "text": "云",
+          "pinyin": "yún",
+          "audioId": "word-say-32d42b97294a1365"
+        },
+        {
+          "text": "雨水",
+          "pinyin": "yǔ shuǐ",
+          "audioId": "word-say-0c25944364ccf26f"
+        },
+        {
+          "text": "虫子",
+          "pinyin": "chóng zi",
+          "audioId": "word-say-224749f7ec5568b9"
+        },
+        {
+          "text": "大山",
+          "pinyin": "dà shān",
+          "audioId": "word-say-3a77460a2b254ba4"
+        },
+        {
+          "text": "水中",
+          "pinyin": "shuǐ zhōng",
+          "audioId": "word-say-6fd237b93acb5538"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "课文《对韵歌》",
+      "id": "word-26",
+      "characters": "对歌雨风虫清绿桃红",
+      "passages": [
+        {
+          "title": "对韵歌",
+          "page": 73,
+          "paragraphs": [
+            {
+              "text": "云对雨，雪对风。花对树，鸟对虫。",
+              "audioId": "word-text-word-26-0"
+            },
+            {
+              "text": "山清对水秀，柳绿对桃红。",
+              "audioId": "word-text-word-26-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-26",
+      "spokenTitle": "对韵歌",
+      "characterItems": [
+        {
+          "text": "对",
+          "audioId": "word-say-74570c72706a38b1",
+          "example": "对"
+        },
+        {
+          "text": "歌",
+          "audioId": "word-say-602c513e5ff73db8",
+          "example": "歌"
+        },
+        {
+          "text": "雨",
+          "audioId": "word-say-124d60580dfa9072",
+          "example": "雨"
+        },
+        {
+          "text": "风",
+          "audioId": "word-say-be65bd5518aedced",
+          "example": "风"
+        },
+        {
+          "text": "虫",
+          "audioId": "word-say-0897f429729130c4",
+          "example": "虫"
+        },
+        {
+          "text": "清",
+          "audioId": "word-say-59854abf83c93334",
+          "example": "清"
+        },
+        {
+          "text": "绿",
+          "audioId": "word-say-84b34ffba5aa3e3e",
+          "example": "绿"
+        },
+        {
+          "text": "桃",
+          "audioId": "word-say-8555b2922fe3800a",
+          "example": "桃"
+        },
+        {
+          "text": "红",
+          "audioId": "word-say-0eb7ee7e38effcf3",
+          "example": "红"
+        }
+      ]
+    },
+    {
+      "title": "日月明",
+      "page": 3,
+      "read": [
+        {
+          "text": "力气",
+          "pinyin": "lì qi",
+          "audioId": "word-say-87291f2b64f42ac1"
+        },
+        {
+          "text": "大力士",
+          "pinyin": "dà lì shì",
+          "audioId": "word-say-6b92175db394743b"
+        },
+        {
+          "text": "力不从心",
+          "pinyin": "lì bù cóng xīn",
+          "audioId": "word-say-3fac148c538b5ac8"
+        },
+        {
+          "text": "尖叫",
+          "pinyin": "jiān jiào",
+          "audioId": "word-say-e48607ed2453b106"
+        },
+        {
+          "text": "尖牙",
+          "pinyin": "jiān yá",
+          "audioId": "word-say-2cee6eeb80202c91"
+        },
+        {
+          "text": "尘土",
+          "pinyin": "chén tǔ",
+          "audioId": "word-say-a5fa17d4bbb0ecbd"
+        },
+        {
+          "text": "灰尘",
+          "pinyin": "huī chén",
+          "audioId": "word-say-5acbfc8fbf85b18c"
+        },
+        {
+          "text": "众多",
+          "pinyin": "zhòng duō",
+          "audioId": "word-say-67229c07bde3409f"
+        },
+        {
+          "text": "众人",
+          "pinyin": "zhòng rén",
+          "audioId": "word-say-20835cc9cb04571c"
+        },
+        {
+          "text": "大众",
+          "pinyin": "dà zhòng",
+          "audioId": "word-say-4c0c7cf20f89df60"
+        },
+        {
+          "text": "双手",
+          "pinyin": "shuāng shǒu",
+          "audioId": "word-say-e54550a82a667a4a"
+        },
+        {
+          "text": "双目",
+          "pinyin": "shuāng mù",
+          "audioId": "word-say-7aa4c5f82324619e"
+        },
+        {
+          "text": "双耳",
+          "pinyin": "shuāng ěr",
+          "audioId": "word-say-dd6547f30ff7ea90"
+        },
+        {
+          "text": "一双鞋",
+          "pinyin": "yī shuāng xié",
+          "audioId": "word-say-d5dd5a0272ad5558"
+        },
+        {
+          "text": "树林",
+          "pinyin": "shù lín",
+          "audioId": "word-say-d5def885722ba5c2"
+        },
+        {
+          "text": "丛林",
+          "pinyin": "cóng lín",
+          "audioId": "word-say-af322392f20369f4"
+        },
+        {
+          "text": "森林",
+          "pinyin": "sēn lín",
+          "audioId": "word-say-3bfbf21e2f002bc2"
+        },
+        {
+          "text": "林子",
+          "pinyin": "lín zi",
+          "audioId": "word-say-0df6dc485ddf13f7"
+        },
+        {
+          "text": "不好",
+          "pinyin": "bù hǎo",
+          "audioId": "word-say-1641a06dd3454f2d"
+        },
+        {
+          "text": "不要",
+          "pinyin": "bù yào",
+          "audioId": "word-say-77af2f337c1d4d74"
+        },
+        {
+          "text": "一条鱼",
+          "pinyin": "yī tiáo yú",
+          "audioId": "word-say-d86de1131adab6ef"
+        },
+        {
+          "text": "一条狗",
+          "pinyin": "yī tiáo gǒu",
+          "audioId": "word-say-0bd9c5b4a5d55f92"
+        },
+        {
+          "text": "放心",
+          "pinyin": "fàng xīn",
+          "audioId": "word-say-102f7d8002fe533f"
+        },
+        {
+          "text": "专心",
+          "pinyin": "zhuān xīn",
+          "audioId": "word-say-81a8fc9575dd4b99"
+        },
+        {
+          "text": "爱心",
+          "pinyin": "ài xīn",
+          "audioId": "word-say-d04d7e3884010cec"
+        },
+        {
+          "text": "金子",
+          "pinyin": "jīn zi",
+          "audioId": "word-say-3f73d64b759df799"
+        },
+        {
+          "text": "金色",
+          "pinyin": "jīn sè",
+          "audioId": "word-say-45cb69888ebb4451"
+        }
+      ],
+      "write": [
+        {
+          "text": "木耳",
+          "pinyin": "mù ěr",
+          "audioId": "word-say-deb9acd8cdce75ec"
+        },
+        {
+          "text": "水土",
+          "pinyin": "shuǐ tǔ",
+          "audioId": "word-say-6670b8188ff79e4a"
+        },
+        {
+          "text": "大力",
+          "pinyin": "dà lì",
+          "audioId": "word-say-ba57e3ccc5f5e8ce"
+        },
+        {
+          "text": "开心",
+          "pinyin": "kāi xīn",
+          "audioId": "word-say-6e067999e2407ee3"
+        },
+        {
+          "text": "小心",
+          "pinyin": "xiǎo xīn",
+          "audioId": "word-say-f5261ae14a3d7d90"
+        },
+        {
+          "text": "男女",
+          "pinyin": "nán nǚ",
+          "audioId": "word-say-6dc016a79a4e669d"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-27",
+      "characters": "力尖尘众双林森不条心金",
+      "passages": [
+        {
+          "title": "日月明",
+          "page": 74,
+          "paragraphs": [
+            {
+              "text": "日月明，田力男。小大尖，小土尘。",
+              "audioId": "word-text-word-27-0"
+            },
+            {
+              "text": "二人从，三人众。双木林，三木森。",
+              "audioId": "word-text-word-27-1"
+            },
+            {
+              "text": "一人不成众，独木不成林。",
+              "audioId": "word-text-word-27-2"
+            },
+            {
+              "text": "众人一条心，黄土变成金。",
+              "audioId": "word-text-word-27-3"
+            }
+          ],
+          "required": false,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-27",
+      "spokenTitle": "日月明",
+      "characterItems": [
+        {
+          "text": "力",
+          "audioId": "word-say-5c179fce17ab8bb7",
+          "example": "力"
+        },
+        {
+          "text": "尖",
+          "audioId": "word-say-87e5b2dc0aeab04a",
+          "example": "尖"
+        },
+        {
+          "text": "尘",
+          "audioId": "word-say-eb8c7c1526ecf736",
+          "example": "尘"
+        },
+        {
+          "text": "众",
+          "audioId": "word-say-cc94e82ba81662c5",
+          "example": "众"
+        },
+        {
+          "text": "双",
+          "audioId": "word-say-6fc4411ce5672f6d",
+          "example": "双"
+        },
+        {
+          "text": "林",
+          "audioId": "word-say-0cff3c9b1cdea525",
+          "example": "林"
+        },
+        {
+          "text": "森",
+          "audioId": "word-say-5f8e490558897efa",
+          "example": "森"
+        },
+        {
+          "text": "不",
+          "example": "不好",
+          "audioId": "word-say-1641a06dd3454f2d"
+        },
+        {
+          "text": "条",
+          "audioId": "word-say-f004f1d84cf962dc",
+          "example": "条"
+        },
+        {
+          "text": "心",
+          "audioId": "word-say-082c4ae74277798e",
+          "example": "心"
+        },
+        {
+          "text": "金",
+          "audioId": "word-say-3c1e31a193cda379",
+          "example": "金"
+        }
+      ]
+    },
+    {
+      "title": "小书包",
+      "page": 3,
+      "read": [
+        {
+          "text": "书包",
+          "pinyin": "shū bāo",
+          "audioId": "word-say-c48625607f03389a"
+        },
+        {
+          "text": "包子",
+          "pinyin": "bāo zi",
+          "audioId": "word-say-787d89bb2ba8a2c6"
+        },
+        {
+          "text": "皮包",
+          "pinyin": "pí bāo",
+          "audioId": "word-say-f542c8f985f5ca9b"
+        },
+        {
+          "text": "包心菜",
+          "pinyin": "bāo xīn cài",
+          "audioId": "word-say-1698aadcde920bd9"
+        },
+        {
+          "text": "尺子",
+          "pinyin": "chǐ zi",
+          "audioId": "word-say-3e587e9a1742d5b4"
+        },
+        {
+          "text": "皮尺",
+          "pinyin": "pí chǐ",
+          "audioId": "word-say-3c25fa2279870dec"
+        },
+        {
+          "text": "尺寸",
+          "pinyin": "chǐ cùn",
+          "audioId": "word-say-246df7d8db841735"
+        },
+        {
+          "text": "作业本",
+          "pinyin": "zuò yè běn",
+          "audioId": "word-say-c22680ed2809b0ce"
+        },
+        {
+          "text": "工业",
+          "pinyin": "gōng yè",
+          "audioId": "word-say-af5a32367776a90c"
+        },
+        {
+          "text": "农业",
+          "pinyin": "nóng yè",
+          "audioId": "word-say-b2acdef8f2efe1fb"
+        },
+        {
+          "text": "铅笔",
+          "pinyin": "qiān bǐ",
+          "audioId": "word-say-f77e30ee1aed8819"
+        },
+        {
+          "text": "毛笔",
+          "pinyin": "máo bǐ",
+          "audioId": "word-say-12776fa4b6acea54"
+        },
+        {
+          "text": "水笔",
+          "pinyin": "shuǐ bǐ",
+          "audioId": "word-say-7030e523475d40fe"
+        },
+        {
+          "text": "转笔刀",
+          "pinyin": "zhuàn bǐ dāo",
+          "audioId": "word-say-1b1c7907fd10b251"
+        },
+        {
+          "text": "小刀",
+          "pinyin": "xiǎo dāo",
+          "audioId": "word-say-047a16fd089e1bad"
+        },
+        {
+          "text": "菜刀",
+          "pinyin": "cài dāo",
+          "audioId": "word-say-7a3a25167cc4a4d5"
+        },
+        {
+          "text": "宝贝",
+          "pinyin": "bǎo bei",
+          "audioId": "word-say-203f1a82599f3d1a"
+        },
+        {
+          "text": "少数",
+          "pinyin": "shǎo shù",
+          "audioId": "word-say-b11257c985a7cf06"
+        },
+        {
+          "text": "下课",
+          "pinyin": "xià kè",
+          "audioId": "word-say-fd0b4036e8b231ad"
+        },
+        {
+          "text": "上课",
+          "pinyin": "shàng kè",
+          "audioId": "word-say-b6a5b00f8db545dc"
+        },
+        {
+          "text": "课间",
+          "pinyin": "kè jiān",
+          "audioId": "word-say-9652bab3872e6b83"
+        },
+        {
+          "text": "课本",
+          "pinyin": "kè běn",
+          "audioId": "word-say-5aba39cfdf6ddf0e"
+        },
+        {
+          "text": "早上",
+          "pinyin": "zǎo shang",
+          "audioId": "word-say-c6fe2eb2c986c383"
+        },
+        {
+          "text": "早点",
+          "pinyin": "zǎo diǎn",
+          "audioId": "word-say-6ebd143f636a16b9"
+        },
+        {
+          "text": "早就",
+          "pinyin": "zǎo jiù",
+          "audioId": "word-say-9400fdacbb30ab50"
+        }
+      ],
+      "write": [
+        {
+          "text": "本子",
+          "pinyin": "běn zi",
+          "audioId": "word-say-42864ad27df88070"
+        },
+        {
+          "text": "小刀",
+          "pinyin": "xiǎo dāo",
+          "audioId": "word-say-047a16fd089e1bad"
+        },
+        {
+          "text": "尺子",
+          "pinyin": "chǐ zi",
+          "audioId": "word-say-3e587e9a1742d5b4"
+        },
+        {
+          "text": "刀山",
+          "pinyin": "dāo shān",
+          "audioId": "word-say-b8ee7030343bc0af"
+        },
+        {
+          "text": "不是",
+          "pinyin": "bù shì",
+          "audioId": "word-say-584cd0fcf368adcc"
+        },
+        {
+          "text": "不少",
+          "pinyin": "bù shǎo",
+          "audioId": "word-say-82e65dfb0dad9776"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-28",
+      "characters": "包尺作业笔刀宝贝少课早",
+      "passages": [
+        {
+          "title": "小书包",
+          "page": 76,
+          "paragraphs": [
+            {
+              "text": "我的小书包，宝贝真不少。",
+              "audioId": "word-text-word-28-0"
+            },
+            {
+              "text": "课本作业本，铅笔转笔刀。",
+              "audioId": "word-text-word-28-1"
+            },
+            {
+              "text": "天天起得早，陪我去学校。",
+              "audioId": "word-text-word-28-2"
+            }
+          ],
+          "required": false,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-28",
+      "spokenTitle": "小书包",
+      "characterItems": [
+        {
+          "text": "包",
+          "audioId": "word-say-26b9c4d2448e01e4",
+          "example": "包"
+        },
+        {
+          "text": "尺",
+          "audioId": "word-say-55cc7daf1a5dca42",
+          "example": "尺"
+        },
+        {
+          "text": "作",
+          "audioId": "word-say-7ff9df9923a86fd9",
+          "example": "作"
+        },
+        {
+          "text": "业",
+          "audioId": "word-say-2e452efbdb590d2f",
+          "example": "业"
+        },
+        {
+          "text": "笔",
+          "audioId": "word-say-3afda9c1bd324f75",
+          "example": "笔"
+        },
+        {
+          "text": "刀",
+          "audioId": "word-say-f7bff9ed8550c861",
+          "example": "刀"
+        },
+        {
+          "text": "宝",
+          "audioId": "word-say-5f198b47d26ee4ea",
+          "example": "宝"
+        },
+        {
+          "text": "贝",
+          "audioId": "word-say-97cafd6ffa89b133",
+          "example": "贝"
+        },
+        {
+          "text": "少",
+          "audioId": "word-say-62f99c9a0c50d790",
+          "example": "少"
+        },
+        {
+          "text": "课",
+          "audioId": "word-say-c9ad714600dd4f76",
+          "example": "课"
+        },
+        {
+          "text": "早",
+          "audioId": "word-say-e7c7fb50f3db8408",
+          "example": "早"
+        }
+      ]
+    },
+    {
+      "title": "升国旗",
+      "page": 3,
+      "read": [
+        {
+          "text": "上升",
+          "pinyin": "shàng shēng",
+          "audioId": "word-say-13a33ae5bd1ea1b3"
+        },
+        {
+          "text": "升起",
+          "pinyin": "shēng qǐ",
+          "audioId": "word-say-e7a9170807e92634"
+        },
+        {
+          "text": "升旗",
+          "pinyin": "shēng qí",
+          "audioId": "word-say-c8c37ebf1194f412"
+        },
+        {
+          "text": "中国",
+          "pinyin": "zhōng guó",
+          "audioId": "word-say-f0e9521611bb290d"
+        },
+        {
+          "text": "祖国",
+          "pinyin": "zǔ guó",
+          "audioId": "word-say-632c1d67933b811c"
+        },
+        {
+          "text": "国旗",
+          "pinyin": "guó qí",
+          "audioId": "word-say-2ad57a3da04a8082"
+        },
+        {
+          "text": "队旗",
+          "pinyin": "duì qí",
+          "audioId": "word-say-72a75ed74893233b"
+        },
+        {
+          "text": "红旗",
+          "pinyin": "hóng qí",
+          "audioId": "word-say-79ca28993323a433"
+        },
+        {
+          "text": "中间",
+          "pinyin": "zhōng jiān",
+          "audioId": "word-say-79f883a9fb832c8b"
+        },
+        {
+          "text": "心中",
+          "pinyin": "xīn zhōng",
+          "audioId": "word-say-864bf1aa86550915"
+        },
+        {
+          "text": "中央",
+          "pinyin": "zhōng yāng",
+          "audioId": "word-say-b864a6a4edbf6130"
+        },
+        {
+          "text": "我们",
+          "pinyin": "wǒ men",
+          "audioId": "word-say-bcacb40df81b94b7"
+        },
+        {
+          "text": "你们",
+          "pinyin": "nǐ men",
+          "audioId": "word-say-8a5d477bdaf612a9"
+        },
+        {
+          "text": "声音",
+          "pinyin": "shēng yīn",
+          "audioId": "word-say-473400815c0f687d"
+        },
+        {
+          "text": "歌声",
+          "pinyin": "gē shēng",
+          "audioId": "word-say-ae803572d7a68e73"
+        },
+        {
+          "text": "起来",
+          "pinyin": "qǐ lái",
+          "audioId": "word-say-b8a694b2df6db340"
+        },
+        {
+          "text": "起立",
+          "pinyin": "qǐ lì",
+          "audioId": "word-say-cd340341267de033"
+        },
+        {
+          "text": "起床",
+          "pinyin": "qǐ chuáng",
+          "audioId": "word-say-96f512f980046bf6"
+        },
+        {
+          "text": "多么",
+          "pinyin": "duō me",
+          "audioId": "word-say-ec687bc9f9bc3952"
+        },
+        {
+          "text": "好么",
+          "pinyin": "hǎo me",
+          "audioId": "word-say-816448486b7b942e"
+        },
+        {
+          "text": "要么",
+          "pinyin": "yào me",
+          "audioId": "word-say-f88c476613b4cbda"
+        },
+        {
+          "text": "什么",
+          "pinyin": "shén me",
+          "audioId": "word-say-c1b52e0e64a33dea"
+        },
+        {
+          "text": "方向",
+          "pinyin": "fāng xiàng",
+          "audioId": "word-say-1121471a0ff440f8"
+        },
+        {
+          "text": "指向",
+          "pinyin": "zhǐ xiàng",
+          "audioId": "word-say-59148003e99bbe46"
+        },
+        {
+          "text": "站立",
+          "pinyin": "zhàn lì",
+          "audioId": "word-say-464fbc400e8aa0fd"
+        },
+        {
+          "text": "独立",
+          "pinyin": "dú lì",
+          "audioId": "word-say-05cdb30a5483d64d"
+        }
+      ],
+      "write": [
+        {
+          "text": "山中",
+          "pinyin": "shān zhōng",
+          "audioId": "word-say-efdcf8e1544c4dfc"
+        },
+        {
+          "text": "水中",
+          "pinyin": "shuǐ zhōng",
+          "audioId": "word-say-6fd237b93acb5538"
+        },
+        {
+          "text": "十五",
+          "pinyin": "shí wǔ",
+          "audioId": "word-say-2f740e1769682233"
+        },
+        {
+          "text": "大风",
+          "pinyin": "dà fēng",
+          "audioId": "word-say-bc37c6ec9f64a3bc"
+        },
+        {
+          "text": "风雨",
+          "pinyin": "fēng yǔ",
+          "audioId": "word-say-720650f842fda421"
+        },
+        {
+          "text": "立正",
+          "pinyin": "lì zhèng",
+          "audioId": "word-say-ee1379a840fe0b96"
+        },
+        {
+          "text": "中心",
+          "pinyin": "zhōng xīn",
+          "audioId": "word-say-260cca3889c2a05c"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "课文《升国旗》",
+      "id": "word-29",
+      "characters": "升国旗中们声起多么向立",
+      "passages": [
+        {
+          "title": "升国旗",
+          "page": 78,
+          "paragraphs": [
+            {
+              "text": "中国，国旗，五星红旗。",
+              "audioId": "word-text-word-29-0"
+            },
+            {
+              "text": "五星红旗，我们的国旗。",
+              "audioId": "word-text-word-29-1"
+            },
+            {
+              "text": "国歌声中，徐徐升起。",
+              "audioId": "word-text-word-29-2"
+            },
+            {
+              "text": "迎风飘扬，多么美丽。",
+              "audioId": "word-text-word-29-3"
+            },
+            {
+              "text": "向着国旗，我们立正。",
+              "audioId": "word-text-word-29-4"
+            },
+            {
+              "text": "望着国旗，我们敬礼。",
+              "audioId": "word-text-word-29-5"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-29",
+      "spokenTitle": "升国旗",
+      "characterItems": [
+        {
+          "text": "升",
+          "audioId": "word-say-aa65429cd42bb945",
+          "example": "升"
+        },
+        {
+          "text": "国",
+          "audioId": "word-say-d1566afa505af0f0",
+          "example": "国"
+        },
+        {
+          "text": "旗",
+          "audioId": "word-say-4f720015bf9d6d2c",
+          "example": "旗"
+        },
+        {
+          "text": "中",
+          "audioId": "word-say-a567bdaa11367f26",
+          "example": "中"
+        },
+        {
+          "text": "们",
+          "audioId": "word-say-b4dcb3305a16291a",
+          "example": "们"
+        },
+        {
+          "text": "声",
+          "audioId": "word-say-693e132f27eb39e7",
+          "example": "声"
+        },
+        {
+          "text": "起",
+          "audioId": "word-say-3f3ed24bab3fc188",
+          "example": "起"
+        },
+        {
+          "text": "多",
+          "audioId": "word-say-1940119f05716460",
+          "example": "多"
+        },
+        {
+          "text": "么",
+          "audioId": "word-say-073339935f0c9b3c",
+          "example": "么"
+        },
+        {
+          "text": "向",
+          "audioId": "word-say-a2f77db0e9b9ab53",
+          "example": "向"
+        },
+        {
+          "text": "立",
+          "audioId": "word-say-fc651d3c3ad56c96",
+          "example": "立"
+        }
+      ]
+    },
+    {
+      "title": "语文园地六",
+      "page": 3,
+      "read": [
+        {
+          "text": "学校",
+          "pinyin": "xué xiào",
+          "audioId": "word-say-dc6e2aafeb9e125b"
+        },
+        {
+          "text": "老师",
+          "pinyin": "lǎo shī",
+          "audioId": "word-say-c9a31a3f670b7f99"
+        },
+        {
+          "text": "老人",
+          "pinyin": "lǎo rén",
+          "audioId": "word-say-94c14736de4ee0f7"
+        },
+        {
+          "text": "工人",
+          "pinyin": "gōng rén",
+          "audioId": "word-say-bff01f9cc7b66c85"
+        },
+        {
+          "text": "工厂",
+          "pinyin": "gōng chǎng",
+          "audioId": "word-say-5c331171b102d001"
+        },
+        {
+          "text": "医院",
+          "pinyin": "yī yuàn",
+          "audioId": "word-say-1f6835c0d878fa0e"
+        },
+        {
+          "text": "医生",
+          "pinyin": "yī shēng",
+          "audioId": "word-say-e8ec877c8da553d3"
+        },
+        {
+          "text": "学生",
+          "pinyin": "xué shēng",
+          "audioId": "word-say-13a58ec2074e014a"
+        },
+        {
+          "text": "传达室",
+          "pinyin": "chuán dá shì",
+          "audioId": "word-say-303dd5d3a4c23044"
+        },
+        {
+          "text": "门卫",
+          "pinyin": "mén wèi",
+          "audioId": "word-say-e47883fa23c51eaa"
+        },
+        {
+          "text": "卫生",
+          "pinyin": "wèi shēng",
+          "audioId": "word-say-1156fe3779e4a447"
+        },
+        {
+          "text": "你们",
+          "pinyin": "nǐ men",
+          "audioId": "word-say-8a5d477bdaf612a9"
+        },
+        {
+          "text": "家里",
+          "pinyin": "jiā lǐ",
+          "audioId": "word-say-e97022d759e9ed55"
+        },
+        {
+          "text": "男生",
+          "pinyin": "nán shēng",
+          "audioId": "word-say-ef08455cb3062a7b"
+        },
+        {
+          "text": "女生",
+          "pinyin": "nǚ shēng",
+          "audioId": "word-say-79cdb978c703640a"
+        },
+        {
+          "text": "蓝色",
+          "pinyin": "lán sè",
+          "audioId": "word-say-67035e6b7f82acdb"
+        },
+        {
+          "text": "上山",
+          "pinyin": "shàng shān",
+          "audioId": "word-say-3860ba1683e63d62"
+        },
+        {
+          "text": "三年",
+          "pinyin": "sān nián",
+          "audioId": "word-say-b13f0b14f6bd5842"
+        },
+        {
+          "text": "写字",
+          "pinyin": "xiě zì",
+          "audioId": "word-say-15bbb9e233aeabfc"
+        },
+        {
+          "text": "报纸",
+          "pinyin": "bào zhǐ",
+          "audioId": "word-say-bdd34dcdbaa62120"
+        },
+        {
+          "text": "树林",
+          "pinyin": "shù lín",
+          "audioId": "word-say-d5def885722ba5c2"
+        },
+        {
+          "text": "桃子",
+          "pinyin": "táo zi",
+          "audioId": "word-say-0fe9ed3a6b78600f"
+        },
+        {
+          "text": "大桥",
+          "pinyin": "dà qiáo",
+          "audioId": "word-say-f1297e48d2d1639b"
+        },
+        {
+          "text": "花朵",
+          "pinyin": "huā duǒ",
+          "audioId": "word-say-b0b3497bcf85ecd7"
+        },
+        {
+          "text": "绿草",
+          "pinyin": "lǜ cǎo",
+          "audioId": "word-say-4202d8f6d2164ca3"
+        },
+        {
+          "text": "莲花",
+          "pinyin": "lián huā",
+          "audioId": "word-say-f2f491398295b1b9"
+        },
+        {
+          "text": "莲叶",
+          "pinyin": "lián yè",
+          "audioId": "word-say-cadc102850f1893b"
+        },
+        {
+          "text": "白菜",
+          "pinyin": "bái cài",
+          "audioId": "word-say-9b8bc1b61d692685"
+        },
+        {
+          "text": "买菜",
+          "pinyin": "mǎi cài",
+          "audioId": "word-say-8e2c3a749fcfbac1"
+        }
+      ],
+      "write": [
+        {
+          "text": "工人",
+          "pinyin": "gōng rén",
+          "audioId": "word-say-bff01f9cc7b66c85"
+        },
+        {
+          "text": "工厂",
+          "pinyin": "gōng chǎng",
+          "audioId": "word-say-5c331171b102d001"
+        },
+        {
+          "text": "门口",
+          "pinyin": "mén kǒu",
+          "audioId": "word-say-726c7da129e6e4a6"
+        },
+        {
+          "text": "门卫",
+          "pinyin": "mén wèi",
+          "audioId": "word-say-e47883fa23c51eaa"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "日积月累《古朗月行（节选）》",
+      "id": "word-30",
+      "characters": "老师工厂医院生门卫",
+      "passages": [
+        {
+          "title": "古朗月行（节选）",
+          "page": 82,
+          "paragraphs": [
+            {
+              "text": "小时不识月，呼作白玉盘。",
+              "audioId": "word-text-word-30-0"
+            },
+            {
+              "text": "又疑瑶台镜，飞在青云端。",
+              "audioId": "word-text-word-30-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-30",
+      "spokenTitle": "语文园地六",
+      "characterItems": [
+        {
+          "text": "老",
+          "audioId": "word-say-f91f5faf74703314",
+          "example": "老"
+        },
+        {
+          "text": "师",
+          "audioId": "word-say-8bc706d8f6d1838a",
+          "example": "师"
+        },
+        {
+          "text": "工",
+          "audioId": "word-say-bb6a90660bf98c4d",
+          "example": "工"
+        },
+        {
+          "text": "厂",
+          "audioId": "word-say-29efec4056f32614",
+          "example": "厂"
+        },
+        {
+          "text": "医",
+          "audioId": "word-say-de396510bb75ff73",
+          "example": "医"
+        },
+        {
+          "text": "院",
+          "audioId": "word-say-38eebae5f97a6a11",
+          "example": "院"
+        },
+        {
+          "text": "生",
+          "audioId": "word-say-c5921e8441bcf405",
+          "example": "生"
+        },
+        {
+          "text": "门",
+          "audioId": "word-say-a407325e0081cb7d",
+          "example": "门"
+        },
+        {
+          "text": "卫",
+          "audioId": "word-say-9971297206c91c86",
+          "example": "卫"
+        }
+      ]
+    },
+    {
+      "title": "小小的船",
+      "page": 3,
+      "read": [
+        {
+          "text": "小船",
+          "pinyin": "xiǎo chuán",
+          "audioId": "word-say-f85b025d3f644e36"
+        },
+        {
+          "text": "大船",
+          "pinyin": "dà chuán",
+          "audioId": "word-say-07ef83e3820d96b4"
+        },
+        {
+          "text": "船长",
+          "pinyin": "chuán zhǎng",
+          "audioId": "word-say-a024744b3ca71b0d"
+        },
+        {
+          "text": "船头",
+          "pinyin": "chuán tóu",
+          "audioId": "word-say-f841b50f3fa147f2"
+        },
+        {
+          "text": "弯曲",
+          "pinyin": "wān qū",
+          "audioId": "word-say-bfd401809d15147f"
+        },
+        {
+          "text": "弯月",
+          "pinyin": "wān yuè",
+          "audioId": "word-say-88911eba12dbff95"
+        },
+        {
+          "text": "月儿",
+          "pinyin": "yuè ér",
+          "audioId": "word-say-d978d12fb480a41b"
+        },
+        {
+          "text": "儿子",
+          "pinyin": "ér zi",
+          "audioId": "word-say-9231b93fd67f48d7"
+        },
+        {
+          "text": "儿歌",
+          "pinyin": "ér gē",
+          "audioId": "word-say-bd8e1a22990b1c27"
+        },
+        {
+          "text": "两头",
+          "pinyin": "liǎng tóu",
+          "audioId": "word-say-d9af552c06be931c"
+        },
+        {
+          "text": "两人",
+          "pinyin": "liǎng rén",
+          "audioId": "word-say-af344ece36cdbd7e"
+        },
+        {
+          "text": "头发",
+          "pinyin": "tóu fà",
+          "audioId": "word-say-476627a8c1b83505"
+        },
+        {
+          "text": "头上",
+          "pinyin": "tóu shàng",
+          "audioId": "word-say-72de5d88d27d9f7a"
+        },
+        {
+          "text": "正在",
+          "pinyin": "zhèng zài",
+          "audioId": "word-say-e6b02a08e69a342d"
+        },
+        {
+          "text": "现在",
+          "pinyin": "xiàn zài",
+          "audioId": "word-say-43584f37c1f4932f"
+        },
+        {
+          "text": "里面",
+          "pinyin": "lǐ miàn",
+          "audioId": "word-say-0111930eba211e33"
+        },
+        {
+          "text": "里外",
+          "pinyin": "lǐ wài",
+          "audioId": "word-say-26086cb3d98f9874"
+        },
+        {
+          "text": "看见",
+          "pinyin": "kàn jiàn",
+          "audioId": "word-say-7205426737a8c37c"
+        },
+        {
+          "text": "看书",
+          "pinyin": "kàn shū",
+          "audioId": "word-say-9f805978dd250981"
+        },
+        {
+          "text": "见面",
+          "pinyin": "jiàn miàn",
+          "audioId": "word-say-65a7e6d1d31fc4b9"
+        },
+        {
+          "text": "再见",
+          "pinyin": "zài jiàn",
+          "audioId": "word-say-c90a1cdb561d0269"
+        },
+        {
+          "text": "闪亮",
+          "pinyin": "shǎn liàng",
+          "audioId": "word-say-bb78295186a64610"
+        },
+        {
+          "text": "闪光",
+          "pinyin": "shǎn guāng",
+          "audioId": "word-say-c687c64eecc48c5d"
+        },
+        {
+          "text": "闪电",
+          "pinyin": "shǎn diàn",
+          "audioId": "word-say-a8c1b5b5b172b128"
+        }
+      ],
+      "write": [
+        {
+          "text": "月儿",
+          "pinyin": "yuè ér",
+          "audioId": "word-say-d978d12fb480a41b"
+        },
+        {
+          "text": "月牙",
+          "pinyin": "yuè yá",
+          "audioId": "word-say-8b3e0785a3aec46e"
+        },
+        {
+          "text": "五月",
+          "pinyin": "wǔ yuè",
+          "audioId": "word-say-5ae5cbaf179a4c24"
+        },
+        {
+          "text": "儿子",
+          "pinyin": "ér zi",
+          "audioId": "word-say-9231b93fd67f48d7"
+        },
+        {
+          "text": "女儿",
+          "pinyin": "nǚ ér",
+          "audioId": "word-say-115425d59e4ae5f5"
+        },
+        {
+          "text": "男儿",
+          "pinyin": "nán ér",
+          "audioId": "word-say-05b9ef6e49cf9c69"
+        },
+        {
+          "text": "头上",
+          "pinyin": "tóu shàng",
+          "audioId": "word-say-72de5d88d27d9f7a"
+        },
+        {
+          "text": "手头",
+          "pinyin": "shǒu tóu",
+          "audioId": "word-say-5082d89ef4541b6c"
+        },
+        {
+          "text": "里头",
+          "pinyin": "lǐ tou",
+          "audioId": "word-say-4a397860f8e9bf32"
+        },
+        {
+          "text": "厂里",
+          "pinyin": "chǎng lǐ",
+          "audioId": "word-say-469775ca2afd799a"
+        },
+        {
+          "text": "雨里",
+          "pinyin": "yǔ lǐ",
+          "audioId": "word-say-34b147f10fc1e0de"
+        },
+        {
+          "text": "土里",
+          "pinyin": "tǔ lǐ",
+          "audioId": "word-say-4d7c3f3fd13264eb"
+        },
+        {
+          "text": "不见",
+          "pinyin": "bù jiàn",
+          "audioId": "word-say-a3fdf059d4ffb9a2"
+        },
+        {
+          "text": "可见",
+          "pinyin": "kě jiàn",
+          "audioId": "word-say-41417f490b88b05f"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "课文《小小的船》",
+      "id": "word-32",
+      "characters": "船弯儿两头在里看见闪",
+      "passages": [
+        {
+          "title": "小小的船",
+          "page": 84,
+          "paragraphs": [
+            {
+              "text": "弯弯的月儿小小的船，小小的船儿两头尖。",
+              "audioId": "word-text-word-32-0"
+            },
+            {
+              "text": "我在小小的船里坐，只看见闪闪的星星蓝蓝的天。",
+              "audioId": "word-text-word-32-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-32",
+      "spokenTitle": "小小的船",
+      "characterItems": [
+        {
+          "text": "船",
+          "audioId": "word-say-15b7f7a95c1ccdcb",
+          "example": "船"
+        },
+        {
+          "text": "弯",
+          "audioId": "word-say-d534a1f08af204d5",
+          "example": "弯"
+        },
+        {
+          "text": "儿",
+          "audioId": "word-say-1ed5efc3dc59b2e5",
+          "example": "儿"
+        },
+        {
+          "text": "两",
+          "audioId": "word-say-83385d2edafe28d4",
+          "example": "两"
+        },
+        {
+          "text": "头",
+          "audioId": "word-say-5f64ab008929fdb5",
+          "example": "头"
+        },
+        {
+          "text": "在",
+          "audioId": "word-say-12404a0b63817240",
+          "example": "在"
+        },
+        {
+          "text": "里",
+          "audioId": "word-say-79f43de6e3bc9fd5",
+          "example": "里"
+        },
+        {
+          "text": "看",
+          "audioId": "word-say-61f43315f98a4b16",
+          "example": "看"
+        },
+        {
+          "text": "见",
+          "audioId": "word-say-b1c57d1cf6573f2e",
+          "example": "见"
+        },
+        {
+          "text": "闪",
+          "audioId": "word-say-02c6f46a33fa8e3a",
+          "example": "闪"
+        }
+      ]
+    },
+    {
+      "title": "影子",
+      "page": 3,
+      "read": [
+        {
+          "text": "影子",
+          "pinyin": "yǐng zi",
+          "audioId": "word-say-337dbf6cb6f623df"
+        },
+        {
+          "text": "人影",
+          "pinyin": "rén yǐng",
+          "audioId": "word-say-6a5934c87d3572b0"
+        },
+        {
+          "text": "电影",
+          "pinyin": "diàn yǐng",
+          "audioId": "word-say-03a3a327af684099"
+        },
+        {
+          "text": "前面",
+          "pinyin": "qián miàn",
+          "audioId": "word-say-ad0a0abeab6bedf6"
+        },
+        {
+          "text": "前方",
+          "pinyin": "qián fāng",
+          "audioId": "word-say-22d07e5bf14e6f67"
+        },
+        {
+          "text": "前进",
+          "pinyin": "qián jìn",
+          "audioId": "word-say-d681c6e2947ae79b"
+        },
+        {
+          "text": "常常",
+          "pinyin": "cháng cháng",
+          "audioId": "word-say-cfd3e2c41de90c5a"
+        },
+        {
+          "text": "经常",
+          "pinyin": "jīng cháng",
+          "audioId": "word-say-1c49d48df5599c11"
+        },
+        {
+          "text": "常用",
+          "pinyin": "cháng yòng",
+          "audioId": "word-say-4563c57b5143deaa"
+        },
+        {
+          "text": "黑色",
+          "pinyin": "hēi sè",
+          "audioId": "word-say-ed7d2c54184be5f5"
+        },
+        {
+          "text": "黑人",
+          "pinyin": "hēi rén",
+          "audioId": "word-say-337ddf54b42b3256"
+        },
+        {
+          "text": "黑笔",
+          "pinyin": "hēi bǐ",
+          "audioId": "word-say-b3a655bd441d0432"
+        },
+        {
+          "text": "黑狗",
+          "pinyin": "hēi gǒu",
+          "audioId": "word-say-a8bf7428ccab5767"
+        },
+        {
+          "text": "小狗",
+          "pinyin": "xiǎo gǒu",
+          "audioId": "word-say-291b0888f1c619c3"
+        },
+        {
+          "text": "黄狗",
+          "pinyin": "huáng gǒu",
+          "audioId": "word-say-946ca1d4aba4f2fe"
+        },
+        {
+          "text": "狗毛",
+          "pinyin": "gǒu máo",
+          "audioId": "word-say-d90819c707ce5bdc"
+        },
+        {
+          "text": "左右",
+          "pinyin": "zuǒ yòu",
+          "audioId": "word-say-191e26b5d741e457"
+        },
+        {
+          "text": "左边",
+          "pinyin": "zuǒ biān",
+          "audioId": "word-say-6a0ef384c814c9e5"
+        },
+        {
+          "text": "右边",
+          "pinyin": "yòu biān",
+          "audioId": "word-say-0838dcc59823278c"
+        },
+        {
+          "text": "右下角",
+          "pinyin": "yòu xià jiǎo",
+          "audioId": "word-say-6897632c0ea9cf81"
+        },
+        {
+          "text": "它们",
+          "pinyin": "tā men",
+          "audioId": "word-say-c40b3d28802c0caa"
+        },
+        {
+          "text": "好人",
+          "pinyin": "hǎo rén",
+          "audioId": "word-say-cbbc956826741471"
+        },
+        {
+          "text": "好事",
+          "pinyin": "hǎo shì",
+          "audioId": "word-say-6d0a309b590ce873"
+        },
+        {
+          "text": "好吧",
+          "pinyin": "hǎo ba",
+          "audioId": "word-say-4feafb585b359d6b"
+        },
+        {
+          "text": "友好",
+          "pinyin": "yǒu hǎo",
+          "audioId": "word-say-b09958f8d9bd99ee"
+        },
+        {
+          "text": "朋友",
+          "pinyin": "péng you",
+          "audioId": "word-say-677aad1a0ee44cd6"
+        },
+        {
+          "text": "友人",
+          "pinyin": "yǒu rén",
+          "audioId": "word-say-797d0fd6e5e3d3dd"
+        },
+        {
+          "text": "友善",
+          "pinyin": "yǒu shàn",
+          "audioId": "word-say-16e3b4c5c04a244b"
+        },
+        {
+          "text": "友谊",
+          "pinyin": "yǒu yì",
+          "audioId": "word-say-edc4eb15573c056e"
+        }
+      ],
+      "write": [
+        {
+          "text": "正在",
+          "pinyin": "zhèng zài",
+          "audioId": "word-say-e6b02a08e69a342d"
+        },
+        {
+          "text": "我是",
+          "pinyin": "wǒ shì",
+          "audioId": "word-say-06ba27715e2633b7"
+        },
+        {
+          "text": "左右",
+          "pinyin": "zuǒ yòu",
+          "audioId": "word-say-191e26b5d741e457"
+        },
+        {
+          "text": "左手",
+          "pinyin": "zuǒ shǒu",
+          "audioId": "word-say-dd393f37630429c3"
+        },
+        {
+          "text": "右耳",
+          "pinyin": "yòu ěr",
+          "audioId": "word-say-ebb778c56e18e09f"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-31",
+      "characters": "影前常黑狗左右它好朋友",
+      "passages": [
+        {
+          "title": "影子",
+          "page": 86,
+          "paragraphs": [
+            {
+              "text": "影子在前，影子在后，影子常常跟着我，就像一条小黑狗。",
+              "audioId": "word-text-word-31-0"
+            },
+            {
+              "text": "影子在左，影子在右，影子常常陪着我，它是我的好朋友。",
+              "audioId": "word-text-word-31-1"
+            }
+          ],
+          "required": false,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-31",
+      "spokenTitle": "影子",
+      "characterItems": [
+        {
+          "text": "影",
+          "audioId": "word-say-1cc19d290f3c72bc",
+          "example": "影"
+        },
+        {
+          "text": "前",
+          "audioId": "word-say-6044e9f095e0b5e4",
+          "example": "前"
+        },
+        {
+          "text": "常",
+          "audioId": "word-say-08b2018a055b5231",
+          "example": "常"
+        },
+        {
+          "text": "黑",
+          "audioId": "word-say-59650f41f74bb476",
+          "example": "黑"
+        },
+        {
+          "text": "狗",
+          "audioId": "word-say-cecd675a4c3cb00d",
+          "example": "狗"
+        },
+        {
+          "text": "左",
+          "audioId": "word-say-e2e0c454e5d53186",
+          "example": "左"
+        },
+        {
+          "text": "右",
+          "audioId": "word-say-14ab1f2bce0a8777",
+          "example": "右"
+        },
+        {
+          "text": "它",
+          "audioId": "word-say-7e9260e925f14bef",
+          "example": "它"
+        },
+        {
+          "text": "好",
+          "audioId": "word-say-f867f34178594f89",
+          "example": "好"
+        },
+        {
+          "text": "朋",
+          "audioId": "word-say-e9742deb13fd55d9",
+          "example": "朋"
+        },
+        {
+          "text": "友",
+          "audioId": "word-say-23fa6f37cdf00853",
+          "example": "友"
+        }
+      ]
+    },
+    {
+      "title": "两件宝",
+      "page": 4,
+      "read": [
+        {
+          "text": "两件",
+          "pinyin": "liǎng jiàn",
+          "audioId": "word-say-12334ba65fcf8dca"
+        },
+        {
+          "text": "事件",
+          "pinyin": "shì jiàn",
+          "audioId": "word-say-c560201b331c5443"
+        },
+        {
+          "text": "部件",
+          "pinyin": "bù jiàn",
+          "audioId": "word-say-a2345efc60006908"
+        },
+        {
+          "text": "这件",
+          "pinyin": "zhè jiàn",
+          "audioId": "word-say-ba8e9f8c9017eacb"
+        },
+        {
+          "text": "没有",
+          "pinyin": "méi yǒu",
+          "audioId": "word-say-f127804b9227e152"
+        },
+        {
+          "text": "有心",
+          "pinyin": "yǒu xīn",
+          "audioId": "word-say-a3eb877bb9ac932a"
+        },
+        {
+          "text": "少有",
+          "pinyin": "shǎo yǒu",
+          "audioId": "word-say-58c47d3ca68f1397"
+        },
+        {
+          "text": "共有",
+          "pinyin": "gòng yǒu",
+          "audioId": "word-say-a8d79a099242cdc7"
+        },
+        {
+          "text": "和好",
+          "pinyin": "hé hǎo",
+          "audioId": "word-say-bd7b17f82dd07a23"
+        },
+        {
+          "text": "和平",
+          "pinyin": "hé píng",
+          "audioId": "word-say-c38b401e2062ca88"
+        },
+        {
+          "text": "和气",
+          "pinyin": "hé qi",
+          "audioId": "word-say-08bceeeda8a88414"
+        },
+        {
+          "text": "总和",
+          "pinyin": "zǒng hé",
+          "audioId": "word-say-f74cddc929315622"
+        },
+        {
+          "text": "做工",
+          "pinyin": "zuò gōng",
+          "audioId": "word-say-8ed3d92576b2d2cc"
+        },
+        {
+          "text": "做事",
+          "pinyin": "zuò shì",
+          "audioId": "word-say-4f7f5752e418e024"
+        },
+        {
+          "text": "做家务",
+          "pinyin": "zuò jiā wù",
+          "audioId": "word-say-c61e5b066ff14adf"
+        },
+        {
+          "text": "做作业",
+          "pinyin": "zuò zuò yè",
+          "audioId": "word-say-ad905cb6e5ac8db8"
+        },
+        {
+          "text": "也好",
+          "pinyin": "yě hǎo",
+          "audioId": "word-say-e962d35d6d1815ea"
+        },
+        {
+          "text": "也是",
+          "pinyin": "yě shì",
+          "audioId": "word-say-256c0476edd6eadd"
+        },
+        {
+          "text": "也有",
+          "pinyin": "yě yǒu",
+          "audioId": "word-say-c534d05d4833e745"
+        },
+        {
+          "text": "办法",
+          "pinyin": "bàn fǎ",
+          "audioId": "word-say-d2a92f0c9c91ab20"
+        },
+        {
+          "text": "办到",
+          "pinyin": "bàn dào",
+          "audioId": "word-say-97938634efdd007a"
+        },
+        {
+          "text": "开办",
+          "pinyin": "kāi bàn",
+          "audioId": "word-say-ee52bb04dd6d03f4"
+        },
+        {
+          "text": "办事",
+          "pinyin": "bàn shì",
+          "audioId": "word-say-9ca6185efdaa0f35"
+        },
+        {
+          "text": "怎么办",
+          "pinyin": "zěn me bàn",
+          "audioId": "word-say-11c128bc383dd7db"
+        },
+        {
+          "text": "包办",
+          "pinyin": "bāo bàn",
+          "audioId": "word-say-55479ad5c7b9b24e"
+        },
+        {
+          "text": "站到",
+          "pinyin": "zhàn dào",
+          "audioId": "word-say-e74eb7f51e5a1b59"
+        },
+        {
+          "text": "飞到",
+          "pinyin": "fēi dào",
+          "audioId": "word-say-04c9f88b4cda9b34"
+        },
+        {
+          "text": "先到",
+          "pinyin": "xiān dào",
+          "audioId": "word-say-16e59397dd7f4123"
+        },
+        {
+          "text": "早到",
+          "pinyin": "zǎo dào",
+          "audioId": "word-say-63043e1b6c54c786"
+        },
+        {
+          "text": "有声有色",
+          "pinyin": "yǒu shēng yǒu sè",
+          "audioId": "word-say-fc53738afd700889"
+        },
+        {
+          "text": "又来",
+          "pinyin": "yòu lái",
+          "audioId": "word-say-fa7a47fbffe19674"
+        },
+        {
+          "text": "又大又白",
+          "pinyin": "yòu dà yòu bái",
+          "audioId": "word-say-6547ef1ae0fb0c5f"
+        },
+        {
+          "text": "天才",
+          "pinyin": "tiān cái",
+          "audioId": "word-say-9fa8ca8b38302914"
+        },
+        {
+          "text": "才气",
+          "pinyin": "cái qì",
+          "audioId": "word-say-c18adcf96518ed51"
+        },
+        {
+          "text": "才能",
+          "pinyin": "cái néng",
+          "audioId": "word-say-9bc2ebe0cb790711"
+        },
+        {
+          "text": "能力",
+          "pinyin": "néng lì",
+          "audioId": "word-say-5c5374dd958bcb79"
+        },
+        {
+          "text": "能手",
+          "pinyin": "néng shǒu",
+          "audioId": "word-say-e105aaf971084258"
+        },
+        {
+          "text": "能干",
+          "pinyin": "néng gàn",
+          "audioId": "word-say-bff02a6131f86a8d"
+        }
+      ],
+      "write": [
+        {
+          "text": "中和",
+          "pinyin": "zhōng hé",
+          "audioId": "word-say-fb3f2583e0f790fe"
+        },
+        {
+          "text": "左和右",
+          "pinyin": "zuǒ hé yòu",
+          "audioId": "word-say-041d9f5678e6ac7b"
+        },
+        {
+          "text": "开和关",
+          "pinyin": "kāi hé guān",
+          "audioId": "word-say-7f1037bf77d268f6"
+        },
+        {
+          "text": "也是",
+          "pinyin": "yě shì",
+          "audioId": "word-say-256c0476edd6eadd"
+        },
+        {
+          "text": "又一年",
+          "pinyin": "yòu yī nián",
+          "audioId": "word-say-f520791fff899dd3"
+        },
+        {
+          "text": "天才",
+          "pinyin": "tiān cái",
+          "audioId": "word-say-9fa8ca8b38302914"
+        },
+        {
+          "text": "才女",
+          "pinyin": "cái nǚ",
+          "audioId": "word-say-0c4d70c81e56e63d"
+        },
+        {
+          "text": "才子",
+          "pinyin": "cái zi",
+          "audioId": "word-say-5bbd9d415b80be14"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "课文《两件宝》",
+      "id": "word-33",
+      "characters": "件有和做也办到又才能",
+      "passages": [
+        {
+          "title": "两件宝",
+          "page": 88,
+          "paragraphs": [
+            {
+              "text": "人有两件宝，双手和大脑。双手会做工，大脑会思考。",
+              "audioId": "word-text-word-33-0"
+            },
+            {
+              "text": "用手不用脑，事情做不好。用脑不用手，啥也办不到。",
+              "audioId": "word-text-word-33-1"
+            },
+            {
+              "text": "用手又用脑，才能有创造。",
+              "audioId": "word-text-word-33-2"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-33",
+      "spokenTitle": "两件宝",
+      "characterItems": [
+        {
+          "text": "件",
+          "audioId": "word-say-7c00255577088ec9",
+          "example": "件"
+        },
+        {
+          "text": "有",
+          "audioId": "word-say-90ce0f66f09488f2",
+          "example": "有"
+        },
+        {
+          "text": "和",
+          "audioId": "word-say-3d7114281f5b59d9",
+          "example": "和"
+        },
+        {
+          "text": "做",
+          "audioId": "word-say-94f5404441e8c480",
+          "example": "做"
+        },
+        {
+          "text": "也",
+          "audioId": "word-say-658605835bfc7ff8",
+          "example": "也"
+        },
+        {
+          "text": "办",
+          "audioId": "word-say-fc5b0c1a72a6c88e",
+          "example": "办"
+        },
+        {
+          "text": "到",
+          "audioId": "word-say-b56f36b529dbcd62",
+          "example": "到"
+        },
+        {
+          "text": "又",
+          "audioId": "word-say-e71ce5deab513c6d",
+          "example": "又"
+        },
+        {
+          "text": "才",
+          "audioId": "word-say-9a8d951dcb604ef6",
+          "example": "才"
+        },
+        {
+          "text": "能",
+          "audioId": "word-say-413c06bcef7c934d",
+          "example": "能"
+        }
+      ]
+    },
+    {
+      "title": "语文园地七",
+      "page": 4,
+      "read": [
+        {
+          "text": "爷爷",
+          "pinyin": "yé ye",
+          "audioId": "word-say-05a394a5779b1ee5"
+        },
+        {
+          "text": "奶奶",
+          "pinyin": "nǎi nai",
+          "audioId": "word-say-b50dde9bb88540ba"
+        },
+        {
+          "text": "姥爷",
+          "pinyin": "lǎo ye",
+          "audioId": "word-say-ab4901dc09bd2a0c"
+        },
+        {
+          "text": "姥姥",
+          "pinyin": "lǎo lao",
+          "audioId": "word-say-92cbb2701ad6b5b9"
+        },
+        {
+          "text": "叔叔",
+          "pinyin": "shū shu",
+          "audioId": "word-say-3aea6dc123efe59a"
+        },
+        {
+          "text": "姑姑",
+          "pinyin": "gū gu",
+          "audioId": "word-say-2605e3afd09d8413"
+        },
+        {
+          "text": "爸爸",
+          "pinyin": "bà ba",
+          "audioId": "word-say-d45ce71dd359d0e7"
+        },
+        {
+          "text": "妈妈",
+          "pinyin": "mā ma",
+          "audioId": "word-say-45f1364f08aed165"
+        },
+        {
+          "text": "舅舅",
+          "pinyin": "jiù jiu",
+          "audioId": "word-say-bf665739f1689a68"
+        },
+        {
+          "text": "姨妈",
+          "pinyin": "yí mā",
+          "audioId": "word-say-9dcbe12a5bcaa496"
+        },
+        {
+          "text": "哥哥",
+          "pinyin": "gē ge",
+          "audioId": "word-say-6cf70b7c4fa3c4b4"
+        },
+        {
+          "text": "姐姐",
+          "pinyin": "jiě jie",
+          "audioId": "word-say-d25622289ef32c86"
+        },
+        {
+          "text": "弟弟",
+          "pinyin": "dì di",
+          "audioId": "word-say-cf0af76ceb03b3ad"
+        },
+        {
+          "text": "妹妹",
+          "pinyin": "mèi mei",
+          "audioId": "word-say-dd663fa55681eed7"
+        },
+        {
+          "text": "明天",
+          "pinyin": "míng tiān",
+          "audioId": "word-say-b1d841b978fb524c"
+        },
+        {
+          "text": "昨晚",
+          "pinyin": "zuó wǎn",
+          "audioId": "word-say-59ae28caf7a9a166"
+        },
+        {
+          "text": "春天",
+          "pinyin": "chūn tiān",
+          "audioId": "word-say-9eaa6d08fa0ccc5c"
+        },
+        {
+          "text": "早晨",
+          "pinyin": "zǎo chen",
+          "audioId": "word-say-119af509ad0770c5"
+        },
+        {
+          "text": "面向",
+          "pinyin": "miàn xiàng",
+          "audioId": "word-say-2019f9645edcfe59"
+        },
+        {
+          "text": "方面",
+          "pinyin": "fāng miàn",
+          "audioId": "word-say-3fc5b79e6d298d4a"
+        },
+        {
+          "text": "太阳",
+          "pinyin": "tài yang",
+          "audioId": "word-say-5c313602f7beb485"
+        },
+        {
+          "text": "栽树",
+          "pinyin": "zāi shù",
+          "audioId": "word-say-71e3b4dc50fd717a"
+        },
+        {
+          "text": "乘凉",
+          "pinyin": "chéng liáng",
+          "audioId": "word-say-9143ffacfe329d90"
+        },
+        {
+          "text": "开始",
+          "pinyin": "kāi shǐ",
+          "audioId": "word-say-d2bb025a2e51c410"
+        },
+        {
+          "text": "竹竿",
+          "pinyin": "zhú gān",
+          "audioId": "word-say-f0fdd6e3a83f8bfb"
+        },
+        {
+          "text": "进步",
+          "pinyin": "jìn bù",
+          "audioId": "word-say-3cd4b73afa842451"
+        }
+      ],
+      "write": [
+        {
+          "text": "爸爸",
+          "pinyin": "bà ba",
+          "audioId": "word-say-d45ce71dd359d0e7"
+        },
+        {
+          "text": "妈妈",
+          "pinyin": "mā ma",
+          "audioId": "word-say-45f1364f08aed165"
+        },
+        {
+          "text": "好了",
+          "pinyin": "hǎo le",
+          "audioId": "word-say-e9934d5d82275b80"
+        },
+        {
+          "text": "天才",
+          "pinyin": "tiān cái",
+          "audioId": "word-say-9fa8ca8b38302914"
+        },
+        {
+          "text": "云雨",
+          "pinyin": "yún yǔ",
+          "audioId": "word-say-980a1ce42761e190"
+        },
+        {
+          "text": "山水",
+          "pinyin": "shān shuǐ",
+          "audioId": "word-say-41ce59d238e251f8"
+        },
+        {
+          "text": "月儿",
+          "pinyin": "yuè ér",
+          "audioId": "word-say-d978d12fb480a41b"
+        },
+        {
+          "text": "四年",
+          "pinyin": "sì nián",
+          "audioId": "word-say-57f5281cbbe04a45"
+        },
+        {
+          "text": "我在",
+          "pinyin": "wǒ zài",
+          "audioId": "word-say-33f40475f82bfe08"
+        },
+        {
+          "text": "心里",
+          "pinyin": "xīn li",
+          "audioId": "word-say-dcee9a614a00ca82"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "日积月累谚语",
+      "id": "word-34",
+      "characters": "爷奶叔姐妹",
+      "passages": [
+        {
+          "title": "语文园地七",
+          "page": 91,
+          "paragraphs": [
+            {
+              "text": "种瓜得瓜，种豆得豆。",
+              "audioId": "word-text-word-34-0"
+            },
+            {
+              "text": "前人栽树，后人乘凉。",
+              "audioId": "word-text-word-34-1"
+            },
+            {
+              "text": "千里之行，始于足下。",
+              "audioId": "word-text-word-34-2"
+            },
+            {
+              "text": "百尺竿头，更进一步。",
+              "audioId": "word-text-word-34-3"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-34",
+      "spokenTitle": "语文园地七",
+      "characterItems": [
+        {
+          "text": "爷",
+          "audioId": "word-say-d20e1289115e0b38",
+          "example": "爷"
+        },
+        {
+          "text": "奶",
+          "audioId": "word-say-0265b363986583b1",
+          "example": "奶"
+        },
+        {
+          "text": "叔",
+          "audioId": "word-say-ab89b22a6e0051bb",
+          "example": "叔"
+        },
+        {
+          "text": "姐",
+          "audioId": "word-say-620abcb5e9103971",
+          "example": "姐"
+        },
+        {
+          "text": "妹",
+          "audioId": "word-say-219c2f148bcece14",
+          "example": "妹"
+        }
+      ]
+    },
+    {
+      "title": "比尾巴",
+      "page": 4,
+      "read": [
+        {
+          "text": "对比",
+          "pinyin": "duì bǐ",
+          "audioId": "word-say-bc4b2dbbb77b9e5b"
+        },
+        {
+          "text": "比如",
+          "pinyin": "bǐ rú",
+          "audioId": "word-say-a201fc64552b4eac"
+        },
+        {
+          "text": "尾巴",
+          "pinyin": "wěi ba",
+          "audioId": "word-say-797d828e8c3167e9"
+        },
+        {
+          "text": "尾部",
+          "pinyin": "wěi bù",
+          "audioId": "word-say-88d9071fe844d444"
+        },
+        {
+          "text": "嘴巴",
+          "pinyin": "zuǐ ba",
+          "audioId": "word-say-cbb4c198e88c338d"
+        },
+        {
+          "text": "是谁",
+          "pinyin": "shì shuí",
+          "audioId": "word-say-e2968fbf764034e2"
+        },
+        {
+          "text": "谁的",
+          "pinyin": "shéi de",
+          "audioId": "word-say-b6fb75fdf2cc058f"
+        },
+        {
+          "text": "长短",
+          "pinyin": "cháng duǎn",
+          "audioId": "word-say-db9199a552fc87c8"
+        },
+        {
+          "text": "长度",
+          "pinyin": "cháng dù",
+          "audioId": "word-say-fcd53935fd79027b"
+        },
+        {
+          "text": "短发",
+          "pinyin": "duǎn fà",
+          "audioId": "word-say-46f0228db71cbc3d"
+        },
+        {
+          "text": "短跑",
+          "pinyin": "duǎn pǎo",
+          "audioId": "word-say-6ed385a27a30f1f1"
+        },
+        {
+          "text": "火把",
+          "pinyin": "huǒ bǎ",
+          "audioId": "word-say-a05064959097cd37"
+        },
+        {
+          "text": "拖把",
+          "pinyin": "tuō bǎ",
+          "audioId": "word-say-e6496838fd1eac32"
+        },
+        {
+          "text": "雨伞",
+          "pinyin": "yǔ sǎn",
+          "audioId": "word-say-a86eaeb98f4ced93"
+        },
+        {
+          "text": "跳伞",
+          "pinyin": "tiào sǎn",
+          "audioId": "word-say-b427aac3025d3896"
+        },
+        {
+          "text": "兔子",
+          "pinyin": "tù zi",
+          "audioId": "word-say-02ea6e1b01e9fc52"
+        },
+        {
+          "text": "白兔",
+          "pinyin": "bái tù",
+          "audioId": "word-say-519285e2df000741"
+        },
+        {
+          "text": "最好",
+          "pinyin": "zuì hǎo",
+          "audioId": "word-say-041e0910b5cc4e44"
+        },
+        {
+          "text": "最后",
+          "pinyin": "zuì hòu",
+          "audioId": "word-say-445905122e87b990"
+        },
+        {
+          "text": "公鸡",
+          "pinyin": "gōng jī",
+          "audioId": "word-say-e62503dbd7636b52"
+        },
+        {
+          "text": "公园",
+          "pinyin": "gōng yuán",
+          "audioId": "word-say-e852dca995be4432"
+        },
+        {
+          "text": "公主",
+          "pinyin": "gōng zhǔ",
+          "audioId": "word-say-d7f5fdf60724707b"
+        }
+      ],
+      "write": [
+        {
+          "text": "比方",
+          "pinyin": "bǐ fāng",
+          "audioId": "word-say-48aff813e4138904"
+        },
+        {
+          "text": "大巴",
+          "pinyin": "dà bā",
+          "audioId": "word-say-aa1c9db36f135911"
+        },
+        {
+          "text": "下巴",
+          "pinyin": "xià bā",
+          "audioId": "word-say-ace5bba2aed53e6a"
+        },
+        {
+          "text": "长工",
+          "pinyin": "cháng gōng",
+          "audioId": "word-say-8f432d83e21f03c2"
+        },
+        {
+          "text": "公公",
+          "pinyin": "gōng gōng",
+          "audioId": "word-say-16f6af47cc85c75d"
+        },
+        {
+          "text": "公子",
+          "pinyin": "gōng zi",
+          "audioId": "word-say-bbad731e97448987"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "课文《比尾巴》",
+      "id": "word-35",
+      "characters": "比尾巴谁长短把伞兔最公",
+      "passages": [
+        {
+          "title": "比尾巴",
+          "page": 95,
+          "paragraphs": [
+            {
+              "text": "谁的尾巴长？谁的尾巴短？谁的尾巴好像一把伞？",
+              "audioId": "word-text-word-35-0"
+            },
+            {
+              "text": "猴子的尾巴长。兔子的尾巴短。松鼠的尾巴好像一把伞。",
+              "audioId": "word-text-word-35-1"
+            },
+            {
+              "text": "谁的尾巴弯？谁的尾巴扁？谁的尾巴最好看？",
+              "audioId": "word-text-word-35-2"
+            },
+            {
+              "text": "公鸡的尾巴弯。鸭子的尾巴扁。孔雀的尾巴最好看。",
+              "audioId": "word-text-word-35-3"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-35",
+      "spokenTitle": "比尾巴",
+      "characterItems": [
+        {
+          "text": "比",
+          "audioId": "word-say-ab158a8483c3b86e",
+          "example": "比"
+        },
+        {
+          "text": "尾",
+          "audioId": "word-say-c05110564eccfc5c",
+          "example": "尾"
+        },
+        {
+          "text": "巴",
+          "audioId": "word-say-e9772175e8ea3b47",
+          "example": "巴"
+        },
+        {
+          "text": "谁",
+          "audioId": "word-say-056b9c626275cd54",
+          "example": "谁"
+        },
+        {
+          "text": "长",
+          "audioId": "word-say-db9199a552fc87c8",
+          "example": "长短"
+        },
+        {
+          "text": "短",
+          "audioId": "word-say-4ca8d4f77574e43a",
+          "example": "短"
+        },
+        {
+          "text": "把",
+          "audioId": "word-say-2442748e41108dab",
+          "example": "把"
+        },
+        {
+          "text": "伞",
+          "audioId": "word-say-99b0fd962a831543",
+          "example": "伞"
+        },
+        {
+          "text": "兔",
+          "audioId": "word-say-4eda5539c8b24a50",
+          "example": "兔"
+        },
+        {
+          "text": "最",
+          "audioId": "word-say-150617a89b449d77",
+          "example": "最"
+        },
+        {
+          "text": "公",
+          "audioId": "word-say-9b67720a9243f02a",
+          "example": "公"
+        }
+      ]
+    },
+    {
+      "title": "乌鸦喝水",
+      "page": 4,
+      "read": [
+        {
+          "text": "喝水",
+          "pinyin": "hē shuǐ",
+          "audioId": "word-say-a8720cdfc7de0556"
+        },
+        {
+          "text": "喝茶",
+          "pinyin": "hē chá",
+          "audioId": "word-say-cb79e0cecd8e9392"
+        },
+        {
+          "text": "一只",
+          "pinyin": "yī zhī",
+          "audioId": "word-say-216a478784bc0a00"
+        },
+        {
+          "text": "几只",
+          "pinyin": "jǐ zhī",
+          "audioId": "word-say-5c6c81f7af11c2bf"
+        },
+        {
+          "text": "到处",
+          "pinyin": "dào chù",
+          "audioId": "word-say-465be82399feacfb"
+        },
+        {
+          "text": "处处",
+          "pinyin": "chù chù",
+          "audioId": "word-say-9abffe74d500a779"
+        },
+        {
+          "text": "四处",
+          "pinyin": "sì chù",
+          "audioId": "word-say-6c4f9d77077083af"
+        },
+        {
+          "text": "找到",
+          "pinyin": "zhǎo dào",
+          "audioId": "word-say-0ccc285138ce0754"
+        },
+        {
+          "text": "找着",
+          "pinyin": "zhǎo zháo",
+          "audioId": "word-say-81db9a25b9b7785d"
+        },
+        {
+          "text": "着火",
+          "pinyin": "zháo huǒ",
+          "audioId": "word-say-2b4948a3f16f35c2"
+        },
+        {
+          "text": "找来找去",
+          "pinyin": "zhǎo lái zhǎo qù",
+          "audioId": "word-say-fb440ca84df9cc35"
+        },
+        {
+          "text": "许多",
+          "pinyin": "xǔ duō",
+          "audioId": "word-say-1df1ae654a196b96"
+        },
+        {
+          "text": "许愿",
+          "pinyin": "xǔ yuàn",
+          "audioId": "word-say-623834a3b5e49421"
+        },
+        {
+          "text": "石头",
+          "pinyin": "shí tou",
+          "audioId": "word-say-a1aca9fd68a97328"
+        },
+        {
+          "text": "办法",
+          "pinyin": "bàn fǎ",
+          "audioId": "word-say-d2a92f0c9c91ab20"
+        },
+        {
+          "text": "出去",
+          "pinyin": "chū qù",
+          "audioId": "word-say-d1147b647ff1a523"
+        },
+        {
+          "text": "出门",
+          "pinyin": "chū mén",
+          "audioId": "word-say-10809c4d0192c12a"
+        },
+        {
+          "text": "方法",
+          "pinyin": "fāng fǎ",
+          "audioId": "word-say-22b9f0b66212809c"
+        },
+        {
+          "text": "法官",
+          "pinyin": "fǎ guān",
+          "audioId": "word-say-dbfe337c8f9f6f4f"
+        },
+        {
+          "text": "法国",
+          "pinyin": "fǎ guó",
+          "audioId": "word-say-81678972842d4663"
+        },
+        {
+          "text": "放学",
+          "pinyin": "fàng xué",
+          "audioId": "word-say-9f1415b044b5e48b"
+        },
+        {
+          "text": "放进",
+          "pinyin": "fàng jìn",
+          "audioId": "word-say-30842609977fcf42"
+        },
+        {
+          "text": "放走",
+          "pinyin": "fàng zǒu",
+          "audioId": "word-say-1e665fe1b7dbde13"
+        },
+        {
+          "text": "放风筝",
+          "pinyin": "fàng fēng zheng",
+          "audioId": "word-say-2662eea552076136"
+        },
+        {
+          "text": "进来",
+          "pinyin": "jìn lái",
+          "audioId": "word-say-5a490d99246de50a"
+        },
+        {
+          "text": "进入",
+          "pinyin": "jìn rù",
+          "audioId": "word-say-f88182fcd575be3a"
+        },
+        {
+          "text": "高兴",
+          "pinyin": "gāo xìng",
+          "audioId": "word-say-5fcaf1452472773f"
+        },
+        {
+          "text": "高处",
+          "pinyin": "gāo chù",
+          "audioId": "word-say-e8c17d134439aa9f"
+        }
+      ],
+      "write": [
+        {
+          "text": "一只虫",
+          "pinyin": "yī zhī chóng",
+          "audioId": "word-say-853116df3c5fd5b1"
+        },
+        {
+          "text": "只有",
+          "pinyin": "zhǐ yǒu",
+          "audioId": "word-say-ba8bd7c8c9747b95"
+        },
+        {
+          "text": "个个",
+          "pinyin": "gè gè",
+          "audioId": "word-say-b39fa522ebd3abb3"
+        },
+        {
+          "text": "一个",
+          "pinyin": "yī gè",
+          "audioId": "word-say-e1dbc1c99fb499ef"
+        },
+        {
+          "text": "多少",
+          "pinyin": "duō shǎo",
+          "audioId": "word-say-fb8f01cb6d4be28b"
+        },
+        {
+          "text": "多好",
+          "pinyin": "duō hǎo",
+          "audioId": "word-say-02d5351e80007a1c"
+        },
+        {
+          "text": "石子",
+          "pinyin": "shí zǐ",
+          "audioId": "word-say-bd5984e61dc2d581"
+        },
+        {
+          "text": "石头",
+          "pinyin": "shí tou",
+          "audioId": "word-say-a1aca9fd68a97328"
+        },
+        {
+          "text": "出来",
+          "pinyin": "chū lái",
+          "audioId": "word-say-8491cffebe6126ea"
+        },
+        {
+          "text": "出门",
+          "pinyin": "chū mén",
+          "audioId": "word-say-10809c4d0192c12a"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-36",
+      "characters": "喝只处找着许石出法放进高",
+      "passages": [
+        {
+          "title": "乌鸦喝水",
+          "page": 97,
+          "paragraphs": [
+            {
+              "text": "一只乌鸦口渴了，到处找水喝。",
+              "audioId": "word-text-word-36-0"
+            },
+            {
+              "text": "乌鸦看见一个瓶子，瓶子里有水。但是，瓶子里水不多，瓶口又小，乌鸦喝不着水。怎么办呢？",
+              "audioId": "word-text-word-36-1"
+            },
+            {
+              "text": "乌鸦看见旁边有许多小石子，想出办法来了。",
+              "audioId": "word-text-word-36-2"
+            },
+            {
+              "text": "乌鸦把小石子一颗一颗地放进瓶子里。瓶子里的水渐渐升高，乌鸦就喝着水了。",
+              "audioId": "word-text-word-36-3"
+            }
+          ],
+          "required": false,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-36",
+      "spokenTitle": "乌鸦喝水",
+      "characterItems": [
+        {
+          "text": "喝",
+          "audioId": "word-say-193632bffe7bd105",
+          "example": "喝"
+        },
+        {
+          "text": "只",
+          "audioId": "word-say-409e2c3882c96ae6",
+          "example": "只"
+        },
+        {
+          "text": "处",
+          "audioId": "word-say-34ee554a469c80c2",
+          "example": "处"
+        },
+        {
+          "text": "找",
+          "audioId": "word-say-c277be8a4b92ee42",
+          "example": "找"
+        },
+        {
+          "text": "着",
+          "audioId": "word-say-2b4948a3f16f35c2",
+          "example": "着火"
+        },
+        {
+          "text": "许",
+          "audioId": "word-say-8d3edaa608b7415f",
+          "example": "许"
+        },
+        {
+          "text": "石",
+          "audioId": "word-say-e6df66d46112600c",
+          "example": "石"
+        },
+        {
+          "text": "出",
+          "audioId": "word-say-4d5f7e15c8a569bf",
+          "example": "出"
+        },
+        {
+          "text": "法",
+          "audioId": "word-say-c82e0431b4e531f5",
+          "example": "法"
+        },
+        {
+          "text": "放",
+          "audioId": "word-say-50272827b8e2c1bd",
+          "example": "放"
+        },
+        {
+          "text": "进",
+          "audioId": "word-say-83a8fd743b82c1ea",
+          "example": "进"
+        },
+        {
+          "text": "高",
+          "audioId": "word-say-b1c27820fec23edb",
+          "example": "高"
+        }
+      ]
+    },
+    {
+      "title": "雨点儿",
+      "page": 4,
+      "read": [
+        {
+          "text": "点名",
+          "pinyin": "diǎn míng",
+          "audioId": "word-say-855f3f1677f6c93b"
+        },
+        {
+          "text": "点头",
+          "pinyin": "diǎn tóu",
+          "audioId": "word-say-68f8249523811e47"
+        },
+        {
+          "text": "数不清",
+          "pinyin": "shǔ bù qīng",
+          "audioId": "word-say-e342c032f333e305"
+        },
+        {
+          "text": "数落",
+          "pinyin": "shǔ luo",
+          "audioId": "word-say-768854f43a9eccc0"
+        },
+        {
+          "text": "彩色",
+          "pinyin": "cǎi sè",
+          "audioId": "word-say-db57813f39b19aae"
+        },
+        {
+          "text": "彩云",
+          "pinyin": "cǎi yún",
+          "audioId": "word-say-7ac06c55ca5b1bae"
+        },
+        {
+          "text": "两半",
+          "pinyin": "liǎng bàn",
+          "audioId": "word-say-5927ca0563e8e662"
+        },
+        {
+          "text": "半个",
+          "pinyin": "bàn gè",
+          "audioId": "word-say-abd3aa25a3b626d1"
+        },
+        {
+          "text": "回答",
+          "pinyin": "huí dá",
+          "audioId": "word-say-f3f512648742020f"
+        },
+        {
+          "text": "回去",
+          "pinyin": "huí qù",
+          "audioId": "word-say-8fa02ce7cc62b0cf"
+        },
+        {
+          "text": "天空",
+          "pinyin": "tiān kōng",
+          "audioId": "word-say-6c8c7a77cdfd4fd3"
+        },
+        {
+          "text": "答复",
+          "pinyin": "dá fù",
+          "audioId": "word-say-28275eff0e3fe3f6"
+        },
+        {
+          "text": "空间",
+          "pinyin": "kōng jiān",
+          "audioId": "word-say-3347e052c0f17434"
+        },
+        {
+          "text": "问题",
+          "pinyin": "wèn tí",
+          "audioId": "word-say-33a8618cb6710e43"
+        },
+        {
+          "text": "方向",
+          "pinyin": "fāng xiàng",
+          "audioId": "word-say-1121471a0ff440f8"
+        },
+        {
+          "text": "问号",
+          "pinyin": "wèn hào",
+          "audioId": "word-say-bcadaf2c56029821"
+        },
+        {
+          "text": "久远",
+          "pinyin": "jiǔ yuǎn",
+          "audioId": "word-say-0bfcab25f638a616"
+        },
+        {
+          "text": "问好",
+          "pinyin": "wèn hǎo",
+          "audioId": "word-say-ea81087e8e698485"
+        },
+        {
+          "text": "长久",
+          "pinyin": "cháng jiǔ",
+          "audioId": "word-say-80d60b4f325dba90"
+        },
+        {
+          "text": "更加",
+          "pinyin": "gèng jiā",
+          "audioId": "word-say-f70ea2031adfe9b5"
+        },
+        {
+          "text": "更好",
+          "pinyin": "gèng hǎo",
+          "audioId": "word-say-bd5a043855a4c7df"
+        }
+      ],
+      "write": [
+        {
+          "text": "本来",
+          "pinyin": "běn lái",
+          "audioId": "word-say-0c75d89282e0f00f"
+        },
+        {
+          "text": "出来",
+          "pinyin": "chū lái",
+          "audioId": "word-say-8491cffebe6126ea"
+        },
+        {
+          "text": "长大",
+          "pinyin": "zhǎng dà",
+          "audioId": "word-say-6edcbb95dac1e004"
+        },
+        {
+          "text": "方正",
+          "pinyin": "fāng zhèng",
+          "audioId": "word-say-c073c0960cafda25"
+        },
+        {
+          "text": "成长",
+          "pinyin": "chéng zhǎng",
+          "audioId": "word-say-16cc0bf3dd255549"
+        },
+        {
+          "text": "半日",
+          "pinyin": "bàn rì",
+          "audioId": "word-say-3d5d1aa59f33124b"
+        },
+        {
+          "text": "半个",
+          "pinyin": "bàn gè",
+          "audioId": "word-say-abd3aa25a3b626d1"
+        },
+        {
+          "text": "你我",
+          "pinyin": "nǐ wǒ",
+          "audioId": "word-say-9ba624fa9e6dbaa4"
+        },
+        {
+          "text": "有人",
+          "pinyin": "yǒu rén",
+          "audioId": "word-say-53aee23080f13488"
+        },
+        {
+          "text": "有才",
+          "pinyin": "yǒu cái",
+          "audioId": "word-say-285afa1f275365fd"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "",
+      "id": "word-37",
+      "characters": "点数彩半空问回答方久更长",
+      "passages": [
+        {
+          "title": "雨点儿",
+          "page": 99,
+          "paragraphs": [
+            {
+              "text": "数不清的雨点儿，从云彩里落下来。",
+              "audioId": "word-text-word-37-0"
+            },
+            {
+              "text": "半空中，大雨点儿问小雨点儿：“你要到哪里去？”",
+              "audioId": "word-text-word-37-1"
+            },
+            {
+              "text": "小雨点儿回答：“我要去有花有草的地方。你呢？”",
+              "audioId": "word-text-word-37-2"
+            },
+            {
+              "text": "大雨点儿说：“我要去没有花没有草的地方。”",
+              "audioId": "word-text-word-37-3"
+            },
+            {
+              "text": "不久，有花有草的地方，花更红了，草更绿了。没有花没有草的地方，开出了红的花，长出了绿的草。",
+              "audioId": "word-text-word-37-4"
+            }
+          ],
+          "required": false,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-37",
+      "spokenTitle": "雨点儿",
+      "characterItems": [
+        {
+          "text": "点",
+          "audioId": "word-say-08dddeac1319d6e8",
+          "example": "点"
+        },
+        {
+          "text": "数",
+          "audioId": "word-say-e342c032f333e305",
+          "example": "数不清"
+        },
+        {
+          "text": "彩",
+          "audioId": "word-say-1f828276b921aa10",
+          "example": "彩"
+        },
+        {
+          "text": "半",
+          "audioId": "word-say-f30071fa503a5928",
+          "example": "半"
+        },
+        {
+          "text": "空",
+          "audioId": "word-say-2f8267a89ad55e6b",
+          "example": "空"
+        },
+        {
+          "text": "问",
+          "audioId": "word-say-4628c0e06f4b378d",
+          "example": "问"
+        },
+        {
+          "text": "回",
+          "audioId": "word-say-6da3e5c03ac7e66c",
+          "example": "回"
+        },
+        {
+          "text": "答",
+          "audioId": "word-say-10ec8c161aac40d5",
+          "example": "答"
+        },
+        {
+          "text": "方",
+          "audioId": "word-say-4a5ff677e1dbd37c",
+          "example": "方"
+        },
+        {
+          "text": "久",
+          "audioId": "word-say-4302da3d1fe8e554",
+          "example": "久"
+        },
+        {
+          "text": "更",
+          "audioId": "word-say-69c679ef6bf3d499",
+          "example": "更"
+        },
+        {
+          "text": "长",
+          "audioId": "word-say-6edcbb95dac1e004",
+          "example": "长大"
+        }
+      ]
+    },
+    {
+      "title": "语文园地八",
+      "page": 4,
+      "read": [
+        {
+          "text": "牛羊",
+          "pinyin": "niú yáng",
+          "audioId": "word-say-0f3c31c7f495c4fa"
+        },
+        {
+          "text": "牛奶",
+          "pinyin": "niú nǎi",
+          "audioId": "word-say-b892a42b9695881d"
+        },
+        {
+          "text": "山羊",
+          "pinyin": "shān yáng",
+          "audioId": "word-say-549836293a1a788c"
+        },
+        {
+          "text": "爪子",
+          "pinyin": "zhuǎ zi",
+          "audioId": "word-say-8e3039eac77018f0"
+        },
+        {
+          "text": "元旦",
+          "pinyin": "yuán dàn",
+          "audioId": "word-say-d3da90a864b8126c"
+        },
+        {
+          "text": "一旦",
+          "pinyin": "yī dàn",
+          "audioId": "word-say-03cacbff31c50e09"
+        },
+        {
+          "text": "拼音",
+          "pinyin": "pīn yīn",
+          "audioId": "word-say-7cfb855571b48dea"
+        },
+        {
+          "text": "拼写",
+          "pinyin": "pīn xiě",
+          "audioId": "word-say-cee02cd8ae5c5e5e"
+        },
+        {
+          "text": "音乐",
+          "pinyin": "yīn yuè",
+          "audioId": "word-say-db95142124934467"
+        },
+        {
+          "text": "声音",
+          "pinyin": "shēng yīn",
+          "audioId": "word-say-473400815c0f687d"
+        }
+      ],
+      "write": [
+        {
+          "text": "牛羊",
+          "pinyin": "niú yáng",
+          "audioId": "word-say-0f3c31c7f495c4fa"
+        },
+        {
+          "text": "公牛",
+          "pinyin": "gōng niú",
+          "audioId": "word-say-5b09713ac5aea670"
+        },
+        {
+          "text": "小羊",
+          "pinyin": "xiǎo yáng",
+          "audioId": "word-say-eba0cf05d8e4dbd0"
+        },
+        {
+          "text": "爪子",
+          "pinyin": "zhuǎ zi",
+          "audioId": "word-say-8e3039eac77018f0"
+        },
+        {
+          "text": "白马",
+          "pinyin": "bái mǎ",
+          "audioId": "word-say-146d79287d4cf29a"
+        },
+        {
+          "text": "日月",
+          "pinyin": "rì yuè",
+          "audioId": "word-say-0bccc088cc0bffa4"
+        },
+        {
+          "text": "大风",
+          "pinyin": "dà fēng",
+          "audioId": "word-say-bc37c6ec9f64a3bc"
+        },
+        {
+          "text": "小鸟",
+          "pinyin": "xiǎo niǎo",
+          "audioId": "word-say-31159146a4d5197c"
+        },
+        {
+          "text": "水火",
+          "pinyin": "shuǐ huǒ",
+          "audioId": "word-say-58b9ea72ad5614f8"
+        }
+      ],
+      "reading": [],
+      "reciteRequirement": "日积月累《风》",
+      "id": "word-38",
+      "characters": "牛羊爪旦拼音",
+      "passages": [
+        {
+          "title": "风",
+          "page": 102,
+          "paragraphs": [
+            {
+              "text": "解落三秋叶，能开二月花。",
+              "audioId": "word-text-word-38-0"
+            },
+            {
+              "text": "过江千尺浪，入竹万竿斜。",
+              "audioId": "word-text-word-38-1"
+            }
+          ],
+          "required": true,
+          "readingOnly": false
+        }
+      ],
+      "audioId": "word-title-word-38",
+      "spokenTitle": "语文园地八",
+      "characterItems": [
+        {
+          "text": "牛",
+          "audioId": "word-say-a7bee35f18c1c782",
+          "example": "牛"
+        },
+        {
+          "text": "羊",
+          "audioId": "word-say-58f7764311f430bb",
+          "example": "羊"
+        },
+        {
+          "text": "爪",
+          "audioId": "word-say-d1c7462284532267",
+          "example": "爪"
+        },
+        {
+          "text": "旦",
+          "audioId": "word-say-6e679719f498b78a",
+          "example": "旦"
+        },
+        {
+          "text": "拼",
+          "audioId": "word-say-d7064be7294ddedf",
+          "example": "拼"
+        },
+        {
+          "text": "音",
+          "audioId": "word-say-bec69dd92eb83823",
+          "example": "音"
+        }
+      ]
+    }
+  ],
+  "ui": {
+    "welcome": "词语天天练。先选一课，再选词语拼读、词语听写或课文背诵。",
+    "read": "点一个词听示范，再跟着读一读。",
+    "write": "听词语，在纸上写一写。写好后点揭晓答案，请大人一起核对。",
+    "recite": "先听课文，再试着背一背。可以隐藏正文，也可以打开提示。彩色标记的是本课生字词。",
+    "reveal": "揭晓答案",
+    "hide": "隐藏正文",
+    "show": "显示正文",
+    "done": "这部分我练习过了",
+    "back": "返回首页",
+    "stop": "停止播放",
+    "emptyWrite": "这课材料没有听写任务，可以去练习词语拼读。",
+    "emptyRecite": "这课材料没有指定背诵篇目，可以先听读本课生字词。"
+  },
+  "pinyinNote": "拼音标注本调；一、不在连读时会变调，轻声音节不标声调。"
+}
