@@ -16,6 +16,10 @@ Mac Studio 提供同源 HTTPS 静态网页与 `/api/v1/` 服务；浏览器必�
 
 不要求安装 PWA，也不承诺浏览器断 LAN 后独立学习或保存。若使用 service worker，只缓存版本化公开静态文件和标准音，不缓存配对响应或进度 API；禁止缓存私有数据导致删除后重新出现。可以不用 service worker，通过 Mac 本地完整资源实现断互联网运行。
 
+## GitHub 0.9.0 发布
+
+经用户授权，在已验证的 `main` 提交上推送注解标签 `v0.9.0`。GitHub Actions 从同一标签构建 macOS Apple Silicon DMG 和 Windows x64 EXE，发布两个安装包、对应 SHA-256 与标签中的发布说明。桌面安装包未签名，DMG 未公证。iOS/iPadOS 通过标签内的通用 Xcode 工程从源码签名安装。产品范围与真机证据见 [SPEC-023](SPEC-023-ios-app.md)。
+
 ## 更新、回滚与资产门禁
 
 - 构建产物绑定应用、内容与规则版本。启动前完整性校验；缺失或摘要错误时准确报不可用，不边运行边联网下载。

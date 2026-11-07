@@ -67,6 +67,7 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: LovePinyin-macos-arm64
@@ -78,6 +79,5 @@ jobs:
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
           TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" release/* --title "$TAG" --notes 'macOS Apple Silicon 与 Windows x64 安装包；均未签名。macOS 未公证。请参阅 README。'
+        run: gh release create "$TAG" release/* --title "$TAG" --verify-tag --notes-from-tag
