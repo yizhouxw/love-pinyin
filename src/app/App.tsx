@@ -615,6 +615,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           }
         }}
         onExit={() => void act(exitGame)}
+        onPause={isIOSApp() ? () => gameClock.pause('GAME_PAUSED') : undefined}
         onNext={() =>
           void act(async () => {
             stopVoice();
@@ -1005,7 +1006,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     setProgress((await api('/profiles/progress')) as Progress);
   }
 
-  if (gamesOpen && !isIOSApp() && !parentOpen && curriculum && progress)
+  if (gamesOpen && !parentOpen && curriculum && progress)
     return (
       <main className="home-page">
         <GameZone
@@ -1300,26 +1301,24 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                     进入词语天天练 →
                   </button>
                 </section>
-                {!isIOSApp() && (
-                  <section className="daily-entry games-entry">
-                    <div>
-                      <span className="eyebrow">边玩边学 · 每次短一点</span>
-                      <h2>拼音游戏乐园</h2>
-                      <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
-                    </div>
-                    <button
-                      onClick={() => {
-                        stopVoice();
-                        voiceStarted.current = true;
-                        window.location.hash = 'games';
-                        setGamesOpen(true);
-                        if (guidanceEnabled) playVoice('ui-game_welcome');
-                      }}
-                    >
-                      进入游戏乐园 →
-                    </button>
-                  </section>
-                )}
+                <section className="daily-entry games-entry">
+                  <div>
+                    <span className="eyebrow">边玩边学 · 每次短一点</span>
+                    <h2>拼音游戏乐园</h2>
+                    <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      stopVoice();
+                      voiceStarted.current = true;
+                      window.location.hash = 'games';
+                      setGamesOpen(true);
+                      if (guidanceEnabled) playVoice('ui-game_welcome');
+                    }}
+                  >
+                    进入游戏乐园 →
+                  </button>
+                </section>
               </div>
               <details className="course-browser">
                 <summary>查看全部课程</summary>

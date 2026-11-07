@@ -3,7 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 stage=$(mktemp -d)
 trap 'rm -rf "$stage"' EXIT
-xcrun swiftc deploy/ios/{ClassroomStore,Classroom,ClassroomSmoke}.swift -lsqlite3 -o "$stage/smoke"
+xcrun swiftc deploy/ios/{ClassroomStore,Classroom,ClassroomGames,ClassroomSmoke}.swift -lsqlite3 -o "$stage/smoke"
 "$stage/smoke" build/ios/Resources/Data/classroom.json "$stage" > "$stage/result.json"
 uv run --locked python - "$stage/result.json" <<'PY'
 import json

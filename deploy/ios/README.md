@@ -1,6 +1,6 @@
 # iPhone / iPad 工程验证
 
-本工程对应 [SPEC-023](../../docs/specs/SPEC-023-ios-app.md) 的 IOS-01、IOS-02 听读和 IOS-03 课堂作答切片。启动页标记为「离线课堂验证版」，可打开课堂练习、天天练拼音和词语天天练。答题和进度存放在当前设备。完整家长备份、到期复习及游戏将在后续接入。
+本工程对应 [SPEC-023](../../docs/specs/SPEC-023-ios-app.md)。可离线使用课堂练习、天天练拼音、词语天天练和四款拼音游戏。答题、进度和游戏时长存放在当前设备。到期复习和跨端备份分别由 GitHub Issue [#36](https://github.com/yizhouxw/love-pinyin/issues/36) 和 [#37](https://github.com/yizhouxw/love-pinyin/issues/37) 跟踪。
 
 ## 准备和构建
 
@@ -37,6 +37,8 @@ xcodebuild -project deploy/ios/LovePinyin.xcodeproj -scheme LovePinyin \
 参考 [Apple 真机运行说明](https://developer.apple.com/documentation/xcode/running-your-app-on-simulated-or-physical-devices)和 [Personal Team 限制](https://developer.apple.com/help/account/basics/about-your-developer-account/)。
 
 运行 `deploy/ios/test-classroom.sh` 可在 Mac 上用随包课程验证 Swift/SQLite 存储、作答恢复和与 Python 的规则对照。先准备离线资源。
+
+运行 `deploy/ios/test-games.sh` 检查四款游戏的选题、关卡和计分，以及暂停、额度用完和重开恢复。Xcode 的 `testOfflineGameScenes` 使用临时档案测试游戏入口、触控和暂停恢复。
 
 ## 真机自动化
 

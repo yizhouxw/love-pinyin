@@ -10,6 +10,9 @@ from pathlib import Path
 
 from server import daily_reading, learning_audio, source_audio
 from server.content import load_curriculum
+from server.game_levels import catalog as level_catalog
+from server.game_levels import freeze_run
+from server.game_policy import CATALOG as GAME_RULES
 from server.learning_state import _objective_available
 from server.routes import resources
 
@@ -43,6 +46,17 @@ def encode_narration(source: Path, encoded: Path, decoded: Path) -> None:
         ):
             raise ValueError(f"Encoded narration changed the timeline: {source.name}")
     decoded.unlink()
+
+
+def game_resources() -> dict:
+    routes = level_catalog()
+    # Runtime binding needs the shortened patterns for every authored segment.
+    # Reuse the same frozen pattern projection as B/S and discard the build-only IDs.
+    slots = [{"instanceId": f"build-slot-{i}"} for i in range(GAME_RULES["play"]["maxTasks"])]
+    patterns = {}
+    for level in routes["levels"]:
+        patterns.update(freeze_run(level, slots)["patterns"])
+    return {"rules": GAME_RULES, "routes": {**routes, "patterns": patterns}}
 
 
 def prepare(output: Path, trial_aac: bool) -> None:
@@ -106,6 +120,7 @@ def prepare(output: Path, trial_aac: bool) -> None:
         "version": curriculum["contentVersion"],
         "lessons": curriculum["lessons"],
         "knowledgeItems": curriculum["knowledgeItems"],
+        "game": game_resources(),
         "eligible": [
             {
                 "exercise": question,

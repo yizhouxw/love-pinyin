@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { gameCatalog, type GameClock } from '../domain/games';
 import { api } from '../platform/api-client';
+import { isIOSApp } from '../platform/ios-app';
 
 /** A monotonic local deadline may only shorten the server's short authorization. */
 export function useGameClock(enabled: boolean, stopVoice: () => void) {
@@ -25,6 +26,8 @@ export function useGameClock(enabled: boolean, stopVoice: () => void) {
     setPaused(true);
     setReason(message);
     stop.current();
+    if (isIOSApp() && message === 'GAME_PAUSED')
+      void api('/games/pause', { method: 'POST' }).catch(() => undefined);
   }, []);
   const resume = useCallback(async () => {
     if (inFlight.current || document.hidden) return;
@@ -92,13 +95,17 @@ export function useGameClock(enabled: boolean, stopVoice: () => void) {
       if (document.hidden) pause('GAME_PAUSED');
       // Returning to the tab still requires an explicit renewal before answering.
     };
+    const interrupted = () => pause('GAME_PAUSED');
     document.addEventListener('visibilitychange', visible);
+    window.addEventListener('lp-ios-audio-interrupted', interrupted);
     return () => {
       epoch.current += 1;
       request.current?.abort();
       window.clearInterval(renew);
       window.clearInterval(check);
       document.removeEventListener('visibilitychange', visible);
+      window.removeEventListener('lp-ios-audio-interrupted', interrupted);
+      if (isIOSApp()) void api('/games/pause', { method: 'POST' }).catch(() => undefined);
     };
   }, [enabled, pause, resume]);
   return { clock, paused: enabled && paused, reason, resume, pause };

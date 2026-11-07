@@ -58,6 +58,12 @@ const messages: Record<string, string> = {
 };
 
 export function errorMessage(error: string): string {
+  if (isIOSApp()) {
+    if (error === 'GAME_PAUSED') return '游戏已暂停计时。准备好后，点继续游戏。';
+    if (error === 'GAME_CLOCK_ROLLBACK')
+      return '设备时间发生回退，游戏已暂停。请家长校准系统时间后再继续。';
+    if (error === 'GAME_SETTINGS_INVALID') return '请检查每日和单次游戏时长。';
+  }
   if (messages[error]) return messages[error];
   if (error.startsWith('BACKUP_')) return messages.BACKUP_INVALID!;
   if (error.startsWith('CSRF_') || error === 'ORIGIN_REJECTED')

@@ -130,6 +130,12 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
 
     @objc private func stopPlayback() {
         player?.pause()
+        do {
+            try classroom?.pauseGameOnInterruption()
+        } catch {
+            // A stored lease expires on its own if saving the pause fails.
+            NSLog("Could not persist the game pause")
+        }
         webView?.evaluateJavaScript("window.dispatchEvent(new Event('lp-ios-audio-interrupted'))")
     }
 
@@ -177,13 +183,18 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         do {
             switch operation {
             case "classroom" where body.count == 5:
-                guard let method = body["method"] as? String, ["GET", "POST", "PUT"].contains(method),
+                guard let method = body["method"] as? String, ["GET", "POST", "PUT", "PATCH"].contains(method),
                       let path = body["path"] as? String, path.count < 240,
                       let payload = body["payload"] as? String, payload.utf8.count <= 4096,
                       let input = try JSONSerialization.jsonObject(with: Data(payload.utf8)) as? [String: Any]
                 else {
                     replyHandler(nil, "INVALID_BRIDGE_REQUEST")
                     return
+                }
+                let grantsGameTime = path == "/games/heartbeat" || path.hasSuffix("/game-settings")
+                    || (path == "/sessions" && input["gameId"] != nil)
+                if grantsGameTime && view.window?.windowScene?.activationState != .foregroundActive {
+                    throw ClassroomError("GAME_PAUSED")
                 }
                 switch (method, path) {
                 case ("GET", "/curriculum"):

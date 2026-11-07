@@ -2,6 +2,74 @@ import XCTest
 
 final class AdaptiveClassroomTests: XCTestCase {
     @MainActor
+    func testOfflineGameScenes() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        let device = XCUIDevice.shared
+        device.orientation = .portrait
+        defer { device.orientation = .portrait }
+        app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
+        app.launch()
+
+        let hub = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "进入游戏乐园")).firstMatch
+        XCTAssertTrue(hub.waitForExistence(timeout: 25), app.debugDescription)
+        reveal(hub, in: app)
+        assertTouchTarget(hub, within: app)
+        hub.tap()
+
+        for (title, actionLabel) in [
+            ("森林跑酷", "跳跃 ↑"), ("河湾划船", "双桨前进"),
+            ("节奏鼓岛", "咚！击鼓"), ("星际投递", "发射 ↑"),
+        ] {
+            let start = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "开始" + title)).firstMatch
+            XCTAssertTrue(start.waitForExistence(timeout: 15), app.debugDescription)
+            reveal(start, in: app)
+            assertTouchTarget(start, within: app)
+            start.tap()
+
+            let listen = app.buttons["听拼音"]
+            XCTAssertTrue(listen.waitForExistence(timeout: 15), app.debugDescription)
+            reveal(listen, in: app)
+            assertTouchTarget(listen, within: app)
+            listen.tap()
+            let action = app.buttons[actionLabel]
+            XCTAssertTrue(action.waitForExistence(timeout: 15), app.debugDescription)
+            XCTAssertTrue(waitUntil(action, predicate: "enabled == true"), app.debugDescription)
+            reveal(action, in: app)
+            assertTouchTarget(action, within: app)
+            action.tap()
+            addScreenshot(title)
+
+            let pause = app.buttons.matching(NSPredicate(format: "label ENDSWITH %@", "暂停")).firstMatch
+            for _ in 0..<3 where !pause.isHittable { app.swipeDown() }
+            XCTAssertTrue(pause.isHittable, app.debugDescription)
+            assertTouchTarget(pause, within: app)
+            pause.tap()
+            let resume = app.buttons["继续游戏"]
+            XCTAssertTrue(resume.waitForExistence(timeout: 12), app.debugDescription)
+            XCTAssertTrue(labeled("游戏先暂停一下", in: app).exists, app.debugDescription)
+            resume.tap()
+            XCTAssertTrue(listen.waitForExistence(timeout: 12), app.debugDescription)
+
+            if title == "森林跑酷" {
+                device.press(.home)
+                app.activate()
+                XCTAssertTrue(resume.waitForExistence(timeout: 12), app.debugDescription)
+                resume.tap()
+                XCTAssertTrue(listen.waitForExistence(timeout: 12), app.debugDescription)
+                app.terminate()
+                app.launch()
+                XCTAssertTrue(listen.waitForExistence(timeout: 25), app.debugDescription)
+            }
+
+            let exit = app.buttons.matching(NSPredicate(format: "label ENDSWITH %@", "保存并退出游戏")).firstMatch
+            XCTAssertTrue(exit.isHittable, app.debugDescription)
+            exit.tap()
+            XCTAssertTrue(start.waitForExistence(timeout: 12), app.debugDescription)
+        }
+    }
+
+    @MainActor
     func testClassroomAcrossRotationAndRelaunch() throws {
         continueAfterFailure = false
         let app = XCUIApplication()

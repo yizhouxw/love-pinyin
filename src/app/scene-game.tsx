@@ -50,6 +50,7 @@ type Props = {
   onSkip: () => void;
   onNext: () => void;
   onExit: () => void;
+  onPause?: () => void;
   onSettings: (preference: ScenePreference) => Promise<void>;
 };
 export function SceneGame(props: Props) {
@@ -203,7 +204,8 @@ export function SceneGame(props: Props) {
   }
   function togglePause() {
     voice.stop();
-    setPaused((value) => !value);
+    if (!paused && props.onPause) props.onPause();
+    else setPaused((value) => !value);
   }
   const pointer = useGamePointer(!stopped && world.hit === null, scene, fire);
   useGameInput({
@@ -264,6 +266,11 @@ export function SceneGame(props: Props) {
         </span>
       </nav>
       <div className="scene-view-actions">
+        {props.onPause && (
+          <button className="quiet" onClick={togglePause}>
+            {paused ? '▶ 继续' : 'Ⅱ 暂停'}
+          </button>
+        )}
         <button
           className="quiet"
           aria-pressed={enlarged}
@@ -499,9 +506,11 @@ export function SceneGame(props: Props) {
             ))}
           </div>
           <div className="scene-tools">
-            <button className="quiet" onClick={togglePause}>
-              {paused ? '▶ 继续' : 'Ⅱ 暂停'}
-            </button>
+            {!props.onPause && (
+              <button className="quiet" onClick={togglePause}>
+                {paused ? '▶ 继续' : 'Ⅱ 暂停'}
+              </button>
+            )}
             <button
               className="quiet"
               aria-pressed={assist}

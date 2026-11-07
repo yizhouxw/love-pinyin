@@ -9,6 +9,7 @@ final class Classroom {
             let id: String
             let order: Int
             let exerciseIds: [String]
+            let knowledgeIds: [String]
         }
 
         struct Knowledge: Decodable {
@@ -58,6 +59,12 @@ final class Classroom {
         }
     }
 
+    private struct GameRound: Codable {
+        let id: String
+        var settings: LocalGameSettings
+        let route: Data
+    }
+
     private struct Round: Codable {
         let id: String
         let lessonId: String
@@ -65,6 +72,7 @@ final class Classroom {
         let startedAt: Date
         var tasks: [Task]
         var results: [String: Data] = [:]
+        var game: GameRound?
     }
 
     private struct Attempt: Codable {
@@ -77,6 +85,8 @@ final class Classroom {
         let firstCorrect: Bool
         let credit: Bool
         let clockPending: Bool
+        var gameId: String?
+        var hintUsed: Bool?
     }
 
     private struct Exposure: Codable {
@@ -95,10 +105,16 @@ final class Classroom {
         var attempts: [Attempt] = []
         var exposure: [String: Exposure] = [:]
         var lastObserved: Date?
+        var gameClock: LocalGameClock?
+        var gameSessionMinutes: Int?
+        var gameDailyMinutes: Int?
     }
 
     private let syllabus: Syllabus
     private let questions: [String: Task]
+    private let gameEligible: Set<String>
+    private let rules: GameRules
+    private let routes: GameRoutes
     private let store: ClassroomStore
     private let now: () -> Date
     private var state: State
@@ -109,9 +125,14 @@ final class Classroom {
         syllabus = try JSONDecoder().decode(Syllabus.self, from: content)
         guard let first = syllabus.lessons.first,
               let document = try JSONSerialization.jsonObject(with: content) as? JSON,
-              let rows = document["eligible"] as? [JSON]
+              let rows = document["eligible"] as? [JSON],
+              let game = document["game"] as? JSON,
+              let gameRules = game["rules"] as? JSON, let gameRoutes = game["routes"] as? JSON
         else { throw ClassroomError("IOS_RESOURCE_UNAVAILABLE") }
+        rules = try JSONDecoder().decode(GameRules.self, from: JSONSerialization.data(withJSONObject: gameRules))
+        routes = try GameRoutes(gameRoutes)
         var tasks: [String: Task] = [:]
+        var gameIds: Set<String> = []
         for row in rows {
             guard var question = row["exercise"] as? JSON,
                   let id = question["id"] as? String,
@@ -126,6 +147,10 @@ final class Classroom {
             guard ids.count == options.count, ids.contains(correct), tasks[id] == nil else {
                 throw ClassroomError("IOS_RESOURCE_UNAVAILABLE")
             }
+            if question["audioRef"] is String
+                && options.allSatisfy({ $0["pictureId"] == nil && $0["writing"] == nil }) {
+                gameIds.insert(id)
+            }
             question.removeValue(forKey: "hint")
             question.removeValue(forKey: "reviewStatus")
             tasks[id] = Task(
@@ -135,6 +160,7 @@ final class Classroom {
             )
         }
         questions = tasks
+        gameEligible = gameIds
         store = try ClassroomStore(url: database)
         if let raw = try store.load() {
             do {
@@ -168,6 +194,14 @@ final class Classroom {
             return NSNull()
         case ("POST", "/sessions"):
             return try start(body)
+        case ("GET", "/games"):
+            return try gameOverview()
+        case ("POST", "/games/heartbeat"):
+            return try changeClock(.heartbeat)
+        case ("POST", "/games/pause"):
+            return try changeClock(.pause)
+        case ("PUT", "/household/game-limits"):
+            return try changeGameLimits(body)
         case ("POST", "/rest/complete"):
             if state.roundsSinceBreak > 0 {
                 try update { $0.roundsSinceBreak = 0 }
@@ -188,6 +222,9 @@ final class Classroom {
         if method == "GET", segments.count == 2, segments[0] == "attempts" {
             guard let saved = state.receipts[String(segments[1])] else { throw ClassroomError("ATTEMPT_NOT_FOUND") }
             return try decode(saved)
+        }
+        if method == "PATCH", segments.count == 3, segments[0] == "sessions", segments[2] == "game-settings" {
+            return try changeGameSettings(String(segments[1]), body: body)
         }
         if method == "POST", segments.count == 3 {
             let id = String(segments[1])
@@ -218,19 +255,31 @@ final class Classroom {
     }
 
     private func project(_ round: Round) throws -> JSON {
-        [
+        var value: JSON = [
             "id": round.id, "lessonId": round.lessonId, "contentVersion": round.contentVersion,
             "startedAt": ISO8601DateFormatter().string(from: round.startedAt),
             "tasks": try round.tasks.map { try $0.projection },
             "results": try round.results.mapValues(decode),
         ]
+        if let game = round.game {
+            value["gameId"] = game.id
+            value["gameSettings"] = try decode(JSONEncoder().encode(game.settings))
+            value["gameRun"] = try decode(game.route)
+        }
+        return value
     }
 
     private func start(_ body: JSON) throws -> JSON {
-        guard body.count == 1, let id = body["lessonId"] as? String else {
+        let isGame = body["gameId"] != nil
+        guard let id = body["lessonId"] as? String, isGame || body.count == 1 else {
             throw ClassroomError("LESSON_NOT_FOUND")
         }
-        if let round = state.current { return try project(round) }
+        if let round = state.current {
+            guard round.lessonId == id, round.game?.id == body["gameId"] as? String else {
+                throw ClassroomError("SESSION_ACTIVE")
+            }
+            return try project(round)
+        }
         guard state.roundsSinceBreak < 2 else { throw ClassroomError("REST_REQUIRED") }
         guard let current = syllabus.lessons.first(where: { $0.id == state.lessonId }) else {
             throw ClassroomError("CURRENT_LESSON_REQUIRES_SELECTION")
@@ -239,23 +288,197 @@ final class Classroom {
             throw ClassroomError("LESSON_NOT_FOUND")
         }
         guard requested.order <= current.order else { throw ClassroomError("LESSON_NOT_UNLOCKED") }
-        let eligible = requested.exerciseIds.enumerated().compactMap { index, id in
-            questions[id].map { (index, $0, state.exposure[id] ?? Exposure()) }
-        }.sorted { left, right in
-            let a = left.2, b = right.2
-            if a.count != b.count { return a.count < b.count }
-            if a.latest != b.latest { return (a.latest ?? .distantPast) < (b.latest ?? .distantPast) }
-            return left.0 < right.0
+        let started = now()
+        var game: GameRound?
+        var clock: LocalGameClock?
+        let tasks: [Task]
+        if isGame {
+            let selected = try prepareGame(body, order: current.order)
+            tasks = selected.tasks
+            game = selected.game
+            let (next, status) = transition(.heartbeat, at: started)
+            if let reason = status.reason { throw ClassroomError(reason) }
+            clock = next
+        } else {
+            tasks = try rank(requested.exerciseIds.compactMap { questions[$0] }).prefix(6).map { try $0.instantiate() }
+            guard !tasks.isEmpty else { throw ClassroomError("LESSON_NOT_READY") }
         }
-        let tasks = try eligible.prefix(6).map { try $0.1.instantiate() }
-        guard !tasks.isEmpty else { throw ClassroomError("LESSON_NOT_READY") }
         let round = Round(
             id: UUID().uuidString, lessonId: id, contentVersion: syllabus.version,
-            startedAt: now(), tasks: tasks
+            startedAt: started, tasks: tasks, game: game
         )
         let result = try project(round)
-        try update { $0.current = round }
+        try update {
+            $0.current = round
+            if let clock { $0.gameClock = clock }
+        }
         return result
+    }
+
+    private var sessionMinutes: Int { state.gameSessionMinutes ?? rules.policy.sessionMinutes }
+    private var dailyMinutes: Int { state.gameDailyMinutes ?? rules.policy.dailyMinutes }
+
+    private func transition(_ action: LocalGameClock.Action, at: Date) -> (LocalGameClock, LocalGameClock.Status) {
+        var clock = state.gameClock ?? LocalGameClock()
+        let status = clock.transition(action, now: at, session: sessionMinutes, daily: dailyMinutes,
+                                      policy: rules.policy, day: day)
+        return (clock, status)
+    }
+
+    func pauseGameOnInterruption() throws {
+        if (state.gameClock?.leaseUntil ?? 0) > (state.gameClock?.accountedAt ?? 0) {
+            _ = try changeClock(.pause)
+        }
+    }
+
+    private func changeClock(_ action: LocalGameClock.Action) throws -> JSON {
+        let (clock, status) = transition(action, at: now())
+        if clock != state.gameClock { try update { $0.gameClock = clock } }
+        return status.projection
+    }
+
+    private func requireGameLease(_ round: Round, at: Date) throws {
+        guard round.game != nil else { return }
+        let status = transition(.status, at: at).1
+        if let reason = status.reason { throw ClassroomError(reason) }
+        if status.leaseSeconds <= 0 { throw ClassroomError("GAME_PAUSED") }
+    }
+
+    private func changeGameLimits(_ body: JSON) throws -> JSON {
+        guard body.count == 2, let session = body["gameSessionMinutes"] as? Int,
+              let daily = body["gameDailyMinutes"] as? Int,
+              (1...rules.policy.sessionMaxMinutes).contains(session), (1...rules.policy.dailyMaxMinutes).contains(daily)
+        else { throw ClassroomError("GAME_SETTINGS_INVALID") }
+        guard state.current == nil else { throw ClassroomError("SESSION_ACTIVE") }
+        let (clock, _) = transition(.pause, at: now())
+        try update {
+            $0.gameClock = clock
+            $0.gameSessionMinutes = session
+            $0.gameDailyMinutes = daily
+        }
+        return progress()
+    }
+
+    private func rank(_ tasks: [Task]) -> [Task] {
+        tasks.enumerated().sorted { left, right in
+            let a = state.exposure[left.element.exerciseId] ?? Exposure()
+            let b = state.exposure[right.element.exerciseId] ?? Exposure()
+            if a.count != b.count { return a.count < b.count }
+            if a.latest != b.latest { return (a.latest ?? .distantPast) < (b.latest ?? .distantPast) }
+            return left.offset < right.offset
+        }.map(\.element)
+    }
+
+    private func gameMastery(order: Int) -> [String: JSON] {
+        let keys = Set(syllabus.lessons.filter { $0.order <= order }.flatMap(\.knowledgeIds))
+        return Dictionary(uniqueKeysWithValues: keys.map { ($0, mastery($0, attempts: state.attempts)) })
+    }
+
+    private func recommendation(_ mastery: [String: JSON]) -> GameRecommendation {
+        let samples = mastery.values.reduce(0) { $0 + ($1["sampleSize"] as? Int ?? 0) }
+        let correct = mastery.values.reduce(0) { $0 + ($1["correctCount"] as? Int ?? 0) }
+        let mastered = mastery.values.filter { $0["status"] as? String == "mastered" }.count
+        let accuracy = samples == 0 ? 0 : Double(correct) / Double(samples)
+        let rule = rules.adaptation
+        let steady = samples >= rule.steadySamples && accuracy >= rule.steadyAccuracy
+        let challenge = samples >= rule.challengeSamples && accuracy >= rule.challengeAccuracy && mastered >= rule.challengeMastered
+        return GameRecommendation(level: challenge ? "challenge" : steady ? "steady" : "gentle",
+                                  speed: steady ? "normal" : "slow", sampleSize: samples,
+                                  correctCount: correct, masteredCount: mastered)
+    }
+
+    private func prepareGame(_ body: JSON, order: Int) throws -> (tasks: [Task], game: GameRound) {
+        guard let id = body["gameId"] as? String, let game = rules.games.first(where: { $0.id == id }) else {
+            throw ClassroomError("GAME_NOT_FOUND")
+        }
+        let count = body["gameTaskCount"] as? Int ?? rules.play.defaultTasks
+        guard (rules.play.minTasks...rules.play.maxTasks).contains(count) else {
+            throw ClassroomError("GAME_SETTINGS_INVALID")
+        }
+        let mastery = gameMastery(order: order)
+        let settings = try LocalGameSettings(
+            difficulty: body["gameDifficulty"] as? String ?? "auto",
+            speed: body["gameSpeed"] as? String ?? "auto", recommendation: recommendation(mastery)
+        )
+        let lessons = syllabus.lessons.filter { $0.order <= order }
+        var seen: Set<String> = []
+        let eligible = lessons.flatMap(\.exerciseIds).compactMap { key -> Task? in
+            guard gameEligible.contains(key), let task = questions[key],
+                  game.modes.contains(task.mode), seen.insert(key).inserted
+            else { return nil }
+            return task
+        }
+        guard eligible.count >= count else { throw ClassroomError("GAME_LEVEL_CONTENT_INSUFFICIENT") }
+        let candidates = eligible.filter { $0.mode == game.mode } + eligible.filter { $0.mode != game.mode }
+        let currentKeys = Set(lessons.first(where: { $0.id == state.lessonId })?.exerciseIds ?? [])
+        let weak = rank(candidates.filter { mastery[$0.knowledgeId]?["status"] as? String == "practicing" })
+        var selected = Array(weak.prefix(min(count, rules.adaptation.weakSlots)))
+        var picked = Set(selected.map(\.exerciseId))
+        let current = rank(candidates.filter { currentKeys.contains($0.exerciseId) && !picked.contains($0.exerciseId) })
+        selected += current.prefix(count - selected.count)
+        picked = Set(selected.map(\.exerciseId))
+        selected += rank(candidates.filter { !picked.contains($0.exerciseId) }).prefix(count - selected.count)
+        picked = Set(selected.map(\.exerciseId))
+        var pending = selected + current.filter { !picked.contains($0.exerciseId) }
+        var spread: [Task] = []
+        while !pending.isEmpty && spread.count < count {
+            var targets: Set<String> = []
+            pending = pending.filter {
+                guard spread.count < count, targets.insert($0.knowledgeId).inserted else { return true }
+                spread.append($0)
+                return false
+            }
+        }
+        let tasks = try spread.map { try $0.instantiate() }
+        let route = try routes.freeze(gameId: id, levelId: body["gameLevelId"] as? String,
+                                      difficulty: settings.level, instances: tasks.map(\.instanceId))
+        return (tasks, GameRound(id: id, settings: settings, route: route))
+    }
+
+    private func changeGameSettings(_ id: String, body: JSON) throws -> JSON {
+        guard let round = state.current, round.id == id, let game = round.game else {
+            throw ClassroomError("SESSION_NOT_FOUND")
+        }
+        guard let difficulty = body["difficulty"] as? String, let speed = body["speed"] as? String else {
+            throw ClassroomError("GAME_SETTINGS_INVALID")
+        }
+        let (clock, status) = transition(.heartbeat, at: now())
+        if let reason = status.reason { throw ClassroomError(reason) }
+        let settings = try LocalGameSettings(difficulty: difficulty, speed: speed, recommendation: game.settings.recommendation)
+        let projection = try decode(JSONEncoder().encode(settings))
+        try update {
+            $0.gameClock = clock
+            $0.current?.game?.settings = settings
+        }
+        return projection
+    }
+
+    private func gameOverview() throws -> JSON {
+        let at = now()
+        let earliest = at.addingTimeInterval(-7 * 86400)
+        let recent = state.attempts.filter { $0.gameId != nil && $0.at >= earliest }
+        let iso = ISO8601DateFormatter()
+        let rounds = Array(state.finished.values) + [state.current].compactMap { $0 }
+        var skips = 0
+        for round in rounds where round.game != nil {
+            for saved in round.results.values {
+                if let time = try decode(saved)["skippedAt"] as? String,
+                   let date = iso.date(from: time), date >= earliest { skips += 1 }
+            }
+        }
+        let report: JSON = [
+            "answered": recent.count,
+            "independentCorrect": recent.filter { $0.firstCorrect && !$0.clockPending }.count,
+            "hints": recent.filter { $0.hintUsed == true }.count,
+            "skipped": skips,
+            "pendingClock": recent.filter(\.clockPending).count,
+            "practiceKnowledgeIds": Set(recent.filter { !$0.firstCorrect && !$0.clockPending }.map(\.knowledgeId)).sorted(),
+        ]
+        let order = syllabus.lessons.first(where: { $0.id == state.lessonId })?.order ?? 0
+        return [
+            "clock": transition(.status, at: at).1.projection, "report": report,
+            "recommendation": try decode(JSONEncoder().encode(recommendation(gameMastery(order: order)))),
+        ]
     }
 
     private func locate(_ id: String) throws -> (Round, Int) {
@@ -275,6 +498,7 @@ final class Classroom {
     private func hint(_ id: String) throws -> JSON {
         let (round, index) = try locate(id)
         try unresolved(round, id)
+        try requireGameLease(round, at: now())
         let task = round.tasks[index]
         if !task.hintUsed {
             try update { $0.current?.tasks[index].hintUsed = true }
@@ -296,6 +520,7 @@ final class Classroom {
         }
         try unresolved(round, id)
         let time = now()
+        try requireGameLease(round, at: time)
         let value: JSON = ["instanceId": id, "skipped": true, "skippedAt": ISO8601DateFormatter().string(from: time)]
         let encoded = try JSONSerialization.data(withJSONObject: value)
         try update {
@@ -321,6 +546,7 @@ final class Classroom {
         let task = round.tasks[index]
         guard task.options.contains(option) else { throw ClassroomError("OPTION_NOT_VALID") }
         let at = now()
+        try requireGameLease(round, at: at)
         let today = day.string(from: at)
         let clockPending = clockSkew(at)
         let credit = !clockPending && !state.attempts.contains {
@@ -330,7 +556,7 @@ final class Classroom {
         let attempt = Attempt(
             id: UUID().uuidString, exerciseId: task.exerciseId, knowledgeId: task.knowledgeId,
             mode: task.mode, day: today, at: at, firstCorrect: correct && !task.hintUsed, credit: credit,
-            clockPending: clockPending
+            clockPending: clockPending, gameId: round.game?.id, hintUsed: task.hintUsed
         )
         let result: JSON = [
             "attemptId": attempt.id, "requestId": requestId, "instanceId": id, "answerOptionId": option,
@@ -359,7 +585,9 @@ final class Classroom {
         }
         guard let round = state.current, round.id == id else { throw ClassroomError("SESSION_NOT_FOUND") }
         let completed = round.results.count == round.tasks.count
+        let clock = round.game == nil ? nil : transition(.pause, at: now()).0
         try update {
+            if let clock { $0.gameClock = clock }
             $0.current = nil
             $0.finished[id] = round
             if completed {
@@ -397,7 +625,10 @@ final class Classroom {
             "revision": state.revision, "selectedLessonId": state.lessonId,
             "completedSessions": state.completed, "attemptCount": state.attempts.count,
             "clockSkewDetected": clockSkew(now()), "pendingClockAttempts": state.attempts.filter { $0.clockPending }.count,
-            "settings": ["soundEnabled": true, "reducedMotion": false],
+            "settings": [
+                "soundEnabled": true, "reducedMotion": false,
+                "gameSessionMinutes": sessionMinutes, "gameDailyMinutes": dailyMinutes,
+            ] as JSON,
             "mastery": syllabus.knowledgeItems.map { mastery($0.id, attempts: state.attempts) },
         ]
     }

@@ -49,3 +49,9 @@ IOS-03 首段采用 SQLite schema 1。课堂当前轮次、历史、作答回执
 ## iOS 界面尺寸与辅助功能
 
 UIKit 继续约束 WebView 安全区并传入系统正文点数和辅助字号状态。网页按可用宽高重排，窄窗和大字号采用单列，宽且高的窗口在课堂详情旁显示课程侧栏。课程和题目由同一份 React 状态驱动。iOS 样式由现有原生平台标记启用。XCUITest 以仅 Debug 构建读取的 UUID 启动参数选择独立缓存档案，并使用临时 WebKit 存储。参见 [Apple 布局指南](https://developer.apple.com/design/human-interface-guidelines/layout)和[辅助功能指南](https://developer.apple.com/design/human-interface-guidelines/accessibility)。
+
+## 本机游戏
+
+构建阶段从现有游戏目录、关卡和 Python 路线冻结逻辑生成随包游戏资料。Swift 在进入关卡时从已学范围选题，把路线、选项和题目实例一起冻结到现有 SQLite 快照。切后台或重开后从当前题目继续，主动退出会结束关卡并保留已保存的成绩。旧课堂快照缺少游戏字段时使用默认值。
+
+Swift 按同一套游戏规则发放短时授权，以最近一次授权截止时间为扣时上界。原生生命周期、音频中断和路线变化会结束授权。续期和开始关卡要求 App 在前台。新作答、提示和跳过需有有效授权，已保存回执可用原幂等键重取。小卖部在 iOS 使用模拟模式。React 共用四款游戏的操作和反馈界面，家长限时按设备保存。

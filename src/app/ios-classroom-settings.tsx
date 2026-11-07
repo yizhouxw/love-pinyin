@@ -1,4 +1,5 @@
 import type { Lesson, Progress } from '../domain/learning-api';
+import { gameCatalog } from '../domain/games';
 import { api } from '../platform/api-client';
 
 export function IOSClassroomSettings({
@@ -49,6 +50,50 @@ export function IOSClassroomSettings({
         </label>
         <button disabled={busy || !lessonChoice || lessonChoice === progress.selectedLessonId}>
           保存当前课
+        </button>
+      </form>
+      <h2>游戏时长</h2>
+      <form
+        className="ios-game-limits"
+        onSubmit={(event) => {
+          event.preventDefault();
+          const values = new FormData(event.currentTarget);
+          void act(async () => {
+            await api('/household/game-limits', {
+              method: 'PUT',
+              body: JSON.stringify({
+                gameSessionMinutes: Number(values.get('session')),
+                gameDailyMinutes: Number(values.get('daily')),
+              }),
+            });
+            await refresh();
+          });
+        }}
+      >
+        <label>
+          每次最多（分钟）
+          <input
+            type="number"
+            name="session"
+            min={1}
+            max={gameCatalog.policy.sessionMaxMinutes}
+            defaultValue={progress.settings.gameSessionMinutes ?? gameCatalog.policy.sessionMinutes}
+            required
+          />
+        </label>
+        <label>
+          每天最多（分钟）
+          <input
+            type="number"
+            name="daily"
+            min={1}
+            max={gameCatalog.policy.dailyMaxMinutes}
+            defaultValue={progress.settings.gameDailyMinutes ?? gameCatalog.policy.dailyMinutes}
+            required
+          />
+        </label>
+        <button className="quiet" disabled={busy}>
+          保存游戏时长
         </button>
       </form>
       <h2>此设备学习记录</h2>
