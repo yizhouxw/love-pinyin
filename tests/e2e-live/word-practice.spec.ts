@@ -213,11 +213,28 @@ test('WORD-07/08/09: touch course units, selected pictures and home entry order'
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto(appUrl);
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
-  await expect(page.locator('.daily-entry h2')).toHaveText([
+  await expect(page.locator('.practice-entries strong')).toHaveText([
     '天天练拼音',
     '词语天天练',
     '拼音游戏乐园',
   ]);
+  for (const width of [320, 375, 820, 1280]) {
+    await page.setViewportSize({ width, height: 680 });
+    for (const entry of [
+      '开始今天的练习',
+      '课堂学习',
+      '进入天天练拼音',
+      '进入词语天天练 →',
+      '进入游戏乐园',
+    ]) {
+      const button = page.getByRole('button', { name: entry, exact: true });
+      const frame = (await button.boundingBox())!;
+      expect(frame.height).toBeGreaterThanOrEqual(44);
+      expect(frame.x + frame.width).toBeLessThanOrEqual(width);
+      expect(frame.y + frame.height).toBeLessThanOrEqual(680);
+    }
+  }
+  await page.setViewportSize({ width: 375, height: 812 });
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
   const course = page.getByRole('button', { name: /^选择课程/ });
   expect((await page.locator('.word-header').boundingBox())!.height).toBeLessThanOrEqual(64);

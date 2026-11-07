@@ -518,25 +518,29 @@ footer {
 }
 .learning-welcome .current-course {
   color: #436454;
-  font-size: 20px;
+  font-size: 1.15rem;
   font-weight: 700;
+  margin: 0;
 }
 .learning-welcome .start-actions {
   display: grid;
   grid-template-columns: 1.3fr 1fr;
   gap: 12px;
-  margin: 22px 0 12px;
+  margin: 0.85rem 0 0;
 }
 .learning-welcome .start-actions button {
   margin: 0;
-  min-height: 56px;
+  min-height: 48px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
-  font-size: 17px;
+  padding: 9px 12px;
+  font-size: 1rem;
+}
+.learning-welcome .start-actions button > span {
+  font-size: 1rem;
 }
 .learning-welcome .listen-lesson-button {
   border: 1px solid #abc7b5;
@@ -602,30 +606,23 @@ footer {
 }
 .topbar > .guidance-switch {
   order: 1;
+  flex-wrap: nowrap;
+  margin: 0;
 }
 .topbar > .parent-button {
   order: 2;
 }
-.home-page .daily-entry {
-  padding: 20px 24px;
-  margin-block: 18px;
-  border-radius: 20px;
-}
-.home-page .daily-entry h2 {
-  font-size: 24px;
-}
-.home-page .daily-entry p {
-  margin: 6px 0 0;
-}
 @media (max-width: 500px) {
   .home-page .learning-welcome {
     margin-top: 18px;
-    padding: 20px;
+    padding: 0.85rem;
   }
   .learning-welcome .start-actions {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    margin-top: 16px;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 8px;
+  }
+  .topbar {
+    gap: 6px;
   }
   .topbar .brand {
     font-size: 16px;
@@ -645,7 +642,85 @@ footer {
     font-size: 13px;
     padding: 8px 10px;
   }
-  .home-page .daily-entry {
-    padding: 18px 20px;
+}
+
+.practice-entries {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.practice-entries > button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  align-items: center;
+  min-height: 58px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #b2d6c8;
+  border-radius: 16px;
+  background: #e5f2ee;
+  color: var(--green);
+  text-align: start;
+}
+
+.practice-entries > button:last-child {
+  background: #e8f3e9;
+  border-color: #bedac6;
+}
+
+.practice-entries > button span:first-child {
+  font-size: 1.35rem;
+}
+
+.practice-entries :is(strong, small) {
+  display: block;
+  line-height: 1.35;
+}
+
+.practice-entries small {
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  color: #52665d;
+}
+
+@media (max-width: 679px) {
+  .practice-entries {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-page {
+    padding-top: 10px;
+  }
+
+  .course-browser {
+    margin-block: 0.65rem;
+    padding-block: 0;
+  }
+}
+
+[data-ios-large-text] :is(.practice-entries, .learning-welcome .start-actions) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (max-width: 500px) {
+  :root:not([data-ios-large-text]) .topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .topbar > .guidance-switch {
+    gap: 4px;
+  }
+}
+
+@media (max-width: 359px) {
+  :root:not([data-ios-large-text]) .learning-welcome .start-actions button {
+    justify-content: center;
+    font-size: 0.94rem;
+  }
+
+  .learning-welcome .start-actions button > span {
+    display: none;
   }
 }

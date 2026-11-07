@@ -9,12 +9,14 @@ CODE_SIGN_STYLE = Automatic
 ENABLE_USER_SCRIPT_SANDBOXING = NO
 ALWAYS_SEARCH_USER_PATHS = NO
 GENERATE_INFOPLIST_FILE = YES
-INFOPLIST_KEY_CFBundleDisplayName = 爱拼音验证
+INFOPLIST_KEY_CFBundleDisplayName = 爱拼音
 INFOPLIST_KEY_UILaunchScreen_Generation = YES
 INFOPLIST_FILE = Info.plist
 INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 MARKETING_VERSION = 0.8.0
-CURRENT_PROJECT_VERSION = 5
+CURRENT_PROJECT_VERSION = 6
 OTHER_LDFLAGS = $(inherited) -lsqlite3
 #include? "Signing.local"
+
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon

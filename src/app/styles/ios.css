@@ -1,5 +1,4 @@
 /* The UIKit host owns safe-area insets. These rules use the resulting viewport. */
-.practice-entries,
 .lesson-workspace {
   display: contents;
 }
@@ -41,7 +40,7 @@
   font-size: 1.65rem;
 }
 
-[data-ios-app] :is(.current-course, .daily-entry h2, .play-nav strong) {
+[data-ios-app] :is(.current-course, .play-nav strong) {
   font-size: 1.1rem;
 }
 
@@ -94,21 +93,7 @@
   }
 
   [data-ios-app] .learning-welcome .start-actions {
-    grid-template-columns: minmax(0, 1fr);
-    margin-block: 0.8rem 0.25rem;
-  }
-
-  [data-ios-app] .home-page .daily-entry {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.6rem;
-    padding: 0.85rem;
-    margin-block: 0.7rem;
-  }
-
-  [data-ios-app] .home-page .daily-entry > button {
-    align-self: stretch;
-    width: 100%;
+    margin-block: 0.65rem 0;
   }
 
   [data-ios-app] .play-page {
@@ -164,19 +149,6 @@
 }
 
 @media (min-width: 760px) and (min-height: 560px) {
-  [data-ios-app]:not([data-ios-large-text]) .practice-entries {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  [data-ios-app]:not([data-ios-large-text]) .practice-entries .daily-entry {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.65rem;
-    margin: 0;
-  }
-
   [data-ios-app]:not([data-ios-large-text]) .lesson-workspace {
     display: grid;
     grid-template-columns: minmax(12rem, 29%) minmax(0, 1fr);
@@ -223,10 +195,6 @@
 
 [data-ios-large-text] .daily-section-navigation {
   flex-wrap: wrap;
-}
-
-[data-ios-app] .practice-entries .games-entry {
-  grid-column: 1 / -1;
 }
 
 [data-ios-app] .scene-view-actions {

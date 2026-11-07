@@ -73,7 +73,7 @@ export function App() {
       {!isGuest() && household?.paired && (
         <aside className="guest-banner family-banner" aria-label="家庭模式">
           <span>
-            <strong>{isIOSApp() ? '离线课堂验证版' : '家庭学习'}</strong> ·{' '}
+            <strong>{isIOSApp() ? '离线学习' : '家庭学习'}</strong> ·{' '}
             {isIOSApp() ? '进度保存在此设备' : '进度已连接家庭电脑'}
           </span>
         </aside>
@@ -270,6 +270,25 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const mastery = progress?.mastery ?? [];
   const masteryById = new Map(mastery.map((item) => [item.knowledgeId, item]));
   const active = session;
+  const destination = wordsOpen
+    ? 'word-practice'
+    : dailyOpen
+      ? 'daily-reading'
+      : gamesOpen
+        ? 'games'
+        : '';
+  const showDestination = Boolean(boot && curriculum && progress && !active && !parentOpen);
+  const previousDestination = useRef('');
+  useEffect(() => {
+    if (!showDestination) return;
+    if (destination) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      document.getElementById(`page-${destination}`)?.focus({ preventScroll: true });
+    } else if (previousDestination.current) {
+      document.getElementById(`entry-${previousDestination.current}`)?.focus();
+    }
+    previousDestination.current = destination;
+  }, [destination, showDestination]);
   const taskIndex = active
     ? active.tasks.findIndex((task: Json) => !active.results?.[task.instanceId])
     : -1;
@@ -1008,7 +1027,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
 
   if (gamesOpen && !parentOpen && curriculum && progress)
     return (
-      <main className="home-page">
+      <main className="home-page" id="page-games" tabIndex={-1} aria-label="拼音游戏乐园">
         <GameZone
           guidanceEnabled={guidanceEnabled}
           onGuidanceChange={changeGuidance}
@@ -1031,7 +1050,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
 
   if (wordsOpen)
     return (
-      <main className="home-page">
+      <main className="home-page" id="page-word-practice" tabIndex={-1} aria-label="词语天天练">
         <WordPractice
           guidanceEnabled={guidanceEnabled}
           onGuidanceChange={changeGuidance}
@@ -1047,7 +1066,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
 
   if (dailyOpen)
     return (
-      <main className="home-page">
+      <main className="home-page" id="page-daily-reading" tabIndex={-1} aria-label="天天练拼音">
         <DailyReadingPage
           gapSeconds={gapSeconds}
           onGapChange={changePlaybackGap}
@@ -1070,7 +1089,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           <span>爱拼音</span>
         </div>
         {(!lessonViewId || parentOpen) && (
-          <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
+          <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} label="语音" />
         )}
         {boot.isLocalHost && (
           <button
@@ -1097,9 +1116,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           {(!lessonViewId || parentOpen) && (
             <section className={`welcome ${parentOpen ? 'parent-welcome' : 'learning-welcome'}`}>
               <div>
-                <p className="eyebrow">
-                  {parentOpen ? (boot.guest ? '访客学习空间' : '家庭学习空间') : '每天一点，慢慢学'}
-                </p>
+                {parentOpen && (
+                  <p className="eyebrow">{boot.guest ? '访客学习空间' : '家庭学习空间'}</p>
+                )}
                 <h1>{parentOpen ? '家长管理' : <>今天学拼音</>}</h1>
                 {parentOpen ? (
                   <p>
@@ -1144,11 +1163,6 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                         课堂学习 <span aria-hidden="true">→</span>
                       </button>
                     </div>
-                    <details className="home-help">
-                      <summary>第一次玩？听听玩法</summary>
-                      <VoiceButton id="ui-welcome" voice={voice} label="听怎么玩" />
-                    </details>
-                    <VoiceFailure voice={voice} />
                   </>
                 )}
               </div>
@@ -1268,58 +1282,58 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             </div>
           ) : (
             <>
-              <div className="practice-entries">
-                <section className="daily-entry">
-                  <div>
-                    <span className="eyebrow">每天读一点</span>
-                    <h2>天天练拼音</h2>
-                    <p>听一听，跟着读。</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      stopVoice();
-                      window.location.hash = 'daily-reading';
-                      setDailyOpen(true);
-                    }}
-                  >
-                    进入天天练拼音 →
-                  </button>
-                </section>
-                <section className="daily-entry">
-                  <div>
-                    <span className="eyebrow">跟着课文天天练</span>
-                    <h2>词语天天练</h2>
-                    <p>词语拼读 · 词语听写 · 课文背诵</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      stopVoice();
-                      window.location.hash = 'word-practice';
-                      setWordsOpen(true);
-                    }}
-                  >
-                    进入词语天天练 →
-                  </button>
-                </section>
-                <section className="daily-entry games-entry">
-                  <div>
-                    <span className="eyebrow">边玩边学 · 每次短一点</span>
-                    <h2>拼音游戏乐园</h2>
-                    <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      stopVoice();
-                      voiceStarted.current = true;
-                      window.location.hash = 'games';
-                      setGamesOpen(true);
-                      if (guidanceEnabled) playVoice('ui-game_welcome');
-                    }}
-                  >
-                    进入游戏乐园 →
-                  </button>
-                </section>
-              </div>
+              <nav className="practice-entries" aria-label="练习与游戏">
+                <button
+                  id="entry-daily-reading"
+                  aria-label="进入天天练拼音"
+                  onClick={() => {
+                    stopVoice();
+                    window.location.hash = 'daily-reading';
+                    setDailyOpen(true);
+                  }}
+                >
+                  <span aria-hidden="true">🎧</span>
+                  <span>
+                    <strong>天天练拼音</strong>
+                    <small>听一听，跟着读</small>
+                  </span>
+                  <span aria-hidden="true">›</span>
+                </button>
+                <button
+                  id="entry-word-practice"
+                  aria-label="进入词语天天练 →"
+                  onClick={() => {
+                    stopVoice();
+                    window.location.hash = 'word-practice';
+                    setWordsOpen(true);
+                  }}
+                >
+                  <span aria-hidden="true">📖</span>
+                  <span>
+                    <strong>词语天天练</strong>
+                    <small>拼读、听写、背诵</small>
+                  </span>
+                  <span aria-hidden="true">›</span>
+                </button>
+                <button
+                  id="entry-games"
+                  aria-label="进入游戏乐园"
+                  onClick={() => {
+                    stopVoice();
+                    voiceStarted.current = true;
+                    window.location.hash = 'games';
+                    setGamesOpen(true);
+                    if (guidanceEnabled) playVoice('ui-game_welcome');
+                  }}
+                >
+                  <span aria-hidden="true">🎮</span>
+                  <span>
+                    <strong>拼音游戏乐园</strong>
+                    <small>四款游戏练拼音</small>
+                  </span>
+                  <span aria-hidden="true">›</span>
+                </button>
+              </nav>
               <details className="course-browser">
                 <summary>查看全部课程</summary>
                 <LessonNavigation
@@ -1329,6 +1343,11 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                   onSelect={(id) => openLesson(id, true)}
                 />
               </details>
+              <details className="home-help">
+                <summary>第一次玩？听听玩法</summary>
+                <VoiceButton id="ui-welcome" voice={voice} label="听怎么玩" />
+              </details>
+              <VoiceFailure voice={voice} />
               <details className="home-progress-note">
                 <summary>我的拼音花园 · {progress.completedSessions} 片叶子</summary>
                 <span role="img" aria-label={`拼音花园已长出 ${progress.completedSessions} 片叶子`}>

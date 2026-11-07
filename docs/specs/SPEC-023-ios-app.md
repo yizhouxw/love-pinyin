@@ -22,6 +22,8 @@
 
 2026-11-07，交付顺序调整。先完成 IOS-04 的四款离线游戏及本机游戏额度，到期复习和跨端备份分别移到 [#36](https://github.com/yizhouxw/love-pinyin/issues/36) 与 [#37](https://github.com/yizhouxw/love-pinyin/issues/37)。
 
+2026-11-07，首页与品牌调整。iOS 使用「爱拼音」与现有四线格品牌图标。共享首页优先展示当前课、练习、课堂学习、天天练拼音、词语天天练和游戏乐园；课程目录次之，使用说明与进度放在入口之后。窄窗使用紧凑入口，宽窗横向排列，大字号允许内容换行。沿用现有配色。真机检查 iPhone 与 iPad 竖屏首屏的入口、点击区域和返回路径，浏览器复核窄窗与宽窗。
+
 ## 验收切片
 
 | 编号                      | 通过条件                                                                                                                                                                                                                                  |
@@ -65,3 +67,9 @@
 iPhone 13（iOS 26.5）与 iPad Air 第 4 代（iPadOS 26.7）已签名安装。两台真机的 XCUITest 覆盖四款游戏打开、听题后启用动作、触控尺寸、暂停和恢复，另在森林跑酷验证切后台和冷启动恢复。报告及截图位于本机 `build/ios/game-phone-r2.xcresult` 和 `build/ios/game-pad-r2.xcresult`。Swift/SQLite 测试验证四款完整题单、计分、重开、上海跨日、单次及每日额度、暂停和时钟回拨。桌面 WebKit 通过测试桥接调用真实 Swift/SQLite，驱动四款场景各完成作答，跑完森林跑酷一关，并验证家长时长设置及小卖部模拟结算没有写入作答。真机飞行模式、扬声器听感、来电和 iPad 分屏仍待人工验收。
 
 本切片通过 `npm run verify:all`、`npm run validate:release`、`deploy/ios/test-classroom.sh`、`deploy/ios/test-games.sh` 和 B/S WebKit 的 10 项游戏专项回归。
+
+2026-11-07，IOS-07/08 首页与品牌（0.8.0 / 6）：iOS/iPadOS 从资源目录生成系统图标，采用现有四线格「bā」与品牌配色，系统名称为「爱拼音」，页内状态为「离线学习」。首页主卡并列放置「开始今天的练习」与「课堂学习」，后续三项采用整块按钮。浏览器宽窗与 iPad 宽窗横排，窄窗纵排，课程目录紧随其后。打开三个学习分区从顶部开始，返回时焦点回到原入口。天天练的语音开关样式仅作用于天天练页面。设计依据为 [Apple 布局指南](https://developer.apple.com/design/human-interface-guidelines/layout)与[触控尺寸建议](https://developer.apple.com/design/tips/)。
+
+两台真机的首页测试均确认主要入口无需滚动、触控区至少 44 pt，并打开天天练拼音、词语天天练和游戏乐园后返回。报告与截图位于本机 `build/ios/home-phone-r3.xcresult` 和 `build/ios/home-pad-r3.xcresult`。课堂作答、横屏和重开恢复也在两台设备上通过。Chromium 和 WebKit 使用实际家庭服务，在 320、375、820、1280 CSS px 检查首页入口可见并继续进入词语选课。桌面 WebKit 另使用 iOS 测试桥接检查 320–1440 CSS px 的课堂、两类天天练和游戏页，确认无横向溢出并恢复入口焦点；四种宽度的大字号检查通过。真机 VoiceOver 与系统大字号仍待人工检查。
+
+工程检查通过。首次真服务浏览器回归的报告目录被并行专项测试重置，改用独立目录重跑后 68 项全部通过。内容发布检查通过。

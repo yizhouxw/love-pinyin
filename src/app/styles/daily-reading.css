@@ -1,17 +1,3 @@
-.daily-entry {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: 1.6rem;
-  margin: 1.5rem 0;
-  border-radius: 24px;
-  background: #e5f2ee;
-  border: 1px solid #b2d6c8;
-}
-.daily-entry h2 {
-  margin: 0.4rem 0;
-}
 .daily-heading {
   display: flex;
   align-items: center;
@@ -86,7 +72,7 @@
   border-radius: 24px;
   padding: clamp(1rem, 3vw, 2rem);
 }
-.guidance-switch {
+.daily-page .guidance-switch {
   min-height: 44px;
   cursor: pointer;
   display: flex;
@@ -95,7 +81,7 @@
   gap: 0.6rem;
   margin: 1rem 0;
 }
-.guidance-switch input {
+.daily-page .guidance-switch input {
   width: 1.5rem;
   height: 1.5rem;
 }
@@ -187,10 +173,6 @@
   .daily-workspace {
     grid-template-columns: minmax(0, 1fr);
   }
-  .daily-entry {
-    align-items: flex-start;
-    flex-direction: column;
-  }
   .daily-list {
     max-height: 300px;
   }
@@ -201,8 +183,7 @@
 
 .daily-reader .daily-actions > button:first-child,
 .daily-reader .daily-next > button:nth-child(2),
-.daily-preview > button,
-.daily-entry > button {
+.daily-preview > button {
   background: #326c59;
   color: white;
   border: 1px solid #326c59;

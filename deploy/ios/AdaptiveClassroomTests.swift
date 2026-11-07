@@ -2,6 +2,39 @@ import XCTest
 
 final class AdaptiveClassroomTests: XCTestCase {
     @MainActor
+    func testHomeShowsLearningDestinations() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        XCUIDevice.shared.orientation = .portrait
+        app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
+        app.launch()
+
+        let start = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "开始今天的练习")).firstMatch
+        XCTAssertTrue(start.waitForExistence(timeout: 25), app.debugDescription)
+        for label in ["课堂学习", "进入天天练拼音", "进入词语天天练", "进入游戏乐园", "家长管理"] {
+            let entry = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", label)).firstMatch
+            XCTAssertTrue(entry.isHittable, app.debugDescription)
+            assertTouchTarget(entry, within: app)
+        }
+        XCTAssertTrue(start.isHittable)
+        assertTouchTarget(start, within: app)
+        addScreenshot("学习首页")
+
+        for (label, back) in [
+            ("进入天天练拼音", "返回小岛"), ("进入词语天天练", "返回首页"),
+            ("进入游戏乐园", "回到学习"),
+        ] {
+            let entry = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", label)).firstMatch
+            entry.tap()
+            let backButton = app.buttons.matching(NSPredicate(format: "label ENDSWITH %@", back)).firstMatch
+            XCTAssertTrue(backButton.waitForExistence(timeout: 15), app.debugDescription)
+            backButton.tap()
+            XCTAssertTrue(entry.waitForExistence(timeout: 15), app.debugDescription)
+            XCTAssertTrue(entry.isHittable)
+        }
+    }
+
+    @MainActor
     func testOfflineGameScenes() throws {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -94,6 +127,8 @@ final class AdaptiveClassroomTests: XCTestCase {
         listen.tap()
         let correct = app.buttons.matching(NSPredicate(format: "label ENDSWITH %@", "，a")).firstMatch
         XCTAssertTrue(correct.exists)
+        // An automatic prompt can already be playing when the first tap lands.
+        if !waitUntil(correct, predicate: "enabled == true"), listen.exists { listen.tap() }
         XCTAssertTrue(waitUntil(correct, predicate: "enabled == true"), app.debugDescription)
 
         device.orientation = .landscapeLeft

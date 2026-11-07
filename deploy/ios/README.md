@@ -1,4 +1,4 @@
-# iPhone / iPad 工程验证
+# 爱拼音 iPhone / iPad
 
 本工程对应 [SPEC-023](../../docs/specs/SPEC-023-ios-app.md)。可离线使用课堂练习、天天练拼音、词语天天练和四款拼音游戏。答题、进度和游戏时长存放在当前设备。到期复习和跨端备份分别由 GitHub Issue [#36](https://github.com/yizhouxw/love-pinyin/issues/36) 和 [#37](https://github.com/yizhouxw/love-pinyin/issues/37) 跟踪。
 
@@ -31,7 +31,7 @@ xcodebuild -project deploy/ios/LovePinyin.xcodeproj -scheme LovePinyin \
 1. 在 Xcode 的 Settings → Apple Accounts 登录普通 Apple 账号。可使用免费 Personal Team。
 2. 为 LovePinyin target 选择该 Team 并使用自动签名。若需要保持工程文件原样，将团队 ID 写入本机忽略文件 `deploy/ios/Signing.local`，格式为 `DEVELOPMENT_TEAM = 团队ID`。
 3. 解锁已连接的 iPhone 或 iPad，按系统提示信任 Mac 并启用开发者模式。选该设备为运行目标，点击 Run。免费签名七天到期，届时用 Xcode 重新签名安装。
-4. 如果首次打开提示开发者不受信任，先保持设备联网，在「设置 → 通用 → VPN 与设备管理」选择当前「开发者 App」的签名账号，按系统提示完成信任，再尝试打开验证版。
+4. 如果首次打开提示开发者不受信任，先保持设备联网，在「设置 → 通用 → VPN 与设备管理」选择当前「开发者 App」的签名账号，按系统提示完成信任，再尝试打开爱拼音。
 5. 首次打开成功后，断开 USB、关闭 Wi-Fi 和蜂窝。分别在 iPhone 和 iPad 上冷启动，确认显示 14 课，分别打开课堂听写、天天练拼音和词语天天练。检查拼音字形、笔顺、标准音、词语连播和逐字高亮，试播课程录音并拖动播放进度。完成一道有声客观题后关闭 App，再打开确认能继续同一轮练习。切换横竖屏和 iPad 窗口大小，离开前台时验证停止播放。单独记录两台设备结果。
 
 参考 [Apple 真机运行说明](https://developer.apple.com/documentation/xcode/running-your-app-on-simulated-or-physical-devices)和 [Personal Team 限制](https://developer.apple.com/help/account/basics/about-your-developer-account/)。
