@@ -255,7 +255,8 @@
 .voice-button > span {
   font-size: 27px;
 }
-.voice-button[aria-pressed='true'] {
+.voice-button[aria-pressed='true'],
+.voice-button[data-ios-playing] {
   background: #376c50;
   color: white;
   border-color: #376c50;

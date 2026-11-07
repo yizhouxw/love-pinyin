@@ -37,3 +37,15 @@ xcodebuild -project deploy/ios/LovePinyin.xcodeproj -scheme LovePinyin \
 参考 [Apple 真机运行说明](https://developer.apple.com/documentation/xcode/running-your-app-on-simulated-or-physical-devices)和 [Personal Team 限制](https://developer.apple.com/help/account/basics/about-your-developer-account/)。
 
 运行 `deploy/ios/test-classroom.sh` 可在 Mac 上用随包课程验证 Swift/SQLite 存储、作答恢复和与 Python 的规则对照。先准备离线资源。
+
+## 真机自动化
+
+准备资源后，解锁设备并在 Xcode 的 LovePinyin scheme 执行 Product → Test。也可以通过终端运行，同一份测试依次用于 iPhone 与 iPad。
+
+```sh
+xcodebuild -project deploy/ios/LovePinyin.xcodeproj -scheme LovePinyin \
+  -destination "id=$LP_IOS_DEVICE_ID" -parallel-testing-enabled NO \
+  -allowProvisioningUpdates -resultBundlePath build/ios/classroom-ui.xcresult test
+```
+
+使用目标设备的 ID 设置 `LP_IOS_DEVICE_ID`。每次运行指定一个新的结果路径。Debug 测试使用独立 SQLite 与临时 WebKit 存储。测试检查可触达的主要按钮、听题后可作答、旋转保留当前题、重开恢复第二题和只保存一条作答。Xcode 测试报告保留首页、横屏和恢复后的截图。

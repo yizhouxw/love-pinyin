@@ -38,6 +38,28 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
     private var playbackId: Int?
     private var lessonId: String?
 
+    private let testProfile: UUID? = {
+        #if DEBUG
+        if let value = ProcessInfo.processInfo.environment["LP_UI_TEST_PROFILE"] {
+            return UUID(uuidString: value)
+        }
+        #endif
+        return nil
+    }()
+
+    private var typographyScript: String {
+        let size = UIFont.preferredFont(forTextStyle: .body, compatibleWith: traitCollection).pointSize
+        let largeText = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        return """
+            document.documentElement.style.setProperty('--ios-body-size', '\(size)px');
+            document.documentElement.toggleAttribute('data-ios-large-text', \(largeText));
+            """
+    }
+
+    @objc private func updateTypography() {
+        webView?.evaluateJavaScript(typographyScript)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -46,11 +68,15 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
             let assets = try OfflineAssets(root: resources.appendingPathComponent("Offline"))
             self.assets = assets
             let config = WKWebViewConfiguration()
+            if testProfile != nil { config.websiteDataStore = .nonPersistent() }
             config.setURLSchemeHandler(assets, forURLScheme: OfflineAssets.scheme)
             config.mediaTypesRequiringUserActionForPlayback = []
             config.userContentController.addUserScript(WKUserScript(
                 source: "Object.defineProperty(window, '__lovePinyinIOS', { value: true });",
                 injectionTime: .atDocumentStart, forMainFrameOnly: true
+            ))
+            config.userContentController.addUserScript(WKUserScript(
+                source: typographyScript, injectionTime: .atDocumentEnd, forMainFrameOnly: true
             ))
             config.userContentController.addScriptMessageHandler(
                 LearningBridge(controller: self), contentWorld: .page, name: "learning"
@@ -60,6 +86,10 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
             self.webView = webView
             install(webView)
             webView.load(URLRequest(url: OfflineAssets.entry))
+            NotificationCenter.default.addObserver(
+                self, selector: #selector(updateTypography),
+                name: UIContentSizeCategory.didChangeNotification, object: nil
+            )
             NotificationCenter.default.addObserver(
                 self, selector: #selector(stopPlayback),
                 name: UIScene.willDeactivateNotification, object: nil
@@ -118,6 +148,10 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         url?.fragment = nil
         let allowed = navigationAction.targetFrame?.isMainFrame == true && url?.url == OfflineAssets.entry
         decisionHandler(allowed ? .allow : .cancel)
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        updateTypography()
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
@@ -232,8 +266,15 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         if let classroom { return classroom }
         let files = FileManager.default
         var folder = try files.url(
-            for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true
-        ).appendingPathComponent("Classroom", isDirectory: true)
+            for: testProfile == nil ? .applicationSupportDirectory : .cachesDirectory,
+            in: .userDomainMask, appropriateFor: nil, create: true
+        )
+        if let testProfile {
+            folder.appendPathComponent("UITests", isDirectory: true)
+            folder.appendPathComponent(testProfile.uuidString, isDirectory: true)
+        } else {
+            folder.appendPathComponent("Classroom", isDirectory: true)
+        }
         do {
             try files.createDirectory(at: folder, withIntermediateDirectories: true, attributes: [
                 .protectionKey: FileProtectionType.completeUntilFirstUserAuthentication,

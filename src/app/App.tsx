@@ -157,8 +157,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       if (lessonFromCatalogue.current) {
         const catalogue = document.querySelector<HTMLDetailsElement>('.course-browser');
         if (catalogue) catalogue.open = true;
-        document
-          .querySelector<HTMLButtonElement>(`[data-lesson-id="${previousLessonView.current}"]`)
+        catalogue
+          ?.querySelector<HTMLButtonElement>(`[data-lesson-id="${previousLessonView.current}"]`)
           ?.focus();
       } else document.querySelector<HTMLButtonElement>('.listen-lesson-button')?.focus();
     }
@@ -676,7 +676,12 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           </button>
           <div>
             <small>{game ? `${game.icon} ${game.title}` : `拼音小岛 · ${title}`}</small>
-            <strong>
+            <strong
+              role={isIOSApp() ? 'status' : undefined}
+              aria-label={
+                isIOSApp() ? `第 ${taskIndex + 1} / ${active.tasks.length} 关` : undefined
+              }
+            >
               第 {taskIndex + 1} / {active.tasks.length} 关
             </strong>
           </div>
@@ -784,6 +789,11 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               <div className="option-with-voice" key={option.id}>
                 <button
                   data-option-id={option.id}
+                  aria-label={
+                    isIOSApp() && !option.pictureId && !option.writing
+                      ? `选项 ${String.fromCharCode(65 + index)}，${option.label}`
+                      : undefined
+                  }
                   aria-describedby="answer-availability"
                   className={`option game-option ${question.type} ${hint?.answer.optionId === option.id && !answer ? 'hinted' : ''} ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
                   disabled={
@@ -1054,13 +1064,13 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   return (
     <main className="home-page">
       <header className="topbar">
-        {(!lessonViewId || parentOpen) && (
-          <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
-        )}
         <div className="brand">
           <img className="brand-mark" src="/logo.svg" alt="" />
           <span>爱拼音</span>
         </div>
+        {(!lessonViewId || parentOpen) && (
+          <GuidanceSwitch enabled={guidanceEnabled} onChange={changeGuidance} />
+        )}
         {boot.isLocalHost && (
           <button
             className="parent-button"
@@ -1190,109 +1200,127 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               />
             )
           ) : lessonViewId ? (
-            <LessonDetail
-              key={lessonViewId}
-              lesson={lessonById.get(lessonViewId)}
-              knowledge={
-                curriculum?.knowledgeItems.filter((item) => item.lessonId === lessonViewId) ?? []
-              }
-              audioRequirements={curriculum?.audioRequirements ?? []}
-              familyAudio={learningAudio?.lessons[lessonViewId]}
-              illustrations={curriculum?.illustrations}
-              writingCatalog={curriculum?.writing}
-              soundEnabled={guidanceEnabled}
-              onGuidanceChange={changeGuidance}
-              masteryById={masteryById}
-              busy={busy}
-              withinCurrentRange={Boolean(
-                lessonById.get(lessonViewId) &&
-                currentLesson &&
-                lessonById.get(lessonViewId)!.order <= currentLesson.order,
+            <div className="lesson-workspace">
+              {isIOSApp() && (
+                <aside className="ios-course-sidebar" aria-label="课程列表">
+                  <LessonNavigation
+                    lessons={lessons}
+                    currentLesson={currentLesson}
+                    viewedLessonId={lessonViewId}
+                    masteryById={masteryById}
+                    onSelect={(id) => openLesson(id, lessonFromCatalogue.current)}
+                  />
+                </aside>
               )}
-              canPractice={Boolean(
-                lessonById.get(lessonViewId) &&
-                currentLesson &&
-                lessonById.get(lessonViewId)!.order <= currentLesson.order &&
-                lessonById
-                  .get(lessonViewId)
-                  ?.exerciseIds.some((exerciseId) =>
-                    curriculum?.exercises.some(
-                      (exercise) =>
-                        exercise.id === exerciseId &&
-                        ['listen-choice', 'symbol-choice', 'tone-choice', 'blend-choice'].includes(
-                          exercise.type,
-                        ),
+              <LessonDetail
+                key={lessonViewId}
+                lesson={lessonById.get(lessonViewId)}
+                knowledge={
+                  curriculum?.knowledgeItems.filter((item) => item.lessonId === lessonViewId) ?? []
+                }
+                audioRequirements={curriculum?.audioRequirements ?? []}
+                familyAudio={learningAudio?.lessons[lessonViewId]}
+                illustrations={curriculum?.illustrations}
+                writingCatalog={curriculum?.writing}
+                soundEnabled={guidanceEnabled}
+                onGuidanceChange={changeGuidance}
+                masteryById={masteryById}
+                busy={busy}
+                withinCurrentRange={Boolean(
+                  lessonById.get(lessonViewId) &&
+                  currentLesson &&
+                  lessonById.get(lessonViewId)!.order <= currentLesson.order,
+                )}
+                canPractice={Boolean(
+                  lessonById.get(lessonViewId) &&
+                  currentLesson &&
+                  lessonById.get(lessonViewId)!.order <= currentLesson.order &&
+                  lessonById
+                    .get(lessonViewId)
+                    ?.exerciseIds.some((exerciseId) =>
+                      curriculum?.exercises.some(
+                        (exercise) =>
+                          exercise.id === exerciseId &&
+                          [
+                            'listen-choice',
+                            'symbol-choice',
+                            'tone-choice',
+                            'blend-choice',
+                          ].includes(exercise.type),
+                      ),
                     ),
-                  ),
-              )}
-              onBack={() => setLessonViewId(null)}
-              onReview={(knowledgeId: string) =>
-                void act(async () => {
-                  await beginReview(knowledgeId);
-                  setLessonViewId(null);
-                })
-              }
-              onStart={() =>
-                void act(async () => {
-                  await beginLesson(lessonViewId);
-                  setLessonViewId(null);
-                })
-              }
-            />
+                )}
+                onBack={() => setLessonViewId(null)}
+                onReview={(knowledgeId: string) =>
+                  void act(async () => {
+                    await beginReview(knowledgeId);
+                    setLessonViewId(null);
+                  })
+                }
+                onStart={() =>
+                  void act(async () => {
+                    await beginLesson(lessonViewId);
+                    setLessonViewId(null);
+                  })
+                }
+              />
+            </div>
           ) : (
             <>
-              <section className="daily-entry">
-                <div>
-                  <span className="eyebrow">每天读一点</span>
-                  <h2>天天练拼音</h2>
-                  <p>听一听，跟着读。</p>
-                </div>
-                <button
-                  onClick={() => {
-                    stopVoice();
-                    window.location.hash = 'daily-reading';
-                    setDailyOpen(true);
-                  }}
-                >
-                  进入天天练拼音 →
-                </button>
-              </section>
-              <section className="daily-entry">
-                <div>
-                  <span className="eyebrow">跟着课文天天练</span>
-                  <h2>词语天天练</h2>
-                  <p>词语拼读 · 词语听写 · 课文背诵</p>
-                </div>
-                <button
-                  onClick={() => {
-                    stopVoice();
-                    window.location.hash = 'word-practice';
-                    setWordsOpen(true);
-                  }}
-                >
-                  进入词语天天练 →
-                </button>
-              </section>
-              {!isIOSApp() && (
-                <section className="daily-entry games-entry">
+              <div className="practice-entries">
+                <section className="daily-entry">
                   <div>
-                    <span className="eyebrow">边玩边学 · 每次短一点</span>
-                    <h2>拼音游戏乐园</h2>
-                    <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
+                    <span className="eyebrow">每天读一点</span>
+                    <h2>天天练拼音</h2>
+                    <p>听一听，跟着读。</p>
                   </div>
                   <button
                     onClick={() => {
                       stopVoice();
-                      voiceStarted.current = true;
-                      window.location.hash = 'games';
-                      setGamesOpen(true);
-                      if (guidanceEnabled) playVoice('ui-game_welcome');
+                      window.location.hash = 'daily-reading';
+                      setDailyOpen(true);
                     }}
                   >
-                    进入游戏乐园 →
+                    进入天天练拼音 →
                   </button>
                 </section>
-              )}
+                <section className="daily-entry">
+                  <div>
+                    <span className="eyebrow">跟着课文天天练</span>
+                    <h2>词语天天练</h2>
+                    <p>词语拼读 · 词语听写 · 课文背诵</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      stopVoice();
+                      window.location.hash = 'word-practice';
+                      setWordsOpen(true);
+                    }}
+                  >
+                    进入词语天天练 →
+                  </button>
+                </section>
+                {!isIOSApp() && (
+                  <section className="daily-entry games-entry">
+                    <div>
+                      <span className="eyebrow">边玩边学 · 每次短一点</span>
+                      <h2>拼音游戏乐园</h2>
+                      <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        stopVoice();
+                        voiceStarted.current = true;
+                        window.location.hash = 'games';
+                        setGamesOpen(true);
+                        if (guidanceEnabled) playVoice('ui-game_welcome');
+                      }}
+                    >
+                      进入游戏乐园 →
+                    </button>
+                  </section>
+                )}
+              </div>
               <details className="course-browser">
                 <summary>查看全部课程</summary>
                 <LessonNavigation

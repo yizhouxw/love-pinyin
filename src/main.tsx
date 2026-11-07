@@ -6,6 +6,7 @@ import { App } from './app/App';
 import './app/styles.css';
 
 if (isIOSApp()) {
+  document.documentElement.dataset.iosApp = '';
   window.addEventListener('lp-ios-audio-interrupted', () => audioPlayer.stop());
 }
 const root = document.getElementById('root');

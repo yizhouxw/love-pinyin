@@ -1,0 +1,226 @@
+/* The UIKit host owns safe-area insets. These rules use the resulting viewport. */
+.practice-entries,
+.lesson-workspace {
+  display: contents;
+}
+
+.ios-course-sidebar {
+  display: none;
+}
+
+:root[data-ios-app] {
+  font-size: var(--ios-body-size, 17px);
+  -webkit-text-size-adjust: 100%;
+}
+
+[data-ios-app] body {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+[data-ios-app] :is(button, select, summary, .guidance-switch) {
+  min-block-size: 44px;
+  min-inline-size: 44px;
+}
+
+[data-ios-app] :is(summary, .guidance-switch, a):focus-visible {
+  outline: 3px solid #aa5610;
+  outline-offset: 2px;
+}
+
+[data-ios-app] :is(.topbar, .play-nav) {
+  gap: 0.5rem;
+}
+
+[data-ios-app] :is(.topbar, .play-nav) .guidance-switch,
+[data-ios-app] .parent-button {
+  font-size: 0.875rem;
+}
+
+[data-ios-app] .learning-welcome h1 {
+  font-size: 1.65rem;
+}
+
+[data-ios-app] :is(.current-course, .daily-entry h2, .play-nav strong) {
+  font-size: 1.1rem;
+}
+
+[data-ios-app] .learning-welcome .start-actions button,
+[data-ios-app] .question-audio-actions .voice-button {
+  font-size: 1rem;
+}
+
+[data-ios-app] .question-card {
+  min-height: 0;
+}
+
+[data-ios-app] .question-card h1 {
+  font-size: 1.45rem;
+}
+
+[data-ios-app] .option {
+  font-size: 1.2rem;
+}
+
+[data-ios-app] :is(.option-voice, .question-help summary, #answer-availability, .play-nav small) {
+  font-size: 0.85rem;
+}
+
+[data-ios-app] .family-course-audio > div {
+  min-width: 0;
+}
+
+[data-ios-app] .family-course-audio input[type='range'] {
+  display: block;
+  width: min(100%, 22rem);
+  min-height: 44px;
+  margin: 0.35rem 0;
+  accent-color: var(--green);
+}
+
+[data-ios-app] .daily-days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 3.9rem), 1fr));
+}
+
+[data-ios-app] .daily-days button {
+  min-width: 44px;
+}
+
+@media (max-width: 759px), (max-height: 559px) {
+  [data-ios-app] .home-page .learning-welcome {
+    margin-block: 0.5rem 0.9rem;
+    padding: 1rem;
+  }
+
+  [data-ios-app] .learning-welcome .start-actions {
+    grid-template-columns: minmax(0, 1fr);
+    margin-block: 0.8rem 0.25rem;
+  }
+
+  [data-ios-app] .home-page .daily-entry {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    padding: 0.85rem;
+    margin-block: 0.7rem;
+  }
+
+  [data-ios-app] .home-page .daily-entry > button {
+    align-self: stretch;
+    width: 100%;
+  }
+
+  [data-ios-app] .play-page {
+    padding-block: 0.35rem 1rem;
+  }
+
+  [data-ios-app] .play-nav .progress-dots {
+    display: none;
+  }
+
+  [data-ios-app] .question-card {
+    margin-block-start: 0.4rem;
+    padding: 0.85rem;
+  }
+
+  [data-ios-app] .question-card .question-audio-actions {
+    min-height: 0;
+    margin-block: 0.4rem;
+  }
+
+  [data-ios-app] .question-card .options {
+    margin-block: 0.4rem;
+  }
+
+  [data-ios-app] .question-card .exercise-response {
+    min-height: 0;
+  }
+
+  [data-ios-app] .daily-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [data-ios-app] .word-course-dialog {
+    width: 100%;
+    max-width: none;
+    max-height: 90dvh;
+    margin: auto 0 0;
+    border-radius: 22px 22px 0 0;
+    overscroll-behavior: contain;
+  }
+
+  [data-ios-app] .word-course-dialog > header {
+    position: sticky;
+    z-index: 1;
+    inset-block-start: 0;
+    background: #f7f8ef;
+  }
+
+  [data-ios-app] .word-course-dialog .word-course-list {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (min-width: 760px) and (min-height: 560px) {
+  [data-ios-app]:not([data-ios-large-text]) .practice-entries {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  [data-ios-app]:not([data-ios-large-text]) .practice-entries .daily-entry {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin: 0;
+  }
+
+  [data-ios-app]:not([data-ios-large-text]) .lesson-workspace {
+    display: grid;
+    grid-template-columns: minmax(12rem, 29%) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  [data-ios-app]:not([data-ios-large-text]) .ios-course-sidebar {
+    display: block;
+  }
+
+  [data-ios-app] .ios-course-sidebar .lesson-navigation {
+    margin: 0;
+    padding: 0.75rem;
+  }
+
+  [data-ios-app] .ios-course-sidebar .lesson-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 359px) {
+  [data-ios-app] .question-card .options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+[data-ios-large-text] :is(.question-card .options, .daily-workspace, .word-reading-layout) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-ios-large-text] .word-header {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+[data-ios-large-text] .word-unit-tabs {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+[data-ios-large-text] .word-course-options {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-ios-large-text] .daily-section-navigation {
+  flex-wrap: wrap;
+}

@@ -2,11 +2,13 @@ import type { Lesson, Progress } from '../domain/learning-api';
 export function LessonNavigation({
   lessons,
   currentLesson,
+  viewedLessonId,
   masteryById,
   onSelect,
 }: {
   lessons: Lesson[];
   currentLesson: Lesson | undefined;
+  viewedLessonId?: string;
   masteryById: Map<string, Progress['mastery'][number]>;
   onSelect: (id: string) => void;
 }) {
@@ -40,7 +42,8 @@ export function LessonNavigation({
             <button
               key={lesson.id}
               data-lesson-id={lesson.id}
-              className={`lesson-tile ${lesson.id === currentLesson?.id ? 'selected' : ''} ${future ? 'locked' : ''}`}
+              aria-current={lesson.id === viewedLessonId ? 'page' : undefined}
+              className={`lesson-tile ${lesson.id === (viewedLessonId ?? currentLesson?.id) ? 'selected' : ''} ${future ? 'locked' : ''}`}
               onClick={() => onSelect(lesson.id)}
             >
               <span className="tile-number">{String(lesson.order).padStart(2, '0')}</span>

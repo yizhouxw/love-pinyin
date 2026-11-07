@@ -18,6 +18,7 @@ export function IOSClassroomSettings({
   act: (work: () => Promise<void>) => Promise<void>;
   refresh: () => Promise<void>;
 }) {
+  const progressSummary = `已作答 ${progress.attemptCount ?? 0} 题，完成 ${progress.completedSessions} 轮练习。`;
   return (
     <section className="map-card" aria-label="此设备学习设置">
       <h2>当前学习课</h2>
@@ -51,8 +52,8 @@ export function IOSClassroomSettings({
         </button>
       </form>
       <h2>此设备学习记录</h2>
-      <p>
-        已作答 {progress.attemptCount ?? 0} 题，完成 {progress.completedSessions} 轮练习。
+      <p role="status" aria-label={progressSummary}>
+        {progressSummary}
       </p>
       <p>记录保存在此设备。请保留 App，备份入口将在后续版本提供。</p>
     </section>

@@ -45,3 +45,7 @@ Apple 参考：[WKWebView](https://developer.apple.com/documentation/webkit/wkwe
 ## 首个课堂存储切片
 
 IOS-03 首段采用 SQLite schema 1。课堂当前轮次、历史、作答回执与计数作为一份带类型的快照，由单窗口 Swift 服务串行写入；SQLite 提交后才替换内存状态并返回成功。关闭多窗口以维持单写入者，iPad 单窗口仍可旋转或调整宽度。后续补备份和历史查询时保留冻结题单及完整作答回执，若需要迁移内部存储，必须在保留档案的前提下引入新版 schema。该内部快照不作为跨端备份格式。
+
+## iOS 界面尺寸与辅助功能
+
+UIKit 继续约束 WebView 安全区并传入系统正文点数和辅助字号状态。网页按可用宽高重排，窄窗和大字号采用单列，宽且高的窗口在课堂详情旁显示课程侧栏。课程和题目由同一份 React 状态驱动。iOS 样式由现有原生平台标记启用。XCUITest 以仅 Debug 构建读取的 UUID 启动参数选择独立缓存档案，并使用临时 WebKit 存储。参见 [Apple 布局指南](https://developer.apple.com/design/human-interface-guidelines/layout)和[辅助功能指南](https://developer.apple.com/design/human-interface-guidelines/accessibility)。
