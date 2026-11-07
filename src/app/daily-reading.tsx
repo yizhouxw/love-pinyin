@@ -16,6 +16,7 @@ import {
 } from '../domain/daily-reading';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { BrowserReadingRecorder } from '../platform/audio/browser-reading-recorder';
+import { iosOperation, isIOSApp } from '../platform/ios-app';
 import { isGuest } from '../platform/guest';
 import { recognizeReading, type RecognitionResult } from '../platform/audio/reading-recognition';
 import { waitForPlaybackGap } from '../platform/audio/playback-gap';
@@ -27,6 +28,7 @@ import recognitionContent from '../../content/reading-recognition.json';
 import navigationContent from '../../content/daily-reading-navigation.json';
 
 async function readDaily(): Promise<DailyReading> {
+  if (isIOSApp()) return iosOperation<DailyReading>('dailyReading');
   const response = await fetch(`/api/v1/${isGuest() ? 'guest/' : ''}daily-reading`);
   if (!response.ok) throw new Error('DAILY_UNAVAILABLE');
   return response.json() as Promise<DailyReading>;
@@ -858,81 +860,85 @@ function ReadingSession({
             )}
           </div>
         )}
-        <details
-          className="daily-optional-recording"
-          open={recordOpen}
-          onToggle={(event) => {
-            setRecordOpen(event.currentTarget.open);
-            if (!event.currentTarget.open) clearCapture();
-          }}
-        >
-          <summary>录音比较（可选）</summary>
-          <div className="daily-record-actions">
-            {recording === 'recording' ? (
-              <button
-                onClick={() => {
-                  setRecording('stopping');
-                  recorder.current.stop();
-                }}
-              >
-                ■ 停止录音
-              </button>
-            ) : (
-              <button
-                className="quiet"
-                disabled={recording !== 'idle' || phase === 'playing'}
-                onClick={() => void record()}
-              >
-                🎙 {recordUrl ? '重新录音' : '录下我的跟读'}
-              </button>
-            )}
-          </div>
-          <p className="daily-privacy">
-            录音仅在浏览器和家庭电脑
-            内存处理，不保存；换条、退出或后台会清除。识别只匹配音节，不判四声。每次识别最多三十秒，录音两分钟自动停止。
-          </p>
-          {recordError && <p role="alert">{recordError}</p>}
-          {recordUrl && (
-            <div className="daily-recording">
-              <PronunciationResults
-                key={item.id}
-                targetId={item.id}
-                guidanceEnabled={false}
-                audioUrl={recordUrl}
-              />
-              <strong>我的跟读 · 听回放比较</strong>
-              <audio ref={replay} src={recordUrl} controls aria-label="回放我的跟读" />
-              <button className="quiet" onClick={clearCapture}>
-                清除这段录音
-              </button>
-              <p>录音完成不代表识别匹配。电脑仅核对识别出的音节，不判四声准确度。</p>
-              <button
-                className="quiet"
-                disabled={recognizing}
-                onClick={() => void judge(recordUrl)}
-              >
-                重新识别这段跟读
-              </button>
-              {recognizing && <p role="status">电脑正在识别你的跟读…</p>}
-              {recognition && (
-                <div
-                  className={`daily-recognition daily-recognition-${recognition.status}`}
-                  role="status"
+        {!isIOSApp() && (
+          <details
+            className="daily-optional-recording"
+            open={recordOpen}
+            onToggle={(event) => {
+              setRecordOpen(event.currentTarget.open);
+              if (!event.currentTarget.open) clearCapture();
+            }}
+          >
+            <summary>录音比较（可选）</summary>
+            <div className="daily-record-actions">
+              {recording === 'recording' ? (
+                <button
+                  onClick={() => {
+                    setRecording('stopping');
+                    recorder.current.stop();
+                  }}
                 >
-                  <strong>音节对照（Whisper）：{recognitionContent.ui[recognition.status]}</strong>
-                  {recognition.transcript && <p>识别文字：{recognition.transcript}</p>}
-                  {recognition.recognizedPinyin && (
-                    <p>识别文字的拼音：{recognition.recognizedPinyin}</p>
-                  )}
-                  {recognition.reason === 'READING_TOO_LONG' && (
-                    <p>这段超过三十秒，请分条录音再试。</p>
-                  )}
-                  <small>仅识别匹配，不是发音分数；字典标调不代表录音的实际声调。</small>
-                </div>
+                  ■ 停止录音
+                </button>
+              ) : (
+                <button
+                  className="quiet"
+                  disabled={recording !== 'idle' || phase === 'playing'}
+                  onClick={() => void record()}
+                >
+                  🎙 {recordUrl ? '重新录音' : '录下我的跟读'}
+                </button>
               )}
             </div>
-          )}
-        </details>
+            <p className="daily-privacy">
+              录音仅在浏览器和家庭电脑
+              内存处理，不保存；换条、退出或后台会清除。识别只匹配音节，不判四声。每次识别最多三十秒，录音两分钟自动停止。
+            </p>
+            {recordError && <p role="alert">{recordError}</p>}
+            {recordUrl && (
+              <div className="daily-recording">
+                <PronunciationResults
+                  key={item.id}
+                  targetId={item.id}
+                  guidanceEnabled={false}
+                  audioUrl={recordUrl}
+                />
+                <strong>我的跟读 · 听回放比较</strong>
+                <audio ref={replay} src={recordUrl} controls aria-label="回放我的跟读" />
+                <button className="quiet" onClick={clearCapture}>
+                  清除这段录音
+                </button>
+                <p>录音完成不代表识别匹配。电脑仅核对识别出的音节，不判四声准确度。</p>
+                <button
+                  className="quiet"
+                  disabled={recognizing}
+                  onClick={() => void judge(recordUrl)}
+                >
+                  重新识别这段跟读
+                </button>
+                {recognizing && <p role="status">电脑正在识别你的跟读…</p>}
+                {recognition && (
+                  <div
+                    className={`daily-recognition daily-recognition-${recognition.status}`}
+                    role="status"
+                  >
+                    <strong>
+                      音节对照（Whisper）：{recognitionContent.ui[recognition.status]}
+                    </strong>
+                    {recognition.transcript && <p>识别文字：{recognition.transcript}</p>}
+                    {recognition.recognizedPinyin && (
+                      <p>识别文字的拼音：{recognition.recognizedPinyin}</p>
+                    )}
+                    {recognition.reason === 'READING_TOO_LONG' && (
+                      <p>这段超过三十秒，请分条录音再试。</p>
+                    )}
+                    <small>仅识别匹配，不是发音分数；字典标调不代表录音的实际声调。</small>
+                  </div>
+                )}
+              </div>
+            )}
+          </details>
+        )}
         <details
           open={adultOpen}
           onToggle={(event) => setAdultOpen(event.currentTarget.open)}

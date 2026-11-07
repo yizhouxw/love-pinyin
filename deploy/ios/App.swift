@@ -34,6 +34,8 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
     private var webView: WKWebView?
     private var assets: OfflineAssets?
     private var player: AVPlayer?
+    private var playbackId: Int?
+    private var lessonId: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,10 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
             let config = WKWebViewConfiguration()
             config.setURLSchemeHandler(assets, forURLScheme: OfflineAssets.scheme)
             config.mediaTypesRequiringUserActionForPlayback = []
+            config.userContentController.addUserScript(WKUserScript(
+                source: "Object.defineProperty(window, '__lovePinyinIOS', { value: true });",
+                injectionTime: .atDocumentStart, forMainFrameOnly: true
+            ))
             config.userContentController.addScriptMessageHandler(
                 LearningBridge(controller: self), contentWorld: .page, name: "learning"
             )
@@ -93,7 +99,7 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
 
     @objc private func stopPlayback() {
         player?.pause()
-        webView?.evaluateJavaScript("document.querySelector('audio')?.pause()")
+        webView?.evaluateJavaScript("window.dispatchEvent(new Event('lp-ios-audio-interrupted'))")
     }
 
     @objc private func audioRouteChanged(_ notification: Notification) {
@@ -123,46 +129,102 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         guard message.frameInfo.isMainFrame,
               message.frameInfo.request.url == OfflineAssets.entry,
               let assets,
-              let body = message.body as? [String: Any], body.count == 2,
+              let body = message.body as? [String: Any], body.count <= 4,
               body["version"] as? Int == 1,
               let operation = body["operation"] as? String
         else {
             replyHandler(nil, "INVALID_BRIDGE_REQUEST")
             return
         }
-        switch operation {
-        case "bootstrap":
-            replyHandler(["lessonCount": assets.lessonCount, "audioCount": assets.audioCount], nil)
-        case "playLesson":
-            do {
+        do {
+            switch operation {
+            case "library" where body.count == 2:
+                replyHandler([
+                    "curriculum": try assets.responseData("curriculum"),
+                    "sounds": try assets.responseData("learning-audio"),
+                ], nil)
+            case "libraryReady" where body.count == 2:
+                #if DEBUG
+                FileHandle.standardOutput.write(Data("Offline listening library mounted\n".utf8))
+                #endif
+                replyHandler(true, nil)
+            case "dailyReading" where body.count == 2:
+                replyHandler(try assets.responseData("daily-reading"), nil)
+            case "playLesson" where body.count == 4:
+                guard let id = body["id"] as? Int, id > 0,
+                      let audioId = body["audioId"] as? String, audioId.count < 128,
+                      let file = assets.lesson(audioId),
+                      view.window?.windowScene?.activationState == .foregroundActive
+                else {
+                    replyHandler(nil, "AUDIO_UNAVAILABLE")
+                    return
+                }
                 let session = AVAudioSession.sharedInstance()
                 try session.setCategory(.playback)
                 try session.setActive(true)
-                player?.pause()
-                let player = AVPlayer(url: assets.lesson)
-                self.player = player
-                player.play()
-                replyHandler(true, nil)
-            } catch {
-                replyHandler(nil, "AUDIO_UNAVAILABLE")
-            }
-        case "seekLesson":
-            guard let player else {
-                replyHandler(nil, "LESSON_NOT_STARTED")
-                return
-            }
-            player.seek(to: CMTime(seconds: 10, preferredTimescale: 600)) { finished in
-                DispatchQueue.main.async {
-                    replyHandler(finished ? true : nil, finished ? nil : "SEEK_INTERRUPTED")
+                if playbackId != id || lessonId != audioId || player?.currentItem?.status == .failed {
+                    player?.pause()
+                    player = AVPlayer(url: file)
+                    playbackId = id
+                    lessonId = audioId
                 }
+                if let player, player.currentTime().seconds >= duration(player), duration(player) > 0 {
+                    player.seek(to: .zero)
+                }
+                player?.play()
+                replyHandler(playbackState(), nil)
+            case "lessonState", "pauseLesson":
+                guard body.count == 3, let id = body["id"] as? Int, id == playbackId else {
+                    replyHandler(["playing": false, "position": 0, "duration": 0], nil)
+                    return
+                }
+                if operation == "pauseLesson" { player?.pause() }
+                if player?.currentItem?.status == .failed {
+                    replyHandler(nil, "AUDIO_UNAVAILABLE")
+                } else {
+                    replyHandler(playbackState(), nil)
+                }
+            case "seekLesson" where body.count == 4:
+                guard let id = body["id"] as? Int, id == playbackId, let player,
+                      let seconds = body["seconds"] as? Double,
+                      seconds.isFinite, seconds >= 0, seconds <= duration(player)
+                else {
+                    replyHandler(nil, "INVALID_AUDIO_POSITION")
+                    return
+                }
+                player.seek(to: CMTime(seconds: seconds, preferredTimescale: 600)) { [weak self] finished in
+                    DispatchQueue.main.async {
+                        guard finished, let self, self.playbackId == id else {
+                            replyHandler(nil, "SEEK_INTERRUPTED")
+                            return
+                        }
+                        replyHandler(self.playbackState(), nil)
+                    }
+                }
+            default:
+                replyHandler(nil, "UNKNOWN_OPERATION")
             }
-        case "stop":
-            player?.pause()
-            replyHandler(true, nil)
-        default:
-            replyHandler(nil, "UNKNOWN_OPERATION")
+        } catch {
+            replyHandler(nil, "IOS_RESOURCE_UNAVAILABLE")
         }
     }
+
+    private func duration(_ player: AVPlayer) -> Double {
+        let seconds = player.currentItem?.duration.seconds ?? 0
+        return seconds.isFinite && seconds >= 0 ? seconds : 0
+    }
+
+    private func playbackState() -> [String: Any] {
+        guard let player else { return ["playing": false, "position": 0, "duration": 0] }
+        let position = player.currentTime().seconds
+        let duration = duration(player)
+        return [
+            "playing": player.timeControlStatus != .paused && (duration == 0 || position < duration),
+            "position": position.isFinite ? position : 0,
+            "duration": duration,
+        ]
+    }
+
 }
 
 @MainActor

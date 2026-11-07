@@ -1,3 +1,4 @@
+import { isIOSApp } from '../platform/ios-app';
 import practice from '../../content/pronunciation-practice.json';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { PronunciationService, PronunciationTarget } from '../domain/pronunciation';
@@ -389,6 +390,7 @@ export function CoursePronunciationPractice({
   const targets = coursePronunciationTargets.filter((target) => target.lessonId === lessonId);
   const [index, setIndex] = useState(0);
   const target = targets[index];
+  const [demoFailed, setDemoFailed] = useState(false);
   if (!target) return null;
   return (
     <section className="lesson-pronunciation" aria-label="课程拼读跟读">
@@ -399,18 +401,39 @@ export function CoursePronunciationPractice({
             className="quiet"
             key={item.id}
             aria-pressed={position === index}
-            onClick={() => setIndex(position)}
+            onClick={() => {
+              audioPlayer.stop();
+              setDemoFailed(false);
+              setIndex(position);
+            }}
           >
             {item.pinyin}
           </button>
         ))}
       </nav>
-      <RecordedPractice
-        key={target.id}
-        target={target}
-        audioId={target.audioId}
-        guidanceEnabled={guidanceEnabled}
-      />
+      {isIOSApp() ? (
+        <>
+          <button
+            className="quiet"
+            onClick={() => {
+              setDemoFailed(false);
+              void audioPlayer.play(target.audioId).catch((error: unknown) => {
+                if (!(error instanceof Error && error.name === 'AbortError')) setDemoFailed(true);
+              });
+            }}
+          >
+            ♫ 听示范
+          </button>
+          {demoFailed && <p role="alert">示范声音暂不可用，请重试。</p>}
+        </>
+      ) : (
+        <RecordedPractice
+          key={target.id}
+          target={target}
+          audioId={target.audioId}
+          guidanceEnabled={guidanceEnabled}
+        />
+      )}
     </section>
   );
 }

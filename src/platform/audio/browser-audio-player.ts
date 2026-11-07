@@ -1,4 +1,5 @@
 import type { AudioPlayer } from '../../domain/contracts';
+import { isIOSApp } from '../ios-app';
 import { learningAssetUrl } from '../guest';
 import { ReadingAudioPool } from './reading-audio-pool';
 import {
@@ -92,6 +93,10 @@ export class BrowserAudioPlayer implements AudioPlayer {
 
   /** Recording owns the same audio lifetime: any new playback first cancels the input. */
   claimInput(onInterrupted: () => void): () => void {
+    return this.claimAudio(onInterrupted);
+  }
+
+  claimAudio(onInterrupted: () => void): () => void {
     this.stop();
     const input: ActivePlayback = {
       stop: () => {
@@ -144,7 +149,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
     if (signal?.aborted) return Promise.reject(aborted());
 
     const source = learningAssetUrl(kind, audioId);
-    if (kind === 'daily-audio' || (kind === 'voice' && audioId.startsWith('daily-')))
+    if (isIOSApp() || kind === 'daily-audio' || (kind === 'voice' && audioId.startsWith('daily-')))
       return this.playBufferedReading([source], signal, observer);
     // Narration and standard demonstrations share the activated learning element.
     // A queued standard sample can follow its prompt after the original tap.

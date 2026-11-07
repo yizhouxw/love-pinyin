@@ -14,7 +14,6 @@ mkdir -p build/ios
 stage=$(mktemp -d "$PWD/build/ios/stage.XXXXXXXX")
 trap 'rm -rf "$stage"' EXIT
 uv run --locked python -m deploy.ios.prepare "$stage/Resources" "$@"
-cp deploy/ios/probe.html deploy/ios/probe.js "$stage/Resources/Web/"
 rm -rf "$output"
 mv "$stage/Resources" "$output"
 du -sh "$output"

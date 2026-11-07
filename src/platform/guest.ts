@@ -1,3 +1,4 @@
+import { isIOSApp } from './ios-app';
 import { isMacApp } from './mac-app';
 
 /** Per-tab temporary progress. No cookies, localStorage or server guest account. */
@@ -6,7 +7,7 @@ let guestMode: boolean | undefined;
 let leaving = false;
 
 export function isGuest(): boolean {
-  if (isMacApp()) return false;
+  if (isMacApp() || isIOSApp()) return false;
   if (guestMode !== undefined) return guestMode;
   try {
     guestMode = sessionStorage.getItem(CACHE_KEY) !== null;

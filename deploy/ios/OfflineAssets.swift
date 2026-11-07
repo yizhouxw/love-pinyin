@@ -4,63 +4,61 @@ import WebKit
 @MainActor
 final class OfflineAssets: NSObject, WKURLSchemeHandler {
     static let scheme = "lovepinyin"
-    static let entry = URL(string: "lovepinyin://bundle/probe.html")!
+    static let entry = URL(string: "lovepinyin://bundle/index.html")!
 
     private struct Clip: Decodable {
         let file: String
     }
 
-    private struct Curriculum: Decodable {
-        let lessons: [Lesson]
-
-        struct Lesson: Decodable {
-            let id: String
-        }
-    }
-
     private let web: URL
-    private let shortSample: URL
-    let lesson: URL
-    let lessonCount: Int
-    let audioCount: Int
+    private let audio: URL
+    private let data: URL
+    private let catalog: [String: Clip]
+    private let webFiles: Set<String>
 
     init(root: URL) throws {
-        let catalog = try JSONDecoder().decode(
-            [String: Clip].self, from: Data(contentsOf: root.appendingPathComponent("Data/audio.json"))
-        )
-        let curriculum = try JSONDecoder().decode(
-            Curriculum.self, from: Data(contentsOf: root.appendingPathComponent("Data/curriculum.json"))
-        )
-        guard let firstLesson = curriculum.lessons.first,
-              let recording = catalog["voice/lesson-\(firstLesson.id)"],
-              let standard = catalog.keys.sorted().first(where: { $0.hasPrefix("audio/") }),
-              let sample = catalog[standard]
-        else { throw CocoaError(.fileNoSuchFile) }
-        let audio = root.appendingPathComponent("Audio", isDirectory: true)
-        lesson = audio.appendingPathComponent(recording.file)
-        shortSample = audio.appendingPathComponent(sample.file)
         web = root.appendingPathComponent("Web", isDirectory: true)
-        audioCount = catalog.count
-        lessonCount = curriculum.lessons.count
+        audio = root.appendingPathComponent("Audio", isDirectory: true)
+        data = root.appendingPathComponent("Data", isDirectory: true)
+        let decoder = JSONDecoder()
+        catalog = try decoder.decode(
+            [String: Clip].self, from: Data(contentsOf: data.appendingPathComponent("audio.json"))
+        )
+        webFiles = Set(try decoder.decode(
+            [String].self, from: Data(contentsOf: data.appendingPathComponent("web-files.json"))
+        ))
+        guard webFiles.contains("index.html") else { throw CocoaError(.fileNoSuchFile) }
+    }
+
+    func responseData(_ name: String) throws -> Any {
+        try JSONSerialization.jsonObject(with: Data(contentsOf: data.appendingPathComponent("\(name).json")))
+    }
+
+    func lesson(_ id: String) -> URL? {
+        guard id.hasPrefix("lesson-") else { return nil }
+        return clip("voice/\(id)")
     }
 
     func webView(_ webView: WKWebView, start task: any WKURLSchemeTask) {
         guard let url = task.request.url,
-              url.scheme == Self.scheme, url.host == "bundle", url.query == nil,
+              url.scheme == Self.scheme, url.host == "bundle", url.port == nil, url.user == nil,
               task.request.httpMethod == "GET",
               let file = resource(for: url.path),
               let mimeType = Self.mimeTypes[file.pathExtension],
-              let data = try? Data(contentsOf: file, options: .mappedIfSafe)
+              let bytes = try? Data(contentsOf: file, options: .mappedIfSafe)
         else {
             task.didFailWithError(URLError(.resourceUnavailable))
             return
         }
-        let response = HTTPURLResponse(
-            url: url, statusCode: 200, httpVersion: nil,
-            headerFields: ["Content-Type": mimeType, "Content-Length": String(data.count)]
-        )!
+        var headers = ["Content-Type": mimeType, "Content-Length": String(bytes.count)]
+        if url == Self.entry {
+            headers["Content-Security-Policy"] = """
+                default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; object-src 'none'; frame-src 'none'
+                """
+        }
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: headers)!
         task.didReceive(response)
-        task.didReceive(data)
+        task.didReceive(bytes)
         task.didFinish()
     }
 
@@ -68,21 +66,33 @@ final class OfflineAssets: NSObject, WKURLSchemeHandler {
         // All reads and replies finish synchronously on the scheme handler's actor.
     }
 
+    private func clip(_ key: String) -> URL? {
+        guard let entry = catalog[key], !entry.file.contains("/") else { return nil }
+        return audio.appendingPathComponent(entry.file)
+    }
+
     private func resource(for path: String) -> URL? {
-        switch path {
-        case "/probe-audio":
-            return shortSample
-        case "/probe.html", "/probe.js", "/fonts/andika/Andika-Regular.woff2":
-            return web.appendingPathComponent(String(path.dropFirst()))
-        default:
-            return nil
+        if path.hasPrefix("/api/v1/") {
+            let key = String(path.dropFirst("/api/v1/".count))
+            guard !key.hasPrefix("voice/lesson-") else { return nil }
+            return clip(key)
         }
+        let relative = String(path.dropFirst())
+        guard webFiles.contains(relative) else { return nil }
+        return web.appendingPathComponent(relative)
     }
 
     private static let mimeTypes = [
         "html": "text/html; charset=utf-8",
         "js": "text/javascript; charset=utf-8",
+        "css": "text/css; charset=utf-8",
+        "svg": "image/svg+xml",
+        "png": "image/png",
+        "jpg": "image/jpeg",
+        "jpeg": "image/jpeg",
+        "webp": "image/webp",
         "mp3": "audio/mpeg",
+        "m4a": "audio/mp4",
         "woff2": "font/woff2",
         "wav": "audio/wav",
     ]

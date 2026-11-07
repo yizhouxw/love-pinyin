@@ -96,6 +96,9 @@ def prepare(output: Path, trial_aac: bool) -> None:
     reading["assessment"]["available"] = False
     for name, payload in {
         "audio": catalog,
+        "web-files": sorted(
+            str(path.relative_to(web)) for path in web.rglob("*") if path.is_file()
+        ),
         "curriculum": resources.curriculum({}),
         "daily-reading": reading,
         "learning-audio": learning_audio.learning_audio_status(),
