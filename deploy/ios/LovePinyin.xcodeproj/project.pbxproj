@@ -16,7 +16,7 @@
     };
     000000000000000000000002 = {
       isa = PBXGroup;
-      children = (000000000000000000000005, 000000000000000000000006, 000000000000000000000018, 000000000000000000000003);
+      children = (000000000000000000000005, 000000000000000000000006, 000000000000000000000018, 000000000000000000000019, 000000000000000000000020, 000000000000000000000003);
       sourceTree = "<group>";
     };
     000000000000000000000003 = {
@@ -39,7 +39,7 @@
     000000000000000000000005 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
     000000000000000000000006 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineAssets.swift; sourceTree = "<group>"; };
     000000000000000000000007 = { isa = PBXFileReference; explicitFileType = wrapper.application; path = LovePinyin.app; sourceTree = BUILT_PRODUCTS_DIR; };
-    000000000000000000000008 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000012, 000000000000000000000013); runOnlyForDeploymentPostprocessing = 0; };
+    000000000000000000000008 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000012, 000000000000000000000013, 000000000000000000000021, 000000000000000000000022); runOnlyForDeploymentPostprocessing = 0; };
     000000000000000000000009 = {
       isa = PBXShellScriptBuildPhase;
       alwaysOutOfDate = 1;
@@ -59,6 +59,10 @@
     000000000000000000000016 = { isa = XCBuildConfiguration; baseConfigurationReference = 000000000000000000000018; buildSettings = { SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; }; name = Debug; };
     000000000000000000000017 = { isa = XCBuildConfiguration; baseConfigurationReference = 000000000000000000000018; buildSettings = { SWIFT_OPTIMIZATION_LEVEL = "-O"; }; name = Release; };
     000000000000000000000018 = { isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
+    000000000000000000000019 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classroom.swift; sourceTree = "<group>"; };
+    000000000000000000000020 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStore.swift; sourceTree = "<group>"; };
+    000000000000000000000021 = { isa = PBXBuildFile; fileRef = 000000000000000000000019; };
+    000000000000000000000022 = { isa = PBXBuildFile; fileRef = 000000000000000000000020; };
   };
   rootObject = 000000000000000000000001;
 }

@@ -31,7 +31,11 @@ final class OfflineAssets: NSObject, WKURLSchemeHandler {
     }
 
     func responseData(_ name: String) throws -> Any {
-        try JSONSerialization.jsonObject(with: Data(contentsOf: data.appendingPathComponent("\(name).json")))
+        try JSONSerialization.jsonObject(with: dataFile(name))
+    }
+
+    func dataFile(_ name: String) throws -> Data {
+        try Data(contentsOf: data.appendingPathComponent("\(name).json"))
     }
 
     func lesson(_ id: String) -> URL? {

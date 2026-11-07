@@ -10,6 +10,7 @@ from pathlib import Path
 
 from server import daily_reading, learning_audio, source_audio
 from server.content import load_curriculum
+from server.learning_state import _objective_available
 from server.routes import resources
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -94,12 +95,33 @@ def prepare(output: Path, trial_aac: bool) -> None:
     data.mkdir()
     reading = daily_reading.status()
     reading["assessment"]["available"] = False
+    curriculum = load_curriculum()
+    standard = {
+        target["id"]
+        for target in curriculum["audioRequirements"]
+        if f"audio/{target['id']}" in catalog
+    }
+    scripts = learning_audio.narration_scripts()
+    classroom = {
+        "version": curriculum["contentVersion"],
+        "lessons": curriculum["lessons"],
+        "knowledgeItems": curriculum["knowledgeItems"],
+        "eligible": [
+            {
+                "exercise": question,
+                "explanation": scripts[f"hint-{question['id']}"],
+            }
+            for question in curriculum["exercises"]
+            if _objective_available(question, standard)
+        ],
+    }
     for name, payload in {
         "audio": catalog,
         "web-files": sorted(
             str(path.relative_to(web)) for path in web.rglob("*") if path.is_file()
         ),
         "curriculum": resources.curriculum({}),
+        "classroom": classroom,
         "daily-reading": reading,
         "learning-audio": learning_audio.learning_audio_status(),
     }.items():

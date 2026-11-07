@@ -1,6 +1,7 @@
 import type { Json } from '../domain/learning-api';
 import { suggestedDeviceModel } from './device-info';
 import { guestApi, isGuest } from './guest';
+import { iosOperation, isIOSApp } from './ios-app';
 import { isMacApp } from './mac-app';
 
 let macConnection: Promise<void> | undefined;
@@ -14,6 +15,16 @@ async function connectMacApp(): Promise<void> {
 }
 
 export async function api(path: string, options: RequestInit = {}): Promise<Json> {
+  if (isIOSApp()) {
+    options.signal?.throwIfAborted();
+    const result = await iosOperation<Json>('classroom', {
+      method: options.method ?? 'GET',
+      path,
+      payload: options.body ?? '{}',
+    });
+    options.signal?.throwIfAborted();
+    return result;
+  }
   if (isGuest()) {
     try {
       return (await guestApi(path, options)) as Json;

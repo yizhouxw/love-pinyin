@@ -1,4 +1,10 @@
+import { isIOSApp } from '../platform/ios-app';
+
 const messages: Record<string, string> = {
+  IOS_STORAGE_UNAVAILABLE: '暂时无法读取或保存此设备的记录，请重试。',
+  IOS_STORAGE_INVALID: '此设备的学习档案无法读取，已有档案已保留。',
+  IOS_STORAGE_VERSION_UNSUPPORTED: '此设备的档案需要较新的爱拼音版本，已有档案已保留。',
+  IOS_RESOURCE_UNAVAILABLE: '本机课程资料读取失败，请重试。',
   GAME_SESSION_LIMIT: '这一次的游戏时间用完啦。连续休息 10 分钟后，再回来玩吧。',
   GAME_DAILY_LIMIT: '今天的游戏时间用完啦。明天再来探索拼音吧。',
   GAME_CLOCK_ROLLBACK: '家庭电脑的时间发生回退，游戏已暂停。请家长校准系统时间后再继续。',
@@ -58,6 +64,7 @@ export function errorMessage(error: string): string {
     return '页面连接验证已失效。请重新打开家庭电脑 提供的入口，再试一次。';
   if (error.includes('AUDIO_NOT_FOUND'))
     return '声音文件尚未就绪。请家长在家庭电脑检查音频；可以重听或跳过，不计为答错。';
+  if (isIOSApp()) return '这次本机操作没有完成，请重试。';
   return '这次操作没有完成。请检查输入和家庭电脑 连接，再重试刚才的操作；若仍失败，可将技术详情提供给家长。';
 }
 
@@ -66,6 +73,8 @@ export function Notice({ error, onReconnect }: { error: string; onReconnect: () 
     <div className="error-notice" role="alert">
       <p>{errorMessage(error)}</p>
       {[
+        'IOS_STORAGE_UNAVAILABLE',
+        'IOS_RESOURCE_UNAVAILABLE',
         'MAC_UNREACHABLE',
         'REVISION_CONFLICT',
         'INSTANCE_NOT_FOUND',

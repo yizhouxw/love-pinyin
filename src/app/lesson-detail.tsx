@@ -24,7 +24,6 @@ export function LessonDetail({
   busy,
   withinCurrentRange,
   canPractice,
-  listeningOnly = false,
   onGuidanceChange,
   onBack,
   onReview,
@@ -43,9 +42,8 @@ export function LessonDetail({
   canPractice: boolean;
   onGuidanceChange: (enabled: boolean) => void;
   onBack: () => void;
-  onReview?: (knowledgeId: string) => void;
-  onStart?: () => void;
-  listeningOnly?: boolean;
+  onReview: (knowledgeId: string) => void;
+  onStart: () => void;
 }) {
   const [activity, setActivity] = useState<'listen' | 'write' | 'practice'>('listen');
   const courseMedia = useRef<HTMLAudioElement | null>(null);
@@ -106,22 +104,20 @@ export function LessonDetail({
             ['write', '写一写'],
             ['practice', '练一练'],
           ] as const
-        )
-          .filter(([id]) => !listeningOnly || id !== 'practice')
-          .map(([id, label]) => (
-            <button
-              className="quiet"
-              key={id}
-              aria-pressed={activity === id}
-              onClick={() => {
-                stopPlayback();
-                courseMedia.current?.pause();
-                setActivity(id);
-              }}
-            >
-              {label}
-            </button>
-          ))}
+        ).map(([id, label]) => (
+          <button
+            className="quiet"
+            key={id}
+            aria-pressed={activity === id}
+            onClick={() => {
+              stopPlayback();
+              courseMedia.current?.pause();
+              setActivity(id);
+            }}
+          >
+            {label}
+          </button>
+        ))}
       </div>
       {activity === 'practice' && (
         <div className="lesson-practice">
@@ -230,7 +226,7 @@ export function LessonDetail({
                 <article className="knowledge-card" key={item.id}>
                   <div className="knowledge-card-meta">
                     <span>{categoryLabels[item.category] ?? '拼音知识'}</span>
-                    {!listeningOnly && <span>{statusLabel}</span>}
+                    <span>{statusLabel}</span>
                   </div>
                   <h3>{item.symbol}</h3>
                   {state?.reviewDue && (
@@ -239,7 +235,7 @@ export function LessonDetail({
                       <button
                         className="quiet"
                         disabled={busy || !withinCurrentRange}
-                        onClick={() => onReview?.(item.id)}
+                        onClick={() => onReview(item.id)}
                       >
                         开始两题复习
                       </button>

@@ -17,6 +17,8 @@ import {
   saveGuidancePreference,
 } from '../platform/guidance-preference';
 import { api } from '../platform/api-client';
+import { iosOperation, isIOSApp } from '../platform/ios-app';
+import { IOSClassroomSettings } from './ios-classroom-settings';
 import { isMacApp } from '../platform/mac-app';
 import {
   readPlaybackPreference,
@@ -71,7 +73,8 @@ export function App() {
       {!isGuest() && household?.paired && (
         <aside className="guest-banner family-banner" aria-label="家庭模式">
           <span>
-            <strong>家庭学习</strong> · 进度已连接家庭电脑
+            <strong>{isIOSApp() ? '离线课堂验证版' : '家庭学习'}</strong> ·{' '}
+            {isIOSApp() ? '进度保存在此设备' : '进度已连接家庭电脑'}
           </span>
         </aside>
       )}
@@ -87,6 +90,12 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   }, [boot, onBootstrap]);
   const [curriculum, setCurriculum] = useState<Curriculum | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
+  const classroomReady = Boolean(boot?.paired && curriculum && progress);
+  useEffect(() => {
+    if (isIOSApp() && classroomReady) {
+      void iosOperation('classroomReady').catch(() => undefined);
+    }
+  }, [classroomReady]);
   const [guidancePreference, setGuidancePreference] = useState(readGuidancePreference);
   const [playbackPreference, setPlaybackPreference] = useState(() =>
     readPlaybackPreference(isGuest()),
@@ -305,7 +314,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     answer && (answer.correct || corrected)
       ? '这题已经完成，点“继续”进入下一题。'
       : busy
-        ? '正在连接家庭电脑、保存练习，请稍等。'
+        ? isIOSApp()
+          ? '正在保存本机练习，请稍等。'
+          : '正在连接家庭电脑、保存练习，请稍等。'
         : picturesPending
           ? picturesFailed
             ? '答案暂时不能选：图片未加载好，请点“重试图片”。'
@@ -468,8 +479,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       <main className="loading">
         {error ? (
           <>
-            <h1>暂时连不上家庭电脑 Studio</h1>
-            <p>检查家庭电脑和家庭局域网后，可以在这里重新连接。</p>
+            <h1>{isIOSApp() ? '暂时无法读取本机课堂' : '暂时连不上家庭电脑 Studio'}</h1>
+            {!isIOSApp() && <p>检查家庭电脑和家庭局域网后，可以在这里重新连接。</p>}
             <Notice error={error} onReconnect={() => void act(refresh)} />
           </>
         ) : (
@@ -984,7 +995,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     setProgress((await api('/profiles/progress')) as Progress);
   }
 
-  if (gamesOpen && !parentOpen && curriculum && progress)
+  if (gamesOpen && !isIOSApp() && !parentOpen && curriculum && progress)
     return (
       <main className="home-page">
         <GameZone
@@ -1134,14 +1145,26 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           )}
           {!parentOpen && progress.clockSkewDetected && (
             <div className="error-notice" role="alert">
-              家庭电脑时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度；请家长检查服务器时间。
+              {isIOSApp()
+                ? '设备时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度。'
+                : '家庭电脑时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度；请家长检查服务器时间。'}
             </div>
           )}
           {parentOpen && !/^(BACKUP_|IMPORT_)/.test(error) && (
             <Notice error={error} onReconnect={() => void act(refresh)} />
           )}
           {parentOpen ? (
-            boot.guest ? (
+            isIOSApp() ? (
+              <IOSClassroomSettings
+                lessons={lessons}
+                progress={progress}
+                lessonChoice={lessonChoice}
+                setLessonChoice={setLessonChoice}
+                busy={busy}
+                refresh={refresh}
+                act={act}
+              />
+            ) : boot.guest ? (
               <GuestPanel
                 curriculum={curriculum}
                 progress={progress}
@@ -1250,24 +1273,26 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                   进入词语天天练 →
                 </button>
               </section>
-              <section className="daily-entry games-entry">
-                <div>
-                  <span className="eyebrow">边玩边学 · 每次短一点</span>
-                  <h2>拼音游戏乐园</h2>
-                  <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
-                </div>
-                <button
-                  onClick={() => {
-                    stopVoice();
-                    voiceStarted.current = true;
-                    window.location.hash = 'games';
-                    setGamesOpen(true);
-                    if (guidanceEnabled) playVoice('ui-game_welcome');
-                  }}
-                >
-                  进入游戏乐园 →
-                </button>
-              </section>
+              {!isIOSApp() && (
+                <section className="daily-entry games-entry">
+                  <div>
+                    <span className="eyebrow">边玩边学 · 每次短一点</span>
+                    <h2>拼音游戏乐园</h2>
+                    <p>{gameCatalog.games.map((item) => item.title).join('、')}。</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      stopVoice();
+                      voiceStarted.current = true;
+                      window.location.hash = 'games';
+                      setGamesOpen(true);
+                      if (guidanceEnabled) playVoice('ui-game_welcome');
+                    }}
+                  >
+                    进入游戏乐园 →
+                  </button>
+                </section>
+              )}
               <details className="course-browser">
                 <summary>查看全部课程</summary>
                 <LessonNavigation
@@ -1323,7 +1348,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               )}
             </>
           )}
-          {parentOpen && !isMacApp() && (
+          {parentOpen && !isMacApp() && !isIOSApp() && (
             <details className="management-section">
               <summary>连接其他设备</summary>
               <PairingManagement />

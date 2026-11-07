@@ -2,7 +2,12 @@ import type { PendingAnswer, Session } from '../domain/learning-api';
 import { api } from './api-client';
 import { isGuest } from './guest';
 
-export const idempotencyKey = () => crypto.randomUUID();
+export const idempotencyKey = () =>
+  typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : Array.from(crypto.getRandomValues(new Uint8Array(16)), (value) =>
+        value.toString(16).padStart(2, '0'),
+      ).join('');
 
 const pendingAnswerKey = (instanceId: string) =>
   `lp.${isGuest() ? 'guest.' : ''}pending-answer.${instanceId}`;

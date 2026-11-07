@@ -33,6 +33,7 @@ final class LearningSceneDelegate: UIResponder, UIWindowSceneDelegate {
 final class LearningViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandlerWithReply {
     private var webView: WKWebView?
     private var assets: OfflineAssets?
+    private var classroom: Classroom?
     private var player: AVPlayer?
     private var playbackId: Int?
     private var lessonId: String?
@@ -113,8 +114,9 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         _ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        let allowed = navigationAction.targetFrame?.isMainFrame == true
-            && navigationAction.request.url == OfflineAssets.entry
+        var url = navigationAction.request.url.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+        url?.fragment = nil
+        let allowed = navigationAction.targetFrame?.isMainFrame == true && url?.url == OfflineAssets.entry
         decisionHandler(allowed ? .allow : .cancel)
     }
 
@@ -126,10 +128,12 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         _ userContentController: WKUserContentController, didReceive message: WKScriptMessage,
         replyHandler: @escaping (Any?, String?) -> Void
     ) {
+        var url = message.frameInfo.request.url.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+        url?.fragment = nil
         guard message.frameInfo.isMainFrame,
-              message.frameInfo.request.url == OfflineAssets.entry,
+              url?.url == OfflineAssets.entry,
               let assets,
-              let body = message.body as? [String: Any], body.count <= 4,
+              let body = message.body as? [String: Any], body.count <= 5,
               body["version"] as? Int == 1,
               let operation = body["operation"] as? String
         else {
@@ -138,14 +142,27 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         }
         do {
             switch operation {
-            case "library" where body.count == 2:
-                replyHandler([
-                    "curriculum": try assets.responseData("curriculum"),
-                    "sounds": try assets.responseData("learning-audio"),
-                ], nil)
-            case "libraryReady" where body.count == 2:
+            case "classroom" where body.count == 5:
+                guard let method = body["method"] as? String, ["GET", "POST", "PUT"].contains(method),
+                      let path = body["path"] as? String, path.count < 240,
+                      let payload = body["payload"] as? String, payload.utf8.count <= 4096,
+                      let input = try JSONSerialization.jsonObject(with: Data(payload.utf8)) as? [String: Any]
+                else {
+                    replyHandler(nil, "INVALID_BRIDGE_REQUEST")
+                    return
+                }
+                switch (method, path) {
+                case ("GET", "/curriculum"):
+                    replyHandler(try assets.responseData("curriculum"), nil)
+                case ("GET", "/learning-audio"):
+                    replyHandler(try assets.responseData("learning-audio"), nil)
+                default:
+                    let classroom = try openClassroom(assets)
+                    replyHandler(try classroom.request(method: method, path: path, body: input), nil)
+                }
+            case "classroomReady" where body.count == 2:
                 #if DEBUG
-                FileHandle.standardOutput.write(Data("Offline listening library mounted\n".utf8))
+                FileHandle.standardOutput.write(Data("Offline classroom mounted\n".utf8))
                 #endif
                 replyHandler(true, nil)
             case "dailyReading" where body.count == 2:
@@ -204,9 +221,34 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
             default:
                 replyHandler(nil, "UNKNOWN_OPERATION")
             }
+        } catch let error as ClassroomError {
+            replyHandler(nil, error.code)
         } catch {
             replyHandler(nil, "IOS_RESOURCE_UNAVAILABLE")
         }
+    }
+
+    private func openClassroom(_ assets: OfflineAssets) throws -> Classroom {
+        if let classroom { return classroom }
+        let files = FileManager.default
+        var folder = try files.url(
+            for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true
+        ).appendingPathComponent("Classroom", isDirectory: true)
+        do {
+            try files.createDirectory(at: folder, withIntermediateDirectories: true, attributes: [
+                .protectionKey: FileProtectionType.completeUntilFirstUserAuthentication,
+            ])
+            var values = URLResourceValues()
+            values.isExcludedFromBackup = true
+            try folder.setResourceValues(values)
+        } catch {
+            throw ClassroomError("IOS_STORAGE_UNAVAILABLE")
+        }
+        let service = try Classroom(
+            content: assets.dataFile("classroom"), database: folder.appendingPathComponent("classroom.sqlite")
+        )
+        classroom = service
+        return service
     }
 
     private func duration(_ player: AVPlayer) -> Double {

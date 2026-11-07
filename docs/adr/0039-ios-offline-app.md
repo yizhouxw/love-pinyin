@@ -41,3 +41,7 @@ Apple 参考：[WKWebView](https://developer.apple.com/documentation/webkit/wkwe
 2. IOS-02、IOS-03 学习闭环：接入全量课程与声音、本地事务、课堂与复习、家长和双向备份。用失败注入验证已保存回执和原档案恢复。
 3. IOS-04 游戏及中断：完成额度、关卡恢复、前后台与时钟回拨，验证窄窗和不同输入方式。
 4. IOS-05、IOS-06 交付：执行 `npm run verify:all`、`npm run validate:release` 与 iOS 原生测试，回归既有 B/S 与桌面包。按 iPhone 真机、iPad 真机、模拟器、包大小分别记录结果；补真实家庭试用证据。
+
+## 首个课堂存储切片
+
+IOS-03 首段采用 SQLite schema 1。课堂当前轮次、历史、作答回执与计数作为一份带类型的快照，由单窗口 Swift 服务串行写入；SQLite 提交后才替换内存状态并返回成功。关闭多窗口以维持单写入者，iPad 单窗口仍可旋转或调整宽度。后续补备份和历史查询时保留冻结题单及完整作答回执，若需要迁移内部存储，必须在保留档案的前提下引入新版 schema。该内部快照不作为跨端备份格式。
