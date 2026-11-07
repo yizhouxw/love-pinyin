@@ -210,8 +210,8 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
                 FileHandle.standardOutput.write(Data("Offline classroom mounted\n".utf8))
                 #endif
                 replyHandler(true, nil)
-            case "dailyReading" where body.count == 2:
-                replyHandler(try assets.responseData("daily-reading"), nil)
+            case "practicePacks" where body.count == 2:
+                replyHandler(try assets.responseData("practice-packs"), nil)
             case "playLesson" where body.count == 4:
                 guard let id = body["id"] as? Int, id > 0,
                       let audioId = body["audioId"] as? String, audioId.count < 128,

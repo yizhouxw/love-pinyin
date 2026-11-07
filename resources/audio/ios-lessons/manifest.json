@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "sourceType": "local-open-tts",
+  "model": "Qwen3-TTS-12Hz-1.7B-CustomVoice",
+  "modelRevision": "52f4770fd9726457eae3d3b6aa92047a25a10776",
+  "speaker": "Serena",
+  "license": "Apache-2.0",
+  "lessons": {
+    "lesson-01": {
+      "file": "lesson-01.mp3",
+      "sha256": "0e37fd53449bc040b827fd1f7c7f1299941c9493e11ab6ed66beaef8129c280f",
+      "textSha256": "a19c0b6ad45729ced2264ad58d8e4b8c28b47b9292fa4e9887df51f7fb81c5f9",
+      "seconds": 50.54
+    },
+    "lesson-02": {
+      "file": "lesson-02.mp3",
+      "sha256": "41ec55e195105bd95b49dd42e6ed2a2383eb05246cbda6d2cf56ecfdbce158c3",
+      "textSha256": "9c6ceaaf1c847f627e60a8a8ae22121a46116f311272d2251af60e82075b77ee",
+      "seconds": 47.74
+    },
+    "lesson-03": {
+      "file": "lesson-03.mp3",
+      "sha256": "bcac022d6303b3b8eedd876ff637b6ca147e7cce1cc8157b8c4183b2dae3f1bf",
+      "textSha256": "b5888d9c735acf2dda2bcf3308ebe529042a74609652bbbee49533b4ffc6c385",
+      "seconds": 48.14
+    },
+    "lesson-04": {
+      "file": "lesson-04.mp3",
+      "sha256": "a5e58e6c9d92ec5f0502c5d176538f860d3d177b32d46e0775cf8c5e9f34d79d",
+      "textSha256": "a75fb56b21958191bea8609a0170881fe7f793fd2a402975f0c65f11c2958107",
+      "seconds": 43.1
+    },
+    "lesson-05": {
+      "file": "lesson-05.mp3",
+      "sha256": "94dbca29445ff0c6cca0cefba7b91871d8933cf27c77a6e2fb19cfff0340a9f3",
+      "textSha256": "10ab8219c477933dfea5939a7d1470ed7a4dacfc1cb1a6df9f3bff1ed417ecd8",
+      "seconds": 50.46
+    },
+    "lesson-06": {
+      "file": "lesson-06.mp3",
+      "sha256": "b6968d54d44c859aaa84dba3e237d6fb8838c140faeae99f3ba6c979e1c40b73",
+      "textSha256": "52d46873eea81c50984e49287932c899984c2154fab4dd1a6afbf7083a81cfe7",
+      "seconds": 40.38
+    },
+    "lesson-07": {
+      "file": "lesson-07.mp3",
+      "sha256": "77e5e0cc029a2ab1397749a530988d1a533faa8dc96089699e4be7130c835a40",
+      "textSha256": "4a98ed1e6f5d51ef0984e8f756e29121c731f910d24bd5a291bd81948d268982",
+      "seconds": 40.3
+    },
+    "lesson-08": {
+      "file": "lesson-08.mp3",
+      "sha256": "3f04db5658dd59622185a937a08739ccc9c36d87f9af27c2b15ed2371c04ce91",
+      "textSha256": "e796af06e53ae1ab62c50b1cb734e9fd11177872bc0394e2d84e82bb9e9728ab",
+      "seconds": 49.58
+    },
+    "lesson-09": {
+      "file": "lesson-09.mp3",
+      "sha256": "d047222e64f6040f3b67a0fe294ddc050b2f139b6a84c18d4f96f153c0568094",
+      "textSha256": "bc92254259ce60d36f252488f7466d006fe6fc7c7030464f4673078be0d2d2f8",
+      "seconds": 49.58
+    },
+    "lesson-10": {
+      "file": "lesson-10.mp3",
+      "sha256": "4108ef97d1fad23df4f55bcd61353e6cd6213923284dce4465f78c2d4d472644",
+      "textSha256": "486ff042b8a0b67c7297993b35c5f9f1450fe02ce1464eee027605e4be2f9e83",
+      "seconds": 43.34
+    },
+    "lesson-11": {
+      "file": "lesson-11.mp3",
+      "sha256": "1662db6f111e1558420a9fa7bcf62d03b0db90687f5db2b3aa4e8168aff5b30b",
+      "textSha256": "8202c3912a7c19b7cd7061c99cdc3fc43b1cbea21205e86efae1eb42ed3bf545",
+      "seconds": 39.9
+    },
+    "lesson-12": {
+      "file": "lesson-12.mp3",
+      "sha256": "f16a7159f3cf9f122be532dfb7ee35ca7ab939a5663df1fe0aa6498cad7a96dd",
+      "textSha256": "ead65a5d9fac47bdfa3578e532f2c7d6b250646b2b5551f50d757b4dabf53b7d",
+      "seconds": 41.74
+    },
+    "lesson-13": {
+      "file": "lesson-13.mp3",
+      "sha256": "85be63d94c7160c9a184ee4b2e644d3bd3763c6bd1cdb1e9bf59f67ba46fbf2e",
+      "textSha256": "7de0f4877e140b518bc6d195ca4b0ad37858909f2adc524cbbd10074f3eee3bc",
+      "seconds": 37.02
+    },
+    "lesson-14": {
+      "file": "lesson-14.mp3",
+      "sha256": "183ed36d3b6c3749fc10bcfed4676af5f09cad8d18ef30084e4153f735ffea47",
+      "textSha256": "3a4dd98354cffb9a6c60a590156554eb981a589937cd7d84299b6e259ce63872",
+      "seconds": 43.18
+    }
+  }
+}

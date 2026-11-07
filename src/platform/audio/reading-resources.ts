@@ -15,7 +15,10 @@ export function itemResources(item: DailyItem): ReadingResource[] {
 export function dayResources(day: DailyDay, ui: Record<string, string>): ReadingResource[] {
   const resources: ReadingResource[] = [];
   for (const section of day.sections) {
-    resources.push({ kind: 'voice', id: `daily-instruction-${section.id}` });
+    resources.push({
+      kind: 'voice',
+      id: section.instructionId ?? `daily-instruction-${section.id}`,
+    });
     for (const item of section.items) {
       if (item.available) resources.push(...itemResources(item));
       if (item.wordExample) resources.push({ kind: 'voice', id: item.wordExample.id });

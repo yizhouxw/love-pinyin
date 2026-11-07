@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "sources": {
+    "chen": {
+      "url": "https://github.com/hugolpz/audio-cmn/tree/f759a0f18f27690742957619e1248ed91e9b3f2c/64k/syllabs",
+      "revision": "f759a0f18f27690742957619e1248ed91e9b3f2c",
+      "license": "CC-BY-SA-3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "attribution": "zh_syllabs. Recordings: Chen Wang 王琛. Copyright © 2013 Wang Chen, Lopez Hugo, Vion Nicolas. Audio-cmn processing: Hugo Lopez, PLIDAM, INALCO."
+    },
+    "bopomofo": {
+      "url": "https://language.moe.gov.tw/001/Upload/files/site_content/M0001/juyin/",
+      "archiveUrl": "https://language.moe.gov.tw/001/Upload/files/site_content/M0001/juyin/bopomofo_materials_20170213.zip",
+      "archiveSha256": "df946cdb8f8f31a04957a55af51f4b4b527dfac62cd1d958250553f7d8b4f24d",
+      "license": "CC-BY-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "2017 © 教育部，國語注音符號手冊-開放部件。"
+    }
+  },
+  "initialSymbolOrder": [
+    "b",
+    "p",
+    "m",
+    "f",
+    "d",
+    "t",
+    "n",
+    "l",
+    "g",
+    "k",
+    "h",
+    "j",
+    "q",
+    "x",
+    "zh",
+    "ch",
+    "sh",
+    "r",
+    "z",
+    "c",
+    "s"
+  ],
+  "finalSymbolNumbers": {
+    "a": 22,
+    "o": 23,
+    "e": 24,
+    "ai": 26,
+    "ei": 27,
+    "ao": 28,
+    "ou": 29,
+    "an": 30,
+    "en": 31,
+    "ang": 32,
+    "eng": 33,
+    "er": 34,
+    "i": 35,
+    "u": 36,
+    "v": 37
+  },
+  "finalSyllableSpellings": {
+    "ui": "wei1",
+    "iu": "you1",
+    "ie": "ye1",
+    "ve": "yue1",
+    "in": "yin1",
+    "un": "wen1",
+    "vn": "yun1",
+    "ing": "ying1"
+  },
+  "isolatedVowelSpellings": { "i": "yi", "u": "wu", "v": "yu" },
+  "ong": { "source": "kong1", "startSeconds": 0.425, "endSeconds": 0.725 }
+}

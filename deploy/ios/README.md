@@ -4,7 +4,7 @@
 
 ## 准备和构建
 
-在仓库根目录，按项目锁文件完成 npm 与 uv 安装，显式准备 PinYinSound：
+家庭调试版安装两套练习。首次使用默认爱拼音自编资料，可从「家长管理 → 高级设置 → 天天练资料」切换到行知小学和原词语练习。家庭版先显式准备旧练习用的 PinYinSound：
 
 ```sh
 npm ci
@@ -14,7 +14,22 @@ deploy/ios/prepare.sh
 open deploy/ios/LovePinyin.xcodeproj
 ```
 
-资源准备先构建共享 Vite 前端并运行内容发布检查。每条音频按源文件摘要验证并按实际文件去重。输出位于忽略目录 `build/ios/Resources`。Xcode 构建时将它复制到应用包。重新准备后再构建可以同步最新课程和音频。
+家庭资源位于 `build/ios/Resources`，供 Xcode Debug 使用。公开版只含自编练习、公开授权标准音和原创课程音频，构建不需要下载旧音库。准备公开资源后才能生成 Release Archive：
+
+```sh
+deploy/ios/prepare.sh --public
+```
+
+公开资源位于 `build/ios/PublicResources`。两种构建分别校验实际引用及音频摘要。课程与练习生成命令见下方。正式分发按 [SPEC-024](../../docs/specs/SPEC-024-ios-content-distribution.md) 和上架 Issue 验收。
+
+修改稿件后，用已显式下载的固定本地模型生成音频：
+
+```sh
+uv run --locked --group voice-build python -m scripts.build_ios_lesson_audio
+uv run --locked --group voice-build python -m scripts.build_ios_practice_audio
+```
+
+已提交的标准音可以用固定来源重建。用 `scripts.prepare_ios_standard` 的 `--chen-repo` 参数指定固定的 audio-cmn checkout，`--bopomofo-archive` 参数指定开放部件 ZIP。构建程序核对版本、源摘要和许可证。
 
 可选 `deploy/ios/prepare.sh --trial-aac` 将中文引导和词语的 WAV 试编码为 64 kbps AAC，重新解码检查采样率和帧数，原文件与派生摘要均登记。输出独立存放在 `build/ios/TrialAAC`，供后续听感、逐字时间轴和体积验证。
 

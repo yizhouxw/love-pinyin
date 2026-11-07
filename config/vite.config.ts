@@ -1,7 +1,22 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { fileURLToPath } from 'node:url';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  // iOS loads both practice modules from the installed pack over the native bridge.
+  resolve: {
+    alias:
+      mode === 'ios-offline'
+        ? [
+            {
+              find: /^\.\.\/\.\.\/content\/(word-practice\/lessons|daily-reading-hanzi)\.json$/,
+              replacement: fileURLToPath(
+                new URL('../src/domain/ios-empty-content.json', import.meta.url),
+              ),
+            },
+          ]
+        : [],
+  },
   plugins: [react()],
   base: './',
   server: {
@@ -18,4 +33,4 @@ export default defineConfig({
     },
   },
   build: { target: ['chrome120', 'edge120', 'firefox121', 'safari17'] },
-});
+}));

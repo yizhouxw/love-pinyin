@@ -129,12 +129,12 @@ export function LessonDetail({
       )}
       {activity === 'listen' && (
         <>
-          <section className="family-course-audio" aria-label="家庭课程录音">
+          <section className="family-course-audio" aria-label="课程录音">
             <span className="course-audio-icon" aria-hidden="true">
               🎧
             </span>
             <div>
-              <h3>先听老师讲一讲</h3>
+              <h3>先听一听本课讲解</h3>
               {isIOSApp() ? (
                 <IOSLessonAudio audioId={familyAudio?.audioId ?? `lesson-${lesson.id}`} />
               ) : (
@@ -177,12 +177,12 @@ export function LessonDetail({
               <details>
                 <summary>家长查看录音来源</summary>
                 <p>
-                  家庭提供的旧版整课录音，录音中提到的课次和页码与当前教材可能不同。本课按知识内容对应，不把整课录音当作单个拼音的标准音。
+                  {isIOSApp()
+                    ? '爱拼音按新版课序编写，使用本机语音模型制作。单个拼音的示范请使用下方标准音。'
+                    : '家庭提供的旧版整课录音，录音中提到的课次和页码与当前教材可能不同。本课按知识内容对应。'}
                 </p>
                 {familyAudio?.title && <p>{familyAudio.title}</p>}
-                {!familyAudio?.available && (
-                  <p>尚未读取到本课录音，请在家庭电脑上完成音频准备后重试。</p>
-                )}
+                {!familyAudio?.available && <p>尚未读取到本课录音，请完成音频准备后重试。</p>}
               </details>
             </div>
           </section>

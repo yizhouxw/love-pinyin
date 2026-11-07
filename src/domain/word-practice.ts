@@ -1,6 +1,7 @@
 import content from '../../content/word-practice/lessons.json';
 
 export const wordPractice = content;
+export type WordPracticeContent = typeof content;
 export type WordLesson = (typeof content.lessons)[number];
 export type WordMode = 'read' | 'write' | 'recite';
 

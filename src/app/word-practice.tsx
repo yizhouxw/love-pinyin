@@ -1,5 +1,10 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
-import { highlightWords, practiceKey, wordPractice, type WordMode } from '../domain/word-practice';
+import {
+  highlightWords,
+  practiceKey,
+  type WordPracticeContent,
+  type WordMode,
+} from '../domain/word-practice';
 import { readWordProgress, saveWordProgress } from '../platform/word-practice-progress';
 import { GuidanceSwitch } from './guidance-switch';
 import { QuickGapSettings } from './quick-gap-settings';
@@ -15,12 +20,16 @@ const modes: { id: WordMode; title: string }[] = [
   { id: 'recite', title: '课文背诵' },
 ];
 export function WordPractice({
+  content: wordPractice,
+  contentId,
   onBack,
   guidanceEnabled,
   onGuidanceChange,
   gapSeconds,
   onGapChange,
 }: {
+  content: WordPracticeContent;
+  contentId: string;
   onBack: () => void;
   guidanceEnabled: boolean;
   onGuidanceChange: (enabled: boolean) => void;
@@ -36,7 +45,7 @@ export function WordPractice({
   const [notice, setNotice] = useState('');
   const [done, setDone] = useState<string[]>(() => {
     try {
-      return readWordProgress();
+      return readWordProgress(contentId);
     } catch {
       return [];
     }
@@ -122,7 +131,12 @@ export function WordPractice({
         >
           ‹
         </button>
-        <WordCoursePicker lesson={lesson} onSelect={selectLesson} onListen={voice.play} />
+        <WordCoursePicker
+          lessons={wordPractice.lessons}
+          lesson={lesson}
+          onSelect={selectLesson}
+          onListen={voice.play}
+        />
         <button
           aria-label="下一课"
           disabled={lessonIndex === wordPractice.lessons.length - 1}
@@ -388,7 +402,7 @@ export function WordPractice({
             onClick={() => {
               const next = [...new Set([...done, selectedKey])];
               try {
-                saveWordProgress(next);
+                saveWordProgress(next, contentId);
                 setDone(next);
                 setNotice('已记录本次练习。');
               } catch {
@@ -406,14 +420,19 @@ export function WordPractice({
       <details className="word-about">
         <summary>记录与材料来源</summary>
         <p>练习标记仅保存在当前设备；访客退出后清除，不计入拼音成绩或同步家庭档案。</p>
-        <p>
-          词目来自家长提供的《{wordPractice.source.file}》，本课在第 {lesson.page}{' '}
-          页；补充课文及生字依据{wordPractice.source.edition}。
-        </p>
-        <a href={wordPractice.source.textbook} target="_blank" rel="noreferrer">
-          查看国家智慧教育平台教材
-        </a>
-        <p>教材与练习材料保留各自权利。插图为原创情景示意。</p>
+        {wordPractice.source.textbook ? (
+          <>
+            <p>
+              词目来自家长提供的《{wordPractice.source.file}》，本课在第 {lesson.page}{' '}
+              页；补充课文及生字依据{wordPractice.source.edition}。
+            </p>
+            <a href={wordPractice.source.textbook} target="_blank" rel="noreferrer">
+              查看国家智慧教育平台教材
+            </a>
+          </>
+        ) : (
+          <p>词目与阅读短文由爱拼音自编。插图为原创情景示意。</p>
+        )}
       </details>
     </section>
   );

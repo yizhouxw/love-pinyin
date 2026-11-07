@@ -1,12 +1,14 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { wordPractice, type WordLesson } from '../domain/word-practice';
+import { type WordLesson } from '../domain/word-practice';
 
 export function WordCoursePicker({
   lesson,
+  lessons,
   onSelect,
   onListen,
 }: {
   lesson: WordLesson;
+  lessons: WordLesson[];
   onSelect: (id: string) => void;
   onListen: (id: string) => void;
 }) {
@@ -83,16 +85,16 @@ export function WordCoursePicker({
           </button>
         </header>
         <nav className="word-unit-tabs" aria-label="教材单元">
-          {Array.from(new Set(wordPractice.lessons.map((item) => item.unit))).map((value) => (
+          {Array.from(new Set(lessons.map((item) => item.unit))).map((value) => (
             <button key={value} aria-pressed={value === unit} onClick={() => setUnit(value)}>
               第{value}单元
             </button>
           ))}
         </nav>
         <div className="word-course-list">
-          <h3>{wordPractice.lessons.find((item) => item.unit === unit)!.unitTitle}</h3>
+          <h3>{lessons.find((item) => item.unit === unit)!.unitTitle}</h3>
           <div className="word-course-options">
-            {wordPractice.lessons
+            {lessons
               .filter((item) => item.unit === unit)
               .map((item) => (
                 <div className="word-course-option" key={item.id}>
@@ -104,7 +106,7 @@ export function WordCoursePicker({
                       setOpen(false);
                     }}
                   >
-                    <span>{wordPractice.lessons.indexOf(item) + 1}</span>
+                    <span>{lessons.indexOf(item) + 1}</span>
                     <strong>{item.title}</strong>
                     {item.id === lesson.id && <small>当前课</small>}
                   </button>

@@ -79,3 +79,10 @@ EdUHK 香港教育大学普通话语音学习语料（SPEC-018 MATCH-14）：来
 ## 2026-11-06 词语天天练（SPEC-022）
 
 根目录《一年级上学期词语天天练-对应课文.pdf》由用户提供并授权用于本模块；词目整理及教材补充内容见 `content/word-practice/lessons.json`。补充来源为国家智慧教育平台的人民教育出版社《义务教育教科书 语文 一年级 上册》（2024修订），完整来源URL和材料SHA256保留于内容清单。教材课文、作者作品及练习材料保留原权利，不由代码MIT许可覆盖；此授权不代表取得教材面向公众再发行许可。未提交在线教材整本PDF。新增语音使用既有固定Qwen3-TTS本地生成流程，模型许可和参数沿用SPEC-011。
+
+## SPEC-024 iOS 发行素材
+
+- 新版 14 课整课稿件、天天练拼音及词语练习为项目自编内容，稿件按 MIT。随包声音由既有固定 Qwen3-TTS 模型本地生成，按 Apache-2.0 登记。逐课稿件/文件摘要和练习合成摘要见 `resources/audio/ios-lessons/manifest.json` 与 `resources/audio/ios-practice/manifest.json`。未新增 npm 或 uv 依赖。整课 MP3 维护时使用本机 FFmpeg 4.4 的 libmp3lame，正式包只含 MP3。
+- iOS 课堂及自编天天练标准音采用 [audio-cmn 固定修订](https://github.com/hugolpz/audio-cmn/tree/f759a0f18f27690742957619e1248ed91e9b3f2c/64k/syllabs)中 Chen Wang 王琛的普通话录音。Copyright © 2013 Wang Chen, Lopez Hugo, Vion Nicolas。Hugo Lopez（PLIDAM、INALCO）处理及整理。原文件标记 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)。重命名后保持原始录音，ong 是同许可裁切派生，具体变更见随包清单。音源原始文件与派生文件可分别从上游和本项目素材目录取得。
+- 部分声韵符来自 [《國語注音符號手冊》開放部件](https://language.moe.gov.tw/001/Upload/files/site_content/M0001/juyin/)。2017 © 教育部，國語注音符號手冊-開放部件。选用音频适用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)，保留原始 WAV，仅改文件名。来源和配对表见 `content/ios-standard-audio.json`，原始与输出摘要见 `resources/audio/ios-standard/manifest.json`。不暗示来源机构为本项目背书。
+- 公开 iOS Archive 只装入自编练习和上述独立授权素材。家庭 Xcode 运行版保留旧练习材料及旧练习声音的本地使用，原 13 份整课 MP3 不再装入 iOS。

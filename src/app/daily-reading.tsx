@@ -16,7 +16,7 @@ import {
 } from '../domain/daily-reading';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { BrowserReadingRecorder } from '../platform/audio/browser-reading-recorder';
-import { iosOperation, isIOSApp } from '../platform/ios-app';
+import { isIOSApp } from '../platform/ios-app';
 import { isGuest } from '../platform/guest';
 import { recognizeReading, type RecognitionResult } from '../platform/audio/reading-recognition';
 import { waitForPlaybackGap } from '../platform/audio/playback-gap';
@@ -27,20 +27,23 @@ import { QuickGapSettings } from './quick-gap-settings';
 import recognitionContent from '../../content/reading-recognition.json';
 import navigationContent from '../../content/daily-reading-navigation.json';
 
-async function readDaily(): Promise<DailyReading> {
-  if (isIOSApp()) return iosOperation<DailyReading>('dailyReading');
+async function readDaily(offline?: DailyReading): Promise<DailyReading> {
+  if (offline) return offline;
+  if (isIOSApp()) throw new Error('DAILY_UNAVAILABLE');
   const response = await fetch(`/api/v1/${isGuest() ? 'guest/' : ''}daily-reading`);
   if (!response.ok) throw new Error('DAILY_UNAVAILABLE');
   return response.json() as Promise<DailyReading>;
 }
 
 export function DailyReadingPage({
+  offline,
   onBack,
   guidanceEnabled,
   gapSeconds,
   onGuidanceChange,
   onGapChange,
 }: {
+  offline?: DailyReading;
   onBack: () => void;
   guidanceEnabled: boolean;
   gapSeconds: number;
@@ -66,13 +69,13 @@ export function DailyReadingPage({
   const sectionTabs = useRef<HTMLDivElement | null>(null);
   const load = useCallback(() => {
     setError(false);
-    void readDaily()
+    void readDaily(offline)
       .then(setData)
       .catch(() => setError(true));
-  }, []);
+  }, [offline]);
   useEffect(() => {
     let active = true;
-    void readDaily()
+    void readDaily(offline)
       .then((value) => {
         if (active) setData(value);
       })
@@ -83,7 +86,7 @@ export function DailyReadingPage({
       active = false;
       audioPlayer.releaseReading();
     };
-  }, []);
+  }, [offline]);
   const day = data?.days.find((value) => value.id === dayId);
   const section = day?.sections.find((value) => value.id === sectionId);
   const sectionIndex = day?.sections.findIndex((value) => value.id === sectionId) ?? -1;
@@ -430,7 +433,7 @@ function ReadingSession({
   }, [item.id]);
   useEffect(() => {
     audioPlayer.prioritizeReading([
-      { kind: 'voice', id: `daily-instruction-${section.id}` },
+      { kind: 'voice', id: section.instructionId ?? `daily-instruction-${section.id}` },
       ...section.items.slice(index, index + 2).flatMap(itemResources),
     ]);
   }, [section, index]);
@@ -489,7 +492,7 @@ function ReadingSession({
   }, [recordUrl]);
 
   const playPrivate = (id: string, signal: AbortSignal) => {
-    setInstructionPlaying(id.startsWith('daily-instruction-'));
+    setInstructionPlaying(id === (section.instructionId ?? `daily-instruction-${section.id}`));
     return audioPlayer.playPrivate(id, signal, { onState: setAudioStage });
   };
   async function demo(target: DailyItem, signal: AbortSignal) {
@@ -544,7 +547,11 @@ function ReadingSession({
     controller.current = active;
     setPhase('playing');
     try {
-      if (guidance.current) await playPrivate(`daily-instruction-${section.id}`, active.signal);
+      if (guidance.current)
+        await playPrivate(
+          section.instructionId ?? `daily-instruction-${section.id}`,
+          active.signal,
+        );
       if (all) {
         for (let cursor = startIndex; cursor < section.items.length; cursor += 1) {
           const target = section.items[cursor]!;
@@ -736,8 +743,8 @@ function ReadingSession({
               >
                 {syllable}
               </span>
-              {readingCharacters(item.id)[position] && (
-                <rt>{readingCharacters(item.id)[position]}</rt>
+              {readingCharacters(item.id, item.hanzi)[position] && (
+                <rt>{readingCharacters(item.id, item.hanzi)[position]}</rt>
               )}
             </ruby>
           ))}
@@ -1006,8 +1013,10 @@ function ReadingSession({
                     <span>{position + 1}</span>
                     <strong>
                       {value.display}
-                      {readingHanzi(value.id) && (
-                        <small className="daily-nav-hanzi">{readingHanzi(value.id)}</small>
+                      {readingHanzi(value.id, value.hanzi) && (
+                        <small className="daily-nav-hanzi">
+                          {readingHanzi(value.id, value.hanzi)}
+                        </small>
                       )}
                     </strong>
                     <small>

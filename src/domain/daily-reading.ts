@@ -5,6 +5,7 @@ export type DailyItem = {
   id: string;
   display: string;
   original: string;
+  hanzi?: string;
   syllables: string[];
   audioIds: string[];
   audioNotes: string[];
@@ -27,6 +28,7 @@ export type DailySection = {
   kind: 'phonics' | 'comparison' | 'spelling' | 'words' | 'sentences';
   title: string;
   instruction: string;
+  instructionId?: string;
   items: DailyItem[];
 };
 export type DailyDay = {
@@ -69,11 +71,11 @@ export function highlightedSyllable(timings: AudioTiming[], seconds: number): nu
 }
 
 /** Each character travels with its syllable when a long sentence wraps. */
-export function readingCharacters(id: string): string[] {
-  const text = (hanziContent as Record<string, string>)[id];
+export function readingCharacters(id: string, hanzi?: string): string[] {
+  const text = readingHanzi(id, hanzi);
   return text?.match(/\p{Script=Han}[^\p{Script=Han}]*/gu) ?? [];
 }
 
-export function readingHanzi(id: string): string | undefined {
-  return (hanziContent as Record<string, string>)[id];
+export function readingHanzi(id: string, hanzi?: string): string | undefined {
+  return hanzi ?? (hanziContent as Record<string, string>)[id];
 }

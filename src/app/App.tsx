@@ -32,6 +32,8 @@ import {
   replayPendingAnswer,
   savePendingAnswer,
 } from '../platform/pending-answer';
+import type { IOSPracticePacks, PracticeSource } from '../domain/practice-packs';
+import { wordPractice } from '../domain/word-practice';
 import { WordPractice } from './word-practice';
 import { DailyReadingPage } from './daily-reading';
 import { gameCatalog } from '../domain/games';
@@ -128,6 +130,42 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const blendConfirm = useRef<HTMLButtonElement | null>(null);
   const blendOptions = useRef(new Map<string, HTMLButtonElement>());
   const [gamesOpen, setGamesOpen] = useState(window.location.hash === '#games');
+  const [practicePacks, setPracticePacks] = useState<IOSPracticePacks | null>(null);
+  const [practiceLoadError, setPracticeLoadError] = useState(false);
+  const [practiceSource, setPracticeSource] = useState<PracticeSource>(() => {
+    try {
+      return localStorage.getItem('love-pinyin-ios-practice-source') === 'household'
+        ? 'household'
+        : 'original';
+    } catch {
+      return 'original';
+    }
+  });
+  const activePracticeSource =
+    practiceSource === 'household' && practicePacks?.household ? 'household' : 'original';
+  const activePractice = practicePacks?.[activePracticeSource];
+  function changePracticeSource(source: PracticeSource) {
+    setPracticeSource(source);
+    try {
+      localStorage.setItem('love-pinyin-ios-practice-source', source);
+    } catch {
+      // A restricted store still allows switching for the current session.
+    }
+  }
+  useEffect(() => {
+    if (!isIOSApp()) return;
+    let active = true;
+    void iosOperation<IOSPracticePacks>('practicePacks')
+      .then((packs) => {
+        if (active) setPracticePacks(packs);
+      })
+      .catch(() => {
+        if (active) setPracticeLoadError(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
   const [wordsOpen, setWordsOpen] = useState(window.location.hash === '#word-practice');
   const [dailyOpen, setDailyOpen] = useState(window.location.hash === '#daily-reading');
   useEffect(() => {
@@ -1048,10 +1086,31 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       </main>
     );
 
+  if (isIOSApp() && (wordsOpen || dailyOpen) && !activePractice) {
+    return (
+      <main className="home-page">
+        <button
+          className="quiet"
+          onClick={() => {
+            window.location.hash = '';
+          }}
+        >
+          ← 返回小岛
+        </button>
+        <p role={practiceLoadError ? 'alert' : 'status'}>
+          {practiceLoadError ? '此设备的练习资料暂时打不开。' : '正在读取练习资料…'}
+        </p>
+      </main>
+    );
+  }
+
   if (wordsOpen)
     return (
       <main className="home-page" id="page-word-practice" tabIndex={-1} aria-label="词语天天练">
         <WordPractice
+          key={activePracticeSource}
+          content={activePractice?.words ?? wordPractice}
+          contentId={isIOSApp() ? activePracticeSource : 'household'}
           guidanceEnabled={guidanceEnabled}
           onGuidanceChange={changeGuidance}
           gapSeconds={gapSeconds}
@@ -1068,6 +1127,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     return (
       <main className="home-page" id="page-daily-reading" tabIndex={-1} aria-label="天天练拼音">
         <DailyReadingPage
+          key={activePracticeSource}
+          offline={activePractice?.daily}
           gapSeconds={gapSeconds}
           onGapChange={changePlaybackGap}
           guidanceEnabled={guidanceEnabled}
@@ -1181,6 +1242,10 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           {parentOpen ? (
             isIOSApp() ? (
               <IOSClassroomSettings
+                hasHouseholdPractice={Boolean(practicePacks?.household)}
+                standardSources={practicePacks?.standardSources ?? []}
+                practiceSource={activePracticeSource}
+                onPracticeSourceChange={changePracticeSource}
                 lessons={lessons}
                 progress={progress}
                 lessonChoice={lessonChoice}
