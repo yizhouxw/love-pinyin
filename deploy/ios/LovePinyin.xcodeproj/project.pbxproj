@@ -1,0 +1,64 @@
+// !$*UTF8*$!
+{
+  archiveVersion = 1;
+  classes = {};
+  objectVersion = 56;
+  objects = {
+    000000000000000000000001 = {
+      isa = PBXProject;
+      buildConfigurationList = 000000000000000000000010;
+      compatibilityVersion = "Xcode 14.0";
+      developmentRegion = "zh-Hans";
+      knownRegions = ("zh-Hans", Base);
+      mainGroup = 000000000000000000000002;
+      productRefGroup = 000000000000000000000003;
+      targets = (000000000000000000000004);
+    };
+    000000000000000000000002 = {
+      isa = PBXGroup;
+      children = (000000000000000000000005, 000000000000000000000006, 000000000000000000000018, 000000000000000000000003);
+      sourceTree = "<group>";
+    };
+    000000000000000000000003 = {
+      isa = PBXGroup;
+      children = (000000000000000000000007);
+      name = Products;
+      sourceTree = "<group>";
+    };
+    000000000000000000000004 = {
+      isa = PBXNativeTarget;
+      buildConfigurationList = 000000000000000000000011;
+      buildPhases = (000000000000000000000008, 000000000000000000000009);
+      buildRules = ();
+      dependencies = ();
+      name = LovePinyin;
+      productName = LovePinyin;
+      productReference = 000000000000000000000007;
+      productType = "com.apple.product-type.application";
+    };
+    000000000000000000000005 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+    000000000000000000000006 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineAssets.swift; sourceTree = "<group>"; };
+    000000000000000000000007 = { isa = PBXFileReference; explicitFileType = wrapper.application; path = LovePinyin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+    000000000000000000000008 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000012, 000000000000000000000013); runOnlyForDeploymentPostprocessing = 0; };
+    000000000000000000000009 = {
+      isa = PBXShellScriptBuildPhase;
+      alwaysOutOfDate = 1;
+      buildActionMask = 2147483647;
+      files = ();
+      name = "Stage verified offline resources";
+      runOnlyForDeploymentPostprocessing = 0;
+      shellPath = /bin/bash;
+      shellScript = "\"$SRCROOT/install-resources.sh\"";
+    };
+    000000000000000000000010 = { isa = XCConfigurationList; buildConfigurations = (000000000000000000000014, 000000000000000000000015); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+    000000000000000000000011 = { isa = XCConfigurationList; buildConfigurations = (000000000000000000000016, 000000000000000000000017); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+    000000000000000000000012 = { isa = PBXBuildFile; fileRef = 000000000000000000000005; };
+    000000000000000000000013 = { isa = PBXBuildFile; fileRef = 000000000000000000000006; };
+    000000000000000000000014 = { isa = XCBuildConfiguration; buildSettings = { SDKROOT = iphoneos; }; name = Debug; };
+    000000000000000000000015 = { isa = XCBuildConfiguration; buildSettings = { SDKROOT = iphoneos; }; name = Release; };
+    000000000000000000000016 = { isa = XCBuildConfiguration; baseConfigurationReference = 000000000000000000000018; buildSettings = { SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; }; name = Debug; };
+    000000000000000000000017 = { isa = XCBuildConfiguration; baseConfigurationReference = 000000000000000000000018; buildSettings = { SWIFT_OPTIMIZATION_LEVEL = "-O"; }; name = Release; };
+    000000000000000000000018 = { isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
+  };
+  rootObject = 000000000000000000000001;
+}
