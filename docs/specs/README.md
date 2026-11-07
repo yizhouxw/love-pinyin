@@ -59,3 +59,5 @@
 桌面应用：[SPEC-020 macOS 本地应用](SPEC-020-macos-app.md)（与历史拼读接口 SPEC-020 分别命名）、[SPEC-021 Windows 本地应用](SPEC-021-windows-app.md)。
 
 2026-11-06新增：[022 词语天天练](SPEC-022-word-practice.md)，依据家长PDF整理38课，提供本地有声词语拼读、纸笔听写和生字词高亮背诵；沿用011本地声音与007访客边界。
+
+2026-11-07新增 [023 iPhone 与 iPad 离线应用](SPEC-023-ios-app.md) 方案，定义通用应用、本机档案和有声学习，以及与 B/S 和桌面应用共存的验收。

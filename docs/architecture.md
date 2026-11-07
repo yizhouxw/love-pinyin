@@ -65,7 +65,7 @@ DAILY-06按[ADR-0025](adr/0025-buffered-daily-audio.md)为天天练短声音增�
 
 ## 未来扩展与验收边界
 
-原生封装仅为后续方向，未安装 Capacitor 或生成 Xcode/Gradle 工程。届时需独立SPEC处理网络发现、权限、证书信任、后台行为和商店发布。
+macOS App 通过原生 WebKit 窗口与随包 Python 服务运行，见 [ADR-0037](adr/0037-macos-app.md)。iPhone 与 iPad 通用应用处于设计阶段，计划复用界面与内容，在设备本机离线存储和执行学习业务，见 [SPEC-023](specs/SPEC-023-ios-app.md) 和 [ADR-0039](adr/0039-ios-offline-app.md)。
 
 课程原文拼音条款核对已完成，见[课程研究](research/curriculum.md)。设备支持下限尚未冻结：Vite构建目标只是语法目标，不能代替实际 iPad、手机、Windows 和 Firefox 验收。当前证据统一见[状态表](STATUS.md)。
 
