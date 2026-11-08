@@ -35,7 +35,7 @@ final class AdaptiveClassroomTests: XCTestCase {
     }
 
     @MainActor
-    func testParentVersionPrecedesAdvancedSettings() {
+    func testParentVersionFollowsSettingsAndCredits() {
         continueAfterFailure = false
         let app = XCUIApplication()
         XCUIDevice.shared.orientation = .portrait
@@ -51,16 +51,17 @@ final class AdaptiveClassroomTests: XCTestCase {
 
         let version = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "版本 ")).firstMatch
         XCTAssertTrue(version.waitForExistence(timeout: 12), app.debugDescription)
+        let credits = labeled("音频来源与许可", in: app)
+        reveal(credits, in: app)
+        XCTAssertLessThan(credits.frame.midY, version.frame.midY)
         let advanced = labeled("高级设置", in: app)
-        reveal(advanced, in: app)
-        XCTAssertLessThan(version.frame.midY, advanced.frame.midY)
-        XCTAssertFalse(labeled("音频来源与许可", in: app).exists)
+        if advanced.exists {
+            XCTAssertLessThan(advanced.frame.midY, credits.frame.midY)
+            XCTAssertFalse(labeled("学习素材", in: app).exists)
+        }
+        XCTAssertFalse(labeled("CC-BY-SA-3.0", in: app).exists)
         addScreenshot("家长设置顺序")
 
-        advanced.tap()
-        let credits = labeled("音频来源与许可", in: app)
-        XCTAssertTrue(credits.waitForExistence(timeout: 12), app.debugDescription)
-        reveal(credits, in: app)
         credits.tap()
         let license = labeled("CC-BY-SA-3.0", in: app)
         XCTAssertTrue(license.waitForExistence(timeout: 12), app.debugDescription)

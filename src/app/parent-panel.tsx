@@ -29,9 +29,11 @@ export function ParentPanel({
   refresh,
   act,
   advancedSettings,
+  materialInfo,
   learningAudio,
 }: LearningSettingsProps & {
   advancedSettings?: ReactNode;
+  materialInfo?: ReactNode;
   boot: Bootstrap;
   error?: string;
   onGuidanceChange: (enabled: boolean) => void;
@@ -89,6 +91,7 @@ export function ParentPanel({
             : '暂时没有到期复习，按当前课程继续学习即可。'}
         </p>
       </section>
+      <h3 className="parent-category">学习与体验</h3>
       <div className="parent-setting">
         <div>
           <strong>当前课程</strong>
@@ -142,36 +145,6 @@ export function ParentPanel({
       />
       <details className="parent-section">
         <summary>声音与播放设置</summary>
-        <section className="parent-audio-status" aria-label="学习音频准备状态">
-          <h3>学习音频准备状态</h3>
-          <p>
-            中文引导：{Object.values(learningAudio?.narration ?? {}).filter(Boolean).length} /{' '}
-            {Object.keys(learningAudio?.narration ?? {}).length} 条可播放； 家庭课程录音：
-            {
-              Object.values(learningAudio?.lessons ?? {}).filter(
-                (item) => (item as { available: boolean }).available,
-              ).length
-            }{' '}
-            / {curriculum.lessons.length} 课可播放。
-          </p>
-          <p>
-            中文引导由本地开源模型生成，只读中文操作提示；拼音示范使用独立音频文件。跟读录音留在家庭
-            电脑和浏览器内存中临时处理，不保存。
-          </p>
-          <p>
-            拼音标准音：
-            {audioRequirements.filter((asset) => asset.available).length} 项可播放。
-          </p>
-          {(!learningAudio ||
-            Object.values(learningAudio.narration ?? {}).some((ready) => !ready)) && (
-            <p className="audio-error">
-              学习音频尚未全部就绪。请检查应用安装，再点重新检查；音频未就绪时不适合孩子独立使用。
-            </p>
-          )}
-          <button className="quiet" disabled={busy} onClick={() => void act(refresh)}>
-            重新检查音频
-          </button>
-        </section>
         <div className="parent-setting">
           <div>
             <strong>自动朗读题目</strong>
@@ -220,10 +193,9 @@ export function ParentPanel({
             })
           }
         />
-      </details>
-      <details className="parent-section">
-        <summary>详细学习记录</summary>
-        <KnowledgeProgress curriculum={curriculum} progress={progress} />
+        <button className="quiet" disabled={busy} onClick={() => void act(refresh)}>
+          重新检查音频
+        </button>
       </details>
       {(progress.clockSkewDetected || (progress.pendingClockAttempts ?? 0) > 0) && (
         <div className="parent-setting clock-pending-setting">
@@ -314,6 +286,8 @@ export function ParentPanel({
           />
         </div>
       </details>
+      {isParent && <ModelSettings />}
+      <h3 className="parent-category">设备与数据</h3>
       {!isMacApp() && (
         <details className="parent-section">
           <summary>已连接设备</summary>
@@ -582,6 +556,7 @@ export function ParentPanel({
           {importComplete && <p role="status">家庭数据已恢复。</p>}
         </div>
       </details>
+      {advancedSettings}
       <details className="parent-section">
         <summary>删除与重置</summary>
         <div className="parent-setting danger-setting">
@@ -648,7 +623,6 @@ export function ParentPanel({
           </button>
         </div>
       </details>
-      {isParent && <ModelSettings />}
       {!isMacApp() && (
         <button
           className="quiet"
@@ -663,8 +637,43 @@ export function ParentPanel({
         </button>
       )}
       {!boot.device?.isParent && <p className="adult-hint">此设备尚未取得家长管理权限。</p>}
+      <h3 className="parent-category">信息与记录</h3>
+      <details className="parent-section">
+        <summary>详细学习记录</summary>
+        <KnowledgeProgress curriculum={curriculum} progress={progress} />
+      </details>
+      <details className="parent-section">
+        <summary>音频状态</summary>
+        <section className="parent-audio-status" aria-label="学习音频准备状态">
+          <h3>学习音频准备状态</h3>
+          <p>
+            中文引导：{Object.values(learningAudio?.narration ?? {}).filter(Boolean).length} /{' '}
+            {Object.keys(learningAudio?.narration ?? {}).length} 条可播放； 家庭课程录音：
+            {
+              Object.values(learningAudio?.lessons ?? {}).filter(
+                (item) => (item as { available: boolean }).available,
+              ).length
+            }{' '}
+            / {curriculum.lessons.length} 课可播放。
+          </p>
+          <p>
+            中文引导由本地开源模型生成，只读中文操作提示；拼音示范使用独立音频文件。跟读录音留在家庭
+            电脑和浏览器内存中临时处理，不保存。
+          </p>
+          <p>
+            拼音标准音：
+            {audioRequirements.filter((asset) => asset.available).length} 项可播放。
+          </p>
+          {(!learningAudio ||
+            Object.values(learningAudio.narration ?? {}).some((ready) => !ready)) && (
+            <p className="audio-error">
+              学习音频尚未全部就绪。请检查应用安装，再点重新检查；音频未就绪时不适合孩子独立使用。
+            </p>
+          )}
+        </section>
+      </details>
+      {materialInfo}
       <ReleaseHistory contentVersion={curriculum.contentVersion} />
-      {advancedSettings}
     </section>
   );
 }

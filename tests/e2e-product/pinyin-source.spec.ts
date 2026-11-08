@@ -1,3 +1,4 @@
+import { pairForHouseholdMaterial, useHouseholdMaterial } from '../support/household-material';
 import { openSection } from '../support/interaction';
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
@@ -18,12 +19,8 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
       external.push(request.url());
     if (request.url().endsWith('/answer')) answers.push(request.url());
   });
-  await page.goto(appUrl);
-  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
-  const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)?.[0];
-  expect(code).toBeTruthy();
-  await page.getByLabel('家长配对码').fill(code!);
-  await page.getByRole('button', { name: '连接家庭' }).click();
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeVisible();
   const decoded = await page.evaluate(
     async (ids) => {
@@ -108,11 +105,10 @@ test('SOURCE-01: actual selected audio decodes, plays and completes a local list
   await page.getByRole('button', { name: '回到小岛' }).click();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  await openSection(page, '声音与播放设置');
+  await openSection(page, '音频状态');
   await expect(page.getByLabel('学习音频准备状态')).toContainText(
     `${source.assets.length} 项可播放`,
   );
-  await expect(page.getByLabel('学习音频准备状态')).toContainText('标准音来源：cmguo/PinYinSound');
   await expect(page.getByText(/教师审校|待审音|审核者|课程草稿/)).toHaveCount(0);
   const exported = await page.request.get(`${appUrl}/api/v1/profiles/export`);
   const backup = await exported.json();

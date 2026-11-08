@@ -300,3 +300,9 @@
 .material-credits li p {
   margin: 0.15rem 0;
 }
+
+.parent-category {
+  margin: 20px 0 8px;
+  color: var(--muted);
+  font-size: 15px;
+}

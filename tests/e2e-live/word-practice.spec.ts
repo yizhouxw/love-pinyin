@@ -399,23 +399,36 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   await pairForHouseholdMaterial(page, appUrl);
   await page.getByRole('button', { name: '家长管理', exact: true }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  const advanced = page.locator('.parent-panel > .material-settings:last-child');
-  const version = page.getByRole('button', { name: /^版本 / });
+  const panel = page.locator('.parent-panel').filter({
+    has: page.getByRole('heading', { name: '学习与隐私设置', exact: true }),
+  });
+  const advanced = panel.locator('.material-settings');
+  const controls = panel.locator(
+    ':scope > h3, :scope > details > summary, :scope > button, .version-trigger',
+  );
+  const labels = await controls.allTextContents();
+  const expectedOrder = [
+    '学习与体验',
+    '声音与播放设置',
+    '设备与数据',
+    '备份与恢复',
+    '高级设置',
+    '删除与重置',
+    '退出此设备配对',
+    '信息与记录',
+    '详细学习记录',
+    '音频状态',
+    '音频来源与许可',
+  ];
+  expect(labels.filter((label) => expectedOrder.includes(label))).toEqual(expectedOrder);
+  await expect(panel.locator(':scope > :last-child .version-trigger')).toBeVisible();
   await expect(advanced).not.toHaveAttribute('open', '');
-  expect(
-    await version.evaluate((button) =>
-      Boolean(
-        button.compareDocumentPosition(document.querySelector('.material-settings')!) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
-      ),
-    ),
-  ).toBe(true);
   await advanced.getByText('高级设置', { exact: true }).click();
   await expect(advanced.getByRole('combobox', { name: '学习素材' })).toHaveValue('original');
-  await expect(advanced.getByText('CC-BY-SA-3.0', { exact: true })).toBeHidden();
-  await advanced.getByText('音频来源与许可', { exact: true }).click();
-  await expect(advanced.getByText('CC-BY-SA-3.0', { exact: true })).toBeVisible();
-  await advanced.screenshot({ path: info.outputPath('material-settings.png') });
+  await expect(panel.getByText('CC-BY-SA-3.0', { exact: true })).toBeHidden();
+  await panel.getByText('音频来源与许可', { exact: true }).click();
+  await expect(panel.getByText('CC-BY-SA-3.0', { exact: true })).toBeVisible();
+  await panel.screenshot({ path: info.outputPath('material-settings.png') });
   await page.getByRole('button', { name: '返回学习', exact: true }).click();
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
 

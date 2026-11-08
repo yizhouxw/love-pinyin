@@ -13,9 +13,11 @@ export function IOSClassroomSettings({
   busy,
   act,
   advancedSettings,
+  materialInfo,
   refresh,
 }: {
   advancedSettings?: ReactNode;
+  materialInfo?: ReactNode;
   lessons: Lesson[];
   contentVersion?: string;
   progress: Progress;
@@ -102,13 +104,14 @@ export function IOSClassroomSettings({
           保存游戏时长
         </button>
       </form>
+      {advancedSettings}
       <h2>此设备学习记录</h2>
       <p role="status" aria-label={progressSummary}>
         {progressSummary}
       </p>
       <p>记录保存在此设备。请保留 App，备份入口将在后续版本提供。</p>
+      {materialInfo}
       <ReleaseHistory contentVersion={contentVersion} />
-      {advancedSettings}
     </section>
   );
 }

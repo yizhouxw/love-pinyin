@@ -33,7 +33,7 @@ import {
   savePendingAnswer,
 } from '../platform/pending-answer';
 import type { PracticePacks, PracticeSource } from '../domain/practice-packs';
-import { MaterialSettings } from './material-settings';
+import { MaterialInfo, MaterialSettings } from './material-settings';
 import { WordPractice } from './word-practice';
 import { DailyReadingPage } from './daily-reading';
 import { gameCatalog } from '../domain/games';
@@ -563,9 +563,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     );
   if (!boot.paired)
     return <PairingPage boot={boot} busy={busy} act={act} refresh={refresh} error={error} />;
-  const advancedSettings = boot.device?.isParent && (
+  const advancedSettings = boot.device?.isParent && practicePacks?.household && (
     <MaterialSettings
-      packs={practicePacks}
       source={activePracticeSource}
       busy={busy}
       onChange={(source) => void act(() => changePracticeSource(source))}
@@ -1272,6 +1271,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 refresh={refresh}
                 act={act}
                 advancedSettings={advancedSettings}
+                materialInfo={<MaterialInfo packs={practicePacks} />}
               />
             ) : boot.guest ? (
               <GuestPanel
@@ -1295,6 +1295,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 refresh={refresh}
                 act={act}
                 advancedSettings={advancedSettings}
+                materialInfo={<MaterialInfo packs={practicePacks} />}
                 learningAudio={
                   learningAudio && activePractice
                     ? { ...learningAudio, lessons: activePractice.lessons }
