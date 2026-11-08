@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import type { LearningAudio } from './learning-voice';
 import type { LearningSettingsProps } from './settings-types';
@@ -26,8 +27,10 @@ export function ParentPanel({
   busy,
   refresh,
   act,
+  advancedSettings,
   learningAudio,
 }: LearningSettingsProps & {
+  advancedSettings?: ReactNode;
   boot: Bootstrap;
   error?: string;
   onGuidanceChange: (enabled: boolean) => void;
@@ -654,6 +657,7 @@ export function ParentPanel({
         </button>
       )}
       {!boot.device?.isParent && <p className="adult-hint">此设备尚未取得家长管理权限。</p>}
+      {advancedSettings}
     </section>
   );
 }

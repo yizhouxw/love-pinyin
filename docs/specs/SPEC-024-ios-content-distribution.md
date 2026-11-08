@@ -26,3 +26,16 @@
 ## 跨端素材选择（DIST-05）
 
 B/S、macOS、Windows 和家庭 iOS 共用新版、旧版素材包。新版为默认，家长可同时切换课堂标准音、整课讲解、天天练拼音和词语天天练。教学规则和成绩沿用稳定 ID，词语练习标记按素材包隔离。B/S 配置随家庭服务保存，已配对设备重新进入后应用该设置。原生独立应用各自保存设置。App Store 安装包只分发新版，家庭构建提供两套资料。
+
+## 家长设置与来源核对（DIST-06）
+
+高级设置作为家长设置卡片的最后一节，保持同一折叠交互。素材选择注明影响的范围，标准音出处及许可独立折叠，保留原始署名。进一步核对大陆普通话独立声韵录音的覆盖范围与随 App 再分发条款，按实际来源标示音频。
+
+本次核对确认：旧版家庭包仍采用原标准音。新版标准音 205 个教学目标中，36 个声韵示范来自台湾地区《國語注音符號手冊》的 CC BY 4.0 开放部件，其余来自江苏普通话录音者王琛（源文件署名 Chen Wang 王琛）的 audio-cmn 音库。繁体出现在来源署名，教材课序、拼音规则和界面依然采用大陆统编课程和简体中文。新增词语拼读的独立带调音节来自同一固定修订的 audio-cmn。
+
+- [人教点读](https://www.pep.com.cn/products/sz/ydxx/)提供教材配套资源，[平台条款](https://www.pep.com.cn/xyzc/202412/t20241203_1997325.html)保留音频权利。未找到可随本 App 分发的独立授权。
+- [深圳大学普通话水平测试站](https://putonghua.szu.edu.cn/info/1014/2854.htm)提供发音部位和简体例词，可作教学参照。该页未提供可随包分发的独立录音。
+- [CLI 互动拼音表](https://studycli.org/zh-CN/pinyin-chart/)可在线试听，未找到其录音可再分发的声明。[Ting Yi Ting](https://opentext.ku.edu/tingyiting/front-matter/about/)使用 CC BY-NC 4.0，不作为公开包的通用授权来源。
+- [hanyu-pinyin-audio](https://github.com/zispace/hanyu-pinyin-audio)汇集第三方网站和仓库的音频。[mp3-chinese-pinyin-sound](https://github.com/davinfifield/mp3-chinese-pinyin-sound)根目录有 Unlicense，但 README 未说明录音人及原始来源；两者均不作为新授权依据。
+
+尚未核实可覆盖这 36 个教学目标的大陆独立声韵音库。该部分目前沿用已明确许可的录音，后续继续在 [#40](https://github.com/yizhouxw/love-pinyin/issues/40) 跟踪。

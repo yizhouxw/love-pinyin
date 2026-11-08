@@ -6,13 +6,15 @@ import io
 import json
 import re
 import subprocess
+import unicodedata
 import wave
 import zipfile
 from array import array
 from pathlib import Path
 
-from server import source_audio
+from server import daily_reading, source_audio
 from server.content import load_curriculum
+from server.materials import WORD_SOURCE, original_packs
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "content/ios-standard-audio.json"
@@ -33,6 +35,21 @@ def chen_recording(root: Path, name: str) -> bytes:
     if tags.get("SWAC_COLL_LICENSE") != "CC-BY-SA-3.0" or tags.get("SWAC_TEXT") != name:
         raise ValueError(f"Unexpected original recording label or license: {name}")
     return file.read_bytes()
+
+
+def install_clip(output: Path, recording: bytes, extension: str) -> tuple[str, str]:
+    sha = digest(recording)
+    filename = f"{sha}.{extension}"
+    destination = output / filename
+    if not destination.exists():
+        destination.write_bytes(recording)
+        subprocess.run(
+            ["ffmpeg", "-v", "error", "-xerror", "-i", destination, "-f", "null", "-"],
+            check=True,
+        )
+    elif digest(destination.read_bytes()) != sha:
+        raise ValueError(f"Existing clip has a different digest: {destination}")
+    return filename, sha
 
 
 def without_onset(source: bytes, start: float, end: float) -> bytes:
@@ -65,6 +82,40 @@ def without_onset(source: bytes, start: float, end: float) -> bytes:
         wav.setparams((1, 2, 24000, 0, "NONE", "not compressed"))
         wav.writeframes(samples)
     return output.getvalue()
+
+
+def spelling_targets(standard_ids: set[str]) -> set[str]:
+    original, _, _ = original_packs(standard_ids)
+    words = [
+        *original["words"]["lessons"],
+        *json.loads(WORD_SOURCE.read_text())["lessons"],
+    ]
+    readings = [item["pinyin"] for lesson in words for item in lesson["read"]]
+    readings.extend(
+        " ".join(item["syllables"])
+        for daily in (original["daily"], daily_reading.load())
+        for day in daily["days"]
+        for section in day["sections"]
+        if section["kind"] != "sentences"
+        for item in section["items"]
+    )
+    readings.extend(
+        example["pinyin"]
+        for entry in daily_reading.word_examples().values()
+        for example in entry["examples"]
+    )
+    tones = {"\u0304": 1, "\u0301": 2, "\u030c": 3, "\u0300": 4}
+    targets = set()
+    for reading in readings:
+        for value in re.split(r"[\s'’·-]+", reading.lower()):
+            decomposed = unicodedata.normalize("NFD", value)
+            tone = next((tones[mark] for mark in decomposed if mark in tones), 5)
+            plain = unicodedata.normalize(
+                "NFC", "".join(char for char in decomposed if char not in tones)
+            ).replace("ü", "v")
+            if re.fullmatch(r"[a-z]+", plain):
+                targets.add(f"{plain}{tone}")
+    return targets
 
 
 def prepare(chen_repo: Path, archive: Path, output: Path) -> None:
@@ -120,17 +171,7 @@ def prepare(chen_repo: Path, archive: Path, output: Path) -> None:
                         name = spelling
                     original = clip = chen_recording(chen_dir, name)
                 source_file = f"64k/syllabs/cmn-{name}.mp3"
-            sha = digest(clip)
-            filename = f"{sha}.{extension}"
-            destination = output / filename
-            if not destination.exists():
-                destination.write_bytes(clip)
-                subprocess.run(
-                    ["ffmpeg", "-v", "error", "-xerror", "-i", destination, "-f", "null", "-"],
-                    check=True,
-                )
-            elif digest(destination.read_bytes()) != sha:
-                raise ValueError(f"Existing clip has a different digest: {destination}")
+            filename, sha = install_clip(output, clip, extension)
             clips[asset_id] = {
                 "source": source,
                 "sourceFile": source_file,
@@ -139,11 +180,31 @@ def prepare(chen_repo: Path, archive: Path, output: Path) -> None:
                 "sha256": sha,
                 "changes": change,
             }
+    spelling = {}
+    for name in sorted(spelling_targets(set(clips))):
+        recorded_name = policy["spellingAliases"].get(name, name)
+        source_file = f"cmn-{recorded_name}.mp3"
+        if not (chen_dir / source_file).is_file():
+            continue
+        recording = chen_recording(chen_dir, recorded_name)
+        filename, sha = install_clip(output, recording, "mp3")
+        spelling[name] = {
+            "source": "chen",
+            "sourceFile": f"64k/syllabs/{source_file}",
+            "sourceSha256": sha,
+            "file": filename,
+            "sha256": sha,
+            "changes": "filename only",
+        }
     (output / "manifest.json").write_text(
-        json.dumps({"version": 1, "sources": sources, "clips": clips}, ensure_ascii=False, indent=2)
+        json.dumps(
+            {"version": 1, "sources": sources, "clips": clips, "spelling": spelling},
+            ensure_ascii=False,
+            indent=2,
+        )
         + "\n"
     )
-    print(f"{len(clips)} targets, {len({asset['file'] for asset in clips.values()})} audio files")
+    print(f"{len(clips)} standard targets, {len(spelling)} spelling targets")
 
 
 def main() -> None:

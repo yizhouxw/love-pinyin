@@ -88,7 +88,9 @@ def public_standard_catalog(required: set[str]) -> dict:
     clips = payload["clips"]
     if set(clips) != required:
         raise ValueError("Public standard audio must cover the current classroom and games")
-    for asset in clips.values():
+    if not payload.get("spelling"):
+        raise ValueError("Public spelling audio catalog is missing")
+    for asset in (*clips.values(), *payload["spelling"].values()):
         if (
             asset["source"] not in payload["sources"]
             or Path(asset["file"]).name != asset["file"]
@@ -192,6 +194,8 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
 
     for asset_id, asset in public_standard["clips"].items():
         add("audio", ORIGINAL_PREFIX + asset_id, STANDARD_AUDIO / asset["file"], asset["sha256"])
+    for syllable, asset in public_standard["spelling"].items():
+        add("daily-audio", f"spelling-{syllable}", STANDARD_AUDIO / asset["file"], asset["sha256"])
     shutil.copyfile(STANDARD_AUDIO / "manifest.json", output / "StandardAudioSources.json")
     shutil.copyfile(STANDARD_AUDIO / "bopomofo-NOTICE.txt", output / "Licenses/bopomofo-NOTICE.txt")
 
@@ -203,6 +207,7 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
     practice_packs = {
         "original": original,
         "standardSources": list(public_standard["sources"].values()),
+        "spellingSyllables": list(public_standard["spelling"]),
     }
     if not public:
         daily = daily_reading.load()

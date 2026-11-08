@@ -12,6 +12,9 @@ import { WordPlayback } from '../platform/audio/word-playback';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { WordCoursePicker } from './word-course-picker';
 import { WordImage } from './word-image';
+import { PinyinLegend, PinyinText, ReadingModeControl } from './pinyin-reading';
+import { pinyinSyllables, spellingPlan, type ReadingMode } from '../domain/pinyin-spelling';
+import { playSpelling } from '../platform/audio/spelling-playback';
 import './word-practice.css';
 
 const modes: { id: WordMode; title: string }[] = [
@@ -22,6 +25,7 @@ const modes: { id: WordMode; title: string }[] = [
 export function WordPractice({
   content: wordPractice,
   contentId,
+  spellingSyllables,
   onBack,
   guidanceEnabled,
   onGuidanceChange,
@@ -30,6 +34,7 @@ export function WordPractice({
 }: {
   content: WordPracticeContent;
   contentId: string;
+  spellingSyllables: readonly string[];
   onBack: () => void;
   guidanceEnabled: boolean;
   onGuidanceChange: (enabled: boolean) => void;
@@ -38,6 +43,7 @@ export function WordPractice({
 }) {
   const [lessonId, setLessonId] = useState(wordPractice.lessons[0]!.id);
   const [mode, setMode] = useState<WordMode>('read');
+  const [readingMode, setReadingMode] = useState<ReadingMode>('direct');
   const [revealed, setRevealed] = useState(false);
   const [index, setIndex] = useState(0);
   const [hidden, setHidden] = useState(false);
@@ -55,6 +61,12 @@ export function WordPractice({
   const [voice] = useState(
     () => new WordPlayback((id, signal) => audioPlayer.playPrivate(id, signal)),
   );
+  const playWord = (id: string, signal: AbortSignal) => {
+    const word = lesson.read.find((item) => item.audioId === id);
+    return readingMode === 'spelling' && word
+      ? playSpelling(spellingPlan(pinyinSyllables(word.pinyin), spellingSyllables), id, signal)
+      : audioPlayer.playPrivate(id, signal);
+  };
   const playback = useSyncExternalStore(voice.subscribe, voice.snapshot);
   useEffect(() => {
     const onHidden = () => {
@@ -179,6 +191,16 @@ export function WordPractice({
           }}
         />
         {mode === 'read' && (
+          <ReadingModeControl
+            mode={readingMode}
+            onChange={(nextMode) => {
+              if (nextMode === readingMode) return;
+              voice.stop();
+              setReadingMode(nextMode);
+            }}
+          />
+        )}
+        {mode === 'read' && (
           <button
             className="word-continuous"
             aria-label="连读本课"
@@ -188,6 +210,7 @@ export function WordPractice({
                 lesson.read.map((word) => word.audioId),
                 gapSeconds,
                 true,
+                playWord,
               )
             }
           >
@@ -227,6 +250,7 @@ export function WordPractice({
         {mode === 'read' && <p>{wordPractice.pinyinNote}</p>}
         <button onClick={() => voice.play(`word-ui-${mode}`)}>🔊 听玩法</button>
       </details>
+      {mode === 'read' && <PinyinLegend />}
       {mode === 'read' && (
         <div className="word-reading-layout">
           <WordImage word={selected} />
@@ -239,12 +263,14 @@ export function WordPractice({
                 aria-current={playback.playingId === word.audioId ? 'true' : undefined}
                 onClick={() => {
                   setSelectedText(word.text);
-                  voice.play(word.audioId);
+                  voice.play(word.audioId, playWord);
                 }}
               >
                 <ruby>
                   {word.text}
-                  <rt>{word.pinyin}</rt>
+                  <rt>
+                    <PinyinText value={word.pinyin} />
+                  </rt>
                 </ruby>
               </button>
             ))}
@@ -263,7 +289,9 @@ export function WordPractice({
                 {revealed ? (
                   <ruby>
                     {target.text}
-                    <rt>{target.pinyin}</rt>
+                    <rt>
+                      <PinyinText value={target.pinyin} />
+                    </rt>
                   </ruby>
                 ) : (
                   '听一听，在纸上写一写'

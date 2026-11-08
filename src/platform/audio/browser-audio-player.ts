@@ -1,4 +1,5 @@
 import type { AudioPlayer } from '../../domain/contracts';
+import type { SpellingClip } from '../../domain/pinyin-spelling';
 import { isIOSApp } from '../ios-app';
 import { learningAssetUrl } from '../guest';
 import { ReadingAudioPool } from './reading-audio-pool';
@@ -56,15 +57,30 @@ export class BrowserAudioPlayer implements AudioPlayer {
     signal?: AbortSignal,
     observer?: PlaybackObserver,
   ): Promise<void> {
+    return this.playReadingSequence(
+      audioIds.map((id) => ({ kind: 'daily-audio', id })),
+      signal,
+      observer,
+    );
+  }
+
+  playReadingSequence(
+    clips: SpellingClip[],
+    signal?: AbortSignal,
+    observer?: PlaybackObserver,
+    pauseSeconds?: number,
+  ): Promise<void> {
     this.stop();
     if (typeof document !== 'undefined' && document.hidden) return Promise.reject(aborted());
-    if (!audioIds.length || audioIds.some((id) => !id.trim()))
+    if (!clips.length || clips.some(({ id }) => !id.trim()))
       return Promise.reject(new Error('AUDIO_ID_INVALID'));
     if (signal?.aborted) return Promise.reject(aborted());
     return this.playBufferedReading(
-      audioIds.map((id) => learningAssetUrl('daily-audio', id)),
+      clips.map(({ kind, id }) => learningAssetUrl(kind, id)),
       signal,
       observer,
+      undefined,
+      pauseSeconds,
     );
   }
 
@@ -224,6 +240,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
     signal?: AbortSignal,
     observer?: PlaybackObserver,
     characterTimings?: { start: number; end: number }[],
+    pauseSeconds?: number,
   ): Promise<void> {
     const audio = (this.readingMedia ??= new Audio(''));
     audio.preload = 'auto';
@@ -330,7 +347,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
         if (characterTimings)
           return spaceReadingCharacters(blobs[0]!, characterTimings, controller.signal);
         if (sources.length === 1) return { blob: blobs[0]!, segments: [] };
-        return combineReadingAudio(blobs, controller.signal);
+        return combineReadingAudio(blobs, controller.signal, pauseSeconds);
       };
       void Promise.all([activation, prepare()])
         .then(([, prepared]) => {

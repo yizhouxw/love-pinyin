@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { PinyinText } from './pinyin-reading';
 import catalog from '../../content/word-practice/images.json';
 
 export function WordImage({
@@ -53,7 +54,9 @@ export function WordImage({
       <figcaption>
         <ruby className={concealed ? 'word-invisible' : ''} aria-hidden={concealed}>
           {word.text}
-          <rt>{word.pinyin}</rt>
+          <rt>
+            <PinyinText value={word.pinyin} />
+          </rt>
         </ruby>
         {item && (
           <small className={concealed ? 'word-invisible' : ''} aria-hidden={concealed}>

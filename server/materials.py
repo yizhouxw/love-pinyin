@@ -259,6 +259,7 @@ def payload(selected: str) -> dict:
         "selected": selected,
         "original": original,
         "standardSources": list(standard_manifest()["sources"].values()),
+        "spellingSyllables": list(standard_manifest()["spelling"]),
     }
     if source_audio.installed():
         result["household"] = household_content()
@@ -278,10 +279,12 @@ def audio_response(kind: str, asset_id: str, byte_range: str | None):
     """Return None when the ID belongs to the existing household bank."""
     from server.audio_assets import file_audio_response
 
-    if kind == "audio" and asset_id.startswith(ORIGINAL_PREFIX):
-        key = asset_id.removeprefix(ORIGINAL_PREFIX)
+    if kind == "daily-audio" and asset_id.startswith("spelling-"):
+        clip = standard_manifest()["spelling"].get(asset_id.removeprefix("spelling-"))
+    elif kind == "audio" and asset_id.startswith(ORIGINAL_PREFIX):
+        clip = standard_manifest()["clips"].get(asset_id.removeprefix(ORIGINAL_PREFIX))
     elif kind == "daily-audio" and asset_id in original_content()[1]:
-        key = original_content()[1][asset_id]
+        clip = standard_manifest()["clips"].get(original_content()[1][asset_id])
     elif kind == "voice" and asset_id.startswith((ORIGINAL_PREFIX, "lesson-original-")):
         entry = original_voice_assets().get(asset_id)
         if not entry:
@@ -290,7 +293,6 @@ def audio_response(kind: str, asset_id: str, byte_range: str | None):
         return file_audio_response(path, media_type(path), digest, byte_range)
     else:
         return None
-    clip = standard_manifest()["clips"].get(key)
     if not clip:
         raise HTTPException(404, detail={"code": "AUDIO_NOT_FOUND"})
     path = STANDARD_AUDIO / clip["file"]

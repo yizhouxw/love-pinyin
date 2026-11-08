@@ -13,6 +13,7 @@ const cancelled = () => new DOMException('Reading audio cancelled.', 'AbortError
 export async function combineReadingAudio(
   sources: Blob[],
   signal: AbortSignal,
+  pauseSeconds?: number,
 ): Promise<CombinedReadingAudio> {
   if (signal.aborted) throw cancelled();
   try {
@@ -24,7 +25,7 @@ export async function combineReadingAudio(
       decoded.push(await decoder.decodeAudioData(bytes));
       if (signal.aborted) throw cancelled();
     }
-    return joinReadingSamples(decoded);
+    return joinReadingSamples(decoded, { pauseSeconds });
   } catch (error) {
     if (signal.aborted) throw cancelled();
     throw new Error('AUDIO_DECODE_FAILED', { cause: error });

@@ -25,6 +25,7 @@
     "wordBoundarySilenceSeconds": 0.1,
     "edgeGuardSeconds": 0.04,
     "silenceThreshold": 0.0005,
-    "characterPauseSeconds": 0.4
+    "characterPauseSeconds": 0.4,
+    "spellingPauseSeconds": 0.28
   }
 }

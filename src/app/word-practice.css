@@ -199,7 +199,8 @@
   color: #718275;
 }
 .word-practice rt {
-  font-size: 0.85rem;
+  font-family: var(--pinyin-font);
+  font-size: 0.9rem;
   font-weight: 400;
 }
 .word-image-failure {

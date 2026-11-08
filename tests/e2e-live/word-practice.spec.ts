@@ -390,3 +390,68 @@ test('WORD-08: every local picture decodes in the browser', async ({ page, appUr
     .locator('#word-contact')
     .screenshot({ path: test.info().outputPath('word-picture-contact.png') });
 });
+
+test('DIST-06/WORD-10/DAILY-11: integrated settings and real direct and spelling audio', async ({
+  page,
+  appUrl,
+}, info) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await pairForHouseholdMaterial(page, appUrl);
+  await page.getByRole('button', { name: '家长管理', exact: true }).click();
+  await page.getByRole('button', { name: '我是家长，继续' }).click();
+  const advanced = page.locator('.parent-panel > .material-settings:last-child');
+  await advanced.getByText('高级设置', { exact: true }).click();
+  await expect(advanced.getByRole('combobox', { name: '学习素材' })).toHaveValue('original');
+  await expect(advanced.getByText('CC-BY-4.0', { exact: true })).toBeHidden();
+  await advanced.getByText('音频来源与许可', { exact: true }).click();
+  await expect(advanced.getByText('CC-BY-4.0', { exact: true })).toBeVisible();
+  await advanced.screenshot({ path: info.outputPath('material-settings.png') });
+  await page.getByRole('button', { name: '返回学习', exact: true }).click();
+  await page.getByRole('button', { name: '进入词语天天练 →' }).click();
+
+  const word = page.getByRole('button', { name: '听读老师', exact: true });
+  await expect(word.locator('.pinyin-whole')).toHaveText('shī');
+  const color = await word
+    .locator('.pinyin-whole')
+    .evaluate((element) => getComputedStyle(element).color);
+  expect(color).toBe('rgb(32, 78, 145)');
+  await expect(page.getByRole('button', { name: '直接读', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  const direct = page.waitForResponse(
+    (response) => /\/voice\/original-/.test(response.url()) && response.ok(),
+  );
+  await word.click();
+  await direct;
+  const spelling = page.waitForResponse(
+    (response) => response.url().endsWith('/daily-audio/spelling-shi1') && response.ok(),
+  );
+  const initial = page.waitForResponse(
+    (response) => response.url().endsWith('/audio/original-audio-initial-l') && response.ok(),
+  );
+  await page.getByRole('button', { name: '拼读', exact: true }).click();
+  await expect(page.locator('.word-playback')).not.toContainText('正在播放');
+  await word.click();
+  await Promise.all([spelling, initial]);
+  await expect(page.locator('.word-playback')).not.toContainText('正在播放', { timeout: 15000 });
+  await expect(page.locator('.word-audio-error')).toHaveAttribute('aria-hidden', 'true');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.locator('.word-practice').screenshot({ path: info.outputPath('word-spelling.png') });
+
+  await page.getByRole('button', { name: '返回首页' }).click();
+  await useHouseholdMaterial(page);
+  await page.getByRole('button', { name: '进入天天练拼音' }).click();
+  await page.getByRole('button', { name: '第 3 份', exact: true }).click();
+  await page.getByRole('button', { name: /读词语/ }).click();
+  await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
+  await expect(page.locator('.daily-target')).toContainText('bà');
+  const dailyComponent = page.waitForResponse(
+    (response) => response.url().endsWith('/audio/audio-initial-b') && response.ok(),
+  );
+  await page.getByRole('button', { name: '拼读', exact: true }).click();
+  await page.getByRole('button', { name: '开始跟读' }).click();
+  await dailyComponent;
+  await expect(page.locator('.daily-status-strip')).toContainText('轮到你读啦', { timeout: 15000 });
+  await expect(page.getByRole('button', { name: '重试示范' })).toHaveCount(0);
+});

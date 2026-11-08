@@ -563,6 +563,14 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     );
   if (!boot.paired)
     return <PairingPage boot={boot} busy={busy} act={act} refresh={refresh} error={error} />;
+  const advancedSettings = boot.device?.isParent && (
+    <MaterialSettings
+      packs={practicePacks}
+      source={activePracticeSource}
+      busy={busy}
+      onChange={(source) => void act(() => changePracticeSource(source))}
+    />
+  );
   if (!practicePacks)
     return (
       <main className="loading">
@@ -1122,6 +1130,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           key={activePracticeSource}
           content={activePractice.words}
           contentId={activePracticeSource}
+          spellingSyllables={practicePacks.spellingSyllables ?? []}
           guidanceEnabled={guidanceEnabled}
           onGuidanceChange={changeGuidance}
           gapSeconds={gapSeconds}
@@ -1140,6 +1149,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         <DailyReadingPage
           key={activePracticeSource}
           offline={activePractice?.daily}
+          spellingSyllables={practicePacks.spellingSyllables ?? []}
           gapSeconds={gapSeconds}
           onGapChange={changePlaybackGap}
           guidanceEnabled={guidanceEnabled}
@@ -1250,14 +1260,6 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           {parentOpen && !/^(BACKUP_|IMPORT_)/.test(error) && (
             <Notice error={error} onReconnect={() => void act(refresh)} />
           )}
-          {parentOpen && boot.device?.isParent && (
-            <MaterialSettings
-              packs={practicePacks}
-              source={activePracticeSource}
-              busy={busy}
-              onChange={(source) => void act(() => changePracticeSource(source))}
-            />
-          )}
           {parentOpen ? (
             isIOSApp() ? (
               <IOSClassroomSettings
@@ -1268,6 +1270,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 busy={busy}
                 refresh={refresh}
                 act={act}
+                advancedSettings={advancedSettings}
               />
             ) : boot.guest ? (
               <GuestPanel
@@ -1290,6 +1293,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 busy={busy}
                 refresh={refresh}
                 act={act}
+                advancedSettings={advancedSettings}
                 learningAudio={
                   learningAudio && activePractice
                     ? { ...learningAudio, lessons: activePractice.lessons }

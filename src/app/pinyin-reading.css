@@ -1,0 +1,39 @@
+.reading-mode-control {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #eef3eb;
+}
+.reading-mode-control > button[type='button'] {
+  min-height: 48px;
+  padding: 0.45rem 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #345749;
+}
+.reading-mode-control button[aria-pressed='true'] {
+  background: #306653;
+  color: white;
+}
+.pinyin-whole {
+  color: #204e91;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+.pinyin-legend {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0.4rem 0 0.7rem;
+  color: #456254;
+  font-size: 0.85rem;
+}
+.pinyin-legend .pinyin-whole {
+  font: 700 1rem var(--pinyin-font);
+}

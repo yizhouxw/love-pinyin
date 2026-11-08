@@ -22,5 +22,6 @@ export type PracticePacks = {
   selected?: PracticeSource;
   original: PracticePack;
   household?: PracticePack;
+  spellingSyllables?: string[];
   standardSources: StandardAudioSource[];
 };

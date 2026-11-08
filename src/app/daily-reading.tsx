@@ -27,6 +27,15 @@ import { QuickGapSettings } from './quick-gap-settings';
 import recognitionContent from '../../content/reading-recognition.json';
 import navigationContent from '../../content/daily-reading-navigation.json';
 
+import {
+  isWholeSyllable,
+  pinyinSyllables,
+  spellingPlan,
+  type ReadingMode,
+} from '../domain/pinyin-spelling';
+import { playSpelling } from '../platform/audio/spelling-playback';
+import { PinyinLegend, PinyinText, ReadingModeControl } from './pinyin-reading';
+
 async function readDaily(offline?: DailyReading): Promise<DailyReading> {
   if (offline) return offline;
   if (isIOSApp()) throw new Error('DAILY_UNAVAILABLE');
@@ -37,6 +46,7 @@ async function readDaily(offline?: DailyReading): Promise<DailyReading> {
 
 export function DailyReadingPage({
   offline,
+  spellingSyllables,
   onBack,
   guidanceEnabled,
   gapSeconds,
@@ -44,6 +54,7 @@ export function DailyReadingPage({
   onGapChange,
 }: {
   offline?: DailyReading;
+  spellingSyllables: readonly string[];
   onBack: () => void;
   guidanceEnabled: boolean;
   gapSeconds: number;
@@ -59,6 +70,7 @@ export function DailyReadingPage({
   const [dayId, setDayId] = useState('day-01');
   const [sectionId, setSectionId] = useState<string | null>(null);
   const [characterReading, setCharacterReading] = useState(false);
+  const [readingMode, setReadingMode] = useState<ReadingMode>('direct');
   const helpVoice = useLearningVoice(sectionId ?? 'daily-materials');
   const stopHelpVoice = helpVoice.stop;
   useEffect(() => {
@@ -298,6 +310,9 @@ export function DailyReadingPage({
               onGuidanceChange={onGuidanceChange}
               onGapChange={onGapChange}
               section={section}
+              readingMode={readingMode}
+              onReadingModeChange={setReadingMode}
+              spellingSyllables={spellingSyllables}
               characterReading={characterReading}
               onCharacterReadingChange={setCharacterReading}
               onNextSection={
@@ -372,6 +387,9 @@ function ReadingSession({
   onGuidanceChange,
   onGapChange,
   section,
+  readingMode,
+  onReadingModeChange,
+  spellingSyllables,
   characterReading,
   onCharacterReadingChange,
   onNextSection,
@@ -385,6 +403,9 @@ function ReadingSession({
   onGuidanceChange: (enabled: boolean) => void;
   onGapChange: (seconds: number) => void;
   section: DailySection;
+  readingMode: ReadingMode;
+  onReadingModeChange: (mode: ReadingMode) => void;
+  spellingSyllables: readonly string[];
   characterReading: boolean;
   onCharacterReadingChange: (enabled: boolean) => void;
   onNextSection?: () => void;
@@ -497,6 +518,22 @@ function ReadingSession({
   };
   async function demo(target: DailyItem, signal: AbortSignal) {
     setInstructionPlaying(false);
+    if (section.kind !== 'sentences' && readingMode === 'spelling') {
+      const narration = target.narrationId;
+      const exact =
+        target.audioIds.length === target.syllables.length && !target.missingSyllables.length
+          ? target.audioIds
+          : [];
+      const parts = spellingPlan(target.syllables, spellingSyllables, exact);
+      if (parts.length || narration) {
+        await playSpelling(parts, narration, signal, {
+          onState: setAudioStage,
+          onSegment: setHighlight,
+        });
+        setHighlight(-1);
+        return;
+      }
+    }
     if (section.kind === 'sentences') {
       const sentence = target.sentenceReading;
       if (!sentence?.available || sentence.timings.length !== target.syllables.length)
@@ -601,7 +638,21 @@ function ReadingSession({
     const active = new AbortController();
     controller.current = active;
     try {
-      await playPrivate(item.wordExample.id, active.signal);
+      if (section.kind !== 'sentences' && readingMode === 'spelling') {
+        const syllables = item.wordExample.examples.flatMap((example) =>
+          pinyinSyllables(example.pinyin),
+        );
+        await playSpelling(
+          spellingPlan(syllables, spellingSyllables),
+          item.wordExample.id,
+          active.signal,
+          {
+            onState: setAudioStage,
+          },
+        );
+      } else {
+        await playPrivate(item.wordExample.id, active.signal);
+      }
     } catch {
       if (!active.signal.aborted) setExampleFailure(true);
     } finally {
@@ -712,6 +763,19 @@ function ReadingSession({
               onGapChange(seconds);
             }}
           />
+          {section.kind !== 'sentences' && (
+            <ReadingModeControl
+              mode={readingMode}
+              disabled={recording !== 'idle' || recognizing}
+              onChange={(mode) => {
+                if (mode === readingMode) return;
+                stop();
+                setFailure('');
+                setExampleFailure(false);
+                onReadingModeChange(mode);
+              }}
+            />
+          )}
           {section.kind === 'sentences' && (
             <label className="guidance-switch">
               <input
@@ -729,6 +793,7 @@ function ReadingSession({
           )}
         </div>
         <p>{section.instruction}</p>
+        <PinyinLegend />
         <button
           className={`quiet daily-target${item.syllables.length > 6 ? ' daily-target-sentence' : ''}`}
           aria-label={item.display}
@@ -738,7 +803,12 @@ function ReadingSession({
           {item.syllables.map((syllable, position) => (
             <ruby key={position}>
               <span
-                className={highlight === position ? 'daily-highlight' : ''}
+                className={[
+                  isWholeSyllable(syllable) && 'pinyin-whole',
+                  highlight === position && 'daily-highlight',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
                 aria-current={highlight === position ? 'true' : undefined}
               >
                 {syllable}
@@ -818,11 +888,13 @@ function ReadingSession({
             ? characterReading
               ? '逐字读 · 字间留停顿'
               : '整句连读 · 普通话示范'
-            : item.narrationId
-              ? '中文词句朗读 · 普通话示范'
-              : item.derivedAudio
-                ? '拼音派生示范 · 一声'
-                : '拼音标准音 · 逐音节示范'}
+            : readingMode === 'spelling'
+              ? '拼读 · 分解音节，整体认读直接读'
+              : item.narrationId
+                ? '中文词句朗读 · 普通话示范'
+                : item.derivedAudio
+                  ? '拼音派生示范 · 一声'
+                  : '拼音标准音 · 逐音节示范'}
         </p>
         {item.audioNotes.length > 0 && (
           <p className="daily-audio-note">{item.audioNotes.join('；')}</p>
@@ -851,7 +923,9 @@ function ReadingSession({
                   {item.wordExample.examples.map((example) => (
                     <div key={example.text}>
                       <strong>{example.text}</strong>
-                      <span>{example.pinyin}</span>
+                      <span>
+                        <PinyinText value={example.pinyin} />
+                      </span>
                     </div>
                   ))}
                 </div>

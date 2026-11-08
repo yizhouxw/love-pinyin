@@ -11,13 +11,18 @@ export function MaterialSettings({
   onChange: (source: PracticeSource) => void;
   busy: boolean;
 }) {
+  const label = source === 'original' ? '新版原创素材' : '旧版家庭素材';
   return (
-    <details>
+    <details className="parent-section material-settings">
       <summary>高级设置</summary>
-      {packs?.household ? (
-        <label>
-          学习素材
+      <div className="parent-setting material-setting">
+        <div>
+          <strong>学习素材</strong>
+          <p>影响课堂讲解、标准音和两类天天练。</p>
+        </div>
+        {packs?.household ? (
           <select
+            aria-label="学习素材"
             value={source}
             disabled={busy}
             onChange={(event) =>
@@ -27,16 +32,27 @@ export function MaterialSettings({
             <option value="original">新版原创素材</option>
             <option value="household">旧版家庭素材</option>
           </select>
-        </label>
-      ) : (
-        <p>{packs ? '此版本使用新版原创素材。' : '正在读取学习素材。'}</p>
-      )}
-      {source === 'original' &&
-        packs?.standardSources.map((item) => (
-          <p key={item.url}>
-            {item.attribution} · {item.license} · {item.licenseUrl}
+        ) : (
+          <small>{packs ? label : '正在读取学习素材…'}</small>
+        )}
+      </div>
+      {Boolean(packs?.standardSources.length) && (
+        <details className="material-credits">
+          <summary>音频来源与许可</summary>
+          <p>
+            大陆普通话录音用于新版带调音节及词语拼读。台湾地区注音录音用于新版的部分独立声母和韵母。
           </p>
-        ))}
+          <ul>
+            {packs?.standardSources.map((item) => (
+              <li key={item.url}>
+                <strong>{item.license}</strong>
+                <p>{item.attribution}</p>
+                <small>{item.licenseUrl}</small>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
     </details>
   );
 }

@@ -1,0 +1,34 @@
+{
+  "writtenWithoutInitial": {
+    "ya": "ia",
+    "yo": "io",
+    "you": "iu",
+    "yan": "ian",
+    "yang": "iang",
+    "yong": "iong",
+    "wa": "ua",
+    "wo": "uo",
+    "wai": "uai",
+    "wei": "ui",
+    "wan": "uan",
+    "wen": "un",
+    "wang": "uang",
+    "weng": "ueng"
+  },
+  "umlautInitials": ["j", "q", "x"],
+  "compoundFinals": {
+    "ia": ["i", "a"],
+    "io": ["i", "o"],
+    "iao": ["i", "ao"],
+    "ian": ["i", "an"],
+    "iang": ["i", "ang"],
+    "iong": ["i", "ong"],
+    "ua": ["u", "a"],
+    "uo": ["u", "o"],
+    "uai": ["u", "ai"],
+    "uan": ["u", "an"],
+    "uang": ["u", "ang"],
+    "ueng": ["u", "eng"],
+    "üan": ["ü", "an"]
+  }
+}

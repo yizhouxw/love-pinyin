@@ -268,3 +268,35 @@
 .parent-panel .parent-setting p {
   font-size: 14px;
 }
+
+.material-settings .material-setting {
+  border: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  background: #f4f7ee;
+}
+.material-settings select {
+  min-height: 48px;
+  max-width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #c6d9c9;
+  border-radius: 12px;
+  background: #fffefa;
+  color: #294f40;
+  font-weight: 700;
+}
+.material-credits {
+  margin-top: 0.4rem;
+  color: #415d50;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+.material-credits ul {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0.6rem 0;
+  padding-inline-start: 1.25rem;
+}
+.material-credits li p {
+  margin: 0.15rem 0;
+}
