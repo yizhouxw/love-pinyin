@@ -11,7 +11,7 @@ export function MaterialSettings({
   onChange: (source: PracticeSource) => void;
   busy: boolean;
 }) {
-  const label = source === 'original' ? '新版原创素材' : '旧版家庭素材';
+  const label = source === 'original' ? '新版素材' : '旧版家庭素材';
   return (
     <details className="parent-section material-settings">
       <summary>高级设置</summary>
@@ -29,7 +29,7 @@ export function MaterialSettings({
               onChange(event.target.value === 'household' ? 'household' : 'original')
             }
           >
-            <option value="original">新版原创素材</option>
+            <option value="original">新版素材</option>
             <option value="household">旧版家庭素材</option>
           </select>
         ) : (

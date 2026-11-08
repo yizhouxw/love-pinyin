@@ -21,7 +21,7 @@ test('WORD-01/02/03: real voices, hidden dictation, text highlights and device p
   page.on('pageerror', (error) => errors.push(error.message));
   await pairForHouseholdMaterial(page, appUrl);
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
-  await expect(page.getByRole('button', { name: '选择课程，当前身边的人' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '选择课程，当前天地人' })).toBeVisible();
   await page.getByRole('button', { name: '返回首页' }).click();
   await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
@@ -419,6 +419,10 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   await page.getByRole('button', { name: '返回学习', exact: true }).click();
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
 
+  await page.getByRole('button', { name: /^选择课程/ }).click();
+  const picker = page.getByRole('dialog');
+  await picker.getByRole('button', { name: '第6单元', exact: true }).click();
+  await picker.getByRole('button', { name: '选择语文园地六', exact: true }).click();
   const word = page.getByRole('button', { name: '听读老师', exact: true });
   await expect(word.locator('.pinyin-whole')).toHaveText('shī');
   const color = await word
@@ -430,7 +434,7 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
     'true',
   );
   const direct = page.waitForResponse(
-    (response) => /\/voice\/original-/.test(response.url()) && response.ok(),
+    (response) => /\/voice\/word-say-c9a31a3f670b7f99$/.test(response.url()) && response.ok(),
   );
   await word.click();
   await direct;

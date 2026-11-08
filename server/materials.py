@@ -5,15 +5,14 @@ from functools import lru_cache
 from pathlib import Path
 
 from fastapi import HTTPException
-from pypinyin import Style, lazy_pinyin
 
-from server import learning_audio
+from server import learning_audio, word_practice
 from server.content import load_curriculum
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL = ROOT / "content/ios-original-practice.json"
 GENERATED = ROOT / "resources/audio/ios-practice"
-WORD_SOURCE = ROOT / "content/word-practice/lessons.json"
+WORD_SOURCE = word_practice.CONTENT
 
 
 def original_packs(standard_ids: set[str]) -> tuple[dict, dict, dict[str, str]]:
@@ -25,13 +24,6 @@ def original_packs(standard_ids: set[str]) -> tuple[dict, dict, dict[str, str]]:
         asset_id = "original-" + learning_audio.text_digest(text)[:24]
         voice[asset_id] = text
         return asset_id
-
-    def word(text: str) -> dict:
-        return {
-            "text": text,
-            "pinyin": " ".join(lazy_pinyin(text, style=Style.TONE)),
-            "audioId": speak(text),
-        }
 
     # The teaching target and its availability come from the actual installed audio bank.
     by_text = {}
@@ -103,46 +95,23 @@ def original_packs(standard_ids: set[str]) -> tuple[dict, dict, dict[str, str]]:
         "days": days,
         "assessment": {"available": False, "mode": "asr-syllable-match", "toneAssessed": False},
     }
-    original_words = []
-    word_ui = json.loads(WORD_SOURCE.read_text())
-    for index, row in enumerate(data["words"], 1):
-        original_words.append(
+    words = json.loads(WORD_SOURCE.read_text())
+    passages = data["wordPassages"]
+    if passages.keys() != {lesson["id"] for lesson in words["lessons"]}:
+        raise ValueError("Expected one original reading extension per textbook lesson")
+    for lesson in words["lessons"]:
+        passage = passages[lesson["id"]]
+        lesson["passages"] = [
             {
-                "id": f"original-word-{index:02}",
-                "title": row["title"],
+                "title": passage["title"],
                 "page": 0,
-                "audioId": speak(row["title"]),
-                "unit": row["unit"],
-                "unitTitle": "爱拼音自编练习",
-                "read": [word(text) for text in row["read"]],
-                "write": [word(text) for text in row["write"]],
-                "characters": row["write"],
-                "characterItems": [word(text) for text in row["write"]],
-                "passages": [
-                    {
-                        "title": row["title"],
-                        "page": 0,
-                        "required": False,
-                        "readingOnly": False,
-                        "paragraphs": [{"text": row["passage"], "audioId": speak(row["passage"])}],
-                    }
-                ],
+                "required": False,
+                "readingOnly": True,
+                "paragraphs": [{"text": passage["text"], "audioId": speak(passage["text"])}],
             }
-        )
-    if len(original_words) != 38:
-        raise ValueError("Expected 38 independently written word lessons")
-    words = {
-        "version": 1,
-        "source": {
-            "file": "爱拼音自编材料",
-            "edition": "爱拼音",
-            "textbook": "",
-            "sha256": daily["source"]["sha256"],
-        },
-        "lessons": original_words,
-        "ui": word_ui["ui"],
-        "pinyinNote": word_ui["pinyinNote"],
-    }
+        ]
+        lesson.pop("reading")
+        lesson.pop("reciteRequirement")
     return (
         {
             "daily": daily,

@@ -100,6 +100,21 @@ def public_standard_catalog(required: set[str]) -> dict:
     return payload
 
 
+def word_vocabulary_audio_ids(pack: dict) -> set[str]:
+    return {
+        asset_id
+        for lesson in pack["words"]["lessons"]
+        for asset_id in (
+            lesson["audioId"],
+            *(
+                item["audioId"]
+                for key in ("read", "write", "characterItems")
+                for item in lesson[key]
+            ),
+        )
+    }
+
+
 def validate_practice_audio(packs: dict, catalog: dict) -> None:
     for name in ("original", "household"):
         if name not in packs:
@@ -113,22 +128,16 @@ def validate_practice_audio(packs: dict, catalog: dict) -> None:
                 for item in section["items"]:
                     if any(f"daily-audio/{asset}" not in catalog for asset in item["audioIds"]):
                         raise ValueError(f"Missing standard audio for {name}/{item['id']}")
-        for lesson in pack["words"]["lessons"]:
-            ids = [
-                lesson["audioId"],
-                *(
-                    item["audioId"]
-                    for key in ("read", "write", "characterItems")
-                    for item in lesson[key]
-                ),
-                *(
-                    paragraph["audioId"]
-                    for passage in lesson["passages"]
-                    for paragraph in passage["paragraphs"]
-                ),
-            ]
-            if any(f"voice/{asset}" not in catalog for asset in ids):
-                raise ValueError(f"Missing word or reading audio for {name}/{lesson['id']}")
+        word_ids = word_vocabulary_audio_ids(pack)
+        word_ids.update(
+            paragraph["audioId"]
+            for lesson in pack["words"]["lessons"]
+            for passage in lesson["passages"]
+            for paragraph in passage["paragraphs"]
+        )
+        missing = sorted(asset for asset in word_ids if f"voice/{asset}" not in catalog)
+        if missing:
+            raise ValueError(f"Missing word or reading audio for {name}: {missing}")
 
 
 def validate_public_materials(web: Path, catalog: dict, lesson_manifest: dict) -> None:
@@ -140,17 +149,23 @@ def validate_public_materials(web: Path, catalog: dict, lesson_manifest: dict) -
         for row in lesson_manifest.values()
         if row.get("sourceType") == "user-provided-recording"
     )
-    if any(asset["sha256"] in legacy for asset in catalog.values()):
-        raise ValueError("Family audio found in public resources")
     household = json.loads(WORD_SOURCE.read_text())
-    scripts = [
-        paragraph["text"]
+    paragraphs = [
+        paragraph
         for lesson in household["lessons"]
         for passage in lesson["passages"]
         for paragraph in passage["paragraphs"]
     ]
+    legacy.update(lesson_manifest[paragraph["audioId"]]["sha256"] for paragraph in paragraphs)
+    if any(
+        legacy.intersection((asset["sha256"], asset.get("originalSha256")))
+        for asset in catalog.values()
+    ):
+        raise ValueError("Family audio found in public resources")
     family_signatures = [household["source"]["sha256"], daily_reading.load()["source"]["sha256"]]
-    family_signatures += [text for text in scripts if len(text) >= 12]
+    family_signatures += [
+        paragraph["text"] for paragraph in paragraphs if len(paragraph["text"]) >= 12
+    ]
     for script in web.rglob("*.js"):
         content = script.read_text()
         if any(text in content for text in family_signatures):
@@ -231,10 +246,15 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
         "word-ui-",
         "daily-ui-",
     )
+    shared_word_voice = word_vocabulary_audio_ids(original)
     for asset_id, expected in learning_audio.expected_assets().items():
         if public and expected["purpose"] == "whole-lesson-recording":
             continue
-        if public and not asset_id.startswith(public_voice_prefixes):
+        if (
+            public
+            and asset_id not in shared_word_voice
+            and not asset_id.startswith(public_voice_prefixes)
+        ):
             continue
         path, _, digest = learning_audio.registered_file(manifest[asset_id], expected)
         add("voice", asset_id, path, digest)

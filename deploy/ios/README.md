@@ -4,7 +4,7 @@
 
 ## 准备和构建
 
-家庭调试版安装两套练习。首次使用默认爱拼音自编资料，可从「家长管理 → 高级设置 → 学习素材」切换到行知小学和原词语练习。家庭版先显式准备旧练习用的 PinYinSound：
+家庭调试版安装两套练习。首次使用默认新版资料，可从「家长管理 → 高级设置 → 学习素材」切换到行知小学和原词语练习。家庭版先显式准备旧练习用的 PinYinSound：
 
 ```sh
 npm ci
@@ -14,7 +14,7 @@ deploy/ios/prepare.sh
 open deploy/ios/LovePinyin.xcodeproj
 ```
 
-家庭资源位于 `build/ios/Resources`，供 Xcode Debug 使用。公开版只含自编练习、公开授权标准音和原创课程音频，构建不需要下载旧音库。准备公开资源后才能生成 Release Archive：
+家庭资源位于 `build/ios/Resources`，供 Xcode Debug 使用。公开版随附新版练习（含两版共用的课序和词表）、公开授权标准音和原创课程音频，构建不需要下载旧音库。准备公开资源后才能生成 Release Archive：
 
 ```sh
 deploy/ios/prepare.sh --public

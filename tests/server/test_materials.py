@@ -1,15 +1,16 @@
+import json
+
 from fastapi.testclient import TestClient
 
 from server import source_audio
 from server.main import app
+from server.word_practice import CONTENT
 
 
 def test_material_choice_is_saved_and_media_remains_range_addressable(paired_client, monkeypatch):
     monkeypatch.setattr(source_audio, "installed", lambda: True)
     initial = paired_client.get("/api/v1/practice-packs").json()
     assert initial["selected"] == "original"
-    assert initial["original"]["words"]["lessons"][0]["title"] == "身边的人"
-    assert initial["household"]["words"]["lessons"][0]["title"] == "天地人"
 
     endpoint = "/api/v1/household/material-source"
     csrf = {"X-LP-CSRF": paired_client.cookies["lp_csrf"]}
@@ -44,3 +45,33 @@ def test_material_choice_is_saved_and_media_remains_range_addressable(paired_cli
         response = paired_client.get(f"/api/v1/{path}", headers={"Range": "bytes=0-15"})
         assert response.status_code == 206
         assert len(response.content) == 16
+
+
+def test_new_word_practice_reuses_the_complete_textbook_sequence(test_client):
+    packs = test_client.get("/api/v1/guest/practice-packs").json()
+    original = packs["original"]["words"]["lessons"]
+
+    textbook = json.loads(CONTENT.read_text())["lessons"]
+    assert len(original) == 38
+    assert sum(len(lesson["read"]) for lesson in original) == 687
+    assert sum(len(lesson["write"]) for lesson in original) == 156
+    for new, old in zip(original, textbook, strict=True):
+        for key in (
+            "id",
+            "unit",
+            "unitTitle",
+            "title",
+            "read",
+            "write",
+            "characterItems",
+            "audioId",
+        ):
+            assert new[key] == old[key]
+        assert all(passage["readingOnly"] for passage in new["passages"])
+        assert "reading" not in new
+    for asset_id in (original[0]["audioId"], original[0]["read"][0]["audioId"]):
+        response = test_client.get(
+            f"/api/v1/guest/voice/{asset_id}", headers={"Range": "bytes=0-15"}
+        )
+        assert response.status_code == 206
+        assert response.content.startswith(b"RIFF")

@@ -13,7 +13,7 @@ from pathlib import Path
 
 from server import daily_reading, source_audio
 from server.content import load_curriculum
-from server.materials import WORD_SOURCE, original_packs
+from server.materials import original_packs
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "content/ios-standard-audio.json"
@@ -85,10 +85,7 @@ def crop_recording(source: bytes, start: float, end: float) -> bytes:
 
 def spelling_targets(standard_ids: set[str]) -> set[str]:
     original, _, _ = original_packs(standard_ids)
-    words = [
-        *original["words"]["lessons"],
-        *json.loads(WORD_SOURCE.read_text())["lessons"],
-    ]
+    words = original["words"]["lessons"]
     readings = [item["pinyin"] for lesson in words for item in lesson["read"]]
     readings.extend(
         " ".join(item["syllables"])

@@ -353,8 +353,8 @@ export function WordPractice({
                       ? '材料要求背诵'
                       : passage.readingOnly
                         ? '朗读拓展'
-                        : '自选背诵'}{' '}
-                    · 教材第 {passage.page} 页
+                        : '自选背诵'}
+                    {passage.page > 0 && ` · 教材第 ${passage.page} 页`}
                   </small>
                 </div>
                 <button
@@ -452,7 +452,8 @@ export function WordPractice({
           <>
             <p>
               词目来自家长提供的《{wordPractice.source.file}》，本课在第 {lesson.page}{' '}
-              页；补充课文及生字依据{wordPractice.source.edition}。
+              页。课序及生字依据{wordPractice.source.edition}。
+              {contentId === 'original' && '拓展朗读短文由爱拼音自编。'}
             </p>
             <a href={wordPractice.source.textbook} target="_blank" rel="noreferrer">
               查看国家智慧教育平台教材

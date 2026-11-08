@@ -82,6 +82,6 @@ EdUHK 香港教育大学普通话语音学习语料（SPEC-018 MATCH-14）：来
 
 ## SPEC-024 iOS 发行素材
 
-- 新版 14 课整课稿件、天天练拼音及词语练习为项目自编内容，稿件按 MIT。随包声音由既有固定 Qwen3-TTS 模型本地生成，按 Apache-2.0 登记。逐课稿件/文件摘要和练习合成摘要见 `resources/audio/ios-lessons/manifest.json` 与 `resources/audio/ios-practice/manifest.json`。未新增 npm 或 uv 依赖。整课 MP3 维护时使用本机 FFmpeg 4.4 的 libmp3lame，正式包只含 MP3。
+- 新版 14 课整课稿件、天天练拼音及词语练习的拓展朗读为项目自编内容，稿件按 MIT。随包声音由既有固定 Qwen3-TTS 模型本地生成，按 Apache-2.0 登记。逐课稿件/文件摘要和练习合成摘要见 `resources/audio/ios-lessons/manifest.json` 与 `resources/audio/ios-practice/manifest.json`。未新增 npm 或 uv 依赖。整课 MP3 维护时使用本机 FFmpeg 4.4 的 libmp3lame，正式包只含 MP3。
 - 新版课堂、游戏与天天练的标准音采用 [audio-cmn 固定修订](https://github.com/hugolpz/audio-cmn/tree/f759a0f18f27690742957619e1248ed91e9b3f2c/64k/syllabs)中 Chen Wang 王琛的普通话录音。Copyright © 2013 Wang Chen, Lopez Hugo, Vion Nicolas。Hugo Lopez（PLIDAM、INALCO）处理及整理。原文件标记 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)。声母从短呼读音裁切，ong 从 kōng 裁切，派生音沿用同一许可。其余录音仅更名。具体变更见随包清单。音源原始文件与派生文件可分别从上游和本项目素材目录取得。词语拼读补充音节同样来自上述录音，随包清单的 spelling 项逐条记录原文件、许可归属及摘要。
-- 公开 iOS Archive 只装入自编练习和上述独立授权素材。家庭 Xcode 运行版保留旧练习材料及旧练习声音的本地使用，原 13 份整课 MP3 不再装入 iOS。
+- 公开 iOS Archive 装入新版练习及上述音源。词语天天练两版共用课名、词目及其本地合成音频，来源与许可见 SPEC-022。家庭 Xcode 运行版保留旧练习材料及旧练习声音的本地使用，原 13 份整课 MP3 不再装入 iOS。
