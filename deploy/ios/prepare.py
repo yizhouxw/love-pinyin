@@ -8,19 +8,24 @@ import subprocess
 import wave
 from pathlib import Path
 
-from deploy.ios.practice_packs import WORD_SOURCE, original_packs, original_voice
 from server import daily_reading, learning_audio, source_audio
 from server.content import load_curriculum
 from server.game_levels import catalog as level_catalog
 from server.game_levels import freeze_run
 from server.game_policy import CATALOG as GAME_RULES
 from server.learning_state import _objective_available
+from server.materials import (
+    ORIGINAL_PREFIX,
+    STANDARD_AUDIO,
+    WORD_SOURCE,
+    household_content,
+    original_content,
+    original_courses,
+    original_voice,
+)
 from server.routes import resources
 
 ROOT = Path(__file__).resolve().parents[2]
-COURSE_AUDIO = ROOT / "resources/audio/ios-lessons"
-COURSE_SCRIPTS = ROOT / "content/ios-lesson-narration.json"
-PUBLIC_STANDARD = ROOT / "resources/audio/ios-standard"
 IOS_WEB = ROOT / "build/ios/Web"
 
 
@@ -65,7 +70,7 @@ def game_resources() -> dict:
 
 
 def public_standard_catalog(required: set[str]) -> dict:
-    manifest = PUBLIC_STANDARD / "manifest.json"
+    manifest = STANDARD_AUDIO / "manifest.json"
     if not manifest.is_file():
         raise ValueError("Public iOS build requires a complete redistributable standard audio bank")
     payload = json.loads(manifest.read_text())
@@ -186,15 +191,13 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
         catalog[f"{kind}/{asset_id}"] = {"file": name, "sha256": digest}
 
     for asset_id, asset in public_standard["clips"].items():
-        add("audio", asset_id, PUBLIC_STANDARD / asset["file"], asset["sha256"])
-    shutil.copyfile(PUBLIC_STANDARD / "manifest.json", output / "StandardAudioSources.json")
-    shutil.copyfile(
-        PUBLIC_STANDARD / "bopomofo-NOTICE.txt", output / "Licenses/bopomofo-NOTICE.txt"
-    )
+        add("audio", ORIGINAL_PREFIX + asset_id, STANDARD_AUDIO / asset["file"], asset["sha256"])
+    shutil.copyfile(STANDARD_AUDIO / "manifest.json", output / "StandardAudioSources.json")
+    shutil.copyfile(STANDARD_AUDIO / "bopomofo-NOTICE.txt", output / "Licenses/bopomofo-NOTICE.txt")
 
-    original, aliases, practice_scripts = original_packs(required_standard)
+    original, aliases, practice_scripts = original_content()
     for asset_id, standard_id in aliases.items():
-        catalog[f"daily-audio/{asset_id}"] = catalog[f"audio/{standard_id}"]
+        catalog[f"daily-audio/{asset_id}"] = catalog[f"audio/{ORIGINAL_PREFIX}{standard_id}"]
     for asset_id, path, digest in original_voice(practice_scripts):
         add("voice", asset_id, path, digest)
     practice_packs = {
@@ -205,41 +208,14 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
         daily = daily_reading.load()
         for asset_id in [*(a["id"] for a in daily["assets"]), *daily.get("derivedAssets", [])]:
             add("daily-audio", asset_id, *daily_reading.registered(asset_id))
-        reading = daily_reading.status()
-        reading["assessment"]["available"] = False
-        hanzi = json.loads((ROOT / "content/daily-reading-hanzi.json").read_text())
-        for day in reading["days"]:
-            for section in day["sections"]:
-                for item in section["items"]:
-                    if item["id"] in hanzi:
-                        item["hanzi"] = hanzi[item["id"]]
-        practice_packs["household"] = {
-            "daily": reading,
-            "words": json.loads(WORD_SOURCE.read_text()),
-        }
+        practice_packs["household"] = household_content(offline=True)
+        for target in load_curriculum()["audioRequirements"]:
+            if target["id"] in required_standard:
+                path, digest = source_audio.registered_path(target)
+                add("audio", target["id"], path, digest)
 
-    course_manifest = json.loads((COURSE_AUDIO / "manifest.json").read_text())
-    course_scripts = json.loads(COURSE_SCRIPTS.read_text())["lessons"]
-    current_lessons = load_curriculum()["lessons"]
-    if set(course_manifest["lessons"]) != {lesson["id"] for lesson in current_lessons}:
-        raise ValueError("iOS course audio must cover all current lessons")
-    lesson_audio = {}
-    for lesson in current_lessons:
-        lesson_id = lesson["id"]
-        asset = course_manifest["lessons"][lesson_id]
-        filename = f"{lesson_id}.mp3"
-        if asset["file"] != filename or asset["textSha256"] != learning_audio.text_digest(
-            "\n".join(course_scripts[lesson_id])
-        ):
-            raise ValueError(f"Stale course recording: {lesson_id}")
-        asset_id = f"lesson-{lesson_id}"
-        add("voice", asset_id, COURSE_AUDIO / filename, asset["sha256"])
-        lesson_audio[lesson_id] = {
-            "audioId": asset_id,
-            "title": f"{lesson['title']} · 爱拼音原创课程",
-            "available": True,
-            "sourceType": "local-open-tts",
-        }
+    for course, path, digest in original_courses().values():
+        add("voice", course["audioId"], path, digest)
     manifest = learning_audio.read_manifest()
     public_voice_prefixes = (
         "ui-",
@@ -252,7 +228,7 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
         "daily-ui-",
     )
     for asset_id, expected in learning_audio.expected_assets().items():
-        if expected["purpose"] == "whole-lesson-recording":
+        if public and expected["purpose"] == "whole-lesson-recording":
             continue
         if public and not asset_id.startswith(public_voice_prefixes):
             continue
@@ -264,11 +240,7 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
     data = output / "Data"
     data.mkdir()
     curriculum = load_curriculum()
-    standard = {
-        target["id"]
-        for target in curriculum["audioRequirements"]
-        if f"audio/{target['id']}" in catalog
-    }
+    standard = required_standard
     scripts = learning_audio.narration_scripts()
     classroom = {
         "version": curriculum["contentVersion"],
@@ -295,7 +267,7 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
         "distribution": {"profile": "public" if public else "household"},
         "learning-audio": {
             "narration": {asset_id: f"voice/{asset_id}" in catalog for asset_id in scripts},
-            "lessons": lesson_audio,
+            "lessons": original["lessons"],
         },
     }.items():
         (data / f"{name}.json").write_text(

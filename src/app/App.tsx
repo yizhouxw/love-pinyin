@@ -10,7 +10,7 @@ import type {
   Progress,
   Session,
 } from '../domain/learning-api';
-import { isGuest, leaveGuest } from '../platform/guest';
+import { isGuest, leaveGuest, setStandardAudioPrefix } from '../platform/guest';
 import {
   readGuidancePreference,
   resolveGuidance,
@@ -32,8 +32,8 @@ import {
   replayPendingAnswer,
   savePendingAnswer,
 } from '../platform/pending-answer';
-import type { IOSPracticePacks, PracticeSource } from '../domain/practice-packs';
-import { wordPractice } from '../domain/word-practice';
+import type { PracticePacks, PracticeSource } from '../domain/practice-packs';
+import { MaterialSettings } from './material-settings';
 import { WordPractice } from './word-practice';
 import { DailyReadingPage } from './daily-reading';
 import { gameCatalog } from '../domain/games';
@@ -130,7 +130,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const blendConfirm = useRef<HTMLButtonElement | null>(null);
   const blendOptions = useRef(new Map<string, HTMLButtonElement>());
   const [gamesOpen, setGamesOpen] = useState(window.location.hash === '#games');
-  const [practicePacks, setPracticePacks] = useState<IOSPracticePacks | null>(null);
+  const [practicePacks, setPracticePacks] = useState<PracticePacks | null>(null);
   const [practiceLoadError, setPracticeLoadError] = useState(false);
   const [practiceSource, setPracticeSource] = useState<PracticeSource>(() => {
     try {
@@ -141,23 +141,39 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       return 'original';
     }
   });
+  const preferredSource = isIOSApp() ? practiceSource : practicePacks?.selected;
   const activePracticeSource =
-    practiceSource === 'household' && practicePacks?.household ? 'household' : 'original';
+    preferredSource === 'household' && practicePacks?.household ? 'household' : 'original';
   const activePractice = practicePacks?.[activePracticeSource];
-  function changePracticeSource(source: PracticeSource) {
-    setPracticeSource(source);
-    try {
+  async function changePracticeSource(source: PracticeSource) {
+    if (source === activePracticeSource) return;
+    if (isIOSApp()) {
       localStorage.setItem('love-pinyin-ios-practice-source', source);
-    } catch {
-      // A restricted store still allows switching for the current session.
+      setPracticeSource(source);
+    } else {
+      await api('/household/material-source', {
+        method: 'PUT',
+        body: JSON.stringify({ source }),
+      });
     }
+    window.location.reload();
   }
+  const paired = Boolean(boot?.paired);
   useEffect(() => {
-    if (!isIOSApp()) return;
+    if (!paired) return;
     let active = true;
-    void iosOperation<IOSPracticePacks>('practicePacks')
+    const load = isIOSApp()
+      ? iosOperation<PracticePacks>('practicePacks')
+      : api('/practice-packs').then((value) => value as unknown as PracticePacks);
+    void load
       .then((packs) => {
-        if (active) setPracticePacks(packs);
+        if (!active) return;
+        const selected = isIOSApp() ? practiceSource : packs.selected;
+        const pack =
+          selected === 'household' ? (packs.household ?? packs.original) : packs.original;
+        setStandardAudioPrefix(pack.audioPrefix);
+        setPracticePacks(packs);
+        setPracticeLoadError(false);
       })
       .catch(() => {
         if (active) setPracticeLoadError(true);
@@ -165,7 +181,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     return () => {
       active = false;
     };
-  }, []);
+  }, [paired, practiceSource]);
   const [wordsOpen, setWordsOpen] = useState(window.location.hash === '#word-practice');
   const [dailyOpen, setDailyOpen] = useState(window.location.hash === '#daily-reading');
   useEffect(() => {
@@ -547,6 +563,19 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     );
   if (!boot.paired)
     return <PairingPage boot={boot} busy={busy} act={act} refresh={refresh} error={error} />;
+  if (!practicePacks)
+    return (
+      <main className="loading">
+        {practiceLoadError ? (
+          <>
+            <p role="alert">暂时无法读取学习素材。</p>
+            <button onClick={() => window.location.reload()}>重新加载</button>
+          </>
+        ) : (
+          '正在读取学习素材…'
+        )}
+      </main>
+    );
 
   if ((boot.profile?.roundsSinceBreak ?? 0) >= 2)
     return (
@@ -1086,31 +1115,13 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       </main>
     );
 
-  if (isIOSApp() && (wordsOpen || dailyOpen) && !activePractice) {
-    return (
-      <main className="home-page">
-        <button
-          className="quiet"
-          onClick={() => {
-            window.location.hash = '';
-          }}
-        >
-          ← 返回小岛
-        </button>
-        <p role={practiceLoadError ? 'alert' : 'status'}>
-          {practiceLoadError ? '此设备的练习资料暂时打不开。' : '正在读取练习资料…'}
-        </p>
-      </main>
-    );
-  }
-
-  if (wordsOpen)
+  if (wordsOpen && activePractice)
     return (
       <main className="home-page" id="page-word-practice" tabIndex={-1} aria-label="词语天天练">
         <WordPractice
           key={activePracticeSource}
-          content={activePractice?.words ?? wordPractice}
-          contentId={isIOSApp() ? activePracticeSource : 'household'}
+          content={activePractice.words}
+          contentId={activePracticeSource}
           guidanceEnabled={guidanceEnabled}
           onGuidanceChange={changeGuidance}
           gapSeconds={gapSeconds}
@@ -1239,13 +1250,17 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           {parentOpen && !/^(BACKUP_|IMPORT_)/.test(error) && (
             <Notice error={error} onReconnect={() => void act(refresh)} />
           )}
+          {parentOpen && boot.device?.isParent && (
+            <MaterialSettings
+              packs={practicePacks}
+              source={activePracticeSource}
+              busy={busy}
+              onChange={(source) => void act(() => changePracticeSource(source))}
+            />
+          )}
           {parentOpen ? (
             isIOSApp() ? (
               <IOSClassroomSettings
-                hasHouseholdPractice={Boolean(practicePacks?.household)}
-                standardSources={practicePacks?.standardSources ?? []}
-                practiceSource={activePracticeSource}
-                onPracticeSourceChange={changePracticeSource}
                 lessons={lessons}
                 progress={progress}
                 lessonChoice={lessonChoice}
@@ -1275,7 +1290,11 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 busy={busy}
                 refresh={refresh}
                 act={act}
-                learningAudio={learningAudio}
+                learningAudio={
+                  learningAudio && activePractice
+                    ? { ...learningAudio, lessons: activePractice.lessons }
+                    : learningAudio
+                }
                 onGuidanceChange={changeGuidance}
               />
             )
@@ -1298,8 +1317,10 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 knowledge={
                   curriculum?.knowledgeItems.filter((item) => item.lessonId === lessonViewId) ?? []
                 }
-                audioRequirements={curriculum?.audioRequirements ?? []}
-                familyAudio={learningAudio?.lessons[lessonViewId]}
+                audioRequirements={(curriculum?.audioRequirements ?? []).map((asset) =>
+                  activePracticeSource === 'original' ? { ...asset, standardSource: null } : asset,
+                )}
+                familyAudio={activePractice?.lessons[lessonViewId]}
                 illustrations={curriculum?.illustrations}
                 writingCatalog={curriculum?.writing}
                 soundEnabled={guidanceEnabled}

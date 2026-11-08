@@ -8,7 +8,10 @@ async function chooseLesson(page: Page, title: string) {
     .click();
 }
 import { test } from '../support/real-server';
+import { pairForHouseholdMaterial, useHouseholdMaterial } from '../support/household-material';
 import wordImages from '../../content/word-practice/images.json' with { type: 'json' };
+
+test.use({ selectedPinyinSource: true });
 
 test('WORD-01/02/03: real voices, hidden dictation, text highlights and device practice', async ({
   page,
@@ -16,11 +19,11 @@ test('WORD-01/02/03: real voices, hidden dictation, text highlights and device p
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto(appUrl);
-  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
-  const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)![0];
-  await page.getByLabel('家长配对码').fill(code);
-  await page.getByRole('button', { name: '连接家庭' }).click();
+  await pairForHouseholdMaterial(page, appUrl);
+  await page.getByRole('button', { name: '进入词语天天练 →' }).click();
+  await expect(page.getByRole('button', { name: '选择课程，当前身边的人' })).toBeVisible();
+  await page.getByRole('button', { name: '返回首页' }).click();
+  await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
   await expect(page.getByRole('heading', { name: '词语天天练', exact: true })).toBeVisible();
   const voice = page.waitForResponse(
@@ -90,11 +93,8 @@ test('WORD-03: blocked storage is retryable without claiming saved marks', async
   page,
   appUrl,
 }) => {
-  await page.goto(appUrl);
-  await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
-  const code = (await page.locator('.pair-code').innerText()).match(/[A-Z2-9]{8}/)![0];
-  await page.getByLabel('家长配对码').fill(code);
-  await page.getByRole('button', { name: '连接家庭' }).click();
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
   await page.evaluate(() => {
     const original = Storage.prototype.setItem;
@@ -118,8 +118,8 @@ test('WORD-04/05/06: shared guidance, finite continuous words and stable playing
   page,
   appUrl,
 }) => {
-  await page.goto(appUrl);
-  await page.getByRole('button', { name: '访客体验', exact: true }).click();
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
   const guidance = page.getByRole('checkbox', { name: '语音引导', exact: true });
   await guidance.setChecked(false);
@@ -154,7 +154,7 @@ test('WORD-04/05/06: shared guidance, finite continuous words and stable playing
   await page.getByRole('button', { name: '停止播放', exact: true }).click();
   await expect(page.locator('.word-playback')).not.toContainText('正在播放');
   expect(Math.abs((await gridY()) - initial)).toBeLessThan(1);
-  await page.route('**/guest/voice/word-say-*', (route) => route.abort());
+  await page.route('**/api/v1/voice/word-say-*', (route) => route.abort());
   await page.getByRole('button', { name: '听读天上', exact: true }).click();
   await expect(page.getByRole('alert')).toContainText('声音暂时不可用');
   expect(Math.abs((await gridY()) - initial)).toBeLessThan(1);
@@ -211,8 +211,8 @@ test('WORD-07/08/09: touch course units, selected pictures and home entry order'
   appUrl,
 }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto(appUrl);
-  await page.getByRole('button', { name: '访客体验', exact: true }).click();
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
   await expect(page.locator('.practice-entries strong')).toHaveText([
     '天天练拼音',
     '词语天天练',

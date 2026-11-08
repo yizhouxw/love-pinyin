@@ -129,6 +129,10 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
               }
             : { paired: false, isLocalHost: true, contentVersion: 'test-v1' },
       });
+    } else if (path === '/practice-packs') {
+      await route.fulfill({
+        json: { original: { audioPrefix: '', lessons: {} }, standardSources: [] },
+      });
     } else if (path === '/curriculum') {
       await route.fulfill({
         json: {
@@ -778,6 +782,10 @@ test('旧课程版本的当前课提示家长重选并保留学习路线', async
           attemptCount: 1,
         },
       });
+    } else if (path === '/practice-packs') {
+      await route.fulfill({
+        json: { original: { audioPrefix: '', lessons: {} }, standardSources: [] },
+      });
     } else if (path === '/curriculum') {
       await route.fulfill({
         json: {
@@ -908,6 +916,10 @@ test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) 
             roundsSinceBreak: 0,
           },
         },
+      });
+    } else if (path === '/practice-packs') {
+      await route.fulfill({
+        json: { original: { audioPrefix: '', lessons: {} }, standardSources: [] },
       });
     } else if (path === '/curriculum') {
       await route.fulfill({
@@ -1040,6 +1052,10 @@ test('家长校时后可明确保留待校时练习为不计分记录', async ({
             roundsSinceBreak: 0,
           },
         },
+      });
+    } else if (path === '/practice-packs') {
+      await route.fulfill({
+        json: { original: { audioPrefix: '', lessons: {} }, standardSources: [] },
       });
     } else if (path === '/curriculum') {
       await route.fulfill({

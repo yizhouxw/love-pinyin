@@ -6,9 +6,9 @@ import wave
 
 import numpy as np
 
-from deploy.ios.practice_packs import GENERATED, original_packs, reusable_voice
 from scripts.build_ios_lesson_audio import load_locked_voice
 from server import learning_audio, source_audio
+from server.materials import GENERATED, original_packs, reusable_voice
 
 
 def main() -> None:

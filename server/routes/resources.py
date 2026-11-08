@@ -4,7 +4,7 @@ import os
 
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Request, Response
 
-from server import source_audio
+from server import materials, source_audio
 from server.api_dependencies import _get_device, _is_parent_entry, mutable, paired
 from server.content import load_curriculum, load_illustrations, load_writing
 from server.learning_audio import learning_audio_response, learning_audio_status
@@ -105,12 +105,20 @@ def curriculum(device: dict = Depends(paired)) -> dict:
     return result
 
 
+@router.get("/practice-packs")
+def practice_packs(device: dict = Depends(paired)) -> dict:
+    return materials.payload(device.get("material_source", "original"))
+
+
 @router.get("/audio/{asset_id}")
 def get_audio_asset(
     asset_id: str,
     range_header: str | None = Header(default=None, alias="Range"),
     device: dict = Depends(paired),
 ) -> Response:
+    resolved = materials.audio_response("audio", asset_id, range_header)
+    if resolved is not None:
+        return resolved
     matches = [a for a in load_curriculum()["audioRequirements"] if a["id"] == asset_id]
     if len(matches) != 1:
         raise HTTPException(404, detail={"code": "AUDIO_NOT_FOUND"})
@@ -128,7 +136,8 @@ def get_learning_voice(
     range_header: str | None = Header(default=None, alias="Range"),
     device: dict = Depends(paired),
 ) -> Response:
-    return learning_audio_response(asset_id, range_header)
+    resolved = materials.audio_response("voice", asset_id, range_header)
+    return resolved if resolved is not None else learning_audio_response(asset_id, range_header)
 
 
 @router.get("/daily-reading")
@@ -146,6 +155,9 @@ def get_daily_audio(
 ) -> Response:
     from server.daily_reading import audio_response
 
+    resolved = materials.audio_response("daily-audio", asset_id, range_header)
+    if resolved is not None:
+        return resolved
     return audio_response(asset_id, range_header)
 
 

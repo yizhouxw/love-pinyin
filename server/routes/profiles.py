@@ -5,10 +5,12 @@ import json
 import secrets
 import threading
 import time
+from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
+from server import source_audio
 from server.api_dependencies import COOKIE, CSRF_COOKIE, parent, parent_read
 from server.content import map_by_id
 from server.game_policy import POLICY, empty_clock
@@ -60,6 +62,23 @@ def select_lesson(body: LessonChoice, device: dict = Depends(parent)) -> dict:
             "SELECT * FROM household WHERE id=?", (device["household_id"],)
         ).fetchone()
     return public_profile(household)
+
+
+class MaterialChoice(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    source: Literal["original", "household"]
+
+
+@router.put("/household/material-source")
+def select_material(body: MaterialChoice, device: dict = Depends(parent)) -> dict:
+    if body.source == "household" and not source_audio.installed():
+        raise HTTPException(409, detail={"code": "MATERIAL_UNAVAILABLE"})
+    with transaction() as db:
+        db.execute(
+            "UPDATE household SET material_source=? WHERE id=?",
+            (body.source, device["household_id"]),
+        )
+    return {"source": body.source}
 
 
 class Settings(BaseModel):

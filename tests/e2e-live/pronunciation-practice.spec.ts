@@ -1,5 +1,8 @@
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
+import { pairForHouseholdMaterial, useHouseholdMaterial } from '../support/household-material';
+
+test.use({ selectedPinyinSource: true });
 
 // Synthetic capture proves native MediaRecorder -> PCM -> same-origin API only.
 // It is not evidence about pronunciation quality, children or physical devices.
@@ -97,7 +100,8 @@ test('MATCH-13/15: daily capture shares the port, supports cancellation and keep
   appUrl,
 }) => {
   await installCapture(page);
-  await guest(page, appUrl);
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();

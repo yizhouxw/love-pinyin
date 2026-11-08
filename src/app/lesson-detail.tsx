@@ -136,7 +136,7 @@ export function LessonDetail({
             <div>
               <h3>先听一听本课讲解</h3>
               {isIOSApp() ? (
-                <IOSLessonAudio audioId={familyAudio?.audioId ?? `lesson-${lesson.id}`} />
+                <IOSLessonAudio audioId={familyAudio?.audioId ?? `lesson-original-${lesson.id}`} />
               ) : (
                 <>
                   <button
@@ -161,7 +161,10 @@ export function LessonDetail({
                     aria-label="课程录音播放进度"
                     controls
                     preload="metadata"
-                    src={learningAssetUrl('voice', familyAudio?.audioId ?? `lesson-${lesson.id}`)}
+                    src={learningAssetUrl(
+                      'voice',
+                      familyAudio?.audioId ?? `lesson-original-${lesson.id}`,
+                    )}
                     onPlay={() => setCoursePlaying(true)}
                     onPause={() => setCoursePlaying(false)}
                     onEnded={() => setCoursePlaying(false)}
@@ -177,7 +180,7 @@ export function LessonDetail({
               <details>
                 <summary>家长查看录音来源</summary>
                 <p>
-                  {isIOSApp()
+                  {familyAudio?.sourceType === 'local-open-tts'
                     ? '爱拼音按新版课序编写，使用本机语音模型制作。单个拼音的示范请使用下方标准音。'
                     : '家庭提供的旧版整课录音，录音中提到的课次和页码与当前教材可能不同。本课按知识内容对应。'}
                 </p>

@@ -37,8 +37,14 @@ export function leaveGuest() {
   window.location.reload();
 }
 
+let standardAudioPrefix = '';
+
+export function setStandardAudioPrefix(prefix: string) {
+  standardAudioPrefix = prefix;
+}
+
 export function learningAssetUrl(kind: 'audio' | 'voice' | 'daily-audio', id: string) {
-  return `/api/v1/${isGuest() ? 'guest/' : ''}${kind}/${encodeURIComponent(id)}`;
+  return `/api/v1/${isGuest() ? 'guest/' : ''}${kind}/${encodeURIComponent(kind === 'audio' ? standardAudioPrefix + id : id)}`;
 }
 
 async function readResponse(response: Response): Promise<Record<string, unknown>> {
@@ -53,7 +59,7 @@ let queue: Promise<unknown> = Promise.resolve();
 export function guestApi(path: string, options: RequestInit): Promise<unknown> {
   const work = queue.then(async () => {
     if (leaving) throw new Error('GUEST_EXITED');
-    if (path === '/curriculum' || path === '/learning-audio') {
+    if (path === '/curriculum' || path === '/learning-audio' || path === '/practice-packs') {
       return readResponse(await fetch(`/api/v1/guest${path}`, { credentials: 'omit' }));
     }
     let cached: { state: unknown };

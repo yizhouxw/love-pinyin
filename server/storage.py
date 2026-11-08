@@ -16,7 +16,7 @@ from server.playback_settings import DEFAULT_TENTHS
 DATA_DIR = Path(os.environ.get("LOVE_PINYIN_DATA_DIR", "private/data")).expanduser().resolve()
 DATABASE_PATH = DATA_DIR / "love-pinyin.sqlite3"
 # SQLite migration versions, independent of the portable JSON backup format.
-SUPPORTED_SCHEMA_VERSIONS = frozenset({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11})
+SUPPORTED_SCHEMA_VERSIONS = frozenset({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})
 _request_database: ContextVar[sqlite3.Connection | None] = ContextVar(
     "request_database", default=None
 )
@@ -274,6 +274,15 @@ def migrate() -> None:
             db.execute(
                 "INSERT OR IGNORE INTO schema_migrations(version,applied_at) "
                 "VALUES(11,CURRENT_TIMESTAMP)"
+            )
+            if "material_source" not in columns:
+                db.execute(
+                    "ALTER TABLE household ADD COLUMN material_source "
+                    "TEXT NOT NULL DEFAULT 'original'"
+                )
+            db.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version,applied_at) "
+                "VALUES(12,CURRENT_TIMESTAMP)"
             )
             db.execute("COMMIT")
         except Exception:

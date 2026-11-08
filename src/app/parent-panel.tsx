@@ -157,8 +157,6 @@ export function ParentPanel({
           <p>
             拼音标准音：
             {audioRequirements.filter((asset) => asset.available).length} 项可播放。
-            {audioRequirements.some((asset) => asset.standardSource) &&
-              '标准音来源：cmguo/PinYinSound，已安装到家庭电脑。'}
           </p>
           {(!learningAudio ||
             Object.values(learningAudio.narration ?? {}).some((ready) => !ready)) && (

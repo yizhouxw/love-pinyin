@@ -158,6 +158,11 @@ def curriculum():
     return resources.curriculum({})
 
 
+@router.get("/practice-packs")
+def practice_packs():
+    return resources.practice_packs({})
+
+
 @router.get("/learning-audio")
 def learning_audio():
     return resources.get_learning_audio({})

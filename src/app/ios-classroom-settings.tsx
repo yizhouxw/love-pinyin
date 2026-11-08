@@ -1,13 +1,8 @@
 import type { Lesson, Progress } from '../domain/learning-api';
-import type { PracticeSource, StandardAudioSource } from '../domain/practice-packs';
 import { gameCatalog } from '../domain/games';
 import { api } from '../platform/api-client';
 
 export function IOSClassroomSettings({
-  hasHouseholdPractice,
-  standardSources,
-  practiceSource,
-  onPracticeSourceChange,
   lessons,
   progress,
   lessonChoice,
@@ -16,10 +11,6 @@ export function IOSClassroomSettings({
   act,
   refresh,
 }: {
-  hasHouseholdPractice: boolean;
-  standardSources: StandardAudioSource[];
-  practiceSource: PracticeSource;
-  onPracticeSourceChange: (source: PracticeSource) => void;
   lessons: Lesson[];
   progress: Progress;
   lessonChoice: string;
@@ -105,43 +96,6 @@ export function IOSClassroomSettings({
           保存游戏时长
         </button>
       </form>
-      <details>
-        <summary>高级设置</summary>
-        {hasHouseholdPractice ? (
-          <label>
-            天天练资料
-            <select
-              value={practiceSource}
-              onChange={(event) =>
-                onPracticeSourceChange(
-                  event.target.value === 'household' ? 'household' : 'original',
-                )
-              }
-            >
-              <option value="original">爱拼音自编资料</option>
-              <option value="household">家庭资料（行知小学与原词语练习）</option>
-            </select>
-          </label>
-        ) : (
-          <p>天天练使用爱拼音自编资料。</p>
-        )}
-      </details>
-      {standardSources.length > 0 && (
-        <details>
-          <summary>标准音来源与许可</summary>
-          <ul>
-            {standardSources.map((source) => (
-              <li key={source.url}>
-                <p>{source.attribution}</p>
-                <p>
-                  {source.license} · {source.licenseUrl}
-                </p>
-                <p>{source.url}</p>
-              </li>
-            ))}
-          </ul>
-        </details>
-      )}
       <h2>此设备学习记录</h2>
       <p role="status" aria-label={progressSummary}>
         {progressSummary}

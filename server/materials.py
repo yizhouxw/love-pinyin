@@ -1,14 +1,16 @@
 """Project the same UI data contract from original and household content."""
 
 import json
+from functools import lru_cache
 from pathlib import Path
 
+from fastapi import HTTPException
 from pypinyin import Style, lazy_pinyin
 
 from server import learning_audio
 from server.content import load_curriculum
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL = ROOT / "content/ios-original-practice.json"
 GENERATED = ROOT / "resources/audio/ios-practice"
 WORD_SOURCE = ROOT / "content/word-practice/lessons.json"
@@ -141,7 +143,16 @@ def original_packs(standard_ids: set[str]) -> tuple[dict, dict, dict[str, str]]:
         "ui": word_ui["ui"],
         "pinyinNote": word_ui["pinyinNote"],
     }
-    return {"daily": daily, "words": words}, daily_aliases, voice
+    return (
+        {
+            "daily": daily,
+            "words": words,
+            "audioPrefix": ORIGINAL_PREFIX,
+            "lessons": original_lessons(),
+        },
+        daily_aliases,
+        voice,
+    )
 
 
 def reusable_voice() -> dict[str, tuple[Path, str]]:
@@ -173,3 +184,118 @@ def original_voice(scripts: dict[str, str]):
             if asset["textSha256"] != text_sha:
                 raise ValueError(f"Stale original practice audio: {asset_id}")
             yield asset_id, GENERATED / f"{asset_id}.wav", asset["sha256"]
+
+
+COURSE_AUDIO = ROOT / "resources/audio/ios-lessons"
+STANDARD_AUDIO = ROOT / "resources/audio/ios-standard"
+ORIGINAL_PREFIX = "original-"
+
+
+@lru_cache(maxsize=1)
+def standard_manifest() -> dict:
+    return json.loads((STANDARD_AUDIO / "manifest.json").read_text())
+
+
+@lru_cache(maxsize=1)
+def original_content() -> tuple[dict, dict, dict[str, str]]:
+    return original_packs(set(standard_manifest()["clips"]))
+
+
+@lru_cache(maxsize=1)
+def original_courses() -> dict:
+    manifest = json.loads((COURSE_AUDIO / "manifest.json").read_text())["lessons"]
+    scripts = json.loads((ROOT / "content/ios-lesson-narration.json").read_text())["lessons"]
+    courses = {}
+    for lesson in load_curriculum()["lessons"]:
+        lesson_id = lesson["id"]
+        asset = manifest[lesson_id]
+        filename = f"{lesson_id}.mp3"
+        if asset["file"] != filename or asset["textSha256"] != learning_audio.text_digest(
+            "\n".join(scripts[lesson_id])
+        ):
+            raise ValueError(f"Stale course recording: {lesson_id}")
+        courses[lesson_id] = (
+            {
+                "audioId": f"lesson-original-{lesson_id}",
+                "title": f"{lesson['title']} · 爱拼音原创课程",
+                "available": True,
+                "sourceType": "local-open-tts",
+            },
+            COURSE_AUDIO / filename,
+            asset["sha256"],
+        )
+    return courses
+
+
+def original_lessons() -> dict:
+    return {key: row[0] for key, row in original_courses().items()}
+
+
+def household_content(*, offline: bool = False) -> dict:
+    from server import daily_reading
+
+    daily = daily_reading.status()
+    if offline:
+        daily["assessment"]["available"] = False
+    hanzi = json.loads((ROOT / "content/daily-reading-hanzi.json").read_text())
+    for day in daily["days"]:
+        for section in day["sections"]:
+            for item in section["items"]:
+                if item["id"] in hanzi:
+                    item["hanzi"] = hanzi[item["id"]]
+    return {
+        "daily": daily,
+        "words": json.loads(WORD_SOURCE.read_text()),
+        "audioPrefix": "",
+        "lessons": learning_audio.learning_audio_status()["lessons"],
+    }
+
+
+def payload(selected: str) -> dict:
+    from server import source_audio
+
+    original, _, _ = original_content()
+    result = {
+        "selected": selected,
+        "original": original,
+        "standardSources": list(standard_manifest()["sources"].values()),
+    }
+    if source_audio.installed():
+        result["household"] = household_content()
+    return result
+
+
+@lru_cache(maxsize=1)
+def original_voice_assets() -> dict:
+    _, _, scripts = original_content()
+    return {
+        **{key: (path, digest) for key, path, digest in original_voice(scripts)},
+        **{row[0]["audioId"]: (row[1], row[2]) for row in original_courses().values()},
+    }
+
+
+def audio_response(kind: str, asset_id: str, byte_range: str | None):
+    """Return None when the ID belongs to the existing household bank."""
+    from server.audio_assets import file_audio_response
+
+    if kind == "audio" and asset_id.startswith(ORIGINAL_PREFIX):
+        key = asset_id.removeprefix(ORIGINAL_PREFIX)
+    elif kind == "daily-audio" and asset_id in original_content()[1]:
+        key = original_content()[1][asset_id]
+    elif kind == "voice" and asset_id.startswith((ORIGINAL_PREFIX, "lesson-original-")):
+        entry = original_voice_assets().get(asset_id)
+        if not entry:
+            raise HTTPException(404, detail={"code": "AUDIO_NOT_FOUND"})
+        path, digest = entry
+        return file_audio_response(path, media_type(path), digest, byte_range)
+    else:
+        return None
+    clip = standard_manifest()["clips"].get(key)
+    if not clip:
+        raise HTTPException(404, detail={"code": "AUDIO_NOT_FOUND"})
+    path = STANDARD_AUDIO / clip["file"]
+    return file_audio_response(path, media_type(path), clip["sha256"], byte_range)
+
+
+def media_type(path: Path) -> str:
+    return "audio/mpeg" if path.suffix == ".mp3" else "audio/wav"
