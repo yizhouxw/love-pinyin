@@ -38,61 +38,45 @@ async function guest(page: import('@playwright/test').Page, url: string) {
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
 }
 
-test('MATCH-13/15: course capture reaches the real unavailable backend and clears on target change', async ({
+test('MATCH-16: course demonstration and local-only replay are separate', async ({
   page,
   appUrl,
 }) => {
   await installCapture(page);
+  const uploads: string[] = [];
+  page.on('request', (request) => {
+    if (request.method() === 'POST' && request.headers()['content-type']?.startsWith('audio/'))
+      uploads.push(request.url());
+  });
   await guest(page, appUrl);
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
   await page.getByRole('button', { name: '课堂学习' }).click();
   const course = page.getByRole('region', { name: '课程拼读跟读' });
-  await expect(course).toBeVisible();
-  await course.getByRole('button', { name: '录下我的跟读' }).click();
-  const stop = course.getByRole('button', { name: '停止录音并识别' });
-  await expect(stop).toBeVisible();
-  await page.waitForTimeout(1000);
-  const response = page.waitForResponse((value) =>
-    value.url().includes('/pronunciation/rt-01-a1/assess'),
+  const record = course.getByRole('button', { name: '录下我的跟读' });
+  await expect(record).toBeHidden();
+  const demo = page.waitForResponse(
+    (response) => response.url().includes('/audio/') && response.ok(),
   );
-  await stop.click();
-  const body = await (await response).json();
-  expect(body.match.status).toBe('unavailable');
-  expect(body.saved).toBe(false);
-  const result = course.getByRole('region', { name: '拼读准确情况' });
-  await expect(result).toContainText('拼读识别暂不可用，不算读错');
-  await expect(page.getByLabel('回放课程跟读')).toBeVisible();
-  await result.getByText('查看本条拼读记录').click();
-  await expect(result).toContainText('有效判断 0 次');
-  await page.screenshot({
-    path: `test-results/pronunciation-${test.info().project.name}.png`,
-    fullPage: true,
-  });
-  let release!: () => void;
-  const gate = new Promise<void>((resolve) => {
-    release = resolve;
-  });
-  let requested = false;
-  await page.route('**/pronunciation/rt-01-a1/assess', async (route) => {
-    const response = await route.fetch();
-    requested = true;
-    await gate;
-    await route.fulfill({ response }).catch(() => undefined);
-  });
-  await course.getByRole('button', { name: '重新录音' }).click();
+  await course.getByRole('button', { name: '听示范' }).click();
+  expect((await demo).headers()['content-type']).toMatch(/^audio\//);
+  await course.getByText('录音回放（可选）', { exact: false }).click();
+  await expect(course.getByText('课程拼读识别暂未启用。', { exact: false })).toBeVisible();
+  await record.click();
+  const stop = course.getByRole('button', { name: '停止录音', exact: false });
   await expect(stop).toBeVisible();
   await page.waitForTimeout(1000);
   await stop.click();
-  await expect.poll(() => requested).toBe(true);
+  const replay = page.getByLabel('回放课程跟读');
+  await expect(replay).toHaveAttribute('src', /^blob:/);
   await course
     .getByRole('navigation', { name: '选择跟读目标' })
     .getByRole('button', { name: 'é', exact: true })
     .click();
-  release();
-  await expect(page.getByLabel('回放课程跟读')).toHaveCount(0);
-  await expect(result).not.toContainText('本次没有保存真实识别成绩');
+  await expect(replay).toHaveCount(0);
+  await expect(record).toBeHidden();
   await page.getByRole('button', { name: '返回学习路线' }).click();
   await expect(page.getByRole('button', { name: '开始今天的练习' })).toBeEnabled();
+  expect(uploads).toEqual([]);
 });
 
 test('MATCH-13/15: daily capture shares the port, supports cancellation and keeps existing ASR separate', async ({
@@ -143,6 +127,7 @@ test('MATCH-15: microphone refusal leaves the course usable and creates no recog
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
   await page.getByRole('button', { name: '课堂学习' }).click();
   const course = page.getByRole('region', { name: '课程拼读跟读' });
+  await course.getByText('录音回放（可选）', { exact: false }).click();
   await course.getByRole('button', { name: '录下我的跟读' }).click();
   await expect(course.getByRole('alert')).toContainText('请允许麦克风');
   await expect(course.getByRole('button', { name: '录下我的跟读' })).toBeEnabled();
@@ -185,8 +170,9 @@ for (const action of ['demonstration', 'activity'] as const) {
     await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
     await page.getByRole('button', { name: '课堂学习' }).click();
     const course = page.getByRole('region', { name: '课程拼读跟读' });
+    await course.getByText('录音回放（可选）', { exact: false }).click();
     await course.getByRole('button', { name: '录下我的跟读' }).click();
-    await expect(course.getByRole('button', { name: '停止录音并识别' })).toBeVisible();
+    await expect(course.getByRole('button', { name: '停止录音' })).toBeVisible();
     if (action === 'demonstration')
       await page.getByRole('button', { name: '播放课程录音', exact: true }).click();
     else await page.getByRole('button', { name: '写一写', exact: true }).click();
@@ -199,7 +185,7 @@ for (const action of ['demonstration', 'activity'] as const) {
         ),
       )
       .toBe(true);
-    await expect(course.getByRole('button', { name: '停止录音并识别' })).toHaveCount(0);
+    await expect(course.getByRole('button', { name: '停止录音' })).toHaveCount(0);
     await expect(page.getByLabel('回放课程跟读')).toHaveCount(0);
     expect(assessments).toEqual([]);
   });
@@ -228,6 +214,7 @@ test('MATCH-15: interrupted pending microphone permission cannot stop the newer 
     };
   });
   const course = page.getByRole('region', { name: '课程拼读跟读' });
+  await course.getByText('录音回放（可选）', { exact: false }).click();
   await course.getByRole('button', { name: '录下我的跟读' }).click();
   await expect
     .poll(() =>

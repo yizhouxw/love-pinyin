@@ -119,9 +119,7 @@ export function PairingPage({
             无需配对。进度仅缓存在当前标签页，刷新可继续；退出会清除，不跨设备同步。仍需连接家庭电脑。
           </p>
         </div>
-        <p className="privacy-note">
-          🔒 课程练习不使用麦克风。每日跟读可自愿录音，电脑本地识别，不保存。
-        </p>
+        <p className="privacy-note">🔒 课堂答题无需麦克风。可选跟读可录音回放，录音不保存。</p>
       </section>
       <ReleaseHistory />
     </main>

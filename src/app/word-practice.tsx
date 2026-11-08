@@ -44,6 +44,7 @@ export function WordPractice({
   const [lessonId, setLessonId] = useState(wordPractice.lessons[0]!.id);
   const [mode, setMode] = useState<WordMode>('read');
   const [readingMode, setReadingMode] = useState<ReadingMode>('direct');
+  const isOriginal = contentId === 'original';
   const [revealed, setRevealed] = useState(false);
   const [index, setIndex] = useState(0);
   const [hidden, setHidden] = useState(false);
@@ -171,7 +172,7 @@ export function WordPractice({
               if (guidanceEnabled) voice.play(`word-ui-${item.id}`);
             }}
           >
-            {item.title}
+            {item.id === 'recite' && isOriginal ? '拓展朗读' : item.title}
             <span
               className="word-mode-mark"
               aria-hidden={!done.includes(practiceKey(lesson.id, item.id))}
@@ -182,27 +183,9 @@ export function WordPractice({
         ))}
       </nav>
       <div className="word-toolbar">
-        <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-        <QuickGapSettings
-          seconds={gapSeconds}
-          onSave={(seconds) => {
-            voice.stop();
-            onGapChange(seconds);
-          }}
-        />
-        {mode === 'read' && (
-          <ReadingModeControl
-            mode={readingMode}
-            onChange={(nextMode) => {
-              if (nextMode === readingMode) return;
-              voice.stop();
-              setReadingMode(nextMode);
-            }}
-          />
-        )}
         {mode === 'read' && (
           <button
-            className="word-continuous"
+            className="word-play-primary"
             aria-label="连读本课"
             aria-pressed={playback.continuous}
             onClick={() =>
@@ -215,6 +198,11 @@ export function WordPractice({
             }
           >
             ▶ 连读本课
+          </button>
+        )}
+        {mode === 'write' && target && (
+          <button className="word-play-primary" onClick={() => voice.play(target.audioId)}>
+            🔊 听词语 / 重听
           </button>
         )}
         <button aria-label="停止播放" onClick={voice.stop}>
@@ -231,7 +219,9 @@ export function WordPractice({
               ? '点词语听读、看图，也可以连读本课。'
               : mode === 'write'
                 ? '先听词语，在纸上写好后揭晓。'
-                : '听一遍，再试着背一背。'}
+                : isOriginal
+                  ? '听一遍，再跟着读一读。'
+                  : '听一遍，再试着背一背。'}
         </p>
         <div
           className={`word-audio-error${playback.failureId ? '' : ' word-invisible'}`}
@@ -244,13 +234,42 @@ export function WordPractice({
           </button>
         </div>
       </div>
-      <details className="word-help">
-        <summary>玩法与提示</summary>
-        <p>{wordPractice.ui[mode]}</p>
-        {mode === 'read' && <p>{wordPractice.pinyinNote}</p>}
-        <button onClick={() => voice.play(`word-ui-${mode}`)}>🔊 听玩法</button>
-      </details>
-      {mode === 'read' && <PinyinLegend />}
+      <div className="word-options">
+        <details className="word-settings">
+          <summary>播放设置</summary>
+          <div className="word-settings-controls">
+            <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+            <QuickGapSettings
+              seconds={gapSeconds}
+              onSave={(seconds) => {
+                voice.stop();
+                onGapChange(seconds);
+              }}
+            />
+            {mode === 'read' && (
+              <ReadingModeControl
+                mode={readingMode}
+                onChange={(nextMode) => {
+                  if (nextMode === readingMode) return;
+                  voice.stop();
+                  setReadingMode(nextMode);
+                }}
+              />
+            )}
+          </div>
+        </details>
+        <details className="word-help">
+          <summary>玩法与提示</summary>
+          <p>{wordPractice.ui[mode]}</p>
+          {mode === 'read' && (
+            <>
+              <p>{wordPractice.pinyinNote}</p>
+              <PinyinLegend />
+            </>
+          )}
+          <button onClick={() => voice.play(`word-ui-${mode}`)}>🔊 听玩法</button>
+        </details>
+      </div>
       {mode === 'read' && (
         <div className="word-reading-layout">
           <WordImage word={selected} />
@@ -284,7 +303,6 @@ export function WordPractice({
               <p>
                 第 {index + 1} / {lesson.write.length} 个词
               </p>
-              <button onClick={() => voice.play(target.audioId)}>🔊 听词语 / 重听</button>
               <p className="word-answer" aria-live="polite">
                 {revealed ? (
                   <ruby>
@@ -335,7 +353,7 @@ export function WordPractice({
         <>
           <div className="word-recite-toolbar">
             <button disabled={!lesson.passages.length} onClick={() => setHidden(!hidden)}>
-              {hidden ? '显示正文' : '隐藏正文，试着背'}
+              {hidden ? '显示正文' : isOriginal ? '隐藏短文' : '隐藏正文，试着背'}
             </button>
             <span>
               <mark className="word-mark-character">生字</mark> ·{' '}
@@ -352,7 +370,7 @@ export function WordPractice({
                     {passage.required
                       ? '材料要求背诵'
                       : passage.readingOnly
-                        ? '朗读拓展'
+                        ? '拓展朗读'
                         : '自选背诵'}
                     {passage.page > 0 && ` · 教材第 ${passage.page} 页`}
                   </small>
@@ -453,7 +471,7 @@ export function WordPractice({
             <p>
               词目来自家长提供的《{wordPractice.source.file}》，本课在第 {lesson.page}{' '}
               页。课序及生字依据{wordPractice.source.edition}。
-              {contentId === 'original' && '拓展朗读短文由爱拼音自编。'}
+              {isOriginal && '拓展朗读短文由爱拼音自编。'}
             </p>
             <a href={wordPractice.source.textbook} target="_blank" rel="noreferrer">
               查看国家智慧教育平台教材

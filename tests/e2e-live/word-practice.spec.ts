@@ -121,6 +121,7 @@ test('WORD-04/05/06: shared guidance, finite continuous words and stable playing
   await pairForHouseholdMaterial(page, appUrl);
   await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
+  await page.getByText('播放设置', { exact: true }).click();
   const guidance = page.getByRole('checkbox', { name: '语音引导', exact: true });
   await guidance.setChecked(false);
   let instructions = 0;
@@ -238,9 +239,8 @@ test('WORD-07/08/09: touch course units, selected pictures and home entry order'
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
   const course = page.getByRole('button', { name: /^选择课程/ });
   expect((await page.locator('.word-header').boundingBox())!.height).toBeLessThanOrEqual(64);
-  expect(
-    (await page.locator('.word-toolbar .guidance-switch').boundingBox())!.height,
-  ).toBeLessThanOrEqual(52);
+  const settings = page.getByText('播放设置', { exact: true });
+  expect((await settings.boundingBox())!.height).toBeGreaterThanOrEqual(48);
   await course.click();
   const dialog = page.getByRole('dialog', { name: '选择课程', exact: true });
   await expect(dialog).toBeVisible();
@@ -254,7 +254,9 @@ test('WORD-07/08/09: touch course units, selected pictures and home entry order'
   await dialog.getByRole('button', { name: '选择雨点儿', exact: true }).click();
   await expect(dialog).not.toBeVisible();
   await expect(course).toBeFocused();
+  await settings.click();
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).setChecked(false);
+  await settings.click();
   const frame = page.locator('.word-selected-picture');
   const before = await frame.boundingBox();
   await page.getByRole('button', { name: '听读彩云', exact: true }).click();
@@ -432,6 +434,16 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   await page.getByRole('button', { name: '返回学习', exact: true }).click();
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
 
+  await expect(page.getByRole('button', { name: '连读本课' })).toBeInViewport();
+  await expect(page.getByRole('button', { name: '直接读', exact: true })).toBeHidden();
+  await expect(page.getByRole('button', { name: /^间隔设置/ })).toBeHidden();
+  await page.getByRole('button', { name: '拓展朗读', exact: true }).click();
+  await expect(page.getByText('身边的人', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '听全文' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '隐藏短文', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '词语拼读', exact: true }).click();
+  await page.getByText('播放设置', { exact: true }).click();
+  await expect(page.getByRole('button', { name: /^间隔设置/ })).toBeVisible();
   await page.getByRole('button', { name: /^选择课程/ }).click();
   const picker = page.getByRole('dialog');
   await picker.getByRole('button', { name: '第6单元', exact: true }).click();

@@ -19,6 +19,7 @@
 .lesson-pronunciation nav button {
   min-width: 56px;
   min-height: 52px;
+  font-family: var(--pinyin-font);
   font-size: 1.4rem;
 }
 .lesson-pronunciation nav button[aria-pressed='true'] {
@@ -30,13 +31,10 @@
   min-height: 48px;
 }
 .pronunciation-capture summary {
-  padding-block: 10px;
+  cursor: pointer;
+  min-height: 48px;
+  padding-block: 12px;
   font-weight: 650;
-}
-.pronunciation-target {
-  margin-block: 16px;
-  font-family: var(--pinyin-font);
-  font-size: clamp(2.5rem, 6vw, 4rem);
 }
 .pronunciation-results {
   margin-block: 16px;

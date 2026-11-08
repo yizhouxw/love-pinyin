@@ -81,7 +81,7 @@
   width: 1em;
 }
 .word-practice .word-modes button[aria-pressed='true'],
-.word-practice .word-continuous[aria-pressed='true'] {
+.word-practice .word-play-primary {
   background: #285946;
   color: #fffefa;
 }
@@ -91,18 +91,22 @@
   flex-wrap: wrap;
   align-items: center;
 }
-.word-toolbar .guidance-switch {
+.word-settings-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+.word-settings-controls .guidance-switch {
   min-height: 48px;
   padding: 8px 12px;
   margin: 0;
   font-size: 0.85rem;
 }
-.word-toolbar .daily-gap-trigger {
+.word-settings-controls .daily-gap-trigger {
   min-height: 48px;
   padding: 8px 10px;
-}
-.word-toolbar .daily-gap-trigger > span {
-  display: none;
 }
 .word-toolbar > button {
   padding: 8px 12px;
@@ -142,10 +146,17 @@
 .word-invisible {
   visibility: hidden;
 }
-.word-help {
-  margin-bottom: 12px;
+.word-options {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  margin-bottom: 8px;
   font-size: 0.85rem;
 }
+.word-options > details[open] {
+  flex-basis: 100%;
+}
+.word-settings summary,
 .word-help summary,
 .word-about summary,
 .word-vocabulary summary {
@@ -153,6 +164,11 @@
   min-height: 36px;
   display: list-item;
   padding-block: 7px;
+}
+.word-settings summary,
+.word-help summary {
+  min-height: 48px;
+  padding-block: 12px;
 }
 .word-help p {
   margin: 8px 0;
@@ -597,16 +613,16 @@
   display: grid;
   place-content: center;
 }
-.word-toolbar .guidance-switch {
+.word-settings-controls .guidance-switch {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
 }
-.word-toolbar .guidance-switch input {
+.word-settings-controls .guidance-switch input {
   flex-shrink: 0;
 }
-.word-toolbar .guidance-switch span {
+.word-settings-controls .guidance-switch span {
   white-space: nowrap;
 }
 .word-unit-tabs button,
@@ -626,11 +642,11 @@
   color: inherit;
   font-size: inherit;
 }
-.word-toolbar .guidance-switch {
+.word-settings-controls .guidance-switch {
   flex-wrap: nowrap;
   flex-shrink: 0;
 }
-.word-toolbar .guidance-switch input {
+.word-settings-controls .guidance-switch input {
   flex: 0 0 30px;
   width: 30px;
   height: 18px;

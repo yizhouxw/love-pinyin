@@ -1,7 +1,7 @@
 import { isIOSApp } from '../platform/ios-app';
 import practice from '../../content/pronunciation-practice.json';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { PronunciationService, PronunciationTarget } from '../domain/pronunciation';
+import type { PronunciationService } from '../domain/pronunciation';
 import {
   coursePronunciationTargets,
   pronunciationSummary,
@@ -233,17 +233,7 @@ export function PronunciationResults({
   );
 }
 
-function RecordedPractice({
-  target,
-  audioId,
-  service,
-  guidanceEnabled,
-}: {
-  target: PronunciationTarget;
-  audioId: string;
-  guidanceEnabled: boolean;
-  service?: PronunciationService;
-}) {
+function RecordedPractice({ guidanceEnabled }: { guidanceEnabled: boolean }) {
   const recorder = useRef(new BrowserReadingRecorder());
   const releaseInput = useRef<(() => void) | null>(null);
   const active = useRef<AbortController | null>(null);
@@ -251,7 +241,6 @@ function RecordedPractice({
   const [url, setUrl] = useState<string | null>(null);
   const [error, setError] = useState('');
   const replay = useRef<HTMLAudioElement | null>(null);
-  const [open, setOpen] = useState(true);
   function clear() {
     releaseInput.current?.();
     releaseInput.current = null;
@@ -328,24 +317,12 @@ function RecordedPractice({
   return (
     <details
       className="pronunciation-capture"
-      open={open}
       onToggle={(event) => {
-        setOpen(event.currentTarget.open);
         if (!event.currentTarget.open) clear();
       }}
     >
-      <summary>🎙 听一听，读一读（可选）</summary>
-      <p className="pronunciation-target">{target.pinyin}</p>
-      <button
-        className="quiet"
-        disabled={phase !== 'idle'}
-        onClick={() => {
-          replay.current?.pause();
-          void audioPlayer.play(audioId).catch(() => setError('示范声音暂不可用，请重试。'));
-        }}
-      >
-        ♫ 听示范
-      </button>
+      <summary>🎙 录音回放（可选）</summary>
+      <p>录音只在当前设备回放，退出后清除。课程拼读识别暂未启用。</p>
       {phase === 'recording' ? (
         <button
           onClick={() => {
@@ -353,7 +330,7 @@ function RecordedPractice({
             recorder.current.stop();
           }}
         >
-          ■ 停止录音并识别
+          ■ 停止录音
         </button>
       ) : (
         <button disabled={phase !== 'idle'} onClick={() => void record()}>
@@ -363,19 +340,8 @@ function RecordedPractice({
       <button className="quiet" onClick={clear}>
         取消并清除录音
       </button>
-      <p>
-        录音只在内存处理，每段识别最多三十秒，录音两分钟安全停止。退出、换条或后台清除录音，家庭仅保存真实识别摘要。
-      </p>
       {error && <p role="alert">{error}</p>}
       {url && <audio ref={replay} src={url} controls aria-label="回放课程跟读" />}
-      {open && (
-        <PronunciationResults
-          targetId={target.id}
-          audioUrl={url}
-          service={service}
-          guidanceEnabled={guidanceEnabled}
-        />
-      )}
     </details>
   );
 }
@@ -411,29 +377,19 @@ export function CoursePronunciationPractice({
           </button>
         ))}
       </nav>
-      {isIOSApp() ? (
-        <>
-          <button
-            className="quiet"
-            onClick={() => {
-              setDemoFailed(false);
-              void audioPlayer.play(target.audioId).catch((error: unknown) => {
-                if (!(error instanceof Error && error.name === 'AbortError')) setDemoFailed(true);
-              });
-            }}
-          >
-            ♫ 听示范
-          </button>
-          {demoFailed && <p role="alert">示范声音暂不可用，请重试。</p>}
-        </>
-      ) : (
-        <RecordedPractice
-          key={target.id}
-          target={target}
-          audioId={target.audioId}
-          guidanceEnabled={guidanceEnabled}
-        />
-      )}
+      <button
+        className="quiet"
+        onClick={() => {
+          setDemoFailed(false);
+          void audioPlayer.play(target.audioId).catch((error: unknown) => {
+            if (!(error instanceof Error && error.name === 'AbortError')) setDemoFailed(true);
+          });
+        }}
+      >
+        ♫ 听示范
+      </button>
+      {demoFailed && <p role="alert">示范声音暂不可用，请重试。</p>}
+      {!isIOSApp() && <RecordedPractice key={target.id} guidanceEnabled={guidanceEnabled} />}
     </section>
   );
 }
