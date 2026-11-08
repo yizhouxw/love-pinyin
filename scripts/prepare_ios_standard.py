@@ -1,4 +1,4 @@
-"""Build the redistributable iOS audio bank from explicitly supplied fixed sources."""
+"""Build the redistributable iOS audio bank from a fixed mainland Mandarin recording bank."""
 
 import argparse
 import hashlib
@@ -8,7 +8,6 @@ import re
 import subprocess
 import unicodedata
 import wave
-import zipfile
 from array import array
 from pathlib import Path
 
@@ -52,7 +51,7 @@ def install_clip(output: Path, recording: bytes, extension: str) -> tuple[str, s
     return filename, sha
 
 
-def without_onset(source: bytes, start: float, end: float) -> bytes:
+def crop_recording(source: bytes, start: float, end: float) -> bytes:
     samples = subprocess.check_output(
         [
             "ffmpeg",
@@ -76,7 +75,7 @@ def without_onset(source: bytes, start: float, end: float) -> bytes:
         input=source,
     )
     if max(map(abs, array("h", samples)), default=0) < 500:
-        raise ValueError("Extracted final is silent")
+        raise ValueError("Extracted clip is silent")
     output = io.BytesIO()
     with wave.open(output, "wb") as wav:
         wav.setparams((1, 2, 24000, 0, "NONE", "not compressed"))
@@ -118,7 +117,7 @@ def spelling_targets(standard_ids: set[str]) -> set[str]:
     return targets
 
 
-def prepare(chen_repo: Path, archive: Path, output: Path) -> None:
+def prepare(chen_repo: Path, output: Path) -> None:
     policy = json.loads(POLICY.read_text())
     sources = policy["sources"]
     revision = subprocess.check_output(
@@ -126,60 +125,44 @@ def prepare(chen_repo: Path, archive: Path, output: Path) -> None:
     ).strip()
     if revision != sources["chen"]["revision"]:
         raise ValueError("audio-cmn checkout must match the pinned revision")
-    if digest(archive.read_bytes()) != sources["bopomofo"]["archiveSha256"]:
-        raise ValueError("Official audio archive does not match the pinned SHA-256")
     chen_dir = chen_repo / "64k/syllabs"
     targets = {row["id"]: row for row in load_curriculum()["audioRequirements"]}
     output.mkdir(parents=True, exist_ok=True)
     clips = {}
-    with zipfile.ZipFile(archive) as bopomofo:
-        (output / "bopomofo-NOTICE.txt").write_bytes(bopomofo.read("license.txt"))
-        for row in source_audio.catalog()["assets"]:
-            asset_id = row["id"]
-            kind = targets[asset_id]["kind"]
-            spelling = row["filename"].removesuffix(".mp3").replace("ü", "v")
-            source = "chen"
-            extension = "mp3"
-            change = "filename only"
-            if kind == "initial":
-                number = 1 + policy["initialSymbolOrder"].index(spelling)
-            elif kind == "final":
-                number = policy["finalSymbolNumbers"].get(spelling)
-            else:
-                number = None
-            if number is not None:
-                source, extension = "bopomofo", "wav"
-                source_file = f"audio/F{number}.WAV"
-                original = clip = bopomofo.read(source_file)
-            else:
-                if kind == "final" and spelling == "ong":
-                    recipe = policy["ong"]
-                    name = recipe["source"]
-                    original = chen_recording(chen_dir, name)
-                    clip = without_onset(original, recipe["startSeconds"], recipe["endSeconds"])
-                    change = (
-                        f"韵母裁切 {recipe['startSeconds']}–{recipe['endSeconds']} 秒，短淡入淡出"
-                    )
-                    extension = "wav"
-                else:
-                    vowel = re.fullmatch(r"([iuv])([1-4])", spelling)
-                    if kind == "final":
-                        name = policy["finalSyllableSpellings"][spelling]
-                    elif vowel:
-                        name = policy["isolatedVowelSpellings"][vowel[1]] + vowel[2]
-                    else:
-                        name = spelling
-                    original = clip = chen_recording(chen_dir, name)
-                source_file = f"64k/syllabs/cmn-{name}.mp3"
-            filename, sha = install_clip(output, clip, extension)
-            clips[asset_id] = {
-                "source": source,
-                "sourceFile": source_file,
-                "sourceSha256": digest(original),
-                "file": filename,
-                "sha256": sha,
-                "changes": change,
-            }
+    for row in source_audio.catalog()["assets"]:
+        asset_id = row["id"]
+        kind = targets[asset_id]["kind"]
+        spelling = row["filename"].removesuffix(".mp3").replace("ü", "v")
+        crop = None
+        if kind == "initial":
+            name, start, end = policy["initialCrops"][spelling]
+            crop = (start, end)
+        elif kind == "final" and spelling == "ong":
+            recipe = policy["ong"]
+            name = recipe["source"]
+            crop = (recipe["startSeconds"], recipe["endSeconds"])
+        elif kind == "final":
+            name = policy["finalSyllableSpellings"].get(spelling, f"{spelling}1")
+        else:
+            vowel = re.fullmatch(r"([iuv])([1-4])", spelling)
+            name = policy["isolatedVowelSpellings"][vowel[1]] + vowel[2] if vowel else spelling
+
+        original = chen_recording(chen_dir, name)
+        if crop:
+            clip = crop_recording(original, *crop)
+            extension = "wav"
+            change = f"裁切 {crop[0]}–{crop[1]} 秒，短淡入淡出"
+        else:
+            clip, extension, change = original, "mp3", "filename only"
+        filename, sha = install_clip(output, clip, extension)
+        clips[asset_id] = {
+            "source": "chen",
+            "sourceFile": f"64k/syllabs/cmn-{name}.mp3",
+            "sourceSha256": digest(original),
+            "file": filename,
+            "sha256": sha,
+            "changes": change,
+        }
     spelling = {}
     for name in sorted(spelling_targets(set(clips))):
         recorded_name = policy["spellingAliases"].get(name, name)
@@ -210,9 +193,8 @@ def prepare(chen_repo: Path, archive: Path, output: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--chen-repo", required=True, type=Path)
-    parser.add_argument("--bopomofo-archive", required=True, type=Path)
     args = parser.parse_args()
-    prepare(args.chen_repo, args.bopomofo_archive, OUTPUT)
+    prepare(args.chen_repo, OUTPUT)
 
 
 if __name__ == "__main__":

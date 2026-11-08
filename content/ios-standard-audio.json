@@ -7,56 +7,10 @@
       "license": "CC-BY-SA-3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
       "attribution": "zh_syllabs. Recordings: Chen Wang 王琛. Copyright © 2013 Wang Chen, Lopez Hugo, Vion Nicolas. Audio-cmn processing: Hugo Lopez, PLIDAM, INALCO."
-    },
-    "bopomofo": {
-      "url": "https://language.moe.gov.tw/001/Upload/files/site_content/M0001/juyin/",
-      "archiveUrl": "https://language.moe.gov.tw/001/Upload/files/site_content/M0001/juyin/bopomofo_materials_20170213.zip",
-      "archiveSha256": "df946cdb8f8f31a04957a55af51f4b4b527dfac62cd1d958250553f7d8b4f24d",
-      "license": "CC-BY-4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "attribution": "2017 © 教育部，國語注音符號手冊-開放部件。"
     }
   },
-  "spellingAliases": { "ju4": "jv4" },
-  "initialSymbolOrder": [
-    "b",
-    "p",
-    "m",
-    "f",
-    "d",
-    "t",
-    "n",
-    "l",
-    "g",
-    "k",
-    "h",
-    "j",
-    "q",
-    "x",
-    "zh",
-    "ch",
-    "sh",
-    "r",
-    "z",
-    "c",
-    "s"
-  ],
-  "finalSymbolNumbers": {
-    "a": 22,
-    "o": 23,
-    "e": 24,
-    "ai": 26,
-    "ei": 27,
-    "ao": 28,
-    "ou": 29,
-    "an": 30,
-    "en": 31,
-    "ang": 32,
-    "eng": 33,
-    "er": 34,
-    "i": 35,
-    "u": 36,
-    "v": 37
+  "spellingAliases": {
+    "ju4": "jv4"
   },
   "finalSyllableSpellings": {
     "ui": "wei1",
@@ -66,8 +20,42 @@
     "in": "yin1",
     "un": "wen1",
     "vn": "yun1",
-    "ing": "ying1"
+    "ing": "ying1",
+    "i": "yi1",
+    "u": "wu1",
+    "v": "yu1"
   },
-  "isolatedVowelSpellings": { "i": "yi", "u": "wu", "v": "yu" },
-  "ong": { "source": "kong1", "startSeconds": 0.425, "endSeconds": 0.725 }
+  "isolatedVowelSpellings": {
+    "i": "yi",
+    "u": "wu",
+    "v": "yu"
+  },
+  "ong": {
+    "source": "kong1",
+    "startSeconds": 0.425,
+    "endSeconds": 0.725
+  },
+  "initialCrops": {
+    "b": ["bo1", 0.312, 0.445],
+    "p": ["po1", 0.212, 0.41],
+    "m": ["mo1", 0.33, 0.465],
+    "f": ["fo1", 0.145, 0.393],
+    "d": ["de1", 0.271, 0.395],
+    "t": ["te1", 0.311, 0.508],
+    "n": ["ne1", 0.252, 0.395],
+    "l": ["le1", 0.268, 0.445],
+    "g": ["ge1", 0.25, 0.41],
+    "k": ["ke1", 0.31, 0.52],
+    "h": ["he1", 0.275, 0.526],
+    "j": ["ji1", 0.23, 0.423],
+    "q": ["qi1", 0.265, 0.545],
+    "x": ["xi1", 0.278, 0.498],
+    "zh": ["zhi1", 0.27, 0.465],
+    "ch": ["chi1", 0.27, 0.42],
+    "sh": ["shi1", 0.32, 0.608],
+    "r": ["ri1", 0.27, 0.445],
+    "z": ["zi1", 0.281, 0.508],
+    "c": ["ci1", 0.286, 0.612],
+    "s": ["si1", 0.251, 0.59]
+  }
 }

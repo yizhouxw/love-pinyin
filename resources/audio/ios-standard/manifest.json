@@ -7,200 +7,192 @@
       "license": "CC-BY-SA-3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
       "attribution": "zh_syllabs. Recordings: Chen Wang 王琛. Copyright © 2013 Wang Chen, Lopez Hugo, Vion Nicolas. Audio-cmn processing: Hugo Lopez, PLIDAM, INALCO."
-    },
-    "bopomofo": {
-      "url": "https://language.moe.gov.tw/001/Upload/files/site_content/M0001/juyin/",
-      "archiveUrl": "https://language.moe.gov.tw/001/Upload/files/site_content/M0001/juyin/bopomofo_materials_20170213.zip",
-      "archiveSha256": "df946cdb8f8f31a04957a55af51f4b4b527dfac62cd1d958250553f7d8b4f24d",
-      "license": "CC-BY-4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "attribution": "2017 © 教育部，國語注音符號手冊-開放部件。"
     }
   },
   "clips": {
     "audio-final-a": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F22.WAV",
-      "sourceSha256": "937acb887c383a7d45eaffce4376ce3a053c514b221bbba13323796287a37100",
-      "file": "937acb887c383a7d45eaffce4376ce3a053c514b221bbba13323796287a37100.wav",
-      "sha256": "937acb887c383a7d45eaffce4376ce3a053c514b221bbba13323796287a37100",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-a1.mp3",
+      "sourceSha256": "c37e4240175f61eeefc0ddc57a085962e7846f71302cd507a20dac868e0f68f2",
+      "file": "c37e4240175f61eeefc0ddc57a085962e7846f71302cd507a20dac868e0f68f2.mp3",
+      "sha256": "c37e4240175f61eeefc0ddc57a085962e7846f71302cd507a20dac868e0f68f2",
       "changes": "filename only"
     },
     "audio-final-o": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F23.WAV",
-      "sourceSha256": "8f5fc2ca710d36371082e5e395ec9e6538e5a9064213bceb1597b58a540584b1",
-      "file": "8f5fc2ca710d36371082e5e395ec9e6538e5a9064213bceb1597b58a540584b1.wav",
-      "sha256": "8f5fc2ca710d36371082e5e395ec9e6538e5a9064213bceb1597b58a540584b1",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-o1.mp3",
+      "sourceSha256": "aa07d81aff4d10bd9383f57044e9e011b97ac286690f0c931e6882beec20329d",
+      "file": "aa07d81aff4d10bd9383f57044e9e011b97ac286690f0c931e6882beec20329d.mp3",
+      "sha256": "aa07d81aff4d10bd9383f57044e9e011b97ac286690f0c931e6882beec20329d",
       "changes": "filename only"
     },
     "audio-final-e": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F24.WAV",
-      "sourceSha256": "5c5171e144ad10df390820faa530b0930ea03d70d1d51f30964fd6ec7e20ade6",
-      "file": "5c5171e144ad10df390820faa530b0930ea03d70d1d51f30964fd6ec7e20ade6.wav",
-      "sha256": "5c5171e144ad10df390820faa530b0930ea03d70d1d51f30964fd6ec7e20ade6",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-e1.mp3",
+      "sourceSha256": "88ebb65b7e6983701285d171f2a02d7d2a85162214b53fb0d47ae1f9d74443d4",
+      "file": "88ebb65b7e6983701285d171f2a02d7d2a85162214b53fb0d47ae1f9d74443d4.mp3",
+      "sha256": "88ebb65b7e6983701285d171f2a02d7d2a85162214b53fb0d47ae1f9d74443d4",
       "changes": "filename only"
     },
     "audio-final-i": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F35.WAV",
-      "sourceSha256": "32f6d205454e5b110abc285012a2731c0355bce6692a19cdb7827cba6deba5e1",
-      "file": "32f6d205454e5b110abc285012a2731c0355bce6692a19cdb7827cba6deba5e1.wav",
-      "sha256": "32f6d205454e5b110abc285012a2731c0355bce6692a19cdb7827cba6deba5e1",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yi1.mp3",
+      "sourceSha256": "36540ca523dcddcfd1f09e59f1386f576dfe4142cd22494e49d82b604ca045c6",
+      "file": "36540ca523dcddcfd1f09e59f1386f576dfe4142cd22494e49d82b604ca045c6.mp3",
+      "sha256": "36540ca523dcddcfd1f09e59f1386f576dfe4142cd22494e49d82b604ca045c6",
       "changes": "filename only"
     },
     "audio-final-u": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F36.WAV",
-      "sourceSha256": "5e66d7d1d0f20c9fcbd87d72cefc19312a30150f31c2b0bd3ed75725dccd2161",
-      "file": "5e66d7d1d0f20c9fcbd87d72cefc19312a30150f31c2b0bd3ed75725dccd2161.wav",
-      "sha256": "5e66d7d1d0f20c9fcbd87d72cefc19312a30150f31c2b0bd3ed75725dccd2161",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wu1.mp3",
+      "sourceSha256": "efcc05666b8af5ae4c6171b8b60198db40caea22e268be4c5205a8c256f15772",
+      "file": "efcc05666b8af5ae4c6171b8b60198db40caea22e268be4c5205a8c256f15772.mp3",
+      "sha256": "efcc05666b8af5ae4c6171b8b60198db40caea22e268be4c5205a8c256f15772",
       "changes": "filename only"
     },
     "audio-final-v": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F37.WAV",
-      "sourceSha256": "13408b0d91e0141a2a6c797ad87035a90e5f547ecde3ac3de3f4e0990becaa47",
-      "file": "13408b0d91e0141a2a6c797ad87035a90e5f547ecde3ac3de3f4e0990becaa47.wav",
-      "sha256": "13408b0d91e0141a2a6c797ad87035a90e5f547ecde3ac3de3f4e0990becaa47",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yu1.mp3",
+      "sourceSha256": "885e611ae4d31125a10b81c7b9bb8127ffd9beca22b908b12a9a2a5a49e7a1d0",
+      "file": "885e611ae4d31125a10b81c7b9bb8127ffd9beca22b908b12a9a2a5a49e7a1d0.mp3",
+      "sha256": "885e611ae4d31125a10b81c7b9bb8127ffd9beca22b908b12a9a2a5a49e7a1d0",
       "changes": "filename only"
     },
     "audio-initial-b": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F1.WAV",
-      "sourceSha256": "ff794a493cbb8e582ac70b54da41a57b7639bd2bed8ba8a036425817d8fdae9c",
-      "file": "ff794a493cbb8e582ac70b54da41a57b7639bd2bed8ba8a036425817d8fdae9c.wav",
-      "sha256": "ff794a493cbb8e582ac70b54da41a57b7639bd2bed8ba8a036425817d8fdae9c",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-bo1.mp3",
+      "sourceSha256": "440d76b7ebb1c5a39771f20a2668ff9d97124b5a45531dea312914a5dd66b871",
+      "file": "052f8c194cd570f11f8592296934639a8d4653c4f177278cf8921c71f13aa3b2.wav",
+      "sha256": "052f8c194cd570f11f8592296934639a8d4653c4f177278cf8921c71f13aa3b2",
+      "changes": "裁切 0.312–0.445 秒，短淡入淡出"
     },
     "audio-initial-p": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F2.WAV",
-      "sourceSha256": "65f7faf3ab4ec318cc489a61b365980bf17877b919b8df2fdc94ad902d1f6573",
-      "file": "65f7faf3ab4ec318cc489a61b365980bf17877b919b8df2fdc94ad902d1f6573.wav",
-      "sha256": "65f7faf3ab4ec318cc489a61b365980bf17877b919b8df2fdc94ad902d1f6573",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-po1.mp3",
+      "sourceSha256": "25aeb1a092359daf2c19e1d8be45378f81392ced167700367a1e53c86f287977",
+      "file": "6bb0dd56fd557fd42a36be415a1bcf7b2fa14271527c457728fbb662d78b7637.wav",
+      "sha256": "6bb0dd56fd557fd42a36be415a1bcf7b2fa14271527c457728fbb662d78b7637",
+      "changes": "裁切 0.212–0.41 秒，短淡入淡出"
     },
     "audio-initial-m": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F3.WAV",
-      "sourceSha256": "814481eeb38f357a1181b067b25784d1ec614a01fd7396d27a4c641ebe727add",
-      "file": "814481eeb38f357a1181b067b25784d1ec614a01fd7396d27a4c641ebe727add.wav",
-      "sha256": "814481eeb38f357a1181b067b25784d1ec614a01fd7396d27a4c641ebe727add",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-mo1.mp3",
+      "sourceSha256": "661f2c65f598a3c529c9d33f947a96ceb56b3df54ae8ed75989682c4b036211d",
+      "file": "f8298f6b053ffef4404c32033c13a0d546378ad7325fd758e9831cc2ce3df31e.wav",
+      "sha256": "f8298f6b053ffef4404c32033c13a0d546378ad7325fd758e9831cc2ce3df31e",
+      "changes": "裁切 0.33–0.465 秒，短淡入淡出"
     },
     "audio-initial-f": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F4.WAV",
-      "sourceSha256": "68bf5b9025831561d62d7d2cce1c2b8d784cbc3b7851b9a2993157f50585b620",
-      "file": "68bf5b9025831561d62d7d2cce1c2b8d784cbc3b7851b9a2993157f50585b620.wav",
-      "sha256": "68bf5b9025831561d62d7d2cce1c2b8d784cbc3b7851b9a2993157f50585b620",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-fo1.mp3",
+      "sourceSha256": "fdd320166b7a0350e2547ba7812986bd4e7b07dc42de02ca56db24cf551ef73a",
+      "file": "6c7bdd2d3877c07e955372b41b5c46e5c7dfcded67419ae56d80bf56317761a7.wav",
+      "sha256": "6c7bdd2d3877c07e955372b41b5c46e5c7dfcded67419ae56d80bf56317761a7",
+      "changes": "裁切 0.145–0.393 秒，短淡入淡出"
     },
     "audio-initial-d": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F5.WAV",
-      "sourceSha256": "49b0a896d93553bf8b57cbf245753460abb2df9c4028d372e2828ee57b004cfe",
-      "file": "49b0a896d93553bf8b57cbf245753460abb2df9c4028d372e2828ee57b004cfe.wav",
-      "sha256": "49b0a896d93553bf8b57cbf245753460abb2df9c4028d372e2828ee57b004cfe",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-de1.mp3",
+      "sourceSha256": "9d9aa6878d5e962042772318cbab699897996b565582f7aac651b7ad126f1370",
+      "file": "e88ce8efe95c6866e17e0a8c7c8f67719234e0fb459095490eb49972024d4040.wav",
+      "sha256": "e88ce8efe95c6866e17e0a8c7c8f67719234e0fb459095490eb49972024d4040",
+      "changes": "裁切 0.271–0.395 秒，短淡入淡出"
     },
     "audio-initial-t": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F6.WAV",
-      "sourceSha256": "d8ec83f5359fb9066ca1bb4b7c0a8ed11f378fd05795024f624b432ce1f42afb",
-      "file": "d8ec83f5359fb9066ca1bb4b7c0a8ed11f378fd05795024f624b432ce1f42afb.wav",
-      "sha256": "d8ec83f5359fb9066ca1bb4b7c0a8ed11f378fd05795024f624b432ce1f42afb",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-te1.mp3",
+      "sourceSha256": "dae97e04da3b8092d4d914ddffdff1601b931f990dfe9afaf36185ee28a3e959",
+      "file": "9577835d6718b17b2d7fb3befc96ae1448ed1b5aa948c2689eed6befd1b0ec57.wav",
+      "sha256": "9577835d6718b17b2d7fb3befc96ae1448ed1b5aa948c2689eed6befd1b0ec57",
+      "changes": "裁切 0.311–0.508 秒，短淡入淡出"
     },
     "audio-initial-n": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F7.WAV",
-      "sourceSha256": "a503a0caf984dcdada06b25cfc91cd12046c1ef07874466a18dc45c3a44bdf28",
-      "file": "a503a0caf984dcdada06b25cfc91cd12046c1ef07874466a18dc45c3a44bdf28.wav",
-      "sha256": "a503a0caf984dcdada06b25cfc91cd12046c1ef07874466a18dc45c3a44bdf28",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ne1.mp3",
+      "sourceSha256": "2f594ab3539f76451fe233bdc2d3e511ac44d27d793a0c8088100deca3cdc81f",
+      "file": "f9478dfdecf0b61be9f3d2833f167c2ebe4278df4cdeacab008291d540c4df5e.wav",
+      "sha256": "f9478dfdecf0b61be9f3d2833f167c2ebe4278df4cdeacab008291d540c4df5e",
+      "changes": "裁切 0.252–0.395 秒，短淡入淡出"
     },
     "audio-initial-l": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F8.WAV",
-      "sourceSha256": "b9b5fc35148fb396667074496668e58a6bf3077f3aaa76454f219c0314ae8a6c",
-      "file": "b9b5fc35148fb396667074496668e58a6bf3077f3aaa76454f219c0314ae8a6c.wav",
-      "sha256": "b9b5fc35148fb396667074496668e58a6bf3077f3aaa76454f219c0314ae8a6c",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-le1.mp3",
+      "sourceSha256": "85cd77d211571c97e6737ec1ebda4f60945ae26c16c629f0a7a464af6f618ff7",
+      "file": "dc9d18647aa23cd72b7cacdaf47e8959280968e4e2a0c6f6ee040e7aa1572f82.wav",
+      "sha256": "dc9d18647aa23cd72b7cacdaf47e8959280968e4e2a0c6f6ee040e7aa1572f82",
+      "changes": "裁切 0.268–0.445 秒，短淡入淡出"
     },
     "audio-initial-g": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F9.WAV",
-      "sourceSha256": "b910b2228d4b6d67228d64cd8caf2bda6f54e89913696b9461bbf139fe3d1bc7",
-      "file": "b910b2228d4b6d67228d64cd8caf2bda6f54e89913696b9461bbf139fe3d1bc7.wav",
-      "sha256": "b910b2228d4b6d67228d64cd8caf2bda6f54e89913696b9461bbf139fe3d1bc7",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ge1.mp3",
+      "sourceSha256": "1ac5408f6f9cf20447153c50688469a418154f96be75ff6c613c06a847f1e462",
+      "file": "a76bb784605a5e64341b5d31bc818bef022f70c271ab49dc7abacd6aaeccec4b.wav",
+      "sha256": "a76bb784605a5e64341b5d31bc818bef022f70c271ab49dc7abacd6aaeccec4b",
+      "changes": "裁切 0.25–0.41 秒，短淡入淡出"
     },
     "audio-initial-k": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F10.WAV",
-      "sourceSha256": "94d68908d8a28d62768b11fa5a4b926babd744719ee68704ae750597d4c90ef5",
-      "file": "94d68908d8a28d62768b11fa5a4b926babd744719ee68704ae750597d4c90ef5.wav",
-      "sha256": "94d68908d8a28d62768b11fa5a4b926babd744719ee68704ae750597d4c90ef5",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ke1.mp3",
+      "sourceSha256": "046f31a71f5605acc96f80ec050acae0dabf188a4869238d605aef19057ed4b0",
+      "file": "92d7d2d8ae3eb492b841bb95c14c316927a1978e562d3cb293c91fcfbd65b651.wav",
+      "sha256": "92d7d2d8ae3eb492b841bb95c14c316927a1978e562d3cb293c91fcfbd65b651",
+      "changes": "裁切 0.31–0.52 秒，短淡入淡出"
     },
     "audio-initial-h": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F11.WAV",
-      "sourceSha256": "a5969aaeceb2658ff78624819f905c1dac24a7224fc59a7337fdb8dc609aeb50",
-      "file": "a5969aaeceb2658ff78624819f905c1dac24a7224fc59a7337fdb8dc609aeb50.wav",
-      "sha256": "a5969aaeceb2658ff78624819f905c1dac24a7224fc59a7337fdb8dc609aeb50",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-he1.mp3",
+      "sourceSha256": "6ba3fec9323dba6540fb91aeb5f908aff4ba9a18f4675be17fffd70faf2781b6",
+      "file": "10ac3baf5553bb32f50cde9f6290a944e2be6254cb7cb28e30e3f482dd881e2d.wav",
+      "sha256": "10ac3baf5553bb32f50cde9f6290a944e2be6254cb7cb28e30e3f482dd881e2d",
+      "changes": "裁切 0.275–0.526 秒，短淡入淡出"
     },
     "audio-initial-j": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F12.WAV",
-      "sourceSha256": "bd617d30b34ee3e4dc39d29d82db3e0993ba55262802e2196b5427e559ad24c5",
-      "file": "bd617d30b34ee3e4dc39d29d82db3e0993ba55262802e2196b5427e559ad24c5.wav",
-      "sha256": "bd617d30b34ee3e4dc39d29d82db3e0993ba55262802e2196b5427e559ad24c5",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ji1.mp3",
+      "sourceSha256": "86633a0e9d816cf86120a94c0bb726aad6265aa97d95297d7ad5eec6142ac411",
+      "file": "ae22969c75746fa788e8f44bb1cecaa9a6e7bc6002ffee72d4dc5b73d87cced1.wav",
+      "sha256": "ae22969c75746fa788e8f44bb1cecaa9a6e7bc6002ffee72d4dc5b73d87cced1",
+      "changes": "裁切 0.23–0.423 秒，短淡入淡出"
     },
     "audio-initial-q": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F13.WAV",
-      "sourceSha256": "6c002446a5d58421aa47571bde0f34f899a8b3e797c6c3fd551e375ab541c60d",
-      "file": "6c002446a5d58421aa47571bde0f34f899a8b3e797c6c3fd551e375ab541c60d.wav",
-      "sha256": "6c002446a5d58421aa47571bde0f34f899a8b3e797c6c3fd551e375ab541c60d",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-qi1.mp3",
+      "sourceSha256": "3b80a1a84a92f357b8e8856312c20164b7db5e24b9fe04fe2d14fb4cb5dc8017",
+      "file": "19e990a03212c70fb6c452f4b2875ec5f060f6d000a9c4d8e4cf720377ef20be.wav",
+      "sha256": "19e990a03212c70fb6c452f4b2875ec5f060f6d000a9c4d8e4cf720377ef20be",
+      "changes": "裁切 0.265–0.545 秒，短淡入淡出"
     },
     "audio-initial-x": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F14.WAV",
-      "sourceSha256": "cde858075fa16078457aefdc6c586b7a4c5ee088c3e3ab0eaf46fed915778e7d",
-      "file": "cde858075fa16078457aefdc6c586b7a4c5ee088c3e3ab0eaf46fed915778e7d.wav",
-      "sha256": "cde858075fa16078457aefdc6c586b7a4c5ee088c3e3ab0eaf46fed915778e7d",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-xi1.mp3",
+      "sourceSha256": "28a49bfbf4faf8548d7f276a8ea9ba1dfa32fbc1b70e7ce5f529108e85248b31",
+      "file": "50fdb84a13f56606bbc9391d8df0ddf8855a4c4d68c0c7a7190a61d8e748ab73.wav",
+      "sha256": "50fdb84a13f56606bbc9391d8df0ddf8855a4c4d68c0c7a7190a61d8e748ab73",
+      "changes": "裁切 0.278–0.498 秒，短淡入淡出"
     },
     "audio-initial-z": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F19.WAV",
-      "sourceSha256": "48c6849d0f5d735b5cdddc81fbdea39f6194f6632a7fa30c90ae9e1db7f21e4f",
-      "file": "48c6849d0f5d735b5cdddc81fbdea39f6194f6632a7fa30c90ae9e1db7f21e4f.wav",
-      "sha256": "48c6849d0f5d735b5cdddc81fbdea39f6194f6632a7fa30c90ae9e1db7f21e4f",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-zi1.mp3",
+      "sourceSha256": "69646f0108a6b7fbf660e75712fb8074584f2f165661d1d6a3bf97f602ab31f1",
+      "file": "1b48a9c56c1a10bfadb507a1f3c4edf4fdb14b00767b412a6db7c294162f8408.wav",
+      "sha256": "1b48a9c56c1a10bfadb507a1f3c4edf4fdb14b00767b412a6db7c294162f8408",
+      "changes": "裁切 0.281–0.508 秒，短淡入淡出"
     },
     "audio-initial-c": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F20.WAV",
-      "sourceSha256": "a373b1e3cb43e207fc5de2563d6f4775b6dc234d16744387377106ff9f1051f9",
-      "file": "a373b1e3cb43e207fc5de2563d6f4775b6dc234d16744387377106ff9f1051f9.wav",
-      "sha256": "a373b1e3cb43e207fc5de2563d6f4775b6dc234d16744387377106ff9f1051f9",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ci1.mp3",
+      "sourceSha256": "7b3738ac519c4f6de640c28fe8f774913b2de46230bde2b950f457b37c3390ea",
+      "file": "fd7959e6d8a30206a6b641e07bbe633c17e77343abd3cc3861b09fbc7a7db498.wav",
+      "sha256": "fd7959e6d8a30206a6b641e07bbe633c17e77343abd3cc3861b09fbc7a7db498",
+      "changes": "裁切 0.286–0.612 秒，短淡入淡出"
     },
     "audio-initial-s": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F21.WAV",
-      "sourceSha256": "0804096bba32009b07b79de5553c014c18e940b7878924b61618c1a41cf70a53",
-      "file": "0804096bba32009b07b79de5553c014c18e940b7878924b61618c1a41cf70a53.wav",
-      "sha256": "0804096bba32009b07b79de5553c014c18e940b7878924b61618c1a41cf70a53",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-si1.mp3",
+      "sourceSha256": "55a9017b026d6bad7b29543a583f9a6994daf44589542d03e34ff6b627eb7caf",
+      "file": "a73e20e002cdaee1b7a9e4bf4d192f505a029502cf9891bf4c3f4b2b06ee32cb.wav",
+      "sha256": "a73e20e002cdaee1b7a9e4bf4d192f505a029502cf9891bf4c3f4b2b06ee32cb",
+      "changes": "裁切 0.251–0.59 秒，短淡入淡出"
     },
     "audio-whole-syllable-zi": {
       "source": "chen",
@@ -227,36 +219,36 @@
       "changes": "filename only"
     },
     "audio-initial-zh": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F15.WAV",
-      "sourceSha256": "74f9b1444b3cb4ac2d8dac14b05d9b8ef1d09a4107a33eae47a8a9355e6be290",
-      "file": "74f9b1444b3cb4ac2d8dac14b05d9b8ef1d09a4107a33eae47a8a9355e6be290.wav",
-      "sha256": "74f9b1444b3cb4ac2d8dac14b05d9b8ef1d09a4107a33eae47a8a9355e6be290",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-zhi1.mp3",
+      "sourceSha256": "b746bae292f50590906038b916f8c5bfefe33d6d6b95ec7bf7e3133f76a424c1",
+      "file": "64f35882144a807b14b7a11d60573454f3b5b0b6bbaa2c617b7c0e7f3b54c415.wav",
+      "sha256": "64f35882144a807b14b7a11d60573454f3b5b0b6bbaa2c617b7c0e7f3b54c415",
+      "changes": "裁切 0.27–0.465 秒，短淡入淡出"
     },
     "audio-initial-ch": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F16.WAV",
-      "sourceSha256": "080d9be21f769863b5e462743596d79017429834750328a284c3f06753781ee0",
-      "file": "080d9be21f769863b5e462743596d79017429834750328a284c3f06753781ee0.wav",
-      "sha256": "080d9be21f769863b5e462743596d79017429834750328a284c3f06753781ee0",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-chi1.mp3",
+      "sourceSha256": "aeea5db8ed8383c8fdc70e063b21161950aa071591dd81c7d9445c2da355e231",
+      "file": "00d4b64cec314fdab3fd20274ef93057b4798b0896277802a336594103e6a0a5.wav",
+      "sha256": "00d4b64cec314fdab3fd20274ef93057b4798b0896277802a336594103e6a0a5",
+      "changes": "裁切 0.27–0.42 秒，短淡入淡出"
     },
     "audio-initial-sh": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F17.WAV",
-      "sourceSha256": "fda75dff8b11daab818b94a67c9585414ad7db74fc2ecbb703871018d8c9517e",
-      "file": "fda75dff8b11daab818b94a67c9585414ad7db74fc2ecbb703871018d8c9517e.wav",
-      "sha256": "fda75dff8b11daab818b94a67c9585414ad7db74fc2ecbb703871018d8c9517e",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-shi1.mp3",
+      "sourceSha256": "ca6519a8d9b249f22ef28896be6fcbc9ed7489980bcd7b00ca840bc18a59aeee",
+      "file": "ba73efd8089696ecdeb3c5a58a3447ee92279ba27aa978b2ea704a866c298bc9.wav",
+      "sha256": "ba73efd8089696ecdeb3c5a58a3447ee92279ba27aa978b2ea704a866c298bc9",
+      "changes": "裁切 0.32–0.608 秒，短淡入淡出"
     },
     "audio-initial-r": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F18.WAV",
-      "sourceSha256": "75224437ecfbbfc752a6a744b7f7eaff257ea2f6709ce02ffe69752bbe88f183",
-      "file": "75224437ecfbbfc752a6a744b7f7eaff257ea2f6709ce02ffe69752bbe88f183.wav",
-      "sha256": "75224437ecfbbfc752a6a744b7f7eaff257ea2f6709ce02ffe69752bbe88f183",
-      "changes": "filename only"
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ri1.mp3",
+      "sourceSha256": "d2db6c56007be25d120ccb26cc0f0f3e754c3cfb3d94ec71837c775dd4fc18e0",
+      "file": "7393e772d7e24d3ddb2b6d22231f84e311d301a02c73f106a07cd89ae17d68c8.wav",
+      "sha256": "7393e772d7e24d3ddb2b6d22231f84e311d301a02c73f106a07cd89ae17d68c8",
+      "changes": "裁切 0.27–0.445 秒，短淡入淡出"
     },
     "audio-whole-syllable-zhi": {
       "source": "chen",
@@ -315,19 +307,19 @@
       "changes": "filename only"
     },
     "audio-final-ai": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F26.WAV",
-      "sourceSha256": "03d701ce1feec644b4c3934e75636b728b0edcf7b643a6c5ea14b9be032e9321",
-      "file": "03d701ce1feec644b4c3934e75636b728b0edcf7b643a6c5ea14b9be032e9321.wav",
-      "sha256": "03d701ce1feec644b4c3934e75636b728b0edcf7b643a6c5ea14b9be032e9321",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ai1.mp3",
+      "sourceSha256": "d3953f8621ee50f8fba524adff3beea1c3884dab23086c10e406414ac2ec04a6",
+      "file": "d3953f8621ee50f8fba524adff3beea1c3884dab23086c10e406414ac2ec04a6.mp3",
+      "sha256": "d3953f8621ee50f8fba524adff3beea1c3884dab23086c10e406414ac2ec04a6",
       "changes": "filename only"
     },
     "audio-final-ei": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F27.WAV",
-      "sourceSha256": "d9ff24329b99838d1e97fab27dc821b095734179ef081073344aac2c288b0568",
-      "file": "d9ff24329b99838d1e97fab27dc821b095734179ef081073344aac2c288b0568.wav",
-      "sha256": "d9ff24329b99838d1e97fab27dc821b095734179ef081073344aac2c288b0568",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ei1.mp3",
+      "sourceSha256": "91316ae36883ddf50d3ad6d3a0f4cbf3bff8536155a846736fd31b0a764190df",
+      "file": "91316ae36883ddf50d3ad6d3a0f4cbf3bff8536155a846736fd31b0a764190df.mp3",
+      "sha256": "91316ae36883ddf50d3ad6d3a0f4cbf3bff8536155a846736fd31b0a764190df",
       "changes": "filename only"
     },
     "audio-final-ui": {
@@ -339,19 +331,19 @@
       "changes": "filename only"
     },
     "audio-final-ao": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F28.WAV",
-      "sourceSha256": "4e4dc81e930be2302ed6142a618d39624df7d8054eb39c6191ae326c592b3a94",
-      "file": "4e4dc81e930be2302ed6142a618d39624df7d8054eb39c6191ae326c592b3a94.wav",
-      "sha256": "4e4dc81e930be2302ed6142a618d39624df7d8054eb39c6191ae326c592b3a94",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ao1.mp3",
+      "sourceSha256": "fb4bc1ba143b7ec2196b48cead74cdf2dd97ddd2c66c601abb540a4c80959962",
+      "file": "fb4bc1ba143b7ec2196b48cead74cdf2dd97ddd2c66c601abb540a4c80959962.mp3",
+      "sha256": "fb4bc1ba143b7ec2196b48cead74cdf2dd97ddd2c66c601abb540a4c80959962",
       "changes": "filename only"
     },
     "audio-final-ou": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F29.WAV",
-      "sourceSha256": "168993425e47150ff6e5ac9eca356363d0be109f40a89eef1cc5d9a5588f44f8",
-      "file": "168993425e47150ff6e5ac9eca356363d0be109f40a89eef1cc5d9a5588f44f8.wav",
-      "sha256": "168993425e47150ff6e5ac9eca356363d0be109f40a89eef1cc5d9a5588f44f8",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ou1.mp3",
+      "sourceSha256": "cc199063dfba957d3e70bb1ae209edbc2dfca73835c49d3d9259d9688ba81caa",
+      "file": "cc199063dfba957d3e70bb1ae209edbc2dfca73835c49d3d9259d9688ba81caa.mp3",
+      "sha256": "cc199063dfba957d3e70bb1ae209edbc2dfca73835c49d3d9259d9688ba81caa",
       "changes": "filename only"
     },
     "audio-final-iu": {
@@ -379,11 +371,11 @@
       "changes": "filename only"
     },
     "audio-final-er": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F34.WAV",
-      "sourceSha256": "3b7c3d8022d7a08f9fbe95fc874b0b2b0c955798fe54cb2a710abee0871196d8",
-      "file": "3b7c3d8022d7a08f9fbe95fc874b0b2b0c955798fe54cb2a710abee0871196d8.wav",
-      "sha256": "3b7c3d8022d7a08f9fbe95fc874b0b2b0c955798fe54cb2a710abee0871196d8",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-er1.mp3",
+      "sourceSha256": "a04a2f36cac62b2b0536893e7c50e5bd889552babcf4964cf447cb4bc56367d1",
+      "file": "a04a2f36cac62b2b0536893e7c50e5bd889552babcf4964cf447cb4bc56367d1.mp3",
+      "sha256": "a04a2f36cac62b2b0536893e7c50e5bd889552babcf4964cf447cb4bc56367d1",
       "changes": "filename only"
     },
     "audio-whole-syllable-ye": {
@@ -403,19 +395,19 @@
       "changes": "filename only"
     },
     "audio-final-an": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F30.WAV",
-      "sourceSha256": "e63521363829ccb6ebc0653ec05bcfe5257a9d85a1a40688e4ec0256351282e1",
-      "file": "e63521363829ccb6ebc0653ec05bcfe5257a9d85a1a40688e4ec0256351282e1.wav",
-      "sha256": "e63521363829ccb6ebc0653ec05bcfe5257a9d85a1a40688e4ec0256351282e1",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-an1.mp3",
+      "sourceSha256": "ef5f094588a6781e02e4f2f16a8230aeb58d6b1a1d54f45e335a2aec787a6ff4",
+      "file": "ef5f094588a6781e02e4f2f16a8230aeb58d6b1a1d54f45e335a2aec787a6ff4.mp3",
+      "sha256": "ef5f094588a6781e02e4f2f16a8230aeb58d6b1a1d54f45e335a2aec787a6ff4",
       "changes": "filename only"
     },
     "audio-final-en": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F31.WAV",
-      "sourceSha256": "ec4a5014a7ddeaf4c3bf7077035f2434b1970384fe862b379362b163030d6650",
-      "file": "ec4a5014a7ddeaf4c3bf7077035f2434b1970384fe862b379362b163030d6650.wav",
-      "sha256": "ec4a5014a7ddeaf4c3bf7077035f2434b1970384fe862b379362b163030d6650",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-en1.mp3",
+      "sourceSha256": "f7f374fa75f20c5a5558547352962636ceef2aa3b8e3cfeac8b057caf6f51b21",
+      "file": "f7f374fa75f20c5a5558547352962636ceef2aa3b8e3cfeac8b057caf6f51b21.mp3",
+      "sha256": "f7f374fa75f20c5a5558547352962636ceef2aa3b8e3cfeac8b057caf6f51b21",
       "changes": "filename only"
     },
     "audio-final-in": {
@@ -467,19 +459,19 @@
       "changes": "filename only"
     },
     "audio-final-ang": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F32.WAV",
-      "sourceSha256": "5135613be150d43028307d6322319f999a00a6c5d0eb5ad41c64daa00e41d6d0",
-      "file": "5135613be150d43028307d6322319f999a00a6c5d0eb5ad41c64daa00e41d6d0.wav",
-      "sha256": "5135613be150d43028307d6322319f999a00a6c5d0eb5ad41c64daa00e41d6d0",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ang1.mp3",
+      "sourceSha256": "2d57d964dff69e6f7a4a2dfdb83fdc10431e5f6d5b25835baad71daf5f1f095c",
+      "file": "2d57d964dff69e6f7a4a2dfdb83fdc10431e5f6d5b25835baad71daf5f1f095c.mp3",
+      "sha256": "2d57d964dff69e6f7a4a2dfdb83fdc10431e5f6d5b25835baad71daf5f1f095c",
       "changes": "filename only"
     },
     "audio-final-eng": {
-      "source": "bopomofo",
-      "sourceFile": "audio/F33.WAV",
-      "sourceSha256": "53487d1215a35ed5291e53621bf28b977489f9dd23fa07aeed020087f9f77fc4",
-      "file": "53487d1215a35ed5291e53621bf28b977489f9dd23fa07aeed020087f9f77fc4.wav",
-      "sha256": "53487d1215a35ed5291e53621bf28b977489f9dd23fa07aeed020087f9f77fc4",
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-eng1.mp3",
+      "sourceSha256": "f2bdb0abf7555a629fd8dbe67f77b2d596aea8954c02208edc3d263eb99e2f5a",
+      "file": "f2bdb0abf7555a629fd8dbe67f77b2d596aea8954c02208edc3d263eb99e2f5a.mp3",
+      "sha256": "f2bdb0abf7555a629fd8dbe67f77b2d596aea8954c02208edc3d263eb99e2f5a",
       "changes": "filename only"
     },
     "audio-final-ing": {
@@ -496,7 +488,7 @@
       "sourceSha256": "68ab74dc1e2c6949d283f02e6ec45e3c34c48078ecd18616677b12c3521365ec",
       "file": "d87355f52aa6676311a215753ac19830ab36a3292cae50847298f4bdfe26ea34.wav",
       "sha256": "d87355f52aa6676311a215753ac19830ab36a3292cae50847298f4bdfe26ea34",
-      "changes": "韵母裁切 0.425–0.725 秒，短淡入淡出"
+      "changes": "裁切 0.425–0.725 秒，短淡入淡出"
     },
     "audio-whole-syllable-ying": {
       "source": "chen",

@@ -15,6 +15,7 @@ import { PlaybackGapControl } from './playback-gap-control';
 import { ReleaseHistory } from './release-history';
 import { Notice } from './notice';
 import { ModelSettings } from './model-settings';
+import { PairingManagement } from './pairing-management';
 
 export function ParentPanel({
   boot,
@@ -430,6 +431,12 @@ export function ParentPanel({
           )}
         </details>
       )}
+      {!isMacApp() && (
+        <details className="parent-section">
+          <summary>连接其他设备</summary>
+          <PairingManagement />
+        </details>
+      )}
       <details className="parent-section">
         <summary>备份与恢复</summary>
         <Notice
@@ -642,7 +649,6 @@ export function ParentPanel({
         </div>
       </details>
       {isParent && <ModelSettings />}
-      <ReleaseHistory contentVersion={curriculum.contentVersion} />
       {!isMacApp() && (
         <button
           className="quiet"
@@ -657,6 +663,7 @@ export function ParentPanel({
         </button>
       )}
       {!boot.device?.isParent && <p className="adult-hint">此设备尚未取得家长管理权限。</p>}
+      <ReleaseHistory contentVersion={curriculum.contentVersion} />
       {advancedSettings}
     </section>
   );

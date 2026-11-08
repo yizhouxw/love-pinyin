@@ -35,6 +35,40 @@ final class AdaptiveClassroomTests: XCTestCase {
     }
 
     @MainActor
+    func testParentVersionPrecedesAdvancedSettings() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        XCUIDevice.shared.orientation = .portrait
+        app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
+        app.launch()
+
+        let parent = app.buttons["家长管理"]
+        XCTAssertTrue(parent.waitForExistence(timeout: 25), app.debugDescription)
+        parent.tap()
+        let confirm = app.buttons["我是家长，继续"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 12))
+        confirm.tap()
+
+        let version = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "版本 ")).firstMatch
+        XCTAssertTrue(version.waitForExistence(timeout: 12), app.debugDescription)
+        let advanced = labeled("高级设置", in: app)
+        reveal(advanced, in: app)
+        XCTAssertLessThan(version.frame.midY, advanced.frame.midY)
+        XCTAssertFalse(labeled("音频来源与许可", in: app).exists)
+        addScreenshot("家长设置顺序")
+
+        advanced.tap()
+        let credits = labeled("音频来源与许可", in: app)
+        XCTAssertTrue(credits.waitForExistence(timeout: 12), app.debugDescription)
+        reveal(credits, in: app)
+        credits.tap()
+        let license = labeled("CC-BY-SA-3.0", in: app)
+        XCTAssertTrue(license.waitForExistence(timeout: 12), app.debugDescription)
+        reveal(license, in: app)
+        addScreenshot("新版音源许可")
+    }
+
+    @MainActor
     func testOfflineGameScenes() throws {
         continueAfterFailure = false
         let app = XCUIApplication()

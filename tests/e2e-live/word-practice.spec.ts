@@ -391,7 +391,7 @@ test('WORD-08: every local picture decodes in the browser', async ({ page, appUr
     .screenshot({ path: test.info().outputPath('word-picture-contact.png') });
 });
 
-test('DIST-06/WORD-10/DAILY-13: integrated settings and real direct and spelling audio', async ({
+test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spelling audio', async ({
   page,
   appUrl,
 }, info) => {
@@ -400,11 +400,21 @@ test('DIST-06/WORD-10/DAILY-13: integrated settings and real direct and spelling
   await page.getByRole('button', { name: '家长管理', exact: true }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
   const advanced = page.locator('.parent-panel > .material-settings:last-child');
+  const version = page.getByRole('button', { name: /^版本 / });
+  await expect(advanced).not.toHaveAttribute('open', '');
+  expect(
+    await version.evaluate((button) =>
+      Boolean(
+        button.compareDocumentPosition(document.querySelector('.material-settings')!) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      ),
+    ),
+  ).toBe(true);
   await advanced.getByText('高级设置', { exact: true }).click();
   await expect(advanced.getByRole('combobox', { name: '学习素材' })).toHaveValue('original');
-  await expect(advanced.getByText('CC-BY-4.0', { exact: true })).toBeHidden();
+  await expect(advanced.getByText('CC-BY-SA-3.0', { exact: true })).toBeHidden();
   await advanced.getByText('音频来源与许可', { exact: true }).click();
-  await expect(advanced.getByText('CC-BY-4.0', { exact: true })).toBeVisible();
+  await expect(advanced.getByText('CC-BY-SA-3.0', { exact: true })).toBeVisible();
   await advanced.screenshot({ path: info.outputPath('material-settings.png') });
   await page.getByRole('button', { name: '返回学习', exact: true }).click();
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
@@ -433,7 +443,8 @@ test('DIST-06/WORD-10/DAILY-13: integrated settings and real direct and spelling
   await page.getByRole('button', { name: '拼读', exact: true }).click();
   await expect(page.locator('.word-playback')).not.toContainText('正在播放');
   await word.click();
-  await Promise.all([spelling, initial]);
+  const [, initialAudio] = await Promise.all([spelling, initial]);
+  expect(initialAudio.headers()['content-type']).toBe('audio/wav');
   await expect(page.locator('.word-playback')).not.toContainText('正在播放', { timeout: 15000 });
   await expect(page.locator('.word-audio-error')).toHaveAttribute('aria-hidden', 'true');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

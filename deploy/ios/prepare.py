@@ -197,7 +197,6 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
     for syllable, asset in public_standard["spelling"].items():
         add("daily-audio", f"spelling-{syllable}", STANDARD_AUDIO / asset["file"], asset["sha256"])
     shutil.copyfile(STANDARD_AUDIO / "manifest.json", output / "StandardAudioSources.json")
-    shutil.copyfile(STANDARD_AUDIO / "bopomofo-NOTICE.txt", output / "Licenses/bopomofo-NOTICE.txt")
 
     original, aliases, practice_scripts = original_content()
     for asset_id, standard_id in aliases.items():

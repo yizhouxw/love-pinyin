@@ -4,7 +4,7 @@
 
 ## 准备和构建
 
-家庭调试版安装两套练习。首次使用默认爱拼音自编资料，可从「家长管理 → 高级设置 → 天天练资料」切换到行知小学和原词语练习。家庭版先显式准备旧练习用的 PinYinSound：
+家庭调试版安装两套练习。首次使用默认爱拼音自编资料，可从「家长管理 → 高级设置 → 学习素材」切换到行知小学和原词语练习。家庭版先显式准备旧练习用的 PinYinSound：
 
 ```sh
 npm ci
@@ -29,7 +29,7 @@ uv run --locked --group voice-build python -m scripts.build_ios_lesson_audio
 uv run --locked --group voice-build python -m scripts.build_ios_practice_audio
 ```
 
-已提交的标准音可以用固定来源重建。用 `scripts.prepare_ios_standard` 的 `--chen-repo` 参数指定固定的 audio-cmn checkout，`--bopomofo-archive` 参数指定开放部件 ZIP。构建程序核对版本、源摘要和许可证。
+已提交的标准音可以用固定来源重建。运行 `uv run --locked python -m scripts.prepare_ios_standard --chen-repo /path/to/audio-cmn`，指定清单固定的 audio-cmn 修订。构建程序核对录音标签与许可，登记原始摘要、裁切参数和输出摘要。
 
 可选 `deploy/ios/prepare.sh --trial-aac` 将中文引导和词语的 WAV 试编码为 64 kbps AAC，重新解码检查采样率和帧数，原文件与派生摘要均登记。输出独立存放在 `build/ios/TrialAAC`，供后续听感、逐字时间轴和体积验证。
 
@@ -57,7 +57,7 @@ xcodebuild -project deploy/ios/LovePinyin.xcodeproj -scheme LovePinyin \
 
 ## 真机自动化
 
-准备资源后，解锁设备并在 Xcode 的 LovePinyin scheme 执行 Product → Test。也可以通过终端运行，同一份测试依次用于 iPhone 与 iPad。
+准备资源后，解锁设备并在 Xcode 的 LovePinyin scheme 执行 Product → Test。若手机显示「为 XCTest 输入 iPhone 密码」，请在手机上完成系统确认后继续。也可以通过终端运行，同一份测试依次用于 iPhone 与 iPad。
 
 ```sh
 xcodebuild -project deploy/ios/LovePinyin.xcodeproj -scheme LovePinyin \

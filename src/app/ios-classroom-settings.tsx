@@ -2,9 +2,11 @@ import type { ReactNode } from 'react';
 import type { Lesson, Progress } from '../domain/learning-api';
 import { gameCatalog } from '../domain/games';
 import { api } from '../platform/api-client';
+import { ReleaseHistory } from './release-history';
 
 export function IOSClassroomSettings({
   lessons,
+  contentVersion,
   progress,
   lessonChoice,
   setLessonChoice,
@@ -15,6 +17,7 @@ export function IOSClassroomSettings({
 }: {
   advancedSettings?: ReactNode;
   lessons: Lesson[];
+  contentVersion?: string;
   progress: Progress;
   lessonChoice: string;
   setLessonChoice: (value: string) => void;
@@ -104,6 +107,7 @@ export function IOSClassroomSettings({
         {progressSummary}
       </p>
       <p>记录保存在此设备。请保留 App，备份入口将在后续版本提供。</p>
+      <ReleaseHistory contentVersion={contentVersion} />
       {advancedSettings}
     </section>
   );

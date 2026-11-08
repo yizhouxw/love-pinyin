@@ -39,9 +39,7 @@ export function MaterialSettings({
       {Boolean(packs?.standardSources.length) && (
         <details className="material-credits">
           <summary>音频来源与许可</summary>
-          <p>
-            大陆普通话录音用于新版带调音节及词语拼读。台湾地区注音录音用于新版的部分独立声母和韵母。
-          </p>
+          <p>新版声母、韵母、带调音节及词语拼读的单音示范使用大陆普通话录音。</p>
           <ul>
             {packs?.standardSources.map((item) => (
               <li key={item.url}>

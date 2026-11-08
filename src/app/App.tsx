@@ -1264,6 +1264,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             isIOSApp() ? (
               <IOSClassroomSettings
                 lessons={lessons}
+                contentVersion={curriculum.contentVersion}
                 progress={progress}
                 lessonChoice={lessonChoice}
                 setLessonChoice={setLessonChoice}
@@ -1484,7 +1485,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               )}
             </>
           )}
-          {parentOpen && !isMacApp() && !isIOSApp() && (
+          {parentOpen && boot.guest && !isMacApp() && !isIOSApp() && (
             <details className="management-section">
               <summary>连接其他设备</summary>
               <PairingManagement />

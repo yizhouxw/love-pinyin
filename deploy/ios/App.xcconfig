@@ -15,7 +15,7 @@ INFOPLIST_FILE = Info.plist
 INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 MARKETING_VERSION = 0.9.0
-CURRENT_PROJECT_VERSION = 7
+CURRENT_PROJECT_VERSION = 8
 OTHER_LDFLAGS = $(inherited) -lsqlite3
 #include? "Signing.local"
 
