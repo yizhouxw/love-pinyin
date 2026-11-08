@@ -119,6 +119,6 @@ verify:all整链通过（131项前端/工具、398项Python、30项视口、40�
 
 证据：private/daily12-all.log、daily12-isolated-{engineering,server,release,product-final}.log、daily12-review/{changes,pitch-check}.json。HTTP8000及已配置HTTPS8443已更新0.2.5，实际API的785条及10个派生接口就绪；更新前独立备份，排除设备连接/家庭观察时刻后的全部表摘要相同，见private/daily12-deployment/verification.json。无新增依赖，原音/派生音均留private；本次不宣称移动真机听感、家庭LAN故障或儿童试用通过。
 
-## DAILY-11：词语的直接读与拼读
+## DAILY-13：词语的直接读与拼读
 
 当前词语与音节练习提供「直接读」与「拼读」。直接读优先使用完整朗读，拼读按音节示范，在已有录音或带调音节后保留可用的完整示范。整体认读音节用蓝色及下划线标示，并整音读。单条、连播与组词样例沿用同一规则。句子练习保留原有整句连读和逐字读。

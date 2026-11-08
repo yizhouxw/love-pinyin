@@ -391,7 +391,7 @@ test('WORD-08: every local picture decodes in the browser', async ({ page, appUr
     .screenshot({ path: test.info().outputPath('word-picture-contact.png') });
 });
 
-test('DIST-06/WORD-10/DAILY-11: integrated settings and real direct and spelling audio', async ({
+test('DIST-06/WORD-10/DAILY-13: integrated settings and real direct and spelling audio', async ({
   page,
   appUrl,
 }, info) => {
