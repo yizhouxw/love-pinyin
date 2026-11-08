@@ -14,8 +14,8 @@ INFOPLIST_KEY_UILaunchScreen_Generation = YES
 INFOPLIST_FILE = Info.plist
 INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
-MARKETING_VERSION = 0.9.0
-CURRENT_PROJECT_VERSION = 8
+MARKETING_VERSION = 0.10.0
+CURRENT_PROJECT_VERSION = 9
 OTHER_LDFLAGS = $(inherited) -lsqlite3
 #include? "Signing.local"
 

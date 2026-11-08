@@ -20,6 +20,10 @@ Mac Studio 提供同源 HTTPS 静态网页与 `/api/v1/` 服务；浏览器必�
 
 经用户授权，在已验证的 `main` 提交上推送注解标签 `v0.9.0`。GitHub Actions 从同一标签构建 macOS Apple Silicon DMG 和 Windows x64 EXE，发布两个安装包、对应 SHA-256 与标签中的发布说明。桌面安装包未签名，DMG 未公证。iOS/iPadOS 通过标签内的通用 Xcode 工程从源码签名安装。产品范围与真机证据见 [SPEC-023](SPEC-023-ios-app.md)。
 
+## GitHub 0.10.0 发布
+
+沿用同一标签的 macOS 和 Windows 安装包发布流程。本次交付 [SPEC-024](SPEC-024-ios-content-distribution.md) 的新版素材、两类天天练拼读和家长设置调整。macOS 就地替换应用，学习档案保留在应用支持目录。iPhone 真机记录对应发布前的构建 8。
+
 ## 更新、回滚与资产门禁
 
 - 构建产物绑定应用、内容与规则版本。启动前完整性校验；缺失或摘要错误时准确报不可用，不边运行边联网下载。
