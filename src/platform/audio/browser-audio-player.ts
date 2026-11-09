@@ -68,7 +68,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
     clips: SpellingClip[],
     signal?: AbortSignal,
     observer?: PlaybackObserver,
-    pauseSeconds?: number,
+    spellingPauses?: readonly number[],
   ): Promise<void> {
     this.stop();
     if (typeof document !== 'undefined' && document.hidden) return Promise.reject(aborted());
@@ -80,7 +80,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
       signal,
       observer,
       undefined,
-      pauseSeconds,
+      spellingPauses,
     );
   }
 
@@ -240,7 +240,7 @@ export class BrowserAudioPlayer implements AudioPlayer {
     signal?: AbortSignal,
     observer?: PlaybackObserver,
     characterTimings?: { start: number; end: number }[],
-    pauseSeconds?: number,
+    spellingPauses?: readonly number[],
   ): Promise<void> {
     const audio = (this.readingMedia ??= new Audio(''));
     audio.preload = 'auto';
@@ -346,8 +346,8 @@ export class BrowserAudioPlayer implements AudioPlayer {
         );
         if (characterTimings)
           return spaceReadingCharacters(blobs[0]!, characterTimings, controller.signal);
-        if (sources.length === 1) return { blob: blobs[0]!, segments: [] };
-        return combineReadingAudio(blobs, controller.signal, pauseSeconds);
+        if (sources.length === 1 && !spellingPauses) return { blob: blobs[0]!, segments: [] };
+        return combineReadingAudio(blobs, controller.signal, spellingPauses);
       };
       void Promise.all([activation, prepare()])
         .then(([, prepared]) => {

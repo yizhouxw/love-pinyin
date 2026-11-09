@@ -13,7 +13,7 @@ const cancelled = () => new DOMException('Reading audio cancelled.', 'AbortError
 export async function combineReadingAudio(
   sources: Blob[],
   signal: AbortSignal,
-  pauseSeconds?: number,
+  spellingPauses?: readonly number[],
 ): Promise<CombinedReadingAudio> {
   if (signal.aborted) throw cancelled();
   try {
@@ -25,25 +25,56 @@ export async function combineReadingAudio(
       decoded.push(await decoder.decodeAudioData(bytes));
       if (signal.aborted) throw cancelled();
     }
-    return joinReadingSamples(decoded, { pauseSeconds });
+    return joinReadingSamples(decoded, { spellingPauses });
   } catch (error) {
     if (signal.aborted) throw cancelled();
     throw new Error('AUDIO_DECODE_FAILED', { cause: error });
   }
 }
 
+/** Ignore low-energy padding without treating a single loud sample as a speech boundary. */
+function spellingEdges(channels: Float32Array[], length: number, sampleRate: number) {
+  const { edgeWindowSeconds, edgeRmsThreshold } = playback.reading.spelling;
+  const window = Math.max(1, Math.round(edgeWindowSeconds * sampleRate));
+  const windows = Math.ceil(length / window);
+  const audible = (index: number) => {
+    const start = index * window;
+    const end = Math.min(start + window, length);
+    const threshold = edgeRmsThreshold ** 2 * (end - start);
+    return channels.some((channel) => {
+      let energy = 0;
+      for (let i = start; i < end; i++) energy += channel[i]! ** 2;
+      return energy >= threshold;
+    });
+  };
+  let first = 0;
+  let last = windows - 1;
+  while (first < windows && !audible(first)) first++;
+  while (last > first && !audible(last)) last--;
+  return { first: first * window, last: Math.min(length, (last + 1) * window) - 1 };
+}
+
 /** Preserve speech samples and guarded edges, replacing surplus edge silence with a short join. */
 export function joinReadingSamples(
   sources: DecodedAudio[],
-  options: { preserveEdges?: boolean; pauseSeconds?: number } = {},
+  options: {
+    preserveEdges?: boolean;
+    pauseSeconds?: number;
+    spellingPauses?: readonly number[];
+  } = {},
 ): CombinedReadingAudio {
   if (!sources.length) throw new Error('AUDIO_DECODE_FAILED');
   const sampleRate = sources[0]!.sampleRate;
   if (!Number.isFinite(sampleRate) || sampleRate <= 0) throw new Error('AUDIO_DECODE_FAILED');
-  const guard = Math.round(playback.reading.edgeGuardSeconds * sampleRate);
-  const boundary = Math.round(
-    (options.pauseSeconds ?? playback.reading.wordBoundarySilenceSeconds) * sampleRate,
-  );
+  const { spellingPauses } = options;
+  const guardSeconds = spellingPauses
+    ? playback.reading.spelling.edgeGuardSeconds
+    : playback.reading.edgeGuardSeconds;
+  const guard = Math.round(guardSeconds * sampleRate);
+  const fade = spellingPauses
+    ? Math.round(playback.reading.spelling.edgeFadeSeconds * sampleRate)
+    : 0;
+  const defaultPause = options.pauseSeconds ?? playback.reading.wordBoundarySilenceSeconds;
   const clips = sources.map((source) => {
     if (source.sampleRate !== sampleRate || !source.length || !source.numberOfChannels)
       throw new Error('AUDIO_DECODE_FAILED');
@@ -52,24 +83,29 @@ export function joinReadingSamples(
     );
     if (options.preserveEdges)
       return { channels, start: 0, end: source.length, leading: 0, trailing: 0 };
-    // Inspect every channel so a quiet channel cannot hide another channel's speech edge.
-    const audible = (index: number) =>
-      channels.some((channel) => Math.abs(channel[index]!) >= playback.reading.silenceThreshold);
     let first = 0;
     let last = source.length - 1;
-    while (first < source.length && !audible(first)) first++;
-    while (last >= first && !audible(last)) last--;
+    if (spellingPauses) {
+      ({ first, last } = spellingEdges(channels, source.length, sampleRate));
+    } else {
+      // Inspect every channel so a quiet channel cannot hide another channel's speech edge.
+      const audible = (index: number) =>
+        channels.some((channel) => Math.abs(channel[index]!) >= playback.reading.silenceThreshold);
+      while (first < source.length && !audible(first)) first++;
+      while (last >= first && !audible(last)) last--;
+    }
     // Never turn an unexpectedly quiet file into an empty or shortened sound.
     if (first > last) return { channels, start: 0, end: source.length, leading: 0, trailing: 0 };
     const start = Math.max(0, first - guard);
     const end = Math.min(source.length, last + guard + 1);
     return { channels, start, end, leading: first - start, trailing: end - last - 1 };
   });
-  const joins = clips.map((clip, index) =>
-    index < clips.length - 1
-      ? Math.max(0, boundary - clip.trailing - clips[index + 1]!.leading)
-      : 0,
-  );
+  const joins = clips.map((clip, index) => {
+    const next = clips[index + 1];
+    if (!next) return 0;
+    const boundary = Math.round((spellingPauses?.[index] ?? defaultPause) * sampleRate);
+    return Math.max(0, boundary - clip.trailing - next.leading);
+  });
   const frames = clips.reduce(
     (total, clip, index) => total + clip.end - clip.start + joins[index]!,
     0,
@@ -99,10 +135,18 @@ export function joinReadingSamples(
   let frame = 0;
   for (const [index, clip] of clips.entries()) {
     const startSeconds = frame / sampleRate;
+    const fadeFrames = Math.min(fade, Math.floor((clip.end - clip.start) / 2));
     for (let sourceFrame = clip.start; sourceFrame < clip.end; sourceFrame++, frame++) {
+      const gain = fadeFrames
+        ? Math.min(
+            1,
+            (sourceFrame - clip.start) / fadeFrames,
+            (clip.end - 1 - sourceFrame) / fadeFrames,
+          )
+        : 1;
       for (let channel = 0; channel < channels; channel++) {
         const source = clip.channels[channel] ?? clip.channels[0]!;
-        const sample = Math.max(-1, Math.min(1, source[sourceFrame]!));
+        const sample = Math.max(-1, Math.min(1, source[sourceFrame]! * gain));
         view.setInt16(
           44 + frame * bytesPerFrame + channel * 2,
           Math.round(sample * (sample < 0 ? 32768 : 32767)),

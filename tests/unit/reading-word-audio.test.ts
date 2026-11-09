@@ -123,6 +123,44 @@ describe('current-item standard audio composition', () => {
   });
 });
 
+describe('DAILY-14 / WORD-12 spelling composition', () => {
+  it('trims noisy padding, fades cuts, and keeps separate pauses within and between syllables', async () => {
+    const noisy = new Float32Array(1000).fill(0.003);
+    noisy[40] = 0.012; // A single noisy sample is below the window threshold.
+    noisy.fill(0.25, 300, 700);
+    noisy[280] = 0.01; // Keep quiet articulation close to the detected onset.
+    const result = joinReadingSamples(
+      Array.from({ length: 3 }, () => recording([noisy])),
+      {
+        spellingPauses: [0.12, 0.28],
+      },
+    );
+    expect(result.segments).toEqual([
+      { startSeconds: 0, endSeconds: 0.46 },
+      { startSeconds: 0.52, endSeconds: 0.98 },
+      { startSeconds: 1.2, endSeconds: 1.66 },
+    ]);
+    const samples = new Int16Array(await result.blob.slice(44).arrayBuffer());
+    expect(samples[0]).toBe(0);
+    expect(samples[10]).toBe(328);
+    expect([...samples.slice(30, 430)].every((value) => value === 8192)).toBe(true);
+    expect(samples[459]).toBe(0);
+    expect([...samples.slice(460, 520)].every((value) => value === 0)).toBe(true);
+    expect(samples[520]).toBe(0);
+    expect(readingSegmentAt(result.segments, 1.1)).toBe(-1);
+  });
+
+  it('smooths hard clip edges even without removable padding', async () => {
+    const result = joinReadingSamples([recording([paddedSpeech(0, 0)])], {
+      spellingPauses: [],
+    });
+    const samples = new Int16Array(await result.blob.slice(44).arrayBuffer());
+    expect(samples).toHaveLength(400);
+    expect([...samples.slice(0, 3)]).toEqual([0, 1024, 2048]);
+    expect([...samples.slice(-3)]).toEqual([2048, 1024, 0]);
+  });
+});
+
 describe('DAILY-11 character pauses', () => {
   it('preserves every original sample and inserts exactly 400ms per boundary, with silence unhighlighted', async () => {
     const { spaceCharacterSamples } = await import('../../src/platform/audio/reading-word-audio');

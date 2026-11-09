@@ -26,6 +26,13 @@
     "edgeGuardSeconds": 0.04,
     "silenceThreshold": 0.0005,
     "characterPauseSeconds": 0.4,
-    "spellingPauseSeconds": 0.28
+    "spelling": {
+      "withinSyllableSeconds": 0.12,
+      "betweenSyllablesSeconds": 0.28,
+      "edgeWindowSeconds": 0.01,
+      "edgeRmsThreshold": 0.005,
+      "edgeGuardSeconds": 0.03,
+      "edgeFadeSeconds": 0.008
+    }
   }
 }
