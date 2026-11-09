@@ -1,7 +1,7 @@
 /** Local bounded PCM capture for MATCH-10 snapshots. No MediaRecorder chunk decoding or storage. */
 export interface ShopCapture {
   start(): Promise<void>;
-  snapshot(): Blob | null;
+  snapshot(): Blob | null | Promise<Blob | null>;
   discard(): void;
 }
 

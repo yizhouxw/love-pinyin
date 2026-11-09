@@ -55,7 +55,14 @@ export class ShopReadingSession {
           finish('timeout');
           return;
         }
-        const audio = this.capture.snapshot();
+        let audio: Blob | null;
+        try {
+          audio = await this.capture.snapshot();
+        } catch {
+          finish('microphone');
+          return;
+        }
+        if (generation !== this.epoch) return;
         if (audio) {
           const controller = new AbortController();
           this.request = controller;
@@ -63,7 +70,7 @@ export class ShopReadingSession {
             // Mock requests are local to this session and need no secure-context API.
             const requestId = this.mock
               ? `shop-mock-${generation}-${++this.sequence}`
-              : crypto.randomUUID();
+              : (crypto.randomUUID?.() ?? `shop-local-${generation}-${++this.sequence}`);
             const result = await this.service.match({
               requestId,
               targetId: target.id,

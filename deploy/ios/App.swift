@@ -37,6 +37,12 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
     private var player: AVPlayer?
     private var playbackId: Int?
     private var lessonId: String?
+    private let recognitionRecorder = IOSRecognitionRecorder()
+    private var recognitionStore: Any?
+    private var recognitionPending: String?
+    #if DEBUG
+    private var recognitionTestWav: String?
+    #endif
 
     private let testProfile: UUID? = {
         #if DEBUG
@@ -91,8 +97,12 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
                 name: UIContentSizeCategory.didChangeNotification, object: nil
             )
             NotificationCenter.default.addObserver(
-                self, selector: #selector(stopPlayback),
+                self, selector: #selector(sceneWillDeactivate),
                 name: UIScene.willDeactivateNotification, object: nil
+            )
+            NotificationCenter.default.addObserver(
+                self, selector: #selector(stopPlayback),
+                name: UIScene.didEnterBackgroundNotification, object: nil
             )
             NotificationCenter.default.addObserver(
                 self, selector: #selector(stopPlayback),
@@ -128,7 +138,17 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         install(label)
     }
 
+    @objc private func sceneWillDeactivate() {
+        // The system microphone permission sheet also deactivates the scene.
+        if !recognitionRecorder.requestingPermission { stopPlayback() }
+    }
+
     @objc private func stopPlayback() {
+        recognitionPending = nil
+        recognitionRecorder.discard()
+        #if DEBUG
+        recognitionTestWav = nil
+        #endif
         player?.pause()
         do {
             try classroom?.pauseGameOnInterruption()
@@ -182,6 +202,97 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         }
         do {
             switch operation {
+            case "modelStatus", "modelDownload":
+                guard body.count == 2 else { throw ClassroomError("INVALID_BRIDGE_REQUEST") }
+                let store = try recognition(assets)
+                Task {
+                    if operation == "modelDownload" {
+                        let status = await store.startDownload()
+                        replyHandler(status, nil)
+                        if status["state"] as? String == "downloading" {
+                            UIApplication.shared.isIdleTimerDisabled = true
+                            await store.waitForDownload()
+                            UIApplication.shared.isIdleTimerDisabled = false
+                        }
+                    } else {
+                        replyHandler(await store.status(), nil)
+                    }
+                }
+            case "recordStart" where body.count == 4:
+                guard let id = recordingID(body),
+                      let limit = body["limit"] as? Int, [5000, 30000].contains(limit),
+                      view.window?.windowScene?.activationState == .foregroundActive
+                else { throw ClassroomError("MICROPHONE_UNAVAILABLE") }
+                let store = try recognition(assets)
+                recognitionPending = id
+                Task {
+                    do {
+                        try await store.prepare()
+                        guard recognitionPending == id,
+                              view.window?.windowScene?.activationState == .foregroundActive
+                        else { throw ClassroomError("RECORDING_CANCELLED") }
+                        #if DEBUG
+                        if testProfile != nil, limit == 5000,
+                           ProcessInfo.processInfo.environment["LP_UI_TEST_RECOGNITION_SAMPLE"] == "1",
+                           let source = assets.recognitionTestAsset() {
+                            let audio = try AVAudioFile(forReading: source)
+                            let count = AVAudioFrameCount(min(audio.length, 4 * Int64(audio.processingFormat.sampleRate)))
+                            guard let buffer = AVAudioPCMBuffer(pcmFormat: audio.processingFormat, frameCapacity: count)
+                            else { throw ClassroomError("TEST_SAMPLE_UNAVAILABLE") }
+                            try audio.read(into: buffer)
+                            guard let mono = buffer.floatChannelData?[0] else {
+                                throw ClassroomError("TEST_SAMPLE_UNAVAILABLE")
+                            }
+                            let samples = Array(UnsafeBufferPointer(start: mono, count: Int(buffer.frameLength)))
+                            recognitionTestWav = IOSPCM.encode(samples, rate: audio.processingFormat.sampleRate)
+                                .base64EncodedString()
+                            replyHandler(true, nil)
+                            return
+                        }
+                        #endif
+                        try await recognitionRecorder.start(id, maximumMs: limit)
+                        replyHandler(true, nil)
+                    } catch {
+                        replyHandler(nil, "MICROPHONE_UNAVAILABLE")
+                    }
+                }
+            case "recordSnapshot", "recordStop", "recordDiscard":
+                guard body.count == 3, let id = recordingID(body) else { throw ClassroomError("INVALID_BRIDGE_REQUEST") }
+                if operation == "recordDiscard" {
+                    if recognitionPending == id {
+                        recognitionPending = nil
+                        #if DEBUG
+                        recognitionTestWav = nil
+                        #endif
+                    }
+                    recognitionRecorder.discard(id)
+                    replyHandler(true, nil)
+                } else {
+                    #if DEBUG
+                    if recognitionPending == id, let wav = recognitionTestWav {
+                        if operation == "recordStop" { recognitionTestWav = nil }
+                        replyHandler(wav, nil)
+                        return
+                    }
+                    #endif
+                    replyHandler(recognitionRecorder.snapshot(id, stop: operation == "recordStop"), nil)
+                }
+            case "recognizeAudio" where body.count == 4:
+                guard let forShop = body["forShop"] as? Bool,
+                      let audio = body["audio"] as? String,
+                      audio.utf8.count <= (forShop ? 213_392 : 1_280_060),
+                      let wav = Data(base64Encoded: audio),
+                      view.window?.windowScene?.activationState == .foregroundActive
+                else { throw ClassroomError("RECOGNITION_UNAVAILABLE") }
+                let store = try recognition(assets)
+                Task {
+                    do {
+                        let result = try await store.recognize(wav, forShop: forShop)
+                        replyHandler(result, nil)
+                    } catch {
+                        replyHandler(["status": "unavailable"], nil)
+                    }
+                }
             case "classroom" where body.count == 5:
                 guard let method = body["method"] as? String, ["GET", "POST", "PUT", "PATCH"].contains(method),
                       let path = body["path"] as? String, path.count < 240,
@@ -271,6 +382,30 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         } catch {
             replyHandler(nil, "IOS_RESOURCE_UNAVAILABLE")
         }
+    }
+
+    private func recordingID(_ body: [String: Any]) -> String? {
+        guard let id = body["id"] as? String, !id.isEmpty, id.utf8.count <= 64 else { return nil }
+        return id
+    }
+
+    private func recognition(_ assets: OfflineAssets) throws -> IOSRecognition {
+        if let store = recognitionStore as? IOSRecognition { return store }
+        var root = try FileManager.default.url(
+            for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true
+        )
+        if testProfile != nil {
+            #if DEBUG
+            let seeded = ProcessInfo.processInfo.environment["LP_UI_TEST_RECOGNITION_SEEDED"] == "1"
+            root.appendPathComponent(seeded ? "RecognitionSeededUITests" : "RecognitionUITests", isDirectory: true)
+            #endif
+        }
+        let store = try IOSRecognition(
+            manifestData: assets.dataFile("qwen-asr"),
+            directory: root.appendingPathComponent("Models/Qwen3-ASR-0.6B-MLX", isDirectory: true)
+        )
+        recognitionStore = store
+        return store
     }
 
     private func openClassroom(_ assets: OfflineAssets) throws -> Classroom {

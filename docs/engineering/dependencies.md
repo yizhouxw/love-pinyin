@@ -151,3 +151,9 @@ DOCKER-05的Windows x86-64宿主运行Linux amd64容器，不新增Windows原生
 底层研究依赖独立锁在 `tools/pinyin-pretrained/pyproject.toml` 与 `uv.lock`，应用依赖不变。[预训练工具文档](pretrained-pronunciation-matcher.md)列出固定直接版本、官方来源、许可证、安装与复现命令；[完整机器清单](pretrained-python-dependency-inventory.json)区分 55 个跨平台锁条目和本机实际安装的 38 个 distribution，含许可证元数据/文件摘要。SenseVoice 代码 MIT 与权重 FunASR Model License 1.1 分别保留；Charsiu 独立权重许可不确定性、HanziFlow 卡片声明与数据许可见[候选核验](../research/pretrained-matcher-model-audit.md)，权重不随 Git 再分发。
 
 2026-11-09 SHOP-09：Apple Silicon Web 服务和 Mac 安装包复用锁定的 [MLX-Audio 0.5.8](https://pypi.org/project/mlx-audio/0.5.8/)（MIT）及 [MLX 0.32.3](https://pypi.org/project/mlx/0.32.3/)（MIT）。家长设置安装 [Qwen3-ASR 0.6B 8-bit 固定转换](https://huggingface.co/mlx-community/Qwen3-ASR-0.6B-8bit/tree/89e96d92ba34aca20b3e29fb10cc284097d1219f)（Apache-2.0）。逐文件版本、大小与摘要见 `content/qwen-asr.json`。
+
+### SPEC-019 SHOP-13～15（iOS 本地识别）
+
+Xcode 原生目标使用 [MLX Audio Swift 0.1.8](https://github.com/Blaizzy/mlx-audio-swift/tree/v0.1.8)（MIT）、[MLX Swift 0.33.0](https://github.com/ml-explore/mlx-swift/tree/0.33.0)（MIT）和系统 AVFoundation。SwiftPM 锁定直接和传递依赖的来源、版本和提交，见 iOS 工程的 `Package.resolved`。许可证与 NOTICE 汇总在 `resources/licenses/IOS-Swift-Packages.txt`，随 iOS 构建分发。构建机实装了 Xcode Metal Toolchain 27B47 及锁定的 SwiftPM 依赖。无新增 npm 或 uv 依赖。
+
+iOS 与 Mac 使用同一份 [Qwen3-ASR 0.6B MLX 8-bit 模型](https://huggingface.co/mlx-community/Qwen3-ASR-0.6B-8bit/tree/89e96d92ba34aca20b3e29fb10cc284097d1219f)（Apache-2.0）。[魔搭镜像](https://modelscope.cn/models/mlx-community/Qwen3-ASR-0.6B-8bit)的固定修订经逐文件尺寸和 SHA-256 核对，与 Hugging Face 发布字节一致。统一清单在 `content/qwen-asr.json`。iOS 构建只带清单，家长主动安装后，权重才进入该设备沙盒。

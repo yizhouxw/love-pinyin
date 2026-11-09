@@ -1,5 +1,6 @@
 import { recordingWav } from './recording-wav';
 import { isGuest } from '../guest';
+import { matchesDaily, observedSyllables, recognizeIOSAudio } from './ios-recognition';
 
 export type RecognitionResult = {
   status: 'matched' | 'different' | 'uncertain' | 'unavailable';
@@ -35,4 +36,26 @@ export async function recognizeReading(
   );
   if (!result.ok) throw new Error(`RECOGNITION_HTTP_${result.status}`);
   return result.json() as Promise<RecognitionResult>;
+}
+
+export async function recognizeIOSReading(
+  expected: readonly string[],
+  audio: Blob,
+  signal: AbortSignal,
+): Promise<RecognitionResult> {
+  const result = await recognizeIOSAudio(audio, false, signal);
+  const context = { mode: 'asr-syllable-match', toneAssessed: false } as const;
+  if (result.status !== 'recognized') return { ...context, status: result.status };
+  const observed = observedSyllables(result.pinyin);
+  const matched = matchesDaily(expected, observed);
+  return {
+    ...context,
+    status: matched
+      ? 'matched'
+      : observed.length && /\p{Script=Han}/u.test(result.transcript)
+        ? 'different'
+        : 'uncertain',
+    transcript: result.transcript,
+    recognizedPinyin: observed.join(' '),
+  };
 }

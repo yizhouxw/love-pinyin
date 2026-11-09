@@ -38,6 +38,12 @@ final class OfflineAssets: NSObject, WKURLSchemeHandler {
         try Data(contentsOf: data.appendingPathComponent("\(name).json"))
     }
 
+    #if DEBUG
+    func recognitionTestAsset() -> URL? {
+        clip("audio/audio-final-a")
+    }
+    #endif
+
     func lesson(_ id: String) -> URL? {
         guard id.hasPrefix("lesson-") else { return nil }
         return clip("voice/\(id)")

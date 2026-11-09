@@ -17,7 +17,13 @@ import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { BrowserReadingRecorder } from '../platform/audio/browser-reading-recorder';
 import { isIOSApp } from '../platform/ios-app';
 import { isGuest } from '../platform/guest';
-import { recognizeReading, type RecognitionResult } from '../platform/audio/reading-recognition';
+import {
+  recognizeIOSReading,
+  recognizeReading,
+  type RecognitionResult,
+} from '../platform/audio/reading-recognition';
+import { iosModelStatus } from '../platform/audio/ios-recognition';
+import { IOSReadingRecorder } from '../platform/audio/ios-recorder';
 import { waitForPlaybackGap } from '../platform/audio/playback-gap';
 import { dayResources, itemResources } from '../platform/audio/reading-resources';
 import { GuidanceSwitch } from './guidance-switch';
@@ -36,7 +42,14 @@ import { playSpelling } from '../platform/audio/spelling-playback';
 import { PinyinLegend, PinyinText, ReadingModeControl } from './pinyin-reading';
 
 async function readDaily(offline?: DailyReading): Promise<DailyReading> {
-  if (offline) return offline;
+  if (offline) {
+    if (!isIOSApp()) return offline;
+    const model = await iosModelStatus().catch(() => ({ state: 'unavailable' }));
+    return {
+      ...offline,
+      assessment: { ...offline.assessment, available: model.state === 'installed' },
+    };
+  }
   if (isIOSApp()) throw new Error('DAILY_UNAVAILABLE');
   const response = await fetch(`/api/v1/${isGuest() ? 'guest/' : ''}daily-reading`);
   if (!response.ok) throw new Error('DAILY_UNAVAILABLE');
@@ -176,7 +189,8 @@ export function DailyReadingPage({
       )}
       {error && (
         <div role="alert">
-          暂时连不上每日练习。请检查家庭电脑。<button onClick={load}>重新连接</button>
+          {isIOSApp() ? '暂时无法读取本机每日练习。' : '暂时连不上每日练习。请检查家庭电脑。'}
+          <button onClick={load}>{isIOSApp() ? '重试' : '重新连接'}</button>
         </div>
       )}
       {!data && !error && <p role="status">正在读取每日练习…</p>}
@@ -435,7 +449,7 @@ function ReadingSession({
   const [recognizing, setRecognizing] = useState(false);
   const [recognition, setRecognition] = useState<RecognitionResult | null>(null);
   const controller = useRef<AbortController | null>(null);
-  const recorder = useRef(new BrowserReadingRecorder());
+  const recorder = useRef(isIOSApp() ? new IOSReadingRecorder() : new BrowserReadingRecorder());
   const replay = useRef<HTMLAudioElement | null>(null);
   const listRef = useRef<HTMLElement | null>(null);
   const item = section.items[index]!;
@@ -708,7 +722,9 @@ function ReadingSession({
         setRecording('idle');
         if (instructionHeard) {
           setRecordError(
-            '麦克风没有开启。请允许麦克风权限，并使用本机地址或受信任 HTTPS。你仍可以直接跟读。',
+            isIOSApp()
+              ? '录音暂不可用。请检查麦克风权限和本机模型，或请家长帮忙判断。'
+              : '麦克风没有开启。请允许麦克风权限，并使用本机地址或受信任 HTTPS。你仍可以直接跟读。',
           );
         } else {
           setFailure('录音说明没有播放成功，请重听示范后再点录音。');
@@ -723,7 +739,14 @@ function ReadingSession({
     const active = new AbortController();
     controller.current = active;
     try {
-      const result = await recognizeReading(item.id, url, active.signal);
+      const capture = recorder.current;
+      let result: RecognitionResult;
+      if (capture instanceof IOSReadingRecorder) {
+        if (!capture.audio) throw new Error('RECORDING_UNAVAILABLE');
+        result = await recognizeIOSReading(item.syllables, capture.audio, active.signal);
+      } else {
+        result = await recognizeReading(item.id, url, active.signal);
+      }
       if (active.signal.aborted || controller.current !== active) return;
       setRecognition(result);
       setRecognizing(false);
@@ -943,7 +966,7 @@ function ReadingSession({
             )}
           </div>
         )}
-        {!isIOSApp() && (
+        {(!isIOSApp() || canRecognize) && (
           <details
             className="daily-optional-recording"
             open={recordOpen}
@@ -974,8 +997,10 @@ function ReadingSession({
               )}
             </div>
             <p className="daily-privacy">
-              录音仅在浏览器和家庭电脑
-              内存处理，不保存；换条、退出或后台会清除。识别只匹配音节，不判四声。每次识别最多三十秒，录音两分钟自动停止。
+              {isIOSApp()
+                ? '录音和识别仅在本设备内存处理。换条、退出或后台会清除；每次最多三十秒。'
+                : '录音仅在浏览器和家庭电脑内存处理。换条、退出或后台会清除；识别最多三十秒，录音两分钟自动停止。'}
+              识别只核对音节。
             </p>
             {recordError && <p role="alert">{recordError}</p>}
             {recordUrl && (
@@ -986,7 +1011,7 @@ function ReadingSession({
                   清除这段录音
                 </button>
                 {canRecognize ? (
-                  <p>电脑核对识别出的音节。</p>
+                  <p>{isIOSApp() ? '本设备核对识别出的音节。' : '电脑核对识别出的音节。'}</p>
                 ) : (
                   <p>请听回放，用下方的家长判断确认本条跟读。</p>
                 )}
@@ -999,13 +1024,20 @@ function ReadingSession({
                     重新识别这段跟读
                   </button>
                 )}
-                {recognizing && <p role="status">电脑正在识别你的跟读…</p>}
+                {recognizing && <p role="status">正在识别你的跟读…</p>}
                 {recognition && (
                   <div
                     className={`daily-recognition daily-recognition-${recognition.status}`}
                     role="status"
                   >
-                    <strong>音节对照（Qwen）：{recognitionContent.ui[recognition.status]}</strong>
+                    <strong>
+                      音节对照（Qwen）：
+                      {
+                        (isIOSApp() ? recognitionContent.iosUI : recognitionContent.ui)[
+                          recognition.status
+                        ]
+                      }
+                    </strong>
                     {recognition.transcript && <p>识别文字：{recognition.transcript}</p>}
                     {recognition.recognizedPinyin && (
                       <p>识别文字的拼音：{recognition.recognizedPinyin}</p>
@@ -1118,10 +1150,11 @@ function ReadingSession({
 function readingAudioFailure(error: unknown): string {
   const code = error instanceof Error ? error.message : '';
   if (code === 'AUDIO_GESTURE_REQUIRED')
-    return 'iPad 需要你再点一下播放按钮才能出声，请点“重试示范”。';
+    return '设备需要你再点一下播放按钮才能出声，请点“重试示范”。';
   if (code === 'AUDIO_DECODE_FAILED') return '这段声音暂时无法解码，请重试；仍然失败时请家长检查。';
   if (code === 'AUDIO_TIMEOUT' || code === 'AUDIO_NETWORK' || code === 'AUDIO_STALLED')
     return '这段声音下载或播放中断了，请点“重试示范”。已经准备好的声音可以继续播放。';
+  if (isIOSApp()) return '这段本机示范暂时无法播放，请点“重试示范”。';
   if (code.startsWith('AUDIO_HTTP_')) return '这段声音暂时不可用，请重新连接家庭电脑 后重试。';
   return '示范声音还没响起来，请重试。仍然失败时请家长检查家庭电脑上的每日练习音频。';
 }

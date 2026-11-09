@@ -70,6 +70,85 @@ final class AdaptiveClassroomTests: XCTestCase {
     }
 
     @MainActor
+    func testOnDeviceQwenDownloadAndShopMatch() {
+        runOnDeviceQwenShop(seeded: false)
+    }
+
+    @MainActor
+    func testOnDeviceQwenShopWithVerifiedFixture() throws {
+        guard ProcessInfo.processInfo.environment["LP_RUN_SEEDED_QWEN_TEST"] == "1" else {
+            throw XCTSkip("Requires a verified model in the isolated device test sandbox")
+        }
+        runOnDeviceQwenShop(seeded: true)
+    }
+
+    @MainActor
+    private func runOnDeviceQwenShop(seeded: Bool) {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        XCUIDevice.shared.orientation = .portrait
+        app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
+        app.launchEnvironment["LP_UI_TEST_RECOGNITION_SAMPLE"] = "1"
+        if seeded { app.launchEnvironment["LP_UI_TEST_RECOGNITION_SEEDED"] = "1" }
+        app.launch()
+
+        let parent = app.buttons["家长管理"]
+        XCTAssertTrue(parent.waitForExistence(timeout: 25), app.debugDescription)
+        parent.tap()
+        let confirm = app.buttons["我是家长，继续"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 12))
+        confirm.tap()
+
+        let model = labeled("本地语音识别模型", in: app)
+        XCTAssertTrue(model.waitForExistence(timeout: 12), app.debugDescription)
+        let installed = labeled("模型已安装", in: app)
+        if seeded { XCTAssertTrue(installed.waitForExistence(timeout: 12), app.debugDescription) }
+        if !installed.exists {
+            let download = app.buttons.matching(NSPredicate(
+                format: "label IN %@", ["下载模型", "重试下载"]
+            )).firstMatch
+            reveal(download, in: app)
+            download.tap()
+            let progress = labeled("正在下载并校验", in: app)
+            XCTAssertTrue(progress.waitForExistence(timeout: 15), app.debugDescription)
+            let failed = labeled("下载或校验失败", in: app)
+            let stopped = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                installed.exists || failed.exists
+            }, object: app)
+            XCTAssertEqual(XCTWaiter.wait(for: [stopped], timeout: 900), .completed)
+            XCTAssertTrue(installed.exists, app.debugDescription)
+        }
+        addScreenshot("iPhone-device-model-installed")
+
+        let back = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "返回学习")).firstMatch
+        if !back.isHittable { app.swipeDown(velocity: .fast) }
+        for _ in 0..<4 where !back.isHittable { app.swipeDown(velocity: .fast) }
+        XCTAssertTrue(back.isHittable, app.debugDescription)
+        back.tap()
+        let hub = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "进入游戏乐园")).firstMatch
+        XCTAssertTrue(hub.waitForExistence(timeout: 15), app.debugDescription)
+        reveal(hub, in: app)
+        hub.tap()
+        let shop = app.buttons["进入拼音小卖部"]
+        XCTAssertTrue(shop.waitForExistence(timeout: 15), app.debugDescription)
+        reveal(shop, in: app)
+        XCUIDevice.shared.orientation = .portrait
+        shop.tap()
+        let auto = labeled("本地语音识别", in: app)
+        XCTAssertTrue(auto.waitForExistence(timeout: 15), app.debugDescription)
+        let goods = app.switches["选择薯片"]
+        XCTAssertTrue(goods.waitForExistence(timeout: 12), app.debugDescription)
+        for _ in 0..<4 where !app.frame.contains(goods.frame) { app.swipeUp() }
+        XCTAssertTrue(app.frame.contains(goods.frame), app.debugDescription)
+        goods.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        // A bundled licensed sample replaces microphone input in this Debug test.
+        // The production Core ML model and native bridge still perform the inference.
+        let match = labeled("读音匹配，商品已自动加入购物车", in: app)
+        XCTAssertTrue(match.waitForExistence(timeout: 45), app.debugDescription)
+        addScreenshot("iPhone-on-device-Qwen-match")
+    }
+
+    @MainActor
     func testOfflineGameScenes() throws {
         continueAfterFailure = false
         let app = XCUIApplication()

@@ -87,3 +87,5 @@ EdUHK 香港教育大学普通话语音学习语料（SPEC-018 MATCH-14）：来
 - 公开 iOS Archive 装入新版练习及上述音源。词语天天练两版共用课名、词目及其本地合成音频，来源与许可见 SPEC-022。家庭 Xcode 运行版保留旧练习材料及旧练习声音的本地使用，原 13 份整课 MP3 不再装入 iOS。
 
 Qwen3-ASR 0.6B（SPEC-019 SHOP-09）：[Qwen 原始权重](https://huggingface.co/Qwen/Qwen3-ASR-0.6B)与[本项目固定的 MLX 8-bit 转换](https://huggingface.co/mlx-community/Qwen3-ASR-0.6B-8bit/tree/89e96d92ba34aca20b3e29fb10cc284097d1219f)为 Apache-2.0。权重由家长显式下载，摘要在 `content/qwen-asr.json`，不会随安装包、仓库或容器分发。Apple Silicon 运行时复用已有 MLX-Audio 和 MLX 锁。小卖部新增三条人工确认语音沿用 SPEC-011 生成流程及许可。
+
+iOS 使用 [MLX Audio Swift 0.1.8](https://github.com/Blaizzy/mlx-audio-swift/tree/v0.1.8) 和 [MLX Swift 0.33.0](https://github.com/ml-explore/mlx-swift/tree/0.33.0)，其运行时代码及第三方许可证随 iOS 构建分发。iOS 与 Mac 使用同一份 Apache-2.0 权重及 `content/qwen-asr.json` 摘要；家长在当前设备主动下载。

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Lesson, Progress } from '../domain/learning-api';
 import { gameCatalog } from '../domain/games';
 import { api } from '../platform/api-client';
+import { ModelSettings } from './model-settings';
 import { ReleaseHistory } from './release-history';
 
 export function IOSClassroomSettings({
@@ -104,6 +105,7 @@ export function IOSClassroomSettings({
           保存游戏时长
         </button>
       </form>
+      <ModelSettings />
       {advancedSettings}
       <h2>此设备学习记录</h2>
       <p role="status" aria-label={progressSummary}>

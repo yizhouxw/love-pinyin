@@ -12,6 +12,8 @@ import {
   type ShopTarget,
 } from '../domain/pinyin-shop';
 import { BrowserShopRecorder } from '../platform/audio/browser-shop-recorder';
+import { isIOSApp } from '../platform/ios-app';
+import { IOSShopRecorder } from '../platform/audio/ios-recorder';
 import { MockShopCapture } from '../platform/audio/mock-shop-capture';
 import {
   ShopReadingSession,
@@ -57,8 +59,12 @@ export function PinyinShop({
   const products = shopProducts();
   const targets = useMemo(() => shopTargets(curriculum, lessonId), [curriculum, lessonId]);
   const adapter = useMemo(
-    () => recognition ?? { service: shopPronunciation(), mock: false },
-    [recognition],
+    () =>
+      recognition ?? {
+        service: shopPronunciation(targets.map(({ target }) => target)),
+        mock: false,
+      },
+    [recognition, targets],
   );
   const [automatic, setAutomatic] = useState(recognition?.configured ?? !!recognition);
   const [manualOverride, setManualOverride] = useState(false);
@@ -79,7 +85,9 @@ export function PinyinShop({
       new ShopReadingSession(
         adapter.mock
           ? new MockShopCapture()
-          : new BrowserShopRecorder(shopRules.recognitionTimeoutMs),
+          : isIOSApp()
+            ? new IOSShopRecorder(shopRules.recognitionTimeoutMs)
+            : new BrowserShopRecorder(shopRules.recognitionTimeoutMs),
         adapter.service,
         adapter.mock,
         shopRules,

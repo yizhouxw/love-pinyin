@@ -289,6 +289,7 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
         "classroom": classroom,
         "practice-packs": practice_packs,
         "distribution": {"profile": "public" if public else "household"},
+        "qwen-asr": json.loads((ROOT / "content/qwen-asr.json").read_text()),
         "learning-audio": {
             "narration": {asset_id: f"voice/{asset_id}" in catalog for asset_id in scripts},
             "lessons": original["lessons"],

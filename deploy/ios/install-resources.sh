@@ -9,7 +9,7 @@ if [[ "${CONFIGURATION:-Debug}" == Release ]]; then
     exit 1
   fi
 fi
-if [[ ! -f "$resources/Data/web-files.json" ]]; then
+if [[ ! -f "$resources/Data/web-files.json" || ! -f "$resources/Data/qwen-asr.json" ]]; then
   echo 'error: Run deploy/ios/prepare.sh from the repository before building the iOS target.' >&2
   exit 1
 fi

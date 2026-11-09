@@ -1,6 +1,7 @@
 {
   "repository": "mlx-community/Qwen3-ASR-0.6B-8bit",
   "revision": "89e96d92ba34aca20b3e29fb10cc284097d1219f",
+  "modelScopeRevision": "54e4c7130621e78fd227cf3a49893c670d9057f1",
   "license": "Apache-2.0",
   "files": {
     "chat_template.json": {

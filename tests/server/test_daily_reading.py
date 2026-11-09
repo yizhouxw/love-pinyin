@@ -26,9 +26,9 @@ def test_pdf_sequence_deduplicates_within_sections_preserving_tones_and_source_p
 def test_status_without_assets_never_fakes_assessment_or_available_audio(
     paired_client, monkeypatch, tmp_path
 ):
-    from server import reading_recognition
+    from server import qwen_recognition
 
-    monkeypatch.setattr(reading_recognition, "MODEL_PATH", tmp_path / "missing-model.bin")
+    monkeypatch.setattr(qwen_recognition, "MODEL_DIR", tmp_path / "missing-model")
     response = paired_client.get("/api/v1/daily-reading")
     assert response.status_code == 200
     data = response.json()

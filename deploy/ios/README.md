@@ -2,6 +2,8 @@
 
 本工程对应 [SPEC-023](../../docs/specs/SPEC-023-ios-app.md)。可离线使用课堂练习、天天练拼音、词语天天练和四款拼音游戏。答题、进度和游戏时长存放在当前设备。到期复习和跨端备份分别由 GitHub Issue [#36](https://github.com/yizhouxw/love-pinyin/issues/36) 和 [#37](https://github.com/yizhouxw/love-pinyin/issues/37) 跟踪。
 
+在 iOS 或 iPadOS 17 及以上，可在「家长管理 → 本地语音识别模型」主动下载 Qwen3-ASR 0.6B MLX 8-bit 权重，约 1.01 GB。下载及校验完成后，天天练拼音和小卖部在设备内录音和识别，独立于家庭 Mac。安装包只带下载清单，缺少模型时可人工确认。
+
 ## 准备和构建
 
 家庭调试版安装两套练习。首次使用默认新版资料，可从「家长管理 → 高级设置 → 学习素材」切换到行知小学和原词语练习。家庭版先显式准备旧练习用的 PinYinSound：
@@ -19,6 +21,8 @@ open deploy/ios/LovePinyin.xcodeproj
 ```sh
 deploy/ios/prepare.sh --public
 ```
+
+编译 MLX 的 Metal 着色器需要 Xcode 对应的 Metal Toolchain。若未安装，在 Xcode 的 Components 设置中安装，或运行 `xcodebuild -downloadComponent MetalToolchain`。
 
 公开资源位于 `build/ios/PublicResources`。两种构建分别校验实际引用及音频摘要。课程与练习生成命令见下方。正式分发按 [SPEC-024](../../docs/specs/SPEC-024-ios-content-distribution.md) 和上架 Issue 验收。
 
