@@ -35,7 +35,6 @@ COPY content ./content
 COPY schemas ./schemas
 COPY resources ./resources
 RUN uv run --no-sync python -m scripts.prepare_docker_resources \
-    && uv run --no-sync python -m scripts.fetch_asr_model \
     && uv run --no-sync python -m scripts.check_bundled_resources \
     && uv run --no-sync python -m scripts.validate_audio_resources \
     && uv run --no-sync python -m scripts.validate_daily_reading --release
@@ -43,8 +42,7 @@ RUN uv run --no-sync python -m scripts.prepare_docker_resources \
 FROM base AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     PATH="/app/.venv/bin:$PATH" LOVE_PINYIN_DATA_DIR=/data \
-    LOVE_PINYIN_SOURCE_AUDIO_DIR=/app/private/pinyinsound \
-    LOVE_PINYIN_ASR_CPU_ONLY=1
+    LOVE_PINYIN_SOURCE_AUDIO_DIR=/app/private/pinyinsound
 WORKDIR /app
 COPY --from=prepared /app/.venv ./.venv
 COPY --from=prepared /app/server ./server
@@ -53,12 +51,10 @@ COPY --from=prepared /app/content ./content
 COPY --from=prepared /app/schemas ./schemas
 COPY --from=prepared /app/resources ./resources
 COPY --from=prepared /app/private/pinyinsound ./private/pinyinsound
-COPY --from=prepared --chmod=644 /app/models/whisper-small/ggml-small.bin ./models/whisper-small/ggml-small.bin
 COPY --from=web /app/dist ./dist
 COPY LICENSE THIRD_PARTY_NOTICES.md ./
 RUN groupadd --gid 10001 pinyin && useradd --uid 10001 --gid pinyin --no-create-home pinyin \
-    && mkdir /data && chown pinyin:pinyin /data \
-    && chmod 755 models models/whisper-small
+    && mkdir /data && chown pinyin:pinyin /data
 USER pinyin
 VOLUME ["/data"]
 EXPOSE 8000

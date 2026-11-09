@@ -1,4 +1,7 @@
 import { spawn } from 'node:child_process';
+import { mkdir, readFile, symlink } from 'node:fs/promises';
+import { join } from 'node:path';
+import standardAudio from '../../resources/audio/ios-standard/manifest.json' with { type: 'json' };
 import { expect, type Page } from '@playwright/test';
 import { test as realTest } from '../support/real-server';
 
@@ -172,7 +175,7 @@ test('SHOP-05/06: six automatic additions and exact decorative checkout total', 
   await page.getByRole('button', { name: '结算购物车', exact: false }).click();
   await expect(page.getByText('结算总金额', { exact: true })).toBeVisible();
   await expect(page.locator('.shop-total strong')).toHaveText('¥30.00');
-  await expect(page.getByText('模拟购物清单 · 不是真实识别', { exact: true })).toBeVisible();
+  await expect(page.getByText('结算总金额', { exact: true })).toBeVisible();
   await page.screenshot({ path: test.info().outputPath('shop2-checkout.png'), fullPage: true });
 });
 
@@ -228,6 +231,7 @@ test('SHOP-05/06: microphone denial recovers and global feedback never speaks wh
   await page.goto(`${devUrl}tests/support/shop-harness.html?result=uncertain`);
   await page.getByRole('button', { name: '选择薯片', exact: true }).click();
   await expect(page.locator('.shop-feedback')).toContainText('麦克风没有准备好');
+  await page.getByRole('button', { name: '切换到本地识别' }).click();
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).check();
   const voices: string[] = [];
   page.on('request', (r) => {
@@ -286,7 +290,7 @@ test('SHOP-05: narrow selection brings the live target into view and cancels rea
   await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
 });
 
-test('SHOP-08: production mock completes checkout with no microphone device or permission', async ({
+test('SHOP-10: manual confirmation requires an explicit action for each item', async ({
   page,
   appUrl,
 }) => {
@@ -297,19 +301,20 @@ test('SHOP-08: production mock completes checkout with no microphone device or p
   await guest(page, appUrl);
   await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
   await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
-  await expect(page.getByText('模拟识别', { exact: true })).toBeVisible();
-  await expect(page.getByText('当前不是真实识别', { exact: false }).first()).toBeVisible();
+  await expect(page.getByText('人工确认', { exact: true })).toBeVisible();
   expect(await page.evaluate(() => navigator.mediaDevices)).toBeUndefined();
   expect(await page.evaluate(() => typeof window.crypto.randomUUID)).toBe('undefined');
   const goods = page.locator('.shop-product');
   for (let i = 0; i < 6; i++) {
     await goods.nth(i).click();
-    await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(i + 1, { timeout: 6000 });
-    await expect(page.locator('.shop-feedback')).toContainText('现在不是真实识别');
+    await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(i);
+    await page.getByRole('button', { name: '读完了，加入购物车' }).click();
+    await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(i + 1);
+    await expect(page.locator('.shop-feedback')).toContainText('已确认读完');
   }
   await expect(goods.nth(6)).toBeDisabled();
   await page.getByRole('button', { name: '结算购物车', exact: false }).click();
-  await expect(page.getByText('模拟购物清单 · 不是真实识别', { exact: true })).toBeVisible();
+  await expect(page.getByText('结算总金额', { exact: true })).toBeVisible();
   await expect(page.locator('.shop-total strong')).toHaveText('¥30.00');
   await page.screenshot({
     path: test.info().outputPath('shop3-production-checkout.png'),
@@ -317,22 +322,68 @@ test('SHOP-08: production mock completes checkout with no microphone device or p
   });
 });
 
-test('SHOP-08: spoken entry and add feedback both identify the simulation', async ({
-  page,
-  appUrl,
-}) => {
+test('SHOP-10: audible manual instructions and explicit confirmation', async ({ page, appUrl }) => {
   await guest(page, appUrl);
   await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
   const intro = page.waitForResponse(
-    (response) => response.url().includes('/voice/ui-shop_mock_welcome') && response.ok(),
+    (response) => response.url().includes('/voice/ui-shop_manual_welcome') && response.ok(),
   );
   await page.getByRole('button', { name: '听小卖部怎么玩', exact: true }).click();
   await intro;
   await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
   const feedback = page.waitForResponse(
-    (response) => response.url().includes('/voice/ui-shop_mock_added') && response.ok(),
+    (response) => response.url().includes('/voice/ui-shop_manual_added') && response.ok(),
   );
   await page.getByRole('button', { name: '选择薯片', exact: true }).click();
+  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+  await page.getByRole('button', { name: '读完了，加入购物车' }).click();
   await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(1);
   await feedback;
+});
+
+test('SHOP-09/10: installed Qwen matches licensed audio in the production shop', async ({
+  page,
+  appUrl,
+  dataDirectory,
+}) => {
+  const modelDir = process.env.LOVE_PINYIN_TEST_QWEN_DIR;
+  test.skip(!modelDir, 'Run with an explicit verified local Qwen model directory.');
+  const modelParent = join(dataDirectory, 'models');
+  await mkdir(modelParent);
+  await symlink(modelDir!, join(modelParent, 'qwen3-asr-0.6b'));
+  const audio = await readFile(
+    join('resources/audio/ios-standard', standardAudio.clips['audio-final-a'].file),
+  );
+  await page.addInitScript(
+    (bytes) => {
+      Object.defineProperty(navigator, 'mediaDevices', {
+        configurable: true,
+        value: {
+          getUserMedia: async () => {
+            const context = new AudioContext();
+            void context.resume().catch(() => undefined);
+            const destination = context.createMediaStreamDestination();
+            const source = context.createBufferSource();
+            source.buffer = await context.decodeAudioData(new Uint8Array(bytes).buffer);
+            source.connect(destination);
+            source.start(context.currentTime + 0.2);
+            return destination.stream;
+          },
+        },
+      });
+    },
+    [...audio],
+  );
+  await guest(page, appUrl);
+  await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
+  await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
+  await expect(page.getByText('本地语音识别', { exact: true })).toBeVisible();
+  await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
+  const match = page.waitForResponse(async (response) => {
+    if (!response.url().endsWith('/assess') || !response.ok()) return false;
+    return (await response.json()).match.status === 'matched';
+  });
+  await page.getByRole('button', { name: '选择薯片' }).click();
+  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(1, { timeout: 7000 });
+  expect((await (await match).json()).saved).toBe(false);
 });

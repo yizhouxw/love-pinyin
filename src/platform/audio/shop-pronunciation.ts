@@ -1,15 +1,14 @@
-import { shopRules } from '../../domain/pinyin-shop';
-import { createPronunciationService } from './pronunciation-service';
-import type { PronunciationTarget } from '../../domain/pronunciation';
+import { isIOSApp } from '../ios-app';
+import { createHttpPronunciationService } from './pronunciation-http';
 
-/** Explicitly configured shop simulation; never inferred from a real service failure. */
-export function shopPronunciation(
-  targets: readonly PronunciationTarget[],
-  mode: 'mock' | 'unavailable' = shopRules.recognitionMode === 'mock' ? 'mock' : 'unavailable',
-) {
-  return {
-    configured: mode === 'mock',
-    mock: mode === 'mock',
-    service: createPronunciationService({ targets, mode }),
-  };
+export const shopPronunciation = createHttpPronunciationService;
+
+export async function shopRecognitionAvailable(signal: AbortSignal): Promise<boolean> {
+  if (isIOSApp() || !navigator.mediaDevices?.getUserMedia || !crypto.randomUUID) return false;
+  try {
+    const response = await fetch('/api/v1/shop-recognition', { signal, cache: 'no-store' });
+    return response.ok && (await response.json()).available === true;
+  } catch {
+    return false;
+  }
 }

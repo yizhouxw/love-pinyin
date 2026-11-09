@@ -158,10 +158,6 @@ def validate(release: bool = False) -> dict:
         if item["narrationId"] and not item["spokenText"]:
             raise ValueError(f"Missing Chinese word script for {item['id']}")
     if release:
-        from scripts.asr_model import validate_model
-        from server.reading_recognition import MODEL_PATH
-
-        validate_model(MODEL_PATH)
         status = daily_reading.status()
         timelines = reading_timings.read()
         manifest = learning_audio.read_manifest()
@@ -205,7 +201,7 @@ def validate(release: bool = False) -> dict:
         "standardClips": len(data["assets"]),
         "derivedFirstTones": len(data["derivedAssets"]),
         "release": release,
-        "automaticRecognition": True,
+        "automaticRecognition": "optional-local-qwen",
         "professionalAssessment": False,
     }
 

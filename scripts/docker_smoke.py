@@ -12,8 +12,6 @@ import urllib.request
 from pathlib import Path
 from server import daily_reading, learning_audio, source_audio
 from server.content import load_curriculum
-from scripts.asr_model import validate_model
-from server.reading_recognition import MODEL_PATH
 
 base = "http://127.0.0.1:8000"
 jar = http.cookiejar.CookieJar()
@@ -44,10 +42,7 @@ else:
         assert request('/api/v1/guest/voice/' + key)
     for asset in daily_reading.load()['assets']:
         assert request('/api/v1/guest/daily-audio/' + asset['id'])
-    validate_model(MODEL_PATH)
-    from pywhispercpp.model import Model
-    Model(str(MODEL_PATH), context_params={"use_gpu": False},
-        print_progress=False, print_realtime=False)
+    assert request('/api/v1/shop-recognition')['available'] is False
     code = request('/api/v1/local/pairing-code', {})['code']
     request('/api/v1/pair', {'code': code, 'label': 'Docker smoke'})
     profile = request('/api/v1/bootstrap')['profile']
@@ -68,7 +63,7 @@ else:
     result = request('/api/v1/guest/operate', {'path': '/sessions', 'method': 'POST',
         'body': {'lessonId': load_curriculum()['lessons'][0]['id']}})
     assert len(result['result']['tasks']) == 6
-    print('Offline: webpage, all audio, Whisper initialization, pairing and guest session passed')
+    print('Offline: webpage, all audio, manual recognition mode, pairing and guest session passed')
 """
 
 

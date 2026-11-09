@@ -35,7 +35,6 @@ final class App: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         process.arguments = ["-m", "uvicorn", "server.main:app", "--host", "127.0.0.1", "--port", String(port), "--no-proxy-headers"]
         var env = ProcessInfo.processInfo.environment
         env["LOVE_PINYIN_DATA_DIR"] = data.appendingPathComponent("data").path
-        env["LOVE_PINYIN_MODEL_PATH"] = data.appendingPathComponent("models/whisper-small/ggml-small.bin").path
         env["LOVE_PINYIN_INSTANCE_ID"] = instanceID
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         process.environment = env

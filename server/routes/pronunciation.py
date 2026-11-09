@@ -10,6 +10,13 @@ from server.storage import connect
 router = APIRouter()
 
 
+@router.get("/shop-recognition")
+def shop_recognition_status() -> dict:
+    from server.qwen_recognition import status
+
+    return {"available": status()["available"]}
+
+
 async def read_audio(request: Request) -> bytes:
     from server.reading_recognition import MAX_BYTES
 

@@ -59,9 +59,13 @@ def evaluate(target: dict, payload: bytes) -> dict:
 def assess(target_id: str, request_id: str, payload: bytes, household_id: str | None) -> dict:
     from fastapi import HTTPException
 
+    from server import shop_recognition
     from server.reading_recognition import decode_pcm
 
-    target = targets().get(target_id)
+    shop_target = shop_recognition.catalog()[0].get(target_id)
+    target = shop_target or targets().get(target_id)
+    if shop_target:
+        household_id = None
     if target is None:
         raise HTTPException(404, detail={"code": "PRONUNCIATION_TARGET_NOT_FOUND"})
     # Validate even when the model is unavailable; never pass paths or remote URLs.
@@ -77,7 +81,7 @@ def assess(target_id: str, request_id: str, payload: bytes, household_id: str | 
                 if row["target_id"] != target_id:
                     raise HTTPException(409, detail={"code": "PRONUNCIATION_REQUEST_CONFLICT"})
                 return json.loads(row["result_json"])
-    result = evaluate(target, payload)
+    result = (shop_recognition.evaluate if shop_target else evaluate)(target, payload)
     if result["evidence"] not in {"none", "acoustic"}:
         raise RuntimeError("Development evidence cannot enter the product API")
     if result["status"] in {"matched", "retry"} and result["evidence"] != "acoustic":
@@ -108,7 +112,7 @@ def assess(target_id: str, request_id: str, payload: bytes, household_id: str | 
         "createdAt": now_iso(),
         "saved": bool(household_id and result["evidence"] == "acoustic"),
     }
-    if result["evidence"] == "acoustic" and not valid_record(response):
+    if not shop_target and result["evidence"] == "acoustic" and not valid_record(response):
         raise RuntimeError("Invalid acoustic result")
     if response["saved"]:
         with transaction() as db:

@@ -12,12 +12,18 @@ from pathlib import Path
 bundle = Path("build/macos/爱拼音.app/Contents/Resources").resolve()
 root = bundle / "app"
 python = bundle / "python/bin/python3"
+assert not list(root.rglob("*.safetensors"))
+subprocess.run(
+    [str(python), "-c", "from server.qwen_recognition import supported; assert supported()"],
+    cwd=root,
+    check=True,
+)
 with tempfile.TemporaryDirectory() as directory:
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]
     env = os.environ.copy()
-    env.update(LOVE_PINYIN_DATA_DIR=directory, LOVE_PINYIN_MODEL_PATH=f"{directory}/model.bin")
+    env.update(LOVE_PINYIN_DATA_DIR=directory)
     process = subprocess.Popen(
         [
             str(python),
@@ -46,6 +52,10 @@ with tempfile.TemporaryDirectory() as directory:
                     assert response.status == 200
                 with urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=1) as response:
                     assert b"<!doctype html>" in response.read().lower()
+                with urllib.request.urlopen(
+                    f"http://127.0.0.1:{port}/api/v1/shop-recognition", timeout=1
+                ) as response:
+                    assert b'"available":false' in response.read()
                 break
             except (OSError, urllib.error.URLError):
                 time.sleep(0.2)

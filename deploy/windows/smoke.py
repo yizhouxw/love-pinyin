@@ -20,7 +20,7 @@ with tempfile.TemporaryDirectory() as directory:
         port = sock.getsockname()[1]
     env = os.environ.copy()
     env["PYTHONUTF8"] = "1"
-    env.update(LOVE_PINYIN_DATA_DIR=directory, LOVE_PINYIN_MODEL_PATH=f"{directory}/model.bin")
+    env.update(LOVE_PINYIN_DATA_DIR=directory)
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
     log = tempfile.TemporaryFile()
     process = subprocess.Popen(

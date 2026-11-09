@@ -805,5 +805,17 @@
     "v2-crow",
     "v2-vowelfish"
   ],
-  "recognitionMode": "mock"
+  "readingTolerance": {
+    "isolatedVowels": { "i": "yi", "u": "wu", "ü": "yu" },
+    "initialPairs": [
+      ["z", "zh"],
+      ["c", "ch"],
+      ["s", "sh"]
+    ],
+    "finalPairs": [
+      ["an", "ang"],
+      ["en", "eng"],
+      ["in", "ing"]
+    ]
+  }
 }

@@ -19,7 +19,7 @@ uv python install 3.12.12
 python_path=$(cd / && uv python find --no-project --managed-python 3.12.12)
 python_root=$(dirname "$(dirname "$python_path")")
 cp -R "$python_root" "$app/Contents/Resources/python"
-uv export --locked --no-default-groups --no-emit-project --quiet -o "$output/requirements.txt"
+uv export --locked --no-default-groups --group voice-build --no-emit-project --quiet -o "$output/requirements.txt"
 uv pip install --break-system-packages --python "$app/Contents/Resources/python/bin/python3" --requirements "$output/requirements.txt"
 root="$app/Contents/Resources/app"
 cp -R server scripts content resources dist "$root/"

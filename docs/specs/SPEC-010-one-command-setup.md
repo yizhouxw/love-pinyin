@@ -22,3 +22,5 @@ SETUP-05生命周期：status仅在所有已配置入口运行时返回0，缺�
 实际执行现有`lovepinyin restart`，HTTP与HTTPS进程均更换；命令退出后的独立调用确认两端持续运行，首页与`/api/v1/health`均返回200。HTTPS验证使用现有家庭根证书且校验主机/IP，不跳过TLS验证。初次实测发现仅nohup未脱离进程组会被调用方清理，已改为独立会话并补真实进程组回归；最终成功证据在`private/setup05-live-endpoints.json`。`run.command status`也正确返回双入口。
 
 以上是实际Mac运行和本机TLS验证，不是iPad真机或家庭断WAN验收；登录启动、Mac重启/休眠和完整多设备矩阵仍待独立验证。
+
+2026-11-09 SHOP-09 更新 SETUP-03：一键启动只准备运行库和学习资源，模型权重由本机家长设置按需下载安装。参见 [ADR-0040](../adr/0040-optional-qwen-asr.md)。

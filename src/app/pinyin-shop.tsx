@@ -17,7 +17,7 @@ import {
   ShopReadingSession,
   type ShopReadingOutcome,
 } from '../platform/audio/shop-reading-session';
-import { shopPronunciation } from '../platform/audio/shop-pronunciation';
+import { shopPronunciation, shopRecognitionAvailable } from '../platform/audio/shop-pronunciation';
 import { useLearningVoice } from './learning-voice';
 import { GuidanceSwitch } from './guidance-switch';
 import { ShopProductImage } from './shop-product-image';
@@ -25,9 +25,10 @@ import { useGameClock } from './use-game-clock';
 import { errorMessage } from './notice';
 import './pinyin-shop.css';
 
-type Feedback = 'welcome' | 'ready' | ShopReadingOutcome | 'complete';
+type Feedback = 'welcome' | 'ready' | 'manual_added' | ShopReadingOutcome | 'complete';
 const messages: Record<Feedback, string> = {
   welcome: '挑一件喜欢的商品，看看右边的拼音，直接读出来。',
+  manual_added: '已确认读完，商品放进购物车啦！',
   ready: '准备好了可以再读一次，也可以先听示范。',
   matched: '读音匹配，商品已自动加入购物车！',
   retry: '这次读音没有匹配。可以听示范，再读一次。',
@@ -56,9 +57,20 @@ export function PinyinShop({
   const products = shopProducts();
   const targets = useMemo(() => shopTargets(curriculum, lessonId), [curriculum, lessonId]);
   const adapter = useMemo(
-    () => recognition ?? shopPronunciation(targets.map((p) => p.target)),
-    [recognition, targets],
+    () => recognition ?? { service: shopPronunciation(), mock: false },
+    [recognition],
   );
+  const [automatic, setAutomatic] = useState(recognition?.configured ?? !!recognition);
+  const [manualOverride, setManualOverride] = useState(false);
+  useEffect(() => {
+    if (recognition) return;
+    const controller = new AbortController();
+    void shopRecognitionAvailable(controller.signal).then((available) => {
+      if (!controller.signal.aborted) setAutomatic(available);
+    });
+    return () => controller.abort();
+  }, [recognition]);
+  const manual = !automatic || manualOverride;
   const voice = useLearningVoice('pinyin-shop');
   const stopVoice = voice.stop;
   const playVoice = voice.play;
@@ -104,7 +116,8 @@ export function PinyinShop({
   useEffect(() => {
     if (!clock.paused && !welcomed.current) {
       welcomed.current = true;
-      if (guidance.current) playVoice(adapter.mock ? 'ui-shop_mock_welcome' : 'ui-shop_welcome');
+      if (guidance.current)
+        playVoice(adapter.mock ? 'ui-shop_mock_welcome' : 'ui-shop_manual_welcome');
     }
   }, [clock.paused, playVoice, adapter.mock]);
 
@@ -116,6 +129,16 @@ export function PinyinShop({
   const full = basket.length >= shopRules.basketLimit;
   const shelf = shopRules.shelves[cabinet]!;
   const goods = products.filter((p) => p.shelfId === shelf.id);
+  function addProduct(product: ShopProduct, confirmation: 'matched' | 'manual_added') {
+    cancel();
+    const next = addShopProduct(basketRef.current, product.id);
+    basketRef.current = next;
+    setBasket(next);
+    setSelected(null);
+    setTarget(null);
+    setPhase('ready');
+    tell(confirmation);
+  }
   function read(product: ShopProduct, task: ShopTarget) {
     cancel();
     const generation = epoch.current;
@@ -128,14 +151,11 @@ export function PinyinShop({
       outcome: (outcome) => {
         if (epoch.current !== generation || document.hidden) return;
         setPhase('ready');
-        if (outcome === 'matched') {
-          const next = addShopProduct(basketRef.current, product.id);
-          basketRef.current = next;
-          setBasket(next);
-          setSelected(null);
-          setTarget(null);
-          tell('matched');
-        } else tell(outcome);
+        if (outcome === 'matched') addProduct(product, 'matched');
+        else {
+          if (outcome === 'unavailable' || outcome === 'microphone') setManualOverride(true);
+          tell(outcome);
+        }
       },
     });
   }
@@ -147,11 +167,17 @@ export function PinyinShop({
     setTarget(task ?? null);
     if (window.matchMedia('(max-width: 800px)').matches)
       challenge.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
-    if (task) read(product, task);
+    if (task && !manual) read(product, task);
     else {
       cancel();
       setPhase('ready');
-      tell('unavailable');
+      if (task) setFeedback('ready');
+      else tell('unavailable');
+      if (task && guidance.current)
+        voice.playSequence([
+          { id: 'ui-shop_manual_read', kind: 'private' },
+          { id: task.audioRef, kind: task.audioKind },
+        ]);
     }
   }
   function changeShelf(index: number) {
@@ -184,11 +210,13 @@ export function PinyinShop({
         ? adapter.mock
           ? '正在模拟识别，不判断真实读音…'
           : '我在听，直接读出右边的拼音…'
-        : feedback === 'matched' && adapter.mock
-          ? '模拟完成，商品已加入购物车。现在不是真实识别。'
-          : feedback === 'welcome' && adapter.mock
-            ? '挑一件喜欢的商品，模拟成功后会自动加入购物车。'
-            : messages[feedback];
+        : manual && selected && (feedback === 'ready' || feedback === 'welcome')
+          ? '听示范，读一读。读完后请自己或家长确认。'
+          : feedback === 'matched' && adapter.mock
+            ? '模拟完成，商品已加入购物车。现在不是真实识别。'
+            : feedback === 'welcome' && adapter.mock
+              ? '挑一件喜欢的商品，模拟成功后会自动加入购物车。'
+              : messages[feedback];
   return (
     <section className="pinyin-shop" aria-label="拼音小卖部">
       <header className="shop-topbar">
@@ -234,9 +262,23 @@ export function PinyinShop({
           <strong>模拟识别</strong> · 当前不是真实识别，商品会自动加入购物车，不记录学习成绩。
         </aside>
       )}
-      {!adapter.mock && adapter.configured === false && (
+      {!adapter.mock && (
         <aside className="shop-mode">
-          真实识别尚未配置，录音后会提示不可用；可听示范跟读，不作发音判断。
+          <strong>{manual ? '人工确认' : '本地语音识别'}</strong>
+          {manual ? ' · 听读后确认入车' : ' · 游戏允许部分近音'}
+          {automatic && (
+            <button
+              className="quiet"
+              onClick={() => {
+                cancel();
+                setManualOverride(!manualOverride);
+                setPhase('ready');
+                setFeedback('ready');
+              }}
+            >
+              {manual ? '切换到本地识别' : '改用人工确认'}
+            </button>
+          )}
         </aside>
       )}
       {clock.paused && !finished ? (
@@ -310,7 +352,9 @@ export function PinyinShop({
                     : selected
                       ? adapter.mock
                         ? '模拟识别，商品自动入车'
-                        : '读这个拼音，商品就来啦'
+                        : manual
+                          ? '听一听，读完再确认'
+                          : '读这个拼音，商品就来啦'
                       : '挑一件你喜欢的商品'}
                 </span>
                 <div className="shop-choice">
@@ -350,7 +394,9 @@ export function PinyinShop({
                           ? '✓ 购物车装好啦'
                           : adapter.mock
                             ? '选商品后模拟入车'
-                            : '选商品后自动开始听'}
+                            : manual
+                              ? '选商品后听读并确认'
+                              : '选商品后自动开始听'}
                     </span>
                   )}
                 </div>
@@ -359,9 +405,18 @@ export function PinyinShop({
                 </p>
                 {target && selected && phase === 'ready' && !finished && (
                   <div className="shop-record-controls">
-                    <button className="shop-primary" onClick={() => read(selected, target)}>
-                      🎙 再读一次
-                    </button>
+                    {manual ? (
+                      <button
+                        className="shop-primary"
+                        onClick={() => addProduct(selected, 'manual_added')}
+                      >
+                        读完了，加入购物车
+                      </button>
+                    ) : (
+                      <button className="shop-primary" onClick={() => read(selected, target)}>
+                        🎙 再读一次
+                      </button>
+                    )}
                     <button
                       className="quiet"
                       onClick={() => {
@@ -386,7 +441,7 @@ export function PinyinShop({
                     取消本次录音
                   </button>
                 )}
-                {feedback === 'matched' && !full && (
+                {(feedback === 'matched' || feedback === 'manual_added') && !full && (
                   <button
                     className="quiet shop-return-shelf"
                     onClick={() =>
@@ -430,7 +485,9 @@ export function PinyinShop({
                   <p className="shop-empty">
                     {adapter.mock
                       ? '选好商品后，会模拟成功并自动入车。'
-                      : '读音匹配后，喜欢的商品会自动来到这里。'}
+                      : manual
+                        ? '读完并确认后，商品会来到这里。'
+                        : '读音匹配后，喜欢的商品会自动来到这里。'}
                   </p>
                 )}
                 <div className="shop-total">
@@ -448,7 +505,9 @@ export function PinyinShop({
             每次最多六件，选好就结算。口头练习不计客观题掌握度。
             {adapter.mock
               ? ' 当前为模拟识别，不使用麦克风或判断发音。'
-              : ' 录音仅在内存处理，退出清除；识别能力以接入的服务为准。'}
+              : manual
+                ? ' 听读后人工确认。'
+                : ' 录音仅在本机内存处理，退出清除。'}
           </footer>
         </>
       )}

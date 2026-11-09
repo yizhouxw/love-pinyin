@@ -79,7 +79,7 @@ test('MATCH-16: course demonstration and local-only replay are separate', async 
   expect(uploads).toEqual([]);
 });
 
-test('MATCH-13/15: daily capture shares the port, supports cancellation and keeps existing ASR separate', async ({
+test('SHOP-09: daily capture is local and can be confirmed by a parent before model installation', async ({
   page,
   appUrl,
 }) => {
@@ -94,19 +94,23 @@ test('MATCH-13/15: daily capture shares the port, supports cancellation and keep
   const stop = page.getByRole('button', { name: '停止录音', exact: false });
   await expect(stop).toBeVisible();
   await page.waitForTimeout(1000);
-  const response = page.waitForResponse((value) =>
-    value.url().includes('/pronunciation/day-01-s1-i1/assess'),
-  );
+  const uploads: string[] = [];
+  page.on('request', (request) => {
+    if (/\/(recognize|assess)$/.test(request.url())) uploads.push(request.url());
+  });
   await stop.click();
-  const assessed = await response;
-  const assessmentBody = await assessed.json();
-  expect(assessed.ok(), JSON.stringify(assessmentBody)).toBe(true);
-  expect(assessmentBody.match.status).toBe('unavailable');
-  const result = page.getByRole('region', { name: '拼读准确情况' });
-  await expect(result).toContainText('不算读错');
+  await expect(page.getByLabel('回放我的跟读')).toBeVisible();
+  await expect(page.getByText('请听回放，用下方的家长判断确认本条跟读。')).toBeVisible();
+  await expect(page.getByRole('button', { name: '重新识别这段跟读' })).toHaveCount(0);
+  await page.getByText('家长帮助判断', { exact: true }).click();
+  await page.getByRole('button', { name: '家长判断：熟练' }).click();
+  await expect(page.getByRole('button', { name: '家长判断：熟练' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
   await expect(page.getByRole('button', { name: '读过了，下一条' })).toBeEnabled();
   await page.getByRole('button', { name: '清除这段录音' }).click();
-  await expect(result).toHaveCount(0);
+  expect(uploads).toEqual([]);
   await expect(page.getByLabel('回放我的跟读')).toHaveCount(0);
 });
 

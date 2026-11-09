@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { gameCatalog, type GameOverview } from '../domain/games';
 import type { Curriculum } from '../domain/learning-api';
 import { api } from '../platform/api-client';
-import { isIOSApp } from '../platform/ios-app';
 import { isGuest } from '../platform/guest';
 import {
   readScenePreference,
@@ -125,8 +124,7 @@ export function GameZone({
   const ids = new Set(
     curriculum.lessons.filter((item) => item.order <= order).flatMap((item) => item.exerciseIds),
   );
-  const shopAvailable = !isIOSApp() || shopRules.recognitionMode === 'mock';
-  if (shopOpen && shopAvailable)
+  if (shopOpen)
     return (
       <PinyinShop
         curriculum={curriculum}
@@ -186,45 +184,39 @@ export function GameZone({
         )}
       </aside>
       <Notice error={error} onReconnect={() => setRevision((v) => v + 1)} />
-      {shopAvailable && (
-        <article className="shop-entry">
-          <span className="shop-entry-icon" aria-hidden="true">
-            🍊
-          </span>
-          <div>
-            <div className="shop-entry-title">
-              <h2>拼音小卖部</h2>
-              <span className="shop-mode-badge">
-                {shopRules.recognitionMode === 'mock' ? '模拟体验 · 非真实识别' : '口头拼读'}
-              </span>
-            </div>
-            <p>
-              {shopRules.shelves.length} 个货架 · {shopRules.products.length} 件商品 ·{' '}
-              {shopRules.recognitionMode === 'mock'
-                ? '模拟入车，不计学习成绩'
-                : '读拼音，装满购物篮'}
-            </p>
+      <article className="shop-entry">
+        <span className="shop-entry-icon" aria-hidden="true">
+          🍊
+        </span>
+        <div>
+          <div className="shop-entry-title">
+            <h2>拼音小卖部</h2>
+            <span className="shop-mode-badge">口头拼读</span>
           </div>
-          <div className="shop-entry-actions">
-            <VoiceButton
-              id={shopRules.recognitionMode === 'mock' ? 'ui-shop_mock_welcome' : 'ui-shop_welcome'}
-              voice={voice}
-              label="听小卖部怎么玩"
-              text="听玩法"
-            />
-            <button
-              aria-label="进入拼音小卖部"
-              disabled={busy || loading || !!error || !data || !!data.clock.reason}
-              onClick={() => {
-                voice.stop();
-                setShopOpen(true);
-              }}
-            >
-              逛小卖部 →
-            </button>
-          </div>
-        </article>
-      )}
+          <p>
+            {shopRules.shelves.length} 个货架 · {shopRules.products.length} 件商品 ·{' '}
+            读拼音，装满购物篮
+          </p>
+        </div>
+        <div className="shop-entry-actions">
+          <VoiceButton
+            id="ui-shop_manual_welcome"
+            voice={voice}
+            label="听小卖部怎么玩"
+            text="听玩法"
+          />
+          <button
+            aria-label="进入拼音小卖部"
+            disabled={busy || loading || !!error || !data || !!data.clock.reason}
+            onClick={() => {
+              voice.stop();
+              setShopOpen(true);
+            }}
+          >
+            逛小卖部 →
+          </button>
+        </div>
+      </article>
       <div className="game-grid">
         {gameCatalog.games.map((game) => {
           const available = curriculum.exercises.some(

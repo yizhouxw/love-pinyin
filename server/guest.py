@@ -190,7 +190,8 @@ def daily_audio(asset_id: str, range_header: str | None = Header(default=None, a
 
 @router.post("/daily-reading/{item_id}/recognize")
 async def recognize_daily_reading(item_id: str, request: Request):
-    from server.reading_recognition import recognize, request_audio
+    from server.qwen_recognition import recognize
+    from server.reading_recognition import request_audio
 
     api_dependencies._check_origin(request)
     payload = await request_audio(request, item_id)

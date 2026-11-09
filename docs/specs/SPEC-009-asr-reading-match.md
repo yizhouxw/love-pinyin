@@ -30,3 +30,7 @@ verify:all已通过：63项前端/工具、303项后端、30项视口、24项真
 实际标准MP3本地试跑ā/á→啊、bō→波、zhī→知；Chromium和WebKit用标准MP3注入真实MediaRecorder流，完成WAV转换、真实Mac API/Whisper、相符与不同结果、切条清除。测试注入不是真实麦克风或儿童样本，不宣称儿童识别准确率、真机或家庭LAN完成。浏览器全部597标准音及42中文词句解码也已验证。
 
 最终专项日志private/daily-product-final.log，页面截图private/daily-asr-product-desktop-chromium.png与private/daily-asr-product-desktop-webkit.png。上述为该切片历史证据；代码与后续获授权素材已推送私有仓库，未公开发行素材包。当前资源数量见STATUS及SPEC-012。
+
+## SHOP-09：Qwen 产品引擎
+
+Apple Silicon 本机服务使用家长显式安装的 Qwen3-ASR 0.6B。两套天天练素材均支持该可选能力；缺少模型或运行环境时仍可听读、录音回放及人工标记，页面不发送识别请求。天天练不采用小卖部的近音容错。Whisper 保留用于历史研究复现。参见 [SPEC-019](SPEC-019-pinyin-shop.md) 和 [ADR-0040](../adr/0040-optional-qwen-asr.md)。

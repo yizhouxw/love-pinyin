@@ -101,8 +101,6 @@ printf '\nChecking local standard pinyin recordings (download only if missing)�
 uv run --locked python -m scripts.sync_standard_audio
 printf '\nChecking bundled narration and lessons…\n'
 uv run --locked python -m scripts.check_bundled_resources
-printf '\nPreparing the pinned local recognition model…\n'
-uv run --locked python -m scripts.fetch_asr_model
 npm run build
 npm run validate:release
 if [[ "${1:-}" == --prepare-only ]]; then

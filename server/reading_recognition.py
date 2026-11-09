@@ -37,7 +37,13 @@ def config() -> dict:
 
 
 def find_item(item_id: str) -> dict:
-    for day in load()["days"]:
+    if item_id.startswith("original-"):
+        from server.materials import original_content
+
+        days = original_content()[0]["daily"]["days"]
+    else:
+        days = load()["days"]
+    for day in days:
         for section in day["sections"]:
             for item in section["items"]:
                 if item["id"] == item_id:

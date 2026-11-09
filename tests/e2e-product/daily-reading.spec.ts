@@ -1,3 +1,5 @@
+import { mkdir, symlink } from 'node:fs/promises';
+import { join } from 'node:path';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { observeReadingMedia, playedReading, clearReadingMedia } from '../support/media-log';
@@ -125,10 +127,17 @@ test('DAILY-03: microphone refusal stays separate from learning marks and permit
   await expect(page.getByRole('button', { name: '进入天天练拼音' })).toBeVisible();
 });
 
-test('ASR-04: native browser recording of permitted reference audio reaches local Whisper and shows match / difference', async ({
+test('SHOP-09: daily recording offers manual confirmation or optional local Qwen matching', async ({
   page,
   appUrl,
+  dataDirectory,
 }) => {
+  const modelDir = process.env.LOVE_PINYIN_TEST_QWEN_DIR;
+  if (modelDir) {
+    const models = join(dataDirectory, 'models');
+    await mkdir(models);
+    await symlink(modelDir, join(models, 'qwen3-asr-0.6b'));
+  }
   test.setTimeout(120_000);
   // Inject known non-private standard audio into a real MediaRecorder stream.
   // This proves the capture/PCM/API/model/UI chain, not a real child's accuracy.
@@ -143,7 +152,9 @@ test('ASR-04: native browser recording of permitted reference audio reaches loca
   );
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
   const skippedGuides: string[] = [];
+  const recognitionRequests: string[] = [];
   page.on('request', (request) => {
+    if (request.url().endsWith('/recognize')) recognitionRequests.push(request.url());
     if (/\/voice\/(daily-ui-record|recognition-)/.test(request.url()))
       skippedGuides.push(request.url());
   });
@@ -184,11 +195,19 @@ test('ASR-04: native browser recording of permitted reference audio reaches loca
     await expect(page.getByRole('button', { name: '停止录音' })).toBeVisible({ timeout: 20000 });
     // Wait for the actual MediaRecorder payload, including the complete source syllable.
     await page.waitForTimeout(1400);
-    const result = page.waitForResponse(
-      (response) =>
-        response.url().endsWith('/daily-reading/day-01-s1-i1/recognize') && response.ok(),
-    );
+    const result = modelDir
+      ? page.waitForResponse(
+          (response) => /\/daily-reading\/[^/]+\/recognize$/.test(response.url()) && response.ok(),
+        )
+      : undefined;
     await page.getByRole('button', { name: '停止录音' }).click();
+    if (!result) {
+      await expect(page.getByLabel('回放我的跟读')).toBeVisible();
+      await expect(page.getByText('请听回放，用下方的家长判断确认本条跟读。')).toBeVisible();
+      await expect(page.getByRole('button', { name: '重新识别这段跟读' })).toHaveCount(0);
+      expect(recognitionRequests).toHaveLength(0);
+      continue;
+    }
     const response = await result;
     expect((await response.json()).toneAssessed).toBe(false);
     await expect(page.locator('.daily-recognition[role="status"]')).toContainText(expected, {

@@ -165,7 +165,8 @@ def get_daily_audio(
 async def recognize_daily_reading(item_id: str, request: Request, device: dict = Depends(mutable)):
     from fastapi.concurrency import run_in_threadpool
 
-    from server.reading_recognition import recognize, request_audio
+    from server.qwen_recognition import recognize
+    from server.reading_recognition import request_audio
 
     payload = await request_audio(request, item_id)
     return await run_in_threadpool(recognize, item_id, payload)

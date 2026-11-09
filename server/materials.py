@@ -222,8 +222,10 @@ def household_content(*, offline: bool = False) -> dict:
 
 def payload(selected: str) -> dict:
     from server import source_audio
+    from server.qwen_recognition import status
 
     original, _, _ = original_content()
+    original = {**original, "daily": {**original["daily"], "assessment": status()}}
     result = {
         "selected": selected,
         "original": original,

@@ -3,7 +3,6 @@ export function validatePinyinShop(shop, illustrations, readImage) {
   const errors = [];
   if (
     shop.version !== 2 ||
-    !['mock', 'unavailable'].includes(shop.recognitionMode) ||
     shop.basketLimit !== 6 ||
     shop.recognitionTimeoutMs !== 5000 ||
     !Number.isInteger(shop.minimumAudioMs) ||
@@ -14,6 +13,21 @@ export function validatePinyinShop(shop, illustrations, readImage) {
     shop.pollIntervalMs > 1000
   )
     errors.push('shop: invalid timing or basket rules');
+  const tolerance = shop.readingTolerance;
+  if (
+    !tolerance ||
+    !Array.isArray(tolerance.initialPairs) ||
+    !Array.isArray(tolerance.finalPairs) ||
+    [...tolerance.initialPairs, ...tolerance.finalPairs].some(
+      (pair) =>
+        !Array.isArray(pair) ||
+        pair.length !== 2 ||
+        pair[0] === pair[1] ||
+        pair.some((sound) => typeof sound !== 'string' || !/^[a-z]+$/.test(sound)),
+    ) ||
+    !tolerance.isolatedVowels
+  )
+    errors.push('shop: invalid reading tolerance');
   if (
     !Array.isArray(shop.shelves) ||
     shop.shelves.length !== 8 ||

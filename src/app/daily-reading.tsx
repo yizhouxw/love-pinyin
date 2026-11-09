@@ -1,4 +1,3 @@
-import { PronunciationResults } from './pronunciation-practice';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type {
   DailyDay,
@@ -304,6 +303,7 @@ export function DailyReadingPage({
           {section ? (
             <ReadingSession
               key={section.id}
+              canRecognize={data.assessment.available}
               day={day}
               gapSeconds={gapSeconds}
               guidanceEnabled={guidanceEnabled}
@@ -395,6 +395,7 @@ function ReadingSession({
   onNextSection,
   onChooseMaterials,
   marks,
+  canRecognize,
   onMark,
 }: {
   day: DailyDay;
@@ -411,6 +412,7 @@ function ReadingSession({
   onNextSection?: () => void;
   onChooseMaterials: () => void;
   marks: Record<string, ReadingMark>;
+  canRecognize: boolean;
   onMark: (id: string, mark: ReadingMark) => void;
 }) {
   const [index, setIndex] = useState(0);
@@ -693,7 +695,7 @@ function ReadingSession({
         (url) => {
           setRecordUrl(url);
           setRecording('idle');
-          void judge(url);
+          if (canRecognize) void judge(url);
         },
         () => {
           setRecording('idle');
@@ -978,34 +980,32 @@ function ReadingSession({
             {recordError && <p role="alert">{recordError}</p>}
             {recordUrl && (
               <div className="daily-recording">
-                <PronunciationResults
-                  key={item.id}
-                  targetId={item.id}
-                  guidanceEnabled={false}
-                  audioUrl={recordUrl}
-                />
                 <strong>我的跟读 · 听回放比较</strong>
                 <audio ref={replay} src={recordUrl} controls aria-label="回放我的跟读" />
                 <button className="quiet" onClick={clearCapture}>
                   清除这段录音
                 </button>
-                <p>录音完成不代表识别匹配。电脑仅核对识别出的音节，不判四声准确度。</p>
-                <button
-                  className="quiet"
-                  disabled={recognizing}
-                  onClick={() => void judge(recordUrl)}
-                >
-                  重新识别这段跟读
-                </button>
+                {canRecognize ? (
+                  <p>电脑核对识别出的音节。</p>
+                ) : (
+                  <p>请听回放，用下方的家长判断确认本条跟读。</p>
+                )}
+                {canRecognize && (
+                  <button
+                    className="quiet"
+                    disabled={recognizing}
+                    onClick={() => void judge(recordUrl)}
+                  >
+                    重新识别这段跟读
+                  </button>
+                )}
                 {recognizing && <p role="status">电脑正在识别你的跟读…</p>}
                 {recognition && (
                   <div
                     className={`daily-recognition daily-recognition-${recognition.status}`}
                     role="status"
                   >
-                    <strong>
-                      音节对照（Whisper）：{recognitionContent.ui[recognition.status]}
-                    </strong>
+                    <strong>音节对照（Qwen）：{recognitionContent.ui[recognition.status]}</strong>
                     {recognition.transcript && <p>识别文字：{recognition.transcript}</p>}
                     {recognition.recognizedPinyin && (
                       <p>识别文字的拼音：{recognition.recognizedPinyin}</p>

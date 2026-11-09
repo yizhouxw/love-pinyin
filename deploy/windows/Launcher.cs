@@ -38,7 +38,6 @@ internal static class Launcher {
                 var start = new ProcessStartInfo(python, "-m uvicorn server.main:app --host 127.0.0.1 --port 18765 --no-proxy-headers");
                 start.WorkingDirectory = root; start.UseShellExecute = false; start.CreateNoWindow = true;
                 start.EnvironmentVariables["LOVE_PINYIN_DATA_DIR"] = Path.Combine(data, "data");
-                start.EnvironmentVariables["LOVE_PINYIN_MODEL_PATH"] = Path.Combine(data, "models", "whisper-small", "ggml-small.bin");
                 start.EnvironmentVariables["LOVE_PINYIN_ASR_CPU_ONLY"] = "1";
                 start.EnvironmentVariables["PYTHONDONTWRITEBYTECODE"] = "1";
                 start.EnvironmentVariables["PYTHONUTF8"] = "1";

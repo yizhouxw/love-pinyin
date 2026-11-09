@@ -160,7 +160,7 @@ def status() -> dict:
                 if "sentenceReading" in item:
                     item["available"] = item["sentenceReading"]["available"]
     data.pop("assets")
-    from server.reading_recognition import status as recognition_status
+    from server.qwen_recognition import status as recognition_status
 
     data["assessment"] = recognition_status()
     return data
