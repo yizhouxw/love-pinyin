@@ -38,30 +38,38 @@ export function spellingPlan(
   recorded: readonly string[],
   existing: readonly string[] = [],
 ) {
-  return syllables.flatMap((value, position) => {
+  return syllables.flatMap<SpellingClip & { position: number }>((value, position) => {
     const plain = plainSyllable(value);
-    const tone = pinyinTone(value);
-    const key = `${plain.replaceAll('ü', 'v')}${tone ?? 5}`;
-    const full = existing[position] ?? (recorded.includes(key) ? `spelling-${key}` : null);
+    const bareKey = plain.replaceAll('ü', 'v');
+    const exact = existing[position];
+    // The legacy practice bank explicitly gives some unmarked entries a first-tone clip.
+    const tone = pinyinTone(value) ?? (exact === `daily-${bareKey}1` ? 1 : null);
+    const key = `${bareKey}${tone ?? 5}`;
+    const fullId = exact ?? (recorded.includes(key) ? `spelling-${key}` : null);
+    if (!fullId) return [];
+    const full: SpellingClip & { position: number } = { kind: 'daily-audio', id: fullId, position };
+    if (!tone || wholeSyllables.has(plain)) return [full];
+
+    const parts = splitPinyinCandidate(plain, curriculum.inventory.initials);
+    const onset = parts?.onset;
+    let rime = parts?.rime ?? writtenFinals[plain] ?? plain;
+    if (onset && spelling.umlautInitials.includes(onset)) rime = rime.replace(/^u/u, 'ü');
+    const [medial, final = rime] = compoundFinals[rime] ?? [];
+    if (!onset && !medial) return [full];
+    const finalKey = `final-${final.replaceAll('ü', 'v')}${tone}`;
+    if (!recorded.includes(finalKey)) return [full];
+
     const result: (SpellingClip & { position: number })[] = [];
-    if (!wholeSyllables.has(plain)) {
-      const parts = splitPinyinCandidate(plain, curriculum.inventory.initials);
-      const onset = parts?.onset;
-      let rime = parts?.rime ?? writtenFinals[plain] ?? plain;
-      if (onset && spelling.umlautInitials.includes(onset)) rime = rime.replace(/^u/u, 'ü');
-      const finals = compoundFinals[rime] ?? [rime];
-      // A standalone sound already has its full demonstration. Keep a neutral
-      // syllable in its word when there is no matching isolated recording.
-      if (onset || finals.length > 1) {
-        const initialId = onset ? audioParts.get(`initial/${onset}`) : undefined;
-        if (initialId) result.push({ kind: 'audio', id: initialId, position });
-        for (const final of finals) {
-          const id = audioParts.get(`final/${final}`);
-          if (id) result.push({ kind: 'audio', id, position });
-        }
-      }
+    if (onset) {
+      const id = audioParts.get(`initial/${onset}`);
+      if (!id) return [full];
+      result.push({ kind: 'audio', id, position });
     }
-    if (full) result.push({ kind: 'daily-audio', id: full, position });
-    return result;
+    if (medial) {
+      const id = audioParts.get(`final/${medial}`);
+      if (!id) return [full];
+      result.push({ kind: 'audio', id, position });
+    }
+    return [...result, { kind: 'daily-audio', id: `spelling-${finalKey}`, position }, full];
   });
 }

@@ -4,9 +4,26 @@ import struct
 import wave
 
 from server import learning_audio
+from server.audio_assets import _verified_file
+from server.content import load_curriculum
+from server.materials import STANDARD_AUDIO, standard_manifest
+
+
+def check_spelling_finals() -> None:
+    manifest = standard_manifest()["spelling"]
+    finals = load_curriculum()["inventory"]["finals"]
+    for final in finals:
+        for tone in "1234":
+            key = f"final-{final.replace('ü', 'v')}{tone}"
+            asset = manifest[key]
+            if not asset["sourceFile"].endswith(f"{tone}.mp3"):
+                raise ValueError(f"Spelling final source tone mismatch: {key}")
+            handle, _ = _verified_file(STANDARD_AUDIO / asset["file"], asset["sha256"])
+            handle.close()
 
 
 def check():
+    check_spelling_finals()
     available = learning_audio.available_assets()
     missing = [key for key, ready in available.items() if not ready]
     if missing:

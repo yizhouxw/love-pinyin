@@ -83,6 +83,27 @@ def crop_recording(source: bytes, start: float, end: float) -> bytes:
     return output.getvalue()
 
 
+def recording_entry(
+    chen_dir: Path, output: Path, name: str, crop: tuple[float, float] | None = None
+) -> dict:
+    original = chen_recording(chen_dir, name)
+    if crop:
+        clip = crop_recording(original, *crop)
+        extension = "wav"
+        change = f"裁切 {crop[0]}–{crop[1]} 秒，短淡入淡出"
+    else:
+        clip, extension, change = original, "mp3", "filename only"
+    filename, sha = install_clip(output, clip, extension)
+    return {
+        "source": "chen",
+        "sourceFile": f"64k/syllabs/cmn-{name}.mp3",
+        "sourceSha256": digest(original),
+        "file": filename,
+        "sha256": sha,
+        "changes": change,
+    }
+
+
 def spelling_targets(standard_ids: set[str]) -> set[str]:
     original, _, _ = original_packs(standard_ids)
     words = original["words"]["lessons"]
@@ -123,7 +144,9 @@ def prepare(chen_repo: Path, output: Path) -> None:
     if revision != sources["chen"]["revision"]:
         raise ValueError("audio-cmn checkout must match the pinned revision")
     chen_dir = chen_repo / "64k/syllabs"
-    targets = {row["id"]: row for row in load_curriculum()["audioRequirements"]}
+    curriculum = load_curriculum()
+    targets = {row["id"]: row for row in curriculum["audioRequirements"]}
+    final_spellings = policy["finalSyllableSpellings"]
     output.mkdir(parents=True, exist_ok=True)
     clips = {}
     for row in source_audio.catalog()["assets"]:
@@ -139,43 +162,27 @@ def prepare(chen_repo: Path, output: Path) -> None:
             name = recipe["source"]
             crop = (recipe["startSeconds"], recipe["endSeconds"])
         elif kind == "final":
-            name = policy["finalSyllableSpellings"].get(spelling, f"{spelling}1")
+            name = f"{final_spellings.get(spelling, spelling)}1"
         else:
             vowel = re.fullmatch(r"([iuv])([1-4])", spelling)
-            name = policy["isolatedVowelSpellings"][vowel[1]] + vowel[2] if vowel else spelling
+            name = final_spellings[vowel[1]] + vowel[2] if vowel else spelling
 
-        original = chen_recording(chen_dir, name)
-        if crop:
-            clip = crop_recording(original, *crop)
-            extension = "wav"
-            change = f"裁切 {crop[0]}–{crop[1]} 秒，短淡入淡出"
-        else:
-            clip, extension, change = original, "mp3", "filename only"
-        filename, sha = install_clip(output, clip, extension)
-        clips[asset_id] = {
-            "source": "chen",
-            "sourceFile": f"64k/syllabs/cmn-{name}.mp3",
-            "sourceSha256": digest(original),
-            "file": filename,
-            "sha256": sha,
-            "changes": change,
-        }
+        clips[asset_id] = recording_entry(chen_dir, output, name, crop)
     spelling = {}
-    for name in sorted(spelling_targets(set(clips))):
+    for name in sorted(spelling_targets(set(clips)) | set(policy["retainedSpellingSyllables"])):
         recorded_name = policy["spellingAliases"].get(name, name)
-        source_file = f"cmn-{recorded_name}.mp3"
-        if not (chen_dir / source_file).is_file():
+        if not (chen_dir / f"cmn-{recorded_name}.mp3").is_file():
             continue
-        recording = chen_recording(chen_dir, recorded_name)
-        filename, sha = install_clip(output, recording, "mp3")
-        spelling[name] = {
-            "source": "chen",
-            "sourceFile": f"64k/syllabs/{source_file}",
-            "sourceSha256": sha,
-            "file": filename,
-            "sha256": sha,
-            "changes": "filename only",
-        }
+        spelling[name] = recording_entry(chen_dir, output, recorded_name)
+    for final in curriculum["inventory"]["finals"]:
+        key = final.replace("ü", "v")
+        for tone in "1234":
+            name = f"{final_spellings.get(key, key)}{tone}"
+            crop = None
+            if key == "ong":
+                name, start, end = policy["ongToneCrops"][tone]
+                crop = (start, end)
+            spelling[f"final-{key}{tone}"] = recording_entry(chen_dir, output, name, crop)
     (output / "manifest.json").write_text(
         json.dumps(
             {"version": 1, "sources": sources, "clips": clips, "spelling": spelling},

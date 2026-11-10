@@ -6,6 +6,7 @@ import json
 import re
 import unicodedata
 
+from scripts.check_bundled_resources import check_spelling_finals
 from scripts.daily_reading_rules import MARKS, expected_audio, key, unique_items
 from server import daily_pronunciation, daily_reading, learning_audio, reading_timings
 from server.audio_assets import _verified_file
@@ -158,6 +159,7 @@ def validate(release: bool = False) -> dict:
         if item["narrationId"] and not item["spokenText"]:
             raise ValueError(f"Missing Chinese word script for {item['id']}")
     if release:
+        check_spelling_finals()
         status = daily_reading.status()
         timelines = reading_timings.read()
         manifest = learning_audio.read_manifest()

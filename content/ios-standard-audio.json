@@ -12,20 +12,29 @@
   "spellingAliases": {
     "ju4": "jv4"
   },
+  "retainedSpellingSyllables": [
+    "chi1",
+    "chi2",
+    "deng3",
+    "jian3",
+    "kong3",
+    "lao2",
+    "man4",
+    "qiang2",
+    "qing2",
+    "qing3",
+    "xie4",
+    "zheng1"
+  ],
   "finalSyllableSpellings": {
-    "ui": "wei1",
-    "iu": "you1",
-    "ie": "ye1",
-    "ve": "yue1",
-    "in": "yin1",
-    "un": "wen1",
-    "vn": "yun1",
-    "ing": "ying1",
-    "i": "yi1",
-    "u": "wu1",
-    "v": "yu1"
-  },
-  "isolatedVowelSpellings": {
+    "ui": "wei",
+    "iu": "you",
+    "ie": "ye",
+    "ve": "yue",
+    "in": "yin",
+    "un": "wen",
+    "vn": "yun",
+    "ing": "ying",
     "i": "yi",
     "u": "wu",
     "v": "yu"
@@ -34,6 +43,12 @@
     "source": "kong1",
     "startSeconds": 0.425,
     "endSeconds": 0.725
+  },
+  "ongToneCrops": {
+    "1": ["kong1", 0.409, 0.711],
+    "2": ["kong2", 0.448, 0.831],
+    "3": ["kong3", 0.385, 0.976],
+    "4": ["kong4", 0.425, 0.692]
   },
   "initialCrops": {
     "b": ["bo1", 0.312, 0.445],

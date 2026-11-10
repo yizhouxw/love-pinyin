@@ -6867,6 +6867,774 @@
       "file": "ff835afcaa24bcc41651b4ae52dc4644564649318f3ca291c5664897a168de08.mp3",
       "sha256": "ff835afcaa24bcc41651b4ae52dc4644564649318f3ca291c5664897a168de08",
       "changes": "filename only"
+    },
+    "final-a1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-a1.mp3",
+      "sourceSha256": "c37e4240175f61eeefc0ddc57a085962e7846f71302cd507a20dac868e0f68f2",
+      "file": "c37e4240175f61eeefc0ddc57a085962e7846f71302cd507a20dac868e0f68f2.mp3",
+      "sha256": "c37e4240175f61eeefc0ddc57a085962e7846f71302cd507a20dac868e0f68f2",
+      "changes": "filename only"
+    },
+    "final-a2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-a2.mp3",
+      "sourceSha256": "8dd3acfe3f447d79dc45ca4a5624fca6d6905140f934481cb6a27c1446422a97",
+      "file": "8dd3acfe3f447d79dc45ca4a5624fca6d6905140f934481cb6a27c1446422a97.mp3",
+      "sha256": "8dd3acfe3f447d79dc45ca4a5624fca6d6905140f934481cb6a27c1446422a97",
+      "changes": "filename only"
+    },
+    "final-a3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-a3.mp3",
+      "sourceSha256": "fb95893a03de4c551b41bd83bb59cfb8936eadda29f28dca5fb826911bc5821b",
+      "file": "fb95893a03de4c551b41bd83bb59cfb8936eadda29f28dca5fb826911bc5821b.mp3",
+      "sha256": "fb95893a03de4c551b41bd83bb59cfb8936eadda29f28dca5fb826911bc5821b",
+      "changes": "filename only"
+    },
+    "final-a4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-a4.mp3",
+      "sourceSha256": "5e3a3bc3419cb915f8816ef8677a5abe0f4a7d9456dbae289b16fd6b4718855c",
+      "file": "5e3a3bc3419cb915f8816ef8677a5abe0f4a7d9456dbae289b16fd6b4718855c.mp3",
+      "sha256": "5e3a3bc3419cb915f8816ef8677a5abe0f4a7d9456dbae289b16fd6b4718855c",
+      "changes": "filename only"
+    },
+    "final-o1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-o1.mp3",
+      "sourceSha256": "aa07d81aff4d10bd9383f57044e9e011b97ac286690f0c931e6882beec20329d",
+      "file": "aa07d81aff4d10bd9383f57044e9e011b97ac286690f0c931e6882beec20329d.mp3",
+      "sha256": "aa07d81aff4d10bd9383f57044e9e011b97ac286690f0c931e6882beec20329d",
+      "changes": "filename only"
+    },
+    "final-o2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-o2.mp3",
+      "sourceSha256": "4d597c7cea6f73bf35e82c07f34713295082e23d22841144249dc15fdea75ecf",
+      "file": "4d597c7cea6f73bf35e82c07f34713295082e23d22841144249dc15fdea75ecf.mp3",
+      "sha256": "4d597c7cea6f73bf35e82c07f34713295082e23d22841144249dc15fdea75ecf",
+      "changes": "filename only"
+    },
+    "final-o3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-o3.mp3",
+      "sourceSha256": "cfa914dc55a7334cac0cba84aece7cd7f5f99210c9d41f6fe58331f51a99c62c",
+      "file": "cfa914dc55a7334cac0cba84aece7cd7f5f99210c9d41f6fe58331f51a99c62c.mp3",
+      "sha256": "cfa914dc55a7334cac0cba84aece7cd7f5f99210c9d41f6fe58331f51a99c62c",
+      "changes": "filename only"
+    },
+    "final-o4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-o4.mp3",
+      "sourceSha256": "fea57e5ab1a50e16866ba9dae897ece8f6a84715ebfb334ce8b968d6a09d0969",
+      "file": "fea57e5ab1a50e16866ba9dae897ece8f6a84715ebfb334ce8b968d6a09d0969.mp3",
+      "sha256": "fea57e5ab1a50e16866ba9dae897ece8f6a84715ebfb334ce8b968d6a09d0969",
+      "changes": "filename only"
+    },
+    "final-e1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-e1.mp3",
+      "sourceSha256": "88ebb65b7e6983701285d171f2a02d7d2a85162214b53fb0d47ae1f9d74443d4",
+      "file": "88ebb65b7e6983701285d171f2a02d7d2a85162214b53fb0d47ae1f9d74443d4.mp3",
+      "sha256": "88ebb65b7e6983701285d171f2a02d7d2a85162214b53fb0d47ae1f9d74443d4",
+      "changes": "filename only"
+    },
+    "final-e2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-e2.mp3",
+      "sourceSha256": "5a5b8eb467310ac06dc1d169e1da9b368b9c13185265ea223a210ef03aad18d7",
+      "file": "5a5b8eb467310ac06dc1d169e1da9b368b9c13185265ea223a210ef03aad18d7.mp3",
+      "sha256": "5a5b8eb467310ac06dc1d169e1da9b368b9c13185265ea223a210ef03aad18d7",
+      "changes": "filename only"
+    },
+    "final-e3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-e3.mp3",
+      "sourceSha256": "6e696c8f3e43fc5b9a8337cc4736fb37a689f9809e3443d9e4d55dec0688b960",
+      "file": "6e696c8f3e43fc5b9a8337cc4736fb37a689f9809e3443d9e4d55dec0688b960.mp3",
+      "sha256": "6e696c8f3e43fc5b9a8337cc4736fb37a689f9809e3443d9e4d55dec0688b960",
+      "changes": "filename only"
+    },
+    "final-e4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-e4.mp3",
+      "sourceSha256": "bd0a3d3819da2233fbf7df186c6a094b89bb9efee435c331191ade1a5bf70398",
+      "file": "bd0a3d3819da2233fbf7df186c6a094b89bb9efee435c331191ade1a5bf70398.mp3",
+      "sha256": "bd0a3d3819da2233fbf7df186c6a094b89bb9efee435c331191ade1a5bf70398",
+      "changes": "filename only"
+    },
+    "final-i1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yi1.mp3",
+      "sourceSha256": "36540ca523dcddcfd1f09e59f1386f576dfe4142cd22494e49d82b604ca045c6",
+      "file": "36540ca523dcddcfd1f09e59f1386f576dfe4142cd22494e49d82b604ca045c6.mp3",
+      "sha256": "36540ca523dcddcfd1f09e59f1386f576dfe4142cd22494e49d82b604ca045c6",
+      "changes": "filename only"
+    },
+    "final-i2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yi2.mp3",
+      "sourceSha256": "b4153aefee0cbfbcd273b4678686da577e356f491fcbaea1bb78128492000b72",
+      "file": "b4153aefee0cbfbcd273b4678686da577e356f491fcbaea1bb78128492000b72.mp3",
+      "sha256": "b4153aefee0cbfbcd273b4678686da577e356f491fcbaea1bb78128492000b72",
+      "changes": "filename only"
+    },
+    "final-i3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yi3.mp3",
+      "sourceSha256": "411ded4463c24428156b2b914787062af4b4b726f9c0f7f727a5e21d1b5b9c06",
+      "file": "411ded4463c24428156b2b914787062af4b4b726f9c0f7f727a5e21d1b5b9c06.mp3",
+      "sha256": "411ded4463c24428156b2b914787062af4b4b726f9c0f7f727a5e21d1b5b9c06",
+      "changes": "filename only"
+    },
+    "final-i4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yi4.mp3",
+      "sourceSha256": "8c4518c8689657e024a3984ac9c871a91c08e737569774d44bf0e5dcee69f368",
+      "file": "8c4518c8689657e024a3984ac9c871a91c08e737569774d44bf0e5dcee69f368.mp3",
+      "sha256": "8c4518c8689657e024a3984ac9c871a91c08e737569774d44bf0e5dcee69f368",
+      "changes": "filename only"
+    },
+    "final-u1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wu1.mp3",
+      "sourceSha256": "efcc05666b8af5ae4c6171b8b60198db40caea22e268be4c5205a8c256f15772",
+      "file": "efcc05666b8af5ae4c6171b8b60198db40caea22e268be4c5205a8c256f15772.mp3",
+      "sha256": "efcc05666b8af5ae4c6171b8b60198db40caea22e268be4c5205a8c256f15772",
+      "changes": "filename only"
+    },
+    "final-u2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wu2.mp3",
+      "sourceSha256": "c104f58a52a5f259607d8b748e01c65e5d648fb3c1cf3234b811fab20ea7b842",
+      "file": "c104f58a52a5f259607d8b748e01c65e5d648fb3c1cf3234b811fab20ea7b842.mp3",
+      "sha256": "c104f58a52a5f259607d8b748e01c65e5d648fb3c1cf3234b811fab20ea7b842",
+      "changes": "filename only"
+    },
+    "final-u3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wu3.mp3",
+      "sourceSha256": "55ffb2c309ddc7de39165cc105d32719f143a62ebf43135b3674983d0bc15296",
+      "file": "55ffb2c309ddc7de39165cc105d32719f143a62ebf43135b3674983d0bc15296.mp3",
+      "sha256": "55ffb2c309ddc7de39165cc105d32719f143a62ebf43135b3674983d0bc15296",
+      "changes": "filename only"
+    },
+    "final-u4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wu4.mp3",
+      "sourceSha256": "65293f6529020a670cbcca4fbd36b16e3b397dc9281adff1acabf3eab715b2e2",
+      "file": "65293f6529020a670cbcca4fbd36b16e3b397dc9281adff1acabf3eab715b2e2.mp3",
+      "sha256": "65293f6529020a670cbcca4fbd36b16e3b397dc9281adff1acabf3eab715b2e2",
+      "changes": "filename only"
+    },
+    "final-v1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yu1.mp3",
+      "sourceSha256": "885e611ae4d31125a10b81c7b9bb8127ffd9beca22b908b12a9a2a5a49e7a1d0",
+      "file": "885e611ae4d31125a10b81c7b9bb8127ffd9beca22b908b12a9a2a5a49e7a1d0.mp3",
+      "sha256": "885e611ae4d31125a10b81c7b9bb8127ffd9beca22b908b12a9a2a5a49e7a1d0",
+      "changes": "filename only"
+    },
+    "final-v2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yu2.mp3",
+      "sourceSha256": "9bafcc3cff6e321cc58aa07565a1d910c97f118a61f72a02b23c7e1c3029d03b",
+      "file": "9bafcc3cff6e321cc58aa07565a1d910c97f118a61f72a02b23c7e1c3029d03b.mp3",
+      "sha256": "9bafcc3cff6e321cc58aa07565a1d910c97f118a61f72a02b23c7e1c3029d03b",
+      "changes": "filename only"
+    },
+    "final-v3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yu3.mp3",
+      "sourceSha256": "8d00c3b3aac9aa8feae034acd66fec25c57103eadf8ab8a93cea412ec6320fec",
+      "file": "8d00c3b3aac9aa8feae034acd66fec25c57103eadf8ab8a93cea412ec6320fec.mp3",
+      "sha256": "8d00c3b3aac9aa8feae034acd66fec25c57103eadf8ab8a93cea412ec6320fec",
+      "changes": "filename only"
+    },
+    "final-v4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yu4.mp3",
+      "sourceSha256": "f4fda55991e07e422ba390a77f73e190893f06747a6311dbc71071d345e4b9e1",
+      "file": "f4fda55991e07e422ba390a77f73e190893f06747a6311dbc71071d345e4b9e1.mp3",
+      "sha256": "f4fda55991e07e422ba390a77f73e190893f06747a6311dbc71071d345e4b9e1",
+      "changes": "filename only"
+    },
+    "final-ai1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ai1.mp3",
+      "sourceSha256": "d3953f8621ee50f8fba524adff3beea1c3884dab23086c10e406414ac2ec04a6",
+      "file": "d3953f8621ee50f8fba524adff3beea1c3884dab23086c10e406414ac2ec04a6.mp3",
+      "sha256": "d3953f8621ee50f8fba524adff3beea1c3884dab23086c10e406414ac2ec04a6",
+      "changes": "filename only"
+    },
+    "final-ai2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ai2.mp3",
+      "sourceSha256": "8a5ff6e6bb41d8c9ee3c8e05e89f4b7019816311ecbb228d42a9ad4a395d3c43",
+      "file": "8a5ff6e6bb41d8c9ee3c8e05e89f4b7019816311ecbb228d42a9ad4a395d3c43.mp3",
+      "sha256": "8a5ff6e6bb41d8c9ee3c8e05e89f4b7019816311ecbb228d42a9ad4a395d3c43",
+      "changes": "filename only"
+    },
+    "final-ai3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ai3.mp3",
+      "sourceSha256": "d4b6af0015303f96ad552ef91648f325fc561e0bd077c83faf1685d128619dd4",
+      "file": "d4b6af0015303f96ad552ef91648f325fc561e0bd077c83faf1685d128619dd4.mp3",
+      "sha256": "d4b6af0015303f96ad552ef91648f325fc561e0bd077c83faf1685d128619dd4",
+      "changes": "filename only"
+    },
+    "final-ai4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ai4.mp3",
+      "sourceSha256": "4029edc24af6ad5603e10385a5409b2751ca65a688879eb0d70eceb51cd9bfc4",
+      "file": "4029edc24af6ad5603e10385a5409b2751ca65a688879eb0d70eceb51cd9bfc4.mp3",
+      "sha256": "4029edc24af6ad5603e10385a5409b2751ca65a688879eb0d70eceb51cd9bfc4",
+      "changes": "filename only"
+    },
+    "final-ei1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ei1.mp3",
+      "sourceSha256": "91316ae36883ddf50d3ad6d3a0f4cbf3bff8536155a846736fd31b0a764190df",
+      "file": "91316ae36883ddf50d3ad6d3a0f4cbf3bff8536155a846736fd31b0a764190df.mp3",
+      "sha256": "91316ae36883ddf50d3ad6d3a0f4cbf3bff8536155a846736fd31b0a764190df",
+      "changes": "filename only"
+    },
+    "final-ei2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ei2.mp3",
+      "sourceSha256": "e0cb2344ef4c9537c9abc52c098b2f8abb1b6d3ff6ca74b1391c9ab33587e635",
+      "file": "e0cb2344ef4c9537c9abc52c098b2f8abb1b6d3ff6ca74b1391c9ab33587e635.mp3",
+      "sha256": "e0cb2344ef4c9537c9abc52c098b2f8abb1b6d3ff6ca74b1391c9ab33587e635",
+      "changes": "filename only"
+    },
+    "final-ei3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ei3.mp3",
+      "sourceSha256": "f15a43ea2d67e70e63de1a5e564e3ca02183be14d575065da4e399cd7ab324e4",
+      "file": "f15a43ea2d67e70e63de1a5e564e3ca02183be14d575065da4e399cd7ab324e4.mp3",
+      "sha256": "f15a43ea2d67e70e63de1a5e564e3ca02183be14d575065da4e399cd7ab324e4",
+      "changes": "filename only"
+    },
+    "final-ei4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ei4.mp3",
+      "sourceSha256": "b116f87c8f57f233fb96174c866f21662f7c4f230bafb1b72c0280f7219028ff",
+      "file": "b116f87c8f57f233fb96174c866f21662f7c4f230bafb1b72c0280f7219028ff.mp3",
+      "sha256": "b116f87c8f57f233fb96174c866f21662f7c4f230bafb1b72c0280f7219028ff",
+      "changes": "filename only"
+    },
+    "final-ui1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wei1.mp3",
+      "sourceSha256": "472696f185a34586294ebc64a4c607d5c624f7cad21c62c12426fe35dc47dc2c",
+      "file": "472696f185a34586294ebc64a4c607d5c624f7cad21c62c12426fe35dc47dc2c.mp3",
+      "sha256": "472696f185a34586294ebc64a4c607d5c624f7cad21c62c12426fe35dc47dc2c",
+      "changes": "filename only"
+    },
+    "final-ui2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wei2.mp3",
+      "sourceSha256": "710e6cf176e0534a778625e6c8937dece8bf9ef57d52e1bb0f5f165124c47080",
+      "file": "710e6cf176e0534a778625e6c8937dece8bf9ef57d52e1bb0f5f165124c47080.mp3",
+      "sha256": "710e6cf176e0534a778625e6c8937dece8bf9ef57d52e1bb0f5f165124c47080",
+      "changes": "filename only"
+    },
+    "final-ui3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wei3.mp3",
+      "sourceSha256": "2552f0e151a7f1d5933912fa18f5a5bdf9bdc32943537d58fe4b7a2c3fae0b4a",
+      "file": "2552f0e151a7f1d5933912fa18f5a5bdf9bdc32943537d58fe4b7a2c3fae0b4a.mp3",
+      "sha256": "2552f0e151a7f1d5933912fa18f5a5bdf9bdc32943537d58fe4b7a2c3fae0b4a",
+      "changes": "filename only"
+    },
+    "final-ui4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wei4.mp3",
+      "sourceSha256": "77da5673dda644b8b22525d0f08cd7bae6c6c5714d871582cc86581d58d00ff7",
+      "file": "77da5673dda644b8b22525d0f08cd7bae6c6c5714d871582cc86581d58d00ff7.mp3",
+      "sha256": "77da5673dda644b8b22525d0f08cd7bae6c6c5714d871582cc86581d58d00ff7",
+      "changes": "filename only"
+    },
+    "final-ao1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ao1.mp3",
+      "sourceSha256": "fb4bc1ba143b7ec2196b48cead74cdf2dd97ddd2c66c601abb540a4c80959962",
+      "file": "fb4bc1ba143b7ec2196b48cead74cdf2dd97ddd2c66c601abb540a4c80959962.mp3",
+      "sha256": "fb4bc1ba143b7ec2196b48cead74cdf2dd97ddd2c66c601abb540a4c80959962",
+      "changes": "filename only"
+    },
+    "final-ao2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ao2.mp3",
+      "sourceSha256": "163426e960041213fcbb5e1c0aa144b4fad9e066ae9b40161dabc5294ed01484",
+      "file": "163426e960041213fcbb5e1c0aa144b4fad9e066ae9b40161dabc5294ed01484.mp3",
+      "sha256": "163426e960041213fcbb5e1c0aa144b4fad9e066ae9b40161dabc5294ed01484",
+      "changes": "filename only"
+    },
+    "final-ao3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ao3.mp3",
+      "sourceSha256": "3945f85dd3d90034435e3d22ada11e73a98280cb64379055f8fb2fbaf72cb984",
+      "file": "3945f85dd3d90034435e3d22ada11e73a98280cb64379055f8fb2fbaf72cb984.mp3",
+      "sha256": "3945f85dd3d90034435e3d22ada11e73a98280cb64379055f8fb2fbaf72cb984",
+      "changes": "filename only"
+    },
+    "final-ao4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ao4.mp3",
+      "sourceSha256": "26824cef7b8880949ab8fb1c41e0e9fd8584c1431dc8051d8ad3993ec177f5b2",
+      "file": "26824cef7b8880949ab8fb1c41e0e9fd8584c1431dc8051d8ad3993ec177f5b2.mp3",
+      "sha256": "26824cef7b8880949ab8fb1c41e0e9fd8584c1431dc8051d8ad3993ec177f5b2",
+      "changes": "filename only"
+    },
+    "final-ou1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ou1.mp3",
+      "sourceSha256": "cc199063dfba957d3e70bb1ae209edbc2dfca73835c49d3d9259d9688ba81caa",
+      "file": "cc199063dfba957d3e70bb1ae209edbc2dfca73835c49d3d9259d9688ba81caa.mp3",
+      "sha256": "cc199063dfba957d3e70bb1ae209edbc2dfca73835c49d3d9259d9688ba81caa",
+      "changes": "filename only"
+    },
+    "final-ou2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ou2.mp3",
+      "sourceSha256": "79fa96c3ceaadc8f589008bdcda1e6415c1f6102895cd6052fa576d3d1c4e4ca",
+      "file": "79fa96c3ceaadc8f589008bdcda1e6415c1f6102895cd6052fa576d3d1c4e4ca.mp3",
+      "sha256": "79fa96c3ceaadc8f589008bdcda1e6415c1f6102895cd6052fa576d3d1c4e4ca",
+      "changes": "filename only"
+    },
+    "final-ou3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ou3.mp3",
+      "sourceSha256": "a1841202bf760ec3ba7cff6025eac2ca1d079e9e1d7a489955d6ed32fbe85ae2",
+      "file": "a1841202bf760ec3ba7cff6025eac2ca1d079e9e1d7a489955d6ed32fbe85ae2.mp3",
+      "sha256": "a1841202bf760ec3ba7cff6025eac2ca1d079e9e1d7a489955d6ed32fbe85ae2",
+      "changes": "filename only"
+    },
+    "final-ou4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ou4.mp3",
+      "sourceSha256": "c4b416089129e32ba9abea5a2709ad6724ef2563f9cf5853efc1b9b84be3b33d",
+      "file": "c4b416089129e32ba9abea5a2709ad6724ef2563f9cf5853efc1b9b84be3b33d.mp3",
+      "sha256": "c4b416089129e32ba9abea5a2709ad6724ef2563f9cf5853efc1b9b84be3b33d",
+      "changes": "filename only"
+    },
+    "final-iu1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-you1.mp3",
+      "sourceSha256": "477257dd430b382531955b9eeef26d7647ea6d878fa0afdae728a3cb3cf9166e",
+      "file": "477257dd430b382531955b9eeef26d7647ea6d878fa0afdae728a3cb3cf9166e.mp3",
+      "sha256": "477257dd430b382531955b9eeef26d7647ea6d878fa0afdae728a3cb3cf9166e",
+      "changes": "filename only"
+    },
+    "final-iu2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-you2.mp3",
+      "sourceSha256": "1b59f360a5625dac442136780308cccf45ebc72e42eb4dddb2d5ac06747d8c01",
+      "file": "1b59f360a5625dac442136780308cccf45ebc72e42eb4dddb2d5ac06747d8c01.mp3",
+      "sha256": "1b59f360a5625dac442136780308cccf45ebc72e42eb4dddb2d5ac06747d8c01",
+      "changes": "filename only"
+    },
+    "final-iu3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-you3.mp3",
+      "sourceSha256": "8f3fe2034bf6b225dfcc75488231a03c578e63c4dab447389dc6d26dcae95ed0",
+      "file": "8f3fe2034bf6b225dfcc75488231a03c578e63c4dab447389dc6d26dcae95ed0.mp3",
+      "sha256": "8f3fe2034bf6b225dfcc75488231a03c578e63c4dab447389dc6d26dcae95ed0",
+      "changes": "filename only"
+    },
+    "final-iu4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-you4.mp3",
+      "sourceSha256": "1455ff359a3a3e62892dcb0d52b10092fc1393b09ba7195c1c6b9a30e181805a",
+      "file": "1455ff359a3a3e62892dcb0d52b10092fc1393b09ba7195c1c6b9a30e181805a.mp3",
+      "sha256": "1455ff359a3a3e62892dcb0d52b10092fc1393b09ba7195c1c6b9a30e181805a",
+      "changes": "filename only"
+    },
+    "final-ie1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ye1.mp3",
+      "sourceSha256": "d8b68086415f4c1056d7360244ca0b72ae4e568bb7fc15c80bb60432654174f2",
+      "file": "d8b68086415f4c1056d7360244ca0b72ae4e568bb7fc15c80bb60432654174f2.mp3",
+      "sha256": "d8b68086415f4c1056d7360244ca0b72ae4e568bb7fc15c80bb60432654174f2",
+      "changes": "filename only"
+    },
+    "final-ie2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ye2.mp3",
+      "sourceSha256": "7fca5450613be3d746f99cd5b9abbd0f642edf05b4a7df90758a7f6c69764c87",
+      "file": "7fca5450613be3d746f99cd5b9abbd0f642edf05b4a7df90758a7f6c69764c87.mp3",
+      "sha256": "7fca5450613be3d746f99cd5b9abbd0f642edf05b4a7df90758a7f6c69764c87",
+      "changes": "filename only"
+    },
+    "final-ie3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ye3.mp3",
+      "sourceSha256": "e0e345c7531d740391ddb672e4869dbcb41b238fbb00c5a9b7942052a1ff9255",
+      "file": "e0e345c7531d740391ddb672e4869dbcb41b238fbb00c5a9b7942052a1ff9255.mp3",
+      "sha256": "e0e345c7531d740391ddb672e4869dbcb41b238fbb00c5a9b7942052a1ff9255",
+      "changes": "filename only"
+    },
+    "final-ie4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ye4.mp3",
+      "sourceSha256": "32a3ccb734db1cf52b7ebe62ec95acf7b642f267cfa536ee221af5886ac5ed8e",
+      "file": "32a3ccb734db1cf52b7ebe62ec95acf7b642f267cfa536ee221af5886ac5ed8e.mp3",
+      "sha256": "32a3ccb734db1cf52b7ebe62ec95acf7b642f267cfa536ee221af5886ac5ed8e",
+      "changes": "filename only"
+    },
+    "final-ve1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yue1.mp3",
+      "sourceSha256": "3c286e8f3501f2470f1e5a34b45aef01274292ead2777d985982c8aaf3499010",
+      "file": "3c286e8f3501f2470f1e5a34b45aef01274292ead2777d985982c8aaf3499010.mp3",
+      "sha256": "3c286e8f3501f2470f1e5a34b45aef01274292ead2777d985982c8aaf3499010",
+      "changes": "filename only"
+    },
+    "final-ve2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yue2.mp3",
+      "sourceSha256": "cc171405aed21aa010ef12f79bd11347f823313d27964781fcb45e611cd4d4d4",
+      "file": "cc171405aed21aa010ef12f79bd11347f823313d27964781fcb45e611cd4d4d4.mp3",
+      "sha256": "cc171405aed21aa010ef12f79bd11347f823313d27964781fcb45e611cd4d4d4",
+      "changes": "filename only"
+    },
+    "final-ve3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yue3.mp3",
+      "sourceSha256": "15222c2ea74f435c9f6921d0da450b95e09634f9accdaa23080711c81dc973b6",
+      "file": "15222c2ea74f435c9f6921d0da450b95e09634f9accdaa23080711c81dc973b6.mp3",
+      "sha256": "15222c2ea74f435c9f6921d0da450b95e09634f9accdaa23080711c81dc973b6",
+      "changes": "filename only"
+    },
+    "final-ve4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yue4.mp3",
+      "sourceSha256": "7a69bb511c0a1031814a8b35e98298e6818c95bf07d653f720bef65681c7bb3d",
+      "file": "7a69bb511c0a1031814a8b35e98298e6818c95bf07d653f720bef65681c7bb3d.mp3",
+      "sha256": "7a69bb511c0a1031814a8b35e98298e6818c95bf07d653f720bef65681c7bb3d",
+      "changes": "filename only"
+    },
+    "final-er1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-er1.mp3",
+      "sourceSha256": "a04a2f36cac62b2b0536893e7c50e5bd889552babcf4964cf447cb4bc56367d1",
+      "file": "a04a2f36cac62b2b0536893e7c50e5bd889552babcf4964cf447cb4bc56367d1.mp3",
+      "sha256": "a04a2f36cac62b2b0536893e7c50e5bd889552babcf4964cf447cb4bc56367d1",
+      "changes": "filename only"
+    },
+    "final-er2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-er2.mp3",
+      "sourceSha256": "36d14eb9a4587f566b5a6b89db01e27200267b14688ec66c158d88b1c0744bec",
+      "file": "36d14eb9a4587f566b5a6b89db01e27200267b14688ec66c158d88b1c0744bec.mp3",
+      "sha256": "36d14eb9a4587f566b5a6b89db01e27200267b14688ec66c158d88b1c0744bec",
+      "changes": "filename only"
+    },
+    "final-er3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-er3.mp3",
+      "sourceSha256": "2b577d166ea6cdf4b7f137c8ab37765128844ce7d23903e915199303cf3f3252",
+      "file": "2b577d166ea6cdf4b7f137c8ab37765128844ce7d23903e915199303cf3f3252.mp3",
+      "sha256": "2b577d166ea6cdf4b7f137c8ab37765128844ce7d23903e915199303cf3f3252",
+      "changes": "filename only"
+    },
+    "final-er4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-er4.mp3",
+      "sourceSha256": "708278953eff64ad7da0d5e711bc881744a9bb4fd6e2f622656ced7a0f68302f",
+      "file": "708278953eff64ad7da0d5e711bc881744a9bb4fd6e2f622656ced7a0f68302f.mp3",
+      "sha256": "708278953eff64ad7da0d5e711bc881744a9bb4fd6e2f622656ced7a0f68302f",
+      "changes": "filename only"
+    },
+    "final-an1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-an1.mp3",
+      "sourceSha256": "ef5f094588a6781e02e4f2f16a8230aeb58d6b1a1d54f45e335a2aec787a6ff4",
+      "file": "ef5f094588a6781e02e4f2f16a8230aeb58d6b1a1d54f45e335a2aec787a6ff4.mp3",
+      "sha256": "ef5f094588a6781e02e4f2f16a8230aeb58d6b1a1d54f45e335a2aec787a6ff4",
+      "changes": "filename only"
+    },
+    "final-an2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-an2.mp3",
+      "sourceSha256": "9665140c7aef06c987a4f4acfad5337f6c40cd1c9338c4b186c4a3181ac13c13",
+      "file": "9665140c7aef06c987a4f4acfad5337f6c40cd1c9338c4b186c4a3181ac13c13.mp3",
+      "sha256": "9665140c7aef06c987a4f4acfad5337f6c40cd1c9338c4b186c4a3181ac13c13",
+      "changes": "filename only"
+    },
+    "final-an3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-an3.mp3",
+      "sourceSha256": "8457448301911b25ef7dff29a86efe3cb6bd738e16a30184d0887f6e6b4a6aaa",
+      "file": "8457448301911b25ef7dff29a86efe3cb6bd738e16a30184d0887f6e6b4a6aaa.mp3",
+      "sha256": "8457448301911b25ef7dff29a86efe3cb6bd738e16a30184d0887f6e6b4a6aaa",
+      "changes": "filename only"
+    },
+    "final-an4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-an4.mp3",
+      "sourceSha256": "25d298b566284f9617c92ea82086c9f417a67f285c4e3be3871210c776158c56",
+      "file": "25d298b566284f9617c92ea82086c9f417a67f285c4e3be3871210c776158c56.mp3",
+      "sha256": "25d298b566284f9617c92ea82086c9f417a67f285c4e3be3871210c776158c56",
+      "changes": "filename only"
+    },
+    "final-en1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-en1.mp3",
+      "sourceSha256": "f7f374fa75f20c5a5558547352962636ceef2aa3b8e3cfeac8b057caf6f51b21",
+      "file": "f7f374fa75f20c5a5558547352962636ceef2aa3b8e3cfeac8b057caf6f51b21.mp3",
+      "sha256": "f7f374fa75f20c5a5558547352962636ceef2aa3b8e3cfeac8b057caf6f51b21",
+      "changes": "filename only"
+    },
+    "final-en2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-en2.mp3",
+      "sourceSha256": "6ef477d515580bd5b810331457d2bb118ee299db6ca7a7586ca9d7eb53682ac2",
+      "file": "6ef477d515580bd5b810331457d2bb118ee299db6ca7a7586ca9d7eb53682ac2.mp3",
+      "sha256": "6ef477d515580bd5b810331457d2bb118ee299db6ca7a7586ca9d7eb53682ac2",
+      "changes": "filename only"
+    },
+    "final-en3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-en3.mp3",
+      "sourceSha256": "71a68798102fe9f8192bb511e6eca7621c6ac7c82de6e1ee483a0628e970baf8",
+      "file": "71a68798102fe9f8192bb511e6eca7621c6ac7c82de6e1ee483a0628e970baf8.mp3",
+      "sha256": "71a68798102fe9f8192bb511e6eca7621c6ac7c82de6e1ee483a0628e970baf8",
+      "changes": "filename only"
+    },
+    "final-en4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-en4.mp3",
+      "sourceSha256": "37674d9f8eb5fcbfa5aa9295afb85ef953b73d44d2987c39a295b8be74576ce8",
+      "file": "37674d9f8eb5fcbfa5aa9295afb85ef953b73d44d2987c39a295b8be74576ce8.mp3",
+      "sha256": "37674d9f8eb5fcbfa5aa9295afb85ef953b73d44d2987c39a295b8be74576ce8",
+      "changes": "filename only"
+    },
+    "final-in1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yin1.mp3",
+      "sourceSha256": "463215358d04f52a2b51b7b85d71433460e749a045c951453d13175d66a5e32d",
+      "file": "463215358d04f52a2b51b7b85d71433460e749a045c951453d13175d66a5e32d.mp3",
+      "sha256": "463215358d04f52a2b51b7b85d71433460e749a045c951453d13175d66a5e32d",
+      "changes": "filename only"
+    },
+    "final-in2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yin2.mp3",
+      "sourceSha256": "07871948802383acf64b718afef207a760a9b6f8b056562c1878220c17d7740d",
+      "file": "07871948802383acf64b718afef207a760a9b6f8b056562c1878220c17d7740d.mp3",
+      "sha256": "07871948802383acf64b718afef207a760a9b6f8b056562c1878220c17d7740d",
+      "changes": "filename only"
+    },
+    "final-in3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yin3.mp3",
+      "sourceSha256": "652bcde11308ee0c6838437bcf665eee22102f5c5e6245f2a7394c179d79de06",
+      "file": "652bcde11308ee0c6838437bcf665eee22102f5c5e6245f2a7394c179d79de06.mp3",
+      "sha256": "652bcde11308ee0c6838437bcf665eee22102f5c5e6245f2a7394c179d79de06",
+      "changes": "filename only"
+    },
+    "final-in4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yin4.mp3",
+      "sourceSha256": "23e608074848c5f4755acab53f3d4d5f35b810f9e920a93bafe9fc754a2ae445",
+      "file": "23e608074848c5f4755acab53f3d4d5f35b810f9e920a93bafe9fc754a2ae445.mp3",
+      "sha256": "23e608074848c5f4755acab53f3d4d5f35b810f9e920a93bafe9fc754a2ae445",
+      "changes": "filename only"
+    },
+    "final-un1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wen1.mp3",
+      "sourceSha256": "e8daa1b6a09fbf778549366348a4e5f97d604e7c999e32e22c8570a1dfc38f23",
+      "file": "e8daa1b6a09fbf778549366348a4e5f97d604e7c999e32e22c8570a1dfc38f23.mp3",
+      "sha256": "e8daa1b6a09fbf778549366348a4e5f97d604e7c999e32e22c8570a1dfc38f23",
+      "changes": "filename only"
+    },
+    "final-un2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wen2.mp3",
+      "sourceSha256": "9c2ad66bb4945f5d557a83fc8e217a3e73bddaf2e394e4fd942660d902295b5e",
+      "file": "9c2ad66bb4945f5d557a83fc8e217a3e73bddaf2e394e4fd942660d902295b5e.mp3",
+      "sha256": "9c2ad66bb4945f5d557a83fc8e217a3e73bddaf2e394e4fd942660d902295b5e",
+      "changes": "filename only"
+    },
+    "final-un3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wen3.mp3",
+      "sourceSha256": "9af4a450b79f7459c4a9529aed90e548dd5c606a7d6b51c54d04a9dcc23d389a",
+      "file": "9af4a450b79f7459c4a9529aed90e548dd5c606a7d6b51c54d04a9dcc23d389a.mp3",
+      "sha256": "9af4a450b79f7459c4a9529aed90e548dd5c606a7d6b51c54d04a9dcc23d389a",
+      "changes": "filename only"
+    },
+    "final-un4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-wen4.mp3",
+      "sourceSha256": "f20ded60adcf5dd861a7b6586d794660d6357b75475fe7c6bf27afcaf7c70c68",
+      "file": "f20ded60adcf5dd861a7b6586d794660d6357b75475fe7c6bf27afcaf7c70c68.mp3",
+      "sha256": "f20ded60adcf5dd861a7b6586d794660d6357b75475fe7c6bf27afcaf7c70c68",
+      "changes": "filename only"
+    },
+    "final-vn1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yun1.mp3",
+      "sourceSha256": "13039ae5b92c39f1fca255cf2fab41a071f3852bfae0d4480f69643113a55231",
+      "file": "13039ae5b92c39f1fca255cf2fab41a071f3852bfae0d4480f69643113a55231.mp3",
+      "sha256": "13039ae5b92c39f1fca255cf2fab41a071f3852bfae0d4480f69643113a55231",
+      "changes": "filename only"
+    },
+    "final-vn2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yun2.mp3",
+      "sourceSha256": "9239fe5ef6f1937b95cc0db82afebaf2d336369b790f8e01b6b1ac41c930e495",
+      "file": "9239fe5ef6f1937b95cc0db82afebaf2d336369b790f8e01b6b1ac41c930e495.mp3",
+      "sha256": "9239fe5ef6f1937b95cc0db82afebaf2d336369b790f8e01b6b1ac41c930e495",
+      "changes": "filename only"
+    },
+    "final-vn3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yun3.mp3",
+      "sourceSha256": "7d15aa0df056a767355840ccd309041ce7fe91a991fa857f988203d6480da8bd",
+      "file": "7d15aa0df056a767355840ccd309041ce7fe91a991fa857f988203d6480da8bd.mp3",
+      "sha256": "7d15aa0df056a767355840ccd309041ce7fe91a991fa857f988203d6480da8bd",
+      "changes": "filename only"
+    },
+    "final-vn4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-yun4.mp3",
+      "sourceSha256": "082d02ff17c2d63887afb5b1bbf88303ac30dc18c177c3216623d5a9f8184af4",
+      "file": "082d02ff17c2d63887afb5b1bbf88303ac30dc18c177c3216623d5a9f8184af4.mp3",
+      "sha256": "082d02ff17c2d63887afb5b1bbf88303ac30dc18c177c3216623d5a9f8184af4",
+      "changes": "filename only"
+    },
+    "final-ang1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ang1.mp3",
+      "sourceSha256": "2d57d964dff69e6f7a4a2dfdb83fdc10431e5f6d5b25835baad71daf5f1f095c",
+      "file": "2d57d964dff69e6f7a4a2dfdb83fdc10431e5f6d5b25835baad71daf5f1f095c.mp3",
+      "sha256": "2d57d964dff69e6f7a4a2dfdb83fdc10431e5f6d5b25835baad71daf5f1f095c",
+      "changes": "filename only"
+    },
+    "final-ang2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ang2.mp3",
+      "sourceSha256": "4ec3bbaffe8c835169199311030a9a37ee597c0be3c166a1433cfc32f6f371fc",
+      "file": "4ec3bbaffe8c835169199311030a9a37ee597c0be3c166a1433cfc32f6f371fc.mp3",
+      "sha256": "4ec3bbaffe8c835169199311030a9a37ee597c0be3c166a1433cfc32f6f371fc",
+      "changes": "filename only"
+    },
+    "final-ang3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ang3.mp3",
+      "sourceSha256": "f86676363867df3b743f60d8f7051a7ec18bf713ca4f18c3e46d3d1b118111fc",
+      "file": "f86676363867df3b743f60d8f7051a7ec18bf713ca4f18c3e46d3d1b118111fc.mp3",
+      "sha256": "f86676363867df3b743f60d8f7051a7ec18bf713ca4f18c3e46d3d1b118111fc",
+      "changes": "filename only"
+    },
+    "final-ang4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ang4.mp3",
+      "sourceSha256": "2a3d50aca1c91247db5ff46452d3b0c1983e52dd990e24fad93c04888683e15e",
+      "file": "2a3d50aca1c91247db5ff46452d3b0c1983e52dd990e24fad93c04888683e15e.mp3",
+      "sha256": "2a3d50aca1c91247db5ff46452d3b0c1983e52dd990e24fad93c04888683e15e",
+      "changes": "filename only"
+    },
+    "final-eng1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-eng1.mp3",
+      "sourceSha256": "f2bdb0abf7555a629fd8dbe67f77b2d596aea8954c02208edc3d263eb99e2f5a",
+      "file": "f2bdb0abf7555a629fd8dbe67f77b2d596aea8954c02208edc3d263eb99e2f5a.mp3",
+      "sha256": "f2bdb0abf7555a629fd8dbe67f77b2d596aea8954c02208edc3d263eb99e2f5a",
+      "changes": "filename only"
+    },
+    "final-eng2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-eng2.mp3",
+      "sourceSha256": "5a41763c94a7d14c963c8924a6483543869dc01b36ea6ae3d090286ded321d3d",
+      "file": "5a41763c94a7d14c963c8924a6483543869dc01b36ea6ae3d090286ded321d3d.mp3",
+      "sha256": "5a41763c94a7d14c963c8924a6483543869dc01b36ea6ae3d090286ded321d3d",
+      "changes": "filename only"
+    },
+    "final-eng3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-eng3.mp3",
+      "sourceSha256": "f569ac46ddd2d7277fa2941b71ab8295f2c2ef8ad820218fb64b42520591dd22",
+      "file": "f569ac46ddd2d7277fa2941b71ab8295f2c2ef8ad820218fb64b42520591dd22.mp3",
+      "sha256": "f569ac46ddd2d7277fa2941b71ab8295f2c2ef8ad820218fb64b42520591dd22",
+      "changes": "filename only"
+    },
+    "final-eng4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-eng4.mp3",
+      "sourceSha256": "6753eb7d7afe5d6fdb198561ea8ed0cd8fee01ddc100176595e56433ff522aa4",
+      "file": "6753eb7d7afe5d6fdb198561ea8ed0cd8fee01ddc100176595e56433ff522aa4.mp3",
+      "sha256": "6753eb7d7afe5d6fdb198561ea8ed0cd8fee01ddc100176595e56433ff522aa4",
+      "changes": "filename only"
+    },
+    "final-ing1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ying1.mp3",
+      "sourceSha256": "ac88995f3ff2d6f527b3b1ab30c518d74e1ac27811cb690dc787cad2e16d75e6",
+      "file": "ac88995f3ff2d6f527b3b1ab30c518d74e1ac27811cb690dc787cad2e16d75e6.mp3",
+      "sha256": "ac88995f3ff2d6f527b3b1ab30c518d74e1ac27811cb690dc787cad2e16d75e6",
+      "changes": "filename only"
+    },
+    "final-ing2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ying2.mp3",
+      "sourceSha256": "21e3f489e98e4f450a9a97efd2e8fe433afbe1b5ff43e4122f731ee7b7b58bef",
+      "file": "21e3f489e98e4f450a9a97efd2e8fe433afbe1b5ff43e4122f731ee7b7b58bef.mp3",
+      "sha256": "21e3f489e98e4f450a9a97efd2e8fe433afbe1b5ff43e4122f731ee7b7b58bef",
+      "changes": "filename only"
+    },
+    "final-ing3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ying3.mp3",
+      "sourceSha256": "b7b1c29f8a5c563bd6d9a059b6ad61956817ec242612941c98c5de63f5b7a156",
+      "file": "b7b1c29f8a5c563bd6d9a059b6ad61956817ec242612941c98c5de63f5b7a156.mp3",
+      "sha256": "b7b1c29f8a5c563bd6d9a059b6ad61956817ec242612941c98c5de63f5b7a156",
+      "changes": "filename only"
+    },
+    "final-ing4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-ying4.mp3",
+      "sourceSha256": "7bd13cd6d3ac85cc6ae81450ce4182d8ae2ecc72675a1e1d11f508d1bb20855f",
+      "file": "7bd13cd6d3ac85cc6ae81450ce4182d8ae2ecc72675a1e1d11f508d1bb20855f.mp3",
+      "sha256": "7bd13cd6d3ac85cc6ae81450ce4182d8ae2ecc72675a1e1d11f508d1bb20855f",
+      "changes": "filename only"
+    },
+    "final-ong1": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-kong1.mp3",
+      "sourceSha256": "68ab74dc1e2c6949d283f02e6ec45e3c34c48078ecd18616677b12c3521365ec",
+      "file": "acf05a9dda0555cc11dca624134f68d6ec4d2294ac18db01975d9a9532b3fbdf.wav",
+      "sha256": "acf05a9dda0555cc11dca624134f68d6ec4d2294ac18db01975d9a9532b3fbdf",
+      "changes": "裁切 0.409–0.711 秒，短淡入淡出"
+    },
+    "final-ong2": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-kong2.mp3",
+      "sourceSha256": "8de3b7bbed08b3cdf3a528915dedaa84babc458e6b156939af9927359ee4e98b",
+      "file": "7954c846981b3efab610f4f6b7de5a5c8fad0248bb6714ca05c202bcc47a0155.wav",
+      "sha256": "7954c846981b3efab610f4f6b7de5a5c8fad0248bb6714ca05c202bcc47a0155",
+      "changes": "裁切 0.448–0.831 秒，短淡入淡出"
+    },
+    "final-ong3": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-kong3.mp3",
+      "sourceSha256": "2be7395f88addbd60c2e137195f6b080909f2ad3b491cc5a46a44a399fdc7dce",
+      "file": "33bd1527af08942a20fee4f8bef18c8aef86eabb22fcd0def1ca271c64d6ff71.wav",
+      "sha256": "33bd1527af08942a20fee4f8bef18c8aef86eabb22fcd0def1ca271c64d6ff71",
+      "changes": "裁切 0.385–0.976 秒，短淡入淡出"
+    },
+    "final-ong4": {
+      "source": "chen",
+      "sourceFile": "64k/syllabs/cmn-kong4.mp3",
+      "sourceSha256": "bf879e0286035e4cce8407e311e53acb49a861fecdd0dd12652591ad87674624",
+      "file": "a392b48e9fd03cc1667ae831b815d903acab3a45cb04deb10d622060291ab430.wav",
+      "sha256": "a392b48e9fd03cc1667ae831b815d903acab3a45cb04deb10d622060291ab430",
+      "changes": "裁切 0.425–0.692 秒，短淡入淡出"
     }
   }
 }
