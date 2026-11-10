@@ -30,6 +30,21 @@ import './pinyin-shop.css';
 
 type Feedback = 'welcome' | 'ready' | 'manual_added' | ShopReadingOutcome | 'complete';
 type ReadingMode = 'syllable' | 'sentence';
+const quietWaveform = Array<number>(23).fill(0);
+const widestSentence = shopSentences.reduce((longest, item) =>
+  item.target.pinyin.length > longest.target.pinyin.length ? item : longest,
+);
+
+function waveformPath(levels: number[]) {
+  return levels
+    .map((level, index) => {
+      const x = 6 + index * 6;
+      const half = Math.round(1 + level * 14);
+      return `M${x} ${18 - half}v${half * 2}`;
+    })
+    .join('');
+}
+
 const messages: Record<Feedback, string> = {
   welcome: '挑一件喜欢的商品，看看右边的拼音，直接读出来。',
   manual_added: '已确认读完，商品放进购物车啦！',
@@ -107,7 +122,8 @@ export function PinyinShop({
   const [cabinet, setCabinet] = useState(0);
   const nextTarget = useRef({ syllable: 0, sentence: 0 });
   const challenge = useRef<HTMLDivElement>(null);
-  const meter = useRef<HTMLDivElement>(null);
+  const waveform = useRef<SVGPathElement>(null);
+  const levels = useRef([...quietWaveform]);
   const display = useRef<HTMLDivElement>(null);
   const epoch = useRef(0);
   const guidance = useRef(guidanceEnabled);
@@ -154,7 +170,8 @@ export function PinyinShop({
   function read(product: ShopProduct, task: ShopTarget) {
     cancel();
     const generation = epoch.current;
-    meter.current?.style.setProperty('--shop-level', '0');
+    levels.current.fill(0);
+    waveform.current?.setAttribute('d', waveformPath(levels.current));
     setPhase('starting');
     setFeedback('ready');
     void reading.start(task.target, {
@@ -162,8 +179,9 @@ export function PinyinShop({
         if (epoch.current === generation) setPhase(value);
       },
       level: (rms) => {
-        const scale = Math.min(1, Math.sqrt(Math.max(0, rms) * 5));
-        meter.current?.style.setProperty('--shop-level', scale.toFixed(3));
+        levels.current.shift();
+        levels.current.push(Math.min(1, Math.sqrt(Math.max(0, rms) * 5)));
+        waveform.current?.setAttribute('d', waveformPath(levels.current));
       },
       outcome: (outcome) => {
         if (epoch.current !== generation || document.hidden) return;
@@ -246,6 +264,15 @@ export function PinyinShop({
     tell('complete');
   };
   const total = shopPrice(shopTotalCents(basket));
+  const canAct = phase === 'ready' && Boolean(target && selected && !finished);
+  const canReturn = !full && (feedback === 'matched' || feedback === 'manual_added');
+  const signal = adapter.mock
+    ? undefined
+    : phase === 'listening'
+      ? 'listening'
+      : feedback === 'matched'
+        ? 'matched'
+        : undefined;
   const feedbackText =
     phase === 'starting'
       ? adapter.mock
@@ -356,8 +383,10 @@ export function PinyinShop({
                   >
                     <ShopProductImage product={product} />
                     <span className="shop-price-tag">
-                      <span>{product.name}</span>
-                      <strong>{shopPrice(product.priceCents)}</strong>
+                      <span className="shop-price-label">
+                        <span>{product.name}</span>
+                        <strong>{shopPrice(product.priceCents)}</strong>
+                      </span>
                     </span>
                     {basket.includes(product.id) && <span className="shop-added">✓ 已入车</span>}
                   </button>
@@ -391,11 +420,14 @@ export function PinyinShop({
                 {!finished && (
                   <div className="shop-confirmation">
                     <strong>{manual ? '人工确认' : adapter.mock ? '模拟' : '本地语音识别'}</strong>
-                    {automatic && (
-                      <button className="quiet" onClick={toggleConfirmation}>
-                        {manual ? '切换到本地识别' : '改用人工确认'}
-                      </button>
-                    )}
+                    <button
+                      className="quiet"
+                      data-empty={!automatic || undefined}
+                      disabled={!automatic}
+                      onClick={toggleConfirmation}
+                    >
+                      {manual ? '切换到本地识别' : '改用人工确认'}
+                    </button>
                   </div>
                 )}
                 <span className="eyebrow">
@@ -424,50 +456,51 @@ export function PinyinShop({
                     </span>
                   )}
                 </div>
-                {target && (
-                  <div className="shop-demonstration">
-                    <button
-                      className="quiet"
-                      aria-pressed={voice.playingId === target.audioRef}
-                      onClick={listen}
-                    >
-                      <span aria-hidden="true">🔊 </span>听正确读音
-                    </button>
-                    {target.hanzi && (
-                      <button className="quiet" onClick={() => setShowHanzi(!showHanzi)}>
-                        {showHanzi ? '隐藏汉字' : '显示汉字'}
-                      </button>
-                    )}
-                  </div>
-                )}
-                <h2 className={target?.hanzi ? 'shop-target shop-sentence' : 'shop-target'}>
-                  {target?.target.pinyin ?? (finished ? '购物清单' : '等你来挑')}
-                </h2>
-                {target?.hanzi && showHanzi && (
-                  <p className="shop-sentence-hanzi">{target.hanzi}</p>
-                )}
-                <div
-                  ref={meter}
-                  className="shop-listening-indicator"
-                  data-signal={
-                    adapter.mock
-                      ? undefined
-                      : phase === 'listening'
-                        ? 'listening'
-                        : feedback === 'matched'
-                          ? 'matched'
-                          : undefined
-                  }
-                  aria-hidden="true"
-                >
-                  {!adapter.mock && (phase === 'listening' || feedback === 'matched') ? (
-                    <span className="shop-signal">
-                      <i />
-                      <i />
-                      <i />
-                      <span>{feedback === 'matched' ? '✓' : '●'}</span>
-                    </span>
-                  ) : (
+                <div className="shop-demonstration">
+                  <button
+                    className="quiet"
+                    disabled={!target}
+                    aria-pressed={Boolean(target && voice.playingId === target.audioRef)}
+                    onClick={listen}
+                  >
+                    <span aria-hidden="true">🔊 </span>听正确读音
+                  </button>
+                  <button
+                    className="quiet"
+                    data-empty={!target?.hanzi || undefined}
+                    disabled={!target?.hanzi}
+                    onClick={() => setShowHanzi(!showHanzi)}
+                  >
+                    {showHanzi ? '隐藏汉字' : '显示汉字'}
+                  </button>
+                </div>
+                <div className="shop-reading-text" data-sizer={widestSentence.target.pinyin}>
+                  <h2
+                    className={
+                      !target || target.hanzi ? 'shop-target shop-sentence' : 'shop-target'
+                    }
+                  >
+                    {target?.target.pinyin ?? (finished ? '购物清单' : '等你来挑')}
+                  </h2>
+                </div>
+                <div className="shop-hanzi-space" data-sizer={widestSentence.hanzi}>
+                  {target?.hanzi && showHanzi && (
+                    <p className="shop-sentence-hanzi">{target.hanzi}</p>
+                  )}
+                </div>
+                <div className="shop-listening-indicator" data-signal={signal} aria-hidden="true">
+                  <svg className="shop-signal" viewBox="0 0 144 36">
+                    <path
+                      className="shop-waveform"
+                      ref={waveform}
+                      d={waveformPath(quietWaveform)}
+                    />
+                    <path
+                      className="shop-waveform-still"
+                      d="M6 16v4 M18 14v8 M30 11v14 M42 7v22 M54 4v28 M66 10v16 M78 6v24 M90 12v12 M102 8v20 M114 13v10 M126 15v6 M138 16v4"
+                    />
+                  </svg>
+                  {!signal && (
                     <span>
                       {phase === 'starting'
                         ? adapter.mock
@@ -483,28 +516,23 @@ export function PinyinShop({
                     </span>
                   )}
                 </div>
-                <p className="shop-feedback" role="status">
-                  {feedbackText}
-                </p>
-                {target && selected && phase === 'ready' && !finished && (
-                  <div className="shop-record-controls">
-                    {manual ? (
-                      <button
-                        className="shop-primary"
-                        onClick={() => addProduct(selected, 'manual_added')}
-                      >
-                        读完了，加入购物车
-                      </button>
-                    ) : (
-                      <button className="shop-primary" onClick={() => read(selected, target)}>
-                        🎙 再读一次
-                      </button>
-                    )}
-                  </div>
-                )}
-                {phase !== 'ready' && (
+                <div className="shop-feedback">
+                  <p role="status" data-empty={Boolean(voice.failureId) || undefined}>
+                    {feedbackText}
+                  </p>
+                  <p
+                    className="shop-audio-error"
+                    data-empty={!voice.failureId || undefined}
+                    role={voice.failureId ? 'alert' : undefined}
+                  >
+                    声音暂时没有响起，请点「听正确读音」重试。
+                  </p>
+                </div>
+                <div className="shop-record-controls">
                   <button
                     className="quiet"
+                    data-empty={phase === 'ready' || undefined}
+                    disabled={phase === 'ready'}
                     onClick={() => {
                       cancel();
                       setPhase('ready');
@@ -513,22 +541,37 @@ export function PinyinShop({
                   >
                     取消本次录音
                   </button>
-                )}
-                {(feedback === 'matched' || feedback === 'manual_added') && !full && (
+                  <button
+                    className="shop-primary"
+                    data-empty={!canAct || !manual || undefined}
+                    disabled={!canAct || !manual}
+                    onClick={() => {
+                      if (selected) addProduct(selected, 'manual_added');
+                    }}
+                  >
+                    读完了，加入购物车
+                  </button>
+                  <button
+                    className="shop-primary"
+                    data-empty={!canAct || manual || undefined}
+                    disabled={!canAct || manual}
+                    onClick={() => {
+                      if (selected && target) read(selected, target);
+                    }}
+                  >
+                    🎙 再读一次
+                  </button>
                   <button
                     className="quiet shop-return-shelf"
+                    data-empty={!canReturn || undefined}
+                    disabled={!canReturn}
                     onClick={() =>
                       display.current?.scrollIntoView({ behavior: 'instant', block: 'start' })
                     }
                   >
                     继续挑商品 ↑
                   </button>
-                )}
-                {voice.failureId && (
-                  <p role="alert" className="shop-audio-error">
-                    提示声音暂时没有响起，可以继续练习。请家长检查本机声音。
-                  </p>
-                )}
+                </div>
               </div>
               <aside
                 className={`shop-basket ${finished ? 'shop-basket-complete' : ''}`}
@@ -541,28 +584,35 @@ export function PinyinShop({
                   </span>
                 </h2>
                 {adapter.mock && <p className="shop-simulation">模拟购物清单 · 不是真实识别</p>}
-                {basket.length ? (
-                  <ul>
-                    {basket.map((id) => {
-                      const product = products.find((p) => p.id === id)!;
-                      return (
-                        <li key={id}>
-                          <ShopProductImage product={product} />
-                          <span>{product.name}</span>
-                          <strong>{shopPrice(product.priceCents)}</strong>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <p className="shop-empty">
-                    {adapter.mock
-                      ? '选好商品后，会模拟成功并自动入车。'
-                      : manual
-                        ? '读完并确认后，商品会来到这里。'
-                        : '读音匹配后，喜欢的商品会自动来到这里。'}
-                  </p>
-                )}
+                <div
+                  className="shop-basket-items"
+                  tabIndex={basket.length ? 0 : undefined}
+                  role="group"
+                  aria-label="购物清单"
+                >
+                  {basket.length ? (
+                    <ul>
+                      {basket.map((id) => {
+                        const product = products.find((p) => p.id === id)!;
+                        return (
+                          <li key={id}>
+                            <ShopProductImage product={product} />
+                            <span>{product.name}</span>
+                            <strong>{shopPrice(product.priceCents)}</strong>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <p className="shop-empty">
+                      {adapter.mock
+                        ? '选好商品后，会模拟成功并自动入车。'
+                        : manual
+                          ? '读完并确认后，商品会来到这里。'
+                          : '读音匹配后，喜欢的商品会自动来到这里。'}
+                    </p>
+                  )}
+                </div>
                 <div className="shop-total">
                   <span>{finished ? '结算总金额' : '合计'}</span>
                   <strong>{total}</strong>

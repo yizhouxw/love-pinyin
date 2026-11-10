@@ -340,8 +340,10 @@ function RecordedPractice({ guidanceEnabled }: { guidanceEnabled: boolean }) {
       <button className="quiet" onClick={clear}>
         取消并清除录音
       </button>
-      {error && <p role="alert">{error}</p>}
-      {url && <audio ref={replay} src={url} controls aria-label="回放课程跟读" />}
+      <div className="pronunciation-replay-space">
+        {error && <p role="alert">{error}</p>}
+        {url && <audio ref={replay} src={url} controls aria-label="回放课程跟读" />}
+      </div>
     </details>
   );
 }

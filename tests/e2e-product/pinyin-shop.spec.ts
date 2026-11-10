@@ -304,7 +304,7 @@ test('SHOP-17: listening to the correct sound cancels active capture on a narrow
   await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
 });
 
-test('SHOP-16/17: short sentences, optional Chinese text and replay without recognition', async ({
+test('SHOP-22: short sentences, optional Chinese text and stable checkout without recognition', async ({
   page,
   appUrl,
 }) => {
@@ -316,7 +316,17 @@ test('SHOP-16/17: short sentences, optional Chinese text and replay without reco
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByRole('button', { name: '进入拼音小卖部' }).click();
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
+  await page.evaluate(() => document.fonts.ready);
+  const counterGeometry = () =>
+    page.locator('.shop-challenge, .shop-basket, .shop-checkout').evaluateAll((elements) =>
+      elements.map((element) => {
+        const rect = element.getBoundingClientRect();
+        return [Math.round(rect.top + scrollY), Math.round(rect.height)];
+      }),
+    );
+  const initial = await counterGeometry();
   await page.getByRole('button', { name: '选择薯片', exact: true }).click();
+  expect(await counterGeometry()).toEqual(initial);
   const sound = page.getByRole('button', { name: '听正确读音', exact: true });
   await expect(sound).toBeEnabled();
   const sentenceMode = page.getByRole('button', { name: '句子拼读', exact: true });
@@ -326,8 +336,10 @@ test('SHOP-16/17: short sentences, optional Chinese text and replay without reco
   const hanzi = page.getByText('爸爸喝茶。', { exact: true });
   await expect(pinyin).toBeVisible();
   await expect(hanzi).toBeVisible();
+  expect(await counterGeometry()).toEqual(initial);
   await page.getByRole('button', { name: '隐藏汉字', exact: true }).click();
   await expect(hanzi).toHaveCount(0);
+  expect(await counterGeometry()).toEqual(initial);
   await expect(pinyin).toBeVisible();
   const audio = page.waitForResponse(
     (response) => response.url().includes('/voice/ui-shop-sentence-tea') && response.ok(),
@@ -342,6 +354,7 @@ test('SHOP-16/17: short sentences, optional Chinese text and replay without reco
   await expect(basket).toHaveCount(0);
   await page.getByRole('button', { name: '读完了，加入购物车' }).click();
   await expect(basket).toHaveText(/薯片/);
+  expect(await counterGeometry()).toEqual(initial);
   await expect(sound).toBeEnabled();
   await page.getByRole('button', { name: '音节拼读', exact: true }).click();
   await expect(basket).toHaveCount(1);
@@ -349,6 +362,16 @@ test('SHOP-16/17: short sentences, optional Chinese text and replay without reco
   await expect(page.locator('.shop-target')).toHaveText('o');
   await expect(sound).toBeEnabled();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  for (const width of [1280, 320, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    if (width === 390) {
+      await page.evaluate(() => document.documentElement.style.setProperty('font-size', '200%'));
+    }
+    await page.getByLabel('切换货架').getByRole('button').first().click();
+    const unselected = await counterGeometry();
+    await page.locator('.shop-product').nth(1).click();
+    expect(await counterGeometry()).toEqual(unselected);
+  }
 });
 
 test('SHOP-10: manual confirmation requires an explicit action for each item', async ({
@@ -465,20 +488,17 @@ for (const mode of ['syllable', 'sentence'] as const) {
     else await choose.click();
     const meter = page.locator('.shop-listening-indicator');
     await expect(meter).toHaveAttribute('data-signal', 'listening');
-    const ripple = meter.locator('i').first();
-    await expect(ripple).toHaveCSS('border-top-color', 'rgb(139, 212, 242)');
+    const waveform = meter.locator('.shop-waveform');
+    await expect(waveform).toHaveCSS('stroke', 'rgb(139, 212, 242)');
     await expect
-      .poll(
-        () =>
-          meter.evaluate((element) =>
-            Number(getComputedStyle(element).getPropertyValue('--shop-level')),
-          ),
-        { intervals: [50, 80], timeout: 3500 },
-      )
-      .toBeGreaterThan(0.03);
+      .poll(() => waveform.evaluate((element) => (element as SVGPathElement).getBBox().height), {
+        intervals: [50, 80],
+        timeout: 3500,
+      })
+      .toBeGreaterThan(2);
     await expect(basket).toHaveCount(1, { timeout: 7000 });
     await expect(meter).toHaveAttribute('data-signal', 'matched');
-    await expect(ripple).toHaveCSS('border-top-color', 'rgb(76, 169, 120)');
+    await expect(waveform).toHaveCSS('stroke', 'rgb(76, 169, 120)');
     const result = await (await match).json();
     expect(result.saved).toBe(false);
     if (mode === 'sentence') expect(result.match.targetId).toBe('shop-sentence-tea');

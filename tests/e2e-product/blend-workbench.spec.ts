@@ -1,4 +1,4 @@
-import { openSection } from '../support/interaction';
+import { documentTop, openSection } from '../support/interaction';
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
@@ -43,17 +43,21 @@ test('BLEND-01: real spoken preview, undo, reload, failed confirmation and singl
   const confirm = page.getByRole('button', { name: '确认拼读', exact: true });
   const undo = page.getByRole('button', { name: '撤销拼读选择', exact: true });
   await expect(options.first()).toBeEnabled({ timeout: 20000 });
+  const responseTop = await documentTop(page.locator('.exercise-response'));
+  await expect(confirm).toBeDisabled();
   await optionById(page, question.options[wrongIndex]!.id).press('Enter');
   await expect(confirm).toBeEnabled();
   await expect(confirm).toBeFocused();
   await expect(confirm).toBeInViewport();
   await expect(page.getByLabel('当前拼读预览')).toContainText(question.options[wrongIndex]!.label);
+  expect(await documentTop(page.locator('.exercise-response'))).toBe(responseTop);
   await expect.poll(() => voices.some((url) => url.endsWith('/voice/ui-blend_ready'))).toBe(true);
   expect(submitted).toEqual([]);
   await undo.press('Enter');
   await expect(optionById(page, question.options[wrongIndex]!.id)).toBeFocused();
   await expect(optionById(page, question.options[wrongIndex]!.id)).toBeInViewport();
   await expect(page.getByLabel('当前拼读预览')).toHaveCount(0);
+  expect(await documentTop(page.locator('.exercise-response'))).toBe(responseTop);
   await optionById(page, question.options[correctIndex]!.id).press('Enter');
   await page.reload();
   await expect(page.getByLabel('当前拼读预览')).toHaveCount(0);

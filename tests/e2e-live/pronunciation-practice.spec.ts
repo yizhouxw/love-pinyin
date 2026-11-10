@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { pairForHouseholdMaterial, useHouseholdMaterial } from '../support/household-material';
+import { documentTop } from '../support/interaction';
 
 test.use({ selectedPinyinSource: true });
 
@@ -91,6 +92,8 @@ test('SHOP-09: daily capture is local and can be confirmed by a parent before mo
   await page.getByText('播放设置', { exact: true }).click();
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
   await page.getByText('录音比较（可选）', { exact: true }).click();
+  const adult = page.getByText('家长帮助判断', { exact: true });
+  const adultTop = await documentTop(adult);
   await page.getByRole('button', { name: '录下我的跟读' }).click();
   const stop = page.getByRole('button', { name: '停止录音', exact: false });
   await expect(stop).toBeVisible();
@@ -101,9 +104,10 @@ test('SHOP-09: daily capture is local and can be confirmed by a parent before mo
   });
   await stop.click();
   await expect(page.getByLabel('回放我的跟读')).toBeVisible();
+  expect(await documentTop(adult)).toBe(adultTop);
   await expect(page.getByText('请听回放，用下方的家长判断确认本条跟读。')).toBeVisible();
   await expect(page.getByRole('button', { name: '重新识别这段跟读' })).toHaveCount(0);
-  await page.getByText('家长帮助判断', { exact: true }).click();
+  await adult.click();
   await page.getByRole('button', { name: '家长判断：熟练' }).click();
   await expect(page.getByRole('button', { name: '家长判断：熟练' })).toHaveAttribute(
     'aria-pressed',

@@ -1,6 +1,6 @@
 import { optionById } from '../support/options';
 import { expect } from '@playwright/test';
-import { openSection } from '../support/interaction';
+import { documentTop, openSection } from '../support/interaction';
 import { test } from '../support/real-server';
 import writing from '../../content/writing.json' with { type: 'json' };
 import type { WritingCatalog } from '../../src/domain/writing';
@@ -198,8 +198,11 @@ test('WRITE-01: all authored course targets render in order, including single-st
           path: test.info().outputPath(`glyph-${target.label === 'ü' ? 'v' : target.label}.png`),
         });
     }
+    const paper = page.locator('.writing-paper');
+    const paperTop = await documentTop(paper);
     await page.getByRole('button', { name: '看第一笔' }).click();
     await expect(page.locator('.writing-stage .active')).toHaveCount(1);
+    expect(await documentTop(paper)).toBe(paperTop);
     await page.getByRole('button', { name: '返回学习路线' }).click();
   }
   const state = await page.evaluate(() => JSON.parse(sessionStorage.getItem('lp.guest.v1')!).state);

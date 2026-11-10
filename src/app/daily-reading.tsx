@@ -801,7 +801,12 @@ function ReadingSession({
         </button>
 
         <div className="daily-status-strip">
-          {waiting ? (
+          {failure ? (
+            <>
+              <p role="alert">{failure}</p>
+              <div className="daily-static-track" aria-hidden="true" />
+            </>
+          ) : waiting ? (
             <FollowWait key={waiting.id} seconds={waiting.seconds} />
           ) : (
             <>
@@ -830,18 +835,12 @@ function ReadingSession({
             </>
           )}
         </div>
-        {failure && (
-          <div className="voice-failure" role="alert">
-            {failure}
-            <button onClick={() => void play()}>重试示范</button>
-          </div>
-        )}
         <div className="daily-actions">
           {phase === 'playing' ? (
             <button onClick={stop}>■ 停止示范</button>
           ) : (
             <button disabled={recording !== 'idle'} onClick={() => void play()}>
-              {phase === 'ready' ? '🔊 开始跟读' : '🔊 再听示范'}
+              {failure ? '重试示范' : phase === 'ready' ? '🔊 开始跟读' : '🔊 再听示范'}
             </button>
           )}
           <button
@@ -1001,54 +1000,64 @@ function ReadingSession({
                 : '录音仅在浏览器和家庭电脑内存处理。换条、退出或后台会清除；识别最多三十秒，录音两分钟自动停止。'}
               识别只核对音节。
             </p>
-            {recordError && <p role="alert">{recordError}</p>}
-            {recordUrl && (
-              <div className="daily-recording">
-                <strong>我的跟读 · 听回放比较</strong>
-                <audio ref={replay} src={recordUrl} controls aria-label="回放我的跟读" />
-                <button className="quiet" onClick={clearCapture}>
-                  清除这段录音
-                </button>
-                {canRecognize ? (
-                  <p>{isIOSApp() ? '本设备核对识别出的音节。' : '电脑核对识别出的音节。'}</p>
-                ) : (
-                  <p>请听回放，用下方的家长判断确认本条跟读。</p>
-                )}
-                {canRecognize && (
-                  <button
-                    className="quiet"
-                    disabled={recognizing}
-                    onClick={() => void judge(recordUrl)}
-                  >
-                    重新识别这段跟读
+            <div
+              className="daily-record-preview"
+              role="group"
+              aria-label="跟读录音结果"
+              tabIndex={recordUrl ? 0 : undefined}
+            >
+              {recordError && <p role="alert">{recordError}</p>}
+              {!recordError && !recordUrl && (
+                <p className="daily-privacy">录完后可以在这里听回放。</p>
+              )}
+              {recordUrl && (
+                <div className="daily-recording">
+                  <strong>我的跟读 · 听回放比较</strong>
+                  <audio ref={replay} src={recordUrl} controls aria-label="回放我的跟读" />
+                  <button className="quiet" onClick={clearCapture}>
+                    清除这段录音
                   </button>
-                )}
-                {recognizing && <p role="status">正在识别你的跟读…</p>}
-                {recognition && (
-                  <div
-                    className={`daily-recognition daily-recognition-${recognition.status}`}
-                    role="status"
-                  >
-                    <strong>
-                      音节对照（Qwen）：
-                      {
-                        (isIOSApp() ? recognitionContent.iosUI : recognitionContent.ui)[
-                          recognition.status
-                        ]
-                      }
-                    </strong>
-                    {recognition.transcript && <p>识别文字：{recognition.transcript}</p>}
-                    {recognition.recognizedPinyin && (
-                      <p>识别文字的拼音：{recognition.recognizedPinyin}</p>
-                    )}
-                    {recognition.reason === 'READING_TOO_LONG' && (
-                      <p>这段超过三十秒，请分条录音再试。</p>
-                    )}
-                    <small>仅识别匹配，不是发音分数；字典标调不代表录音的实际声调。</small>
-                  </div>
-                )}
-              </div>
-            )}
+                  {canRecognize ? (
+                    <p>{isIOSApp() ? '本设备核对识别出的音节。' : '电脑核对识别出的音节。'}</p>
+                  ) : (
+                    <p>请听回放，用下方的家长判断确认本条跟读。</p>
+                  )}
+                  {canRecognize && (
+                    <button
+                      className="quiet"
+                      disabled={recognizing}
+                      onClick={() => void judge(recordUrl)}
+                    >
+                      重新识别这段跟读
+                    </button>
+                  )}
+                  {recognizing && <p role="status">正在识别你的跟读…</p>}
+                  {recognition && (
+                    <div
+                      className={`daily-recognition daily-recognition-${recognition.status}`}
+                      role="status"
+                    >
+                      <strong>
+                        音节对照（Qwen）：
+                        {
+                          (isIOSApp() ? recognitionContent.iosUI : recognitionContent.ui)[
+                            recognition.status
+                          ]
+                        }
+                      </strong>
+                      {recognition.transcript && <p>识别文字：{recognition.transcript}</p>}
+                      {recognition.recognizedPinyin && (
+                        <p>识别文字的拼音：{recognition.recognizedPinyin}</p>
+                      )}
+                      {recognition.reason === 'READING_TOO_LONG' && (
+                        <p>这段超过三十秒，请分条录音再试。</p>
+                      )}
+                      <small>仅识别匹配，不是发音分数；字典标调不代表录音的实际声调。</small>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </details>
         )}
         <details

@@ -861,17 +861,46 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               />
             )}
           </div>
-          <p id="answer-availability" className="listen-before-answer" role="status">
-            {answerUnavailableReason ?? '可以选择答案了。'}
-          </p>
-          <VoiceFailure voice={voice} />
-          {picturesPending && (
-            <div className="picture-failure" role="status">
-              <p>{picturesFailed ? '图片暂时没加载好，可以重试。' : '图片正在加载，请稍等。'}</p>
-              <button className="quiet" onClick={() => setPictureRetry((n) => n + 1)}>
+          <div className="question-audio-state">
+            <p
+              id="answer-availability"
+              className="listen-before-answer"
+              role="status"
+              data-empty={Boolean(voice.failureId) || undefined}
+            >
+              {answerUnavailableReason ?? '可以选择答案了。'}
+            </p>
+            <p
+              className="question-audio-error"
+              role={voice.failureId ? 'alert' : undefined}
+              data-empty={!voice.failureId || undefined}
+            >
+              声音暂时没有响起，请重试。
+            </p>
+            <button
+              className="quiet"
+              data-empty={!voice.failureId || undefined}
+              disabled={!voice.failureId}
+              onClick={voice.retry}
+            >
+              ↻ 重试声音
+            </button>
+          </div>
+          {pictureIds.length > 0 && (
+            <div className="question-picture-recovery" data-empty={!picturesPending || undefined}>
+              <button
+                className="quiet"
+                disabled={!picturesPending}
+                onClick={() => setPictureRetry((n) => n + 1)}
+              >
                 ↻ 重试图片
               </button>
-              <VoiceButton id="picture-error" voice={voice} label="听图片提示" />
+              <VoiceButton
+                id="picture-error"
+                voice={voice}
+                label="听图片提示"
+                className="option-voice"
+              />
             </div>
           )}
           <div
@@ -942,46 +971,49 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           {question.type === 'blend-choice' && (
             <section className="blend-workbench" aria-label="拼读试选台">
               <VoiceButton id="ui-blend_how" voice={voice} label="听拼读怎么玩" />
-              {blendPreview ? (
-                <>
+              <div className="blend-preview-space">
+                {blendPreview ? (
                   <div className="blend-preview" aria-label="当前拼读预览">
                     <span aria-hidden="true">🧩</span>
                     <strong>{blendPreview.label}</strong>
                   </div>
-                  <div className="blend-controls">
-                    <button
-                      ref={blendConfirm}
-                      className="blend-confirm"
-                      aria-label="确认拼读"
-                      aria-describedby="answer-availability"
-                      disabled={
-                        busy ||
-                        answerNeedsAudio ||
-                        picturesPending ||
-                        Boolean(answer && (answer.correct || corrected))
-                      }
-                      onClick={() => void submitOption(blendPreview.id)}
-                    >
-                      ✓ 确认拼读
-                    </button>
-                    <button
-                      className="quiet"
-                      aria-label="撤销拼读选择"
-                      disabled={busy}
-                      onClick={() => {
-                        const id = blendPreview.id;
-                        setBlendDraft(null);
-                        stopVoice();
-                        blendOptions.current.get(id)?.focus();
-                      }}
-                    >
-                      ↶ 重新选择
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <p className="blend-empty">🧩 选一张卡片，看看拼在一起的样子</p>
-              )}
+                ) : (
+                  <p className="blend-empty">🧩 选一张卡片，看看拼在一起的样子</p>
+                )}
+              </div>
+              <div className="blend-controls">
+                <button
+                  ref={blendConfirm}
+                  className="blend-confirm"
+                  aria-label="确认拼读"
+                  aria-describedby="answer-availability"
+                  disabled={
+                    !blendPreview ||
+                    busy ||
+                    answerNeedsAudio ||
+                    picturesPending ||
+                    Boolean(answer && (answer.correct || corrected))
+                  }
+                  onClick={() => {
+                    if (blendPreview) void submitOption(blendPreview.id);
+                  }}
+                >
+                  ✓ 确认拼读
+                </button>
+                <button
+                  className="quiet"
+                  aria-label="撤销拼读选择"
+                  disabled={busy || !blendPreview}
+                  onClick={() => {
+                    if (!blendPreview) return;
+                    setBlendDraft(null);
+                    stopVoice();
+                    blendOptions.current.get(blendPreview.id)?.focus();
+                  }}
+                >
+                  ↶ 重新选择
+                </button>
+              </div>
             </section>
           )}
           <div className="exercise-response">

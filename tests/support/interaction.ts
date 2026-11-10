@@ -1,5 +1,9 @@
 import type { Locator, Page } from '@playwright/test';
 
+export function documentTop(locator: Locator) {
+  return locator.evaluate((element) => Math.round(element.getBoundingClientRect().top + scrollY));
+}
+
 /** Use the same visible disclosure controls as a family, without exposing unrelated settings. */
 export async function openSection(page: Page | Locator, name: string, optional = false) {
   const summary = page

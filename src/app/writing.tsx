@@ -287,7 +287,6 @@ export function WritingWorkshop({
           step={step}
         />
       </div>
-      {playFailure && <p role="alert">声音没有播放成功，请点“播放笔顺”重试。</p>}
       <details>
         <summary>逐笔观察</summary>
         <div className="writing-controls" role="group" aria-label="逐笔操作">
@@ -319,7 +318,11 @@ export function WritingWorkshop({
         <strong>
           {active ? `第 ${step! + 1} / ${steps.length} 笔` : `${steps.length} 笔 · 完整字形`}
         </strong>
-        <p>{active ? active.stroke.instruction : catalog.ui.full}</p>
+        {playFailure ? (
+          <p role="alert">声音没有播放成功，请点“播放笔顺”重试。</p>
+        ) : (
+          <p>{active ? active.stroke.instruction : catalog.ui.full}</p>
+        )}
       </div>
       {target.tone ? (
         <div className="writing-placement">
@@ -327,8 +330,8 @@ export function WritingWorkshop({
         </div>
       ) : (
         <div className="writing-placement">
-          {(active ? [active.glyphId] : [...new Set(target.glyphIds)]).map((id) => (
-            <div key={id}>
+          {[...new Set(target.glyphIds)].map((id) => (
+            <div key={id} aria-current={active?.glyphId === id ? 'true' : undefined}>
               <p>
                 {catalog.glyphs[id]!.symbol} · {catalog.glyphs[id]!.placement}
               </p>

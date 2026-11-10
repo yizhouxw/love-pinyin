@@ -421,6 +421,12 @@
   flex-wrap: wrap;
   gap: 0.7rem;
 }
+.daily-record-preview {
+  block-size: max(11rem, 7lh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
 .daily-reader .daily-next {
   margin-top: 0;
 }

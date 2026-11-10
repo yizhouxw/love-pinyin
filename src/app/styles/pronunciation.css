@@ -53,3 +53,11 @@
   max-width: 100%;
   margin-block: 12px;
 }
+.pronunciation-replay-space {
+  display: grid;
+  align-content: start;
+  min-block-size: max(78px, 4lh);
+}
+.pronunciation-replay-space > p {
+  margin-block: 0.5rem;
+}

@@ -1,5 +1,5 @@
 import { optionById } from '../support/options';
-import { openSection } from '../support/interaction';
+import { documentTop, openSection } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { clearReadingMedia, observeReadingMedia } from '../support/media-log';
@@ -132,6 +132,7 @@ test('WORD-01: picture choices and contextual blending rotate, retry audio and p
   await page.getByLabel('家长配对码').fill(code);
   await page.getByRole('button', { name: '连接家庭' }).click();
   const reached = new Set<string>();
+  const riceAudio = /\/audio\/(?:original-)?audio-rt-03-mi3$/;
   for (const number of [3, 9, 14]) {
     const lessonId = `lesson-${String(number).padStart(2, '0')}`;
     const wanted = curriculum.exercises.filter(
@@ -149,7 +150,7 @@ test('WORD-01: picture choices and contextual blending rotate, retry audio and p
     let audioFailed = false;
     if (number === 3) await page.route('**/illustrations/v1-rice.svg*', (r) => r.abort('failed'));
     if (number === 3)
-      await page.route('**/audio/audio-rt-03-mi3', (r) => {
+      await page.route(riceAudio, (r) => {
         audioFailed = true;
         return r.abort('failed');
       });
@@ -173,7 +174,9 @@ test('WORD-01: picture choices and contextual blending rotate, retry audio and p
           expect(audioFailed).toBe(true);
           await expect(page.locator('.game-option').first()).toBeDisabled();
           expect(posts).toHaveLength(0);
-          await page.unroute('**/audio/audio-rt-03-mi3');
+          const options = page.locator('.options');
+          const optionsTop = await documentTop(options);
+          await page.unroute(riceAudio);
           await page.getByRole('button', { name: '↻ 重试声音' }).click();
           await expect(page.getByRole('button', { name: '听拼音', exact: true })).toBeVisible({
             timeout: 20000,
@@ -183,6 +186,8 @@ test('WORD-01: picture choices and contextual blending rotate, retry audio and p
           expect(posts).toHaveLength(0);
           await page.unroute('**/illustrations/v1-rice.svg*');
           await page.getByRole('button', { name: '↻ 重试图片' }).click();
+          await expect(page.getByRole('button', { name: '↻ 重试图片' })).toBeHidden();
+          expect(await documentTop(options)).toBe(optionsTop);
         }
         await expect(page.locator('.game-option').first()).toBeEnabled({ timeout: 25000 });
         const correct = q.options.findIndex((o) => o.id === q.answer.optionId);

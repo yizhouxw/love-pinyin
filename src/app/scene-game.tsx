@@ -562,7 +562,6 @@ export function SceneGame(props: Props) {
               <VoiceButton id={`prompt-${question.id}`} voice={voice} label="听题目说明" />
             </details>
           </div>
-          <VoiceFailure voice={voice} />
           <p role="status" className="scene-audio-status">
             {locked
               ? '先听完拼音声音，再操作。'
@@ -572,56 +571,6 @@ export function SceneGame(props: Props) {
                   ? '游戏已暂停。'
                   : '可以出发啦！'}
           </p>
-          {world.hit !== null && !answer && (
-            <div className="scene-arrival" role="status">
-              <strong>已抵达 {hitOption?.label}</strong>
-              <p>{busy || sending ? '正在保存这次选择…' : '保存结果待确认，请重试。'}</p>
-              {!busy && !sending && (
-                <button
-                  onClick={() => {
-                    if (hitOption) {
-                      setSending(true);
-                      void props.onAnswer(hitOption.id).finally(() => setSending(false));
-                    }
-                  }}
-                >
-                  重试保存这次选择
-                </button>
-              )}
-            </div>
-          )}
-          {answer && (
-            <div className={`feedback ${done ? 'good' : 'try-again'}`} role="status">
-              <strong>
-                {answer.correct
-                  ? '送达成功，拼音答对啦！'
-                  : corrected
-                    ? '找到正确目标啦！'
-                    : '这个拼音再听一听，亮起的是正确目标。'}
-              </strong>
-              <p>
-                {answer.clockPending
-                  ? '记录待校时，不计入掌握度。'
-                  : '只保留首次作答，场景练习不会覆盖首次结果。'}
-              </p>
-              {answer.explanationAudioId && (
-                <VoiceButton id={answer.explanationAudioId} voice={voice} label="听讲解" />
-              )}
-              {!done && (
-                <button disabled={busy || sending} onClick={reset}>
-                  ↻ 再走一次这段场景
-                </button>
-              )}
-            </div>
-          )}
-          {hint && !answer && (
-            <p className="scene-hint" role="status">
-              {hint.explanation}
-            </p>
-          )}
-          {done && autoContinue && (
-            <p className="scene-auto-note">这一站已保存，听完反馈继续旅程。按 P 可停留。</p>
-          )}
           {done ? (
             <button className="scene-next" disabled={busy || sending} onClick={props.onNext}>
               {props.index + 1 === props.total ? '完成关卡 →' : '继续航程 →'}
@@ -640,12 +589,72 @@ export function SceneGame(props: Props) {
               </button>
             </div>
           )}
-          <Notice
-            error={props.error}
-            onReconnect={() => {
-              if (hitOption) void props.onAnswer(hitOption.id);
-            }}
-          />
+          <div
+            className="scene-response"
+            role="group"
+            aria-label="本关反馈"
+            tabIndex={
+              world.hit !== null || answer || hint || voice.failureId || props.error ? 0 : undefined
+            }
+          >
+            <VoiceFailure voice={voice} />
+            {world.hit !== null && !answer && (
+              <div className="scene-arrival" role="status">
+                <strong>已抵达 {hitOption?.label}</strong>
+                <p>{busy || sending ? '正在保存这次选择…' : '保存结果待确认，请重试。'}</p>
+                {!busy && !sending && (
+                  <button
+                    onClick={() => {
+                      if (hitOption) {
+                        setSending(true);
+                        void props.onAnswer(hitOption.id).finally(() => setSending(false));
+                      }
+                    }}
+                  >
+                    重试保存这次选择
+                  </button>
+                )}
+              </div>
+            )}
+            {answer && (
+              <div className={`feedback ${done ? 'good' : 'try-again'}`} role="status">
+                <strong>
+                  {answer.correct
+                    ? '送达成功，拼音答对啦！'
+                    : corrected
+                      ? '找到正确目标啦！'
+                      : '这个拼音再听一听，亮起的是正确目标。'}
+                </strong>
+                <p>
+                  {answer.clockPending
+                    ? '记录待校时，不计入掌握度。'
+                    : '只保留首次作答，场景练习不会覆盖首次结果。'}
+                </p>
+                {answer.explanationAudioId && (
+                  <VoiceButton id={answer.explanationAudioId} voice={voice} label="听讲解" />
+                )}
+                {!done && (
+                  <button disabled={busy || sending} onClick={reset}>
+                    ↻ 再走一次这段场景
+                  </button>
+                )}
+              </div>
+            )}
+            {hint && !answer && (
+              <p className="scene-hint" role="status">
+                {hint.explanation}
+              </p>
+            )}
+            {done && autoContinue && (
+              <p className="scene-auto-note">这一站已保存，听完反馈继续旅程。按 P 可停留。</p>
+            )}
+            <Notice
+              error={props.error}
+              onReconnect={() => {
+                if (hitOption) void props.onAnswer(hitOption.id);
+              }}
+            />
+          </div>
           <div className="scene-route" aria-label="本关探索进度">
             {Array.from({ length: props.total }, (_, i) => (
               <span

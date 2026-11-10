@@ -86,7 +86,7 @@
   row-gap: 0.5rem;
 }
 .daily-status-strip::before {
-  content: '这一节结束啦，可以休息，也可以再读一遍。';
+  content: '示范声音还没响起来，请重试。仍然失败时请家长检查家庭电脑上的每日练习音频。';
   visibility: hidden;
   grid-area: 1 / 1;
   font-weight: 600;

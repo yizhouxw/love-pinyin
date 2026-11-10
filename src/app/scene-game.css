@@ -651,3 +651,25 @@
 .scene-mission .scene-voices:has(> details:only-child) {
   margin: 0;
 }
+
+.scene-response {
+  block-size: max(10rem, 6lh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+.scene-mission .scene-help,
+.scene-mission .scene-next {
+  margin-block: 0;
+  min-block-size: 54px;
+}
+.scene-help {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.scene-audio-status {
+  min-block-size: 2lh;
+}
+.scene-motor-note {
+  min-block-size: 3lh;
+}

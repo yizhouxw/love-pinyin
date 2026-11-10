@@ -208,6 +208,11 @@
 .writing-instruction {
   min-height: 110px;
 }
+.writing-placement [aria-current='true'] {
+  color: #146857;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
 .writing-controls,
 .writing-targets {
   margin-block: 12px;

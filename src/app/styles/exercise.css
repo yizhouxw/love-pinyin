@@ -475,13 +475,38 @@
 .question-help[open] {
   padding-bottom: 8px;
 }
-.question-card #answer-availability {
-  min-height: 44px;
+.question-audio-state {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 8px;
   margin: 8px auto;
-  max-width: 44ch;
+  max-width: 56ch;
   font-size: 14px;
   line-height: 1.5;
+}
+.question-audio-state p {
+  grid-area: 1 / 1;
+  margin: 0;
   color: #45634d;
+}
+.question-audio-state button {
+  grid-area: 1 / 2;
+  padding-inline: 8px;
+}
+.question-audio-state [data-empty],
+.question-picture-recovery[data-empty] {
+  visibility: hidden;
+}
+.question-audio-state .question-audio-error {
+  color: #835738;
+}
+.question-picture-recovery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
 }
 .question-card .options {
   margin-top: 16px;
@@ -520,9 +545,18 @@
 .blend-workbench .voice-button > span {
   font-size: 20px;
 }
-.blend-preview {
-  font-size: 38px;
+.blend-preview-space {
+  display: grid;
+  place-items: center;
+  min-block-size: max(76px, 3.4em);
   margin-block: 10px;
+}
+.blend-preview-space .blend-preview {
+  font-size: 38px;
+  margin: 0;
+}
+.blend-preview-space .blend-empty {
+  margin: 0;
 }
 @media (max-width: 500px) {
   .question-card {

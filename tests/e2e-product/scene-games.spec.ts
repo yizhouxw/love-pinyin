@@ -1,4 +1,4 @@
-import { openGameSettings } from '../support/interaction';
+import { documentTop, openGameSettings } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { playScene } from '../support/scene-actions';
@@ -48,8 +48,10 @@ for (const game of catalog.games) {
     await page.getByRole('button', { name: '▶ 继续游戏', exact: true }).click();
     await expect(page.locator('.game-option')).toHaveCount(0);
     const q = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;
+    const controlsTop = await documentTop(page.locator('.scene-help'));
     await playScene(page, q.answer.optionId!);
     await expect(page.locator('.feedback')).toContainText('拼音答对');
+    expect(await documentTop(page.locator('.scene-next'))).toBe(controlsTop);
     const backup = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
     expect(backup.attempts).toHaveLength(1);
     expect(backup.attempts[0].first_try_correct).toBe(1);
