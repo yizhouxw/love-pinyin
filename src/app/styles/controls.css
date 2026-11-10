@@ -138,7 +138,6 @@ button:not(:disabled):active {
   .inline-control select {
     flex: 1 1 160px;
   }
-  .writing-heading .voice-button,
   .word-card > div .voice-button {
     flex: 1 1 180px;
   }
@@ -243,6 +242,12 @@ input[type='file']::file-selector-button {
 }
 summary {
   cursor: pointer;
+}
+.practice-settings > summary {
+  min-height: 48px;
+  padding-block: 12px;
+  color: #426351;
+  font-weight: 600;
 }
 .management-section {
   margin-block: 16px;

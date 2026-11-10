@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 
@@ -23,6 +24,7 @@ test('WRITE-03: automatic strokes, optional cross-target playback and cancellati
     'aria-pressed',
     'true',
   );
+  await openSection(page, '播放设置');
   await page
     .getByRole('region', { name: '书写小课堂' })
     .getByRole('checkbox', { name: '语音引导', exact: true })

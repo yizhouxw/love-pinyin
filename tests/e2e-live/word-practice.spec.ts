@@ -484,6 +484,7 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '第 3 份', exact: true }).click();
   await page.getByRole('button', { name: /读词语/ }).click();
+  await page.getByText('播放设置', { exact: true }).click();
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
   await expect(page.locator('.daily-target')).toContainText('bà');
   const dailyComponent = page.waitForResponse(
@@ -494,4 +495,61 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   await dailyComponent;
   await expect(page.locator('.daily-status-strip')).toContainText('轮到你读啦', { timeout: 15000 });
   await expect(page.getByRole('button', { name: '重试示范' })).toHaveCount(0);
+});
+
+test('WORD-14: dictation actions stay with the answer and settings stay below it', async ({
+  page,
+  appUrl,
+}) => {
+  await page.goto(appUrl);
+  await page.getByRole('button', { name: '访客体验', exact: true }).click();
+  await page.getByRole('button', { name: '进入词语天天练 →' }).click();
+  await page.getByRole('button', { name: /^选择课程/ }).click();
+  const picker = page.getByRole('dialog');
+  await picker.getByRole('button', { name: '第5单元', exact: true }).click();
+  await picker.getByRole('button', { name: '选择江南', exact: true }).click();
+  await page.getByRole('button', { name: '词语听写', exact: true }).click();
+
+  const card = page.locator('.word-dictation');
+  const listen = card.getByRole('button', { name: /听词语/ });
+  const reveal = card.locator('.word-reveal');
+  const settings = page.getByText('播放设置', { exact: true });
+  const figure = card.getByRole('figure');
+  await expect(card.getByRole('button', { name: '停止播放' })).toBeVisible();
+  await expect(page.getByRole('checkbox', { name: '语音引导' })).toBeHidden();
+
+  for (const width of [1280, 390, 320]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(listen).toBeInViewport();
+    await expect(reveal).toBeInViewport();
+    if (width < 600) {
+      expect((await reveal.boundingBox())!.y).toBeLessThan((await figure.boundingBox())!.y);
+    }
+    const cardBounds = (await card.boundingBox())!;
+    expect((await settings.boundingBox())!.y).toBeGreaterThan(cardBounds.y + cardBounds.height);
+    for (const zoom of ['100%', '200%']) {
+      await page.evaluate((size) => (document.documentElement.style.fontSize = size), zoom);
+      const answer = card.locator('.word-answer');
+      const height = (await answer.boundingBox())!.height;
+      await expect(figure.getByRole('img')).toHaveCount(0);
+      await reveal.press('Enter');
+      await expect(reveal).toBeFocused();
+      expect(
+        await answer
+          .locator('ruby')
+          .evaluate((ruby) => parseFloat(getComputedStyle(ruby).fontSize)),
+      ).toBeGreaterThanOrEqual(32);
+      expect(
+        await answer.locator('rt').evaluate((rt) => parseFloat(getComputedStyle(rt).fontSize)),
+      ).toBeGreaterThanOrEqual(19);
+      await expect(figure.getByRole('img')).toBeVisible();
+      expect((await answer.boundingBox())!.height).toBe(height);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+      if (zoom === '100%')
+        await card.screenshot({ path: test.info().outputPath(`dictation-${width}.png`) });
+      await reveal.press('Enter');
+    }
+    await page.evaluate(() => (document.documentElement.style.fontSize = ''));
+  }
 });

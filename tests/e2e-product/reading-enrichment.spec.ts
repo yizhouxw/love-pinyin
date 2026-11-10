@@ -1,3 +1,5 @@
+import { pairForHouseholdMaterial, useHouseholdMaterial } from '../support/household-material';
+import { openSection } from '../support/interaction';
 import { expect, type Locator } from '@playwright/test';
 import { test } from '../support/real-server';
 import { clearReadingMedia, observeReadingMedia, playedReading } from '../support/media-log';
@@ -22,6 +24,7 @@ async function parentSound(page: import('@playwright/test').Page) {
 }
 
 async function quickGap(container: Locator) {
+  await openSection(container, '播放设置');
   const dialog = container.getByRole('dialog', { name: '跟读间隔' });
   if (!(await dialog.isVisible())) await container.locator('.daily-gap-trigger').click();
   if (!(await dialog.getByLabel('连播间隔（秒）').isVisible()))
@@ -245,7 +248,7 @@ test('READ-05: short and long real Chinese sentences wait for their spoken sylla
   await observeReadingMedia(page);
   await guest(page, appUrl);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
-  await saveQuickGap(page.getByLabel('天天练拼音', { exact: true }), '0.1');
+  await saveQuickGap(page.getByRole('region', { name: '天天练拼音', exact: true }), '0.1');
   const reader = page.getByLabel('当前跟读内容');
   const sentenceEvents = () =>
     page.evaluate(() =>
@@ -299,7 +302,8 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
   await observeReadingMedia(page);
   await guest(page, appUrl);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
-  const daily = page.getByLabel('天天练拼音', { exact: true });
+  const daily = page.getByRole('region', { name: '天天练拼音', exact: true });
+  await openSection(page, '播放设置');
   await daily.locator('.daily-gap-trigger').focus();
   await page.keyboard.press('Enter');
   let settings = daily.getByRole('dialog', { name: '跟读间隔' });
@@ -348,6 +352,7 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 4 份', exact: true }).click();
+  await openSection(page, '播放设置');
   await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName('间隔设置，基础间隔0.2秒');
   await page.getByRole('button', { name: /^拼读词语/ }).click();
   settings = await quickGap(reader);
@@ -388,6 +393,7 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
   await settings.getByRole('button', { name: '关闭间隔设置' }).click();
   await expect(reader.getByRole('alert')).toContainText('麦克风没有开启');
   await page.reload();
+  await openSection(page, '播放设置');
   await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName('间隔设置，基础间隔0.2秒');
   expect(
     await page.evaluate(() => ({
@@ -400,6 +406,7 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
     .getByRole('button', { name: '清除并退出访客' })
     .click();
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
+  await openSection(page, '播放设置');
   await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName('间隔设置，基础间隔1.0秒');
   expect(await page.evaluate(() => sessionStorage.getItem('lp.guest.playback-gap'))).toBeNull();
 });
@@ -447,28 +454,33 @@ test('READ-06: a real learning device remembers its own gap without parent write
     ).toBe(false);
     await expect(learning.getByRole('button', { name: '家长管理' })).toHaveCount(0);
     await learning.getByRole('button', { name: '进入天天练拼音' }).click();
-    const daily = learning.getByLabel('天天练拼音', { exact: true });
+    const daily = learning.getByRole('region', { name: '天天练拼音', exact: true });
+    await openSection(learning, '播放设置');
     await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
       '间隔设置，基础间隔2.0秒',
     );
     await saveQuickGap(daily, '0.4');
     await learning.getByRole('button', { name: '开始第 1 份跟读' }).click();
+    await openSection(learning, '播放设置');
     await expect(
       learning.getByLabel('当前跟读内容').locator('.daily-gap-trigger'),
     ).toHaveAccessibleName('间隔设置，基础间隔0.4秒');
     if (await learning.getByRole('button', { name: '换练习', exact: true }).isVisible())
       await learning.getByRole('button', { name: '换练习', exact: true }).click();
     await learning.getByRole('button', { name: '第 4 份', exact: true }).click();
+    await openSection(learning, '播放设置');
     await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
       '间隔设置，基础间隔0.4秒',
     );
     await learning.getByRole('button', { name: /^拼读词语/ }).click();
+    await openSection(learning, '播放设置');
     await expect(
       learning.getByLabel('当前跟读内容').locator('.daily-gap-trigger'),
     ).toHaveAccessibleName('间隔设置，基础间隔0.4秒');
     await learning.getByRole('button', { name: '返回小岛', exact: false }).click();
     await learning.reload();
     await learning.getByRole('button', { name: '进入天天练拼音' }).click();
+    await openSection(learning, '播放设置');
     await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
       '间隔设置，基础间隔0.4秒',
     );
@@ -484,6 +496,7 @@ test('READ-06: a real learning device remembers its own gap without parent write
     await page.getByRole('button', { name: '保存间隔' }).click();
     await expect(page.getByText('当前间隔：3.1秒')).toBeVisible();
     await learning.reload();
+    await openSection(learning, '播放设置');
     await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
       '间隔设置，基础间隔3.1秒',
     );
@@ -499,9 +512,11 @@ test('READ-07: compact controls preview drafts, dismiss safely and fit narrow vi
   appUrl,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await guest(page, appUrl);
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
-  const daily = page.getByLabel('天天练拼音', { exact: true });
+  const daily = page.getByRole('region', { name: '天天练拼音', exact: true });
+  await openSection(page, '播放设置');
   const trigger = daily.locator('.daily-gap-trigger');
   await expect(trigger).toHaveAccessibleName('间隔设置，基础间隔1.0秒');
   await expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');

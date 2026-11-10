@@ -15,6 +15,7 @@ test('WRITE-04: names single targets, repeats the introduction during continuous
   await page.getByRole('button', { name: '课堂学习' }).click();
   await page.getByRole('button', { name: '写一写', exact: true }).click();
   await clearReadingMedia(page);
+  await openSection(page, '播放设置');
   await page.getByRole('checkbox', { name: '连读', exact: true }).check();
   await page.getByRole('button', { name: '观察 a 的书写', exact: true }).click();
   const started = () =>
@@ -25,10 +26,10 @@ test('WRITE-04: names single targets, repeats the introduction during continuous
     );
   await expect
     .poll(started, { timeout: 20000 })
-    .toEqual(['writing-ui-start', 'audio-final-a', 'writing-v1-a-placement']);
+    .toEqual(['writing-ui-start', 'original-audio-final-a', 'writing-v1-a-placement']);
   await expect
     .poll(async () => (await started()).slice(-2), { timeout: 45000 })
-    .toEqual(['writing-ui-start', 'audio-final-o']);
+    .toEqual(['writing-ui-start', 'original-audio-final-o']);
   await page.getByRole('button', { name: '■ 停止演示' }).click();
   const stopped = await started();
   await page.waitForTimeout(1800);
@@ -36,11 +37,13 @@ test('WRITE-04: names single targets, repeats the introduction during continuous
   await page.getByRole('checkbox', { name: '连读', exact: true }).uncheck();
   await clearReadingMedia(page);
   await page.getByRole('button', { name: '▶ 播放笔顺' }).click();
-  await expect.poll(started, { timeout: 20000 }).toEqual(['writing-ui-start', 'audio-final-o']);
+  await expect
+    .poll(started, { timeout: 20000 })
+    .toEqual(['writing-ui-start', 'original-audio-final-o']);
   await page.getByRole('button', { name: '观察 e 的书写', exact: true }).click();
   await expect
     .poll(async () => (await started()).slice(-2), { timeout: 15000 })
-    .toEqual(['writing-ui-start', 'audio-final-e']);
+    .toEqual(['writing-ui-start', 'original-audio-final-e']);
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await clearReadingMedia(page);
   await page.getByRole('button', { name: '▶ 播放笔顺' }).click();

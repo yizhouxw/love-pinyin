@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { expect, type Page } from '@playwright/test';
 import daily from '../../content/daily-reading.json' with { type: 'json' };
 import { test } from '../support/real-server';
@@ -29,6 +30,7 @@ test('DAILY-09: direct and adjacent section navigation cancel real playback and 
   await page.route('**/api/v1/guest/voice/daily-*', (route) => route.abort('failed'));
   await expect(tabs).toHaveCount(day.sections.length);
   await expect(nav.getByRole('button', { name: '上一节', exact: true })).toBeDisabled();
+  await openSection(page, '播放设置');
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await reader.getByRole('button', { name: '读过了，下一条', exact: false }).click();
   await expect(tabs.first()).toContainText(`练过 1 / ${day.sections[0]!.items.length} 条`);
@@ -59,6 +61,7 @@ test('DAILY-09: direct and adjacent section navigation cancel real playback and 
   await tabs.first().press('Enter');
   await expect(tabs.first()).toHaveAttribute('aria-current', 'step');
   await expect(tabs.first()).toContainText('练过 1 /');
+  await openSection(page, '播放设置');
   await expect(page.getByRole('checkbox', { name: '语音引导', exact: true })).not.toBeChecked();
   const items = page.getByLabel('第3份本节内容').getByRole('button');
   await items.last().click();
@@ -138,6 +141,7 @@ test('DAILY-09: changing section discards a pending microphone permission result
   appUrl,
 }) => {
   await enter(page, appUrl, 3);
+  await openSection(page, '播放设置');
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await page.evaluate(() => {
     const state = window as Window & {

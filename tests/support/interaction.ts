@@ -1,7 +1,7 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 /** Use the same visible disclosure controls as a family, without exposing unrelated settings. */
-export async function openSection(page: Page, name: string, optional = false) {
+export async function openSection(page: Page | Locator, name: string, optional = false) {
   const summary = page
     .locator('summary')
     .filter({ hasText: new RegExp(`^${name}$`) })

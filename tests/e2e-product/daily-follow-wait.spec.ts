@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 
@@ -9,6 +10,7 @@ test('DAILY-08: follow bar counts down and stops with playback', async ({ page, 
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '第 1 份', exact: true }).click();
   await page.locator('.daily-sections button').first().click();
+  await openSection(page, '播放设置');
   const guidance = page.getByRole('checkbox', { name: '语音引导' });
   if (await guidance.isChecked()) await guidance.uncheck();
   await expect(page.getByText(/源 PDF|原稿：/)).toHaveCount(0);

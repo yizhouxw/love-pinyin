@@ -88,6 +88,7 @@ test('SHOP-09: daily capture is local and can be confirmed by a parent before mo
   await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
+  await page.getByText('播放设置', { exact: true }).click();
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
   await page.getByText('录音比较（可选）', { exact: true }).click();
   await page.getByRole('button', { name: '录下我的跟读' }).click();

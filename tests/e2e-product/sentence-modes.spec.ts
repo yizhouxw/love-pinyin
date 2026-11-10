@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { observeReadingMedia, clearReadingMedia, playedReading } from '../support/media-log';
@@ -52,6 +53,7 @@ test('DAILY-11: complete sentences default to connected reading; character mode 
   await page.getByRole('button', { name: /^读句子/ }).click();
   await expect(page.getByText('本份声音已就绪。', { exact: true })).toBeVisible();
   const reader = page.getByLabel('当前跟读内容', { exact: true });
+  await openSection(page, '播放设置');
   const mode = reader.getByRole('checkbox', { name: '逐字读', exact: true });
   await expect(mode).not.toBeChecked();
   await expect(reader).toContainText('整句连读 · 普通话示范');
@@ -89,11 +91,13 @@ test('DAILY-11: complete sentences default to connected reading; character mode 
     .getByRole('navigation', { name: '本份小节' })
     .getByRole('button', { name: '上一节', exact: true })
     .click();
+  await openSection(page, '播放设置');
   await expect(page.getByRole('checkbox', { name: '逐字读', exact: true })).toHaveCount(0);
   await page
     .getByRole('navigation', { name: '本份小节' })
     .getByRole('button', { name: '下一节', exact: true })
     .click();
+  await openSection(page, '播放设置');
   await expect(page.getByRole('checkbox', { name: '逐字读', exact: true })).toBeChecked();
   await page.setViewportSize({ width: 320, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
@@ -102,6 +106,7 @@ test('DAILY-11: complete sentences default to connected reading; character mode 
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '第 14 份', exact: true }).click();
   await page.getByRole('button', { name: /^读句子/ }).click();
+  await openSection(page, '播放设置');
   await expect(page.getByRole('checkbox', { name: '逐字读', exact: true })).not.toBeChecked();
 });
 
@@ -117,6 +122,7 @@ test('DAILY-11: queued sentences keep the chosen mode; pending recording locks t
   await page.getByRole('button', { name: '第 5 份', exact: true }).click();
   await page.getByRole('button', { name: /^拼读句子/ }).click();
   const reader = page.getByLabel('当前跟读内容', { exact: true });
+  await openSection(page, '播放设置');
   const mode = reader.getByRole('checkbox', { name: '逐字读', exact: true });
   await mode.check();
   await clearReadingMedia(page);
@@ -138,5 +144,6 @@ test('DAILY-11: queued sentences keep the chosen mode; pending recording locks t
   await expect(reader.getByRole('status')).toContainText('正在准备录音');
   await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: /^拼读句子/ }).click();
+  await openSection(page, '播放设置');
   await expect(page.getByRole('checkbox', { name: '逐字读', exact: true })).toBeEnabled();
 });

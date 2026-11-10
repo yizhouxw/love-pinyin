@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { mkdir, symlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect } from '@playwright/test';
@@ -150,6 +151,7 @@ test('SHOP-09: daily recording offers manual confirmation or optional local Qwen
     '轮到你读啦，读完点下一条。',
     { timeout: 25000 },
   );
+  await openSection(page, '播放设置');
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
   const skippedGuides: string[] = [];
   const recognitionRequests: string[] = [];
@@ -235,6 +237,7 @@ test('DAILY-04: guidance can be skipped, remembered and restored while target au
   const targets = () => playedReading(page, 'daily-audio');
   await page.goto(`${appUrl}/#daily-reading`);
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
+  await openSection(page, '播放设置');
   const guidance = page.getByRole('checkbox', { name: '语音引导' });
   await expect(guidance).toBeChecked();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
@@ -242,6 +245,7 @@ test('DAILY-04: guidance can be skipped, remembered and restored while target au
   await expect
     .poll(async () => (await voices()).some((id) => id.startsWith('daily-instruction-')))
     .toBe(true);
+  await openSection(page, '播放设置');
   await guidance.uncheck();
   await expect(page.getByRole('button', { name: '停止示范' })).toHaveCount(0);
   const current = page.getByLabel('当前跟读内容');
@@ -275,8 +279,10 @@ test('DAILY-04: guidance can be skipped, remembered and restored while target au
   await expect(page.getByRole('alert')).toContainText('麦克风没有开启');
   expect(await voices()).toEqual([]);
   await page.reload();
+  await openSection(page, '播放设置');
   await expect(guidance).not.toBeChecked();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
+  await openSection(page, '播放设置');
   await guidance.check();
   await clearReadingMedia(page);
   await current.getByRole('button', { name: 'ā', exact: true }).click();
@@ -319,6 +325,7 @@ test('DAILY-05: parent opt-out reaches daily practice and nearby shortcuts share
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   const reader = page.getByLabel('当前跟读内容');
+  await openSection(page, '播放设置');
   await expect(reader.getByRole('checkbox', { name: '语音引导', exact: true })).not.toBeChecked();
   await page.getByRole('button', { name: '开始跟读', exact: false }).click();
   await expect(reader.getByRole('status')).toHaveText('轮到你读啦，读完点下一条。');

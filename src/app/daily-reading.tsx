@@ -174,19 +174,6 @@ export function DailyReadingPage({
           </span>
         </div>
       )}
-      {!section && (
-        <div className="daily-quick-settings">
-          <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-          <QuickGapSettings seconds={gapSeconds} onSave={onGapChange} />
-        </div>
-      )}
-      {!section && (
-        <details className="daily-parent">
-          <summary>跟读怎么玩</summary>
-          <VoiceButton id="daily-ui-intro" voice={helpVoice} label="听每日跟读说明" />
-          <VoiceFailure voice={helpVoice} />
-        </details>
-      )}
       {error && (
         <div role="alert">
           {isIOSApp() ? '暂时无法读取本机每日练习。' : '暂时连不上每日练习。请检查家庭电脑。'}
@@ -194,28 +181,6 @@ export function DailyReadingPage({
         </div>
       )}
       {!data && !error && <p role="status">正在读取每日练习…</p>}
-      {data && day && !section && (
-        <div className="reading-preparation" aria-label="声音准备">
-          <p aria-live="polite">
-            本份声音：{preparation.ready} / {preparation.total} 已准备好。
-            {preparation.total === 0
-              ? '正在准备声音清单…'
-              : preparation.ready === preparation.total
-                ? '本份声音已就绪。'
-                : preparation.failed > 0
-                  ? '仍有声音待准备或重试，可以先开始。'
-                  : '正在分批准备，可以先开始。'}
-          </p>
-          {preparation.failed > 0 && (
-            <p>
-              {preparation.failed} 段声音暂未准备好。
-              <button className="quiet" onClick={() => audioPlayer.readingPool.retry()}>
-                重试准备声音
-              </button>
-            </p>
-          )}
-        </div>
-      )}
       {data && day && (
         <>
           {!section && (
@@ -259,6 +224,44 @@ export function DailyReadingPage({
                   );
                 })}
               </nav>
+              <div className="daily-preview">
+                <p>选择上面一个小节，点“开始跟读”。</p>
+                <button onClick={() => setSectionId(day.sections[0]?.id ?? null)}>
+                  开始第 {day.number} 份跟读
+                </button>
+              </div>
+              <div className="reading-preparation" aria-label="声音准备">
+                <p aria-live="polite">
+                  本份声音：{preparation.ready} / {preparation.total} 已准备好。
+                  {preparation.total === 0
+                    ? '正在准备声音清单…'
+                    : preparation.ready === preparation.total
+                      ? '本份声音已就绪。'
+                      : preparation.failed > 0
+                        ? '仍有声音待准备或重试，可以先开始。'
+                        : '正在分批准备，可以先开始。'}
+                </p>
+                {preparation.failed > 0 && (
+                  <p>
+                    {preparation.failed} 段声音暂未准备好。
+                    <button className="quiet" onClick={() => audioPlayer.readingPool.retry()}>
+                      重试准备声音
+                    </button>
+                  </p>
+                )}
+              </div>
+              <details className="practice-settings">
+                <summary>播放设置</summary>
+                <div className="daily-quick-settings">
+                  <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+                  <QuickGapSettings seconds={gapSeconds} onSave={onGapChange} />
+                </div>
+              </details>
+              <details className="daily-parent">
+                <summary>跟读怎么玩</summary>
+                <VoiceButton id="daily-ui-intro" voice={helpVoice} label="听每日跟读说明" />
+                <VoiceFailure voice={helpVoice} />
+              </details>
             </>
           )}
           {section && (
@@ -314,7 +317,7 @@ export function DailyReadingPage({
               </nav>
             </>
           )}
-          {section ? (
+          {section && (
             <ReadingSession
               key={section.id}
               canRecognize={data.assessment.available}
@@ -338,13 +341,6 @@ export function DailyReadingPage({
               marks={marks}
               onMark={(id, mark) => setMarks((previous) => ({ ...previous, [id]: mark }))}
             />
-          ) : (
-            <div className="daily-preview">
-              <p>选择上面一个小节，点“开始跟读”。</p>
-              <button onClick={() => setSectionId(day.sections[0]?.id ?? null)}>
-                开始第 {day.number} 份跟读
-              </button>
-            </div>
           )}
           {section && (
             <div className="reading-preparation daily-preparation-detail" aria-label="声音准备">
@@ -777,48 +773,7 @@ function ReadingSession({
             第 {index + 1} / {section.items.length} 条
           </strong>
         </div>
-        <div className="daily-quick-settings">
-          <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-          <QuickGapSettings
-            seconds={gapSeconds}
-            item={item}
-            disabled={recording !== 'idle' || recognizing}
-            onSave={(seconds) => {
-              stop();
-              onGapChange(seconds);
-            }}
-          />
-          {section.kind !== 'sentences' && (
-            <ReadingModeControl
-              mode={readingMode}
-              disabled={recording !== 'idle' || recognizing}
-              onChange={(mode) => {
-                if (mode === readingMode) return;
-                stop();
-                setFailure('');
-                setExampleFailure(false);
-                onReadingModeChange(mode);
-              }}
-            />
-          )}
-          {section.kind === 'sentences' && (
-            <label className="guidance-switch">
-              <input
-                type="checkbox"
-                checked={characterReading}
-                disabled={recording !== 'idle' || recognizing}
-                onChange={(event) => {
-                  stop();
-                  setFailure('');
-                  onCharacterReadingChange(event.currentTarget.checked);
-                }}
-              />
-              <span>逐字读</span>
-            </label>
-          )}
-        </div>
         <p>{section.instruction}</p>
-        <PinyinLegend />
         <button
           className={`quiet daily-target${item.syllables.length > 6 ? ' daily-target-sentence' : ''}`}
           aria-label={item.display}
@@ -924,6 +879,50 @@ function ReadingSession({
         {item.audioNotes.length > 0 && (
           <p className="daily-audio-note">{item.audioNotes.join('；')}</p>
         )}
+        <details className="practice-settings">
+          <summary>播放设置</summary>
+          <div className="daily-quick-settings">
+            <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+            <QuickGapSettings
+              seconds={gapSeconds}
+              item={item}
+              disabled={recording !== 'idle' || recognizing}
+              onSave={(seconds) => {
+                stop();
+                onGapChange(seconds);
+              }}
+            />
+            {section.kind !== 'sentences' && (
+              <ReadingModeControl
+                mode={readingMode}
+                disabled={recording !== 'idle' || recognizing}
+                onChange={(mode) => {
+                  if (mode === readingMode) return;
+                  stop();
+                  setFailure('');
+                  setExampleFailure(false);
+                  onReadingModeChange(mode);
+                }}
+              />
+            )}
+            {section.kind === 'sentences' && (
+              <label className="guidance-switch">
+                <input
+                  type="checkbox"
+                  checked={characterReading}
+                  disabled={recording !== 'idle' || recognizing}
+                  onChange={(event) => {
+                    stop();
+                    setFailure('');
+                    onCharacterReadingChange(event.currentTarget.checked);
+                  }}
+                />
+                <span>逐字读</span>
+              </label>
+            )}
+          </div>
+          <PinyinLegend />
+        </details>
         {item.wordExample && (
           <div className="daily-word-examples">
             <button

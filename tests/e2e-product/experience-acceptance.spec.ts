@@ -4,7 +4,7 @@ import { test } from '../support/real-server';
 
 test.use({ selectedPinyinSource: true });
 
-test('UX-01/02/04/08: main learning actions remain easy to reach on desktop and narrow screens', async ({
+test('UX-01/02/04/08/09: main learning actions remain easy to reach on desktop and narrow screens', async ({
   page,
   appUrl,
 }) => {
@@ -23,7 +23,11 @@ test('UX-01/02/04/08: main learning actions remain easy to reach on desktop and 
   await page.getByRole('button', { name: '课堂学习', exact: true }).click();
   await page.screenshot({ path: test.info().outputPath('lesson-320.png'), fullPage: true });
   await page.getByRole('button', { name: '写一写', exact: true }).click();
-  await expect(page.getByRole('checkbox', { name: '语音引导' })).toHaveCount(1);
+  const writing = page.getByRole('region', { name: '书写小课堂' });
+  await expect(writing.getByRole('checkbox', { name: '语音引导' })).toBeHidden();
+  expect((await writing.getByText('播放设置', { exact: true }).boundingBox())!.y).toBeGreaterThan(
+    (await writing.locator('.writing-stage').boundingBox())!.y,
+  );
   await expect(page.getByRole('button', { name: '▶ 播放笔顺', exact: true })).toBeInViewport();
   await page.screenshot({ path: test.info().outputPath('writing-320.png'), fullPage: true });
   await page.getByRole('button', { name: '练一练', exact: true }).click();
@@ -40,6 +44,11 @@ test('UX-01/02/04/08: main learning actions remain easy to reach on desktop and 
   await page.locator('.daily-sections button').first().click();
   await expect(page.getByRole('button', { name: '开始跟读', exact: false })).toBeInViewport();
   await expect(page.locator('.daily-days')).toHaveCount(0);
+  const reader = page.getByLabel('当前跟读内容', { exact: true });
+  await expect(reader.getByRole('checkbox', { name: '语音引导' })).toBeHidden();
+  expect((await reader.getByText('播放设置', { exact: true }).boundingBox())!.y).toBeGreaterThan(
+    (await reader.locator('.daily-next').boundingBox())!.y,
+  );
   await page.screenshot({ path: test.info().outputPath('daily-320.png'), fullPage: true });
 });
 

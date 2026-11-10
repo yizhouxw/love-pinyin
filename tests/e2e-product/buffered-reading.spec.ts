@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { observeReadingMedia, playedReading } from '../support/media-log';
@@ -14,6 +15,7 @@ test('DAILY-06: simulated page visibility clears preparation and returning prepa
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   const reader = page.getByLabel('当前跟读内容');
+  await openSection(page, '播放设置');
   await reader.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await expect(page.getByLabel('声音准备')).toContainText('本份声音已就绪');
   await reader.getByRole('button', { name: 'ā', exact: true }).click();
@@ -48,6 +50,7 @@ test('DAILY-06: fully prepared short clips replay and switch with the audio netw
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   const reader = page.getByLabel('当前跟读内容');
+  await openSection(page, '播放设置');
   await reader.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await expect(page.getByLabel('声音准备')).toContainText('本份声音已就绪', { timeout: 30000 });
   const block = async (route: import('@playwright/test').Route) => {
@@ -83,6 +86,7 @@ test('DAILY-06: interrupted first download retries once and remains playable', a
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   const reader = page.getByLabel('当前跟读内容');
+  await openSection(page, '播放设置');
   await reader.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await expect(page.getByLabel('声音准备')).toContainText('本份声音已就绪', { timeout: 30000 });
   expect(attempts).toBe(2);

@@ -1,3 +1,4 @@
+import { openSection } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 
@@ -11,6 +12,7 @@ test('DAILY-07: multi-column navigation follows autoplay without moving page or 
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
+  await openSection(page, '播放设置');
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   const list = page.getByLabel('第1份本节内容');
   const first = list.getByRole('button').first();

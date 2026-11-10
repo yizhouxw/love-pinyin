@@ -7,7 +7,7 @@
   border-radius: 22px;
   min-width: 0;
 }
-.writing-heading,
+.writing-settings-controls,
 .writing-controls,
 .writing-targets,
 .writing-placement {
@@ -15,10 +15,6 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-}
-.writing-heading h3 {
-  margin: 0;
-  flex: 1 1 190px;
 }
 .writing-targets button {
   min-width: 56px;
@@ -216,9 +212,6 @@
 .writing-targets {
   margin-block: 12px;
 }
-.writing-heading .guidance-switch {
-  min-height: 48px;
-}
 @media (max-width: 480px) {
   .word-cards {
     padding: 12px;
@@ -240,19 +233,15 @@
   padding-inline: 8px;
 }
 .writing-heading {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 0;
+  font-size: 1.125rem;
+}
+.writing-settings-controls {
   gap: 8px;
 }
-.writing-heading h3 {
-  grid-column: 1 / -1;
-  font-size: 18px;
-}
-.writing-heading .guidance-switch {
-  min-width: 0;
-  padding: 6px 8px;
-  gap: 6px;
-  font-size: 13px;
+.writing-settings-controls .guidance-switch {
+  min-height: 48px;
+  margin: 0;
 }
 .writing-targets[aria-label='选择书写类型'] {
   gap: 8px;
@@ -267,10 +256,6 @@
   .writing-workshop {
     padding: 12px;
     border-width: 1px;
-  }
-  .writing-heading .guidance-switch {
-    font-size: 12px;
-    padding-inline: 6px;
   }
   .writing-targets {
     margin-block: 8px;

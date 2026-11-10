@@ -222,32 +222,7 @@ export function WritingWorkshop({
         if ((event.target as HTMLElement).closest('.voice-button')) stopSequence();
       }}
     >
-      <div className="writing-heading">
-        <h3>✎ 看一笔，写一笔</h3>
-        <GuidanceSwitch
-          label="语音"
-          enabled={soundEnabled}
-          onChange={(enabled) => {
-            stopSequence();
-            voice.stop();
-            onGuidanceChange(enabled);
-          }}
-        />
-        <label className="guidance-switch">
-          <input
-            type="checkbox"
-            aria-label="连读"
-            checked={autoNext}
-            onChange={(event) => {
-              stopSequence();
-              voice.stop();
-              continuous.current = event.currentTarget.checked;
-              setAutoNext(event.currentTarget.checked);
-            }}
-          />
-          <span>连读：{autoNext ? '开' : '关'}</span>
-        </label>
-      </div>
+      <h3 className="writing-heading">✎ 看一笔，写一笔</h3>
       <div className="writing-targets" role="group" aria-label="选择书写类型">
         {[false, true].map((tones) => (
           <button
@@ -369,6 +344,34 @@ export function WritingWorkshop({
         <p>拿出纸笔，慢慢写一写</p>
         <small>可以随时停下来。这项练习不打分。</small>
       </div>
+      <details className="practice-settings">
+        <summary>播放设置</summary>
+        <div className="writing-settings-controls">
+          <GuidanceSwitch
+            label="语音"
+            enabled={soundEnabled}
+            onChange={(enabled) => {
+              stopSequence();
+              voice.stop();
+              onGuidanceChange(enabled);
+            }}
+          />
+          <label className="guidance-switch">
+            <input
+              type="checkbox"
+              aria-label="连读"
+              checked={autoNext}
+              onChange={(event) => {
+                stopSequence();
+                voice.stop();
+                continuous.current = event.currentTarget.checked;
+                setAutoNext(event.currentTarget.checked);
+              }}
+            />
+            <span>连读：{autoNext ? '开' : '关'}</span>
+          </label>
+        </div>
+      </details>
       <VoiceFailure voice={voice} />
     </section>
   );
