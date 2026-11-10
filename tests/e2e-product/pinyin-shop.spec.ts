@@ -252,7 +252,7 @@ test('SHOP-05/06: microphone denial recovers and global feedback never speaks wh
   expect(voices).toHaveLength(0);
 });
 
-test('SHOP-05: narrow selection brings the live target into view and cancels real microphone tracks', async ({
+test('SHOP-17: listening to the correct sound cancels active capture on a narrow screen', async ({
   page,
   devUrl,
   browserName,
@@ -276,7 +276,11 @@ test('SHOP-05: narrow selection brings the live target into view and cancels rea
   await expect(page.locator('.shop-feedback')).toContainText('我在听');
   await expect(page.locator('.shop-target')).toBeInViewport();
   await page.screenshot({ path: test.info().outputPath('shop2-live-390.png'), fullPage: true });
-  await page.getByRole('button', { name: '取消本次录音', exact: true }).click();
+  const audio = page.waitForResponse(
+    (response) => response.url().includes('/audio/audio-final-a') && response.ok(),
+  );
+  await page.getByRole('button', { name: '听正确读音', exact: true }).click();
+  await audio;
   await expect
     .poll(() =>
       page.evaluate(() =>
@@ -288,6 +292,53 @@ test('SHOP-05: narrow selection brings the live target into view and cancels rea
     .toBe(true);
   await page.waitForTimeout(5500);
   await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+});
+
+test('SHOP-16/17: short sentences, optional Chinese text and replay without recognition', async ({
+  page,
+  appUrl,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'mediaDevices', { value: undefined });
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await guest(page, appUrl);
+  await page.getByRole('button', { name: '进入游戏乐园' }).click();
+  await page.getByRole('button', { name: '进入拼音小卖部' }).click();
+  await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
+  await page.getByRole('button', { name: '选择薯片', exact: true }).click();
+  const sound = page.getByRole('button', { name: '听正确读音', exact: true });
+  await expect(sound).toBeEnabled();
+  const sentenceMode = page.getByRole('button', { name: '句子拼读', exact: true });
+  await sentenceMode.click();
+  await expect(sentenceMode).toHaveAttribute('aria-pressed', 'true');
+  const pinyin = page.getByRole('heading', { name: 'bà ba hē chá.', exact: true });
+  const hanzi = page.getByText('爸爸喝茶。', { exact: true });
+  await expect(pinyin).toBeVisible();
+  await expect(hanzi).toBeVisible();
+  await page.getByRole('button', { name: '隐藏汉字', exact: true }).click();
+  await expect(hanzi).toHaveCount(0);
+  await expect(pinyin).toBeVisible();
+  const audio = page.waitForResponse(
+    (response) => response.url().includes('/voice/ui-shop-sentence-tea') && response.ok(),
+  );
+  await sound.click();
+  await audio;
+  await expect(sound).toHaveAttribute('aria-pressed', 'true');
+  await expect(sound).toHaveAttribute('aria-pressed', 'false');
+  await page.getByRole('button', { name: '显示汉字', exact: true }).click();
+  await expect(hanzi).toBeVisible();
+  const basket = page.getByLabel('我的购物车').locator('li');
+  await expect(basket).toHaveCount(0);
+  await page.getByRole('button', { name: '读完了，加入购物车' }).click();
+  await expect(basket).toHaveText(/薯片/);
+  await expect(sound).toBeEnabled();
+  await page.getByRole('button', { name: '音节拼读', exact: true }).click();
+  await expect(basket).toHaveCount(1);
+  await page.locator('.shop-product').nth(1).click();
+  await expect(page.locator('.shop-target')).toHaveText('o');
+  await expect(sound).toBeEnabled();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
 test('SHOP-10: manual confirmation requires an explicit action for each item', async ({

@@ -18,6 +18,7 @@ def write_json(path, value):
 def private_audio(monkeypatch, tmp_path):
     narration_path = tmp_path / "narration.json"
     recordings_path = tmp_path / "recordings.json"
+    shop_path = tmp_path / "pinyin-shop.json"
     narration = {
         "version": 1,
         "ui": {"audio_error": {"text": "点一下小喇叭。"}},
@@ -30,6 +31,7 @@ def private_audio(monkeypatch, tmp_path):
         },
     }
     write_json(narration_path, narration)
+    write_json(shop_path, {"sentences": []})
     write_json(
         recordings_path,
         {
@@ -49,6 +51,7 @@ def private_audio(monkeypatch, tmp_path):
     monkeypatch.setattr(learning_audio, "load_illustrations", lambda: {"items": {}})
     monkeypatch.setattr(learning_audio, "NARRATION_PATH", narration_path)
     monkeypatch.setattr(learning_audio, "RECORDINGS_PATH", recordings_path)
+    monkeypatch.setattr(learning_audio, "SHOP_PATH", shop_path)
     monkeypatch.setattr(learning_audio, "LEARNING_AUDIO_DIR", root)
     payload = b"RIFF-test-file-for-authentication-range-and-integrity"
     audio_path = root / "instruction.wav"

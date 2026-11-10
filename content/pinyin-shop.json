@@ -4,6 +4,16 @@
   "recognitionTimeoutMs": 5000,
   "minimumAudioMs": 650,
   "pollIntervalMs": 450,
+  "sentences": [
+    { "id": "tea", "pinyin": "bà ba hē chá.", "hanzi": "爸爸喝茶。" },
+    { "id": "horse", "pinyin": "mā ma mō mǎ.", "hanzi": "妈妈摸马。" },
+    { "id": "umbrella", "pinyin": "dì di ná sǎn.", "hanzi": "弟弟拿伞。" },
+    { "id": "drawing", "pinyin": "wǒ ài huà huà.", "hanzi": "我爱画画。" },
+    { "id": "kitten", "pinyin": "xiǎo māo shuì le.", "hanzi": "小猫睡了。" },
+    { "id": "apple", "pinyin": "jiě jie chī píng guǒ.", "hanzi": "姐姐吃苹果。" },
+    { "id": "moon", "pinyin": "wǒ kàn jiàn yuè liang.", "hanzi": "我看见月亮。" },
+    { "id": "milk", "pinyin": "mèi mei xǐ huan hē niú nǎi.", "hanzi": "妹妹喜欢喝牛奶。" }
+  ],
   "image": {
     "src": "/shop/products-photo-atlas.png",
     "columns": 12,

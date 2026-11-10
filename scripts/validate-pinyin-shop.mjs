@@ -82,6 +82,26 @@ export function validatePinyinShop(shop, illustrations, readImage) {
     shop.vowelTargetIds.some((id) => !shop.targetIds.includes(id))
   )
     errors.push('shop: invalid vowel task metadata');
+  if (!Array.isArray(shop.sentences) || !shop.sentences.length)
+    errors.push('shop: missing sentence deck');
+  else {
+    const sentenceIds = new Set();
+    for (const { id, pinyin, hanzi } of shop.sentences) {
+      if (
+        typeof id !== 'string' ||
+        !/^[a-z]+$/.test(id) ||
+        sentenceIds.has(id) ||
+        typeof pinyin !== 'string' ||
+        pinyin !== pinyin.normalize('NFC') ||
+        !/^[a-züāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]+(?: [a-züāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]+)+\.$/u.test(pinyin) ||
+        typeof hanzi !== 'string' ||
+        !/^\p{Script=Han}+。$/u.test(hanzi) ||
+        pinyin.split(' ').length !== [...hanzi].length - 1
+      )
+        errors.push(`shop: invalid sentence ${id}`);
+      sentenceIds.add(id);
+    }
+  }
   if (
     shop.image?.src !== '/shop/products-photo-atlas.png' ||
     shop.image.columns !== 12 ||

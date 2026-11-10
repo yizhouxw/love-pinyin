@@ -12,6 +12,12 @@ export type ShopTarget = {
   audioRef: string;
   audioKind: 'standard' | 'daily';
 };
+export const shopSentences = shop.sentences.map((item) => ({
+  ...item,
+  audioRef: `ui-shop-sentence-${item.id}`,
+  audioKind: 'private' as const,
+}));
+export type ShopSentence = (typeof shopSentences)[number];
 /** All 96 goods are decorative: school progress only limits the independent reading deck. */
 export function shopProducts(): readonly ShopProduct[] {
   return shop.products;

@@ -19,6 +19,7 @@ from server.content import load_illustrations, load_writing
 ROOT = Path(__file__).resolve().parents[1]
 NARRATION_PATH = ROOT / "content" / "narration.json"
 RECORDINGS_PATH = ROOT / "content" / "lesson-recordings.json"
+SHOP_PATH = ROOT / "content" / "pinyin-shop.json"
 LEARNING_AUDIO_DIR = (
     Path(os.environ.get("LOVE_PINYIN_LEARNING_AUDIO_DIR", ROOT / "resources" / "audio"))
     .expanduser()
@@ -39,6 +40,8 @@ def narration_scripts() -> dict[str, str]:
     if data.get("version") != 1:
         raise ValueError("unsupported narration version")
     scripts = {f"ui-{key}": value["text"] for key, value in data["ui"].items()}
+    shop = json.loads(SHOP_PATH.read_text(encoding="utf-8"))
+    scripts.update({f"ui-shop-sentence-{item['id']}": item["hanzi"] for item in shop["sentences"]})
     for question_id, item in data["exercises"].items():
         scripts[f"prompt-{question_id}"] = item["text"]
         scripts[f"hint-{question_id}"] = item["hint"]
