@@ -361,6 +361,14 @@ private final class IOSPCMBuffer: @unchecked Sendable {
         lock.unlock()
         return copy.isEmpty ? nil : IOSPCM.encode(copy, rate: rate)
     }
+
+    func level() -> Double {
+        lock.lock()
+        defer { lock.unlock() }
+        let window = samples.suffix(2048)
+        guard !window.isEmpty else { return 0 }
+        return sqrt(window.reduce(0) { $0 + Double($1) * Double($1) } / Double(window.count))
+    }
 }
 
 @MainActor
@@ -418,6 +426,10 @@ final class IOSRecognitionRecorder {
         let snapshot = buffer?.snapshot()?.base64EncodedString()
         if stop { discard(id) }
         return snapshot
+    }
+
+    func level(_ id: String) -> Double {
+        current == id && engine != nil ? buffer?.level() ?? 0 : 0
     }
 
     func discard(_ id: String? = nil) {

@@ -6,6 +6,7 @@ export type ShopReadingOutcome = Exclude<ShopOutcome, 'stale'> | 'timeout' | 'mi
 export type ShopReadingCallbacks = {
   phase: (phase: 'starting' | 'listening') => void;
   outcome: (outcome: ShopReadingOutcome) => void;
+  level?: (rms: number) => void;
 };
 /** One active commodity, one serial MATCH-10 request, one five-second capture/inference budget. */
 export class ShopReadingSession {
@@ -14,6 +15,7 @@ export class ShopReadingSession {
   private request: AbortController | null = null;
   private deadline: ReturnType<typeof setTimeout> | null = null;
   private poll: ReturnType<typeof setTimeout> | null = null;
+  private meter: ReturnType<typeof setTimeout> | null = null;
   constructor(
     private readonly capture: ShopCapture,
     private readonly service: PronunciationService,
@@ -30,8 +32,10 @@ export class ShopReadingSession {
     this.request = null;
     if (this.deadline) clearTimeout(this.deadline);
     if (this.poll) clearTimeout(this.poll);
+    if (this.meter) clearTimeout(this.meter);
     this.deadline = null;
     this.poll = null;
+    this.meter = null;
     this.capture.discard();
   }
   async start(target: PronunciationTarget, callbacks: ShopReadingCallbacks): Promise<void> {
@@ -49,6 +53,17 @@ export class ShopReadingSession {
       const until = performance.now() + this.timing.recognitionTimeoutMs;
       this.deadline = setTimeout(() => finish('timeout'), this.timing.recognitionTimeoutMs);
       callbacks.phase('listening');
+      const measure = async () => {
+        try {
+          const level = await this.capture.level?.();
+          if (generation !== this.epoch || level === undefined) return;
+          callbacks.level?.(level);
+          this.meter = setTimeout(() => void measure(), 60);
+        } catch {
+          // A missing meter does not affect capture or recognition.
+        }
+      };
+      if (callbacks.level && this.capture.level) void measure();
       const tick = async () => {
         if (generation !== this.epoch) return;
         if (performance.now() >= until) {

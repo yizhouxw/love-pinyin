@@ -99,10 +99,11 @@ export function createIOSShopPronunciation(
       const target = targets.find((item) => item.id === request.targetId);
       const result = await transcribe(request);
       const pinyin = result.status === 'recognized' ? observedSyllables(result.pinyin) : [];
+      const expected = target ? observedSyllables(target.pinyin) : [];
       if (
-        target &&
-        pinyin.length === 1 &&
-        gameSyllable(target.pinyin) === gameSyllable(pinyin[0]!)
+        expected.length &&
+        pinyin.length === expected.length &&
+        expected.every((value, index) => gameSyllable(value) === gameSyllable(pinyin[index]!))
       ) {
         return { ...context(request), evidence: 'acoustic', status: 'matched', reason: null };
       }

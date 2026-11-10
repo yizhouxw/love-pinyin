@@ -38,6 +38,8 @@ test('DAILY-15 / WORD-13: both practices request the final with the target tone'
   await page.getByRole('button', { name: '第 3 份', exact: true }).click();
   await page.getByRole('button', { name: /读词语/ }).click();
   await chooseSpelling(page);
+  // Check the real spelling demonstration in isolation from the optional follow-up narration.
+  await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await expect(page.locator('.daily-target')).toContainText('bà');
   const dailyFinal = page.waitForResponse(
     (response) => response.url().endsWith('/daily-audio/spelling-final-a4') && response.ok(),

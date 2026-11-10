@@ -10,7 +10,6 @@ import {
   shopTotalCents,
   shopPrice,
   type ShopProduct,
-  type ShopSentence,
   type ShopTarget,
 } from '../domain/pinyin-shop';
 import { BrowserShopRecorder } from '../platform/audio/browser-shop-recorder';
@@ -64,7 +63,7 @@ export function PinyinShop({
   const adapter = useMemo(
     () =>
       recognition ?? {
-        service: shopPronunciation(targets.map(({ target }) => target)),
+        service: shopPronunciation([...targets, ...shopSentences].map(({ target }) => target)),
         mock: false,
       },
     [recognition, targets],
@@ -81,7 +80,7 @@ export function PinyinShop({
   }, [recognition]);
   const [mode, setMode] = useState<ReadingMode>('syllable');
   const [showHanzi, setShowHanzi] = useState(true);
-  const manual = mode === 'sentence' || !automatic || manualOverride;
+  const manual = !automatic || manualOverride;
   const voice = useLearningVoice('pinyin-shop');
   const stopVoice = voice.stop;
   const playVoice = voice.play;
@@ -99,8 +98,7 @@ export function PinyinShop({
       ),
   );
   const [selected, setSelected] = useState<ShopProduct | null>(null);
-  const [target, setTarget] = useState<ShopTarget | ShopSentence | null>(null);
-  const sentence = target && 'hanzi' in target ? target : null;
+  const [target, setTarget] = useState<ShopTarget | null>(null);
   const [basket, setBasket] = useState<string[]>([]);
   const basketRef = useRef<string[]>([]);
   const [phase, setPhase] = useState<'ready' | 'starting' | 'listening'>('ready');
@@ -109,6 +107,7 @@ export function PinyinShop({
   const [cabinet, setCabinet] = useState(0);
   const nextTarget = useRef({ syllable: 0, sentence: 0 });
   const challenge = useRef<HTMLDivElement>(null);
+  const meter = useRef<HTMLDivElement>(null);
   const display = useRef<HTMLDivElement>(null);
   const epoch = useRef(0);
   const guidance = useRef(guidanceEnabled);
@@ -155,11 +154,16 @@ export function PinyinShop({
   function read(product: ShopProduct, task: ShopTarget) {
     cancel();
     const generation = epoch.current;
+    meter.current?.style.setProperty('--shop-level', '0');
     setPhase('starting');
     setFeedback('ready');
     void reading.start(task.target, {
       phase: (value) => {
         if (epoch.current === generation) setPhase(value);
+      },
+      level: (rms) => {
+        const scale = Math.min(1, Math.sqrt(Math.max(0, rms) * 5));
+        meter.current?.style.setProperty('--shop-level', scale.toFixed(3));
       },
       outcome: (outcome) => {
         if (epoch.current !== generation || document.hidden) return;
@@ -185,7 +189,7 @@ export function PinyinShop({
       return;
     }
     setFeedback('ready');
-    if ('target' in task && startRecording) read(product, task);
+    if (startRecording) read(product, task);
     else if (guidance.current)
       voice.playSequence([
         { id: 'ui-shop_manual_read', kind: 'private', optional: true },
@@ -207,6 +211,12 @@ export function PinyinShop({
       setTarget(null);
       setFeedback('welcome');
     }
+  }
+  function toggleConfirmation() {
+    cancel();
+    setManualOverride(!manual);
+    setPhase('ready');
+    setFeedback('ready');
   }
   function listen() {
     if (!target) return;
@@ -292,28 +302,9 @@ export function PinyinShop({
           96 件好物
         </span>
       </div>
-      {adapter.mock && mode === 'syllable' && (
+      {adapter.mock && (
         <aside className="shop-mode" role="status">
           <strong>模拟识别</strong> · 当前不是真实识别，商品会自动加入购物车，不记录学习成绩。
-        </aside>
-      )}
-      {(!adapter.mock || mode === 'sentence') && (
-        <aside className="shop-mode">
-          <strong>{manual ? '人工确认' : '本地语音识别'}</strong>
-          {manual ? ' · 听读后确认入车' : ' · 游戏允许部分近音'}
-          {automatic && mode === 'syllable' && (
-            <button
-              className="quiet"
-              onClick={() => {
-                cancel();
-                setManualOverride(!manualOverride);
-                setPhase('ready');
-                setFeedback('ready');
-              }}
-            >
-              {manual ? '切换到本地识别' : '改用人工确认'}
-            </button>
-          )}
         </aside>
       )}
       {clock.paused && !finished ? (
@@ -397,6 +388,16 @@ export function PinyinShop({
                     </button>
                   </div>
                 )}
+                {!finished && (
+                  <div className="shop-confirmation">
+                    <strong>{manual ? '人工确认' : adapter.mock ? '模拟' : '本地语音识别'}</strong>
+                    {automatic && (
+                      <button className="quiet" onClick={toggleConfirmation}>
+                        {manual ? '切换到本地识别' : '改用人工确认'}
+                      </button>
+                    )}
+                  </div>
+                )}
                 <span className="eyebrow">
                   {finished
                     ? '本次购物结束'
@@ -432,31 +433,40 @@ export function PinyinShop({
                     >
                       <span aria-hidden="true">🔊 </span>听正确读音
                     </button>
-                    {sentence && (
+                    {target.hanzi && (
                       <button className="quiet" onClick={() => setShowHanzi(!showHanzi)}>
                         {showHanzi ? '隐藏汉字' : '显示汉字'}
                       </button>
                     )}
                   </div>
                 )}
-                <h2 className={sentence ? 'shop-target shop-sentence' : 'shop-target'}>
-                  {sentence?.pinyin ??
-                    (target && 'target' in target
-                      ? target.target.pinyin
-                      : finished
-                        ? '购物清单'
-                        : '等你来挑')}
+                <h2 className={target?.hanzi ? 'shop-target shop-sentence' : 'shop-target'}>
+                  {target?.target.pinyin ?? (finished ? '购物清单' : '等你来挑')}
                 </h2>
-                {sentence && showHanzi && <p className="shop-sentence-hanzi">{sentence.hanzi}</p>}
-                <div className="shop-listening-indicator" aria-hidden="true">
-                  {phase === 'listening' ? (
-                    <>
+                {target?.hanzi && showHanzi && (
+                  <p className="shop-sentence-hanzi">{target.hanzi}</p>
+                )}
+                <div
+                  ref={meter}
+                  className="shop-listening-indicator"
+                  data-signal={
+                    adapter.mock
+                      ? undefined
+                      : phase === 'listening'
+                        ? 'listening'
+                        : feedback === 'matched'
+                          ? 'matched'
+                          : undefined
+                  }
+                  aria-hidden="true"
+                >
+                  {!adapter.mock && (phase === 'listening' || feedback === 'matched') ? (
+                    <span className="shop-signal">
                       <i />
                       <i />
                       <i />
-                      <i />
-                      <i />
-                    </>
+                      <span>{feedback === 'matched' ? '✓' : '●'}</span>
+                    </span>
                   ) : (
                     <span>
                       {phase === 'starting'
@@ -485,11 +495,11 @@ export function PinyinShop({
                       >
                         读完了，加入购物车
                       </button>
-                    ) : 'target' in target ? (
+                    ) : (
                       <button className="shop-primary" onClick={() => read(selected, target)}>
                         🎙 再读一次
                       </button>
-                    ) : null}
+                    )}
                   </div>
                 )}
                 {phase !== 'ready' && (

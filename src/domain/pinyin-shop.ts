@@ -10,14 +10,15 @@ export type ShopProduct = (typeof shop.products)[number];
 export type ShopTarget = {
   target: PronunciationTarget;
   audioRef: string;
-  audioKind: 'standard' | 'daily';
+  audioKind: 'standard' | 'daily' | 'private';
+  hanzi?: string;
 };
-export const shopSentences = shop.sentences.map((item) => ({
-  ...item,
+export const shopSentences: ShopTarget[] = shop.sentences.map((item) => ({
+  target: { id: `shop-sentence-${item.id}`, pinyin: item.pinyin, task: 'sequence' },
+  hanzi: item.hanzi,
   audioRef: `ui-shop-sentence-${item.id}`,
-  audioKind: 'private' as const,
+  audioKind: 'private',
 }));
-export type ShopSentence = (typeof shopSentences)[number];
 /** All 96 goods are decorative: school progress only limits the independent reading deck. */
 export function shopProducts(): readonly ShopProduct[] {
   return shop.products;

@@ -2,6 +2,7 @@
 export interface ShopCapture {
   start(): Promise<void>;
   snapshot(): Blob | null | Promise<Blob | null>;
+  level?(): number | Promise<number>;
   discard(): void;
 }
 
@@ -50,6 +51,7 @@ export class BrowserShopRecorder implements ShopCapture {
   private sink: GainNode | null = null;
   private samples: Float32Array | null = null;
   private frames = 0;
+  private rms = 0;
   private watchdog: ReturnType<typeof setTimeout> | null = null;
   constructor(private readonly maximumMs: number) {}
 
@@ -85,6 +87,9 @@ export class BrowserShopRecorder implements ShopCapture {
       this.processor.onaudioprocess = (event) => {
         if (generation !== this.epoch || !this.samples) return;
         const chunk = event.inputBuffer.getChannelData(0);
+        let energy = 0;
+        for (const sample of chunk) energy += sample * sample;
+        this.rms = Math.sqrt(energy / chunk.length);
         const take = Math.min(chunk.length, this.samples.length - this.frames);
         this.samples.set(chunk.subarray(0, take), this.frames);
         this.frames += take;
@@ -105,6 +110,9 @@ export class BrowserShopRecorder implements ShopCapture {
     if (!this.samples || !this.context || this.frames === 0) return null;
     return shopPcmWav(this.samples.subarray(0, this.frames), this.context.sampleRate);
   }
+  level(): number {
+    return this.rms;
+  }
   discard(): void {
     this.epoch += 1;
     if (this.watchdog) clearTimeout(this.watchdog);
@@ -123,5 +131,6 @@ export class BrowserShopRecorder implements ShopCapture {
     this.sink = null;
     this.samples = null;
     this.frames = 0;
+    this.rms = 0;
   }
 }

@@ -57,7 +57,11 @@ test('SHOP-04/06: eight shelves, 96 unique pictures/prices, global guidance, key
 }) => {
   await guest(page, new URL('/?shopRecognition=mock', appUrl).href);
   await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
+  const backdrop = page.waitForResponse(
+    (response) => response.url().endsWith('/shop/store-interior.jpg') && response.ok(),
+  );
   await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
+  expect((await backdrop).headers()['content-type']).toBe('image/jpeg');
   await expect(page.getByRole('heading', { name: /拼音小卖部/ })).toBeVisible();
   await expect(page.getByRole('checkbox', { name: '语音引导', exact: true })).toBeChecked();
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
@@ -149,8 +153,14 @@ for (const mode of [
         mode === 'retry' ? '没有匹配' : mode === 'uncertain' ? '等待结束' : '暂不可用',
         { timeout: 6500 },
       );
-      await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
-      await expect(page.getByRole('button', { name: '再读一次', exact: false })).toBeEnabled();
+      const basket = page.getByLabel('我的购物车').locator('li');
+      await expect(basket).toHaveCount(0);
+      if (mode === 'retry' || mode === 'uncertain') {
+        await expect(page.getByRole('button', { name: '再读一次' })).toBeEnabled();
+      } else {
+        await page.getByRole('button', { name: '读完了，加入购物车', exact: true }).click();
+        await expect(basket).toHaveCount(1);
+      }
     }
   });
 }
@@ -392,49 +402,85 @@ test('SHOP-10: audible manual instructions and explicit confirmation', async ({ 
   await feedback;
 });
 
-test('SHOP-09/10: installed Qwen matches licensed audio in the production shop', async ({
-  page,
-  appUrl,
-  dataDirectory,
-}) => {
-  const modelDir = process.env.LOVE_PINYIN_TEST_QWEN_DIR;
-  test.skip(!modelDir, 'Run with an explicit verified local Qwen model directory.');
-  const modelParent = join(dataDirectory, 'models');
-  await mkdir(modelParent);
-  await symlink(modelDir!, join(modelParent, 'qwen3-asr-0.6b'));
-  const audio = await readFile(
-    join('resources/audio/ios-standard', standardAudio.clips['audio-final-a'].file),
-  );
-  await page.addInitScript(
-    (bytes) => {
-      Object.defineProperty(navigator, 'mediaDevices', {
-        configurable: true,
-        value: {
-          getUserMedia: async () => {
-            const context = new AudioContext();
-            void context.resume().catch(() => undefined);
-            const destination = context.createMediaStreamDestination();
-            const source = context.createBufferSource();
-            source.buffer = await context.decodeAudioData(new Uint8Array(bytes).buffer);
-            source.connect(destination);
-            source.start(context.currentTime + 0.2);
-            return destination.stream;
+for (const mode of ['syllable', 'sentence'] as const) {
+  test(`SHOP-19/20: installed Qwen matches a ${mode} and shows input level`, async ({
+    page,
+    appUrl,
+    dataDirectory,
+  }) => {
+    const modelDir = process.env.LOVE_PINYIN_TEST_QWEN_DIR;
+    test.skip(!modelDir, 'Run with an explicit verified local Qwen model directory.');
+    const modelParent = join(dataDirectory, 'models');
+    await mkdir(modelParent);
+    await symlink(modelDir!, join(modelParent, 'qwen3-asr-0.6b'));
+    const manifest: { assets: { id: string; file: string }[] } = JSON.parse(
+      await readFile('resources/audio/manifest.json', 'utf8'),
+    );
+    const sample = manifest.assets.find((asset) => asset.id === 'ui-shop-sentence-tea')!;
+    const audio = await readFile(
+      mode === 'sentence'
+        ? join('resources/audio', sample.file)
+        : join('resources/audio/ios-standard', standardAudio.clips['audio-final-a'].file),
+    );
+    await page.addInitScript(
+      (bytes) => {
+        Object.defineProperty(navigator, 'mediaDevices', {
+          configurable: true,
+          value: {
+            getUserMedia: async () => {
+              const context = new AudioContext();
+              void context.resume().catch(() => undefined);
+              const destination = context.createMediaStreamDestination();
+              const source = context.createBufferSource();
+              source.buffer = await context.decodeAudioData(new Uint8Array(bytes).buffer);
+              source.connect(destination);
+              source.start(context.currentTime + 0.2);
+              return destination.stream;
+            },
           },
-        },
-      });
-    },
-    [...audio],
-  );
-  await guest(page, appUrl);
-  await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
-  await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
-  await expect(page.getByText('本地语音识别', { exact: true })).toBeVisible();
-  await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
-  const match = page.waitForResponse(async (response) => {
-    if (!response.url().endsWith('/assess') || !response.ok()) return false;
-    return (await response.json()).match.status === 'matched';
+        });
+      },
+      [...audio],
+    );
+    await guest(page, appUrl);
+    await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
+    await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
+    await expect(page.getByText('本地语音识别', { exact: true })).toBeVisible();
+    await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
+    const choose = page.getByRole('button', { name: '选择薯片' });
+    const basket = page.getByLabel('我的购物车').locator('li');
+    if (mode === 'sentence') {
+      await page.getByRole('button', { name: '句子拼读', exact: true }).click();
+      await page.getByRole('button', { name: '改用人工确认', exact: true }).click();
+      await choose.click();
+      await expect(page.getByRole('button', { name: '读完了，加入购物车' })).toBeVisible();
+      await expect(basket).toHaveCount(0);
+      await page.getByRole('button', { name: '切换到本地识别', exact: true }).click();
+    }
+    const match = page.waitForResponse(async (response) => {
+      if (!response.url().endsWith('/assess') || !response.ok()) return false;
+      return (await response.json()).match.status === 'matched';
+    });
+    if (mode === 'sentence') await page.getByRole('button', { name: '再读一次' }).click();
+    else await choose.click();
+    const meter = page.locator('.shop-listening-indicator');
+    await expect(meter).toHaveAttribute('data-signal', 'listening');
+    const ripple = meter.locator('i').first();
+    await expect(ripple).toHaveCSS('border-top-color', 'rgb(139, 212, 242)');
+    await expect
+      .poll(
+        () =>
+          meter.evaluate((element) =>
+            Number(getComputedStyle(element).getPropertyValue('--shop-level')),
+          ),
+        { intervals: [50, 80], timeout: 3500 },
+      )
+      .toBeGreaterThan(0.03);
+    await expect(basket).toHaveCount(1, { timeout: 7000 });
+    await expect(meter).toHaveAttribute('data-signal', 'matched');
+    await expect(ripple).toHaveCSS('border-top-color', 'rgb(76, 169, 120)');
+    const result = await (await match).json();
+    expect(result.saved).toBe(false);
+    if (mode === 'sentence') expect(result.match.targetId).toBe('shop-sentence-tea');
   });
-  await page.getByRole('button', { name: '选择薯片' }).click();
-  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(1, { timeout: 7000 });
-  expect((await (await match).json()).saved).toBe(false);
-});
+}

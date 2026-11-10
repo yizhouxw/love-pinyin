@@ -256,6 +256,9 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
                         replyHandler(nil, "MICROPHONE_UNAVAILABLE")
                     }
                 }
+            case "recordLevel":
+                guard body.count == 3, let id = recordingID(body) else { throw ClassroomError("INVALID_BRIDGE_REQUEST") }
+                replyHandler(recognitionRecorder.level(id), nil)
             case "recordSnapshot", "recordStop", "recordDiscard":
                 guard body.count == 3, let id = recordingID(body) else { throw ClassroomError("INVALID_BRIDGE_REQUEST") }
                 if operation == "recordDiscard" {

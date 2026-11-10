@@ -14,7 +14,9 @@ CONTENT = Path(__file__).resolve().parents[1] / "content"
 def catalog() -> tuple[dict, dict]:
     rules = json.loads((CONTENT / "pinyin-shop.json").read_text())
     pictures = json.loads((CONTENT / "illustrations.json").read_text())["items"]
-    return {key: pictures[key] for key in rules["targetIds"]}, rules["readingTolerance"]
+    targets = {key: pictures[key] for key in rules["targetIds"]}
+    targets.update({f"shop-sentence-{item['id']}": item for item in rules["sentences"]})
+    return targets, rules["readingTolerance"]
 
 
 def game_form(syllable: str, tolerance: dict) -> str:
@@ -44,18 +46,21 @@ def evaluate(target: dict, payload: bytes) -> dict:
             "evidence": "none",
         }
     _, tolerance = catalog()
-    expected = game_form(target["pinyin"], tolerance)
-    match = match_transcript({"syllables": [target["pinyin"]]}, result["transcript"])
+    expected = target["pinyin"].removesuffix(".").split()
+    match = match_transcript({"syllables": expected}, result["transcript"])
     observed = match["recognizedPinyin"].split()
     matched = (
         match["status"] != "uncertain"
-        and len(observed) == 1
-        and game_form(observed[0], tolerance) == expected
+        and len(observed) == len(expected)
+        and all(
+            game_form(actual, tolerance) == game_form(wanted, tolerance)
+            for actual, wanted in zip(observed, expected, strict=True)
+        )
     )
     return {
         "status": "matched" if matched else "uncertain",
         "reason": None if matched else "insufficient-evidence",
-        "recognizedPinyin": observed[0] if matched else None,
+        "recognizedPinyin": match["recognizedPinyin"] if matched else None,
         "toneAssessed": False,
         "evidence": "acoustic" if matched else "none",
     }

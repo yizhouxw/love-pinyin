@@ -32,6 +32,11 @@ export class IOSShopRecorder implements ShopCapture {
     return new Blob([bytes], { type: 'audio/wav' });
   }
 
+  async level(): Promise<number> {
+    const id = this.id;
+    return id ? iosOperation<number>('recordLevel', { id }) : 0;
+  }
+
   discard() {
     const id = this.id;
     this.id = null;
