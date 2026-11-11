@@ -103,6 +103,7 @@ final class OfflineAssets: NSObject, WKURLSchemeHandler {
         "webp": "image/webp",
         "mp3": "audio/mpeg",
         "m4a": "audio/mp4",
+        "woff": "font/woff",
         "woff2": "font/woff2",
         "wav": "audio/wav",
     ]

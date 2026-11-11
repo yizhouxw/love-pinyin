@@ -235,7 +235,11 @@ export function SceneWorld({
           </g>
         );
       })}
-      {scene === 'runner' && <Fox x={world.x} y={365} jump={world.jump} />}
+      {scene === 'runner' && (
+        <g className="scene-runner-position" style={{ transform: `translateX(${world.x}px)` }}>
+          <Fox x={0} y={365} jump={world.jump} />
+        </g>
+      )}
       {scene === 'boat' && (
         <g transform={`translate(${world.x} 360) rotate(${world.vx / 12})`}>
           <path d="M-54 0Q0 65 54 0Z" fill="#ad6946" stroke="#6c543f" strokeWidth="5" />
@@ -259,20 +263,6 @@ export function SceneWorld({
         <g transform={`translate(${world.shot.x} ${world.shot.y})`}>
           <path d="M0 0V25" stroke="#ffdda4" strokeWidth="5" />
           <rect x="-10" y="-10" width="20" height="20" rx="5" fill="#fff1c7" />
-        </g>
-      )}
-      {world.hit !== null && (
-        <g>
-          <rect width="800" height="440" rx="24" fill="#fff4c433" />
-          <text
-            x="400"
-            y="58"
-            textAnchor="middle"
-            fontSize="28"
-            fill={scene === 'space' ? '#fff4c4' : '#294e45'}
-          >
-            ✦ 目标已抵达 ✦
-          </text>
         </g>
       )}
       {world.flash > 0 && (

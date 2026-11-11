@@ -31,9 +31,6 @@ import './pinyin-shop.css';
 type Feedback = 'welcome' | 'ready' | 'manual_added' | ShopReadingOutcome | 'complete';
 type ReadingMode = 'syllable' | 'sentence';
 const quietWaveform = Array<number>(23).fill(0);
-const widestSentence = shopSentences.reduce((longest, item) =>
-  item.target.pinyin.length > longest.target.pinyin.length ? item : longest,
-);
 
 function waveformPath(levels: number[]) {
   return levels
@@ -121,10 +118,18 @@ export function PinyinShop({
   const [finished, setFinished] = useState(false);
   const [cabinet, setCabinet] = useState(0);
   const nextTarget = useRef({ syllable: 0, sentence: 0 });
-  const challenge = useRef<HTMLDivElement>(null);
+  const [readingOpen, setReadingOpen] = useState(false);
+  const [shelfPage, setShelfPage] = useState(0);
+  const cart = useRef<HTMLDialogElement>(null);
+  const cartButton = useRef<HTMLButtonElement>(null);
+  const lastProduct = useRef<HTMLButtonElement | null>(null);
+  const practiceBack = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (readingOpen && window.matchMedia('(max-width: 700px)').matches)
+      practiceBack.current?.focus({ preventScroll: true });
+  }, [readingOpen]);
   const waveform = useRef<SVGPathElement>(null);
   const levels = useRef([...quietWaveform]);
-  const display = useRef<HTMLDivElement>(null);
   const epoch = useRef(0);
   const guidance = useRef(guidanceEnabled);
   const cancel = useCallback(() => {
@@ -217,8 +222,7 @@ export function PinyinShop({
   function choose(product: ShopProduct) {
     if (finished || full || clock.paused || basketRef.current.includes(product.id)) return;
     prepareTask(product, mode, !manual);
-    if (window.matchMedia('(max-width: 800px)').matches)
-      challenge.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+    setReadingOpen(true);
   }
   function changeMode(nextMode: ReadingMode) {
     if (nextMode === mode) return;
@@ -250,12 +254,38 @@ export function PinyinShop({
     setTarget(null);
     setFeedback('welcome');
     setCabinet(index);
+    setShelfPage(0);
   }
   const exit = () => {
     cancel();
     onExit();
   };
+  function backToShelf() {
+    cancel();
+    setPhase('ready');
+    setReadingOpen(false);
+    requestAnimationFrame(() => {
+      const last = lastProduct.current;
+      const available = last
+        ?.closest('.shop-shelves')
+        ?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)');
+      const button =
+        last && !last.disabled && last.getClientRects().length
+          ? last
+          : Array.from(available ?? []).find((item) => item.getClientRects().length);
+      (button ?? cartButton.current)?.focus({ preventScroll: true });
+    });
+  }
+  function openCart() {
+    if (phase !== 'ready') {
+      cancel();
+      setPhase('ready');
+      setFeedback('ready');
+    }
+    cart.current?.showModal();
+  }
   const checkout = () => {
+    if (!cart.current?.open) cart.current?.showModal();
     cancel();
     setPhase('ready');
     setSelected(null);
@@ -265,7 +295,6 @@ export function PinyinShop({
   };
   const total = shopPrice(shopTotalCents(basket));
   const canAct = phase === 'ready' && Boolean(target && selected && !finished);
-  const canReturn = !full && (feedback === 'matched' || feedback === 'manual_added');
   const signal = adapter.mock
     ? undefined
     : phase === 'listening'
@@ -290,7 +319,7 @@ export function PinyinShop({
               ? '挑一件喜欢的商品，模拟成功后会自动加入购物车。'
               : messages[feedback];
   return (
-    <section className="pinyin-shop" aria-label="拼音小卖部">
+    <section className="pinyin-shop" aria-label="拼音小卖部" data-reading={readingOpen}>
       <header className="shop-topbar">
         <button className="quiet" onClick={exit}>
           ← 回游戏乐园
@@ -317,17 +346,7 @@ export function PinyinShop({
         )}
       </header>
       <div className="shop-sign">
-        <div>
-          <small>喜欢什么，就挑什么</small>
-          <h1>
-            拼音小卖部<span>橘子量贩店</span>
-          </h1>
-        </div>
-        <span className="shop-stamp">
-          8 大货架
-          <br />
-          96 件好物
-        </span>
+        <h1>拼音小卖部</h1>
       </div>
       {adapter.mock && (
         <aside className="shop-mode" role="status">
@@ -354,7 +373,7 @@ export function PinyinShop({
       ) : (
         <>
           <div className="shop-layout">
-            <div className="shop-display" ref={display}>
+            <div className="shop-display">
               <nav className="shop-cabinets" aria-label="切换货架">
                 {shopRules.shelves.map((item, index) => (
                   <button
@@ -367,19 +386,24 @@ export function PinyinShop({
                   </button>
                 ))}
               </nav>
-              <div className="shop-shelf-heading">
-                <h2>{shelf.name}</h2>
-                <span>第 {cabinet + 1} / 8 架 · 12 件商品</span>
-              </div>
-              <div className="shop-shelves" role="group" aria-label="商品货架">
-                {goods.map((product) => (
+              <div
+                className="shop-shelves"
+                role="group"
+                aria-label={shelf.name}
+                data-page={shelfPage}
+              >
+                {goods.map((product, index) => (
                   <button
                     key={product.id}
                     className="shop-product"
+                    data-shelf-page={Math.floor(index / 6)}
                     aria-label={`选择${product.name}`}
                     aria-pressed={selected?.id === product.id}
                     disabled={finished || full || basket.includes(product.id)}
-                    onClick={() => choose(product)}
+                    onClick={(event) => {
+                      lastProduct.current = event.currentTarget;
+                      choose(product);
+                    }}
                   >
                     <ShopProductImage product={product} />
                     <span className="shop-price-tag">
@@ -392,15 +416,33 @@ export function PinyinShop({
                   </button>
                 ))}
               </div>
-              <p className="shop-shelf-note">
-                商品只为好玩，和要读的拼音没有关系。价格不影响练习。
-              </p>
+              <div className="shop-pages" role="group" aria-label="商品翻页">
+                <button
+                  className="quiet"
+                  disabled={shelfPage === 0}
+                  onClick={() => setShelfPage(0)}
+                >
+                  ‹ 前一页
+                </button>
+                <span>{shelfPage + 1} / 2</span>
+                <button
+                  className="quiet"
+                  disabled={shelfPage === 1}
+                  onClick={() => setShelfPage(1)}
+                >
+                  后一页 ›
+                </button>
+              </div>
             </div>
             <div className="shop-counter">
-              <div
-                ref={challenge}
-                className={`shop-challenge ${phase === 'listening' ? 'shop-is-listening' : ''}`}
-              >
+              <div className={`shop-challenge ${phase === 'listening' ? 'shop-is-listening' : ''}`}>
+                <button
+                  ref={practiceBack}
+                  className="quiet shop-return-shelf"
+                  onClick={backToShelf}
+                >
+                  ‹ 继续挑商品
+                </button>
                 {!finished && (
                   <div className="shop-reading-modes" role="group" aria-label="拼读模式">
                     <button
@@ -430,7 +472,7 @@ export function PinyinShop({
                     </button>
                   </div>
                 )}
-                <span className="eyebrow">
+                <span className="eyebrow shop-task-caption">
                   {finished
                     ? '本次购物结束'
                     : selected
@@ -474,7 +516,7 @@ export function PinyinShop({
                     {showHanzi ? '隐藏汉字' : '显示汉字'}
                   </button>
                 </div>
-                <div className="shop-reading-text" data-sizer={widestSentence.target.pinyin}>
+                <div className="shop-reading-text">
                   <h2
                     className={
                       !target || target.hanzi ? 'shop-target shop-sentence' : 'shop-target'
@@ -483,7 +525,7 @@ export function PinyinShop({
                     {target?.target.pinyin ?? (finished ? '购物清单' : '等你来挑')}
                   </h2>
                 </div>
-                <div className="shop-hanzi-space" data-sizer={widestSentence.hanzi}>
+                <div className="shop-hanzi-space">
                   {target?.hanzi && showHanzi && (
                     <p className="shop-sentence-hanzi">{target.hanzi}</p>
                   )}
@@ -561,77 +603,79 @@ export function PinyinShop({
                   >
                     🎙 再读一次
                   </button>
-                  <button
-                    className="quiet shop-return-shelf"
-                    data-empty={!canReturn || undefined}
-                    disabled={!canReturn}
-                    onClick={() =>
-                      display.current?.scrollIntoView({ behavior: 'instant', block: 'start' })
-                    }
-                  >
-                    继续挑商品 ↑
-                  </button>
                 </div>
               </div>
-              <aside
-                className={`shop-basket ${finished ? 'shop-basket-complete' : ''}`}
-                aria-label="我的购物车"
-              >
-                <h2>
-                  我的购物车{' '}
-                  <span>
-                    {basket.length} / {shopRules.basketLimit} 件
-                  </span>
-                </h2>
-                {adapter.mock && <p className="shop-simulation">模拟购物清单 · 不是真实识别</p>}
-                <div
-                  className="shop-basket-items"
-                  tabIndex={basket.length ? 0 : undefined}
-                  role="group"
-                  aria-label="购物清单"
-                >
-                  {basket.length ? (
-                    <ul>
-                      {basket.map((id) => {
-                        const product = products.find((p) => p.id === id)!;
-                        return (
-                          <li key={id}>
-                            <ShopProductImage product={product} />
-                            <span>{product.name}</span>
-                            <strong>{shopPrice(product.priceCents)}</strong>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  ) : (
-                    <p className="shop-empty">
-                      {adapter.mock
-                        ? '选好商品后，会模拟成功并自动入车。'
-                        : manual
-                          ? '读完并确认后，商品会来到这里。'
-                          : '读音匹配后，喜欢的商品会自动来到这里。'}
-                    </p>
-                  )}
-                </div>
-                <div className="shop-total">
-                  <span>{finished ? '结算总金额' : '合计'}</span>
-                  <strong>{total}</strong>
-                </div>
-                <button className="shop-checkout" onClick={finished ? exit : checkout}>
-                  {finished ? '休息，回游戏乐园 →' : '结算购物车 →'}
-                </button>
-                <small>虚拟购物，没有真实购买或支付。</small>
-              </aside>
             </div>
           </div>
-          <footer className="shop-footnote">
-            每次最多六件，选好就结算。口头练习不计客观题掌握度。
-            {adapter.mock
-              ? ' 当前为模拟识别，不使用麦克风或判断发音。'
-              : manual
-                ? ' 听读后人工确认。'
-                : ' 录音仅在本机内存处理，退出清除。'}
-          </footer>
+          <div className="shop-cart-bar">
+            <button ref={cartButton} className="quiet" onClick={openCart}>
+              🧺 购物车 {basket.length} / {shopRules.basketLimit}
+            </button>
+            <button className="shop-checkout" onClick={checkout}>
+              结算购物车 →
+            </button>
+          </div>
+          <dialog
+            ref={cart}
+            className="shop-basket"
+            aria-label="我的购物车"
+            onCancel={(event) => {
+              if (finished) {
+                event.preventDefault();
+                exit();
+              }
+            }}
+          >
+            <h2>
+              我的购物车{' '}
+              <span>
+                {basket.length} / {shopRules.basketLimit} 件
+              </span>
+            </h2>
+            {adapter.mock && <p className="shop-simulation">模拟购物清单 · 不是真实识别</p>}
+            <div
+              className="shop-basket-items"
+              tabIndex={basket.length ? 0 : undefined}
+              role="group"
+              aria-label="购物清单"
+            >
+              {basket.length ? (
+                <ul>
+                  {basket.map((id) => {
+                    const product = products.find((p) => p.id === id)!;
+                    return (
+                      <li key={id}>
+                        <ShopProductImage product={product} />
+                        <span>{product.name}</span>
+                        <strong>{shopPrice(product.priceCents)}</strong>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <p className="shop-empty">
+                  {adapter.mock
+                    ? '选好商品后，会模拟成功并自动入车。'
+                    : manual
+                      ? '读完并确认后，商品会来到这里。'
+                      : '读音匹配后，喜欢的商品会自动来到这里。'}
+                </p>
+              )}
+            </div>
+            <div className="shop-total">
+              <span>{finished ? '结算总金额' : '合计'}</span>
+              <strong>{total}</strong>
+            </div>
+            <button className="shop-checkout" onClick={finished ? exit : checkout}>
+              {finished ? '休息，回游戏乐园 →' : '确认结算 →'}
+            </button>
+            {!finished && (
+              <button className="quiet" onClick={() => cart.current?.close()}>
+                关闭购物车
+              </button>
+            )}
+            <small>虚拟购物，没有真实购买或支付。</small>
+          </dialog>
         </>
       )}
     </section>

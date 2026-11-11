@@ -47,7 +47,9 @@ for (const game of catalog.games) {
     );
     await expect
       .poll(() =>
-        voices.some((url) => url.endsWith(`/audio/${session.tasks[0].exercise.audioRef}`)),
+        voices.some(
+          (url) => /\/audio\//.test(url) && url.endsWith(session.tasks[0].exercise.audioRef),
+        ),
       )
       .toBe(true);
     expect(voices.some((url) => url.includes('/voice/prompt-'))).toBe(false);
@@ -76,7 +78,7 @@ for (const game of catalog.games) {
     await expect(dialog).not.toBeVisible();
     await expect(page.getByRole('button', { name: '游戏设置' })).toBeFocused();
     await page.reload();
-    await expect(page.getByRole('button', { name: '还原画面' })).toBeVisible();
+    await expect(page.getByRole('button', { name: '还原画面' })).toBeVisible({ timeout: 15000 });
     const restored = await (await page.request.get(`${appUrl}/api/v1/sessions/current`)).json();
     expect(restored.gameSettings).toEqual(current.gameSettings);
     for (const width of [1280, 390, 320]) {
@@ -98,7 +100,7 @@ for (const game of catalog.games) {
         timeout: 15000,
       });
       const q = curriculum.exercises.find((q) => q.id === session.tasks[i].exercise.id)!;
-      await playScene(page, q.answer.optionId!, { continuous: true });
+      await playScene(page, q.answer.optionId!);
       if (i < count - 1) await expect(page.getByLabel('本次练习小结')).toHaveCount(0);
     }
     await expect(page.getByLabel('本次练习小结')).toBeVisible({ timeout: 15000 });

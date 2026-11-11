@@ -117,7 +117,6 @@
     "maxTasks": 20,
     "defaultTasks": 6,
     "levelSpeedStep": 0.12,
-    "approachDistance": 360,
-    "continueMilliseconds": 350
+    "approachDistance": 360
   }
 }

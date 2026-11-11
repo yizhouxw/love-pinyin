@@ -34,11 +34,11 @@ test('LEVEL-01/KEY-01: play one complete twelve-task forest journey using normal
     await expect(page.locator('.scene-nav')).toContainText(`任务 ${i + 1} / 12`, {
       timeout: 15000,
     });
-    await expect(page.getByLabel('完整关卡路线')).toContainText(
+    await expect(page.locator('.scene-nav')).toContainText(
       session.gameRun.level.chapters[Math.floor(i / 4)].title,
     );
     const q = curriculum.exercises.find((q) => q.id === session.tasks[i].exercise.id)!;
-    await playScene(page, q.answer.optionId!, { continuous: true });
+    await playScene(page, q.answer.optionId!);
     if (i < 11) await expect(page.getByLabel('本次练习小结')).toHaveCount(0);
   }
   await expect(page.getByLabel('本次练习小结')).toBeVisible({ timeout: 15000 });

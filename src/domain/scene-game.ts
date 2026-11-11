@@ -96,6 +96,7 @@ export function advanceWorld(
   seconds: number,
   c: EngineConfig,
   action?: Action,
+  targetReady = true,
 ): World {
   if (prior.hit !== null) return prior;
   const w = {
@@ -155,6 +156,7 @@ export function advanceWorld(
     w.vx *= Math.exp(-1.8 * dt * motion);
   } else if (scene === 'drum') {
     w.distance += dt * travel * motion;
+    if (!targetReady) w.distance = Math.min(w.distance, p.choiceAt - 65);
     const at = p.choiceAt + w.note * p.choiceGap;
     if (c.assist && w.distance >= at) w.distance = at;
     if (action === 'pass') {
@@ -188,7 +190,7 @@ export function advanceWorld(
     if (action === 'left' || action === 'right')
       w.x = Math.max(80, Math.min(720, w.x + (action === 'left' ? -28 : 28)));
     if (action === 'act' && !w.shot) w.shot = { x: w.x, y: 350 };
-    w.distance = Math.min(p.choiceAt, w.distance + dt * travel * motion);
+    w.distance = Math.min(p.choiceAt - (targetReady ? 0 : 65), w.distance + dt * travel * motion);
     if (w.shot) {
       w.shot.y -= dt * 260 * motion;
       const rock = p.obstacles.find(
@@ -214,6 +216,8 @@ export function advanceWorld(
       }
     }
   }
+  if (!targetReady && (scene === 'runner' || scene === 'boat'))
+    w.distance = Math.max(previous, Math.min(w.distance, p.choiceAt - 65));
   if (scene !== 'drum') {
     for (const obstacle of p.obstacles) {
       if (w.cleared.includes(obstacle.id)) continue;
@@ -254,7 +258,7 @@ export function advanceWorld(
           ? p.choiceAt
           : Math.min(w.distance, p.choiceAt - 65);
     }
-    if ((scene === 'runner' || scene === 'boat') && w.distance >= p.choiceAt) {
+    if (targetReady && (scene === 'runner' || scene === 'boat') && w.distance >= p.choiceAt) {
       const hit = Array.from({ length: c.count }, (_, i) => ({
         i,
         pos: targetPosition(i, w, c),

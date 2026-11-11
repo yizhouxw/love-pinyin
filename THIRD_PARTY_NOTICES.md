@@ -7,7 +7,8 @@
 - npm依赖声明见[自动依赖清单](docs/engineering/dependency-inventory.json)，按上游许可保留版权与notice。
 - Python依赖、各轮子来源及校验哈希见`uv.lock`；主要许可和原生依赖注意事项见[依赖记录](docs/engineering/dependencies.md)。
 - 本地转写研究额外依赖组 `audio-asr` 锁定 `pywhispercpp==1.5.1`（MIT）；Whisper multilingual small 权重为独立 MIT 资产，固定 revision/SHA 与用途限制见 [ADR 0003](docs/adr/0003-local-asr-transcription.md)。权重只在显式安装后存在于 Git 忽略目录，不随本仓库发布。
-- 拼音文字使用随包SIL Andika 7.000（OFL-1.1），Regular/Bold原始WOFF2及许可在public/fonts/andika，来源与摘要见content/pinyin-font.json。默认单层a/g，保留原Unicode拼音字符；中文仍使用系统字体。教学笔顺与占格由content/writing.json原创SVG提供，字体不替代书写轨迹。
+- 中文正文随包使用 [霞鹜文楷 GB Lite v1.530 Regular](https://github.com/lxgw/LxgwWenkaiGB-Lite/releases/tag/v1.530)（OFL-1.1），原始 TTF 以 Python 标准库 zlib 无损封装为 WOFF，字形和字符集完整保留。WOFF 及许可位于 public/fonts/wenkai-1.530。原始 TTF SHA-256 为 `8a07213b51a7c5a61d7ce192728f21483cdbbcb9c74cedf461c57ab35a762d45`，WOFF SHA-256 为 `47687bd1f20eb38cfe2c64f491ec3d7d6d23d13e1cf3fd81fd809bb276d7b9e7`。
+- 拼音文字使用随包SIL Andika 7.000（OFL-1.1），Regular/Bold原始WOFF2及许可在public/fonts/andika，来源与摘要见content/pinyin-font.json。默认单层a/g，保留原Unicode拼音字符；教学笔顺与占格由content/writing.json原创SVG提供，字体不替代书写轨迹。
 - 标准音固定采用cmguo/PinYinSound，当前205个目标由183份私有MP3提供。归档来源与摘要见content/pinyin-source.json；其中licenseStatus仍为unknown，不把产品直接信任决定写成MIT授权，不提交这些声音文件。
 - `content/assessment-manifest.json`仅保留历史研究登记，当前为空；首版无评分模型或评测依赖，不作为发布门禁。
 

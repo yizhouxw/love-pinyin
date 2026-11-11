@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { gameCatalog } from '../domain/games';
 import {
   advanceWorld,
@@ -30,6 +30,7 @@ import {
 
 type Props = {
   gameId: string;
+  taskId: string;
   settings?: GameSettings;
   run?: GameRun;
   question: Exercise;
@@ -68,13 +69,14 @@ export function SceneGame(props: Props) {
   const stageRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef(props.onNext);
   const [display, setDisplay] = useState(() => readSceneDisplay(gameId, props.reducedMotion));
-  const { enlarged, assist, autoContinue } = display;
+  const { enlarged, assist } = display;
   function changeDisplay(value: Partial<typeof display>) {
     setDisplay((prior) => ({ ...prior, ...value }));
   }
   useEffect(() => {
     saveSceneDisplay(gameId, display);
   }, [gameId, display]);
+  const helpDialog = useRef<HTMLDialogElement>(null);
   const settingsDialog = useRef<HTMLDialogElement>(null);
   const settingsButton = useRef<HTMLButtonElement>(null);
   const wasPaused = useRef(false);
@@ -85,6 +87,7 @@ export function SceneGame(props: Props) {
     nextRef.current = props.onNext;
   }, [props.onNext]);
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     stageRef.current?.focus({ preventScroll: true });
   }, []);
   const level = props.settings?.level ?? 'gentle',
@@ -107,8 +110,46 @@ export function SceneGame(props: Props) {
         )
       : null,
   });
-  const [world, setWorld] = useState<World>(seed);
-  const current = useRef(world);
+  const [frames] = useState(() => {
+    let frame = { world: seed(), backdrop: 0 };
+    const listeners = new Set<() => void>();
+    return {
+      read: () => frame,
+      write(world: World, backdrop = frame.backdrop) {
+        frame = { world, backdrop };
+        listeners.forEach((listener) => listener());
+      },
+      subscribe(listener: () => void) {
+        listeners.add(listener);
+        return () => listeners.delete(listener);
+      },
+    };
+  });
+  const [hit, setHit] = useState<number | null>(() => frames.read().world.hit);
+  const taskId = useRef(props.taskId);
+  const submitted = useRef<number | null>(null);
+  const [replaying, setReplaying] = useState(false);
+  const [resolvedHit, setResolvedHit] = useState(false);
+  useLayoutEffect(() => {
+    if (taskId.current === props.taskId) return;
+    const { world: prior, backdrop } = frames.read();
+    const next = {
+      ...initialWorld(),
+      x: prior.x,
+      vx: prior.vx,
+      time: prior.time,
+      jump: prior.jump,
+      jumpVelocity: prior.jumpVelocity,
+      forwardVelocity: prior.forwardVelocity,
+      flash: 0.25,
+    };
+    taskId.current = props.taskId;
+    submitted.current = null;
+    frames.write(next, backdrop + prior.distance);
+    setHit(null);
+    setResolvedHit(false);
+    setReplaying(false);
+  }, [frames, props.taskId]);
   const [paused, setPaused] = useState(false);
   const physics = {
     ...config,
@@ -121,8 +162,6 @@ export function SceneGame(props: Props) {
   });
   const [sfx, setSfx] = useState(true);
   const percussion = useRef<GamePercussion | null>(null);
-  const submitted = useRef<number | null>(null);
-  const [replaying, setReplaying] = useState(false);
   const [sending, setSending] = useState(false);
   const callback = useRef(props.onAnswer);
   useEffect(() => {
@@ -145,43 +184,46 @@ export function SceneGame(props: Props) {
       percussion.current = null;
     };
   }, []);
+  const canMove = !paused && !applying && (!answer || done || replaying);
+  const canMovePastTarget = useRef(false);
+  useLayoutEffect(() => {
+    canMovePastTarget.current = !stopped;
+  }, [stopped]);
   useEffect(() => {
-    if (stopped) {
+    if (!canMove) {
       percussion.current?.close();
       return;
     }
-    let frame = 0,
-      last = 0;
-    const tick = (time: number) => {
-      if (document.hidden) {
-        last = 0;
-        frame = requestAnimationFrame(tick);
-        return;
-      }
+    let frame = 0;
+    let last = 0;
+    function tick(time: number) {
       const dt = last ? (time - last) / 1000 : 0;
       last = time;
-      const next = advanceWorld(current.current, dt, engine.current);
-      current.current = next;
-      setWorld(next);
+      const { world, backdrop } = frames.read();
+      const config = engine.current;
+      if (!document.hidden && dt > 0) {
+        if (world.hit !== null) {
+          frames.write(world, backdrop + Math.min(dt, 0.05) * config.travel * config.speedFactor);
+        } else {
+          const next = advanceWorld(world, dt, config, undefined, canMovePastTarget.current);
+          frames.write(next);
+          if (next.hit !== null) setHit(next.hit);
+        }
+      }
       frame = requestAnimationFrame(tick);
-    };
+    }
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [stopped]);
+  }, [canMove, frames]);
   useEffect(() => {
-    if (
-      locked ||
-      busy ||
-      paused ||
-      voice.playingId ||
-      world.hit === null ||
-      submitted.current === world.hit
-    )
-      return;
-    submitted.current = world.hit;
+    if (stopped || hit === null || submitted.current === hit) return;
+    submitted.current = hit;
     setSending(true);
-    void callback.current(question.options[world.hit]!.id).finally(() => setSending(false));
-  }, [world.hit, question.options, locked, busy, paused, voice.playingId]);
+    void callback.current(question.options[hit]!.id).finally(() => {
+      setResolvedHit(true);
+      setSending(false);
+    });
+  }, [hit, question.options, stopped]);
   useEffect(() => {
     const hide = () => {
       if (document.hidden) {
@@ -193,11 +235,12 @@ export function SceneGame(props: Props) {
     return () => document.removeEventListener('visibilitychange', hide);
   }, []);
   function fire(action: Action) {
-    if (stopped || current.current.hit !== null) return;
+    const { world } = frames.read();
+    if (stopped || world.hit !== null) return;
     if (sfx && scene === 'drum' && action === 'act') percussion.current?.hit();
-    const next = advanceWorld(current.current, 0, engine.current, action);
-    current.current = next;
-    setWorld(next);
+    const next = advanceWorld(world, 0, engine.current, action);
+    frames.write(next);
+    if (next.hit !== null) setHit(next.hit);
   }
   function focusStage() {
     stageRef.current?.focus({ preventScroll: true });
@@ -207,27 +250,47 @@ export function SceneGame(props: Props) {
     if (!paused && props.onPause) props.onPause();
     else setPaused((value) => !value);
   }
-  const pointer = useGamePointer(!stopped && world.hit === null, scene, fire);
+  const pointer = useGamePointer(!stopped && hit === null, scene, fire);
   useGameInput({
-    enabled: !stopped && world.hit === null,
+    enabled: !stopped && hit === null,
     scene,
     onAction: fire,
     onPause: togglePause,
     focus: focusStage,
   });
   useEffect(() => {
-    if (!done || busy || sending || voice.playingId || paused || props.error || !autoContinue)
-      return;
-    const timer = window.setTimeout(() => nextRef.current(), gameCatalog.play.continueMilliseconds);
-    return () => window.clearTimeout(timer);
-  }, [done, busy, sending, voice.playingId, paused, props.error, autoContinue]);
-  function reset() {
-    submitted.current = null;
-    const next = seed();
-    current.current = next;
-    setWorld(next);
-    setReplaying(true);
-  }
+    if (busy || sending || voice.playingId || paused || props.error) return;
+    if (done) {
+      nextRef.current();
+    } else if (answer && hit !== null && resolvedHit) {
+      const frame = requestAnimationFrame(() => {
+        const { world, backdrop } = frames.read();
+        const distance = scene === 'space' ? pattern.choiceAt : pattern.choiceAt - 65;
+        submitted.current = null;
+        frames.write(
+          { ...world, distance, hit: null, shot: null, note: 0, forwardVelocity: 0 },
+          backdrop + world.distance - distance,
+        );
+        setHit(null);
+        setResolvedHit(false);
+        setReplaying(true);
+      });
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [
+    answer,
+    busy,
+    done,
+    frames,
+    hit,
+    pattern.choiceAt,
+    paused,
+    props.error,
+    resolvedHit,
+    scene,
+    sending,
+    voice.playingId,
+  ]);
   const cue = narration.exercises[question.id];
   const controls =
     scene === 'runner'
@@ -237,7 +300,7 @@ export function SceneGame(props: Props) {
         : scene === 'drum'
           ? ['放过音符', '咚！击鼓', '放过音符']
           : ['← 瞄准', '发射 ↑', '瞄准 →'];
-  const hitOption = world.hit === null ? null : question.options[world.hit];
+  const hitOption = hit === null ? null : question.options[hit];
   return (
     <main
       className={`scene-page scene-${scene}${enlarged ? ' scene-enlarged' : ''}`}
@@ -250,7 +313,7 @@ export function SceneGame(props: Props) {
           target.closest('.scene-controls,.scene-voices,.scene-tools')
         )
           queueMicrotask(() => {
-            if (!settingsDialog.current?.open) focusStage();
+            if (!settingsDialog.current?.open && !helpDialog.current?.open) focusStage();
           });
       }}
     >
@@ -262,15 +325,13 @@ export function SceneGame(props: Props) {
           {game.icon} {game.title}
         </strong>
         <span>
-          {run.level.title} · 任务 {props.index + 1} / {props.total}
+          {run.level.chapters[segment.chapterIndex]?.title} · 任务 {props.index + 1} / {props.total}
         </span>
       </nav>
       <div className="scene-view-actions">
-        {props.onPause && (
-          <button className="quiet" onClick={togglePause}>
-            {paused ? '▶ 继续' : 'Ⅱ 暂停'}
-          </button>
-        )}
+        <button className="quiet" onClick={togglePause}>
+          {paused ? '▶ 继续' : 'Ⅱ 暂停'}
+        </button>
         <button
           className="quiet"
           aria-pressed={enlarged}
@@ -405,22 +466,29 @@ export function SceneGame(props: Props) {
           </div>
         </form>
       </dialog>
-      <div className="level-journey" aria-label="完整关卡路线">
-        {run.level.chapters.map((chapter, i) => (
-          <span
-            key={chapter.id}
-            className={
-              i === segment.chapterIndex ? 'active' : i < segment.chapterIndex ? 'finished' : ''
-            }
-          >
-            {i < segment.chapterIndex ? '✓' : i + 1} {chapter.title}
-          </span>
-        ))}
-        <progress aria-label="关卡完成进度" value={props.index} max={props.total} />
-      </div>
-      {!props.run?.level && (
-        <p className="adult-hint">这是旧版未完成旅程；退出后可选择新的完整关卡。</p>
-      )}
+      <dialog
+        ref={helpDialog}
+        className="scene-settings"
+        aria-labelledby="scene-help-title"
+        onClose={() => {
+          voice.stop();
+          setPaused(wasPaused.current);
+        }}
+      >
+        <h2 id="scene-help-title">玩法与故事</h2>
+        <p>{game.controls} 方向键 / A、D，空格 / W；P 暂停。</p>
+        <p>
+          {run.level.title} · {run.level.chapters[segment.chapterIndex]?.title}
+        </p>
+        <div className="scene-voices">
+          <VoiceButton id={game.voiceId} voice={voice} label="听玩法" />
+          <VoiceButton id={run.level.voiceId} voice={voice} label="听本关故事" />
+          <VoiceButton id={`prompt-${question.id}`} voice={voice} label="听题目说明" />
+        </div>
+        <button className="quiet" onClick={() => helpDialog.current?.close()}>
+          关闭
+        </button>
+      </dialog>
       <div className="scene-layout">
         <section className="scene-playfield" aria-label={game.title}>
           <div className="scene-quick-audio scene-voices">
@@ -431,64 +499,34 @@ export function SceneGame(props: Props) {
               label={question.audioRef ? '听拼音' : '听题目'}
               alwaysReplay
             />
-            <VoiceButton id={game.voiceId} voice={voice} label="听玩法" />
+            <button
+              className="quiet"
+              onClick={() => {
+                wasPaused.current = paused;
+                setPaused(true);
+                helpDialog.current?.showModal();
+              }}
+            >
+              玩法与故事
+            </button>
+            <progress aria-label="关卡完成进度" value={props.index} max={props.total} />
           </div>
-          <div className="scene-topline">
-            <span>
-              {gameCatalog.levels[level].label} · {gameCatalog.speeds[speed].label} · 第{' '}
-              {run.level.number} 关
-            </span>
-            <span>
-              {scene === 'drum'
-                ? `热身鼓点 ${world.beatHits.length} / ${pattern.beats.length}`
-                : `沿途收集 ${world.collected.length} / ${pattern.pickups.length}`}{' '}
-              · {Math.min(100, Math.round((world.distance / pattern.length) * 100))}%
-            </span>
-          </div>
-          <div
-            ref={stageRef}
-            className="scene-stage"
-            tabIndex={0}
-            role="group"
-            aria-label="游戏操作区：方向键控制，空格行动"
-            data-scene={scene}
-            data-speed-factor={physics.speedFactor}
-            data-world-x={world.x}
-            data-world-vx={world.vx}
-            data-world-strokes={world.strokes}
-            data-option-count={question.options.length}
-            data-world-distance={world.distance}
-            data-world-hit={world.hit ?? ''}
-            data-choice-at={pattern.choiceAt}
-            data-pattern-id={pattern.id}
-            data-world-jump={world.jump}
-            data-motor-misses={world.misses}
-          >
-            <SceneWorld
-              scene={scene}
-              world={world}
-              options={question.options}
-              config={physics}
-              theme={run.theme}
-              scenery={run.level.number}
-              routeOffset={run.level.chapters
-                .flatMap((c) => c.segments)
-                .slice(0, props.index)
-                .reduce((sum, s) => sum + run.patterns[s.patternId]!.length, 0)}
-              highlight={answer?.correctOptionId ?? hint?.answer.optionId}
-            />
-            {paused && (
-              <div className="scene-curtain">
-                <strong>先停一停</strong>
-                <button onClick={() => setPaused(false)}>▶ 继续游戏</button>
-              </div>
-            )}
-          </div>
+          <LiveScene
+            frames={frames}
+            stageRef={stageRef}
+            scene={scene}
+            physics={physics}
+            run={run}
+            question={question}
+            highlight={answer?.correctOptionId ?? hint?.answer.optionId}
+            paused={paused}
+            onResume={() => setPaused(false)}
+          />
           <div className="scene-controls" role="group" aria-label="场景动作">
             {controls.map((label, i) => (
               <button
                 key={i}
-                disabled={stopped || world.hit !== null}
+                disabled={stopped || hit !== null}
                 className={i === 1 ? 'scene-action' : ''}
                 aria-label={label}
                 {...pointer(
@@ -506,11 +544,6 @@ export function SceneGame(props: Props) {
             ))}
           </div>
           <div className="scene-tools">
-            {!props.onPause && (
-              <button className="quiet" onClick={togglePause}>
-                {paused ? '▶ 继续' : 'Ⅱ 暂停'}
-              </button>
-            )}
             <button
               className="quiet"
               aria-pressed={assist}
@@ -518,135 +551,49 @@ export function SceneGame(props: Props) {
             >
               🐢 辅助慢动作{assist ? '：开' : '：关'}
             </button>
-            <button
-              className="quiet"
-              aria-pressed={autoContinue}
-              onClick={() => changeDisplay({ autoContinue: !autoContinue })}
-            >
-              连续旅程：{autoContinue ? '开' : '关'}
-            </button>
             {scene === 'drum' && (
               <button className="quiet" aria-pressed={sfx} onClick={() => setSfx(!sfx)}>
                 鼓声{sfx ? '：开' : '：关'}
               </button>
             )}
           </div>
-          <details className="scene-instructions">
-            <summary>操作说明与键盘</summary>
-            <p className="scene-instruction">
-              {game.controls} 方向键 / A、D，空格 / W；P 暂停。
-              <br />
-              本段沿途有{pattern.obstacles.length}处障碍，{pattern.pickups.length}份补给
-              {scene === 'drum' ? `，${pattern.beats.length}个热身鼓点` : ''}
-              ；前方还有新的拼音任务。
-            </p>
-          </details>
-          <p className="scene-motor-note" role="status">
-            {scene === 'runner' && physics.assist && world.distance >= pattern.choiceAt - 65
-              ? '选好拼音跑道，再按跳跃穿门。'
-              : world.misses > 0
-                ? '刚才没有碰到目标，继续试试，不算拼音答错。'
-                : level === 'gentle' || assist
-                  ? '启蒙与辅助模式会等你准备好，随时可以暂停。'
-                  : '方向键控制，空格行动；想慢一点可打开辅助。'}
-          </p>
         </section>
         <aside className="scene-mission" aria-label="本关任务">
-          <span className="eyebrow">听清楚，再出发</span>
           <h1>{cue?.text ?? question.prompt}</h1>
           {cue?.visualCue && <div className="scene-cue">{cue.visualCue}</div>}
-          <div className="scene-voices">
-            <details className="scene-more-voices">
-              <summary>故事与说明</summary>
-              <VoiceButton id={run.level.voiceId} voice={voice} label="听本关故事" />
-              <VoiceButton id={`prompt-${question.id}`} voice={voice} label="听题目说明" />
-            </details>
-          </div>
-          <p role="status" className="scene-audio-status">
-            {locked
-              ? '先听完拼音声音，再操作。'
-              : voice.playingId
-                ? '正在听声音，场景等一等。'
-                : paused
-                  ? '游戏已暂停。'
-                  : '可以出发啦！'}
-          </p>
-          {done ? (
-            <button className="scene-next" disabled={busy || sending} onClick={props.onNext}>
-              {props.index + 1 === props.total ? '完成关卡 →' : '继续航程 →'}
+          <div className="scene-help">
+            <button
+              className="quiet"
+              disabled={busy || sending || hit !== null}
+              onClick={props.onHint}
+            >
+              听提示
             </button>
-          ) : (
-            <div className="scene-help">
-              <button
-                className="quiet"
-                disabled={busy || sending || world.hit !== null}
-                onClick={props.onHint}
-              >
-                听提示
-              </button>
+            {voice.failureId && locked && (
               <button className="quiet" disabled={busy || sending} onClick={props.onSkip}>
                 先跳过这题
               </button>
-            </div>
-          )}
-          <div
-            className="scene-response"
-            role="group"
-            aria-label="本关反馈"
-            tabIndex={
-              world.hit !== null || answer || hint || voice.failureId || props.error ? 0 : undefined
-            }
-          >
-            <VoiceFailure voice={voice} />
-            {world.hit !== null && !answer && (
-              <div className="scene-arrival" role="status">
-                <strong>已抵达 {hitOption?.label}</strong>
-                <p>{busy || sending ? '正在保存这次选择…' : '保存结果待确认，请重试。'}</p>
-                {!busy && !sending && (
-                  <button
-                    onClick={() => {
-                      if (hitOption) {
-                        setSending(true);
-                        void props.onAnswer(hitOption.id).finally(() => setSending(false));
-                      }
-                    }}
-                  >
-                    重试保存这次选择
-                  </button>
-                )}
-              </div>
             )}
-            {answer && (
-              <div className={`feedback ${done ? 'good' : 'try-again'}`} role="status">
-                <strong>
-                  {answer.correct
-                    ? '送达成功，拼音答对啦！'
-                    : corrected
-                      ? '找到正确目标啦！'
-                      : '这个拼音再听一听，亮起的是正确目标。'}
-                </strong>
-                <p>
-                  {answer.clockPending
-                    ? '记录待校时，不计入掌握度。'
-                    : '只保留首次作答，场景练习不会覆盖首次结果。'}
-                </p>
-                {answer.explanationAudioId && (
-                  <VoiceButton id={answer.explanationAudioId} voice={voice} label="听讲解" />
-                )}
-                {!done && (
-                  <button disabled={busy || sending} onClick={reset}>
-                    ↻ 再走一次这段场景
-                  </button>
-                )}
-              </div>
+          </div>
+          <div className="scene-response" aria-label="本关反馈">
+            <VoiceFailure voice={voice} />
+            {hit !== null && !answer && !busy && !sending && props.error && (
+              <button
+                className="quiet"
+                onClick={() => hitOption && void props.onAnswer(hitOption.id)}
+              >
+                重试保存这次选择
+              </button>
+            )}
+            {answer && !done && (
+              <p className="scene-hint" role="status">
+                再试一次，亮起的是正确目标。
+              </p>
             )}
             {hint && !answer && (
               <p className="scene-hint" role="status">
                 {hint.explanation}
               </p>
-            )}
-            {done && autoContinue && (
-              <p className="scene-auto-note">这一站已保存，听完反馈继续旅程。按 P 可停留。</p>
             )}
             <Notice
               error={props.error}
@@ -655,18 +602,79 @@ export function SceneGame(props: Props) {
               }}
             />
           </div>
-          <div className="scene-route" aria-label="本关探索进度">
-            {Array.from({ length: props.total }, (_, i) => (
-              <span
-                key={i}
-                className={i < props.index ? 'reached' : i === props.index ? 'current' : ''}
-              >
-                {i < props.index ? '✓' : i + 1}
-              </span>
-            ))}
-          </div>
         </aside>
       </div>
     </main>
+  );
+}
+
+type FrameSource = {
+  read: () => { world: World; backdrop: number };
+  subscribe: (listener: () => void) => () => void;
+};
+
+function LiveScene({
+  frames,
+  stageRef,
+  scene,
+  physics,
+  run,
+  question,
+  highlight,
+  paused,
+  onResume,
+}: {
+  frames: FrameSource;
+  stageRef: React.Ref<HTMLDivElement>;
+  scene: Scene;
+  physics: EngineConfig;
+  run: GameRun;
+  question: Exercise;
+  highlight?: string;
+  paused: boolean;
+  onResume: () => void;
+}) {
+  const { world, backdrop } = useSyncExternalStore(frames.subscribe, frames.read);
+  return (
+    <div
+      ref={stageRef}
+      className="scene-stage"
+      tabIndex={0}
+      role="group"
+      aria-label="游戏操作区：方向键控制，空格行动"
+      data-scene={scene}
+      data-task-id={question.id}
+      data-speed-factor={physics.speedFactor}
+      data-world-x={world.x}
+      data-world-vx={world.vx}
+      data-world-strokes={world.strokes}
+      data-option-count={question.options.length}
+      data-world-distance={world.distance}
+      data-world-hit={world.hit ?? ''}
+      data-choice-at={physics.pattern.choiceAt}
+      data-pattern-id={physics.pattern.id}
+      data-world-jump={world.jump}
+      data-motor-misses={world.misses}
+    >
+      <SceneWorld
+        scene={scene}
+        world={world}
+        options={question.options}
+        config={physics}
+        theme={run.theme}
+        scenery={run.level.number}
+        routeOffset={backdrop}
+        highlight={highlight}
+      />
+      {world.misses > 0 && world.hit === null && (
+        <p className="scene-motor-note">刚才没有碰到目标，继续试试。</p>
+      )}
+      {paused && (
+        <div className="scene-curtain">
+          <strong>先停一停</strong>
+          <button onClick={onResume}>▶ 继续游戏</button>
+        </div>
+      )}
+    </div>
   );
 }

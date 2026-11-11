@@ -254,7 +254,7 @@
 }
 .daily-target rt {
   display: block;
-  font-family: system-ui, sans-serif;
+  font-family: var(--teaching-font);
   font-size: 0.36em;
   font-weight: 400;
   line-height: 1.6;
@@ -263,7 +263,7 @@
 .daily-list .daily-nav-hanzi {
   display: block;
   margin-top: 0.3rem;
-  font-family: system-ui, sans-serif;
+  font-family: var(--teaching-font);
   font-weight: 400;
   font-size: 0.85rem;
   line-height: 1.6;

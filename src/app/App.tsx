@@ -376,8 +376,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     if (blendPreview) blendConfirm.current?.focus();
   }, [blendPreview, task?.instanceId]);
   useEffect(() => {
-    if (task?.instanceId) window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [task?.instanceId]);
+    if (task?.instanceId && !active?.gameId) window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [task?.instanceId, active?.gameId]);
   const corrected = Boolean(task && correctedInstance === task.instanceId);
   const questionVoice = question ? narration.exercises[question.id] : undefined;
   const standardHeard = !question?.audioRef || voice.completedIds.has(question.audioRef);
@@ -415,7 +415,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             : question && answer
               ? answer.correct || corrected
                 ? active?.gameId
-                  ? 'ui-game_checkpoint'
+                  ? null
                   : 'ui-correct'
                 : (answer.explanationAudioId ?? 'ui-incorrect')
               : question && hint
@@ -440,6 +440,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   }, [
     autoVoiceId,
     autoStandardId,
+    task?.instanceId,
     active?.gameId,
     playSequence,
     playVoice,
@@ -543,7 +544,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       clearPendingAnswer(task.instanceId);
       setBlendDraft(null);
       setAnswer({ ...result, selectedOptionId: pending.answerOptionId });
-      await refreshProgressOnly();
+      if (!active?.gameId) await refreshProgressOnly();
     });
   }
 
@@ -663,7 +664,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   if (active?.gameId && game && question && task)
     return (
       <SceneGame
-        key={task.instanceId}
+        key={active.id}
+        taskId={task.instanceId}
         gameId={game.id}
         settings={active.gameSettings}
         run={active.gameRun}
@@ -709,15 +711,17 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         }}
         onExit={() => void act(exitGame)}
         onPause={isIOSApp() ? () => gameClock.pause('GAME_PAUSED') : undefined}
-        onNext={() =>
-          void act(async () => {
-            stopVoice();
-            setSession((await api('/sessions/current')) as Session);
-            setAnswer(null);
-            setHint(null);
-            setBlendDraft(null);
-          })
-        }
+        onNext={() => {
+          if (!answer) return;
+          setSession((current) =>
+            current?.id === active.id
+              ? { ...current, results: { ...current.results, [task.instanceId]: answer } }
+              : current,
+          );
+          setAnswer(null);
+          setHint(null);
+          if (taskIndex === active.tasks.length - 1) void act(refreshProgressOnly);
+        }}
         onHint={() =>
           void act(async () => {
             const data = await api(`/instances/${task.instanceId}/hint`, { method: 'POST' });

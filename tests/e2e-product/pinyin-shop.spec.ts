@@ -137,7 +137,7 @@ for (const mode of [
     await expect(page.locator('.shop-target')).toHaveCSS('font-family', /Andika Pinyin/);
     await expect(page.getByRole('button', { name: '完成录音', exact: false })).toHaveCount(0);
     if (mode === 'matched' || mode === 'growing') {
-      await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(1, { timeout: 6000 });
+      await expect(page.locator('.shop-basket li')).toHaveCount(1, { timeout: 6000 });
       expect(Date.now() - before).toBeLessThan(5000);
       await expect(page.getByRole('button', { name: '选择薯片', exact: true })).toBeDisabled();
       if (mode === 'growing') {
@@ -153,7 +153,7 @@ for (const mode of [
         mode === 'retry' ? '没有匹配' : mode === 'uncertain' ? '等待结束' : '暂不可用',
         { timeout: 6500 },
       );
-      const basket = page.getByLabel('我的购物车').locator('li');
+      const basket = page.locator('.shop-basket li');
       await expect(basket).toHaveCount(0);
       if (mode === 'retry' || mode === 'uncertain') {
         await expect(page.getByRole('button', { name: '再读一次' })).toBeEnabled();
@@ -178,7 +178,7 @@ test('SHOP-05/06: six automatic additions and exact decorative checkout total', 
   const goods = page.locator('.shop-product');
   for (let i = 0; i < 6; i++) {
     await goods.nth(i).click();
-    await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(i + 1, { timeout: 6000 });
+    await expect(page.locator('.shop-basket li')).toHaveCount(i + 1, { timeout: 6000 });
   }
   await expect(goods.nth(6)).toBeDisabled();
   await expect(page.locator('.shop-total strong')).toHaveText('¥30.00');
@@ -204,18 +204,18 @@ test('SHOP-05: switching goods/shelves and pause invalidate a slow response; fiv
   await expect(page.locator('.shop-target')).toHaveText('o');
   await page.getByLabel('切换货架').getByRole('button').nth(1).click();
   await page.waitForTimeout(3000);
-  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+  await expect(page.locator('.shop-basket li')).toHaveCount(0);
   await page.getByRole('button', { name: '选择牛奶', exact: true }).click();
   await page.getByRole('button', { name: '暂停', exact: false }).click();
   await expect(page.getByLabel('游戏已暂停')).toBeVisible();
   await page.waitForTimeout(3000);
   await page.getByRole('button', { name: '继续游戏', exact: true }).click();
-  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+  await expect(page.locator('.shop-basket li')).toHaveCount(0);
   await page.goto(`${devUrl}tests/support/shop-harness.html?delay=9000`);
   await page.getByRole('button', { name: '选择薯片', exact: true }).click();
   await expect(page.locator('.shop-feedback')).toContainText('等待结束', { timeout: 6500 });
   await page.waitForTimeout(4500);
-  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+  await expect(page.locator('.shop-basket li')).toHaveCount(0);
 });
 
 test('SHOP-05/06: microphone denial recovers and global feedback never speaks while recording', async ({
@@ -301,7 +301,7 @@ test('SHOP-17: listening to the correct sound cancels active capture on a narrow
     )
     .toBe(true);
   await page.waitForTimeout(5500);
-  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+  await expect(page.locator('.shop-basket li')).toHaveCount(0);
 });
 
 test('SHOP-22: short sentences, optional Chinese text and stable checkout without recognition', async ({
@@ -316,17 +316,30 @@ test('SHOP-22: short sentences, optional Chinese text and stable checkout withou
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByRole('button', { name: '进入拼音小卖部' }).click();
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
-  await page.evaluate(() => document.fonts.ready);
-  const counterGeometry = () =>
-    page.locator('.shop-challenge, .shop-basket, .shop-checkout').evaluateAll((elements) =>
-      elements.map((element) => {
-        const rect = element.getBoundingClientRect();
-        return [Math.round(rect.top + scrollY), Math.round(rect.height)];
+  await expect
+    .poll(() =>
+      page.evaluate(async () => {
+        const fonts = await document.fonts.load('16px "LXGW WenKai GB Lite"', '拼音小卖部');
+        return fonts.some((font) => font.status === 'loaded');
       }),
-    );
-  const initial = await counterGeometry();
+    )
+    .toBe(true);
+  const noScroll = async () => {
+    const checkout = page.getByRole('button', { name: '结算购物车' });
+    await expect(checkout).toBeVisible();
+    await expect
+      .poll(() =>
+        page.evaluate(() => ({
+          vertical: document.documentElement.scrollHeight - innerHeight,
+          horizontal: document.documentElement.scrollWidth - innerWidth,
+        })),
+      )
+      .toEqual({ vertical: 0, horizontal: 0 });
+    await expect(checkout).toBeInViewport({ ratio: 1 });
+  };
+  await noScroll();
   await page.getByRole('button', { name: '选择薯片', exact: true }).click();
-  expect(await counterGeometry()).toEqual(initial);
+  await noScroll();
   const sound = page.getByRole('button', { name: '听正确读音', exact: true });
   await expect(sound).toBeEnabled();
   const sentenceMode = page.getByRole('button', { name: '句子拼读', exact: true });
@@ -336,10 +349,10 @@ test('SHOP-22: short sentences, optional Chinese text and stable checkout withou
   const hanzi = page.getByText('爸爸喝茶。', { exact: true });
   await expect(pinyin).toBeVisible();
   await expect(hanzi).toBeVisible();
-  expect(await counterGeometry()).toEqual(initial);
+  await noScroll();
   await page.getByRole('button', { name: '隐藏汉字', exact: true }).click();
   await expect(hanzi).toHaveCount(0);
-  expect(await counterGeometry()).toEqual(initial);
+  await noScroll();
   await expect(pinyin).toBeVisible();
   const audio = page.waitForResponse(
     (response) => response.url().includes('/voice/ui-shop-sentence-tea') && response.ok(),
@@ -350,28 +363,41 @@ test('SHOP-22: short sentences, optional Chinese text and stable checkout withou
   await expect(sound).toHaveAttribute('aria-pressed', 'false');
   await page.getByRole('button', { name: '显示汉字', exact: true }).click();
   await expect(hanzi).toBeVisible();
-  const basket = page.getByLabel('我的购物车').locator('li');
+  const basket = page.locator('.shop-basket li');
   await expect(basket).toHaveCount(0);
   await page.getByRole('button', { name: '读完了，加入购物车' }).click();
   await expect(basket).toHaveText(/薯片/);
-  expect(await counterGeometry()).toEqual(initial);
+  await noScroll();
   await expect(sound).toBeEnabled();
   await page.getByRole('button', { name: '音节拼读', exact: true }).click();
   await expect(basket).toHaveCount(1);
+  await page.getByRole('button', { name: '继续挑商品' }).click();
   await page.locator('.shop-product').nth(1).click();
   await expect(page.locator('.shop-target')).toHaveText('o');
   await expect(sound).toBeEnabled();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-  for (const width of [1280, 320, 390]) {
-    await page.setViewportSize({ width, height: 900 });
-    if (width === 390) {
-      await page.evaluate(() => document.documentElement.style.setProperty('font-size', '200%'));
+  await page.getByRole('button', { name: '继续挑商品' }).click();
+  for (const [width, height] of [
+    [1280, 720],
+    [390, 844],
+    [320, 568],
+    [844, 390],
+  ] as const) {
+    await page.setViewportSize({ width, height });
+    await noScroll();
+    if (height < 590) {
+      await page.getByRole('button', { name: '后一页' }).click();
+      await expect(page.locator('[data-shelf-page="1"]').last()).toBeInViewport({ ratio: 0.98 });
+      await noScroll();
+      await page.getByRole('button', { name: '前一页' }).click();
     }
-    await page.getByLabel('切换货架').getByRole('button').first().click();
-    const unselected = await counterGeometry();
-    await page.locator('.shop-product').nth(1).click();
-    expect(await counterGeometry()).toEqual(unselected);
   }
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.getByRole('button', { name: '购物车 1 / 6' }).click();
+  await expect(page.getByRole('dialog', { name: '我的购物车' })).toBeInViewport({ ratio: 1 });
+  await expect(basket).toHaveText(/薯片/);
+  await page.getByRole('button', { name: '确认结算' }).click();
+  await expect(page.getByText('结算总金额')).toBeVisible();
 });
 
 test('SHOP-10: manual confirmation requires an explicit action for each item', async ({
@@ -391,9 +417,9 @@ test('SHOP-10: manual confirmation requires an explicit action for each item', a
   const goods = page.locator('.shop-product');
   for (let i = 0; i < 6; i++) {
     await goods.nth(i).click();
-    await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(i);
+    await expect(page.locator('.shop-basket li')).toHaveCount(i);
     await page.getByRole('button', { name: '读完了，加入购物车' }).click();
-    await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(i + 1);
+    await expect(page.locator('.shop-basket li')).toHaveCount(i + 1);
     await expect(page.locator('.shop-feedback')).toContainText('已确认读完');
   }
   await expect(goods.nth(6)).toBeDisabled();
@@ -419,9 +445,9 @@ test('SHOP-10: audible manual instructions and explicit confirmation', async ({ 
     (response) => response.url().includes('/voice/ui-shop_manual_added') && response.ok(),
   );
   await page.getByRole('button', { name: '选择薯片', exact: true }).click();
-  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(0);
+  await expect(page.locator('.shop-basket li')).toHaveCount(0);
   await page.getByRole('button', { name: '读完了，加入购物车' }).click();
-  await expect(page.getByLabel('我的购物车').locator('li')).toHaveCount(1);
+  await expect(page.locator('.shop-basket li')).toHaveCount(1);
   await feedback;
 });
 
@@ -471,7 +497,7 @@ for (const mode of ['syllable', 'sentence'] as const) {
     await expect(page.getByText('本地语音识别', { exact: true })).toBeVisible();
     await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
     const choose = page.getByRole('button', { name: '选择薯片' });
-    const basket = page.getByLabel('我的购物车').locator('li');
+    const basket = page.locator('.shop-basket li');
     if (mode === 'sentence') {
       await page.getByRole('button', { name: '句子拼读', exact: true }).click();
       await page.getByRole('button', { name: '改用人工确认', exact: true }).click();

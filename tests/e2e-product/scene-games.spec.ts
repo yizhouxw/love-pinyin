@@ -1,4 +1,4 @@
-import { documentTop, openGameSettings } from '../support/interaction';
+import { openGameSettings } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { playScene } from '../support/scene-actions';
@@ -36,10 +36,12 @@ for (const game of catalog.games) {
         (t: { exercise: { lessonId: string } }) => t.exercise.lessonId === 'lesson-01',
       ),
     ).toBe(true);
+    await page.getByRole('button', { name: '玩法与故事', exact: true }).click();
     await page.getByRole('button', { name: '听玩法', exact: true }).click();
     await expect
       .poll(() => voices.some((url) => url.endsWith(`/voice/${game.voiceId}`)))
       .toBe(true);
+    await page.getByRole('dialog').getByRole('button', { name: '关闭', exact: true }).click();
     await page.getByRole('button', { name: 'Ⅱ 暂停', exact: true }).click();
     const stage = page.getByRole('group', { name: '游戏操作区：方向键控制，空格行动' });
     const position = await stage.getAttribute('data-world-distance');
@@ -48,15 +50,31 @@ for (const game of catalog.games) {
     await page.getByRole('button', { name: '▶ 继续游戏', exact: true }).click();
     await expect(page.locator('.game-option')).toHaveCount(0);
     const q = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;
-    const controlsTop = await documentTop(page.locator('.scene-help'));
+    const originalStage = await stage.elementHandle();
     await playScene(page, q.answer.optionId!);
-    await expect(page.locator('.feedback')).toContainText('拼音答对');
-    expect(await documentTop(page.locator('.scene-next'))).toBe(controlsTop);
+    await expect(page.locator('.scene-nav')).toContainText('任务 2 / 6');
+    expect(
+      await originalStage!.evaluate(
+        (element) => element === document.querySelector('.scene-stage'),
+      ),
+    ).toBe(true);
+    await expect(page.getByRole('button', { name: '继续航程 →' })).toHaveCount(0);
     const backup = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
     expect(backup.attempts).toHaveLength(1);
     expect(backup.attempts[0].first_try_correct).toBe(1);
-    for (const width of [1280, 390, 320]) {
-      await page.setViewportSize({ width, height: 1000 });
+    for (const [width, height] of [
+      [1280, 720],
+      [390, 844],
+      [320, 568],
+      [844, 390],
+    ] as const) {
+      await page.setViewportSize({ width, height });
+      await expect(page.getByRole('group', { name: '场景动作' })).toBeInViewport({ ratio: 0.98 });
+      expect(
+        await page
+          .locator('.scene-response')
+          .evaluate((element) => getComputedStyle(element).overflowY),
+      ).toBe('visible');
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
         true,
       );
@@ -65,7 +83,6 @@ for (const game of catalog.games) {
         fullPage: true,
       });
     }
-    await page.getByRole('button', { name: '继续航程 →', exact: true }).click();
     await page.reload();
     const restored = await (await page.request.get(`${appUrl}/api/v1/sessions/current`)).json();
     expect(restored.gameSettings).toEqual(session.gameSettings);
@@ -75,7 +92,7 @@ for (const game of catalog.games) {
     await expect(page.locator('.scene-nav')).toContainText('任务 2 / 6');
     const second = curriculum.exercises.find((q) => q.id === session.tasks[1].exercise.id)!;
     await playScene(page, second.answer.optionId!);
-    await expect(page.locator('.feedback')).toContainText('拼音答对');
+    await expect(page.locator('.scene-nav')).toContainText('任务 3 / 6');
     const more = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
     expect(more.attempts).toHaveLength(2);
 
@@ -98,7 +115,8 @@ test('SCENE-05: an unconfirmed collision stays frozen and reload replays only th
   );
   await page.getByRole('button', { name: '开始节奏鼓岛' }).click();
   const session = await (await created).json();
-  const original = session.tasks[0].exercise.options[0].id;
+  const question = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;
+  const original = question.answer.optionId!;
   await page.route('**/instances/*/answer', (route) => route.abort('failed'));
   await playScene(page, original);
   await expect(page.getByRole('button', { name: '重试保存这次选择' })).toBeVisible();
@@ -109,6 +127,7 @@ test('SCENE-05: an unconfirmed collision stays frozen and reload replays only th
   expect(data.attempts).toHaveLength(0);
   await page.unroute('**/instances/*/answer');
   await page.reload();
+  await page.getByRole('button', { name: '听拼音', exact: true }).click();
   await expect(page.locator('.scene-nav')).toContainText('任务 2 /');
   data = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
   expect(data.attempts).toHaveLength(1);

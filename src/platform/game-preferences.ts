@@ -44,17 +44,16 @@ export function saveScenePreference(id: string, preference: ScenePreference) {
   }
 }
 
-export type SceneDisplay = { enlarged: boolean; assist: boolean; autoContinue: boolean };
+export type SceneDisplay = { enlarged: boolean; assist: boolean };
 export function readSceneDisplay(id: string, reducedMotion: boolean): SceneDisplay {
   try {
     const value = JSON.parse(sessionStorage.getItem(`love-pinyin.scene-view.${id}`) ?? '{}');
     return {
       enlarged: value.enlarged === true,
       assist: typeof value.assist === 'boolean' ? value.assist : reducedMotion,
-      autoContinue: value.autoContinue !== false,
     };
   } catch {
-    return { enlarged: false, assist: reducedMotion, autoContinue: true };
+    return { enlarged: false, assist: reducedMotion };
   }
 }
 export function saveSceneDisplay(id: string, value: SceneDisplay) {

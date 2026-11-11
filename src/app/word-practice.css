@@ -300,8 +300,12 @@
 }
 .word-dictation-controls {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
+}
+.word-dictation-controls button {
+  min-height: 52px;
+  padding-inline: 4px;
 }
 .word-practice .word-reveal {
   background: #e4f2d6;

@@ -65,17 +65,17 @@ test('GAME-01/03: spoken game, first-answer evidence, corrections, skips and fro
   const wrong = question.options.find((o) => o.id !== question.answer.optionId)!;
   await expect(page.locator('.scene-nav')).toContainText('任务 1 /');
   await playScene(page, wrong.id);
-  await expect(page.locator('.feedback')).toContainText('再听一听');
-  await page.getByRole('button', { name: '再走一次这段场景' }).click();
+  await expect(page.getByLabel('本关反馈')).toContainText('亮起的是正确目标');
   await playScene(page, question.answer.optionId!);
-  await expect(page.locator('.feedback')).toContainText('找到正确目标');
-  await page.getByRole('button', { name: '继续航程 →', exact: true }).click();
+  await expect(page.locator('.scene-nav')).toContainText('任务 2 /');
   await page.reload();
   await expect(page.locator('.scene-nav')).toContainText(`任务 2 / ${session.tasks.length}`);
   const restored = await (await page.request.get(`${appUrl}/api/v1/sessions/current`)).json();
   expect(restored.tasks).toEqual(session.tasks);
   expect(restored.gameId).toBe('shape');
+  await page.route('**/api/v1/audio/*', (route) => route.abort('failed'));
   for (let i = 1; i < session.tasks.length; i++) {
+    await page.getByRole('button', { name: '听拼音', exact: true }).click();
     await page.getByRole('button', { name: '先跳过这题' }).click();
   }
   await expect(page.getByLabel('本次练习小结')).toContainText('首次待巩固：1 题');

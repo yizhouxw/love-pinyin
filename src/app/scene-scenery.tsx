@@ -34,7 +34,8 @@ export function SceneScenery({
   count: number;
   scenery: number;
 }) {
-  const offset = (world.distance + routeOffset) % 70;
+  const distance = world.distance + routeOffset;
+  const offset = distance % 70;
   return (
     <g aria-hidden="true">
       <defs>
@@ -63,7 +64,7 @@ export function SceneScenery({
           {[140, 395, 710].map((x, i) => (
             <g
               key={x}
-              transform={`translate(${x - ((world.distance * 0.025) % 100)} ${43 + i * 19})`}
+              transform={`translate(${x - ((distance * 0.025) % 100)} ${43 + i * 19})`}
               fill="#fffdf2"
               opacity=".65"
             >
@@ -107,7 +108,7 @@ export function SceneScenery({
           {[0, 1, 2, 3].map((i) => (
             <g
               key={i}
-              transform={`translate(${i % 2 ? 767 : 29} ${170 + ((i * 115 + world.distance * 0.3) % 300)})`}
+              transform={`translate(${i % 2 ? 767 : 29} ${170 + ((i * 115 + distance * 0.3) % 300)})`}
             >
               <Tree x={0} y={0} scale={1.1} color={i % 2 ? '#316c56' : '#478666'} />
               <path d="M-16 55v16M-28 60h24" stroke="#f5d9ae" strokeWidth="7" />
@@ -144,7 +145,7 @@ export function SceneScenery({
           {Array.from({ length: 12 }, (_, i) => (
             <path
               key={i}
-              d={`M${135 + (i % 4) * 150} ${155 + ((i * 29 + world.distance * 0.4) % 280)}q20-7 40 0t40 0`}
+              d={`M${135 + (i % 4) * 150} ${155 + ((i * 29 + distance * 0.4) % 280)}q20-7 40 0t40 0`}
               stroke="#d8ffff"
               strokeWidth={i % 2 ? 2 : 3}
               opacity=".4"
@@ -157,7 +158,7 @@ export function SceneScenery({
           {[0, 1, 2, 3].map((i) => (
             <g
               key={i}
-              transform={`translate(${i % 2 ? 700 : 90} ${245 + ((i * 57 + world.distance * 0.2) % 150)})`}
+              transform={`translate(${i % 2 ? 700 : 90} ${245 + ((i * 57 + distance * 0.2) % 150)})`}
             >
               <ellipse rx="26" ry="9" fill="#378f72" />
               <path d="M-16 0Q-20-22 0-9Q20-25 16 0Z" fill="#f2b7bb" />
@@ -238,7 +239,7 @@ export function SceneScenery({
             <circle
               key={i}
               cx={(i * 137 + scenery * 19) % 800}
-              cy={(i * 79 + world.distance * ((i % 3) + 1) * 0.035) % 440}
+              cy={(i * 79 + distance * ((i % 3) + 1) * 0.035) % 440}
               r={i % 7 ? 1.2 : 2.5}
               fill={i % 2 ? '#fff0ca' : '#ced7ff'}
               opacity={0.35 + (i % 4) * 0.15}

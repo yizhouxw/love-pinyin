@@ -1,234 +1,206 @@
 .scene-page {
-  max-width: 1240px;
-  margin: auto;
-  padding: 22px;
+  width: min(100% - 12px, 1240px);
+  padding: 6px;
   color: #28473f;
 }
-.scene-nav {
+.scene-page.scene-enlarged {
+  width: min(100% - 12px, 1600px);
+}
+.scene-nav,
+.scene-view-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 6px;
+  margin-bottom: 6px;
   flex-wrap: wrap;
 }
+.scene-nav {
+  justify-content: space-between;
+}
 .scene-nav strong {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
 }
 .scene-nav > span {
   color: #62766b;
+  font-size: 0.85rem;
+}
+.scene-view-actions {
+  justify-content: flex-end;
+}
+.scene-nav button,
+.scene-view-actions button,
+.scene-tools button,
+.scene-quick-audio button {
+  min-height: 44px;
+  padding: 4px 9px;
+}
+.scene-view-actions [aria-pressed='true'],
+.scene-tools [aria-pressed='true'] {
+  background: #deead9;
 }
 .scene-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 22px;
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 23%);
+  gap: 8px;
   align-items: start;
 }
-.scene-playfield {
-  min-width: 0;
-  border: 1px solid #dce7d9;
-  border-radius: 26px;
-  background: #fffdf4;
-  box-shadow: 0 8px 24px #214c3510;
-  padding: 14px;
+.scene-enlarged .scene-layout {
+  grid-template-columns: minmax(0, 1fr);
 }
-.scene-topline {
+.scene-playfield,
+.scene-mission {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid #ccd9c3;
+  border-radius: 18px;
+  background: #fffdf6;
+  box-shadow: 0 8px 24px #214c3510;
+}
+.scene-playfield {
+  background: linear-gradient(145deg, #fffef9, #eef2e3);
+}
+.scene-voices {
   display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  letter-spacing: 0.03em;
-  padding: 0 8px 12px;
-  color: #63766a;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.scene-quick-audio {
+  align-items: center;
+  margin-bottom: 6px;
+}
+.scene-quick-audio progress {
+  min-width: 36px;
+  flex: 1;
+  accent-color: #4f8267;
 }
 .scene-stage {
   position: relative;
-  outline-offset: 4px;
-  border-radius: 24px;
   overflow: hidden;
+  border-radius: 14px;
+  outline-offset: 3px;
+  touch-action: manipulation;
 }
 .scene-stage:focus-visible {
-  outline: 4px solid #e3ae49;
+  outline: 3px solid #e3ae49;
 }
 .scene-world {
   display: block;
   width: 100%;
   height: auto;
+  max-height: max(125px, calc(100dvh - 265px));
   aspect-ratio: 800/440;
+  background: #ddecd3;
+}
+.scene-enlarged .scene-world {
+  max-height: max(125px, calc(100dvh - 275px));
+}
+.scene-stage svg text {
+  user-select: none;
 }
 .scene-pinyin {
   font-family: var(--pinyin-font);
   font-weight: 700;
 }
+.scene-runner-position {
+  transition: transform 90ms ease-out;
+}
 .scene-controls {
   display: grid;
   grid-template-columns: 1fr 1.3fr 1fr;
-  gap: 10px;
-  margin-top: 14px;
+  gap: 6px;
+  margin-top: 6px;
 }
 .scene-controls button {
-  min-height: 60px;
+  min-height: 48px;
+  padding: 4px;
+  border: 1px solid #d2dfc9;
+  border-radius: 12px;
   background: #e9eedf;
   color: #315d4f;
-  box-shadow: 0 4px 0 #c6d3bd;
-  border: 1px solid #d2dfc9;
-  border-radius: 16px;
-  font-size: 1rem;
-  touch-action: manipulation;
+  box-shadow: 0 3px 0 #c6d3bd;
+  touch-action: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 .scene-controls .scene-action {
   background: #f4bf69;
   color: #684722;
-  box-shadow: 0 4px 0 #d79b49;
   border-color: #e2ae61;
+  box-shadow: 0 3px 0 #d79b49;
 }
 .scene-controls button:active:not(:disabled) {
-  transform: translateY(3px);
+  transform: translateY(2px);
   box-shadow: none;
-}
-.scene-controls button:disabled {
-  opacity: 0.5;
 }
 .scene-tools {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
   flex-wrap: wrap;
-  padding-top: 12px;
+  padding-top: 6px;
 }
 .scene-tools button {
   font-size: 0.85rem;
-  min-height: 44px;
-  padding: 8px;
-}
-.scene-tools [aria-pressed='true'] {
-  background: #e6edcf;
-}
-.scene-instruction {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 12px 8px 6px;
-}
-.scene-motor-note {
-  font-size: 0.8rem;
-  color: #708376;
-  min-height: 2.6em;
-  margin: 5px 8px;
-}
-.scene-mission {
-  border-radius: 24px;
-  background: #fffdf6;
-  border: 1px solid #e0e5d7;
-  padding: 22px;
 }
 .scene-mission h1 {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  margin: 12px 0 16px;
-}
-.scene-voices {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.scene-voices button {
-  font-size: 0.9rem;
-  min-height: 46px;
+  margin: 0 0 6px;
+  font-size: 1rem;
 }
 .scene-cue {
-  text-align: center;
-  font-size: 2rem;
-  border-radius: 16px;
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  border-radius: 12px;
   background: #f3efda;
-  padding: 10px;
-  margin-bottom: 14px;
-}
-.scene-audio-status {
-  font-size: 0.85rem;
-  color: #6f7e72;
+  font-size: 1.1rem;
 }
 .scene-help {
   display: flex;
-  gap: 8px;
-  justify-content: space-between;
+  gap: 4px;
   flex-wrap: wrap;
 }
-.scene-help button {
-  min-height: 48px;
+.scene-response:empty {
+  display: none;
 }
-.scene-next {
-  width: 100%;
-  background: #467b63;
-  margin-top: 18px;
-  min-height: 54px;
+.scene-hint {
+  margin: 4px 0;
+  color: #7e4b24;
+  font-size: 0.9rem;
 }
-.scene-route {
-  display: flex;
-  gap: 7px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 24px;
-}
-.scene-route span {
-  width: 27px;
-  height: 27px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #e9eddf;
-  color: #75856c;
+.scene-motor-note {
+  position: absolute;
+  inset: 0.25rem 0 auto;
+  margin: 0;
+  color: #28473f;
   font-size: 0.8rem;
+  text-align: center;
+  pointer-events: none;
+  text-shadow:
+    0 0 4px #fffdf5,
+    0 0 8px #fffdf5;
 }
-.scene-route .current {
-  outline: 2px solid #d1a85c;
-  outline-offset: 3px;
-  background: #f6d99e;
-  color: #6c5025;
-}
-.scene-route .reached {
-  background: #567e66;
-  color: white;
+.scene-space .scene-motor-note {
+  color: #fffdf5;
+  text-shadow:
+    0 0 4px #393e61,
+    0 0 8px #393e61;
 }
 .scene-curtain {
   position: absolute;
   inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 8px;
   background: #243d4388;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
   color: white;
-  backdrop-filter: blur(3px);
 }
-.scene-curtain strong {
-  font-size: 2rem;
-}
-.scene-mission .feedback {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px;
-  border-radius: 16px;
-  margin: 14px 0;
-  font-size: 0.95rem;
-}
-.scene-arrival {
-  padding: 12px;
-  background: #f5eed7;
-  border-radius: 14px;
-}
-.scene-arrival p,
-.scene-mission .feedback p {
-  margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.6;
-}
-.scene-hint {
-  font-size: 0.9rem;
-  line-height: 1.65;
-}
-.scene-space {
-  color: #393e61;
+.scene-curtain button {
+  min-height: 44px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: #315d4f;
+  color: #fff;
 }
 .game-preferences {
   display: grid;
@@ -250,333 +222,6 @@
   padding: 8px;
   background: #fffdf5;
   color: #344e40;
-}
-.scene-stage svg text {
-  user-select: none;
-}
-@media (max-width: 950px) {
-  .scene-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .scene-mission {
-    display: flex;
-    flex-direction: column;
-    padding: 18px;
-  }
-  .scene-mission h1 {
-    font-size: 1.1rem;
-    margin: 8px 0;
-  }
-  .scene-route {
-    margin-top: 16px;
-  }
-  .scene-page {
-    padding: 16px;
-  }
-  .scene-layout {
-    gap: 14px;
-  }
-  .scene-mission .eyebrow {
-    display: none;
-  }
-  .scene-playfield {
-    order: 1;
-  }
-  .scene-mission {
-    order: 0;
-  }
-  .scene-mission .scene-help {
-    margin-top: 8px;
-  }
-  .scene-mission .feedback {
-    margin: 8px 0;
-  }
-  .scene-cue {
-    font-size: 1.4rem;
-  }
-  .scene-voices {
-    gap: 6px;
-  }
-  .scene-voices button {
-    padding: 8px 12px;
-  }
-  .scene-audio-status {
-    margin: 8px 0;
-  }
-  .scene-route {
-    display: none;
-  }
-}
-@media (max-width: 430px) {
-  .scene-page {
-    padding: 10px;
-  }
-  .scene-nav {
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  .scene-nav strong {
-    font-size: 1.05rem;
-  }
-  .scene-nav .quiet {
-    padding: 8px;
-    font-size: 0.82rem;
-    min-height: 44px;
-  }
-  .scene-playfield {
-    padding: 8px;
-    border-radius: 18px;
-  }
-  .scene-controls {
-    gap: 6px;
-  }
-  .scene-controls button {
-    font-size: 0.85rem;
-    padding: 8px;
-    min-height: 55px;
-    border-radius: 12px;
-  }
-  .scene-tools {
-    gap: 3px;
-  }
-  .scene-tools button {
-    font-size: 0.78rem;
-  }
-  .scene-instruction {
-    font-size: 0.85rem;
-  }
-  .scene-mission {
-    padding: 14px;
-  }
-  .scene-voices button {
-    font-size: 0.82rem;
-  }
-  .scene-topline {
-    font-size: 0.78rem;
-  }
-  .scene-motor-note {
-    font-size: 0.75rem;
-  }
-  .scene-mission h1 {
-    font-size: 1rem;
-  }
-}
-
-.scene-next,
-.scene-curtain button,
-.scene-arrival button,
-.scene-mission .feedback > button:not(.voice-button) {
-  border: 0;
-  border-radius: 14px;
-  color: #fff;
-  background: #467b63;
-  padding: 14px 18px;
-  font: inherit;
-  cursor: pointer;
-  min-height: 48px;
-}
-.scene-next:focus-visible,
-.scene-controls button:focus-visible {
-  outline: 3px solid #d6a143;
-  outline-offset: 3px;
-}
-@media (max-width: 950px) {
-  .scene-layout {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-  .scene-mission {
-    display: contents;
-  }
-  .scene-mission > * {
-    order: 3;
-  }
-  .scene-mission h1 {
-    order: 0;
-    margin: 0 5px;
-  }
-  .scene-mission .scene-voices {
-    order: 1;
-  }
-  .scene-mission .scene-cue {
-    order: 1;
-    padding: 6px;
-    margin: 0;
-  }
-  .scene-mission .scene-audio-status {
-    order: 1;
-    margin: 0 5px;
-    font-size: 0.8rem;
-  }
-  .scene-playfield {
-    order: 2;
-  }
-  .scene-mission .feedback {
-    margin: 0;
-  }
-  .scene-mission .scene-route {
-    display: none;
-  }
-  .scene-mission .scene-help {
-    margin: 0;
-  }
-  .scene-mission .scene-next {
-    margin: 0;
-  }
-}
-.level-journey {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 18px;
-  color: #768575;
-  font-size: 0.88rem;
-}
-.level-journey span {
-  padding: 9px 15px;
-  border-radius: 30px;
-  background: #edf0e3;
-}
-.level-journey .active {
-  background: #f3d39b;
-  color: #654820;
-  font-weight: 700;
-  box-shadow: 0 0 0 2px #cf9e56;
-}
-.level-journey .finished {
-  background: #d9e7d1;
-  color: #3f684a;
-}
-.level-journey progress {
-  flex: 1;
-  min-width: 80px;
-  max-width: 180px;
-  height: 10px;
-  accent-color: #4f8267;
-}
-.scene-auto-note {
-  font-size: 0.85rem;
-  color: #5d7e62;
-}
-.scene-topline {
-  gap: 8px;
-}
-.scene-stage {
-  touch-action: manipulation;
-}
-.scene-controls button {
-  user-select: none;
-}
-.scene-nav > span {
-  font-size: 0.85rem;
-  max-width: 100%;
-}
-@media (max-width: 650px) {
-  .level-journey {
-    gap: 6px;
-    font-size: 0.75rem;
-  }
-  .level-journey span {
-    padding: 7px 10px;
-  }
-  .level-journey progress {
-    max-width: none;
-  }
-  .scene-nav > span {
-    width: 100%;
-  }
-  .scene-instruction br {
-    display: none;
-  }
-  .scene-stage .scene-pinyin {
-    font-weight: 700;
-  }
-}
-
-/* Inline theatre: the browser chrome and normal document scrolling stay available. */
-.scene-page {
-  transition: max-width 180ms ease;
-}
-.scene-enlarged {
-  max-width: 1600px;
-}
-.scene-enlarged .scene-layout {
-  grid-template-columns: minmax(0, 1fr);
-}
-.scene-enlarged .scene-mission {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 1fr);
-  gap: 8px 24px;
-}
-.scene-enlarged .scene-mission h1 {
-  margin: 0;
-}
-.scene-enlarged .scene-mission .eyebrow,
-.scene-enlarged .scene-mission .scene-route {
-  display: none;
-}
-.scene-view-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin: -4px 0 14px;
-}
-.scene-view-actions button {
-  min-height: 44px;
-  border: 1px solid #c7d7c7;
-  border-radius: 14px;
-}
-.scene-view-actions [aria-pressed='true'] {
-  background: #deead9;
-}
-.scene-playfield {
-  background: linear-gradient(145deg, #fffef9, #eef2e3);
-  box-shadow:
-    0 16px 40px #214c3514,
-    inset 0 1px #fff;
-  border: 1px solid #ccd9c3;
-}
-.scene-stage {
-  box-shadow:
-    inset 0 0 0 1px #264c3b22,
-    0 6px 12px #233a3b18;
-}
-.scene-mission {
-  box-shadow: 0 8px 24px #214c3509;
-}
-.scene-instructions summary,
-.scene-more-voices summary {
-  cursor: pointer;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-  color: #4f6c60;
-}
-.scene-instructions summary::before,
-.scene-more-voices summary::before {
-  content: '+';
-}
-.scene-instructions[open] summary::before,
-.scene-more-voices[open] summary::before {
-  content: '−';
-}
-.scene-instructions {
-  margin: 8px 8px 0;
-}
-.scene-more-voices {
-  width: 100%;
-}
-.scene-more-voices button {
-  margin: 4px 4px 0 0;
-}
-.scene-controls button {
-  touch-action: none;
-  -webkit-touch-callout: none;
 }
 .scene-settings {
   width: min(500px, calc(100% - 32px));
@@ -619,57 +264,69 @@
   background: #467b63;
   color: #fff;
 }
-@media (max-width: 950px) {
-  .scene-enlarged .scene-mission {
-    display: contents;
+
+.scene-settings > .quiet {
+  margin-top: 8px;
+}
+@media (max-width: 850px) {
+  .scene-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scene-world,
+  .scene-enlarged .scene-world {
+    max-height: max(125px, calc(100dvh - 310px));
   }
   .scene-view-actions {
     justify-content: flex-start;
-    margin: 0 0 12px;
   }
 }
-@media (max-width: 430px) {
-  .scene-settings {
-    padding: 20px;
+@media (max-width: 420px) {
+  .scene-nav strong {
+    font-size: 1rem;
   }
-  .scene-topline span:last-child {
-    text-align: right;
+  .scene-nav > span {
+    flex-basis: 100%;
+  }
+  .scene-controls button,
+  .scene-tools button {
+    font-size: 0.83rem;
+  }
+  .scene-settings {
+    padding: 14px;
+  }
+}
+@media (max-height: 470px) and (min-width: 540px) {
+  .scene-layout,
+  .scene-enlarged .scene-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(160px, 30%);
+  }
+  .scene-world,
+  .scene-enlarged .scene-world {
+    max-height: max(110px, calc(100dvh - 225px));
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .scene-page {
+  .scene-runner-position {
     transition: none;
   }
 }
-.scene-quick-audio {
-  align-items: center;
-  margin: 0 4px 12px;
-}
-.scene-quick-audio .voice-button {
-  padding: 10px 16px;
-}
-.scene-mission .scene-voices:has(> details:only-child) {
-  margin: 0;
+[data-reduced-motion='true'] .scene-runner-position {
+  transition: none;
 }
 
-.scene-response {
-  block-size: max(10rem, 6lh);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-gutter: stable;
-}
-.scene-mission .scene-help,
-.scene-mission .scene-next {
-  margin-block: 0;
-  min-block-size: 54px;
-}
-.scene-help {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.scene-audio-status {
-  min-block-size: 2lh;
-}
-.scene-motor-note {
-  min-block-size: 3lh;
+@media (max-height: 470px) and (min-width: 720px) {
+  .scene-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 8px;
+  }
+  .scene-nav {
+    grid-column: 1;
+  }
+  .scene-view-actions {
+    grid-column: 2;
+  }
+  .scene-layout {
+    grid-column: 1 / -1;
+  }
 }

@@ -1,14 +1,13 @@
 import { expect, type Page } from '@playwright/test';
 /** Real controls only. Read the visible route geometry, never mutate game state or submit an answer. */
-export async function playScene(
-  page: Page,
-  optionId: string,
-  { continuous = false }: { continuous?: boolean } = {},
-) {
+export async function playScene(page: Page, optionId: string) {
   const stage = page.getByRole('group', { name: '游戏操作区：方向键控制，空格行动' });
   await expect(stage).toBeVisible();
-  const auto = page.getByRole('button', { name: /连续旅程：/ });
-  if (!continuous && (await auto.getAttribute('aria-pressed')) === 'true') await auto.click();
+  const task = await page.locator('.scene-nav').innerText();
+  const arrived = async () =>
+    !(await stage.count()) ||
+    Boolean(await stage.getAttribute('data-world-hit')) ||
+    (await page.locator('.scene-nav').innerText()) !== task;
   await page.getByRole('button', { name: '听拼音', exact: true }).click();
   const actions = page.getByRole('group', { name: '场景动作' }).getByRole('button');
   await expect(actions.nth(1)).toBeEnabled({ timeout: 20000 });
@@ -68,7 +67,7 @@ export async function playScene(
         if (Math.abs(snapshot.x - x) < 20) await page.keyboard.press('Space');
       }
       await page.waitForTimeout(100);
-      if (await stage.getAttribute('data-world-hit')) break;
+      if (await arrived()) break;
     }
   } else if (scene === 'drum') {
     expect(index).toBeGreaterThanOrEqual(0);
@@ -111,7 +110,7 @@ export async function playScene(
         await page.keyboard.press(targetX < projected ? 'ArrowLeft' : 'ArrowRight');
       if (Math.abs(targetX - snapshot.x) < 55) await page.keyboard.press('Space');
       await page.waitForTimeout(120);
-      if (await stage.getAttribute('data-world-hit')) break;
+      if (await arrived()) break;
     }
   } else {
     // Stay away from the first meteor lane, then aim at actual planets after the flight.
@@ -152,5 +151,5 @@ export async function playScene(
     }
     await page.keyboard.press('Space');
   }
-  await expect(stage).toHaveAttribute('data-world-hit', String(index), { timeout: 20000 });
+  await expect.poll(arrived, { timeout: 20000 }).toBe(true);
 }

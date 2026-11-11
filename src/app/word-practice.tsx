@@ -298,7 +298,7 @@ export function WordPractice({
                     setRevealed(false);
                   }}
                 >
-                  ‹
+                  ‹ 上一词
                 </button>
                 <button className="word-reveal" onClick={() => setRevealed(!revealed)}>
                   {revealed ? '收起答案' : '揭晓答案'}
@@ -312,7 +312,7 @@ export function WordPractice({
                     setRevealed(false);
                   }}
                 >
-                  ›
+                  下一词 ›
                 </button>
               </div>
               {audioStatus}
