@@ -41,7 +41,10 @@ export function clearPendingAnswer(instanceId: string) {
   }
 }
 
-export async function replayPendingAnswer(session: Session | null): Promise<boolean> {
+export async function replayPendingAnswer(
+  session: Session | null,
+  signal?: AbortSignal,
+): Promise<boolean> {
   if (!session) return false;
   for (const task of session.tasks) {
     const pending = readPendingAnswer(task.instanceId);
@@ -52,10 +55,21 @@ export async function replayPendingAnswer(session: Session | null): Promise<bool
     }
     await api(`/instances/${task.instanceId}/answer`, {
       method: 'POST',
+      signal,
       body: JSON.stringify(pending),
     });
     clearPendingAnswer(task.instanceId);
     return true;
   }
   return false;
+}
+
+export function clearPendingLearningAnswers() {
+  try {
+    for (const key of Object.keys(sessionStorage)) {
+      if (key.startsWith('lp.pending-answer.')) sessionStorage.removeItem(key);
+    }
+  } catch {
+    // This storage can be unavailable; the saved archive is authoritative.
+  }
 }

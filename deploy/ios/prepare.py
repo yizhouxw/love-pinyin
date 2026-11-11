@@ -172,6 +172,25 @@ def validate_public_materials(web: Path, catalog: dict, lesson_manifest: dict) -
             raise ValueError(f"Family practice text found in {script.name}")
 
 
+def classroom_contract(curriculum: dict) -> dict:
+    standard = {row["id"] for row in source_audio.catalog()["assets"]}
+    scripts = learning_audio.narration_scripts()
+    return {
+        "version": curriculum["contentVersion"],
+        "lessons": curriculum["lessons"],
+        "knowledgeItems": curriculum["knowledgeItems"],
+        "game": game_resources(),
+        "eligible": [
+            {
+                "exercise": question,
+                "explanation": scripts[f"hint-{question['id']}"],
+            }
+            for question in curriculum["exercises"]
+            if _objective_available(question, standard)
+        ],
+    }
+
+
 def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
     required_standard = {row["id"] for row in source_audio.catalog()["assets"]}
     public_standard = public_standard_catalog(required_standard)
@@ -264,22 +283,8 @@ def prepare(output: Path, trial_aac: bool, public: bool = False) -> None:
     data = output / "Data"
     data.mkdir()
     curriculum = load_curriculum()
-    standard = required_standard
+    classroom = classroom_contract(curriculum)
     scripts = learning_audio.narration_scripts()
-    classroom = {
-        "version": curriculum["contentVersion"],
-        "lessons": curriculum["lessons"],
-        "knowledgeItems": curriculum["knowledgeItems"],
-        "game": game_resources(),
-        "eligible": [
-            {
-                "exercise": question,
-                "explanation": scripts[f"hint-{question['id']}"],
-            }
-            for question in curriculum["exercises"]
-            if _objective_available(question, standard)
-        ],
-    }
     for name, payload in {
         "audio": catalog,
         "web-files": sorted(

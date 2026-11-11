@@ -1,4 +1,5 @@
 import Foundation
+import SQLite3
 
 @main
 enum ClassroomSmoke {
@@ -97,12 +98,106 @@ enum ClassroomSmoke {
         try check(pending["creditedForMastery"] as? Bool == false, "no credit with suspect time")
         time = clock
 
+        let archive = try classroom.exportBackup()
+        let destination = folder.appendingPathComponent("restored.sqlite")
+        let clean = try Classroom(content: content, database: destination, now: { time })
+        let preview = try clean.previewBackup(archive)
+        try check(preview.text.contains("3 条作答"), "backup preview")
+        try clean.restoreBackup(archive, expectedRevision: preview.revision)
+        let reopened = try Classroom(content: content, database: destination, now: { time })
+        let restoredProgress = try json(reopened.request(method: "GET", path: "/profiles/progress", body: [:]))
+        try check(restoredProgress["attemptCount"] as? Int == 3, "backup persisted on new installation")
+        do {
+            try clean.restoreBackup(archive, expectedRevision: preview.revision)
+            throw ClassroomError("test: accepted stale preview")
+        } catch let error as ClassroomError where error.code == "REVISION_CONFLICT" {}
+        var invalid = try json(JSONSerialization.jsonObject(with: archive))
+        invalid["version"] = 999
+        do {
+            let data = try JSONSerialization.data(withJSONObject: invalid)
+            let revision = try clean.previewBackup(archive).revision
+            try clean.restoreBackup(data, expectedRevision: revision)
+            throw ClassroomError("test: accepted future backup version")
+        } catch let error as ClassroomError where error.code == "IOS_BACKUP_VERSION_UNSUPPORTED" {}
+        let unchanged = try json(clean.request(method: "GET", path: "/profiles/progress", body: [:]))
+        try check(unchanged["attemptCount"] as? Int == 3, "invalid backup leaves history unchanged")
+
+        let legacyURL = folder.appendingPathComponent("legacy.sqlite")
+        let document = try json(JSONSerialization.jsonObject(with: archive))
+        let legacyState = try JSONSerialization.data(withJSONObject: json(document["state"]))
+        try sqlite(legacyURL, """
+            CREATE TABLE classroom (id INTEGER PRIMARY KEY CHECK (id=1), state BLOB NOT NULL);
+            PRAGMA user_version=1;
+            INSERT INTO classroom VALUES (1, X'\(legacyState.map { String(format: "%02x", $0) }.joined())');
+            """)
+        for _ in 0..<2 {
+            let migrated = try Classroom(content: content, database: legacyURL, now: { time })
+            let stats = try json(migrated.request(method: "GET", path: "/profiles/progress", body: [:]))
+            try check(stats["attemptCount"] as? Int == 3, "v1 migration retains history after reopen")
+            let saved = try json(migrated.request(method: "GET", path: "/attempts/\(requestId)", body: [:]))
+            try check(saved["attemptId"] as? String == result["attemptId"] as? String, "v1 migration retains receipts")
+        }
+        try sqlite(destination, """
+            CREATE TRIGGER simulate_write_failure BEFORE UPDATE ON classroom
+            BEGIN SELECT RAISE(ABORT, 'write failed'); END;
+            """)
+        do {
+            try clean.restoreBackup(archive, expectedRevision: try clean.previewBackup(archive).revision)
+            throw ClassroomError("test: backup write failure was ignored")
+        } catch let error as ClassroomError where error.code == "IOS_STORAGE_UNAVAILABLE" {}
+        let intact = try Classroom(content: content, database: destination, now: { time })
+        let afterFailure = try json(intact.request(method: "GET", path: "/profiles/progress", body: [:]))
+        try check(afterFailure["attemptCount"] as? Int == 3, "failed replacement rolls back history")
+        if ProcessInfo.processInfo.environment["LP_IOS_BENCH"] == "1" {
+            try benchmark(archive: archive, content: content, folder: folder, clock: time)
+        }
         let output = try JSONSerialization.data(withJSONObject: [
             "lesson": lesson, "question": questionId, "instance": first, "options": optionOrder,
             "selected": publicQuestions.compactMap { $0["id"] as? String },
             "mastery": try json(result["mastery"]),
         ])
         FileHandle.standardOutput.write(output)
+    }
+
+    static func sqlite(_ url: URL, _ sql: String) throws {
+        var db: OpaquePointer?
+        defer { sqlite3_close(db) }
+        guard sqlite3_open(url.path, &db) == SQLITE_OK, sqlite3_exec(db, sql, nil, nil, nil) == SQLITE_OK
+        else { throw ClassroomError("test: sqlite fixture setup failed") }
+    }
+
+    static func benchmark(archive: Data, content: Data, folder: URL, clock: Date) throws {
+        var backup = try json(JSONSerialization.jsonObject(with: archive))
+        var state = try json(backup["state"])
+        state.removeValue(forKey: "current")
+        let sample = try rows(state["attempts"])[0]
+        let receipt = try json(state["receipts"]).values.first!
+        for count in [10_000, 50_000] {
+            state["attempts"] = (0..<count).map { index in
+                var row = sample
+                row["id"] = "synthetic-attempt-\(index)"
+                return row
+            }
+            state["receipts"] = Dictionary(uniqueKeysWithValues: (0..<count).map { ("synthetic-receipt-\($0)", receipt) })
+            backup["state"] = state
+            let service = try Classroom(content: content,
+                database: folder.appendingPathComponent("bench-\(count).sqlite"), now: { clock })
+            let data = try JSONSerialization.data(withJSONObject: backup)
+            try service.restoreBackup(data, expectedRevision: 0)
+            var writes: [Double] = []
+            var reads: [Double] = []
+            for run in 0..<20 {
+                var start = ProcessInfo.processInfo.systemUptime
+                _ = try service.request(method: "PUT", path: "/household/game-limits",
+                    body: ["gameSessionMinutes": 12 + run % 2, "gameDailyMinutes": 60])
+                writes.append((ProcessInfo.processInfo.systemUptime - start) * 1_000)
+                start = ProcessInfo.processInfo.systemUptime
+                _ = try service.request(method: "GET", path: "/profiles/progress", body: [:])
+                reads.append((ProcessInfo.processInfo.systemUptime - start) * 1_000)
+            }
+            let report = "iOS snapshot benchmark: \(count) attempts/receipts, \(data.count) bytes, p95 write \(writes.sorted()[18]) ms, p95 progress \(reads.sorted()[18]) ms\n"
+            FileHandle.standardError.write(Data(report.utf8))
+        }
     }
 
     static func check(_ condition: @autoclosure () throws -> Bool, _ name: String) throws {

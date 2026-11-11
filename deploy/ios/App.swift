@@ -1,5 +1,6 @@
 import AVFoundation
 import UIKit
+import UniformTypeIdentifiers
 import WebKit
 
 @main
@@ -30,8 +31,12 @@ final class LearningSceneDelegate: UIResponder, UIWindowSceneDelegate {
 }
 
 @MainActor
-final class LearningViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandlerWithReply {
+final class LearningViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandlerWithReply, UIDocumentPickerDelegate {
     private var webView: WKWebView?
+    private var recoveryPanel: UIView?
+    private var exportFolder: URL?
+    private var backupReply: ((Any?, String?) -> Void)?
+    private var importingBackup = false
     private var assets: OfflineAssets?
     private var classroom: Classroom?
     private var player: AVPlayer?
@@ -130,12 +135,55 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
     }
 
     private func showFailure(_ message: String) {
-        webView?.removeFromSuperview()
+        webView?.isHidden = true
+        recoveryPanel?.removeFromSuperview()
         let label = UILabel()
         label.text = message
         label.numberOfLines = 0
         label.textAlignment = .center
-        install(label)
+        label.font = .preferredFont(forTextStyle: .body)
+        label.adjustsFontForContentSizeCategory = true
+        let stack = UIStackView(arrangedSubviews: [label])
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 16
+        stack.layoutMargins = .init(top: 20, left: 24, bottom: 20, right: 24)
+        stack.isLayoutMarginsRelativeArrangement = true
+        if webView != nil {
+            let retry = UIButton(type: .system)
+            retry.setTitle("恢复学习", for: .normal)
+            retry.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
+            retry.addAction(UIAction { [weak self] _ in
+                guard let self, let webView = self.webView else { return }
+                self.recoveryPanel?.removeFromSuperview()
+                self.recoveryPanel = nil
+                webView.isHidden = false
+                webView.load(URLRequest(url: OfflineAssets.entry))
+            }, for: .touchUpInside)
+            stack.addArrangedSubview(retry)
+        }
+        let panel = UIView()
+        install(panel)
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.centerYAnchor.constraint(equalTo: panel.centerYAnchor),
+            stack.leadingAnchor.constraint(equalTo: panel.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: panel.trailingAnchor),
+        ])
+        recoveryPanel = panel
+        UIAccessibility.post(notification: .screenChanged, argument: label)
+    }
+
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        stopPlayback()
+        showFailure("学习页面已暂停。点恢复学习，可以从已保存的位置继续。")
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        if (error as NSError).code != NSURLErrorCancelled {
+            showFailure("离线页面加载失败，请重试。")
+        }
     }
 
     @objc private func sceneWillDeactivate() {
@@ -181,7 +229,9 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        showFailure("离线页面启动失败，请退出后重试。")
+        if (error as NSError).code != NSURLErrorCancelled {
+            showFailure("离线页面启动失败，请重试。")
+        }
     }
 
     func userContentController(
@@ -202,7 +252,7 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         }
         do {
             switch operation {
-            case "modelStatus", "modelDownload":
+            case "modelStatus", "modelDownload", "modelCancel", "modelRemove":
                 guard body.count == 2 else { throw ClassroomError("INVALID_BRIDGE_REQUEST") }
                 let store = try recognition(assets)
                 Task {
@@ -214,6 +264,11 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
                             await store.waitForDownload()
                             UIApplication.shared.isIdleTimerDisabled = false
                         }
+                    } else if operation == "modelCancel" {
+                        replyHandler(await store.cancelDownload(), nil)
+                    } else if operation == "modelRemove" {
+                        do { replyHandler(try await store.removeModel(), nil) }
+                        catch { replyHandler(nil, "MODEL_REMOVE_FAILED") }
                     } else {
                         replyHandler(await store.status(), nil)
                     }
@@ -319,6 +374,11 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
                     let classroom = try openClassroom(assets)
                     replyHandler(try classroom.request(method: method, path: path, body: input), nil)
                 }
+            case "backupExport", "backupImport":
+                guard body.count == 2, presentedViewController == nil, backupReply == nil else {
+                    throw ClassroomError("IOS_BACKUP_UNAVAILABLE")
+                }
+                try chooseBackup(operation == "backupImport", service: openClassroom(assets), reply: replyHandler)
             case "classroomReady" where body.count == 2:
                 #if DEBUG
                 FileHandle.standardOutput.write(Data("Offline classroom mounted\n".utf8))
@@ -409,6 +469,79 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
         )
         recognitionStore = store
         return store
+    }
+
+    private func chooseBackup(
+        _ importing: Bool, service: Classroom, reply: @escaping (Any?, String?) -> Void
+    ) throws {
+        let picker: UIDocumentPickerViewController
+        if importing {
+            picker = UIDocumentPickerViewController(forOpeningContentTypes: [.json], asCopy: true)
+        } else {
+            let data = try service.exportBackup()
+            let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+            try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+            let file = folder.appendingPathComponent("爱拼音-iOS-学习备份.json")
+            do { try data.write(to: file, options: [.atomic, .completeFileProtection]) }
+            catch {
+                try? FileManager.default.removeItem(at: folder)
+                throw error
+            }
+            exportFolder = folder
+            picker = UIDocumentPickerViewController(forExporting: [file], asCopy: true)
+        }
+        importingBackup = importing
+        backupReply = reply
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+
+    private func finishBackup(_ state: String, error: String? = nil) {
+        if let exportFolder { try? FileManager.default.removeItem(at: exportFolder) }
+        exportFolder = nil
+        let reply = backupReply
+        backupReply = nil
+        reply?(error == nil ? ["state": state] : nil, error)
+    }
+
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        finishBackup("cancelled")
+    }
+
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard importingBackup else { finishBackup("exported"); return }
+        guard let file = urls.first, let classroom else { finishBackup("cancelled"); return }
+        defer { try? FileManager.default.removeItem(at: file) } // The picker provided a sandbox copy.
+        do {
+            let handle = try FileHandle(forReadingFrom: file)
+            defer { try? handle.close() }
+            let data = try handle.read(upToCount: Classroom.backupLimit + 1) ?? Data()
+            let summary = try classroom.previewBackup(data)
+            let confirmation = UIAlertController(
+                title: "替换此设备的学习档案？", message: summary.text, preferredStyle: .alert
+            )
+            confirmation.addAction(UIAlertAction(title: "取消", style: .cancel) { [weak self] _ in
+                self?.finishBackup("cancelled")
+            })
+            confirmation.addAction(UIAlertAction(title: "替换档案", style: .destructive) { [weak self] _ in
+                do {
+                    try classroom.restoreBackup(data, expectedRevision: summary.revision)
+                    self?.finishBackup("restored")
+                } catch {
+                    self?.finishBackup("failed", error: (error as? ClassroomError)?.code ?? "IOS_BACKUP_UNAVAILABLE")
+                }
+            })
+            let show: () -> Void = { [weak self] in self?.present(confirmation, animated: true) }
+            if let transition = controller.transitionCoordinator, controller.isBeingDismissed {
+                transition.animate(alongsideTransition: nil) { _ in show() }
+            } else if presentedViewController === controller {
+                controller.dismiss(animated: true) { show() }
+            } else {
+                show()
+            }
+        } catch {
+            finishBackup("failed", error: (error as? ClassroomError)?.code ?? "IOS_BACKUP_INVALID")
+        }
     }
 
     private func openClassroom(_ assets: OfflineAssets) throws -> Classroom {

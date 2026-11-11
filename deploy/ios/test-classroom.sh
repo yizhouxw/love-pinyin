@@ -3,9 +3,19 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 stage=$(mktemp -d)
 trap 'rm -rf "$stage"' EXIT
-xcrun swiftc deploy/ios/{ClassroomStore,Classroom,ClassroomGames,ClassroomSmoke}.swift -lsqlite3 -o "$stage/smoke"
-"$stage/smoke" build/ios/Resources/Data/classroom.json "$stage" > "$stage/result.json"
-uv run --locked python - "$stage/result.json" <<'PY'
+uv run --locked python - "$stage/classroom.json" <<'PYFIXTURE'
+import json
+import sys
+from pathlib import Path
+
+from deploy.ios.prepare import classroom_contract
+from server.content import load_curriculum
+
+Path(sys.argv[1]).write_text(json.dumps(classroom_contract(load_curriculum()), ensure_ascii=False))
+PYFIXTURE
+xcrun swiftc -O deploy/ios/{ClassroomStore,Classroom,ClassroomGames,ClassroomSmoke}.swift -lsqlite3 -o "$stage/smoke"
+"$stage/smoke" "$stage/classroom.json" "$stage" > "$stage/result.json"
+uv run --locked python - "$stage/result.json" "$stage/classroom.json" <<'PY'
 import json
 import sys
 from datetime import UTC, datetime
@@ -15,7 +25,7 @@ from server.content import map_by_id
 from server.domain import Event, calculate_mastery, order_options, plan_practice
 
 result = json.loads(Path(sys.argv[1]).read_text())
-bundled = json.loads(Path("build/ios/Resources/Data/classroom.json").read_text())
+bundled = json.loads(Path(sys.argv[2]).read_text())
 lesson = map_by_id("lessons")[result["lesson"]]
 eligible = {item["exercise"]["id"] for item in bundled["eligible"]}
 assert result["selected"] == plan_practice([qid for qid in lesson["exerciseIds"] if qid in eligible], [])

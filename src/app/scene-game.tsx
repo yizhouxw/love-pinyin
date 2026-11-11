@@ -28,6 +28,14 @@ import {
   type ScenePreference,
 } from '../platform/game-preferences';
 
+const motionPreference = () => window.matchMedia('(prefers-reduced-motion: reduce)');
+const subscribeToMotion = (notify: () => void) => {
+  const preference = motionPreference();
+  preference.addEventListener('change', notify);
+  return () => preference.removeEventListener('change', notify);
+};
+const prefersReducedMotion = () => motionPreference().matches;
+
 type Props = {
   gameId: string;
   taskId: string;
@@ -56,6 +64,8 @@ type Props = {
 };
 export function SceneGame(props: Props) {
   const { gameId, question, voice, busy, locked, answer, hint, corrected } = props;
+  const systemReducedMotion = useSyncExternalStore(subscribeToMotion, prefersReducedMotion);
+  const staticChoices = systemReducedMotion || props.reducedMotion;
   const game = gameCatalog.games.find((g) => g.id === gameId)!;
   const scene = game.scene as Scene;
   const run = props.run?.level
@@ -67,6 +77,14 @@ export function SceneGame(props: Props) {
   const segment = segmentAt(run, props.index)!;
   const pattern = run.patterns[segment.patternId]!;
   const stageRef = useRef<HTMLDivElement>(null);
+  const staticRef = useRef<HTMLDivElement>(null);
+  const priorMode = useRef(staticChoices);
+  useLayoutEffect(() => {
+    if (priorMode.current !== staticChoices) {
+      priorMode.current = staticChoices;
+      (staticChoices ? staticRef.current : stageRef.current)?.focus({ preventScroll: true });
+    }
+  }, [staticChoices]);
   const nextRef = useRef(props.onNext);
   const [display, setDisplay] = useState(() => readSceneDisplay(gameId, props.reducedMotion));
   const { enlarged, assist } = display;
@@ -184,7 +202,7 @@ export function SceneGame(props: Props) {
       percussion.current = null;
     };
   }, []);
-  const canMove = !paused && !applying && (!answer || done || replaying);
+  const canMove = !staticChoices && !paused && !applying && (!answer || done || replaying);
   const canMovePastTarget = useRef(false);
   useLayoutEffect(() => {
     canMovePastTarget.current = !stopped;
@@ -236,7 +254,7 @@ export function SceneGame(props: Props) {
   }, []);
   function fire(action: Action) {
     const { world } = frames.read();
-    if (stopped || world.hit !== null) return;
+    if (staticChoices || stopped || world.hit !== null) return;
     if (sfx && scene === 'drum' && action === 'act') percussion.current?.hit();
     const next = advanceWorld(world, 0, engine.current, action);
     frames.write(next);
@@ -250,9 +268,9 @@ export function SceneGame(props: Props) {
     if (!paused && props.onPause) props.onPause();
     else setPaused((value) => !value);
   }
-  const pointer = useGamePointer(!stopped && hit === null, scene, fire);
+  const pointer = useGamePointer(!staticChoices && !stopped && hit === null, scene, fire);
   useGameInput({
-    enabled: !stopped && hit === null,
+    enabled: !staticChoices && !stopped && hit === null,
     scene,
     onAction: fire,
     onPause: togglePause,
@@ -334,6 +352,7 @@ export function SceneGame(props: Props) {
         </button>
         <button
           className="quiet"
+          disabled={staticChoices}
           aria-pressed={enlarged}
           onClick={() => changeDisplay({ enlarged: !enlarged })}
         >
@@ -511,52 +530,91 @@ export function SceneGame(props: Props) {
             </button>
             <progress aria-label="关卡完成进度" value={props.index} max={props.total} />
           </div>
-          <LiveScene
-            frames={frames}
-            stageRef={stageRef}
-            scene={scene}
-            physics={physics}
-            run={run}
-            question={question}
-            highlight={answer?.correctOptionId ?? hint?.answer.optionId}
-            paused={paused}
-            onResume={() => setPaused(false)}
-          />
-          <div className="scene-controls" role="group" aria-label="场景动作">
-            {controls.map((label, i) => (
-              <button
-                key={i}
-                disabled={stopped || hit !== null}
-                className={i === 1 ? 'scene-action' : ''}
-                aria-label={label}
-                {...pointer(
-                  scene === 'drum' && i !== 1
-                    ? 'pass'
-                    : i === 0
-                      ? 'left'
-                      : i === 1
-                        ? 'act'
-                        : 'right',
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          <div className="scene-tools">
-            <button
-              className="quiet"
-              aria-pressed={assist}
-              onClick={() => changeDisplay({ assist: !assist })}
+          {staticChoices ? (
+            <div
+              ref={staticRef}
+              tabIndex={-1}
+              className="scene-controls"
+              role="group"
+              aria-label="直接选择拼音"
             >
-              🐢 辅助慢动作{assist ? '：开' : '：关'}
-            </button>
-            {scene === 'drum' && (
-              <button className="quiet" aria-pressed={sfx} onClick={() => setSfx(!sfx)}>
-                鼓声{sfx ? '：开' : '：关'}
-              </button>
-            )}
-          </div>
+              {question.options.map((option, index) => (
+                <button
+                  key={option.id}
+                  disabled={stopped || hit !== null}
+                  aria-describedby={
+                    option.id === (answer?.correctOptionId ?? hint?.answer.optionId)
+                      ? 'static-correct-target'
+                      : undefined
+                  }
+                  className={
+                    option.id === (answer?.correctOptionId ?? hint?.answer.optionId)
+                      ? 'scene-action'
+                      : ''
+                  }
+                  onClick={() => {
+                    const { world } = frames.read();
+                    frames.write({ ...world, hit: index });
+                    setHit(index);
+                  }}
+                >
+                  {option.label}
+                </button>
+              ))}
+              <span id="static-correct-target" className="screen-reader-only">
+                提示：正确目标
+              </span>
+            </div>
+          ) : (
+            <>
+              <LiveScene
+                frames={frames}
+                stageRef={stageRef}
+                scene={scene}
+                physics={physics}
+                run={run}
+                question={question}
+                highlight={answer?.correctOptionId ?? hint?.answer.optionId}
+                paused={paused}
+                onResume={() => setPaused(false)}
+              />
+              <div className="scene-controls" role="group" aria-label="场景动作">
+                {controls.map((label, i) => (
+                  <button
+                    key={i}
+                    disabled={stopped || hit !== null}
+                    className={i === 1 ? 'scene-action' : ''}
+                    aria-label={label}
+                    {...pointer(
+                      scene === 'drum' && i !== 1
+                        ? 'pass'
+                        : i === 0
+                          ? 'left'
+                          : i === 1
+                            ? 'act'
+                            : 'right',
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div className="scene-tools">
+                <button
+                  className="quiet"
+                  aria-pressed={assist}
+                  onClick={() => changeDisplay({ assist: !assist })}
+                >
+                  🐢 辅助慢动作{assist ? '：开' : '：关'}
+                </button>
+                {scene === 'drum' && (
+                  <button className="quiet" aria-pressed={sfx} onClick={() => setSfx(!sfx)}>
+                    鼓声{sfx ? '：开' : '：关'}
+                  </button>
+                )}
+              </div>
+            </>
+          )}
         </section>
         <aside className="scene-mission" aria-label="本关任务">
           <h1>{cue?.text ?? question.prompt}</h1>

@@ -55,6 +55,29 @@ actor IOSRecognition {
         return status()
     }
 
+    func cancelDownload() async -> [String: any Sendable] {
+        let task = downloadTask
+        task?.cancel()
+        await task?.value
+        return status()
+    }
+
+    private var staging: URL {
+        directory.deletingLastPathComponent().appendingPathComponent(".qwen-\(manifest.revision)", isDirectory: true)
+    }
+
+    func removeModel() throws -> [String: any Sendable] {
+        guard !busy, downloadTask == nil else { throw IOSRecognitionError.unavailable }
+        let files = FileManager.default
+        for path in [directory, staging] where files.fileExists(atPath: path.path) {
+            try files.removeItem(at: path)
+        }
+        manager = nil
+        failed = false
+        received = 0
+        return status()
+    }
+
     func waitForDownload() async {
         await downloadTask?.value
     }
@@ -86,7 +109,6 @@ actor IOSRecognition {
     private func download() async {
         let files = FileManager.default
         let parent = directory.deletingLastPathComponent()
-        let staging = parent.appendingPathComponent(".qwen-\(manifest.revision)", isDirectory: true)
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = 45
         configuration.timeoutIntervalForResource = 900
@@ -105,6 +127,7 @@ actor IOSRecognition {
             try excluded.setResourceValues(properties)
             var remaining: [Asset] = []
             for entry in entries {
+                try Task.checkCancellation()
                 let staged = staging.appendingPathComponent(entry.path)
                 do {
                     try verify(staged, entry: entry)
@@ -128,6 +151,7 @@ actor IOSRecognition {
                 let preferred = try await transfer(entry, to: destination, using: session, hosts: hosts)
                 hosts = [preferred] + hosts.filter { $0 != preferred }
             }
+            try Task.checkCancellation()
             try manifest.revision.write(to: staging.appendingPathComponent("verified"),
                                         atomically: true, encoding: .utf8)
             if files.fileExists(atPath: directory.path) {
@@ -135,7 +159,7 @@ actor IOSRecognition {
             }
             try files.moveItem(at: staging, to: directory)
         } catch {
-            failed = true
+            failed = !Task.isCancelled
         }
     }
 
@@ -154,6 +178,7 @@ actor IOSRecognition {
         var preferred = hosts
         received += offset
         while offset < entry.bytes {
+            try Task.checkCancellation()
             let ranges = stride(from: offset, to: min(offset + 6 * chunkSize, entry.bytes), by: chunkSize)
                 .map { $0..<min($0 + chunkSize, entry.bytes) }
             let chunks = try await withThrowingTaskGroup(of: (Int, Data, String).self) { group in
@@ -195,6 +220,7 @@ actor IOSRecognition {
         _ entry: Asset, range: Range<Int>?, using session: URLSession, hosts: [String]
     ) async throws -> (Data, String) {
         for (attempt, host) in (hosts + hosts).enumerated() {
+            try Task.checkCancellation()
             var components = URLComponents()
             components.scheme = "https"
             components.host = host

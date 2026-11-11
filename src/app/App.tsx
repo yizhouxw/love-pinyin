@@ -16,6 +16,12 @@ import {
   resolveGuidance,
   saveGuidancePreference,
 } from '../platform/guidance-preference';
+import { useLearningSection } from './use-learning-section';
+import {
+  loadLearningSnapshot,
+  learningAnswer,
+  learningSession,
+} from '../platform/learning-snapshot';
 import { api } from '../platform/api-client';
 import { iosOperation, isIOSApp } from '../platform/ios-app';
 import { IOSClassroomSettings } from './ios-classroom-settings';
@@ -29,7 +35,6 @@ import {
   clearPendingAnswer,
   idempotencyKey,
   readPendingAnswer,
-  replayPendingAnswer,
   savePendingAnswer,
 } from '../platform/pending-answer';
 import type { PracticePacks, PracticeSource } from '../domain/practice-packs';
@@ -129,7 +134,10 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   );
   const blendConfirm = useRef<HTMLButtonElement | null>(null);
   const blendOptions = useRef(new Map<string, HTMLButtonElement>());
-  const [gamesOpen, setGamesOpen] = useState(window.location.hash === '#games');
+  const section = useLearningSection();
+  const gamesOpen = section.route === 'games';
+  const wordsOpen = section.route === 'word-practice';
+  const dailyOpen = section.route === 'daily-reading';
   const [practicePacks, setPracticePacks] = useState<PracticePacks | null>(null);
   const [practiceLoadError, setPracticeLoadError] = useState(false);
   const [practiceSource, setPracticeSource] = useState<PracticeSource>(() => {
@@ -182,17 +190,6 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       active = false;
     };
   }, [paired, practiceSource]);
-  const [wordsOpen, setWordsOpen] = useState(window.location.hash === '#word-practice');
-  const [dailyOpen, setDailyOpen] = useState(window.location.hash === '#daily-reading');
-  useEffect(() => {
-    const followHash = () => {
-      setWordsOpen(window.location.hash === '#word-practice');
-      setDailyOpen(window.location.hash === '#daily-reading');
-      setGamesOpen(window.location.hash === '#games');
-    };
-    window.addEventListener('hashchange', followHash);
-    return () => window.removeEventListener('hashchange', followHash);
-  }, []);
   const [parentOpen, setParentOpen] = useState(false);
   const [parentGateOpen, setParentGateOpen] = useState(false);
   const [lessonChoice, setLessonChoice] = useState('');
@@ -227,85 +224,48 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     );
   }, [progress?.settings?.reducedMotion]);
 
-  const refresh = useCallback(async () => {
-    const state = (await api('/bootstrap')) as Bootstrap;
-    if (!state.paired) {
-      setBoot(state);
-      return;
+  const refresh = useCallback(async (signal?: AbortSignal) => {
+    const snapshot = await loadLearningSnapshot(signal);
+    signal?.throwIfAborted();
+    if (snapshot.loaded) {
+      const { course, stats, current, sounds } = snapshot;
+      setLearningAudio(sounds);
+      setCurriculum(course);
+      setProgress(stats);
+      setSession(current);
+      setLessonChoice(
+        course.lessons.some((lesson) => lesson.id === stats.selectedLessonId)
+          ? stats.selectedLessonId
+          : '',
+      );
     }
-    const [course, stats, current, sounds] = await Promise.all([
-      api('/curriculum'),
-      api('/profiles/progress'),
-      api('/sessions/current'),
-      api('/learning-audio').catch(() => null),
-    ]);
-    setLearningAudio(sounds as LearningAudio | null);
-    const didReplay = await replayPendingAnswer(current as Session | null).catch(() => false);
-    const [latestStats, latestCurrent] = didReplay
-      ? await Promise.all([api('/profiles/progress'), api('/sessions/current')])
-      : [stats, current];
-    const nextStats = latestStats as Progress;
-    const nextCourse = course as Curriculum;
-    setCurriculum(nextCourse);
-    setProgress(nextStats);
-    setSession(latestCurrent as Session | null);
-    setLessonChoice(
-      nextCourse.lessons.some((lesson) => lesson.id === nextStats.selectedLessonId)
-        ? (nextStats.selectedLessonId ?? '')
-        : '',
-    );
-    // Reveal the next screen only with its matching progress revision and settings.
-    setBoot(state);
+    setBoot(snapshot.boot);
   }, []);
 
   useEffect(() => {
-    let cancelled = false;
-    void api('/bootstrap')
-      .then(async (result) => {
-        const state = result as Bootstrap;
-        if (cancelled) return;
-        setBoot(state);
-        if (!state.paired) return;
-        const [course, stats, current, sounds] = await Promise.all([
-          api('/curriculum'),
-          api('/profiles/progress'),
-          api('/sessions/current'),
-          api('/learning-audio').catch(() => null),
-        ]);
-        if (cancelled) return;
-        setLearningAudio(sounds as LearningAudio | null);
-        const didReplay = await replayPendingAnswer(current as Session | null).catch(() => false);
-        const [latestStats, latestCurrent] = didReplay
-          ? await Promise.all([api('/profiles/progress'), api('/sessions/current')])
-          : [stats, current];
-        if (cancelled) return;
-        const nextStats = latestStats as Progress;
-        const nextCourse = course as Curriculum;
-        setCurriculum(nextCourse);
-        setProgress(nextStats);
-        setSession(latestCurrent as Session | null);
-        setLessonChoice(
-          nextCourse.lessons.some((lesson) => lesson.id === nextStats.selectedLessonId)
-            ? (nextStats.selectedLessonId ?? '')
-            : '',
-        );
-      })
+    const controller = new AbortController();
+    const signal = controller.signal;
+    void Promise.resolve()
+      .then(() => refresh(signal))
       .catch(async (reason: Error) => {
-        if (!cancelled) {
-          if (reason.message === 'SESSION_EXPIRED' || reason.message === 'PAIRING_REQUIRED') {
-            if (isMacApp()) {
-              try {
-                await refresh();
-              } catch (error) {
-                setError(error instanceof Error ? error.message : '连接失败，请重试。');
-              }
-            } else setBoot({ paired: false, isLocalHost: false });
-          } else setError(reason.message);
+        if (signal.aborted) return;
+        if (reason.message === 'SESSION_EXPIRED' || reason.message === 'PAIRING_REQUIRED') {
+          if (!isMacApp()) {
+            setBoot({ paired: false, isLocalHost: false });
+            return;
+          }
+          try {
+            await refresh(signal);
+            return;
+          } catch (error) {
+            if (signal.aborted) return;
+            setError(error instanceof Error ? error.message : '连接失败，请重试。');
+            return;
+          }
         }
+        setError(reason.message);
       });
-    return () => {
-      cancelled = true;
-    };
+    return () => controller.abort();
   }, [refresh]);
   const lessons = useMemo(() => curriculum?.lessons ?? [], [curriculum]);
   const lessonById = useMemo(() => new Map(lessons.map((item) => [item.id, item])), [lessons]);
@@ -479,7 +439,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     voiceStarted.current = true;
     if (guidanceEnabled && !gameId) playVoice('ui-start');
     else stopVoice();
-    const started = (await api('/sessions', {
+    const started = await learningSession('/sessions', {
       method: 'POST',
       body: JSON.stringify({
         lessonId,
@@ -493,7 +453,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             }
           : {}),
       }),
-    })) as Session;
+    });
     setSession(started);
     setBlendDraft(null);
     setAnswer(null);
@@ -503,10 +463,10 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   async function beginReview(knowledgeId: string) {
     voiceStarted.current = true;
     if (guidanceEnabled) playVoice('ui-start');
-    const started = (await api(`/reviews/${encodeURIComponent(knowledgeId)}/sessions`, {
+    const started = await learningSession(`/reviews/${encodeURIComponent(knowledgeId)}/sessions`, {
       method: 'POST',
       body: JSON.stringify({}),
-    })) as Session;
+    });
     setSession(started);
     setBlendDraft(null);
     setAnswer(null);
@@ -537,10 +497,10 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         pending = { requestId: idempotencyKey(), answerOptionId: optionId };
         savePendingAnswer(task.instanceId, pending);
       }
-      const result = (await api(`/instances/${task.instanceId}/answer`, {
+      const result = await learningAnswer(`/instances/${task.instanceId}/answer`, {
         method: 'POST',
         body: JSON.stringify(pending),
-      })) as Omit<Answer, 'selectedOptionId'>;
+      });
       clearPendingAnswer(task.instanceId);
       setBlendDraft(null);
       setAnswer({ ...result, selectedOptionId: pending.answerOptionId });
@@ -642,8 +602,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     setBlendDraft(null);
     setAnswer(null);
     setHint(null);
-    setGamesOpen(true);
-    window.location.hash = 'games';
+    section.open('games');
     await refresh();
   }
 
@@ -1147,8 +1106,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           busy={busy}
           onBack={() => {
             stopVoice();
-            window.location.hash = '';
-            setGamesOpen(false);
+            section.close();
           }}
           onStart={(gameId, gameLevelId) =>
             void act(() => beginLesson(progress.selectedLessonId, gameId, gameLevelId))
@@ -1171,8 +1129,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           gapSeconds={gapSeconds}
           onGapChange={changePlaybackGap}
           onBack={() => {
-            window.location.hash = '';
-            setWordsOpen(false);
+            section.close();
           }}
         />
       </main>
@@ -1190,8 +1147,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           guidanceEnabled={guidanceEnabled}
           onGuidanceChange={changeGuidance}
           onBack={() => {
-            window.location.hash = '';
-            setDailyOpen(false);
+            section.close();
           }}
         />
         <ReleaseHistory contentVersion={curriculum?.contentVersion} />
@@ -1416,8 +1372,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                   aria-label="进入天天练拼音"
                   onClick={() => {
                     stopVoice();
-                    window.location.hash = 'daily-reading';
-                    setDailyOpen(true);
+                    section.open('daily-reading');
                   }}
                 >
                   <span aria-hidden="true">🎧</span>
@@ -1432,8 +1387,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                   aria-label="进入词语天天练 →"
                   onClick={() => {
                     stopVoice();
-                    window.location.hash = 'word-practice';
-                    setWordsOpen(true);
+                    section.open('word-practice');
                   }}
                 >
                   <span aria-hidden="true">📖</span>
@@ -1449,8 +1403,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                   onClick={() => {
                     stopVoice();
                     voiceStarted.current = true;
-                    window.location.hash = 'games';
-                    setGamesOpen(true);
+                    section.open('games');
                     if (guidanceEnabled) playVoice('ui-game_welcome');
                   }}
                 >

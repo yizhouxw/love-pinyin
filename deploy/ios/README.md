@@ -55,7 +55,7 @@ xcodebuild -project deploy/ios/LovePinyin.xcodeproj -scheme LovePinyin \
 
 参考 [Apple 真机运行说明](https://developer.apple.com/documentation/xcode/running-your-app-on-simulated-or-physical-devices)和 [Personal Team 限制](https://developer.apple.com/help/account/basics/about-your-developer-account/)。
 
-运行 `deploy/ios/test-classroom.sh` 可在 Mac 上用随包课程验证 Swift/SQLite 存储、作答恢复和与 Python 的规则对照。先准备离线资源。
+运行 `deploy/ios/test-classroom.sh` 可在 Mac 上用随包课程验证 Swift/SQLite 存储、作答恢复和与 Python 的规则对照。脚本从登记的课程与声音 ID 生成契约数据，无需准备声音文件。
 
 运行 `deploy/ios/test-games.sh` 检查四款游戏的选题、关卡和计分，以及暂停、额度用完和重开恢复。Xcode 的 `testOfflineGameScenes` 使用临时档案测试游戏入口、触控和暂停恢复。
 
@@ -70,3 +70,5 @@ xcodebuild -project deploy/ios/LovePinyin.xcodeproj -scheme LovePinyin \
 ```
 
 使用目标设备的 ID 设置 `LP_IOS_DEVICE_ID`。每次运行指定一个新的结果路径。Debug 测试使用独立 SQLite 与临时 WebKit 存储。测试检查可触达的主要按钮、听题后可作答、旋转保留当前题、重开恢复第二题和只保存一条作答。Xcode 测试报告保留首页、横屏和恢复后的截图。
+
+在「家长管理 → 此设备学习记录」可通过系统「文件」导出和恢复当前课程版本的 iOS 学习档案。导入会显示来源、日期、版本和记录数，确认后替换；可在 iPhone 与 iPad 之间手动迁移。家长应将备份保存到 App 沙盒之外。Web/macOS 的家庭备份是独立格式。

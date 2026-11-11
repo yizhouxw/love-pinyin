@@ -1,6 +1,11 @@
 import { isIOSApp } from '../platform/ios-app';
 
 const messages: Record<string, string> = {
+  LEARNING_RESPONSE_INVALID: '学习记录没有完整载入，请重新载入后继续。',
+  IOS_BACKUP_INVALID: '这不是可用的爱拼音 iOS 学习备份，现有档案未更改。',
+  IOS_BACKUP_TOO_LARGE: '学习备份超过 64 MiB，无法处理。',
+  IOS_BACKUP_VERSION_UNSUPPORTED: '这份备份的格式或课程版本不匹配，现有档案未更改。',
+  IOS_BACKUP_UNAVAILABLE: '无法读取或保存备份，请检查设备空间后重试。',
   IOS_STORAGE_UNAVAILABLE: '暂时无法读取或保存此设备的记录，请重试。',
   IOS_STORAGE_INVALID: '此设备的学习档案无法读取，已有档案已保留。',
   IOS_STORAGE_VERSION_UNSUPPORTED: '此设备的档案需要较新的爱拼音版本，已有档案已保留。',
@@ -59,6 +64,9 @@ const messages: Record<string, string> = {
 
 export function errorMessage(error: string): string {
   if (isIOSApp()) {
+    if (error.includes('AUDIO_NOT_FOUND'))
+      return '这段声音暂时不能播放。可以重听或跳过，不算答错。';
+    if (error === 'REVISION_CONFLICT') return '本机记录已更新，请重新载入后重试。';
     if (error === 'GAME_PAUSED') return '游戏已暂停计时。准备好后，点继续游戏。';
     if (error === 'GAME_CLOCK_ROLLBACK')
       return '设备时间发生回退，游戏已暂停。请家长校准系统时间后再继续。';
@@ -79,6 +87,7 @@ export function Notice({ error, onReconnect }: { error: string; onReconnect: () 
     <div className="error-notice" role="alert">
       <p>{errorMessage(error)}</p>
       {[
+        'LEARNING_RESPONSE_INVALID',
         'IOS_STORAGE_UNAVAILABLE',
         'IOS_RESOURCE_UNAVAILABLE',
         'MAC_UNREACHABLE',
@@ -90,7 +99,7 @@ export function Notice({ error, onReconnect }: { error: string; onReconnect: () 
         'IDEMPOTENCY_KEY_REUSED',
       ].includes(error) && (
         <button type="button" className="quiet" onClick={onReconnect}>
-          重新连接并恢复
+          {isIOSApp() ? '重新载入学习记录' : '重新连接并恢复'}
         </button>
       )}
       <details>

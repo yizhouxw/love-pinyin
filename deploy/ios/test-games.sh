@@ -3,9 +3,19 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 stage=$(mktemp -d)
 trap 'rm -rf "$stage"' EXIT
+uv run --locked python - "$stage/classroom.json" <<'PYFIXTURE'
+import json
+import sys
+from pathlib import Path
+
+from deploy.ios.prepare import classroom_contract
+from server.content import load_curriculum
+
+Path(sys.argv[1]).write_text(json.dumps(classroom_contract(load_curriculum()), ensure_ascii=False))
+PYFIXTURE
 xcrun swiftc deploy/ios/{ClassroomStore,Classroom,ClassroomGames,GameSmoke}.swift -lsqlite3 -o "$stage/smoke"
-"$stage/smoke" build/ios/Resources/Data/classroom.json "$stage" > "$stage/result.json"
-uv run --locked python - "$stage/result.json" <<'PY'
+"$stage/smoke" "$stage/classroom.json" "$stage" > "$stage/result.json"
+uv run --locked python - "$stage/result.json" "$stage/classroom.json" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -15,7 +25,7 @@ from server.game_levels import freeze_run, level_for
 from server.game_policy import GAMES
 
 result = json.loads(Path(sys.argv[1]).read_text())
-bundled = json.loads(Path("build/ios/Resources/Data/classroom.json").read_text())
+bundled = json.loads(Path(sys.argv[2]).read_text())
 questions = {row["exercise"]["id"]: row["exercise"] for row in bundled["eligible"]}
 for sample in result:
     game_id = sample["game"]

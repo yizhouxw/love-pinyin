@@ -64,6 +64,7 @@ export async function householdApi(path: string, options: RequestInit = {}): Pro
       credentials: 'same-origin',
     });
   } catch {
+    options.signal?.throwIfAborted();
     throw new Error('MAC_UNREACHABLE');
   }
   if (response.status === 204) return {};

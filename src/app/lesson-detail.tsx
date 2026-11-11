@@ -172,7 +172,9 @@ export function LessonDetail({
                   />
                   {courseError && (
                     <p className="audio-error" role="alert">
-                      课程录音未能播放，请重试；仍未播放时请家长检查家庭电脑上的家庭音频。
+                      {isIOSApp()
+                        ? '本机课程录音未能播放，请重试或继续看其他学习内容。'
+                        : '课程录音未能播放，请重试；仍未播放时请家长检查家庭电脑上的家庭音频。'}
                     </p>
                   )}
                 </>
@@ -278,7 +280,9 @@ export function LessonDetail({
                   ) : null}
                   {audioFailureId === audio?.id && (
                     <p className="audio-error" role="alert">
-                      标准音暂时无法播放，请检查家庭电脑 上的音频资源。
+                      {isIOSApp()
+                        ? '这段本机示范音暂时不能播放。可重听或选择其他拼音。'
+                        : '标准音暂时无法播放，请检查家庭电脑上的音频资源。'}
                     </p>
                   )}
                   <details>

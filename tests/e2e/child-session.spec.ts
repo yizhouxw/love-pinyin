@@ -707,7 +707,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await expect(page.getByRole('button', { name: '确认替换家庭数据' })).toBeDisabled();
   await page.getByLabel('确认替换家庭学习档案文字').fill('替换家庭学习档案');
   await page.getByRole('button', { name: '确认替换家庭数据' }).click();
-  await expect(page.getByRole('status')).toHaveText('家庭数据已恢复。');
+  await expect(page.getByRole('status').filter({ hasText: '家庭数据已恢复。' })).toBeVisible();
   expect(imported).toBe(true);
   await expect(page.getByText('平板', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: '撤销设备' }).click();
@@ -811,6 +811,7 @@ test('旧课程版本的当前课提示家长重选并保留学习路线', async
             },
           ],
           knowledgeItems: [],
+          audioRequirements: [],
           exercises: [
             { id: 'exercise-01', type: 'symbol-choice', prompt: '找一找', options: [] },
             { id: 'exercise-02', type: 'symbol-choice', prompt: '继续找一找', options: [] },
@@ -946,6 +947,7 @@ test('孩子可从知识卡开始并完成两题到期复习', async ({ page }) 
               available: false,
             },
           ],
+          audioRequirements: [],
           exercises: [first, second],
         },
       });
@@ -1073,6 +1075,7 @@ test('家长校时后可明确保留待校时练习为不计分记录', async ({
             },
           ],
           knowledgeItems: [],
+          audioRequirements: [],
           exercises: [],
         },
       });

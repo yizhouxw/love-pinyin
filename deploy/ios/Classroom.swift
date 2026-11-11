@@ -171,11 +171,96 @@ final class Classroom {
         } else {
             state = State(lessonId: first.id)
         }
+        let hasLegacyHistory = !state.attempts.isEmpty || !state.finished.isEmpty || !state.receipts.isEmpty
+        if hasLegacyHistory {
+            try Self.persist(state, to: store, replacing: true)
+        } else {
+            var loaded = state
+            try store.history { row in
+                switch row.kind {
+                case "attempt": loaded.attempts.append(try JSONDecoder().decode(Attempt.self, from: row.payload))
+                case "receipt": loaded.receipts[row.key] = row.payload
+                case "finished": loaded.finished[row.key] = try JSONDecoder().decode(Round.self, from: row.payload)
+                default: throw ClassroomError("IOS_STORAGE_INVALID")
+                }
+            }
+            state = loaded
+        }
         self.now = now
         day.locale = Locale(identifier: "en_US_POSIX")
         day.calendar = Calendar(identifier: .gregorian)
         day.timeZone = TimeZone(identifier: "Asia/Shanghai")
         day.dateFormat = "yyyy-MM-dd"
+    }
+
+    static let backupLimit = 64 * 1024 * 1024
+
+    private struct Backup: Codable {
+        let format: String
+        let version: Int
+        let contentVersion: String
+        let createdAt: Date
+        let state: State
+    }
+
+    func exportBackup() throws -> Data {
+        let data = try JSONEncoder().encode(Backup(
+            format: "love-pinyin-ios", version: 1, contentVersion: syllabus.version,
+            createdAt: now(), state: state
+        ))
+        guard data.count <= Self.backupLimit else { throw ClassroomError("IOS_BACKUP_TOO_LARGE") }
+        return data
+    }
+
+    private func readBackup(_ data: Data) throws -> Backup {
+        guard data.count <= Self.backupLimit else { throw ClassroomError("IOS_BACKUP_TOO_LARGE") }
+        guard let backup = try? JSONDecoder().decode(Backup.self, from: data),
+              backup.format == "love-pinyin-ios" else { throw ClassroomError("IOS_BACKUP_INVALID") }
+        guard backup.version == 1, backup.contentVersion == syllabus.version else {
+            throw ClassroomError("IOS_BACKUP_VERSION_UNSUPPORTED")
+        }
+        let saved = backup.state
+        let lessons = Set(syllabus.lessons.map(\.id))
+        let knowledge = Set(syllabus.knowledgeItems.map(\.id))
+        guard lessons.contains(saved.lessonId), saved.revision >= 0,
+              saved.completed >= 0, saved.roundsSinceBreak >= 0,
+              saved.attempts.allSatisfy({ knowledge.contains($0.knowledgeId) && Self.objectiveModes.contains($0.mode) }),
+              saved.exposure.values.allSatisfy({ $0.count >= 0 }),
+              Set(saved.attempts.map(\.id)).count == saved.attempts.count
+        else { throw ClassroomError("IOS_BACKUP_INVALID") }
+        for round in Array(saved.finished.values) + [saved.current].compactMap({ $0 }) {
+            guard lessons.contains(round.lessonId), !round.tasks.isEmpty,
+                  Set(round.tasks.map(\.instanceId)).count == round.tasks.count,
+                  Set(round.results.keys).isSubset(of: Set(round.tasks.map(\.instanceId)))
+            else { throw ClassroomError("IOS_BACKUP_INVALID") }
+            for task in round.tasks {
+                guard let source = questions[task.exerciseId], source.correctOption == task.correctOption,
+                      source.mode == task.mode, source.knowledgeId == task.knowledgeId,
+                      Set(source.options) == Set(task.options),
+                      let exercise = try? decode(task.publicExercise),
+                      exercise["id"] as? String == task.exerciseId,
+                      (exercise["options"] as? [JSON])?.compactMap({ $0["id"] as? String }) == task.options
+                else { throw ClassroomError("IOS_BACKUP_INVALID") }
+            }
+            for result in round.results.values { _ = try decode(result) }
+            if let game = round.game { _ = try decode(game.route) }
+        }
+        for result in saved.receipts.values { _ = try decode(result) }
+        return backup
+    }
+
+    func previewBackup(_ data: Data) throws -> (text: String, revision: Int) {
+        let backup = try readBackup(data)
+        let date = backup.createdAt.formatted(date: .abbreviated, time: .shortened)
+        return ("来源：爱拼音 iOS · \(date)\n课程版本：\(backup.contentVersion)\n\(backup.state.attempts.count) 条作答，\(backup.state.completed) 轮练习。此操作将替换本机学习记录。", state.revision)
+    }
+
+    func restoreBackup(_ data: Data, expectedRevision: Int) throws {
+        guard expectedRevision == state.revision else { throw ClassroomError("REVISION_CONFLICT") }
+        var restored = try readBackup(data).state
+        restored.revision = state.revision
+        restored.gameClock?.leaseUntil = 0
+        try update(replacingHistory: true) { $0 = restored }
     }
 
     func request(method: String, path: String, body: JSON) throws -> Any {
@@ -239,11 +324,31 @@ final class Classroom {
         throw ClassroomError("IOS_OPERATION_UNAVAILABLE")
     }
 
-    private func update(_ change: (inout State) throws -> Void) throws {
+    private static func persist(
+        _ state: State, to store: ClassroomStore, appending: [ClassroomStore.History] = [], replacing: Bool
+    ) throws {
+        let encoder = JSONEncoder()
+        var rows = appending
+        if replacing {
+            rows = try state.attempts.map { ("attempt", $0.id, try encoder.encode($0)) }
+            rows += state.receipts.map { ("receipt", $0.key, $0.value) }
+            rows += try state.finished.map { ("finished", $0.key, try encoder.encode($0.value)) }
+        }
+        var snapshot = state
+        snapshot.attempts = []
+        snapshot.receipts = [:]
+        snapshot.finished = [:]
+        try store.save(encoder.encode(snapshot), history: rows, replacing: replacing)
+    }
+
+    private func update(
+        appending: [ClassroomStore.History] = [], replacingHistory: Bool = false,
+        _ change: (inout State) throws -> Void
+    ) throws {
         var next = state
         try change(&next)
         next.revision += 1
-        try store.save(JSONEncoder().encode(next))
+        try Self.persist(next, to: store, appending: appending, replacing: replacingHistory)
         state = next
     }
 
@@ -566,7 +671,10 @@ final class Classroom {
             "explanation": task.explanation, "explanationAudioId": "hint-\(task.exerciseId)",
         ]
         let encoded = try JSONSerialization.data(withJSONObject: result)
-        try update {
+        try update(appending: [
+            ("attempt", attempt.id, try JSONEncoder().encode(attempt)),
+            ("receipt", requestId, encoded),
+        ]) {
             $0.current?.results[id] = encoded
             $0.receipts[requestId] = encoded
             $0.attempts.append(attempt)
@@ -586,7 +694,7 @@ final class Classroom {
         guard let round = state.current, round.id == id else { throw ClassroomError("SESSION_NOT_FOUND") }
         let completed = round.results.count == round.tasks.count
         let clock = round.game == nil ? nil : transition(.pause, at: now()).0
-        try update {
+        try update(appending: [("finished", id, try JSONEncoder().encode(round))]) {
             if let clock { $0.gameClock = clock }
             $0.current = nil
             $0.finished[id] = round
@@ -621,7 +729,8 @@ final class Classroom {
     }
 
     private func progress() -> JSON {
-        [
+        let byKnowledge = Dictionary(grouping: state.attempts, by: \.knowledgeId)
+        return [
             "revision": state.revision, "selectedLessonId": state.lessonId,
             "completedSessions": state.completed, "attemptCount": state.attempts.count,
             "clockSkewDetected": clockSkew(now()), "pendingClockAttempts": state.attempts.filter { $0.clockPending }.count,
@@ -629,7 +738,7 @@ final class Classroom {
                 "soundEnabled": true, "reducedMotion": false,
                 "gameSessionMinutes": sessionMinutes, "gameDailyMinutes": dailyMinutes,
             ] as JSON,
-            "mastery": syllabus.knowledgeItems.map { mastery($0.id, attempts: state.attempts) },
+            "mastery": syllabus.knowledgeItems.map { mastery($0.id, attempts: byKnowledge[$0.id] ?? []) },
         ]
     }
 }
