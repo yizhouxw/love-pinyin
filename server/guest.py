@@ -109,7 +109,7 @@ def execute(operation: GuestOperation) -> dict:
                     (
                         profile["selectedLessonId"],
                         int(profile["settings"]["soundEnabled"]),
-                        int(profile["settings"]["reducedMotion"]),
+                        0,
                         gap_tenths(
                             profile["settings"].get("playbackGapSeconds", GAP["defaultSeconds"])
                         ),

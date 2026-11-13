@@ -50,7 +50,7 @@ def test_delete_learning_records_preserves_household_settings_and_pairing(paired
     assert progress["attempts"] == []
     assert progress["profileId"] == household_id
     assert parent.get("/api/v1/profiles/export").json()["profile"]["id"] == household_id
-    assert progress["settings"]["reducedMotion"] is True
+    assert progress["settings"]["reducedMotion"] is False
     assert parent.get("/api/v1/sessions/current").json() is None
     assert parent.get("/api/v1/profiles/export").json()["assessmentSummaries"] == []
     with storage.connect() as db:

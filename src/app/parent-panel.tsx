@@ -10,7 +10,6 @@ import { GameSettings } from './game-settings';
 import { CopyCode } from './copy-code';
 import { KnowledgeProgress } from './knowledge-progress';
 import { formatAttemptTime } from './labels';
-import { ReducedMotionControl } from './management-controls';
 import { PlaybackGapControl } from './playback-gap-control';
 import { ReleaseHistory } from './release-history';
 import { Notice } from './notice';
@@ -166,7 +165,6 @@ export function ParentPanel({
                     method: 'PUT',
                     body: JSON.stringify({
                       soundEnabled,
-                      reducedMotion: Boolean(progress.settings?.reducedMotion),
                     }),
                   });
                   await refresh();
@@ -260,32 +258,7 @@ export function ParentPanel({
           )}
         </div>
       )}
-      <details className="parent-section">
-        <summary>显示设置</summary>
-        <div className="parent-setting">
-          <div>
-            <strong>减少动态效果</strong>
-            <p>开启后，练习界面停用非必要动画与过渡效果。</p>
-          </div>
-          <ReducedMotionControl
-            key={String(Boolean(progress.settings?.reducedMotion))}
-            checked={Boolean(progress.settings?.reducedMotion)}
-            disabled={!isParent}
-            onChange={(next) =>
-              void act(async () => {
-                await api('/household/settings', {
-                  method: 'PUT',
-                  body: JSON.stringify({
-                    soundEnabled: Boolean(progress.settings?.soundEnabled),
-                    reducedMotion: next,
-                  }),
-                });
-                await refresh();
-              })
-            }
-          />
-        </div>
-      </details>
+
       {isParent && <ModelSettings />}
       <h3 className="parent-category">设备与数据</h3>
       {!isMacApp() && (

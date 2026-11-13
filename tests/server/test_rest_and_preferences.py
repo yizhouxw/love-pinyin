@@ -37,7 +37,7 @@ def test_incomplete_session_does_not_count_as_completed_round(paired_client):
     assert client.get("/api/v1/bootstrap").json()["profile"]["roundsSinceBreak"] == 0
 
 
-def test_parent_reduced_motion_preference_is_persisted(paired_client):
+def test_removed_motion_preference_from_legacy_clients_is_ignored(paired_client):
     client = paired_client
     updated = client.put(
         "/api/v1/household/settings",
@@ -45,8 +45,9 @@ def test_parent_reduced_motion_preference_is_persisted(paired_client):
         headers={"X-LP-CSRF": client.cookies.get("lp_csrf")},
     )
     assert updated.status_code == 200
-    assert updated.json()["settings"]["reducedMotion"] is True
-    assert client.get("/api/v1/profiles/progress").json()["settings"]["reducedMotion"] is True
+    assert updated.json()["settings"]["reducedMotion"] is False
+    assert client.get("/api/v1/profiles/progress").json()["settings"]["reducedMotion"] is False
     assert (
-        client.get("/api/v1/profiles/export").json()["profile"]["settings"]["reducedMotion"] is True
+        client.get("/api/v1/profiles/export").json()["profile"]["settings"]["reducedMotion"]
+        is False
     )

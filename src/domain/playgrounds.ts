@@ -6,7 +6,6 @@ export type PlaygroundConfig = {
   count: number;
   speed: number;
   assist: boolean;
-  still: boolean;
   difficulty?: 'gentle' | 'steady' | 'challenge';
 };
 export type PlaygroundState = {
@@ -154,7 +153,7 @@ export function stepPlayground(
   c: PlaygroundConfig,
 ): PlaygroundState {
   const dt = clamp(elapsed, 0, 0.04);
-  if (prior.hit !== null || c.still) return prior;
+  if (prior.hit !== null) return prior;
   const s = { ...prior, time: prior.time + dt, flash: Math.max(0, prior.flash - dt) };
   if (c.scene === 'runner') {
     const nextTree = tree(s, c.count);

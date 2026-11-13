@@ -10,6 +10,7 @@ test('KEY-01: two-dimensional boat navigation, pause, native buttons and voice k
   await page.getByRole('button', { name: '连接家庭' }).click();
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByRole('button', { name: '开始河湾划船' }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const stage = page.locator('.adventure-canvas');
   await expect(page.locator('button[data-option-id]').first()).toBeEnabled({ timeout: 20000 });
   await stage.focus();

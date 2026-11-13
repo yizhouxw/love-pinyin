@@ -188,6 +188,7 @@ final class AdaptiveClassroomTests: XCTestCase {
         defer { device.orientation = .portrait }
         app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
         app.launch()
+        waitForRotation(app, landscape: false)
 
         let hub = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "进入游戏乐园")).firstMatch
         XCTAssertTrue(hub.waitForExistence(timeout: 25), app.debugDescription)
@@ -204,6 +205,10 @@ final class AdaptiveClassroomTests: XCTestCase {
             reveal(start, in: app)
             assertTouchTarget(start, within: app)
             start.tap()
+            let begin = app.buttons["▶ 开始游戏"]
+            XCTAssertTrue(begin.waitForExistence(timeout: 15), app.debugDescription)
+            assertTouchTarget(begin, within: app)
+            begin.tap()
 
             let listen = app.buttons["听拼音"]
             XCTAssertTrue(listen.waitForExistence(timeout: 15), app.debugDescription)
@@ -410,6 +415,11 @@ final class AdaptiveClassroomTests: XCTestCase {
     @MainActor
     private func assertTouchTarget(_ element: XCUIElement, within app: XCUIApplication,
                                    file: StaticString = #filePath, line: UInt = #line) {
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            let frame = element.frame
+            return frame.width >= 44 && frame.height >= 44 && app.frame.contains(frame)
+        }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 12), .completed, file: file, line: line)
         let frame = element.frame
         XCTAssertGreaterThanOrEqual(frame.width, 44, file: file, line: line)
         XCTAssertGreaterThanOrEqual(frame.height, 44, file: file, line: line)

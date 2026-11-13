@@ -43,6 +43,7 @@ for (const game of catalog.games) {
       (response) => response.url().endsWith('/sessions') && response.request().method() === 'POST',
     );
     await page.getByRole('button', { name: `开始${game.title}` }).click();
+    await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
     const round = await (await created).json();
     const exercise = curriculum.exercises.find((item) => item.id === round.tasks[0].exercise.id)!;
     const option = exercise.options.find((item) => item.id === exercise.answer.optionId)!;
@@ -52,10 +53,14 @@ for (const game of catalog.games) {
     await expect(stage).toBeVisible();
     await expect(page.locator('.scene-nav')).toContainText('任务 1 /');
     await expect(page.locator('.adventure-canvas svg')).toBeVisible();
-    await expect(page.locator('.adventure-canvas')).toHaveAttribute('data-still', 'true');
-    const position = await page.locator('.adventure-canvas svg').innerHTML();
-    await page.waitForTimeout(250);
-    expect(await page.locator('.adventure-canvas svg').innerHTML()).toBe(position);
+    await expect(page.locator('button[data-option-id]').first()).toBeEnabled({ timeout: 20000 });
+    // System Reduce Motion must never stop game physics or change answer mechanics.
+    if (game.scene === 'runner') {
+      const distance = Number(await stage.getAttribute('data-world-distance'));
+      await expect
+        .poll(async () => Number(await stage.getAttribute('data-world-distance')))
+        .toBeGreaterThan(distance + 10);
+    }
     await page.screenshot({
       path: test.info().outputPath(`still-${game.scene}.png`),
       fullPage: true,
@@ -65,7 +70,7 @@ for (const game of catalog.games) {
       await expect(page.locator('.rhythm-score')).toBeVisible();
       await completeRhythm(page);
     }
-    await expect(page.locator('.scene-nav')).toContainText('任务 2 /');
+    await expect(page.locator('.scene-nav')).toContainText('任务 2 /', { timeout: 20000 });
   });
 }
 
@@ -80,6 +85,7 @@ for (const game of catalog.games) {
     await page.getByRole('button', { name: '连接家庭' }).click();
     await page.getByRole('button', { name: '进入游戏乐园' }).click();
     await page.getByRole('button', { name: `开始${game.title}` }).click();
+    await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
     const stage = page.locator('.adventure-canvas');
     const character = page.locator('button[data-option-id]').first();
     await expect(character).toBeEnabled({ timeout: 20000 });

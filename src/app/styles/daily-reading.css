@@ -296,11 +296,6 @@
 .daily-follow-wait progress::-moz-progress-bar {
   background: #23878a;
 }
-@media (prefers-reduced-motion: reduce) {
-  .daily-follow-wait progress::-webkit-progress-value {
-    transition: none;
-  }
-}
 
 .daily-session-heading {
   display: flex;

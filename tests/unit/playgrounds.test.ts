@@ -20,7 +20,6 @@ const config: PlaygroundConfig = {
   count: 4,
   speed: 0.85,
   assist: true,
-  still: false,
 };
 describe('new touch playground physics', () => {
   it('passes every fruit without forced answers, including passive obstacle bounces', () => {
@@ -96,6 +95,5 @@ describe('new touch playground physics', () => {
     expect(miss.misses).toBe(1);
     const initial = startPlayground();
     expect(run(initial, { ...config, scene: 'boat' }).x).toBe(initial.x);
-    expect(stepPlayground(initial, 30, { ...config, still: true })).toBe(initial);
   });
 });

@@ -94,7 +94,7 @@ def test_guest_settings_revision_and_concurrent_scopes(test_client):
             )
         )
     assert results[0]["result"]["selectedLessonId"] == "lesson-03"
-    assert results[0]["result"]["settings"]["reducedMotion"]
+    assert results[0]["result"]["settings"]["reducedMotion"] is False
     assert results[1]["result"]["selectedLessonId"] == "lesson-01"
     assert snapshot() == before
 

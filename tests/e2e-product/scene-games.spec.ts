@@ -28,6 +28,7 @@ for (const game of catalog.games) {
       (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
     );
     await page.getByRole('button', { name: `开始${game.title}` }).click();
+    await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
     const session = await (await created).json();
     expect(session.gameSettings.level).toBe('gentle');
     expect(session.gameSettings.speed).toBe('fast');
@@ -110,6 +111,7 @@ test('SCENE-05: an unconfirmed collision stays frozen and reload replays only th
     (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
   );
   await page.getByRole('button', { name: '开始节奏鼓岛' }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const session = await (await created).json();
   const question = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;
   const original = question.answer.optionId!;

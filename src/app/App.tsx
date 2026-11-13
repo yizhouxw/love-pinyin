@@ -219,12 +219,6 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const [learningAudio, setLearningAudio] = useState<LearningAudio | null>(null);
   const voiceStarted = useRef(false);
 
-  useEffect(() => {
-    document.documentElement.dataset.reducedMotion = String(
-      Boolean(progress?.settings?.reducedMotion),
-    );
-  }, [progress?.settings?.reducedMotion]);
-
   const refresh = useCallback(async (signal?: AbortSignal) => {
     const snapshot = await loadLearningSnapshot(signal);
     signal?.throwIfAborted();
@@ -639,7 +633,6 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
         answer={answer}
         hint={hint}
         corrected={corrected}
-        reducedMotion={progress?.settings.reducedMotion ?? false}
         pendingOptionId={readPendingAnswer(task.instanceId)?.answerOptionId}
         onInteract={() => {
           voiceStarted.current = true;

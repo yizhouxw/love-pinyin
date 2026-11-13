@@ -58,7 +58,6 @@ const parseProgress = (value: unknown) =>
       string(data.selectedLessonId) &&
       count(data.completedSessions) &&
       object(data.settings) &&
-      bool(data.settings.reducedMotion) &&
       bool(data.settings.soundEnabled) &&
       Array.isArray(data.mastery) &&
       data.mastery.every(

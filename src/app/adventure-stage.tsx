@@ -26,7 +26,8 @@ type Props = {
   options: Option[];
   disabled: boolean;
   paused: boolean;
-  still: boolean;
+  started: boolean;
+  onStart: () => void;
   assist: boolean;
   speed: number;
   difficulty: 'gentle' | 'steady' | 'challenge';
@@ -110,7 +111,7 @@ export function AdventureStage(p: Props) {
     }
   }, [p.disabled, p.paused, store]);
   useEffect(() => {
-    if (p.disabled || p.paused || p.still) return;
+    if (p.disabled || p.paused) return;
     let raf = 0,
       last = 0;
     const tick = (time: number) => {
@@ -123,7 +124,6 @@ export function AdventureStage(p: Props) {
           count: p.options.length,
           speed: p.speed * (p.scene === 'boat' && pointer.current?.moved ? 2.5 : 1),
           assist: p.assist,
-          still: p.still,
         });
         store.write(next);
         if (next.hit !== null && !sent.current) {
@@ -135,17 +135,7 @@ export function AdventureStage(p: Props) {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [
-    p.disabled,
-    p.paused,
-    p.still,
-    p.scene,
-    p.options.length,
-    p.speed,
-    p.assist,
-    p.difficulty,
-    store,
-  ]);
+  }, [p.disabled, p.paused, p.scene, p.options.length, p.speed, p.assist, p.difficulty, store]);
   useEffect(() => {
     if (!showDemo || p.paused || !p.rhythmEnabled) return;
     const beatMilliseconds = Math.max(360, 650 / p.speed);
@@ -173,7 +163,7 @@ export function AdventureStage(p: Props) {
   function choose(i: number) {
     if (p.disabled || p.paused) return;
     stage.current?.focus({ preventScroll: true });
-    if (p.still || p.scene === 'drum') {
+    if (p.scene === 'drum') {
       sent.current = true;
       store.write({ ...store.read(), hit: i });
       p.onChoose(i);
@@ -236,7 +226,7 @@ export function AdventureStage(p: Props) {
         tabIndex={0}
         aria-label={names[p.scene]}
         data-scene={p.scene}
-        data-still={p.still}
+        data-started={p.started}
         data-speed-factor={p.speed}
         data-world-distance={world.distance}
         data-world-x={world.x}
@@ -251,11 +241,15 @@ export function AdventureStage(p: Props) {
             return;
           }
           if (e.target instanceof Element && e.target.closest('button')) return;
+          const jumpKey = p.scene === 'runner' && (e.code === 'Space' || e.code === 'ArrowUp');
+          if (jumpKey) {
+            e.preventDefault();
+            if (canPlay && !e.repeat) store.write(jump(store.read()));
+            return;
+          }
           if (!canPlay) return;
           if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code))
             e.preventDefault();
-          if (p.scene === 'runner' && (e.code === 'Space' || e.code === 'ArrowUp'))
-            store.write(jump(store.read()));
           if (p.scene === 'boat') {
             const delta = {
               ArrowLeft: [-65, 0],
@@ -272,7 +266,6 @@ export function AdventureStage(p: Props) {
             pointer.current ||
             !e.isPrimary ||
             !canPlay ||
-            p.still ||
             (e.target instanceof Element && e.target.closest('button'))
           )
             return;
@@ -350,7 +343,7 @@ export function AdventureStage(p: Props) {
               <path d="M0 205Q90 75 180 170T480 130V400H0" fill="#7fbea6" />
               <path d="M0 260Q100 150 210 240T480 210V400H0" fill="#47977d" />
               {[0, 1, 2, 3, 4].map((i) => {
-                const x = i * 150 - ((p.still ? 0 : world.distance * 0.25) % 150);
+                const x = i * 150 - ((world.distance * 0.25) % 150);
                 return (
                   <g key={i} transform={`translate(${x} 0)`}>
                     <path d="M18 110v220" stroke="#668064" strokeWidth="12" />
@@ -586,7 +579,13 @@ export function AdventureStage(p: Props) {
             ))}
           </div>
         )}
-        {p.paused && (
+        {!p.started && (
+          <div className="adventure-overlay">
+            <strong>准备好了吗？</strong>
+            <button onClick={p.onStart}>▶ 开始游戏</button>
+          </div>
+        )}
+        {p.started && p.paused && (
           <div className="adventure-overlay">
             <strong>先停一停</strong>
             <button onClick={p.onResume}>▶ 继续游戏</button>
@@ -608,7 +607,19 @@ export function AdventureStage(p: Props) {
       </div>
       {p.scene === 'runner' && (
         <div className="adventure-run-controls">
-          <button disabled={!canPlay} onClick={() => store.write(jump(store.read()))}>
+          <button
+            disabled={!canPlay}
+            onClick={() => {
+              stage.current?.focus({ preventScroll: true });
+              store.write(jump(store.read()));
+            }}
+            onKeyDown={(e) => {
+              if (e.code === 'ArrowUp' || e.code === 'Space') {
+                e.preventDefault();
+                if (canPlay && !e.repeat) store.write(jump(store.read()));
+              }
+            }}
+          >
             跳起来 ↑
           </button>
           <div aria-label="选择果树">

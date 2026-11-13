@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gameCatalog } from '../domain/games';
 import type { GameSettings, Scene } from '../domain/scene-game';
 import type { Answer, Exercise, Hint } from '../domain/learning-api';
@@ -15,13 +15,6 @@ import {
   saveSceneDisplay,
   type ScenePreference,
 } from '../platform/game-preferences';
-const motionPreference = () => window.matchMedia('(prefers-reduced-motion: reduce)');
-const subscribeToMotion = (notify: () => void) => {
-  const preference = motionPreference();
-  preference.addEventListener('change', notify);
-  return () => preference.removeEventListener('change', notify);
-};
-const prefersReducedMotion = () => motionPreference().matches;
 type Props = {
   gameId: string;
   taskId: string;
@@ -37,7 +30,6 @@ type Props = {
   answer: Answer | null;
   hint: Hint | null;
   corrected: boolean;
-  reducedMotion: boolean;
   pendingOptionId?: string;
   onInteract: () => void;
   onAnswer: (id: string) => Promise<void>;
@@ -50,8 +42,6 @@ type Props = {
 };
 export function SceneGame(props: Props) {
   const { gameId, question, voice, busy, locked, answer, hint, corrected } = props;
-  const systemReducedMotion = useSyncExternalStore(subscribeToMotion, prefersReducedMotion);
-  const staticChoices = systemReducedMotion || props.reducedMotion;
   const game = gameCatalog.games.find((g) => g.id === gameId)!;
   const scene = game.scene as Scene;
   const run = props.run?.level
@@ -61,7 +51,7 @@ export function SceneGame(props: Props) {
         Array.from({ length: props.total }, (_, i) => `legacy-${i}`),
       );
   const segment = segmentAt(run, props.index)!;
-  const [display, setDisplay] = useState(() => readSceneDisplay(gameId, props.reducedMotion));
+  const [display, setDisplay] = useState(() => readSceneDisplay(gameId));
   const { enlarged, assist } = display;
   function changeDisplay(value: Partial<typeof display>) {
     setDisplay((prior) => ({ ...prior, ...value }));
@@ -77,6 +67,7 @@ export function SceneGame(props: Props) {
   const [draftAssist, setDraftAssist] = useState(assist);
   const [applying, setApplying] = useState(false),
     [settingsError, setSettingsError] = useState('');
+  const [started, setStarted] = useState(false);
   const [paused, setPaused] = useState(false),
     [sending, setSending] = useState(false);
   const [selection, setSelection] = useState<{ task: string; index: number | null }>(() => ({
@@ -97,6 +88,7 @@ export function SceneGame(props: Props) {
     speed = props.settings?.speed ?? 'slow';
   const done = Boolean(answer && (answer.correct || corrected));
   const stopped =
+    !started ||
     paused ||
     applying ||
     locked ||
@@ -118,7 +110,7 @@ export function SceneGame(props: Props) {
     });
   }
   useEffect(() => {
-    if (busy || sending || voice.playingId || paused || props.error) return;
+    if (!started || busy || sending || voice.playingId || paused || props.error) return;
     if (done && (scene !== 'drum' || celebrated)) {
       const timer = window.setTimeout(() => nextRef.current(), 850);
       return () => window.clearTimeout(timer);
@@ -132,6 +124,7 @@ export function SceneGame(props: Props) {
       return () => window.clearTimeout(timer);
     }
   }, [
+    started,
     answer,
     busy,
     sending,
@@ -158,6 +151,7 @@ export function SceneGame(props: Props) {
     document.querySelector<HTMLElement>('.adventure-canvas')?.focus({ preventScroll: true });
   }
   function togglePause() {
+    if (!started) return;
     voice.stop();
     if (!paused && props.onPause) props.onPause();
     else setPaused((value) => !value);
@@ -192,7 +186,7 @@ export function SceneGame(props: Props) {
         </span>
       </nav>
       <div className="scene-view-actions">
-        <button className="quiet" onClick={togglePause}>
+        <button className="quiet" disabled={!started} onClick={togglePause}>
           {paused ? '▶ 继续' : 'Ⅱ 暂停'}
         </button>
         <button
@@ -394,7 +388,14 @@ export function SceneGame(props: Props) {
             options={question.options}
             disabled={stopped || hit !== null}
             paused={paused}
-            still={staticChoices}
+            started={started}
+            onStart={() => {
+              setStarted(true);
+              setPaused(false);
+              if (question.audioRef) voice.playStandard(question.audioRef);
+              else voice.play(`prompt-${question.id}`);
+              focusStage();
+            }}
             assist={assist || gameCatalog.levels[level].assist}
             speed={
               gameCatalog.speeds[speed].factor *
@@ -408,12 +409,15 @@ export function SceneGame(props: Props) {
             rhythmEnabled={!busy && !sending && !voice.playingId && !applying}
             onChoose={choose}
             onFinished={() => setCelebrated(true)}
-            onResume={() => setPaused(false)}
+            onResume={() => {
+              setPaused(false);
+              focusStage();
+            }}
             onPause={togglePause}
           />
         </section>
         <aside className="scene-mission" aria-label="本关任务">
-          <h1>{staticChoices ? '听一听，轻点场景中的拼音目标。' : game.controls}</h1>
+          <h1>{game.controls}</h1>
           {cue?.visualCue && <div className="scene-cue">{cue.visualCue}</div>}
           <div className="scene-help">
             <button

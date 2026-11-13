@@ -87,6 +87,7 @@ test('HOME-01/02: compact home, independent settings, keyboard, saved choices an
     (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
   );
   await page.getByRole('button', { name: '开始森林跑酷' }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const session = await (await created).json();
   expect(session.gameRun.level.id).toBe('runner-02');
   expect(session.tasks).toHaveLength(3);

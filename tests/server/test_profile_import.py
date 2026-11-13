@@ -281,7 +281,7 @@ def test_failed_restore_rolls_back_existing_data(paired_client, monkeypatch):
     assert after["profile"]["revision"] == before["profile"]["revision"]
 
 
-def test_import_restores_motion_preference_and_rest_round_count(paired_client):
+def test_legacy_motion_preference_is_ignored_while_rest_count_is_restored(paired_client):
     client = paired_client
     headers = {"X-LP-CSRF": client.cookies.get("lp_csrf")}
     assert (
@@ -307,7 +307,9 @@ def test_import_restores_motion_preference_and_rest_round_count(paired_client):
 
     backup = client.get("/api/v1/profiles/export").json()
     assert backup["profile"]["roundsSinceBreak"] == 1
-    assert backup["profile"]["settings"]["reducedMotion"] is True
+    assert backup["profile"]["settings"]["reducedMotion"] is False
+    # A pre-removal backup may still contain True; importing it must not revive the mode.
+    backup["profile"]["settings"]["reducedMotion"] = True
     assert (
         client.request(
             "DELETE",
@@ -329,7 +331,7 @@ def test_import_restores_motion_preference_and_rest_round_count(paired_client):
     preview_result = preview(client, backup).json()
     assert confirm(client, preview_result).status_code == 200
     assert client.get("/api/v1/bootstrap").json()["profile"]["roundsSinceBreak"] == 1
-    assert client.get("/api/v1/profiles/progress").json()["settings"]["reducedMotion"] is True
+    assert client.get("/api/v1/profiles/progress").json()["settings"]["reducedMotion"] is False
 
 
 def test_legacy_review_fields_do_not_block_restore_or_change_frozen_session(paired_client):

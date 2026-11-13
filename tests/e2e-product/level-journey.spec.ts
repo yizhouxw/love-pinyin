@@ -25,6 +25,7 @@ test('LEVEL-01/KEY-01: play one complete twelve-task forest journey using normal
     (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
   );
   await page.getByRole('button', { name: '开始森林跑酷' }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const session = await (await created).json();
   expect(session.tasks).toHaveLength(12);
   expect(

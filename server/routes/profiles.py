@@ -90,7 +90,7 @@ class Settings(BaseModel):
         default=None, strict=True, ge=1, le=POLICY["dailyMaxMinutes"]
     )
     soundEnabled: bool
-    reducedMotion: bool | None = None
+    reducedMotion: bool | None = None  # Accept old clients; ignored.
     playbackGapSeconds: float | None = Field(
         default=None,
         strict=True,
@@ -115,7 +115,7 @@ def settings(body: Settings, device: dict = Depends(parent)) -> dict:
                 int(body.soundEnabled),
                 body.gameSessionMinutes,
                 body.gameDailyMinutes,
-                int(body.reducedMotion) if body.reducedMotion is not None else None,
+                0,
                 gap_tenths(body.playbackGapSeconds)
                 if body.playbackGapSeconds is not None
                 else None,
@@ -317,7 +317,7 @@ def import_profile(body: ImportConfirm, device: dict = Depends(parent)) -> dict:
             (
                 backup["profile"]["selectedLessonId"],
                 int(backup["profile"]["settings"]["soundEnabled"]),
-                int(backup["profile"]["settings"]["reducedMotion"]),
+                0,
                 gap_tenths(
                     backup["profile"]["settings"].get("playbackGapSeconds", GAP["defaultSeconds"])
                 ),
