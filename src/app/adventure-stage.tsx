@@ -276,6 +276,7 @@ export function AdventureStage(p: Props) {
             (e.target instanceof Element && e.target.closest('button'))
           )
             return;
+          e.preventDefault();
           const at = point(e);
           pointer.current = { id: e.pointerId, start: at, last: at, moved: false };
           e.currentTarget.setPointerCapture(e.pointerId);

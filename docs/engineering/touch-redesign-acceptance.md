@@ -31,3 +31,5 @@
 卡住修复后的 iPad 两项真机套件通过（`build/ios/redesign-ipad-recovery.xcresult`）。浏览器三条实际操作路径另录制为手机尺寸录像，保存在 `private/redesign-proof/{runner-pass-fruit,boat-recovery,drum-retry}.webm`；未注入游戏状态，使用真实指针、碰撞和 API 记录。
 
 卡住修复后的 iPhone 13 四游戏与词语工作区也已通过（`build/ios/redesign-iphone-recovery-04.xcresult`）。设备信任恢复后曾遇到 XCTest 自动化启动超时，显式重新启动测试程序后，两项套件实际执行并通过；未把启动失败计为功能通过。两台设备最终均安装本次修复。
+
+REDESIGN-06 安装后的 Mac 原生窗口复查发现 SVG 文字默认选择会与拖船争用指针；补充画布禁止文本选择/长按菜单及有效指针按下的 preventDefault。真实指针撞礁脱离、横竖屏恢复与弹射取消的双浏览器 6 项回归通过，新增选区为空断言；217 项单元测试、lint、类型与构建通过。日志 `/tmp/redesign-native-drag{,-unit,-lint}.log`。这是原生窗口实测发现的补充修复，非仅用模拟截图确认。

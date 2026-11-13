@@ -10,6 +10,9 @@
   overflow: hidden;
   border-radius: 18px;
   touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   isolation: isolate;
   outline-offset: 3px;
 }

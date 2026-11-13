@@ -68,6 +68,7 @@ test('REDESIGN-05 boat: physically hit reef, drag away, hit again and route to c
     .poll(async () => Number(await stage.getAttribute('data-world-x')))
     .toBeLessThan(x - 35);
   await page.mouse.up();
+  expect(await page.evaluate(() => window.getSelection()?.toString())).toBe('');
   const stopped = await stage.getAttribute('data-world-x');
   await page.waitForTimeout(150);
   expect(await stage.getAttribute('data-world-x')).toBe(stopped);
