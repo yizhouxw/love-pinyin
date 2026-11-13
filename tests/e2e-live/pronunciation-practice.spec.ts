@@ -51,6 +51,8 @@ test('MATCH-16: course demonstration and local-only replay are separate', async 
   });
   await guest(page, appUrl);
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
+  if (await page.getByRole('button', { name: '完成', exact: true }).isVisible())
+    await page.getByRole('button', { name: '完成', exact: true }).click();
   await page.getByRole('button', { name: '课堂学习' }).click();
   const course = page.getByRole('region', { name: '课程拼读跟读' });
   const record = course.getByRole('button', { name: '录下我的跟读' });
@@ -91,6 +93,8 @@ test('SHOP-09: daily capture is local and can be confirmed by a parent before mo
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   await page.getByText('播放设置', { exact: true }).click();
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
+  if (await page.getByRole('button', { name: '完成', exact: true }).isVisible())
+    await page.getByRole('button', { name: '完成', exact: true }).click();
   await page.getByText('录音比较（可选）', { exact: true }).click();
   const adult = page.getByText('家长帮助判断', { exact: true });
   const adultTop = await documentTop(adult);
@@ -134,6 +138,8 @@ test('MATCH-15: microphone refusal leaves the course usable and creates no recog
   });
   await guest(page, appUrl);
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
+  if (await page.getByRole('button', { name: '完成', exact: true }).isVisible())
+    await page.getByRole('button', { name: '完成', exact: true }).click();
   await page.getByRole('button', { name: '课堂学习' }).click();
   const course = page.getByRole('region', { name: '课程拼读跟读' });
   await course.getByText('录音回放（可选）', { exact: false }).click();
@@ -177,6 +183,8 @@ for (const action of ['demonstration', 'activity'] as const) {
     });
     await guest(page, appUrl);
     await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
+    if (await page.getByRole('button', { name: '完成', exact: true }).isVisible())
+      await page.getByRole('button', { name: '完成', exact: true }).click();
     await page.getByRole('button', { name: '课堂学习' }).click();
     const course = page.getByRole('region', { name: '课程拼读跟读' });
     await course.getByText('录音回放（可选）', { exact: false }).click();
@@ -211,6 +219,8 @@ test('MATCH-15: interrupted pending microphone permission cannot stop the newer 
   });
   await guest(page, appUrl);
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
+  if (await page.getByRole('button', { name: '完成', exact: true }).isVisible())
+    await page.getByRole('button', { name: '完成', exact: true }).click();
   await page.getByRole('button', { name: '课堂学习' }).click();
   await page.evaluate(() => {
     const capture = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);

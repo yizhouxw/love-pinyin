@@ -354,3 +354,64 @@
   display: grid;
   gap: 12px;
 }
+
+/* Local settings overlay the page rather than moving the learning controls. */
+.quick-settings {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+}
+.quick-settings > summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  cursor: pointer;
+  border-radius: 12px;
+  color: var(--accent, #265eaa);
+  background: #f0f4fa;
+}
+.quick-settings[open] {
+  z-index: 20;
+}
+.quick-settings-panel {
+  position: absolute;
+  inset-inline-start: 0;
+  top: calc(100% + 8px);
+  width: min(380px, calc(100vw - 40px));
+  max-height: min(65vh, 560px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 18px;
+  border: 1px solid #dce2eb;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 36px #172b4d26;
+}
+.quick-settings-panel > div {
+  flex-wrap: wrap;
+}
+@media (max-width: 600px), (max-height: 500px) {
+  .quick-settings-panel {
+    position: fixed;
+    inset: auto 12px 12px;
+    width: auto;
+    max-height: 70dvh;
+    padding-bottom: max(18px, env(safe-area-inset-bottom));
+  }
+}
+.quick-settings-panel .inline-gap-settings {
+  width: 100%;
+}
+.inline-gap-settings > summary {
+  cursor: pointer;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+.quick-settings-done {
+  display: block;
+  margin-inline-start: auto;
+  min-height: 48px;
+}

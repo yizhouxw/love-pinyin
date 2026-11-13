@@ -1,3 +1,4 @@
+import { QuickSettings, CloseQuickSettings } from './quick-settings';
 import { useEffect, useId, useRef, useState } from 'react';
 import {
   writingSteps,
@@ -347,34 +348,37 @@ export function WritingWorkshop({
         <p>拿出纸笔，慢慢写一写</p>
         <small>可以随时停下来。这项练习不打分。</small>
       </div>
-      <details className="practice-settings">
+      <QuickSettings className="practice-settings">
         <summary>播放设置</summary>
-        <div className="writing-settings-controls">
-          <GuidanceSwitch
-            label="语音"
-            enabled={soundEnabled}
-            onChange={(enabled) => {
-              stopSequence();
-              voice.stop();
-              onGuidanceChange(enabled);
-            }}
-          />
-          <label className="guidance-switch">
-            <input
-              type="checkbox"
-              aria-label="连读"
-              checked={autoNext}
-              onChange={(event) => {
+        <div className="quick-settings-panel">
+          <CloseQuickSettings />
+          <div className="writing-settings-controls">
+            <GuidanceSwitch
+              label="语音"
+              enabled={soundEnabled}
+              onChange={(enabled) => {
                 stopSequence();
                 voice.stop();
-                continuous.current = event.currentTarget.checked;
-                setAutoNext(event.currentTarget.checked);
+                onGuidanceChange(enabled);
               }}
             />
-            <span>连读：{autoNext ? '开' : '关'}</span>
-          </label>
+            <label className="guidance-switch">
+              <input
+                type="checkbox"
+                aria-label="连读"
+                checked={autoNext}
+                onChange={(event) => {
+                  stopSequence();
+                  voice.stop();
+                  continuous.current = event.currentTarget.checked;
+                  setAutoNext(event.currentTarget.checked);
+                }}
+              />
+              <span>连读：{autoNext ? '开' : '关'}</span>
+            </label>
+          </div>
         </div>
-      </details>
+      </QuickSettings>
       <VoiceFailure voice={voice} />
     </section>
   );

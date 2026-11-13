@@ -2,6 +2,37 @@ import XCTest
 
 final class AdaptiveClassroomTests: XCTestCase {
     @MainActor
+    func testQuickSettingsDismissAndRotate() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
+        XCUIDevice.shared.orientation = .portrait
+        app.launch()
+        let entry = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "进入词语天天练")).firstMatch
+        XCTAssertTrue(entry.waitForExistence(timeout: 25), app.debugDescription)
+        entry.tap()
+        let settings = labeled("播放设置", in: app)
+        XCTAssertTrue(settings.waitForExistence(timeout: 15), app.debugDescription)
+        reveal(settings, in: app)
+        settings.tap()
+        let done = app.buttons["完成"]
+        XCTAssertTrue(done.waitForExistence(timeout: 10), app.debugDescription)
+        XCTAssertTrue(done.isHittable)
+        addScreenshot("快捷设置竖屏")
+        done.tap()
+        XCTAssertFalse(done.exists)
+        reveal(settings, in: app)
+        settings.tap()
+        XCUIDevice.shared.orientation = .landscapeLeft
+        XCTAssertTrue(done.waitForExistence(timeout: 10))
+        reveal(done, in: app)
+        XCTAssertTrue(done.isHittable)
+        addScreenshot("快捷设置横屏")
+        done.tap()
+        XCUIDevice.shared.orientation = .portrait
+    }
+
+    @MainActor
     func testHomeShowsLearningDestinations() throws {
         continueAfterFailure = false
         let app = XCUIApplication()

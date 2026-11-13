@@ -1,3 +1,4 @@
+import { QuickSettings, CloseQuickSettings } from './quick-settings';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import {
   highlightWords,
@@ -448,29 +449,32 @@ export function WordPractice({
         </span>
       </footer>
       <div className="word-options">
-        <details className="word-settings practice-settings">
+        <QuickSettings className="word-settings practice-settings">
           <summary>播放设置</summary>
-          <div className="word-settings-controls">
-            <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-            <QuickGapSettings
-              seconds={gapSeconds}
-              onSave={(seconds) => {
-                voice.stop();
-                onGapChange(seconds);
-              }}
-            />
-            {mode === 'read' && (
-              <ReadingModeControl
-                mode={readingMode}
-                onChange={(nextMode) => {
-                  if (nextMode === readingMode) return;
+          <div className="quick-settings-panel">
+            <CloseQuickSettings />
+            <div className="word-settings-controls">
+              <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+              <QuickGapSettings
+                seconds={gapSeconds}
+                onSave={(seconds) => {
                   voice.stop();
-                  setReadingMode(nextMode);
+                  onGapChange(seconds);
                 }}
               />
-            )}
+              {mode === 'read' && (
+                <ReadingModeControl
+                  mode={readingMode}
+                  onChange={(nextMode) => {
+                    if (nextMode === readingMode) return;
+                    voice.stop();
+                    setReadingMode(nextMode);
+                  }}
+                />
+              )}
+            </div>
           </div>
-        </details>
+        </QuickSettings>
         <details className="word-help practice-settings">
           <summary>玩法与提示</summary>
           <p>{wordPractice.ui[mode]}</p>

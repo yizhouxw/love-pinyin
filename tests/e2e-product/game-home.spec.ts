@@ -38,10 +38,12 @@ test('HOME-01/02: compact home, independent settings, keyboard, saved choices an
   await page.getByLabel('森林跑酷难度').selectOption('challenge');
   await expect(page.getByLabel('森林跑酷关卡')).toHaveValue(route);
   await page.getByLabel('森林跑酷速度').selectOption('fast');
+  await page.getByRole('button', { name: '完成', exact: true }).click();
   await page.getByLabel('森林跑酷每关题量').selectOption('3');
   await page.getByLabel('森林跑酷关卡').selectOption('runner-02');
   await expect(summary).toContainText('挑战');
   await expect(summary).toContainText('快速');
+  await openGameSettings(page, '森林跑酷');
   await expect(page.getByRole('button', { name: '听关卡故事：蘑菇小径' })).toBeVisible();
   await summary.focus();
   await page.keyboard.press('Space');
@@ -71,6 +73,7 @@ test('HOME-01/02: compact home, independent settings, keyboard, saved choices an
   await openGameSettings(page, '森林跑酷');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath('home-320-text-200.png'), fullPage: true });
+  await page.getByRole('button', { name: '完成', exact: true }).click();
   await page.locator('.game-home-info > summary').click();
   await expect(page.locator('.game-home-info')).toContainText('连续休息 10 分钟');
   await page.locator('.game-home-evidence > summary').click();

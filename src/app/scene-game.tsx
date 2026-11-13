@@ -392,6 +392,7 @@ export function SceneGame(props: Props) {
         <form
           onSubmit={(event) => {
             event.preventDefault();
+            if (applying) return;
             setApplying(true);
             setSettingsError('');
             void props

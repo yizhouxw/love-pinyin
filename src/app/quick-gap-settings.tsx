@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { InQuickSettings } from './quick-settings';
+import { useContext, useEffect, useId, useRef, useState } from 'react';
 import type { DailyItem } from '../domain/daily-reading';
 import { isGuest } from '../platform/guest';
 import { PlaybackGapControl } from './playback-gap-control';
@@ -14,6 +15,7 @@ export function QuickGapSettings({
   onSave: (seconds: number) => void;
   disabled?: boolean;
 }) {
+  const inline = useContext(InQuickSettings);
   const [open, setOpen] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -39,6 +41,52 @@ export function QuickGapSettings({
       document.documentElement.style.overflow = previousRootOverflow;
     };
   }, [open]);
+  if (inline)
+    return (
+      <div className="inline-gap-settings">
+        <button
+          ref={trigger}
+          type="button"
+          className="daily-gap-trigger"
+          aria-expanded={open}
+          aria-label={`间隔设置，基础间隔${seconds.toFixed(1)}秒`}
+          onClick={() => setOpen(!open)}
+        >
+          跟读间隔 · {seconds.toFixed(1)} 秒
+        </button>
+        {open && (
+          <div role="dialog" aria-label="跟读间隔">
+            <button
+              type="button"
+              aria-label="关闭间隔设置"
+              onClick={() => {
+                setOpen(false);
+                trigger.current?.focus();
+              }}
+            >
+              收起间隔
+            </button>
+            <PlaybackGapControl
+              key={seconds}
+              seconds={seconds}
+              disabled={disabled}
+              item={item}
+              onSave={(value) => {
+                onSave(value);
+                setOpen(false);
+                trigger.current?.focus();
+              }}
+              onCancel={() => {
+                setOpen(false);
+                trigger.current?.focus();
+              }}
+              deviceOnly
+              guest={isGuest()}
+            />
+          </div>
+        )}
+      </div>
+    );
   return (
     <div className="daily-gap-settings">
       <button

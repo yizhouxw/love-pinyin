@@ -1,3 +1,4 @@
+import { QuickSettings, CloseQuickSettings } from './quick-settings';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type {
   DailyDay,
@@ -250,13 +251,16 @@ export function DailyReadingPage({
                   </p>
                 )}
               </div>
-              <details className="practice-settings">
+              <QuickSettings className="practice-settings">
                 <summary>播放设置</summary>
-                <div className="daily-quick-settings">
-                  <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-                  <QuickGapSettings seconds={gapSeconds} onSave={onGapChange} />
+                <div className="quick-settings-panel">
+                  <CloseQuickSettings />
+                  <div className="daily-quick-settings">
+                    <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+                    <QuickGapSettings seconds={gapSeconds} onSave={onGapChange} />
+                  </div>
                 </div>
-              </details>
+              </QuickSettings>
               <details className="daily-parent">
                 <summary>跟读怎么玩</summary>
                 <VoiceButton id="daily-ui-intro" voice={helpVoice} label="听每日跟读说明" />
@@ -878,50 +882,53 @@ function ReadingSession({
         {item.audioNotes.length > 0 && (
           <p className="daily-audio-note">{item.audioNotes.join('；')}</p>
         )}
-        <details className="practice-settings">
+        <QuickSettings className="practice-settings">
           <summary>播放设置</summary>
-          <div className="daily-quick-settings">
-            <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-            <QuickGapSettings
-              seconds={gapSeconds}
-              item={item}
-              disabled={recording !== 'idle' || recognizing}
-              onSave={(seconds) => {
-                stop();
-                onGapChange(seconds);
-              }}
-            />
-            {section.kind !== 'sentences' && (
-              <ReadingModeControl
-                mode={readingMode}
+          <div className="quick-settings-panel">
+            <CloseQuickSettings />
+            <div className="daily-quick-settings">
+              <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+              <QuickGapSettings
+                seconds={gapSeconds}
+                item={item}
                 disabled={recording !== 'idle' || recognizing}
-                onChange={(mode) => {
-                  if (mode === readingMode) return;
+                onSave={(seconds) => {
                   stop();
-                  setFailure('');
-                  setExampleFailure(false);
-                  onReadingModeChange(mode);
+                  onGapChange(seconds);
                 }}
               />
-            )}
-            {section.kind === 'sentences' && (
-              <label className="guidance-switch">
-                <input
-                  type="checkbox"
-                  checked={characterReading}
+              {section.kind !== 'sentences' && (
+                <ReadingModeControl
+                  mode={readingMode}
                   disabled={recording !== 'idle' || recognizing}
-                  onChange={(event) => {
+                  onChange={(mode) => {
+                    if (mode === readingMode) return;
                     stop();
                     setFailure('');
-                    onCharacterReadingChange(event.currentTarget.checked);
+                    setExampleFailure(false);
+                    onReadingModeChange(mode);
                   }}
                 />
-                <span>逐字读</span>
-              </label>
-            )}
+              )}
+              {section.kind === 'sentences' && (
+                <label className="guidance-switch">
+                  <input
+                    type="checkbox"
+                    checked={characterReading}
+                    disabled={recording !== 'idle' || recognizing}
+                    onChange={(event) => {
+                      stop();
+                      setFailure('');
+                      onCharacterReadingChange(event.currentTarget.checked);
+                    }}
+                  />
+                  <span>逐字读</span>
+                </label>
+              )}
+            </div>
+            <PinyinLegend />
           </div>
-          <PinyinLegend />
-        </details>
+        </QuickSettings>
         {item.wordExample && (
           <div className="daily-word-examples">
             <button

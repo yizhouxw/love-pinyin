@@ -1,3 +1,4 @@
+import { QuickSettings, CloseQuickSettings } from './quick-settings';
 import { PinyinShop } from './pinyin-shop';
 import { shopRules } from '../domain/pinyin-shop';
 import { useEffect, useState } from 'react';
@@ -284,7 +285,7 @@ export function GameZone({
                   </select>
                 </label>
               </div>
-              <details className="game-card-settings">
+              <QuickSettings className="game-card-settings">
                 <summary aria-label={`${game.title}设置`}>
                   <span>
                     难度{' '}
@@ -300,61 +301,64 @@ export function GameZone({
                     调整 <span aria-hidden="true">⌄</span>
                   </span>
                 </summary>
-                <div className="game-preferences">
-                  <label>
-                    难度
-                    <select
-                      aria-label={`${game.title}难度`}
-                      value={preferences[game.id]?.difficulty ?? 'auto'}
-                      onChange={(event) => {
-                        setSelectedLevels((prior) => ({ ...prior, [game.id]: chosen.id }));
-                        changePreference(game.id, {
-                          difficulty: event.target.value as ScenePreference['difficulty'],
-                        });
-                      }}
-                    >
-                      <option value="auto">按进度匹配</option>
-                      {Object.entries(gameCatalog.levels).map(([key, value]) => (
-                        <option key={key} value={key}>
-                          {value.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    速度
-                    <select
-                      aria-label={`${game.title}速度`}
-                      value={preferences[game.id]?.speed ?? 'auto'}
-                      onChange={(event) =>
-                        changePreference(game.id, {
-                          speed: event.target.value as ScenePreference['speed'],
-                        })
-                      }
-                    >
-                      <option value="auto">自动</option>
-                      {Object.entries(gameCatalog.speeds).map(([key, value]) => (
-                        <option key={key} value={key}>
-                          {value.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                <div className="quick-settings-panel">
+                  <CloseQuickSettings />
+                  <div className="game-preferences">
+                    <label>
+                      难度
+                      <select
+                        aria-label={`${game.title}难度`}
+                        value={preferences[game.id]?.difficulty ?? 'auto'}
+                        onChange={(event) => {
+                          setSelectedLevels((prior) => ({ ...prior, [game.id]: chosen.id }));
+                          changePreference(game.id, {
+                            difficulty: event.target.value as ScenePreference['difficulty'],
+                          });
+                        }}
+                      >
+                        <option value="auto">按进度匹配</option>
+                        {Object.entries(gameCatalog.levels).map(([key, value]) => (
+                          <option key={key} value={key}>
+                            {value.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      速度
+                      <select
+                        aria-label={`${game.title}速度`}
+                        value={preferences[game.id]?.speed ?? 'auto'}
+                        onChange={(event) =>
+                          changePreference(game.id, {
+                            speed: event.target.value as ScenePreference['speed'],
+                          })
+                        }
+                      >
+                        <option value="auto">自动</option>
+                        {Object.entries(gameCatalog.speeds).map(([key, value]) => (
+                          <option key={key} value={key}>
+                            {value.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+                  <div className="game-level-story">
+                    <p>{chosen.subtitle}</p>
+                    <span>
+                      3 个章节 · 第 {chosen.number} 关速度 ×
+                      {(1 + (chosen.number - 1) * gameCatalog.play.levelSpeedStep).toFixed(2)}
+                    </span>
+                    <VoiceButton
+                      id={chosen.voiceId}
+                      voice={voice}
+                      label={`听关卡故事：${chosen.title}`}
+                      text="听关卡故事"
+                    />
+                  </div>
                 </div>
-                <div className="game-level-story">
-                  <p>{chosen.subtitle}</p>
-                  <span>
-                    3 个章节 · 第 {chosen.number} 关速度 ×
-                    {(1 + (chosen.number - 1) * gameCatalog.play.levelSpeedStep).toFixed(2)}
-                  </span>
-                  <VoiceButton
-                    id={chosen.voiceId}
-                    voice={voice}
-                    label={`听关卡故事：${chosen.title}`}
-                    text="听关卡故事"
-                  />
-                </div>
-              </details>
+              </QuickSettings>
               <div className="game-card-actions">
                 <VoiceButton
                   id={game.voiceId}
