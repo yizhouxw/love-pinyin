@@ -543,10 +543,6 @@ export function PinyinShop({
                       ref={waveform}
                       d={waveformPath(quietWaveform)}
                     />
-                    <path
-                      className="shop-waveform-still"
-                      d="M6 16v4 M18 14v8 M30 11v14 M42 7v22 M54 4v28 M66 10v16 M78 6v24 M90 12v12 M102 8v20 M114 13v10 M126 15v6 M138 16v4"
-                    />
                   </svg>
                   {!signal && (
                     <span>

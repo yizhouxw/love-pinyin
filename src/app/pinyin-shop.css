@@ -332,9 +332,6 @@
 [data-signal='matched'] .shop-signal {
   stroke: #4ca978;
 }
-.shop-waveform-still {
-  display: none;
-}
 .shop-is-listening {
   border-color: #8bd4f2;
   box-shadow: 0 0 0 4px #8bd4f240;
@@ -467,20 +464,6 @@
   min-height: 46px;
   margin: 10px;
   padding: 10px 16px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .shop-waveform {
-    display: none;
-  }
-  .shop-waveform-still {
-    display: inline;
-  }
-}
-html[data-reduced-motion='true'] .shop-waveform {
-  display: none;
-}
-html[data-reduced-motion='true'] .shop-waveform-still {
-  display: inline;
 }
 
 #page-games:has(.pinyin-shop) {

@@ -56,7 +56,7 @@ test.beforeEach(async ({ page }) => {
 async function enterParentArea(page: import('@playwright/test').Page) {
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
-  for (const section of ['详细学习记录', '显示设置', '已连接设备', '备份与恢复', '删除与重置'])
+  for (const section of ['详细学习记录', '已连接设备', '备份与恢复', '删除与重置'])
     await openSection(page, section);
 }
 
@@ -655,7 +655,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   const adultConfirm = page.getByRole('button', { name: '我是家长，继续' });
   if (isMobile) await adultConfirm.tap();
   else await adultConfirm.press('Enter');
-  for (const section of ['详细学习记录', '显示设置', '已连接设备', '备份与恢复'])
+  for (const section of ['详细学习记录', '已连接设备', '备份与恢复'])
     await openSection(page, section);
   await expect(page.getByRole('heading', { name: '按知识点查看进度' })).toBeVisible();
   await expect(page.getByText('录音与自动评分')).toHaveCount(0);
@@ -685,18 +685,7 @@ test('配对后可选择合法拼读候选、跳过并查看练习小结', async
   await futureLessonProgress.locator(':scope > summary').click();
   await expect(futureLessonProgress).toContainText('暂无有效练习记录 · 需要练习：字形');
   await expect(page.locator('summary').filter({ hasText: /^已连接设备$/ })).toBeVisible();
-  const reduceMotion = page.getByRole('checkbox', { name: '减少动态效果' });
-  await reduceMotion.click();
-  await expect(reduceMotion).toBeChecked();
-  await expect
-    .poll(() => page.evaluate(() => document.documentElement.dataset.reducedMotion))
-    .toBe('true');
-  expect(
-    await page
-      .locator('.device-list li')
-      .first()
-      .evaluate((node) => getComputedStyle(node).transitionProperty),
-  ).toBe('none');
+  await expect(page.getByRole('checkbox', { name: '减少动态效果' })).toHaveCount(0);
   await page.getByLabel('导入家庭备份文件').setInputFiles({
     name: 'family-backup.json',
     mimeType: 'application/json',

@@ -1,31 +1,5 @@
 import { useEffect, useRef } from 'react';
 
-export function ReducedMotionControl({
-  checked,
-  disabled,
-  onChange,
-}: {
-  checked: boolean;
-  disabled: boolean;
-  onChange: (checked: boolean) => void;
-}) {
-  return (
-    <label className="setting-toggle">
-      <input
-        type="checkbox"
-        aria-label="减少动态效果"
-        checked={checked}
-        disabled={disabled}
-        onChange={(event) => {
-          const next = event.currentTarget.checked;
-          onChange(next);
-        }}
-      />
-      开启
-    </label>
-  );
-}
-
 export function AdultConfirmDialog({
   open,
   onConfirm,

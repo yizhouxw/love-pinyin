@@ -18,6 +18,7 @@ async function enter(page: Page, url: string, title: string) {
     (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
   );
   await page.getByRole('button', { name: `开始${title}` }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const session = await (await created).json();
   await expect(page.locator('button[data-option-id]').first()).toBeEnabled({ timeout: 20000 });
   const q = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;

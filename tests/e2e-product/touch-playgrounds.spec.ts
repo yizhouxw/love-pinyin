@@ -27,6 +27,7 @@ for (const game of games.games)
       (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
     );
     await page.getByRole('button', { name: `开始${game.title}` }).click();
+    await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
     const session = await (await created).json();
     const stage = page.locator('.adventure-canvas');
     await expect(stage).toBeVisible();
@@ -87,6 +88,7 @@ test('REDESIGN-04: a short finger pull previews and delivers a parcel; cancel ne
     (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
   );
   await page.getByRole('button', { name: '开始星际投递' }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const session = await (await created).json();
   const q = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;
   const options = session.tasks[0].exercise.options as { id: string }[];

@@ -59,6 +59,7 @@ test('GAME-01/03: spoken game, first-answer evidence, corrections, skips and fro
   );
   await expect(page.getByRole('button', { name: '开始节奏鼓岛' })).toBeEnabled({ timeout: 15000 });
   await page.getByRole('button', { name: '开始节奏鼓岛' }).press('Enter');
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const session = await (await created).json();
   const first = session.tasks[0];
   const question = curriculum.exercises.find((q) => q.id === first.exercise.id)!;
@@ -113,6 +114,7 @@ test('GAME-02: real parent settings, expiry, reload, offline pause and server re
   await page.getByRole('button', { name: '返回学习', exact: true }).click();
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByRole('button', { name: '开始节奏鼓岛' }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   await page.getByRole('button', { name: '听拼音', exact: true }).click();
   await expect(page.locator('button[data-option-id]').first()).toBeEnabled({ timeout: 15000 });
   await page.route('**/api/v1/games/heartbeat', (route) => route.abort('failed'));
@@ -122,6 +124,7 @@ test('GAME-02: real parent settings, expiry, reload, offline pause and server re
   expect(await page.locator('.game-option').count()).toBe(0);
   await page.unroute('**/api/v1/games/heartbeat');
   await page.getByRole('button', { name: '继续游戏', exact: true }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   await expect(page.locator('button[data-option-id]').first()).toBeEnabled({ timeout: 15000 });
   // Fast-forward only the disposable database's clock usage. The production API,
   // browser timer and media remain real; this is not a 15-minute duration claim.
@@ -175,6 +178,7 @@ test('SCENE-04: missed space delivery retries without learning errors and real s
   await pair(page, appUrl);
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByRole('button', { name: '开始星际投递' }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   await page.getByRole('button', { name: '听拼音', exact: true }).click();
   const action = page.locator('button[data-option-id]').first();
   await expect(action).toBeEnabled({ timeout: 15000 });

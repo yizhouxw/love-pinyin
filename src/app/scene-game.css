@@ -305,14 +305,6 @@
     max-height: max(110px, calc(100dvh - 225px));
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .scene-runner-position {
-    transition: none;
-  }
-}
-[data-reduced-motion='true'] .scene-runner-position {
-  transition: none;
-}
 
 @media (max-height: 470px) and (min-width: 720px) {
   .scene-page {

@@ -16,6 +16,7 @@ for (const guest of [false, true]) {
     }
     await page.getByRole('button', { name: '进入游戏乐园' }).click();
     await page.getByRole('button', { name: '开始节奏鼓岛' }).click();
+    await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
     await page.getByRole('button', { name: '听拼音', exact: true }).click();
     await expect(page.locator('button[data-option-id]').first()).toBeEnabled();
     const pattern = guest ? '**/api/v1/guest/operate' : '**/api/v1/games/heartbeat';

@@ -45,15 +45,15 @@ export function saveScenePreference(id: string, preference: ScenePreference) {
 }
 
 export type SceneDisplay = { enlarged: boolean; assist: boolean };
-export function readSceneDisplay(id: string, reducedMotion: boolean): SceneDisplay {
+export function readSceneDisplay(id: string): SceneDisplay {
   try {
     const value = JSON.parse(sessionStorage.getItem(`love-pinyin.scene-view.${id}`) ?? '{}');
     return {
       enlarged: value.enlarged === true,
-      assist: typeof value.assist === 'boolean' ? value.assist : reducedMotion,
+      assist: typeof value.assist === 'boolean' ? value.assist : false,
     };
   } catch {
-    return { enlarged: false, assist: reducedMotion };
+    return { enlarged: false, assist: false };
   }
 }
 export function saveSceneDisplay(id: string, value: SceneDisplay) {

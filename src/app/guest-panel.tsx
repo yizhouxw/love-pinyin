@@ -2,7 +2,6 @@ import type { LearningSettingsProps } from './settings-types';
 import playback from '../../content/playback.json';
 import type { Lesson } from '../domain/learning-api';
 import { api } from '../platform/api-client';
-import { ReducedMotionControl } from './management-controls';
 import { PlaybackGapControl } from './playback-gap-control';
 import { ReleaseHistory } from './release-history';
 
@@ -74,23 +73,6 @@ export function GuestPanel({
                 body: JSON.stringify({
                   soundEnabled: progress.settings.soundEnabled !== false,
                   playbackGapSeconds,
-                }),
-              });
-              await refresh();
-            })
-          }
-        />
-        <p>减少动态效果</p>
-        <ReducedMotionControl
-          checked={Boolean(progress.settings.reducedMotion)}
-          disabled={busy}
-          onChange={(next) =>
-            void act(async () => {
-              await api('/household/settings', {
-                method: 'PUT',
-                body: JSON.stringify({
-                  soundEnabled: progress.settings.soundEnabled !== false,
-                  reducedMotion: next,
                 }),
               });
               await refresh();

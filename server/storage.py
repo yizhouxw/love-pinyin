@@ -322,7 +322,7 @@ def public_profile(row: sqlite3.Row) -> dict:
             "gameSessionMinutes": row["game_session_minutes"],
             "gameDailyMinutes": row["game_daily_minutes"],
             "soundEnabled": bool(row["sound_enabled"]),
-            "reducedMotion": bool(row["reduced_motion"]),
+            "reducedMotion": False,  # Legacy backup compatibility; mode removed.
             "playbackGapSeconds": row["playback_gap_tenths"] / 10,
         },
         "roundsSinceBreak": row["rounds_since_break"],

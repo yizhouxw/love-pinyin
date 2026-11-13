@@ -32,6 +32,7 @@ for (const game of catalog.games) {
       (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
     );
     await page.getByRole('button', { name: `开始${game.title}` }).click();
+    await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
     const session = await (await created).json();
     expect(session.tasks).toHaveLength(count);
     expect(
@@ -122,6 +123,7 @@ test('PLAY-02/04: failed settings keep the draft; pointer holds release and late
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByLabel('河湾划船关卡').selectOption('boat-01');
   await page.getByRole('button', { name: '开始河湾划船' }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const stage = page.locator('.adventure-canvas');
   await expect(stage).toBeVisible();
   const slow = Number(await stage.getAttribute('data-speed-factor'));
@@ -159,6 +161,7 @@ test('PLAY-02/04: failed settings keep the draft; pointer holds release and late
   await openGameSettings(page, '河湾划船');
   await page.getByLabel('河湾划船速度').selectOption('slow');
   await page.getByRole('button', { name: '开始河湾划船' }).click();
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   await expect(stage).toBeVisible();
   expect(Number(await stage.getAttribute('data-speed-factor'))).toBeCloseTo(slow * 1.6);
 });

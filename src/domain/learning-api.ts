@@ -69,6 +69,7 @@ export type Progress = {
   pendingClockAttempts?: number;
   attemptCount?: number;
   settings: {
+    /** Legacy backup compatibility only; never controls application behavior. */
     reducedMotion: boolean;
     soundEnabled: boolean;
     playbackGapSeconds?: number;

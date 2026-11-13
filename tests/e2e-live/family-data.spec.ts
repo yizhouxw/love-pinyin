@@ -23,10 +23,8 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
   await expect(page.getByText(/· 1 次作答/)).toBeVisible();
-  await page.getByText('显示设置', { exact: true }).click();
   const reducedMotion = page.getByRole('checkbox', { name: '减少动态效果' });
-  await reducedMotion.click();
-  await expect(reducedMotion).toBeChecked();
+  await expect(reducedMotion).toHaveCount(0);
   const downloadEvent = page.waitForEvent('download');
   await page.getByText('备份与恢复', { exact: true }).click();
   await page.getByRole('button', { name: '导出家庭数据' }).click();
@@ -46,8 +44,7 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
   expect(JSON.parse(downloadedBackup)).toEqual(JSON.parse(backup));
   const original = JSON.parse(downloadedBackup);
   expect(original.attempts).toHaveLength(1);
-  await reducedMotion.click();
-  await expect(reducedMotion).not.toBeChecked();
+  await expect(reducedMotion).toHaveCount(0);
 
   const fileInput = page.getByLabel('导入家庭备份文件');
   await fileInput.setInputFiles({
@@ -78,7 +75,7 @@ test('R-012-GUI-01: real family backup, deletion and restoration through desktop
   await page.getByLabel('确认替换家庭学习档案文字').fill('替换家庭学习档案');
   await restore.click();
   await expect(page.getByText('家庭数据已恢复。', { exact: true })).toBeVisible();
-  await expect(reducedMotion).toBeChecked();
+  await expect(reducedMotion).toHaveCount(0);
   await expect(page.getByText(/· 1 次作答/)).toBeVisible();
   await page.reload();
   await page.getByRole('button', { name: '家长管理' }).click();

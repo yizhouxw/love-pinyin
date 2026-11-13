@@ -31,6 +31,7 @@ export interface ProgressSnapshot {
   attempts: Attempt[];
   settings: {
     soundEnabled: boolean;
+    /** Legacy backup compatibility only; never controls application behavior. */
     reducedMotion: boolean;
     sessionMinutes: number;
     playbackGapSeconds?: number;

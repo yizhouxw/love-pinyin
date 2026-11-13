@@ -88,7 +88,7 @@ def progress(device: dict = Depends(paired)) -> dict:
             "gameSessionMinutes": device["game_session_minutes"],
             "gameDailyMinutes": device["game_daily_minutes"],
             "soundEnabled": bool(device["sound_enabled"]),
-            "reducedMotion": bool(device["reduced_motion"]),
+            "reducedMotion": False,  # Legacy backup compatibility; mode removed.
             "playbackGapSeconds": device["playback_gap_tenths"] / 10,
         },
         "mastery": list(mastery.values()),
