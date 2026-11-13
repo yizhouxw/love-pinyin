@@ -1,4 +1,4 @@
-import { QuickSettings, CloseQuickSettings } from './quick-settings';
+import { QuickSettings, CloseQuickSettings, SettingsGlyph, ContextHelp } from './quick-settings';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type {
   DailyDay,
@@ -160,9 +160,24 @@ export function DailyReadingPage({
   }, [day, data]);
   return (
     <section className="daily-page" aria-label="天天练拼音">
-      <button className="quiet" onClick={onBack}>
-        ← 返回小岛
-      </button>
+      <div className="context-title-row">
+        <button className="quiet" onClick={onBack}>
+          ← 返回小岛
+        </button>
+        <div className="page-context-tools">
+          <ContextHelp label="跟读帮助">
+            <VoiceButton id="daily-ui-intro" voice={helpVoice} label="听每日跟读说明" />
+            <VoiceFailure voice={helpVoice} />
+            <details>
+              <summary>声音与练习记录</summary>
+              <p>
+                本份声音：{preparation.ready} / {preparation.total}{' '}
+                已准备好。只在当前页面缓存；换份、退出或后台后清除。本次跟读标记退出清除，不计课程成绩。
+              </p>
+            </details>
+          </ContextHelp>
+        </div>
+      </div>
       {!section && (
         <div className="daily-heading">
           <div>
@@ -170,9 +185,19 @@ export function DailyReadingPage({
             <h1>天天练拼音</h1>
             <p>先听一遍，再自己读。每一步都可以慢慢来。</p>
           </div>
-          <span className="daily-emblem" aria-hidden="true">
-            ā
-          </span>
+          <QuickSettings className="practice-settings">
+            <summary aria-label="播放设置">
+              <SettingsGlyph />
+              <span className="quick-settings-label">播放设置</span>
+            </summary>
+            <div className="quick-settings-panel">
+              <CloseQuickSettings />
+              <div className="daily-quick-settings">
+                <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+                <QuickGapSettings seconds={gapSeconds} onSave={onGapChange} />
+              </div>
+            </div>
+          </QuickSettings>
         </div>
       )}
       {error && (
@@ -251,21 +276,6 @@ export function DailyReadingPage({
                   </p>
                 )}
               </div>
-              <QuickSettings className="practice-settings">
-                <summary>播放设置</summary>
-                <div className="quick-settings-panel">
-                  <CloseQuickSettings />
-                  <div className="daily-quick-settings">
-                    <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-                    <QuickGapSettings seconds={gapSeconds} onSave={onGapChange} />
-                  </div>
-                </div>
-              </QuickSettings>
-              <details className="daily-parent">
-                <summary>跟读怎么玩</summary>
-                <VoiceButton id="daily-ui-intro" voice={helpVoice} label="听每日跟读说明" />
-                <VoiceFailure voice={helpVoice} />
-              </details>
             </>
           )}
           {section && (
@@ -358,13 +368,6 @@ export function DailyReadingPage({
                   重试准备声音
                 </button>
               )}
-              <details>
-                <summary>声音与练习记录</summary>
-                <p>
-                  本份声音：{preparation.ready} / {preparation.total}{' '}
-                  已准备好。只在当前页面缓存；换份、退出或后台后清除。本次跟读标记退出清除，不计课程成绩。
-                </p>
-              </details>
             </div>
           )}
         </>
@@ -854,6 +857,56 @@ function ReadingSession({
           >
             ▶ 连播本节
           </button>
+          <QuickSettings className="practice-settings">
+            <summary aria-label="播放设置">
+              <SettingsGlyph />
+              <span className="quick-settings-label">播放设置</span>
+            </summary>
+            <div className="quick-settings-panel">
+              <CloseQuickSettings />
+              <div className="daily-quick-settings">
+                <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+                <QuickGapSettings
+                  seconds={gapSeconds}
+                  item={item}
+                  disabled={recording !== 'idle' || recognizing}
+                  onSave={(seconds) => {
+                    stop();
+                    onGapChange(seconds);
+                  }}
+                />
+                {section.kind !== 'sentences' && (
+                  <ReadingModeControl
+                    mode={readingMode}
+                    disabled={recording !== 'idle' || recognizing}
+                    onChange={(mode) => {
+                      if (mode === readingMode) return;
+                      stop();
+                      setFailure('');
+                      setExampleFailure(false);
+                      onReadingModeChange(mode);
+                    }}
+                  />
+                )}
+                {section.kind === 'sentences' && (
+                  <label className="guidance-switch">
+                    <input
+                      type="checkbox"
+                      checked={characterReading}
+                      disabled={recording !== 'idle' || recognizing}
+                      onChange={(event) => {
+                        stop();
+                        setFailure('');
+                        onCharacterReadingChange(event.currentTarget.checked);
+                      }}
+                    />
+                    <span>逐字读</span>
+                  </label>
+                )}
+              </div>
+              <PinyinLegend />
+            </div>
+          </QuickSettings>
         </div>
         <div className="daily-next">
           <button className="quiet" disabled={index === 0} onClick={() => select(index - 1)}>
@@ -882,53 +935,7 @@ function ReadingSession({
         {item.audioNotes.length > 0 && (
           <p className="daily-audio-note">{item.audioNotes.join('；')}</p>
         )}
-        <QuickSettings className="practice-settings">
-          <summary>播放设置</summary>
-          <div className="quick-settings-panel">
-            <CloseQuickSettings />
-            <div className="daily-quick-settings">
-              <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-              <QuickGapSettings
-                seconds={gapSeconds}
-                item={item}
-                disabled={recording !== 'idle' || recognizing}
-                onSave={(seconds) => {
-                  stop();
-                  onGapChange(seconds);
-                }}
-              />
-              {section.kind !== 'sentences' && (
-                <ReadingModeControl
-                  mode={readingMode}
-                  disabled={recording !== 'idle' || recognizing}
-                  onChange={(mode) => {
-                    if (mode === readingMode) return;
-                    stop();
-                    setFailure('');
-                    setExampleFailure(false);
-                    onReadingModeChange(mode);
-                  }}
-                />
-              )}
-              {section.kind === 'sentences' && (
-                <label className="guidance-switch">
-                  <input
-                    type="checkbox"
-                    checked={characterReading}
-                    disabled={recording !== 'idle' || recognizing}
-                    onChange={(event) => {
-                      stop();
-                      setFailure('');
-                      onCharacterReadingChange(event.currentTarget.checked);
-                    }}
-                  />
-                  <span>逐字读</span>
-                </label>
-              )}
-            </div>
-            <PinyinLegend />
-          </div>
-        </QuickSettings>
+
         {item.wordExample && (
           <div className="daily-word-examples">
             <button
@@ -943,7 +950,6 @@ function ReadingSession({
                 } else void playExamples();
               }}
             >
-              {' '}
               {exampleOpen ? '收起组词样例' : '展开组词样例'}{' '}
             </button>
             {exampleOpen && (

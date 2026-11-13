@@ -415,3 +415,102 @@
   margin-inline-start: auto;
   min-height: 48px;
 }
+
+.context-title-row,
+.context-help-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.context-title-row h1 {
+  margin-block: 0;
+}
+.context-help > summary {
+  background: transparent;
+  color: #426351;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.context-help .quick-settings-panel {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #324b40;
+  text-align: start;
+}
+.context-help .quick-settings-panel a {
+  color: #23584a;
+}
+.context-help-heading {
+  border-bottom: 1px solid #dce4d1;
+  margin-bottom: 12px;
+}
+.context-help-heading .quick-settings-done {
+  margin: 0;
+}
+.page-context-tools {
+  display: flex;
+  justify-content: flex-end;
+}
+.word-toolbar > .quick-settings,
+.writing-controls > .quick-settings,
+.daily-actions > .quick-settings {
+  flex: 0 0 auto;
+  align-self: center;
+  margin: 0;
+}
+.word-toolbar > .quick-settings > summary,
+.writing-controls > .quick-settings > summary,
+.daily-actions > .quick-settings > summary {
+  background: transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0 12px;
+  min-height: 48px;
+  border: 1px solid #d6e0d4;
+}
+.word-header > .context-help {
+  justify-self: end;
+}
+.word-header > .context-help > summary {
+  padding-inline: 4px;
+}
+.quick-settings[open] {
+  flex-basis: auto;
+}
+.word-recite-toolbar > .quick-settings > summary {
+  background: transparent;
+  color: #426351;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #d6e0d4;
+}
+.quick-settings.practice-settings > summary {
+  color: #426351;
+  background: transparent;
+}
+.quick-settings.practice-settings > summary > [aria-hidden] {
+  font-size: 20px;
+  line-height: 1;
+}
+@media (max-width: 600px) {
+  .quick-settings.practice-settings > summary {
+    width: 48px;
+    padding: 0;
+    justify-content: center;
+  }
+  .quick-settings-label {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  .word-header .context-help > summary {
+    width: 48px;
+    justify-content: center;
+    padding: 0;
+  }
+  .word-header .context-help > summary > span:last-child {
+    display: none;
+  }
+}

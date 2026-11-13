@@ -71,7 +71,7 @@ export function ModelSettings() {
   }
 
   return (
-    <section className="parent-setting">
+    <section className="parent-setting model-settings">
       <div>
         <strong>本地语音识别模型</strong>
         <p>
@@ -99,21 +99,32 @@ export function ModelSettings() {
         </p>
       </div>
       {queryFailed ? (
-        <button type="button" disabled={!!action} onClick={() => void perform('modelStatus')}>
+        <button
+          className="quiet"
+          type="button"
+          disabled={!!action}
+          onClick={() => void perform('modelStatus')}
+        >
           重新查看状态
         </button>
       ) : state === 'downloading' && ios ? (
-        <button type="button" disabled={!!action} onClick={() => void perform('modelCancel')}>
+        <button
+          className="quiet"
+          type="button"
+          disabled={!!action}
+          onClick={() => void perform('modelCancel')}
+        >
           停止下载
         </button>
       ) : ios && state === 'installed' ? (
         confirmRemoval ? (
           <div>
             <p>移除后可以继续人工确认，学习记录会保留。</p>
-            <button type="button" onClick={() => setConfirmRemoval(false)}>
+            <button className="quiet" type="button" onClick={() => setConfirmRemoval(false)}>
               保留模型
             </button>
             <button
+              className="quiet"
               type="button"
               disabled={!!action}
               onClick={() => {
@@ -125,12 +136,22 @@ export function ModelSettings() {
             </button>
           </div>
         ) : (
-          <button type="button" disabled={!!action} onClick={() => setConfirmRemoval(true)}>
+          <button
+            className="quiet"
+            type="button"
+            disabled={!!action}
+            onClick={() => setConfirmRemoval(true)}
+          >
             移除模型并释放空间
           </button>
         )
       ) : ['idle', 'failed'].includes(state) ? (
-        <button type="button" disabled={!!action} onClick={() => void perform('modelDownload')}>
+        <button
+          className="quiet"
+          type="button"
+          disabled={!!action}
+          onClick={() => void perform('modelDownload')}
+        >
           {state === 'failed' || actionFailed ? '重试下载' : '下载模型'}
         </button>
       ) : null}

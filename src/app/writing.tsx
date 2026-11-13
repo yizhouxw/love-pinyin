@@ -1,4 +1,4 @@
-import { QuickSettings, CloseQuickSettings } from './quick-settings';
+import { QuickSettings, CloseQuickSettings, SettingsGlyph } from './quick-settings';
 import { useEffect, useId, useRef, useState } from 'react';
 import {
   writingSteps,
@@ -279,6 +279,40 @@ export function WritingWorkshop({
         >
           下一个
         </button>
+        <QuickSettings className="practice-settings">
+          <summary aria-label="播放设置">
+            <SettingsGlyph />
+            <span className="quick-settings-label">播放设置</span>
+          </summary>
+          <div className="quick-settings-panel">
+            <CloseQuickSettings />
+            <div className="writing-settings-controls">
+              <GuidanceSwitch
+                label="语音"
+                enabled={soundEnabled}
+                onChange={(enabled) => {
+                  stopSequence();
+                  voice.stop();
+                  onGuidanceChange(enabled);
+                }}
+              />
+              <label className="guidance-switch">
+                <input
+                  type="checkbox"
+                  aria-label="连读"
+                  checked={autoNext}
+                  onChange={(event) => {
+                    stopSequence();
+                    voice.stop();
+                    continuous.current = event.currentTarget.checked;
+                    setAutoNext(event.currentTarget.checked);
+                  }}
+                />
+                <span>连读：{autoNext ? '开' : '关'}</span>
+              </label>
+            </div>
+          </div>
+        </QuickSettings>
       </div>
       <div className="writing-stage" aria-label={`${target.label} 四线三格示范`}>
         <WritingDiagram
@@ -348,37 +382,7 @@ export function WritingWorkshop({
         <p>拿出纸笔，慢慢写一写</p>
         <small>可以随时停下来。这项练习不打分。</small>
       </div>
-      <QuickSettings className="practice-settings">
-        <summary>播放设置</summary>
-        <div className="quick-settings-panel">
-          <CloseQuickSettings />
-          <div className="writing-settings-controls">
-            <GuidanceSwitch
-              label="语音"
-              enabled={soundEnabled}
-              onChange={(enabled) => {
-                stopSequence();
-                voice.stop();
-                onGuidanceChange(enabled);
-              }}
-            />
-            <label className="guidance-switch">
-              <input
-                type="checkbox"
-                aria-label="连读"
-                checked={autoNext}
-                onChange={(event) => {
-                  stopSequence();
-                  voice.stop();
-                  continuous.current = event.currentTarget.checked;
-                  setAutoNext(event.currentTarget.checked);
-                }}
-              />
-              <span>连读：{autoNext ? '开' : '关'}</span>
-            </label>
-          </div>
-        </div>
-      </QuickSettings>
+
       <VoiceFailure voice={voice} />
     </section>
   );

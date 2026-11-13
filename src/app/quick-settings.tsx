@@ -84,3 +84,40 @@ export function CloseQuickSettings() {
     </button>
   );
 }
+
+export function ContextHelp({ children, label = '帮助' }: { children: ReactNode; label?: string }) {
+  return (
+    <QuickSettings className="context-help">
+      <summary aria-label={label}>
+        <span aria-hidden="true">ⓘ</span>
+        <span>帮助</span>
+      </summary>
+      <div className="quick-settings-panel">
+        <div className="context-help-heading">
+          <strong>{label}</strong>
+          <CloseQuickSettings />
+        </div>
+        {children}
+      </div>
+    </QuickSettings>
+  );
+}
+
+export function SettingsGlyph() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      aria-hidden="true"
+    >
+      <path d="M3 6h6m6 0h6M3 12h12m6 0h0M3 18h2m6 0h10" strokeLinecap="round" />
+      <circle cx="12" cy="6" r="3" />
+      <circle cx="18" cy="12" r="3" />
+      <circle cx="8" cy="18" r="3" />
+    </svg>
+  );
+}

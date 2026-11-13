@@ -1,4 +1,4 @@
-import { QuickSettings, CloseQuickSettings } from './quick-settings';
+import { QuickSettings, CloseQuickSettings, SettingsGlyph, ContextHelp } from './quick-settings';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import {
   highlightWords,
@@ -115,6 +115,37 @@ export function WordPractice({
         ? lesson.write.length > 0
         : lesson.passages.length > 0;
   const selectedKey = practiceKey(lesson.id, mode);
+  const playbackSettings = (
+    <QuickSettings className="word-settings practice-settings">
+      <summary aria-label="播放设置">
+        <SettingsGlyph />
+        <span className="quick-settings-label">播放设置</span>
+      </summary>
+      <div className="quick-settings-panel">
+        <CloseQuickSettings />
+        <div className="word-settings-controls">
+          <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+          <QuickGapSettings
+            seconds={gapSeconds}
+            onSave={(seconds) => {
+              voice.stop();
+              onGapChange(seconds);
+            }}
+          />
+          {mode === 'read' && (
+            <ReadingModeControl
+              mode={readingMode}
+              onChange={(nextMode) => {
+                if (nextMode === readingMode) return;
+                voice.stop();
+                setReadingMode(nextMode);
+              }}
+            />
+          )}
+        </div>
+      </div>
+    </QuickSettings>
+  );
   const playbackControls = (
     <div className="word-toolbar">
       {mode === 'read' && (
@@ -142,6 +173,7 @@ export function WordPractice({
       <button aria-label="停止播放" onClick={voice.stop}>
         ■<span> 停止</span>
       </button>
+      {playbackSettings}
     </div>
   );
   const audioStatus = (
@@ -185,13 +217,34 @@ export function WordPractice({
           ←<span>首页</span>
         </button>
         <h1>词语天天练</h1>
-        <button
-          className="quiet word-intro"
-          aria-label="听介绍"
-          onClick={() => voice.play('word-ui-welcome')}
-        >
-          🔊<span>介绍</span>
-        </button>
+        <ContextHelp label="玩法与提示">
+          <p>{wordPractice.ui[mode]}</p>
+          {mode === 'read' && (
+            <>
+              <p>{wordPractice.pinyinNote}</p>
+              <PinyinLegend />
+            </>
+          )}
+          <button onClick={() => voice.play(`word-ui-${mode}`)}>🔊 听玩法</button>
+          <details className="word-about">
+            <summary>记录与材料来源</summary>
+            <p>练习标记仅保存在当前设备；访客退出后清除，不计入拼音成绩或同步家庭档案。</p>
+            {wordPractice.source.textbook ? (
+              <>
+                <p>
+                  词目来自家长提供的《{wordPractice.source.file}》，本课在第 {lesson.page}{' '}
+                  页。课序及生字依据{wordPractice.source.edition}。
+                  {isOriginal && '拓展朗读短文由爱拼音自编。'}
+                </p>
+                <a href={wordPractice.source.textbook} target="_blank" rel="noreferrer">
+                  查看国家智慧教育平台教材
+                </a>
+              </>
+            ) : (
+              <p>词目与阅读短文由爱拼音自编。插图为原创情景示意。</p>
+            )}
+          </details>
+        </ContextHelp>
       </header>
       <nav className="word-course-bar" aria-label="选课">
         <button
@@ -339,6 +392,7 @@ export function WordPractice({
                 ■ 停止
               </button>
             </div>
+            {playbackSettings}
             <span>
               <mark className="word-mark-character">生字</mark> ·{' '}
               <mark className="word-mark-word">本课词语</mark>
@@ -448,63 +502,6 @@ export function WordPractice({
           {notice}
         </span>
       </footer>
-      <div className="word-options">
-        <QuickSettings className="word-settings practice-settings">
-          <summary>播放设置</summary>
-          <div className="quick-settings-panel">
-            <CloseQuickSettings />
-            <div className="word-settings-controls">
-              <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-              <QuickGapSettings
-                seconds={gapSeconds}
-                onSave={(seconds) => {
-                  voice.stop();
-                  onGapChange(seconds);
-                }}
-              />
-              {mode === 'read' && (
-                <ReadingModeControl
-                  mode={readingMode}
-                  onChange={(nextMode) => {
-                    if (nextMode === readingMode) return;
-                    voice.stop();
-                    setReadingMode(nextMode);
-                  }}
-                />
-              )}
-            </div>
-          </div>
-        </QuickSettings>
-        <details className="word-help practice-settings">
-          <summary>玩法与提示</summary>
-          <p>{wordPractice.ui[mode]}</p>
-          {mode === 'read' && (
-            <>
-              <p>{wordPractice.pinyinNote}</p>
-              <PinyinLegend />
-            </>
-          )}
-          <button onClick={() => voice.play(`word-ui-${mode}`)}>🔊 听玩法</button>
-        </details>
-      </div>
-      <details className="word-about">
-        <summary>记录与材料来源</summary>
-        <p>练习标记仅保存在当前设备；访客退出后清除，不计入拼音成绩或同步家庭档案。</p>
-        {wordPractice.source.textbook ? (
-          <>
-            <p>
-              词目来自家长提供的《{wordPractice.source.file}》，本课在第 {lesson.page}{' '}
-              页。课序及生字依据{wordPractice.source.edition}。
-              {isOriginal && '拓展朗读短文由爱拼音自编。'}
-            </p>
-            <a href={wordPractice.source.textbook} target="_blank" rel="noreferrer">
-              查看国家智慧教育平台教材
-            </a>
-          </>
-        ) : (
-          <p>词目与阅读短文由爱拼音自编。插图为原创情景示意。</p>
-        )}
-      </details>
     </section>
   );
 }

@@ -74,8 +74,11 @@ test('HOME-01/02: compact home, independent settings, keyboard, saved choices an
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath('home-320-text-200.png'), fullPage: true });
   await page.getByRole('button', { name: '完成', exact: true }).click();
-  await page.locator('.game-home-info > summary').click();
-  await expect(page.locator('.game-home-info')).toContainText('连续休息 10 分钟');
+  await page.getByLabel('游戏帮助', { exact: true }).click();
+  await expect(page.locator('.context-help .quick-settings-panel')).toContainText(
+    '连续休息 10 分钟',
+  );
+  await page.getByRole('button', { name: '完成', exact: true }).click();
   await page.locator('.game-home-evidence > summary').click();
   await expect(page.getByLabel('游戏学习效果')).toBeVisible();
   await page.evaluate(() => (document.documentElement.style.fontSize = ''));

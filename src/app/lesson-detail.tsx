@@ -1,3 +1,4 @@
+import { ContextHelp } from './quick-settings';
 import { CoursePronunciationPractice } from './pronunciation-practice';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { IllustrationCatalog } from '../domain/illustrations';
@@ -179,8 +180,7 @@ export function LessonDetail({
                   )}
                 </>
               )}
-              <details>
-                <summary>家长查看录音来源</summary>
+              <ContextHelp label="录音来源">
                 <p>
                   {familyAudio?.sourceType === 'local-open-tts'
                     ? '爱拼音按新版课序编写，使用本机语音模型制作。单个拼音的示范请使用下方标准音。'
@@ -188,7 +188,7 @@ export function LessonDetail({
                 </p>
                 {familyAudio?.title && <p>{familyAudio.title}</p>}
                 {!familyAudio?.available && <p>尚未读取到本课录音，请完成音频准备后重试。</p>}
-              </details>
+              </ContextHelp>
             </div>
           </section>
           {illustrations && <WordCards catalog={illustrations} lessonId={lesson.id} />}

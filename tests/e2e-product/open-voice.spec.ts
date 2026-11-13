@@ -55,7 +55,7 @@ test('VOICE-09: Qwen Chinese voices all decode through the real local API', asyn
   }, ids);
   expect(decoded).toBe(781);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
-  await page.getByText('跟读怎么玩', { exact: true }).click();
+  await page.getByLabel('跟读帮助', { exact: true }).click();
   await page.getByRole('button', { name: '听每日跟读说明', exact: true }).click();
   await expect(page.getByRole('button', { name: '停止听每日跟读说明', exact: true })).toBeVisible();
   await expect

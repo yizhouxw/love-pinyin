@@ -1,4 +1,4 @@
-import { QuickSettings, CloseQuickSettings } from './quick-settings';
+import { QuickSettings, CloseQuickSettings, ContextHelp } from './quick-settings';
 import { PinyinShop } from './pinyin-shop';
 import { shopRules } from '../domain/pinyin-shop';
 import { useEffect, useState } from 'react';
@@ -150,7 +150,25 @@ export function GameZone({
           <button className="quiet" onClick={onBack}>
             ← 回到学习
           </button>
-          <VoiceButton id="ui-game_welcome" voice={voice} label="听游戏怎么玩" text="听介绍" />
+          <ContextHelp label="游戏帮助">
+            <VoiceButton id="ui-game_welcome" voice={voice} label="听游戏怎么玩" text="听介绍" />
+            <h3>时长与难度推荐说明</h3>
+            <p>
+              连续休息 10 分钟，才算新的一次。每关可选 3～20 个拼音任务，默认 6
+              个，游戏内也能调难度和速度。
+            </p>
+            <p>
+              当前推荐：{gameCatalog.levels[data?.recommendation?.level ?? 'gentle'].label} ·{' '}
+              {gameCatalog.speeds[data?.recommendation?.speed ?? 'slow'].label}
+              。依据已学范围内最近有效作答（{data?.recommendation?.sampleSize ?? 0}{' '}
+              个样本），操作快慢不计掌握度。
+            </p>
+            {isGuest() && (
+              <p>
+                访客时长仅暂存在此标签页，清除访客会重置。连接家庭后，使用跨设备共享的时长约定。
+              </p>
+            )}
+          </ContextHelp>
         </nav>
       </header>
       <VoiceFailure voice={voice} />
@@ -382,22 +400,6 @@ export function GameZone({
         })}
       </div>
       <div className="game-home-details">
-        <details className="game-home-info">
-          <summary>时长与难度推荐说明</summary>
-          <p>
-            连续休息 10 分钟，才算新的一次。每关可选 3～20 个拼音任务，默认 6
-            个，游戏内也能调难度和速度。
-          </p>
-          <p>
-            当前推荐：{gameCatalog.levels[data?.recommendation?.level ?? 'gentle'].label} ·{' '}
-            {gameCatalog.speeds[data?.recommendation?.speed ?? 'slow'].label}
-            。依据已学范围内最近有效作答（{data?.recommendation?.sampleSize ?? 0}{' '}
-            个样本），操作快慢不计掌握度。
-          </p>
-          {isGuest() && (
-            <p>访客时长仅暂存在此标签页，清除访客会重置。连接家庭后，使用跨设备共享的时长约定。</p>
-          )}
-        </details>
         {data && (
           <details className="game-home-evidence">
             <summary>

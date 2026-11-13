@@ -1,3 +1,4 @@
+import { ContextHelp } from './quick-settings';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import playback from '../../content/playback.json';
 import type {
@@ -1192,7 +1193,14 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 {parentOpen && (
                   <p className="eyebrow">{boot.guest ? '访客学习空间' : '家庭学习空间'}</p>
                 )}
-                <h1>{parentOpen ? '家长管理' : <>今天学拼音</>}</h1>
+                <div className="context-title-row">
+                  <h1>{parentOpen ? '家长管理' : <>今天学拼音</>}</h1>
+                  {!parentOpen && (
+                    <ContextHelp label="学习帮助">
+                      <VoiceButton id="ui-welcome" voice={voice} label="听怎么玩" />
+                    </ContextHelp>
+                  )}
+                </div>
                 {parentOpen ? (
                   <p>
                     {boot.device?.label} · {boot.guest ? '临时学习设置' : '家庭学习设置'}
@@ -1424,10 +1432,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                   onSelect={(id) => openLesson(id, true)}
                 />
               </details>
-              <details className="home-help">
-                <summary>第一次玩？听听玩法</summary>
-                <VoiceButton id="ui-welcome" voice={voice} label="听怎么玩" />
-              </details>
+
               <VoiceFailure voice={voice} />
               <details className="home-progress-note">
                 <summary>我的拼音花园 · {progress.completedSessions} 片叶子</summary>

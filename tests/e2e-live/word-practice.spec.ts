@@ -121,9 +121,9 @@ test('WORD-04/05/06: shared guidance, finite continuous words and stable playing
   await pairForHouseholdMaterial(page, appUrl);
   await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
-  await page.getByText('播放设置', { exact: true }).click();
+  await page.getByLabel('播放设置', { exact: true }).click();
   const guidance = page.getByRole('checkbox', { name: '语音引导', exact: true });
-  if (!(await guidance.isVisible())) await page.getByText('播放设置', { exact: true }).click();
+  if (!(await guidance.isVisible())) await page.getByLabel('播放设置', { exact: true }).click();
   await guidance.setChecked(false);
   await page.getByRole('button', { name: '完成', exact: true }).click();
   let instructions = 0;
@@ -133,7 +133,7 @@ test('WORD-04/05/06: shared guidance, finite continuous words and stable playing
   await page.getByRole('button', { name: '词语听写', exact: true }).click();
   await page.getByRole('button', { name: '词语拼读', exact: true }).click();
   expect(instructions).toBe(0);
-  if (!(await guidance.isVisible())) await page.getByText('播放设置', { exact: true }).click();
+  if (!(await guidance.isVisible())) await page.getByLabel('播放设置', { exact: true }).click();
   await guidance.setChecked(true);
   await page.getByRole('button', { name: '完成', exact: true }).click();
   const automatic = page.waitForResponse(
@@ -141,7 +141,7 @@ test('WORD-04/05/06: shared guidance, finite continuous words and stable playing
   );
   await page.getByRole('button', { name: '词语听写', exact: true }).click();
   await automatic;
-  if (!(await guidance.isVisible())) await page.getByText('播放设置', { exact: true }).click();
+  if (!(await guidance.isVisible())) await page.getByLabel('播放设置', { exact: true }).click();
   await guidance.setChecked(false);
   await page.getByRole('button', { name: '完成', exact: true }).click();
   await expect(page.locator('.word-playback')).not.toContainText('正在播放');
@@ -245,7 +245,7 @@ test('WORD-07/08/09: touch course units, selected pictures and home entry order'
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
   const course = page.getByRole('button', { name: /^选择课程/ });
   expect((await page.locator('.word-header').boundingBox())!.height).toBeLessThanOrEqual(64);
-  const settings = page.getByText('播放设置', { exact: true });
+  const settings = page.getByLabel('播放设置', { exact: true });
   expect((await settings.boundingBox())!.height).toBeGreaterThanOrEqual(48);
   await course.click();
   const dialog = page.getByRole('dialog', { name: '选择课程', exact: true });
@@ -448,7 +448,7 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   await expect(page.getByRole('button', { name: '听全文' })).toBeVisible();
   await expect(page.getByRole('button', { name: '隐藏短文', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '词语拼读', exact: true }).click();
-  await page.getByText('播放设置', { exact: true }).click();
+  await page.getByLabel('播放设置', { exact: true }).click();
   await expect(page.getByRole('button', { name: /^间隔设置/ })).toBeVisible();
   await page.getByRole('button', { name: /^选择课程/ }).click();
   const picker = page.getByRole('dialog');
@@ -460,7 +460,7 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
     .locator('.pinyin-whole')
     .evaluate((element) => getComputedStyle(element).color);
   expect(color).toBe('rgb(32, 78, 145)');
-  await page.getByText('播放设置', { exact: true }).click();
+  await page.getByLabel('播放设置', { exact: true }).click();
   await expect(page.getByRole('button', { name: '直接读', exact: true })).toHaveAttribute(
     'aria-pressed',
     'true',
@@ -477,7 +477,7 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   const initial = page.waitForResponse(
     (response) => response.url().endsWith('/audio/original-audio-initial-l') && response.ok(),
   );
-  await page.getByText('播放设置', { exact: true }).click();
+  await page.getByLabel('播放设置', { exact: true }).click();
   await page.getByRole('button', { name: '拼读', exact: true }).click();
   await page.getByRole('button', { name: '完成', exact: true }).click();
   await expect(page.locator('.word-playback')).not.toContainText('正在播放');
@@ -494,7 +494,7 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '第 3 份', exact: true }).click();
   await page.getByRole('button', { name: /读词语/ }).click();
-  await page.getByText('播放设置', { exact: true }).click();
+  await page.getByLabel('播放设置', { exact: true }).click();
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();
   await expect(page.locator('.daily-target')).toContainText('bà');
   const dailyComponent = page.waitForResponse(
@@ -508,10 +508,7 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   await expect(page.getByRole('button', { name: '重试示范' })).toHaveCount(0);
 });
 
-test('WORD-14: dictation actions stay with the answer and settings stay below it', async ({
-  page,
-  appUrl,
-}) => {
+test('WORD-14: dictation actions and settings stay together', async ({ page, appUrl }) => {
   await page.goto(appUrl);
   await page.getByRole('button', { name: '访客体验', exact: true }).click();
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
@@ -524,7 +521,7 @@ test('WORD-14: dictation actions stay with the answer and settings stay below it
   const card = page.locator('.word-dictation');
   const listen = card.getByRole('button', { name: /听词语/ });
   const reveal = card.locator('.word-reveal');
-  const settings = page.getByText('播放设置', { exact: true });
+  const settings = page.getByLabel('播放设置', { exact: true });
   const figure = card.getByRole('figure');
   await expect(card.getByRole('button', { name: '停止播放' })).toBeVisible();
   await expect(page.getByRole('checkbox', { name: '语音引导' })).toBeHidden();
@@ -538,7 +535,15 @@ test('WORD-14: dictation actions stay with the answer and settings stay below it
       expect((await reveal.boundingBox())!.y).toBeLessThan((await figure.boundingBox())!.y);
     }
     const cardBounds = (await card.boundingBox())!;
-    expect((await settings.boundingBox())!.y).toBeGreaterThan(cardBounds.y + cardBounds.height);
+    const settingsBounds = (await settings.boundingBox())!;
+    expect(settingsBounds.y).toBeGreaterThanOrEqual(cardBounds.y);
+    expect(settingsBounds.y + settingsBounds.height).toBeLessThanOrEqual(
+      cardBounds.y + cardBounds.height,
+    );
+    await expect(page.locator('.word-options')).toHaveCount(0);
+    await expect(
+      page.locator('.word-header').getByLabel('玩法与提示', { exact: true }),
+    ).toBeVisible();
     for (const zoom of ['100%', '200%']) {
       await page.evaluate((size) => (document.documentElement.style.fontSize = size), zoom);
       const answer = card.locator('.word-answer');
@@ -568,25 +573,25 @@ test('WORD-14: dictation actions stay with the answer and settings stay below it
 test('快捷设置覆盖内容、Escape 返回入口并保留即时偏好', async ({ page, appUrl }) => {
   await pairForHouseholdMaterial(page, appUrl);
   await page.getByRole('button', { name: '进入词语天天练 →' }).click();
-  const trigger = page.getByText('播放设置', { exact: true });
+  const trigger = page.getByLabel('播放设置', { exact: true });
   const content = page.locator('.word-header');
   for (const width of [1280, 390, 320]) {
     await page.setViewportSize({ width, height: 844 });
     await trigger.scrollIntoViewIfNeeded();
     const before = await content.boundingBox();
     await trigger.click();
-    await expect(page.locator('.quick-settings-panel')).toBeVisible();
+    await expect(page.locator('.word-settings .quick-settings-panel')).toBeVisible();
     expect(await content.boundingBox()).toEqual(before);
-    const bounds = (await page.locator('.quick-settings-panel').boundingBox())!;
+    const bounds = (await page.locator('.word-settings .quick-settings-panel').boundingBox())!;
     expect(bounds.x).toBeGreaterThanOrEqual(0);
     expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
     await page.screenshot({ path: test.info().outputPath(`settings-${width}.png`) });
     const guidance = page.getByRole('checkbox', { name: '语音引导', exact: true });
-    if (!(await guidance.isVisible())) await page.getByText('播放设置', { exact: true }).click();
+    if (!(await guidance.isVisible())) await page.getByLabel('播放设置', { exact: true }).click();
     await guidance.setChecked(false);
     await page.keyboard.press('Escape');
     await expect(trigger).toBeFocused();
-    await expect(page.locator('.quick-settings-panel')).toBeHidden();
+    await expect(page.locator('.word-settings .quick-settings-panel')).toBeHidden();
     await trigger.click();
     await expect(guidance).not.toBeChecked();
     await page.getByRole('button', { name: '完成', exact: true }).click();

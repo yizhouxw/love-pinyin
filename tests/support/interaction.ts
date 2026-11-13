@@ -8,7 +8,7 @@ export function documentTop(locator: Locator) {
 export async function openSection(page: Page | Locator, name: string, optional = false) {
   const summary = page
     .locator('summary')
-    .filter({ hasText: new RegExp(`^${name}$`) })
+    .filter({ hasText: new RegExp(`^(?:⚙)?${name}$`) })
     .first();
   if (optional && !(await summary.count())) return;
   await summary.waitFor({ state: 'visible' });

@@ -25,7 +25,7 @@ test('UX-01/02/04/08/09: main learning actions remain easy to reach on desktop a
   await page.getByRole('button', { name: '写一写', exact: true }).click();
   const writing = page.getByRole('region', { name: '书写小课堂' });
   await expect(writing.getByRole('checkbox', { name: '语音引导' })).toBeHidden();
-  expect((await writing.getByText('播放设置', { exact: true }).boundingBox())!.y).toBeGreaterThan(
+  expect((await writing.getByLabel('播放设置', { exact: true }).boundingBox())!.y).toBeLessThan(
     (await writing.locator('.writing-stage').boundingBox())!.y,
   );
   await expect(page.getByRole('button', { name: '▶ 播放笔顺', exact: true })).toBeInViewport();
@@ -46,7 +46,7 @@ test('UX-01/02/04/08/09: main learning actions remain easy to reach on desktop a
   await expect(page.locator('.daily-days')).toHaveCount(0);
   const reader = page.getByLabel('当前跟读内容', { exact: true });
   await expect(reader.getByRole('checkbox', { name: '语音引导' })).toBeHidden();
-  expect((await reader.getByText('播放设置', { exact: true }).boundingBox())!.y).toBeGreaterThan(
+  expect((await reader.getByLabel('播放设置', { exact: true }).boundingBox())!.y).toBeLessThan(
     (await reader.locator('.daily-next').boundingBox())!.y,
   );
   await page.screenshot({ path: test.info().outputPath('daily-320.png'), fullPage: true });
