@@ -7,7 +7,7 @@ import type { WritingCatalog } from '../domain/writing';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { learningAssetUrl } from '../platform/guest';
 import { IOSLessonAudio } from './ios-lesson-audio';
-import { isIOSApp } from '../platform/ios-app';
+import { isNativeApp } from '../platform/ios-app';
 import { WordCards } from './illustrations';
 import { categoryLabels } from './labels';
 import { type LearningAudio } from './learning-voice';
@@ -136,7 +136,7 @@ export function LessonDetail({
             </span>
             <div>
               <h3>先听一听本课讲解</h3>
-              {isIOSApp() ? (
+              {isNativeApp() ? (
                 <IOSLessonAudio audioId={familyAudio?.audioId ?? `lesson-original-${lesson.id}`} />
               ) : (
                 <>
@@ -173,7 +173,7 @@ export function LessonDetail({
                   />
                   {courseError && (
                     <p className="audio-error" role="alert">
-                      {isIOSApp()
+                      {isNativeApp()
                         ? '本机课程录音未能播放，请重试或继续看其他学习内容。'
                         : '课程录音未能播放，请重试；仍未播放时请家长检查家庭电脑上的家庭音频。'}
                     </p>
@@ -280,7 +280,7 @@ export function LessonDetail({
                   ) : null}
                   {audioFailureId === audio?.id && (
                     <p className="audio-error" role="alert">
-                      {isIOSApp()
+                      {isNativeApp()
                         ? '这段本机示范音暂时不能播放。可重听或选择其他拼音。'
                         : '标准音暂时无法播放，请检查家庭电脑上的音频资源。'}
                     </p>

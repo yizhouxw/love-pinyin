@@ -1,4 +1,4 @@
-import { isIOSApp } from '../platform/ios-app';
+import { isNativeApp } from '../platform/ios-app';
 
 const messages: Record<string, string> = {
   LEARNING_RESPONSE_INVALID: '学习记录没有完整载入，请重新载入后继续。',
@@ -63,7 +63,7 @@ const messages: Record<string, string> = {
 };
 
 export function errorMessage(error: string): string {
-  if (isIOSApp()) {
+  if (isNativeApp()) {
     if (error.includes('AUDIO_NOT_FOUND'))
       return '这段声音暂时不能播放。可以重听或跳过，不算答错。';
     if (error === 'REVISION_CONFLICT') return '本机记录已更新，请重新载入后重试。';
@@ -78,7 +78,7 @@ export function errorMessage(error: string): string {
     return '页面连接验证已失效。请重新打开家庭电脑 提供的入口，再试一次。';
   if (error.includes('AUDIO_NOT_FOUND'))
     return '声音文件尚未就绪。请家长在家庭电脑检查音频；可以重听或跳过，不计为答错。';
-  if (isIOSApp()) return '这次本机操作没有完成，请重试。';
+  if (isNativeApp()) return '这次本机操作没有完成，请重试。';
   return '这次操作没有完成。请检查输入和家庭电脑 连接，再重试刚才的操作；若仍失败，可将技术详情提供给家长。';
 }
 
@@ -99,7 +99,7 @@ export function Notice({ error, onReconnect }: { error: string; onReconnect: () 
         'IDEMPOTENCY_KEY_REUSED',
       ].includes(error) && (
         <button type="button" className="quiet" onClick={onReconnect}>
-          {isIOSApp() ? '重新载入学习记录' : '重新连接并恢复'}
+          {isNativeApp() ? '重新载入学习记录' : '重新连接并恢复'}
         </button>
       )}
       <details>

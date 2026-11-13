@@ -24,7 +24,7 @@ import {
   learningSession,
 } from '../platform/learning-snapshot';
 import { api } from '../platform/api-client';
-import { iosOperation, isIOSApp } from '../platform/ios-app';
+import { nativeOperation, isNativeApp } from '../platform/ios-app';
 import { IOSClassroomSettings } from './ios-classroom-settings';
 import { isMacApp } from '../platform/mac-app';
 import {
@@ -81,8 +81,8 @@ export function App() {
       {!isGuest() && household?.paired && (
         <aside className="guest-banner family-banner" aria-label="家庭模式">
           <span>
-            <strong>{isIOSApp() ? '离线学习' : '家庭学习'}</strong> ·{' '}
-            {isIOSApp() ? '进度保存在此设备' : '进度已连接家庭电脑'}
+            <strong>{isNativeApp() ? '离线学习' : '家庭学习'}</strong> ·{' '}
+            {isNativeApp() ? '进度保存在此设备' : '进度已连接家庭电脑'}
           </span>
         </aside>
       )}
@@ -100,8 +100,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const [progress, setProgress] = useState<Progress | null>(null);
   const classroomReady = Boolean(boot?.paired && curriculum && progress);
   useEffect(() => {
-    if (isIOSApp() && classroomReady) {
-      void iosOperation('classroomReady').catch(() => undefined);
+    if (isNativeApp() && classroomReady) {
+      void nativeOperation('classroomReady').catch(() => undefined);
     }
   }, [classroomReady]);
   const [guidancePreference, setGuidancePreference] = useState(readGuidancePreference);
@@ -150,13 +150,13 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       return 'original';
     }
   });
-  const preferredSource = isIOSApp() ? practiceSource : practicePacks?.selected;
+  const preferredSource = isNativeApp() ? practiceSource : practicePacks?.selected;
   const activePracticeSource =
     preferredSource === 'household' && practicePacks?.household ? 'household' : 'original';
   const activePractice = practicePacks?.[activePracticeSource];
   async function changePracticeSource(source: PracticeSource) {
     if (source === activePracticeSource) return;
-    if (isIOSApp()) {
+    if (isNativeApp()) {
       localStorage.setItem('love-pinyin-ios-practice-source', source);
       setPracticeSource(source);
     } else {
@@ -171,13 +171,13 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   useEffect(() => {
     if (!paired) return;
     let active = true;
-    const load = isIOSApp()
-      ? iosOperation<PracticePacks>('practicePacks')
+    const load = isNativeApp()
+      ? nativeOperation<PracticePacks>('practicePacks')
       : api('/practice-packs').then((value) => value as unknown as PracticePacks);
     void load
       .then((packs) => {
         if (!active) return;
-        const selected = isIOSApp() ? practiceSource : packs.selected;
+        const selected = isNativeApp() ? practiceSource : packs.selected;
         const pack =
           selected === 'household' ? (packs.household ?? packs.original) : packs.original;
         setStandardAudioPrefix(pack.audioPrefix);
@@ -348,7 +348,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     answer && (answer.correct || corrected)
       ? '这题已经完成，点“继续”进入下一题。'
       : busy
-        ? isIOSApp()
+        ? isNativeApp()
           ? '正在保存本机练习，请稍等。'
           : '正在连接家庭电脑、保存练习，请稍等。'
         : picturesPending
@@ -514,8 +514,8 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       <main className="loading">
         {error ? (
           <>
-            <h1>{isIOSApp() ? '暂时无法读取本机课堂' : '暂时连不上家庭电脑 Studio'}</h1>
-            {!isIOSApp() && <p>检查家庭电脑和家庭局域网后，可以在这里重新连接。</p>}
+            <h1>{isNativeApp() ? '暂时无法读取本机课堂' : '暂时连不上家庭电脑 Studio'}</h1>
+            {!isNativeApp() && <p>检查家庭电脑和家庭局域网后，可以在这里重新连接。</p>}
             <Notice error={error} onReconnect={() => void act(refresh)} />
           </>
         ) : (
@@ -670,7 +670,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           }
         }}
         onExit={() => void act(exitGame)}
-        onPause={isIOSApp() ? () => gameClock.pause('GAME_PAUSED') : undefined}
+        onPause={isNativeApp() ? () => gameClock.pause('GAME_PAUSED') : undefined}
         onNext={() => {
           if (!answer) return;
           setSession((current) =>
@@ -735,9 +735,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           <div>
             <small>{game ? `${game.icon} ${game.title}` : `拼音小岛 · ${title}`}</small>
             <strong
-              role={isIOSApp() ? 'status' : undefined}
+              role={isNativeApp() ? 'status' : undefined}
               aria-label={
-                isIOSApp() ? `第 ${taskIndex + 1} / ${active.tasks.length} 关` : undefined
+                isNativeApp() ? `第 ${taskIndex + 1} / ${active.tasks.length} 关` : undefined
               }
             >
               第 {taskIndex + 1} / {active.tasks.length} 关
@@ -877,7 +877,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
                 <button
                   data-option-id={option.id}
                   aria-label={
-                    isIOSApp() && !option.pictureId && !option.writing
+                    isNativeApp() && !option.pictureId && !option.writing
                       ? `选项 ${String.fromCharCode(65 + index)}，${option.label}`
                       : undefined
                   }
@@ -1251,7 +1251,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           )}
           {!parentOpen && progress.clockSkewDetected && (
             <div className="error-notice" role="alert">
-              {isIOSApp()
+              {isNativeApp()
                 ? '设备时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度。'
                 : '家庭电脑时间似乎回退了。练习仍可继续，但新记录暂不计入掌握度；请家长检查服务器时间。'}
             </div>
@@ -1260,7 +1260,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             <Notice error={error} onReconnect={() => void act(refresh)} />
           )}
           {parentOpen ? (
-            isIOSApp() ? (
+            isNativeApp() ? (
               <IOSClassroomSettings
                 lessons={lessons}
                 contentVersion={curriculum.contentVersion}
@@ -1306,7 +1306,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
             )
           ) : lessonViewId ? (
             <div className="lesson-workspace">
-              {isIOSApp() && (
+              {isNativeApp() && (
                 <aside className="ios-course-sidebar" aria-label="课程列表">
                   <LessonNavigation
                     lessons={lessons}
@@ -1480,7 +1480,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
               )}
             </>
           )}
-          {parentOpen && boot.guest && !isMacApp() && !isIOSApp() && (
+          {parentOpen && boot.guest && !isMacApp() && !isNativeApp() && (
             <details className="management-section">
               <summary>连接其他设备</summary>
               <PairingManagement />

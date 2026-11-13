@@ -23,3 +23,8 @@ content/pronunciation-pretrained-xlsr-tail.json
 
 # Original generated word scenes are SHA-bound to their explicit content recipes.
 public/word-illustrations
+
+# Android generated resources and tool caches
+deploy/android/**/build
+deploy/android/.gradle*
+deploy/android/app/src/main/assets

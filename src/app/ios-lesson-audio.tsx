@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
-import { iosOperation } from '../platform/ios-app';
+import { nativeOperation } from '../platform/ios-app';
 
 type PlaybackState = { playing: boolean; position: number; duration: number };
 let nextPlaybackId = 0;
@@ -18,7 +18,7 @@ export function IOSLessonAudio({ audioId }: { audioId: string }) {
     return () => {
       mounted.current = false;
       release.current?.();
-      void iosOperation('pauseLesson', { id }).catch(() => undefined);
+      void nativeOperation('pauseLesson', { id }).catch(() => undefined);
     };
   }, [id]);
 
@@ -29,7 +29,7 @@ export function IOSLessonAudio({ audioId }: { audioId: string }) {
     const timer = setInterval(() => {
       if (pending) return;
       pending = true;
-      iosOperation<PlaybackState>('lessonState', { id })
+      nativeOperation<PlaybackState>('lessonState', { id })
         .then(
           (result) => {
             if (active) setState(result);
@@ -55,7 +55,7 @@ export function IOSLessonAudio({ audioId }: { audioId: string }) {
     setBusy(true);
     setFailed(false);
     try {
-      const result = await iosOperation<PlaybackState>(operation, { id, ...fields });
+      const result = await nativeOperation<PlaybackState>(operation, { id, ...fields });
       if (mounted.current) setState(result);
     } catch {
       if (mounted.current) setFailed(true);
@@ -78,7 +78,7 @@ export function IOSLessonAudio({ audioId }: { audioId: string }) {
             release.current?.();
             release.current = audioPlayer.claimAudio(() => {
               setState((value) => ({ ...value, playing: false }));
-              void iosOperation('pauseLesson', { id }).catch(() => undefined);
+              void nativeOperation('pauseLesson', { id }).catch(() => undefined);
             });
             void control('playLesson', { audioId });
           }

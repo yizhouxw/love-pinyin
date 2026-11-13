@@ -73,3 +73,11 @@ export GRADLE_USER_HOME="$PWD/.gradle-home"
 - [Eclipse Temurin](https://adoptium.net/temurin/)：JDK 为 GPLv2 with Classpath Exception。
 - Android SDK 适用独立 Android SDK 许可；用户已通过安装流程配置所需组件。
 - [Android 本地 WebView 资源说明](https://developer.android.com/develop/ui/views/layout/webapps/load-local-content)：正式离线容器可评估 WebViewAssetLoader，不把普通远程网页包装当作独立离线实现。
+
+## 正式 Android 工程首轮结果（2026-11-13）
+
+工作区 `love-pinyin-android`，分支 `codex/android-offline`。`deploy/android/prepare.sh` 复用离线打包校验；`build.sh --offline :app:assembleDebugAndroidTest` 完成 APK 与隔离回归包构建，lint 0 错误、5 警告。依赖固定且沿用上表来源/许可，无新增 Android 运行时第三方库。
+
+OnePlus 上普通安装成功、冷启动 Status ok（563ms）；实际截图确认 React 首页、当前课和各练习入口加载。原生 instrumentation 返回 `ANDROID_CONTRACT_OK`，覆盖首次作答投影、同键回执、重新打开数据库恢复、无效备份拒绝及恢复、四款游戏路线冻结、暂停授权。测试使用随机目录隔离数据库，不读写家庭档案。前端 206 项单元测试与类型检查通过，发布内容校验覆盖14课、785每日条目、38词语课。
+
+以上不证明实际听感、飞行模式冷启动、触摸完整流程、系统文件导入导出、真实进程被杀恢复或家庭试用通过。主线仍有其他任务未提交改动，尚未合并或替换本机 Mac/Web 服务。构建缓存不能在 Gradle 进程运行时复制，首次隔离缓存应联网按固定版本补齐；避免造成 metadata 损坏。

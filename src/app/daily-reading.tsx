@@ -16,7 +16,7 @@ import {
 } from '../domain/daily-reading';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { BrowserReadingRecorder } from '../platform/audio/browser-reading-recorder';
-import { isIOSApp } from '../platform/ios-app';
+import { isNativeApp } from '../platform/ios-app';
 import { isGuest } from '../platform/guest';
 import {
   recognizeIOSReading,
@@ -44,14 +44,14 @@ import { PinyinLegend, PinyinText, ReadingModeControl } from './pinyin-reading';
 
 async function readDaily(offline?: DailyReading): Promise<DailyReading> {
   if (offline) {
-    if (!isIOSApp()) return offline;
+    if (!isNativeApp()) return offline;
     const model = await iosModelStatus().catch(() => ({ state: 'unavailable' }));
     return {
       ...offline,
       assessment: { ...offline.assessment, available: model.state === 'installed' },
     };
   }
-  if (isIOSApp()) throw new Error('DAILY_UNAVAILABLE');
+  if (isNativeApp()) throw new Error('DAILY_UNAVAILABLE');
   const response = await fetch(`/api/v1/${isGuest() ? 'guest/' : ''}daily-reading`);
   if (!response.ok) throw new Error('DAILY_UNAVAILABLE');
   return response.json() as Promise<DailyReading>;
@@ -202,8 +202,8 @@ export function DailyReadingPage({
       )}
       {error && (
         <div role="alert">
-          {isIOSApp() ? '暂时无法读取本机每日练习。' : '暂时连不上每日练习。请检查家庭电脑。'}
-          <button onClick={load}>{isIOSApp() ? '重试' : '重新连接'}</button>
+          {isNativeApp() ? '暂时无法读取本机每日练习。' : '暂时连不上每日练习。请检查家庭电脑。'}
+          <button onClick={load}>{isNativeApp() ? '重试' : '重新连接'}</button>
         </div>
       )}
       {!data && !error && <p role="status">正在读取每日练习…</p>}
@@ -452,7 +452,7 @@ function ReadingSession({
   const [recognizing, setRecognizing] = useState(false);
   const [recognition, setRecognition] = useState<RecognitionResult | null>(null);
   const controller = useRef<AbortController | null>(null);
-  const recorder = useRef(isIOSApp() ? new IOSReadingRecorder() : new BrowserReadingRecorder());
+  const recorder = useRef(isNativeApp() ? new IOSReadingRecorder() : new BrowserReadingRecorder());
   const replay = useRef<HTMLAudioElement | null>(null);
   const listRef = useRef<HTMLElement | null>(null);
   const item = section.items[index]!;
@@ -725,7 +725,7 @@ function ReadingSession({
         setRecording('idle');
         if (instructionHeard) {
           setRecordError(
-            isIOSApp()
+            isNativeApp()
               ? '录音暂不可用。请检查麦克风权限和本机模型，或请家长帮忙判断。'
               : '麦克风没有开启。请允许麦克风权限，并使用本机地址或受信任 HTTPS。你仍可以直接跟读。',
           );
@@ -977,7 +977,7 @@ function ReadingSession({
             )}
           </div>
         )}
-        {(!isIOSApp() || canRecognize) && (
+        {(!isNativeApp() || canRecognize) && (
           <details
             className="daily-optional-recording"
             open={recordOpen}
@@ -1008,7 +1008,7 @@ function ReadingSession({
               )}
             </div>
             <p className="daily-privacy">
-              {isIOSApp()
+              {isNativeApp()
                 ? '录音和识别仅在本设备内存处理。换条、退出或后台会清除；每次最多三十秒。'
                 : '录音仅在浏览器和家庭电脑内存处理。换条、退出或后台会清除；识别最多三十秒，录音两分钟自动停止。'}
               识别只核对音节。
@@ -1031,7 +1031,7 @@ function ReadingSession({
                     清除这段录音
                   </button>
                   {canRecognize ? (
-                    <p>{isIOSApp() ? '本设备核对识别出的音节。' : '电脑核对识别出的音节。'}</p>
+                    <p>{isNativeApp() ? '本设备核对识别出的音节。' : '电脑核对识别出的音节。'}</p>
                   ) : (
                     <p>请听回放，用下方的家长判断确认本条跟读。</p>
                   )}
@@ -1053,7 +1053,7 @@ function ReadingSession({
                       <strong>
                         音节对照（Qwen）：
                         {
-                          (isIOSApp() ? recognitionContent.iosUI : recognitionContent.ui)[
+                          (isNativeApp() ? recognitionContent.iosUI : recognitionContent.ui)[
                             recognition.status
                           ]
                         }
@@ -1175,7 +1175,7 @@ function readingAudioFailure(error: unknown): string {
   if (code === 'AUDIO_DECODE_FAILED') return '这段声音暂时无法解码，请重试；仍然失败时请家长检查。';
   if (code === 'AUDIO_TIMEOUT' || code === 'AUDIO_NETWORK' || code === 'AUDIO_STALLED')
     return '这段声音下载或播放中断了，请点“重试示范”。已经准备好的声音可以继续播放。';
-  if (isIOSApp()) return '这段本机示范暂时无法播放，请点“重试示范”。';
+  if (isNativeApp()) return '这段本机示范暂时无法播放，请点“重试示范”。';
   if (code.startsWith('AUDIO_HTTP_')) return '这段声音暂时不可用，请重新连接家庭电脑 后重试。';
   return '示范声音还没响起来，请重试。仍然失败时请家长检查家庭电脑上的每日练习音频。';
 }

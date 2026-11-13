@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { gameCatalog, type GameClock } from '../domain/games';
 import { api } from '../platform/api-client';
-import { isIOSApp } from '../platform/ios-app';
+import { isNativeApp } from '../platform/ios-app';
 
 /** A monotonic local deadline may only shorten the server's short authorization. */
 export function useGameClock(enabled: boolean, stopVoice: () => void) {
@@ -26,7 +26,7 @@ export function useGameClock(enabled: boolean, stopVoice: () => void) {
     setPaused(true);
     setReason(message);
     stop.current();
-    if (isIOSApp() && message === 'GAME_PAUSED')
+    if (isNativeApp() && message === 'GAME_PAUSED')
       void api('/games/pause', { method: 'POST' }).catch(() => undefined);
   }, []);
   const resume = useCallback(async () => {
@@ -105,7 +105,7 @@ export function useGameClock(enabled: boolean, stopVoice: () => void) {
       window.clearInterval(check);
       document.removeEventListener('visibilitychange', visible);
       window.removeEventListener('lp-ios-audio-interrupted', interrupted);
-      if (isIOSApp()) void api('/games/pause', { method: 'POST' }).catch(() => undefined);
+      if (isNativeApp()) void api('/games/pause', { method: 'POST' }).catch(() => undefined);
     };
   }, [enabled, pause, resume]);
   return { clock, paused: enabled && paused, reason, resume, pause };

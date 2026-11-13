@@ -17,11 +17,14 @@ export default defineConfig({
       },
     ],
   ],
-  use: { baseURL: 'http://127.0.0.1:4173', trace: 'retain-on-failure' },
+  use: {
+    baseURL: `http://127.0.0.1:${process.env.LP_TEST_PORT ?? '4173'}`,
+    trace: 'retain-on-failure',
+  },
   webServer: {
-    command: 'npm run build && npm run preview -- --port 4173 --strictPort',
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: !process.env.CI,
+    command: `npm run build && npm run preview -- --port ${process.env.LP_TEST_PORT ?? '4173'} --strictPort`,
+    url: `http://127.0.0.1:${process.env.LP_TEST_PORT ?? '4173'}`,
+    reuseExistingServer: !process.env.CI && !process.env.LP_TEST_PORT,
   },
   projects: [
     { name: 'desktop-chromium', use: { ...devices['Desktop Chrome'] } },

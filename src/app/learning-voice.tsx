@@ -1,4 +1,4 @@
-import { isIOSApp } from '../platform/ios-app';
+import { isNativeApp } from '../platform/ios-app';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 
@@ -139,8 +139,8 @@ export function VoiceButton({
       type="button"
       className={`voice-button ${className}`}
       aria-label={canStop ? `停止${label}` : label}
-      aria-pressed={isIOSApp() ? undefined : playing}
-      data-ios-playing={isIOSApp() && playing ? '' : undefined}
+      aria-pressed={isNativeApp() ? undefined : playing}
+      data-ios-playing={isNativeApp() && playing ? '' : undefined}
       aria-description={failed ? '这段声音没有播放成功，点这里重试。' : undefined}
       onClick={() =>
         canStop
@@ -166,7 +166,7 @@ export function VoiceFailure({ voice }: { voice: LearningVoice }) {
     <div className="voice-failure" role="alert">
       <span>
         🔊 声音还没有响起来，请点一下重试。
-        {isIOSApp()
+        {isNativeApp()
           ? '仍然没有声音时，可以先跳过本题或请家长帮忙。'
           : '仍然没有声音时，请家长检查家庭电脑上的学习音频。'}
       </span>
