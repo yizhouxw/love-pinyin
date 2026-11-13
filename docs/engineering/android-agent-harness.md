@@ -1,8 +1,10 @@
 # Android agent harness
 
+先遵守 [项目 Agent harness](agent-harness.md)：独立 worktree/分支开发，同一 Android 真机安装和验收串行。
+
 ## 范围与执行方式
 
-用户于 2026-11-13 授权继续实现 Android 设备版本。先读 README、实施计划、当前 Android SPEC（尚需建立）、ADR-0039 及相关最新 ADR；复用 React、content 与声音资产，先完成独立离线安装、真实声音、作答持久化和重启恢复，再覆盖完整功能。测试工程通过不等于 Android 产品已交付。不要把 iOS 的识别能力自动视为 Android 已支持。
+用户于 2026-11-13 授权继续实现 Android 设备版本。先读 README、实施计划、[Android SPEC](../specs/SPEC-024-android-app.md)、ADR-0039 及相关最新 ADR；复用 React、content 与声音资产，先完成独立离线安装、真实声音、作答持久化和重启恢复，再覆盖完整功能。测试工程通过不等于 Android 产品已交付。不要把 iOS 的识别能力自动视为 Android 已支持。
 
 agent 可直接创建工程、配置构建、执行 Gradle、安装 APK、运行 ADB 和检查日志，不必反复让用户代操作 Android Studio。手机解锁、USB 调试信任、系统安装确认仍由用户在设备上完成；不得绕过系统授权。后续先检查设备连接状态，再决定是否需要用户协助。
 
