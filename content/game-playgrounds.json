@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "runner": {
+    "gravity": 850,
+    "jump": 400,
+    "speed": 110,
+    "treeSpacing": 280,
+    "firstTree": 500,
+    "ground": 330,
+    "assistSpeedFactor": 0.7
+  },
+  "boat": {
+    "speed": 145,
+    "rocks": [
+      {
+        "x": 150,
+        "y": 220,
+        "radius": 31
+      },
+      {
+        "x": 330,
+        "y": 240,
+        "radius": 33
+      }
+    ],
+    "ducklings": [
+      {
+        "x": 90,
+        "y": 270
+      },
+      {
+        "x": 240,
+        "y": 170
+      },
+      {
+        "x": 390,
+        "y": 300
+      }
+    ],
+    "hullRadius": 13
+  },
+  "space": {
+    "gravity": 240,
+    "rocks": [
+      {
+        "x": 45,
+        "y": 220,
+        "radius": 24
+      },
+      {
+        "x": 435,
+        "y": 230,
+        "radius": 25
+      }
+    ]
+  },
+  "rhythms": {
+    "gentle": [
+      [0, 0],
+      [0, 1]
+    ],
+    "steady": [
+      [0, 1, 0],
+      [1, 0, 1]
+    ],
+    "challenge": [
+      [0, 1, 1, 0],
+      [1, 0, 0, 1]
+    ]
+  }
+}

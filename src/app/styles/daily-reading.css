@@ -97,7 +97,7 @@
   line-height: 1.8;
   overflow-wrap: anywhere;
 }
-.daily-target span {
+.daily-target > span:not(.hanzi-pinyin) {
   border-radius: 12px;
   padding: 0.05em 0.12em;
 }
@@ -244,22 +244,6 @@
   font-size: 1.2rem;
 }
 
-.daily-target ruby {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  break-inside: avoid;
-  line-height: 1.5;
-  padding-block: 0.1em;
-}
-.daily-target rt {
-  display: block;
-  font-family: var(--teaching-font);
-  font-size: 0.36em;
-  font-weight: 400;
-  line-height: 1.6;
-  color: #627469;
-}
 .daily-list .daily-nav-hanzi {
   display: block;
   margin-top: 0.3rem;
@@ -458,4 +442,19 @@
 
 [data-ios-large-text] .daily-section-navigation .daily-section-arrow {
   flex-basis: auto;
+}
+
+@media (min-width: 761px) {
+  .daily-workspace > .daily-reader {
+    position: sticky;
+    top: 12px;
+  }
+  .daily-workspace > .daily-list {
+    max-height: min(650px, calc(100dvh - 120px));
+  }
+}
+@media (max-width: 760px) {
+  .daily-workspace > .daily-list {
+    max-height: min(240px, 32dvh);
+  }
 }

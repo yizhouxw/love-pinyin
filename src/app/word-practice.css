@@ -201,18 +201,14 @@
   min-height: 60px;
   padding-top: 12px;
 }
-.word-selected-picture ruby {
+.word-selected-picture .hanzi-pinyin {
   font-size: 1.6rem;
 }
 .word-selected-picture small {
   font-size: 0.7rem;
   color: #718275;
 }
-.word-practice rt {
-  font-family: var(--pinyin-font);
-  font-size: 0.9rem;
-  font-weight: 400;
-}
+
 .word-image-failure {
   position: absolute;
   inset: 0;
@@ -231,18 +227,23 @@
 }
 .word-grid {
   display: grid;
+  grid-auto-rows: max-content;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 8rem), 1fr));
   gap: 10px;
   margin: 0;
 }
 .word-practice .word-grid button {
+  display: block;
+  min-width: 0;
   padding: 14px 6px 10px;
   min-height: 88px;
   font-size: 1.8rem;
   overflow-wrap: anywhere;
 }
-.word-practice .word-grid rt {
-  font-size: 1rem;
+.word-grid .hanzi-pinyin {
+  display: flex;
+  width: auto;
+  --annotation-size: 1rem;
 }
 .word-practice .word-grid button[aria-pressed='true'] {
   background: #e4f2d6;
@@ -277,6 +278,7 @@
   justify-content: center;
 }
 .word-answer {
+  position: relative;
   --word-answer-size: clamp(2rem, 5vw, 3.5rem);
   --word-answer-pinyin-size: clamp(1.2rem, 2.5vw, 1.65rem);
   min-height: calc(var(--word-answer-size) * 1.25 + var(--word-answer-pinyin-size) * 1.4 + 18px);
@@ -286,18 +288,11 @@
   padding: 8px 0;
   margin: 0;
 }
-.word-answer ruby {
-  display: flex;
-  flex-direction: column;
-  font-size: var(--word-answer-size);
-  line-height: 1.25;
+.word-answer .hanzi-pinyin {
+  --hanzi-size: var(--word-answer-size);
+  --annotation-size: var(--word-answer-pinyin-size);
 }
-.word-practice .word-answer rt {
-  display: block;
-  order: -1;
-  font-size: var(--word-answer-pinyin-size);
-  line-height: 1.4;
-}
+
 .word-dictation-controls {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -573,7 +568,7 @@
     padding: 12px 0;
     min-width: 0;
   }
-  .word-selected-picture ruby {
+  .word-selected-picture .hanzi-pinyin {
     font-size: 1.5rem;
   }
   .word-grid {
@@ -669,4 +664,155 @@
   flex: 0 0 30px;
   width: 30px;
   height: 18px;
+}
+
+/* Reading panes keep the illustration and playback controls outside the word scroll. */
+.word-reading-layout {
+  height: clamp(320px, calc(100dvh - 260px), 680px);
+  grid-template-columns: minmax(180px, 30%) minmax(0, 1fr);
+  align-items: stretch;
+}
+.word-reading-layout > .word-selected-picture {
+  align-self: start;
+  position: sticky;
+  top: 12px;
+}
+.word-reading-main {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  min-height: 0;
+  min-width: 0;
+}
+.word-reading-main .word-grid {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  align-content: start;
+  padding: 5px;
+  border-radius: 14px;
+  background: #edf2e780;
+  scroll-padding: 8px;
+  min-height: 0;
+}
+.word-grid:focus-visible,
+.word-passage-scroll:focus-visible {
+  outline: 3px solid #498363;
+  outline-offset: 2px;
+}
+.word-recite-workspace {
+  display: flex;
+  flex-direction: column;
+}
+.word-passage-scroll {
+  max-height: max(220px, calc(100dvh - 370px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 4px;
+}
+.word-paragraph[aria-current='true'] {
+  background: #e8f1da;
+  border-radius: 10px;
+  outline: 2px solid #a5c79b;
+}
+@media (max-width: 600px) and (min-height: 501px) {
+  .word-reading-layout {
+    height: max(360px, calc(100dvh - 240px));
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(100px, 132px) minmax(0, 1fr);
+    gap: 8px;
+  }
+  .word-reading-layout > .word-selected-picture {
+    position: static;
+    align-self: stretch;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .word-reading-layout .word-image-frame {
+    height: 100%;
+    max-height: 114px;
+  }
+  .word-reading-layout .word-selected-picture figcaption {
+    padding: 0;
+    min-height: 0;
+  }
+  .word-reading-layout .word-audio-status {
+    min-height: 36px;
+    margin: 0;
+  }
+  .word-reading-layout .word-playback {
+    min-height: 36px;
+  }
+}
+@media (max-height: 500px) {
+  .word-reading-layout {
+    height: max(240px, calc(100dvh - 140px));
+    grid-template-columns: minmax(130px, 25%) minmax(0, 1fr);
+    gap: 10px;
+  }
+  .word-reading-layout > .word-selected-picture {
+    display: block;
+  }
+  .word-reading-layout .word-image-frame {
+    max-height: 130px;
+  }
+  .word-reading-layout .word-selected-picture figcaption {
+    min-height: 40px;
+    padding-top: 4px;
+  }
+  .word-reading-layout .word-audio-status {
+    min-height: 32px;
+  }
+  .word-reading-layout .word-playback {
+    min-height: 32px;
+  }
+}
+@media (max-height: 500px) and (min-width: 601px) {
+  .home-page:has(> .word-practice) {
+    padding-block: 4px;
+  }
+  .word-practice {
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) minmax(260px, 1fr);
+    gap: 6px 12px;
+  }
+  .word-header {
+    margin: 0;
+  }
+  .word-course-bar {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .word-course-trigger > span {
+    display: none;
+  }
+  .word-modes {
+    grid-column: 1/-1;
+    margin: 0;
+  }
+  .word-reading-layout,
+  .word-dictation,
+  .word-recite-workspace {
+    grid-column: 1/-1;
+  }
+  .word-reading-layout {
+    height: max(200px, calc(100dvh - 140px));
+  }
+  .word-reading-layout .word-audio-status {
+    font-size: 0.8rem;
+    min-height: 26px;
+  }
+  .word-reading-layout .word-playback {
+    gap: 6px;
+  }
+  .word-reading-layout .word-playback button {
+    min-height: 44px;
+    padding-block: 4px;
+  }
+}
+
+.word-answer-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
 }

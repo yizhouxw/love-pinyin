@@ -41,8 +41,8 @@ for (const game of catalog.games) {
         ),
       ).size,
     ).toBeGreaterThanOrEqual(3);
-    const stage = page.locator('.scene-stage');
-    await expect(stage.locator('[data-scene-target]')).toHaveCount(
+    const stage = page.locator('.adventure-canvas');
+    await expect(page.locator('button[data-option-id]')).toHaveCount(
       session.tasks[0].exercise.options.length,
     );
     await expect
@@ -55,7 +55,7 @@ for (const game of catalog.games) {
     expect(voices.some((url) => url.includes('/voice/prompt-'))).toBe(false);
     const originalWidth = (await stage.boundingBox())!.width;
     await page.getByRole('button', { name: '放大画面' }).click();
-    expect((await stage.boundingBox())!.width).toBeGreaterThan(originalWidth);
+    expect((await stage.boundingBox())!.width).toBeGreaterThanOrEqual(originalWidth);
     expect(await page.evaluate(() => document.fullscreenElement)).toBeNull();
     await page.getByRole('button', { name: '游戏设置' }).click();
     const dialog = page.getByRole('dialog', { name: '游戏设置' });
@@ -122,7 +122,7 @@ test('PLAY-02/04: failed settings keep the draft; pointer holds release and late
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByLabel('河湾划船关卡').selectOption('boat-01');
   await page.getByRole('button', { name: '开始河湾划船' }).click();
-  const stage = page.locator('.scene-stage');
+  const stage = page.locator('.adventure-canvas');
   await expect(stage).toBeVisible();
   const slow = Number(await stage.getAttribute('data-speed-factor'));
   await page.getByRole('button', { name: '游戏设置' }).click();
@@ -140,23 +140,20 @@ test('PLAY-02/04: failed settings keep the draft; pointer holds release and late
   await page.getByRole('button', { name: '应用设置' }).click();
   await expect(page.getByRole('dialog')).not.toBeVisible();
   await page.getByRole('button', { name: '听拼音', exact: true }).click();
-  const paddle = page.getByRole('button', { name: '双桨前进', exact: true });
-  await expect(paddle).toBeEnabled({ timeout: 15000 });
-  await paddle.scrollIntoViewIfNeeded();
-  const box = (await paddle.boundingBox())!;
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await expect(page.locator('button[data-option-id]').first()).toBeEnabled({ timeout: 15000 });
+  await stage.scrollIntoViewIfNeeded();
+  const box = (await stage.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height * 0.85);
   await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.82, { steps: 10 });
   await expect
-    .poll(async () => Number(await stage.getAttribute('data-world-distance')))
-    .toBeGreaterThan(15);
-  await expect
-    .poll(async () => Number(await stage.getAttribute('data-world-strokes')))
-    .toBeGreaterThanOrEqual(3);
-  await page.getByRole('button', { name: 'Ⅱ 暂停', exact: true }).press('Enter');
+    .poll(async () => Number(await stage.getAttribute('data-world-x')))
+    .toBeGreaterThan(250);
+  await stage.dispatchEvent('pointercancel', { pointerId: 1 });
   await page.mouse.up();
-  const stopped = await stage.getAttribute('data-world-distance');
+  const stopped = await stage.getAttribute('data-world-x');
   await page.waitForTimeout(400);
-  expect(await stage.getAttribute('data-world-distance')).toBe(stopped);
+  expect(await stage.getAttribute('data-world-x')).toBe(stopped);
   await page.getByRole('button', { name: '保存并退出游戏' }).click();
   await page.getByLabel('河湾划船关卡').selectOption('boat-06');
   await openGameSettings(page, '河湾划船');

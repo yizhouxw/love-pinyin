@@ -37,3 +37,70 @@
 .pinyin-legend .pinyin-whole {
   font: 700 1rem var(--pinyin-font);
 }
+.hanzi-pinyin {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.15em 0.2em;
+  vertical-align: middle;
+  max-width: 100%;
+  --hanzi-size: 1em;
+  --annotation-size: 0.56em;
+}
+.hanzi-pinyin > ruby {
+  display: inline-grid;
+  grid-template-rows: auto auto;
+  justify-items: center;
+  align-items: center;
+  break-inside: avoid;
+  white-space: nowrap;
+  min-width: 1em;
+  line-height: 1.45;
+}
+.hanzi-pinyin > ruby > rt {
+  display: block;
+  grid-row: 1;
+  font: 400 var(--annotation-size)/1.5 var(--pinyin-font);
+  text-align: center;
+  letter-spacing: normal;
+  padding: 0 0.06em;
+}
+.hanzi-pinyin .phonetic-hanzi {
+  grid-row: 2;
+  position: relative;
+  display: block;
+  font-family: var(--teaching-font);
+  font-size: var(--hanzi-size);
+  line-height: 1.35;
+  text-align: center;
+  letter-spacing: normal;
+}
+.phonetic-before,
+.phonetic-after {
+  position: absolute;
+  top: 0;
+}
+.phonetic-before {
+  right: 100%;
+}
+.phonetic-after {
+  left: 100%;
+}
+.hanzi-pinyin .phonetic-punctuation {
+  margin-inline-end: 0.45em;
+}
+.hanzi-pinyin-pinyin {
+  --hanzi-size: 0.4em;
+  --annotation-size: 1em;
+}
+.phonetic-fallback {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hanzi-pinyin .phonetic-character {
+  display: block;
+  font: inherit;
+  line-height: inherit;
+}

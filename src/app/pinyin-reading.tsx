@@ -1,3 +1,4 @@
+import { alignPhonetics } from '../domain/phonetic-alignment';
 import { isWholeSyllable, type ReadingMode } from '../domain/pinyin-spelling';
 import './pinyin-reading.css';
 
@@ -52,5 +53,59 @@ export function PinyinText({ value }: { value: string }) {
     ) : (
       token
     ),
+  );
+}
+
+/** Every syllable and its character share one measurable, unbreakable column. */
+export function PhoneticText({
+  text,
+  pinyin,
+  primary = 'hanzi',
+  concealHanzi = false,
+  activeIndex = -1,
+}: {
+  text: string;
+  pinyin: string;
+  primary?: 'hanzi' | 'pinyin';
+  concealHanzi?: boolean;
+  activeIndex?: number;
+}) {
+  const units = alignPhonetics(text, pinyin);
+  if (!units)
+    return (
+      <span className="phonetic-fallback" data-alignment="unmatched">
+        <span>
+          <PinyinText value={pinyin} />
+        </span>
+        <span hidden={concealHanzi}>{text}</span>
+      </span>
+    );
+  return (
+    <span
+      className={`hanzi-pinyin hanzi-pinyin-${primary}`}
+      data-alignment="paired"
+      data-hanzi={text}
+    >
+      {units.map((unit, index) => (
+        <ruby key={index} className={unit.after ? 'phonetic-punctuation' : ''}>
+          <span
+            className="phonetic-hanzi"
+            style={concealHanzi ? { visibility: 'hidden' } : undefined}
+            aria-hidden={concealHanzi}
+          >
+            {unit.before && <span className="phonetic-before">{unit.before}</span>}
+            <span className="phonetic-character">{unit.hanzi}</span>
+            {unit.after && <span className="phonetic-after">{unit.after}</span>}
+          </span>
+          <rt
+            data-phonetic-syllable
+            className={activeIndex === index ? 'daily-highlight' : undefined}
+            aria-current={activeIndex === index ? 'true' : undefined}
+          >
+            <PinyinText value={unit.pinyin} />
+          </rt>
+        </ruby>
+      ))}
+    </span>
   );
 }

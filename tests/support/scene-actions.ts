@@ -1,155 +1,45 @@
 import { expect, type Page } from '@playwright/test';
-/** Real controls only. Read the visible route geometry, never mutate game state or submit an answer. */
+/** Use the same tap alternatives and visible rhythm score offered to children. */
 export async function playScene(page: Page, optionId: string) {
-  const stage = page.getByRole('group', { name: '游戏操作区：方向键控制，空格行动' });
+  const stage = page.locator('.adventure-canvas');
   await expect(stage).toBeVisible();
-  const task = await page.locator('.scene-nav').innerText();
-  const arrived = async () =>
-    !(await stage.count()) ||
-    Boolean(await stage.getAttribute('data-world-hit')) ||
-    (await page.locator('.scene-nav').innerText()) !== task;
   await page.getByRole('button', { name: '听拼音', exact: true }).click();
-  const actions = page.getByRole('group', { name: '场景动作' }).getByRole('button');
-  await expect(actions.nth(1)).toBeEnabled({ timeout: 20000 });
-  const scene = await stage.getAttribute('data-scene');
-  // Rowing needs fine docking across shuffled targets; use the real child-facing
-  // slow-motion aid rather than letting the pilot's repeated strokes overrun a buoy.
-  if (scene === 'boat') {
-    const assist = page.getByRole('button', { name: /辅助慢动作/ });
-    if ((await assist.getAttribute('aria-pressed')) === 'false') await assist.click();
-  }
-  const goal = Number(await stage.getAttribute('data-choice-at'));
-  let index = -1;
-  const targets = stage.locator('[data-scene-target]');
-  if (scene !== 'space')
-    index = (
-      await targets.evaluateAll((nodes) => nodes.map((n) => n.getAttribute('data-scene-target')))
-    ).indexOf(optionId);
-  // Space planets enter view only after the meteor route. Index is resolved below.
-  if (scene === 'runner') {
-    expect(index).toBeGreaterThanOrEqual(0);
-    for (let step = 0; step < 180; step++) {
-      const snapshot = await stage.evaluate((el) => ({
-        distance: Number(el.getAttribute('data-world-distance')),
-        x: Number(el.getAttribute('data-world-x')),
-        jump: Number(el.getAttribute('data-world-jump')),
-        obstacles: Array.from(el.querySelectorAll('[data-obstacle]')).map((o) => ({
-          at: Number(o.getAttribute('data-obstacle-at')),
-          lane: Number(o.getAttribute('data-obstacle-lane')),
-          kind: o.getAttribute('data-obstacle-kind'),
-        })),
-        count: el.querySelectorAll('[data-scene-target]').length,
-      }));
-      if (snapshot.distance >= goal) break;
-      const obstacle = snapshot.obstacles.find(
-        (o) => o.at > snapshot.distance && o.at - snapshot.distance < 55,
-      );
-      if (obstacle) {
-        const ox = 120 + ((obstacle.lane % snapshot.count) * 560) / Math.max(1, snapshot.count - 1);
-        if (
-          obstacle.kind === 'root' &&
-          (obstacle.lane === -1 || Math.abs(ox - snapshot.x) < 65) &&
-          snapshot.jump < 1
-        )
-          await page.keyboard.press('Space');
-        if (obstacle.kind === 'bush' && Math.abs(ox - snapshot.x) < 80)
-          await page.keyboard.press(snapshot.x < 500 ? 'ArrowRight' : 'ArrowLeft');
-      } else if (!snapshot.obstacles.some((o) => o.at > snapshot.distance)) {
-        const x = 120 + (index * 560) / Math.max(1, snapshot.count - 1);
-        if (Math.abs(snapshot.x - x) > 20)
-          await page.keyboard.press(snapshot.x < x ? 'ArrowRight' : 'ArrowLeft');
-      }
-      if (
-        snapshot.distance >= goal - 65 &&
-        !snapshot.obstacles.some((o) => o.at > snapshot.distance)
-      ) {
-        const x = 120 + (index * 560) / Math.max(1, snapshot.count - 1);
-        if (Math.abs(snapshot.x - x) < 20) await page.keyboard.press('Space');
-      }
-      await page.waitForTimeout(100);
-      if (await arrived()) break;
-    }
-  } else if (scene === 'drum') {
-    expect(index).toBeGreaterThanOrEqual(0);
-    for (let i = 0; i < index; i++) await page.keyboard.press('ArrowRight');
+  const option = page.locator(`button[data-option-id="${optionId}"]`);
+  await expect(option).toBeEnabled({ timeout: 20000 });
+  const task = await page.locator('.scene-nav').innerText();
+  await option.click();
+  await expect
+    .poll(
+      () =>
+        page.evaluate((previousTask) => {
+          const canvas = document.querySelector('.adventure-canvas');
+          const nav = document.querySelector<HTMLElement>('.scene-nav');
+          return (
+            !canvas ||
+            canvas.getAttribute('data-world-hit') !== '' ||
+            nav?.innerText !== previousTask
+          );
+        }, task),
+      { timeout: 20000 },
+    )
+    .toBe(true);
+  if (await page.locator('.adventure-canvas[data-scene="drum"]').count()) {
     await expect
       .poll(
-        async () => Math.abs(Number(await targets.nth(index).getAttribute('data-target-x')) - 180),
-        { timeout: 30000 },
+        async () =>
+          (await page.locator('.rhythm-score').isVisible()) ||
+          (await page.getByRole('button', { name: '重试保存这次选择' }).isVisible()) ||
+          (await page.locator('.scene-hint').isVisible()),
+        { timeout: 15000 },
       )
-      .toBeLessThan(4);
-    await page.keyboard.press('Space');
-  } else if (scene === 'boat') {
-    expect(index).toBeGreaterThanOrEqual(0);
-    const count = await targets.count();
-    for (let step = 0; step < 350; step++) {
-      const snapshot = await stage.evaluate((el) => ({
-        distance: Number(el.getAttribute('data-world-distance')),
-        x: Number(el.getAttribute('data-world-x')),
-        vx: Number(el.getAttribute('data-world-vx')),
-        obstacles: Array.from(el.querySelectorAll('[data-obstacle]')).map((o) => ({
-          at: Number(o.getAttribute('data-obstacle-at')),
-          lane: Number(o.getAttribute('data-obstacle-lane')),
-        })),
-      }));
-      const next = snapshot.obstacles.find(
-        (o) => o.at > snapshot.distance && o.at - snapshot.distance < 100,
-      );
-      const lane = (i: number) => 120 + (i * 560) / Math.max(1, count - 1);
-      // Keep aiming for the actual buoy unless that lane is blocked. Arbitrarily
-      // steering to every reef's next lane can force a cross-river dash at docking.
-      const safeLane =
-        next && next.lane % count === index
-          ? [index - 1, index + 1]
-              .filter((i) => i >= 0 && i < count)
-              .sort((a, b) => Math.abs(lane(a) - snapshot.x) - Math.abs(lane(b) - snapshot.x))[0]!
-          : index;
-      const targetX = lane(safeLane);
-      const projected = snapshot.x + snapshot.vx * 0.35;
-      if (Math.abs(targetX - projected) > 35)
-        await page.keyboard.press(targetX < projected ? 'ArrowLeft' : 'ArrowRight');
-      if (Math.abs(targetX - snapshot.x) < 55) await page.keyboard.press('Space');
-      await page.waitForTimeout(120);
-      if (await arrived()) break;
-    }
-  } else {
-    // Stay away from the first meteor lane, then aim at actual planets after the flight.
-    for (let n = 0; n < 350; n++) {
-      const snapshot = await stage.evaluate((el) => ({
-        distance: Number(el.getAttribute('data-world-distance')),
-        x: Number(el.getAttribute('data-world-x')),
-        obstacles: Array.from(el.querySelectorAll('[data-obstacle]')).map((o) => ({
-          at: Number(o.getAttribute('data-obstacle-at')),
-          lane: Number(o.getAttribute('data-obstacle-lane')),
-        })),
-      }));
-      if (snapshot.distance >= goal) break;
-      const count = Number(await stage.getAttribute('data-option-count'));
-      const obstacle = snapshot.obstacles.find(
-        (o) => o.at > snapshot.distance && o.at - snapshot.distance < 150,
-      );
-      if (
-        obstacle &&
-        Math.abs(120 + ((obstacle.lane % count) * 560) / Math.max(1, count - 1) - snapshot.x) < 80
-      )
-        await page.keyboard.press(snapshot.x < 500 ? 'ArrowRight' : 'ArrowLeft');
-      await page.waitForTimeout(100);
-    }
-    await expect
-      .poll(async () => Number(await stage.getAttribute('data-world-distance')), { timeout: 5000 })
-      .toBeGreaterThanOrEqual(goal);
-    await expect(targets.first()).toBeVisible();
-    index = (
-      await targets.evaluateAll((nodes) => nodes.map((n) => n.getAttribute('data-scene-target')))
-    ).indexOf(optionId);
-    expect(index).toBeGreaterThanOrEqual(0);
-    const x = Number(await targets.nth(index).getAttribute('data-target-x'));
-    for (let n = 0; n < 30; n++) {
-      const current = Number(await stage.getAttribute('data-world-x'));
-      if (Math.abs(x - current) < 15) break;
-      await page.keyboard.press(x < current ? 'ArrowLeft' : 'ArrowRight');
-    }
-    await page.keyboard.press('Space');
+      .toBe(true);
+    if (await page.locator('.rhythm-score').isVisible()) await completeRhythm(page);
   }
-  await expect.poll(arrived, { timeout: 20000 }).toBe(true);
+}
+export async function completeRhythm(page: Page) {
+  const beats = await page.locator('.rhythm-score span').allTextContents();
+  for (const beat of beats)
+    await page
+      .getByRole('button', { name: beat === '●' ? '● 咚 · 鼓心' : '◎ 哒 · 鼓边', exact: true })
+      .click();
 }

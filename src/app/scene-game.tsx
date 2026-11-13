@@ -1,27 +1,13 @@
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { gameCatalog } from '../domain/games';
-import {
-  advanceWorld,
-  initialWorld,
-  laneX,
-  targetPosition,
-  type Action,
-  type GameSettings,
-  type Scene,
-  type World,
-  type EngineConfig,
-} from '../domain/scene-game';
+import type { GameSettings, Scene } from '../domain/scene-game';
 import type { Answer, Exercise, Hint } from '../domain/learning-api';
-import { GamePercussion } from '../platform/audio/game-percussion';
 import { narration } from './labels';
 import { VoiceButton, VoiceFailure, type useLearningVoice } from './learning-voice';
-import { steerWorld } from '../domain/scene-steering';
-import { SceneWorld } from './scene-world';
+import { AdventureStage } from './adventure-stage';
 import { Notice } from './notice';
 import './scene-game.css';
 import { compatibleRun, segmentAt, type GameRun } from '../domain/game-levels';
-import { useGameInput } from './use-game-input';
-import { useGamePointer } from './use-game-pointer';
 import {
   readScenePreference,
   saveScenePreference,
@@ -29,7 +15,6 @@ import {
   saveSceneDisplay,
   type ScenePreference,
 } from '../platform/game-preferences';
-
 const motionPreference = () => window.matchMedia('(prefers-reduced-motion: reduce)');
 const subscribeToMotion = (notify: () => void) => {
   const preference = motionPreference();
@@ -37,7 +22,6 @@ const subscribeToMotion = (notify: () => void) => {
   return () => preference.removeEventListener('change', notify);
 };
 const prefersReducedMotion = () => motionPreference().matches;
-
 type Props = {
   gameId: string;
   taskId: string;
@@ -77,17 +61,6 @@ export function SceneGame(props: Props) {
         Array.from({ length: props.total }, (_, i) => `legacy-${i}`),
       );
   const segment = segmentAt(run, props.index)!;
-  const pattern = run.patterns[segment.patternId]!;
-  const stageRef = useRef<HTMLDivElement>(null);
-  const staticRef = useRef<HTMLDivElement>(null);
-  const priorMode = useRef(staticChoices);
-  useLayoutEffect(() => {
-    if (priorMode.current !== staticChoices) {
-      priorMode.current = staticChoices;
-      (staticChoices ? staticRef.current : stageRef.current)?.focus({ preventScroll: true });
-    }
-  }, [staticChoices]);
-  const nextRef = useRef(props.onNext);
   const [display, setDisplay] = useState(() => readSceneDisplay(gameId, props.reducedMotion));
   const { enlarged, assist } = display;
   function changeDisplay(value: Partial<typeof display>) {
@@ -96,97 +69,32 @@ export function SceneGame(props: Props) {
   useEffect(() => {
     saveSceneDisplay(gameId, display);
   }, [gameId, display]);
-  const helpDialog = useRef<HTMLDialogElement>(null);
-  const settingsDialog = useRef<HTMLDialogElement>(null);
-  const settingsButton = useRef<HTMLButtonElement>(null);
+  const helpDialog = useRef<HTMLDialogElement>(null),
+    settingsDialog = useRef<HTMLDialogElement>(null),
+    settingsButton = useRef<HTMLButtonElement>(null);
   const wasPaused = useRef(false);
   const [draft, setDraft] = useState(() => readScenePreference(gameId));
-  const [applying, setApplying] = useState(false);
-  const [settingsError, setSettingsError] = useState('');
+  const [draftAssist, setDraftAssist] = useState(assist);
+  const [applying, setApplying] = useState(false),
+    [settingsError, setSettingsError] = useState('');
+  const [paused, setPaused] = useState(false),
+    [sending, setSending] = useState(false);
+  const [selection, setSelection] = useState<{ task: string; index: number | null }>(() => ({
+    task: props.taskId,
+    index: props.pendingOptionId
+      ? question.options.findIndex((o) => o.id === props.pendingOptionId)
+      : null,
+  }));
+  const hit = selection.task === props.taskId ? selection.index : null;
+  const [retry, setRetry] = useState('');
+  const [attempt, setAttempt] = useState(0);
+  const [celebrated, setCelebrated] = useState(false);
+  const nextRef = useRef(props.onNext);
   useEffect(() => {
     nextRef.current = props.onNext;
   }, [props.onNext]);
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    stageRef.current?.focus({ preventScroll: true });
-  }, []);
   const level = props.settings?.level ?? 'gentle',
     speed = props.settings?.speed ?? 'slow';
-  const config: EngineConfig = {
-    pattern,
-    count: question.options.length,
-    ...gameCatalog.levels[level],
-    speedFactor:
-      gameCatalog.speeds[speed].factor *
-      (1 + (run.level.number - 1) * gameCatalog.play.levelSpeedStep),
-  };
-  const seed = () => ({
-    ...initialWorld(),
-    x: laneX(Math.floor(question.options.length / 2), question.options.length),
-    hit: props.pendingOptionId
-      ? Math.max(
-          0,
-          question.options.findIndex((o) => o.id === props.pendingOptionId),
-        )
-      : null,
-  });
-  const [frames] = useState(() => {
-    let frame = { world: seed(), backdrop: 0 };
-    const listeners = new Set<() => void>();
-    return {
-      read: () => frame,
-      write(world: World, backdrop = frame.backdrop) {
-        frame = { world, backdrop };
-        listeners.forEach((listener) => listener());
-      },
-      subscribe(listener: () => void) {
-        listeners.add(listener);
-        return () => listeners.delete(listener);
-      },
-    };
-  });
-  const [hit, setHit] = useState<number | null>(() => frames.read().world.hit);
-  const taskId = useRef(props.taskId);
-  const submitted = useRef<number | null>(null);
-  const [replaying, setReplaying] = useState(false);
-  const [resolvedHit, setResolvedHit] = useState(false);
-  useLayoutEffect(() => {
-    if (taskId.current === props.taskId) return;
-    const { world: prior, backdrop } = frames.read();
-    const next = {
-      ...initialWorld(),
-      x: prior.x,
-      vx: prior.vx,
-      time: prior.time,
-      jump: prior.jump,
-      jumpVelocity: prior.jumpVelocity,
-      forwardVelocity: prior.forwardVelocity,
-      flash: 0.25,
-    };
-    taskId.current = props.taskId;
-    submitted.current = null;
-    frames.write(next, backdrop + prior.distance);
-    setHit(null);
-    setResolvedHit(false);
-    setReplaying(false);
-  }, [frames, props.taskId]);
-  const [paused, setPaused] = useState(false);
-  const physics = {
-    ...config,
-    assist: assist || config.assist,
-    speedFactor: config.speedFactor * (assist ? 0.45 : 1),
-  };
-  const engine = useRef(physics);
-  useEffect(() => {
-    engine.current = physics;
-  });
-  const [sfx, setSfx] = useState(true);
-  const percussion = useRef<GamePercussion | null>(null);
-  const [sending, setSending] = useState(false);
-  const callback = useRef(props.onAnswer);
-  useEffect(() => {
-    callback.current = props.onAnswer;
-  }, [props.onAnswer]);
   const done = Boolean(answer && (answer.correct || corrected));
   const stopped =
     paused ||
@@ -196,131 +104,65 @@ export function SceneGame(props: Props) {
     sending ||
     !!voice.playingId ||
     done ||
-    Boolean(answer && !replaying);
-  useEffect(() => {
-    percussion.current = new GamePercussion();
-    return () => {
-      percussion.current?.close();
-      percussion.current = null;
-    };
-  }, []);
-  const canMove = !staticChoices && !paused && !applying && (!answer || done || replaying);
-  const canMovePastTarget = useRef(false);
-  useLayoutEffect(() => {
-    canMovePastTarget.current = !stopped;
-  }, [stopped]);
-  useEffect(() => {
-    if (!canMove) {
-      percussion.current?.close();
-      return;
-    }
-    let frame = 0;
-    let last = 0;
-    function tick(time: number) {
-      const dt = last ? (time - last) / 1000 : 0;
-      last = time;
-      const { world, backdrop } = frames.read();
-      const config = engine.current;
-      if (!document.hidden && dt > 0) {
-        if (world.hit !== null) {
-          frames.write(world, backdrop + Math.min(dt, 0.05) * config.travel * config.speedFactor);
-        } else {
-          const next = advanceWorld(world, dt, config, undefined, canMovePastTarget.current);
-          frames.write(next);
-          if (next.hit !== null) setHit(next.hit);
-        }
-      }
-      frame = requestAnimationFrame(tick);
-    }
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [canMove, frames]);
-  useEffect(() => {
-    if (stopped || hit === null || submitted.current === hit) return;
-    submitted.current = hit;
+    Boolean(answer && retry !== props.taskId);
+  const choosing = useRef(false);
+  function choose(index: number) {
+    if (stopped || choosing.current || hit !== null) return;
+    choosing.current = true;
+    setSelection({ task: props.taskId, index });
     setSending(true);
-    void callback.current(question.options[hit]!.id).finally(() => {
-      setResolvedHit(true);
+    setCelebrated(false);
+    void props.onAnswer(question.options[index]!.id).finally(() => {
+      choosing.current = false;
       setSending(false);
     });
-  }, [hit, question.options, stopped]);
+  }
+  useEffect(() => {
+    if (busy || sending || voice.playingId || paused || props.error) return;
+    if (done && (scene !== 'drum' || celebrated)) {
+      const timer = window.setTimeout(() => nextRef.current(), 850);
+      return () => window.clearTimeout(timer);
+    }
+    if (answer && !done && hit !== null) {
+      const timer = window.setTimeout(() => {
+        setSelection({ task: props.taskId, index: null });
+        setRetry(props.taskId);
+        setAttempt((n) => n + 1);
+      }, 400);
+      return () => window.clearTimeout(timer);
+    }
+  }, [
+    answer,
+    busy,
+    sending,
+    voice.playingId,
+    paused,
+    props.error,
+    done,
+    scene,
+    celebrated,
+    hit,
+    props.taskId,
+  ]);
   useEffect(() => {
     const hide = () => {
       if (document.hidden) {
         setPaused(true);
-        percussion.current?.close();
+        voice.stop();
       }
     };
     document.addEventListener('visibilitychange', hide);
     return () => document.removeEventListener('visibilitychange', hide);
-  }, []);
-  function fire(action: Action) {
-    const { world } = frames.read();
-    if (staticChoices || stopped || world.hit !== null) return;
-    if (sfx && scene === 'drum' && action === 'act') percussion.current?.hit();
-    const next = advanceWorld(world, 0, engine.current, action);
-    frames.write(next);
-    if (next.hit !== null) setHit(next.hit);
-  }
+  }, [voice]);
   function focusStage() {
-    stageRef.current?.focus({ preventScroll: true });
+    document.querySelector<HTMLElement>('.adventure-canvas')?.focus({ preventScroll: true });
   }
   function togglePause() {
     voice.stop();
     if (!paused && props.onPause) props.onPause();
     else setPaused((value) => !value);
   }
-  const pointer = useGamePointer(!staticChoices && !stopped && hit === null, scene, fire);
-  useGameInput({
-    enabled: !staticChoices && !stopped && hit === null,
-    scene,
-    onAction: fire,
-    onPause: togglePause,
-    focus: focusStage,
-  });
-  useEffect(() => {
-    if (busy || sending || voice.playingId || paused || props.error) return;
-    if (done) {
-      const timer = window.setTimeout(() => nextRef.current(), 650);
-      return () => window.clearTimeout(timer);
-    } else if (answer && hit !== null && resolvedHit) {
-      const frame = requestAnimationFrame(() => {
-        const { world, backdrop } = frames.read();
-        const distance = scene === 'space' ? pattern.choiceAt : pattern.choiceAt - 65;
-        submitted.current = null;
-        frames.write(
-          { ...world, distance, hit: null, shot: null, note: 0, forwardVelocity: 0 },
-          backdrop + world.distance - distance,
-        );
-        setHit(null);
-        setResolvedHit(false);
-        setReplaying(true);
-      });
-      return () => cancelAnimationFrame(frame);
-    }
-  }, [
-    answer,
-    busy,
-    done,
-    frames,
-    hit,
-    pattern.choiceAt,
-    paused,
-    props.error,
-    resolvedHit,
-    scene,
-    sending,
-    voice.playingId,
-  ]);
   const cue = narration.exercises[question.id];
-  const controls =
-    scene === 'runner'
-      ? ['← 换道', '跳跃 ↑', '换道 →']
-      : scene === 'boat'
-        ? ['左桨 ↶', '双桨前进', '右桨 ↷']
-        : scene === 'drum'
-          ? ['放过音符', '咚！击鼓', '放过音符']
-          : ['← 瞄准', '发射 ↑', '瞄准 →'];
   const hitOption = hit === null ? null : question.options[hit];
   return (
     <main
@@ -369,6 +211,7 @@ export function SceneGame(props: Props) {
             wasPaused.current = paused;
             setPaused(true);
             setSettingsError('');
+            setDraftAssist(assist);
             setDraft({
               ...readScenePreference(gameId),
               difficulty: props.settings?.requestedDifficulty ?? 'auto',
@@ -402,6 +245,7 @@ export function SceneGame(props: Props) {
               .onSettings(draft)
               .then(() => {
                 saveScenePreference(gameId, draft);
+                changeDisplay({ assist: draftAssist });
                 settingsDialog.current?.close();
               })
               .catch((reason: Error) => setSettingsError(reason.message))
@@ -470,6 +314,17 @@ export function SceneGame(props: Props) {
               </select>
             </label>
           </div>
+          {scene === 'runner' && (
+            <label className="scene-wait-setting">
+              <input
+                type="checkbox"
+                checked={draftAssist}
+                disabled={applying}
+                onChange={(event) => setDraftAssist(event.target.checked)}
+              />{' '}
+              经过果树时减速（启蒙难度始终开启）
+            </label>
+          )}
           <p className="adult-hint">
             本关共 {props.total} 题，已完成 {props.index} 题。题量在下次开始关卡时生效。
           </p>
@@ -499,7 +354,7 @@ export function SceneGame(props: Props) {
         }}
       >
         <h2 id="scene-help-title">玩法与故事</h2>
-        <p>{game.controls} 方向键 / A、D，空格 / W；P 暂停。</p>
+        <p>{game.controls} 可用 Tab 选择场景目标，回车行动；P 暂停。</p>
         <p>
           {run.level.title} · {run.level.chapters[segment.chapterIndex]?.title}
         </p>
@@ -533,85 +388,29 @@ export function SceneGame(props: Props) {
             </button>
             <progress aria-label="关卡完成进度" value={props.index} max={props.total} />
           </div>
-          <LiveScene
-            frames={frames}
-            stageRef={stageRef}
+          <AdventureStage
+            key={`${props.taskId}:${attempt}:${level}`}
             scene={scene}
-            physics={physics}
-            run={run}
-            question={question}
-            highlight={answer?.correctOptionId ?? hint?.answer.optionId}
+            options={question.options}
+            disabled={stopped || hit !== null}
             paused={paused}
             still={staticChoices}
-            disabled={stopped || hit !== null}
-            onAim={(x) => {
-              const { world } = frames.read();
-              if (stopped || world.hit !== null || staticChoices || scene === 'drum') return;
-              frames.write(steerWorld(world, scene, question.options.length, x));
-              focusStage();
-            }}
-            onAction={() => fire('act')}
-            onChoose={(index) => {
-              if (stopped || frames.read().world.hit !== null) return;
-              if (staticChoices) {
-                frames.write({ ...frames.read().world, hit: index });
-                setHit(index);
-              }
-            }}
+            assist={assist || gameCatalog.levels[level].assist}
+            speed={
+              gameCatalog.speeds[speed].factor *
+              (gameCatalog.levels[level].travel / 100) *
+              (1 + (run.level.number - 1) * gameCatalog.play.levelSpeedStep)
+            }
+            difficulty={level}
+            index={props.index}
+            highlight={answer?.correctOptionId ?? hint?.answer.optionId}
+            done={done}
+            rhythmEnabled={!busy && !sending && !voice.playingId && !applying}
+            onChoose={choose}
+            onFinished={() => setCelebrated(true)}
             onResume={() => setPaused(false)}
+            onPause={togglePause}
           />
-          {staticChoices ? (
-            <div
-              ref={staticRef}
-              tabIndex={-1}
-              className="scene-controls"
-              role="group"
-              aria-label="直接选择拼音"
-            >
-              <span>轻点场景中的拼音目标</span>
-              <span id="static-correct-target" className="screen-reader-only">
-                提示：正确目标
-              </span>
-            </div>
-          ) : (
-            <>
-              <div className="scene-controls" role="group" aria-label="场景动作">
-                {controls.map((label, i) => (
-                  <button
-                    key={i}
-                    disabled={stopped || hit !== null}
-                    className={i === 1 ? 'scene-action' : ''}
-                    aria-label={label}
-                    {...pointer(
-                      scene === 'drum' && i !== 1
-                        ? 'pass'
-                        : i === 0
-                          ? 'left'
-                          : i === 1
-                            ? 'act'
-                            : 'right',
-                    )}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-              <div className="scene-tools">
-                <button
-                  className="quiet"
-                  aria-pressed={assist}
-                  onClick={() => changeDisplay({ assist: !assist })}
-                >
-                  🐢 辅助慢动作{assist ? '：开' : '：关'}
-                </button>
-                {scene === 'drum' && (
-                  <button className="quiet" aria-pressed={sfx} onClick={() => setSfx(!sfx)}>
-                    鼓声{sfx ? '：开' : '：关'}
-                  </button>
-                )}
-              </div>
-            </>
-          )}
         </section>
         <aside className="scene-mission" aria-label="本关任务">
           <h1>{staticChoices ? '听一听，轻点场景中的拼音目标。' : game.controls}</h1>
@@ -660,162 +459,5 @@ export function SceneGame(props: Props) {
         </aside>
       </div>
     </main>
-  );
-}
-
-type FrameSource = {
-  read: () => { world: World; backdrop: number };
-  subscribe: (listener: () => void) => () => void;
-};
-
-function LiveScene({
-  frames,
-  stageRef,
-  scene,
-  physics,
-  run,
-  question,
-  highlight,
-  paused,
-  onResume,
-  still,
-  disabled,
-  onAim,
-  onChoose,
-  onAction,
-}: {
-  frames: FrameSource;
-  stageRef: React.Ref<HTMLDivElement>;
-  scene: Scene;
-  physics: EngineConfig;
-  run: GameRun;
-  question: Exercise;
-  highlight?: string;
-  paused: boolean;
-  onResume: () => void;
-  still: boolean;
-  disabled: boolean;
-  onAim: (x: number) => void;
-  onChoose: (index: number) => void;
-  onAction: () => void;
-}) {
-  const { world: movingWorld, backdrop } = useSyncExternalStore(frames.subscribe, frames.read);
-  const world = still
-    ? { ...movingWorld, distance: physics.pattern.choiceAt - 180, time: 0, jump: 0 }
-    : movingWorld;
-  function aim(event: React.PointerEvent<HTMLDivElement>) {
-    if (disabled || still || (event.target instanceof Element && event.target.closest('button')))
-      return;
-    const svg = event.currentTarget.querySelector('svg');
-    if (!svg) return;
-    const rect = svg.getBoundingClientRect();
-    const scale = Math.min(rect.width / 800, rect.height / 440);
-    onAim((event.clientX - rect.left - (rect.width - 800 * scale) / 2) / scale);
-  }
-  return (
-    <div
-      ref={stageRef}
-      className="scene-stage"
-      tabIndex={0}
-      role="group"
-      aria-label="游戏操作区：方向键控制，空格行动"
-      onPointerDown={aim}
-      onPointerMove={(event) => {
-        if (event.buttons === 1) aim(event);
-      }}
-      data-still={still}
-      data-scene={scene}
-      data-task-id={question.id}
-      data-speed-factor={physics.speedFactor}
-      data-world-x={world.x}
-      data-world-vx={world.vx}
-      data-world-strokes={world.strokes}
-      data-option-count={question.options.length}
-      data-world-distance={world.distance}
-      data-world-hit={world.hit ?? ''}
-      data-choice-at={physics.pattern.choiceAt}
-      data-pattern-id={physics.pattern.id}
-      data-world-jump={world.jump}
-      data-motor-misses={world.misses}
-    >
-      <SceneWorld
-        scene={scene}
-        world={world}
-        options={question.options}
-        config={physics}
-        theme={run.theme}
-        scenery={run.level.number}
-        routeOffset={still ? 0 : backdrop}
-        highlight={highlight}
-      />
-      <div className="scene-target-layer" aria-label="场景目标">
-        {question.options
-          .filter(() => still || scene !== 'drum')
-          .map((option, index) => {
-            const p = targetPosition(index, world, physics);
-            return (
-              <button
-                key={option.id}
-                className="scene-touch-target"
-                style={{ left: `${p.x / 8}%`, top: `${p.y / 4.4}%` }}
-                disabled={disabled}
-                aria-describedby={
-                  still && option.id === highlight ? 'static-correct-target' : undefined
-                }
-                aria-label={`${still ? '选择' : scene === 'drum' ? '击鼓' : '瞄准'} ${option.label}`}
-                onClick={() => {
-                  onAim(p.x);
-                  onChoose(index);
-                }}
-              >
-                <span className="screen-reader-only">{option.label}</span>
-              </button>
-            );
-          })}
-      </div>
-      {!still && (
-        <button
-          className="scene-character-action"
-          style={{
-            left: `${(scene === 'drum' ? 180 : world.x) / 8}%`,
-            top: `${(scene === 'drum' ? 312 : 355) / 4.4}%`,
-          }}
-          aria-label={
-            {
-              runner: '点击角色跳跃',
-              boat: '点击小船划桨',
-              drum: '点击鼓面击鼓',
-              space: '点击飞船发射',
-            }[scene]
-          }
-          disabled={disabled}
-          onClick={onAction}
-        />
-      )}
-      <div className="scene-journey" aria-hidden="true">
-        <span>{run.level.title}</span>
-        <span>
-          {still
-            ? '轻点拼音'
-            : scene === 'drum'
-              ? `♪ ${world.beatHits.length} / ${physics.pattern.beats.length}`
-              : `✦ ${world.collected.length} / ${physics.pattern.pickups.length}`}
-        </span>
-      </div>
-      {world.hit !== null && (
-        <div className="scene-arrival" role="status">
-          已选择 · {question.options[world.hit]?.label}
-        </div>
-      )}
-      {world.misses > 0 && world.hit === null && (
-        <p className="scene-motor-note">刚才没有碰到目标，继续试试。</p>
-      )}
-      {paused && (
-        <div className="scene-curtain">
-          <strong>先停一停</strong>
-          <button onClick={onResume}>▶ 继续游戏</button>
-        </div>
-      )}
-    </div>
   );
 }

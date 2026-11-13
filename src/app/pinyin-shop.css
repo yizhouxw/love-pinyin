@@ -683,3 +683,11 @@ body:has(.pinyin-shop, .scene-page) .guest-banner {
     grid-column: 1 / -1;
   }
 }
+
+@media (min-width: 761px) {
+  .shop-counter {
+    position: sticky;
+    top: 12px;
+    align-self: start;
+  }
+}

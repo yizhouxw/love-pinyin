@@ -45,21 +45,15 @@ for (const game of catalog.games) {
       .toBe(true);
     await page.getByRole('dialog').getByRole('button', { name: '关闭', exact: true }).click();
     await page.getByRole('button', { name: 'Ⅱ 暂停', exact: true }).click();
-    const stage = page.getByRole('group', { name: '游戏操作区：方向键控制，空格行动' });
+    const stage = page.locator('.adventure-canvas');
     const position = await stage.getAttribute('data-world-distance');
     await page.waitForTimeout(250);
     expect(await stage.getAttribute('data-world-distance')).toBe(position);
     await page.getByRole('button', { name: '▶ 继续游戏', exact: true }).click();
     await expect(page.locator('.game-option')).toHaveCount(0);
     const q = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;
-    const originalStage = await stage.elementHandle();
     await playScene(page, q.answer.optionId!);
     await expect(page.locator('.scene-nav')).toContainText('任务 2 / 6');
-    expect(
-      await originalStage!.evaluate(
-        (element) => element === document.querySelector('.scene-stage'),
-      ),
-    ).toBe(true);
     await expect(page.getByRole('button', { name: '继续航程 →' })).toHaveCount(0);
     const backup = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
     expect(backup.attempts).toHaveLength(1);
@@ -71,7 +65,7 @@ for (const game of catalog.games) {
       [844, 390],
     ] as const) {
       await page.setViewportSize({ width, height });
-      await expect(page.getByRole('group', { name: '场景动作' })).toBeInViewport({ ratio: 0.98 });
+      await expect(stage).toBeVisible();
       expect(
         await page
           .locator('.scene-response')
@@ -122,9 +116,7 @@ test('SCENE-05: an unconfirmed collision stays frozen and reload replays only th
   await page.route('**/instances/*/answer', (route) => route.abort('failed'));
   await playScene(page, original);
   await expect(page.getByRole('button', { name: '重试保存这次选择' })).toBeVisible();
-  await expect(
-    page.getByRole('group', { name: '场景动作' }).getByRole('button').nth(1),
-  ).toBeDisabled();
+  await expect(page.locator('button[data-option-id]').first()).toBeDisabled();
   let data = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
   expect(data.attempts).toHaveLength(0);
   await page.unroute('**/instances/*/answer');

@@ -36,8 +36,8 @@
   font-size: 1.4rem;
 }
 
-.word-card figcaption span,
-.daily-example-words span {
+.word-card figcaption > span:not(.hanzi-pinyin),
+.daily-example-words > div > span:not(.hanzi-pinyin) {
   font-family: var(--pinyin-font);
 }
 

@@ -346,12 +346,18 @@ test('SHOP-22: short sentences, optional Chinese text and stable checkout withou
   await sentenceMode.click();
   await expect(sentenceMode).toHaveAttribute('aria-pressed', 'true');
   const pinyin = page.getByRole('heading', { name: 'bà ba hē chá.', exact: true });
-  const hanzi = page.getByText('爸爸喝茶。', { exact: true });
+  const hanzi = page.locator('.shop-target .phonetic-hanzi').first();
+  await expect(page.locator('.shop-target .phonetic-character')).toHaveText([
+    '爸',
+    '爸',
+    '喝',
+    '茶',
+  ]);
   await expect(pinyin).toBeVisible();
   await expect(hanzi).toBeVisible();
   await noScroll();
   await page.getByRole('button', { name: '隐藏汉字', exact: true }).click();
-  await expect(hanzi).toHaveCount(0);
+  await expect(hanzi).toBeHidden();
   await noScroll();
   await expect(pinyin).toBeVisible();
   const audio = page.waitForResponse(

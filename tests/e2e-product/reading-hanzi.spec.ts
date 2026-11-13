@@ -1,3 +1,4 @@
+import { pairForHouseholdMaterial, useHouseholdMaterial } from '../support/household-material';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 
@@ -7,14 +8,14 @@ test('READ-08: word and long sentence characters sit below pinyin and wrap on na
   page,
   appUrl,
 }) => {
-  await page.goto(appUrl);
-  await page.getByRole('button', { name: '访客体验', exact: true }).click();
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
   await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '第 7 份', exact: true }).click();
   await page.getByRole('button', { name: /^读词语/ }).click();
   const target = page.locator('.daily-target');
-  await expect(target.locator('rt')).toHaveText(['紫', '色']);
+  await expect(target.locator('.phonetic-character')).toHaveText(['紫', '色']);
   await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: /^读句子/ }).click();
   await expect(target.locator('rt')).toHaveCount(24);
@@ -25,9 +26,13 @@ test('READ-08: word and long sentence characters sit below pinyin and wrap on na
       return {
         overflow: document.documentElement.scrollWidth > innerWidth,
         aligned: pairs.every((pair) => {
-          const pinyin = pair.querySelector('span')!.getBoundingClientRect();
-          const hanzi = pair.querySelector('rt')!.getBoundingClientRect();
-          return hanzi.top >= pinyin.bottom - 1 && hanzi.height < pinyin.height;
+          const pinyin = pair.querySelector('rt')!.getBoundingClientRect();
+          const hanzi = pair.querySelector('.phonetic-character')!.getBoundingClientRect();
+          return (
+            hanzi.top >= pinyin.bottom - 1 &&
+            hanzi.height < pinyin.height &&
+            Math.abs(hanzi.x + hanzi.width / 2 - pinyin.x - pinyin.width / 2) < 1
+          );
         }),
       };
     });

@@ -114,9 +114,7 @@ test('GAME-02: real parent settings, expiry, reload, offline pause and server re
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByRole('button', { name: '开始节奏鼓岛' }).click();
   await page.getByRole('button', { name: '听拼音', exact: true }).click();
-  await expect(
-    page.getByRole('group', { name: '场景动作' }).getByRole('button').nth(1),
-  ).toBeEnabled({ timeout: 15000 });
+  await expect(page.locator('button[data-option-id]').first()).toBeEnabled({ timeout: 15000 });
   await page.route('**/api/v1/games/heartbeat', (route) => route.abort('failed'));
   await expect(page.getByRole('heading', { name: '游戏先暂停一下' })).toBeVisible({
     timeout: 15000,
@@ -124,9 +122,7 @@ test('GAME-02: real parent settings, expiry, reload, offline pause and server re
   expect(await page.locator('.game-option').count()).toBe(0);
   await page.unroute('**/api/v1/games/heartbeat');
   await page.getByRole('button', { name: '继续游戏', exact: true }).click();
-  await expect(
-    page.getByRole('group', { name: '场景动作' }).getByRole('button').nth(1),
-  ).toBeEnabled({ timeout: 15000 });
+  await expect(page.locator('button[data-option-id]').first()).toBeEnabled({ timeout: 15000 });
   // Fast-forward only the disposable database's clock usage. The production API,
   // browser timer and media remain real; this is not a 15-minute duration claim.
   python(
@@ -180,14 +176,16 @@ test('SCENE-04: missed space delivery retries without learning errors and real s
   await page.getByRole('button', { name: '进入游戏乐园' }).click();
   await page.getByRole('button', { name: '开始星际投递' }).click();
   await page.getByRole('button', { name: '听拼音', exact: true }).click();
-  const action = page.getByRole('group', { name: '场景动作' }).getByRole('button').nth(1);
+  const action = page.locator('button[data-option-id]').first();
   await expect(action).toBeEnabled({ timeout: 15000 });
-  const stage = page.getByRole('group', { name: '游戏操作区：方向键控制，空格行动' });
+  const stage = page.locator('.adventure-canvas');
   await stage.focus();
-  // First-lesson option targets are at 120, 400, 680. Aim into the empty gap.
-  for (let i = 0; i < 5; i++) await stage.press('ArrowLeft');
-  await stage.press('Space');
-  await expect(page.locator('.scene-motor-note')).toContainText('没有碰到目标');
+  const box = (await stage.boundingBox())!;
+  // A short central pull intentionally falls short of every planet.
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height * 0.6);
+  await page.mouse.down();
+  await page.mouse.up();
+  await expect(page.locator('.adventure-motor-note')).toContainText('包裹回来');
   const backup = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
   expect(backup.attempts).toHaveLength(0);
   await page.getByRole('button', { name: '保存并退出游戏' }).click();

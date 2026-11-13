@@ -157,7 +157,9 @@ test('READ-05: real word syllables share one compact clip and word waits include
       return play.call(this);
     };
   });
-  await guest(page, appUrl);
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
+  await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await page.getByRole('button', { name: '家长管理' }).click();
   await page.getByRole('button', { name: '我是家长，继续' }).click();
   await parentSound(page);
@@ -173,7 +175,7 @@ test('READ-05: real word syllables share one compact clip and word waits include
   const reader = page.getByLabel('当前跟读内容');
   await expect(page.getByText(/本份声音已就绪/)).toBeVisible();
   const uncached: string[] = [];
-  await page.route('**/api/v1/guest/daily-audio/**', async (route) => {
+  await page.route('**/api/v1/daily-audio/**', async (route) => {
     uncached.push(route.request().url());
     await route.abort();
   });
@@ -182,7 +184,7 @@ test('READ-05: real word syllables share one compact clip and word waits include
     const seen: number[] = [];
     (window as unknown as { combinedHighlights: number[] }).combinedHighlights = seen;
     new MutationObserver(() => {
-      [...target.querySelectorAll('span')].forEach((span, index) => {
+      [...target.querySelectorAll('[data-phonetic-syllable]')].forEach((span, index) => {
         if (span.classList.contains('daily-highlight') && !seen.includes(index)) seen.push(index);
       });
     }).observe(target, { subtree: true, attributes: true, attributeFilter: ['class'] });
@@ -642,26 +644,28 @@ test('READ-03/04: folded examples speak on opening, and Chinese sentences highli
   appUrl,
 }) => {
   await observeReadingMedia(page);
-  await guest(page, appUrl);
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
+  await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 3 份', exact: true }).click();
   await page.getByRole('button', { name: /^读音节并组词/ }).click();
   const reader = page.getByLabel('当前跟读内容');
-  await expect(reader.getByText('八个', { exact: true })).toHaveCount(0);
+  await expect(reader.locator('.daily-example-words [data-hanzi="八个"]')).toHaveCount(0);
   await reader.getByRole('button', { name: '展开组词样例', exact: true }).click();
   await expect
     .poll(async () => (await playedReading(page, 'voice')).includes('daily-example-ba1'))
     .toBe(true);
-  await expect(reader.getByText('八个', { exact: true })).toBeVisible();
-  await expect(reader.getByText('八月', { exact: true })).toBeVisible();
+  await expect(reader.locator('.daily-example-words [data-hanzi="八个"]')).toBeVisible();
+  await expect(reader.locator('.daily-example-words [data-hanzi="八月"]')).toBeVisible();
   await reader.getByRole('button', { name: '收起组词样例', exact: true }).click();
-  await expect(reader.getByText('八个', { exact: true })).toHaveCount(0);
+  await expect(reader.locator('.daily-example-words [data-hanzi="八个"]')).toHaveCount(0);
   await reader.getByRole('button', { name: '展开组词样例', exact: true }).click();
   await reader.getByRole('button', { name: '先跳过', exact: true }).click();
   await expect(reader.getByRole('button', { name: '展开组词样例', exact: true })).toBeVisible();
-  await expect(reader.getByText('八个', { exact: true })).toHaveCount(0);
+  await expect(reader.locator('.daily-example-words [data-hanzi="八个"]')).toHaveCount(0);
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
   await page.getByRole('button', { name: '第 5 份', exact: true }).click();
@@ -671,7 +675,7 @@ test('READ-03/04: folded examples speak on opening, and Chinese sentences highli
     const seen: number[] = [];
     (window as unknown as { readingHighlights: number[] }).readingHighlights = seen;
     new MutationObserver(() => {
-      [...target.querySelectorAll('span')].forEach((span, i) => {
+      [...target.querySelectorAll('[data-phonetic-syllable]')].forEach((span, i) => {
         if (span.classList.contains('daily-highlight') && !seen.includes(i)) seen.push(i);
       });
     }).observe(target, { subtree: true, attributes: true, attributeFilter: ['class'] });

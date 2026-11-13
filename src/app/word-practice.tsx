@@ -1,5 +1,5 @@
 import { QuickSettings, CloseQuickSettings, SettingsGlyph, ContextHelp } from './quick-settings';
-import { useEffect, useState, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
   highlightWords,
   practiceKey,
@@ -13,10 +13,11 @@ import { WordPlayback } from '../platform/audio/word-playback';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
 import { WordCoursePicker } from './word-course-picker';
 import { WordImage } from './word-image';
-import { PinyinLegend, PinyinText, ReadingModeControl } from './pinyin-reading';
+import { PinyinLegend, PhoneticText, ReadingModeControl } from './pinyin-reading';
 import { pinyinSyllables, spellingPlan, type ReadingMode } from '../domain/pinyin-spelling';
 import { playSpelling } from '../platform/audio/spelling-playback';
 import './word-practice.css';
+import { useReadingFollow } from './use-reading-follow';
 
 const modes: { id: WordMode; title: string }[] = [
   { id: 'read', title: '词语拼读' },
@@ -42,6 +43,8 @@ export function WordPractice({
   gapSeconds: number;
   onGapChange: (seconds: number) => void;
 }) {
+  const wordPane = useRef<HTMLDivElement>(null);
+  const passagePane = useRef<HTMLDivElement>(null);
   const [lessonId, setLessonId] = useState(wordPractice.lessons[0]!.id);
   const [mode, setMode] = useState<WordMode>('read');
   const [readingMode, setReadingMode] = useState<ReadingMode>('direct');
@@ -108,6 +111,16 @@ export function WordPractice({
     lesson.read.find((word) => word.audioId === playback.playingId) ??
     lesson.read.find((word) => word.text === selectedText) ??
     lesson.read[0]!;
+  useReadingFollow(wordPane, `${mode}:${lessonId}:${selected.text}`, '[aria-pressed="true"]');
+  useReadingFollow(
+    passagePane,
+    `${mode}:${lessonId}:${playback.playingId}`,
+    '[aria-current="true"]',
+  );
+  useEffect(() => {
+    if (wordPane.current) wordPane.current.scrollTop = 0;
+    if (passagePane.current) passagePane.current.scrollTop = 0;
+  }, [lessonId, mode]);
   const available =
     mode === 'read'
       ? lesson.read.length > 0
@@ -298,7 +311,13 @@ export function WordPractice({
           <div className="word-reading-main">
             {playbackControls}
             {audioStatus}
-            <div className="word-grid">
+            <div
+              className="word-grid"
+              ref={wordPane}
+              role="region"
+              aria-label="本课词语"
+              tabIndex={0}
+            >
               {lesson.read.map((word) => (
                 <button
                   key={word.text}
@@ -310,12 +329,7 @@ export function WordPractice({
                     voice.play(word.audioId, playWord);
                   }}
                 >
-                  <ruby>
-                    {word.text}
-                    <rt>
-                      <PinyinText value={word.pinyin} />
-                    </rt>
-                  </ruby>
+                  <PhoneticText text={word.text} pinyin={word.pinyin} />
                 </button>
               ))}
             </div>
@@ -331,16 +345,10 @@ export function WordPractice({
               </p>
               {playbackControls}
               <p className="word-answer" aria-live="polite">
-                {revealed ? (
-                  <ruby>
-                    {target.text}
-                    <rt>
-                      <PinyinText value={target.pinyin} />
-                    </rt>
-                  </ruby>
-                ) : (
-                  '听一听，在纸上写一写'
-                )}
+                <span className={revealed ? undefined : 'word-invisible'} aria-hidden={!revealed}>
+                  <PhoneticText text={target.text} pinyin={target.pinyin} />
+                </span>
+                {!revealed && <span className="word-answer-placeholder">听一听，在纸上写一写</span>}
               </p>
               <div className="word-dictation-controls">
                 <button
@@ -382,7 +390,7 @@ export function WordPractice({
           </>
         ))}
       {mode === 'recite' && (
-        <>
+        <section className="word-recite-workspace">
           <div className="word-recite-toolbar">
             <div className="word-toolbar">
               <button disabled={!lesson.passages.length} onClick={() => setHidden(!hidden)}>
@@ -400,60 +408,72 @@ export function WordPractice({
           </div>
           {audioStatus}
           {!lesson.passages.length && <p className="word-empty">{wordPractice.ui.emptyRecite}</p>}
-          {lesson.passages.map((passage) => (
-            <article className="word-passage" key={passage.title}>
-              <header>
-                <div>
-                  <h2>{passage.title}</h2>
-                  <small>
-                    {passage.required
-                      ? '材料要求背诵'
-                      : passage.readingOnly
-                        ? '拓展朗读'
-                        : '自选背诵'}
-                    {passage.page > 0 && ` · 教材第 ${passage.page} 页`}
-                  </small>
-                </div>
-                <button
-                  onClick={() =>
-                    voice.playSequence(passage.paragraphs.map((paragraph) => paragraph.audioId))
-                  }
-                >
-                  🔊 听全文
-                </button>
-              </header>
-              {passage.paragraphs.map((paragraph, i) => (
-                <div key={paragraph.audioId} className="word-paragraph">
-                  <button
-                    aria-label={`听第${i + 1}段`}
-                    onClick={() => voice.play(paragraph.audioId)}
-                  >
-                    🔊<small>{i + 1}</small>
-                  </button>
-                  <div className="word-text-space">
-                    <p className={hidden ? 'word-hidden-text' : ''} aria-hidden={hidden}>
-                      {highlightWords(
-                        paragraph.text,
-                        lesson.read.map((word) => word.text),
-                        lesson.characters,
-                      ).map((part, j) =>
-                        part.kind === 'plain' ? (
-                          <span key={j}>{part.text}</span>
-                        ) : (
-                          <mark className={`word-mark-${part.kind}`} key={j}>
-                            {part.text}
-                          </mark>
-                        ),
-                      )}
-                    </p>
-                    {hidden && (
-                      <span className="word-hidden-prompt">正文已隐藏，听一听再背一背。</span>
-                    )}
+          <div
+            className="word-passage-scroll"
+            ref={passagePane}
+            role="region"
+            aria-label="本课朗读正文"
+            tabIndex={0}
+          >
+            {lesson.passages.map((passage) => (
+              <article className="word-passage" key={passage.title}>
+                <header>
+                  <div>
+                    <h2>{passage.title}</h2>
+                    <small>
+                      {passage.required
+                        ? '材料要求背诵'
+                        : passage.readingOnly
+                          ? '拓展朗读'
+                          : '自选背诵'}
+                      {passage.page > 0 && ` · 教材第 ${passage.page} 页`}
+                    </small>
                   </div>
-                </div>
-              ))}
-            </article>
-          ))}
+                  <button
+                    onClick={() =>
+                      voice.playSequence(passage.paragraphs.map((paragraph) => paragraph.audioId))
+                    }
+                  >
+                    🔊 听全文
+                  </button>
+                </header>
+                {passage.paragraphs.map((paragraph, i) => (
+                  <div
+                    key={paragraph.audioId}
+                    className="word-paragraph"
+                    aria-current={playback.playingId === paragraph.audioId ? 'true' : undefined}
+                  >
+                    <button
+                      aria-label={`听第${i + 1}段`}
+                      onClick={() => voice.play(paragraph.audioId)}
+                    >
+                      🔊<small>{i + 1}</small>
+                    </button>
+                    <div className="word-text-space">
+                      <p className={hidden ? 'word-hidden-text' : ''} aria-hidden={hidden}>
+                        {highlightWords(
+                          paragraph.text,
+                          lesson.read.map((word) => word.text),
+                          lesson.characters,
+                        ).map((part, j) =>
+                          part.kind === 'plain' ? (
+                            <span key={j}>{part.text}</span>
+                          ) : (
+                            <mark className={`word-mark-${part.kind}`} key={j}>
+                              {part.text}
+                            </mark>
+                          ),
+                        )}
+                      </p>
+                      {hidden && (
+                        <span className="word-hidden-prompt">正文已隐藏，听一听再背一背。</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </article>
+            ))}
+          </div>
           <details className="word-vocabulary">
             <summary>本课生字词 · 点字听读</summary>
             <h3>生字</h3>
@@ -477,7 +497,7 @@ export function WordPractice({
               ))}
             </div>
           </details>
-        </>
+        </section>
       )}
       <footer className="word-footer">
         {available && (

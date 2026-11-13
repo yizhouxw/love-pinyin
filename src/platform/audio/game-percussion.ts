@@ -1,16 +1,16 @@
 /** Short local drum synthesis; no recordings, network, music loop or auto-play. */
 export class GamePercussion {
   private context: AudioContext | null = null;
-  hit() {
+  hit(rim = false) {
     try {
       this.context ??= new AudioContext();
       const ctx = this.context;
       void ctx.resume().catch(() => {});
       const oscillator = ctx.createOscillator(),
         gain = ctx.createGain();
-      oscillator.frequency.setValueAtTime(160, ctx.currentTime);
+      oscillator.frequency.setValueAtTime(rim ? 480 : 160, ctx.currentTime);
       oscillator.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.12);
-      gain.gain.setValueAtTime(0.16, ctx.currentTime);
+      gain.gain.setValueAtTime(rim ? 0.09 : 0.16, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.16);
       oscillator.connect(gain);
       gain.connect(ctx.destination);
