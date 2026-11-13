@@ -506,7 +506,6 @@ export function SceneGame(props: Props) {
         <div className="scene-voices">
           <VoiceButton id={game.voiceId} voice={voice} label="听玩法" />
           <VoiceButton id={run.level.voiceId} voice={voice} label="听本关故事" />
-          <VoiceButton id={`prompt-${question.id}`} voice={voice} label="听题目说明" />
         </div>
         <button className="quiet" onClick={() => helpDialog.current?.close()}>
           关闭
@@ -615,7 +614,7 @@ export function SceneGame(props: Props) {
           )}
         </section>
         <aside className="scene-mission" aria-label="本关任务">
-          <h1>{cue?.text ?? question.prompt}</h1>
+          <h1>{staticChoices ? '听一听，轻点场景中的拼音目标。' : game.controls}</h1>
           {cue?.visualCue && <div className="scene-cue">{cue.visualCue}</div>}
           <div className="scene-help">
             <button

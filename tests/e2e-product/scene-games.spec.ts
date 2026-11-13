@@ -36,7 +36,9 @@ for (const game of catalog.games) {
         (t: { exercise: { lessonId: string } }) => t.exercise.lessonId === 'lesson-01',
       ),
     ).toBe(true);
+    await expect(page.getByLabel('本关任务').getByRole('heading')).toHaveText(game.controls);
     await page.getByRole('button', { name: '玩法与故事', exact: true }).click();
+    await expect(page.getByRole('button', { name: '听题目说明', exact: true })).toHaveCount(0);
     await page.getByRole('button', { name: '听玩法', exact: true }).click();
     await expect
       .poll(() => voices.some((url) => url.endsWith(`/voice/${game.voiceId}`)))
