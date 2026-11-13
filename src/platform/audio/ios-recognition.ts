@@ -1,7 +1,7 @@
 import reading from '../../../content/reading-recognition.json';
 import { shopRules } from '../../domain/pinyin-shop';
 import type { PronunciationService } from '../../domain/pronunciation';
-import { iosOperation } from '../ios-app';
+import { nativeOperation } from '../ios-app';
 
 type NativeText =
   | { status: 'recognized'; transcript: string; pinyin: string }
@@ -10,7 +10,7 @@ type NativeText =
 export type IOSModelStatus = { state: string; bytes?: number; received?: number };
 
 export function iosModelStatus(download = false) {
-  return iosOperation<IOSModelStatus>(download ? 'modelDownload' : 'modelStatus');
+  return nativeOperation<IOSModelStatus>(download ? 'modelDownload' : 'modelStatus');
 }
 
 export function baseSyllable(value: string) {
@@ -70,7 +70,10 @@ export async function recognizeIOSAudio(audio: Blob, forShop: boolean, signal?: 
     binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
   }
   signal?.throwIfAborted();
-  const result = await iosOperation<NativeText>('recognizeAudio', { audio: btoa(binary), forShop });
+  const result = await nativeOperation<NativeText>('recognizeAudio', {
+    audio: btoa(binary),
+    forShop,
+  });
   signal?.throwIfAborted();
   return result;
 }

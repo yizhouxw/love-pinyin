@@ -8,7 +8,7 @@ test-results/
 .env.*
 !.env.example
 *.local
-private/
+/private
 *.log
 .venv/
 .runtime/

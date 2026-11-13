@@ -1,5 +1,6 @@
+import { isAndroidApp } from '../platform/android-app';
 import { useState, type ReactNode } from 'react';
-import { iosOperation } from '../platform/ios-app';
+import { nativeOperation } from '../platform/ios-app';
 import { clearPendingLearningAnswers } from '../platform/pending-answer';
 import { errorMessage } from './notice';
 import type { Lesson, Progress } from '../domain/learning-api';
@@ -48,7 +49,7 @@ export function IOSClassroomSettings({
     setBackupBusy(true);
     setBackupStatus('');
     try {
-      const { state } = await iosOperation<{ state: string }>(operation);
+      const { state } = await nativeOperation<{ state: string }>(operation);
       if (state === 'restored') {
         clearPendingLearningAnswers();
         setBackupStatus('已恢复学习档案。');
@@ -168,7 +169,7 @@ export function IOSClassroomSettings({
         disabled={busy || backupBusy}
         onClick={() => void backup('backupImport')}
       >
-        从 iOS 备份恢复
+        {isAndroidApp() ? '从 Android 备份恢复' : '从 iOS 备份恢复'}
       </button>
       {lastBackup !== null && (
         <p>

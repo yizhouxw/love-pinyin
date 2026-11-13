@@ -14,7 +14,7 @@ import {
   type ShopTarget,
 } from '../domain/pinyin-shop';
 import { BrowserShopRecorder } from '../platform/audio/browser-shop-recorder';
-import { isIOSApp } from '../platform/ios-app';
+import { isNativeApp } from '../platform/ios-app';
 import { IOSShopRecorder } from '../platform/audio/ios-recorder';
 import { MockShopCapture } from '../platform/audio/mock-shop-capture';
 import {
@@ -102,7 +102,7 @@ export function PinyinShop({
       new ShopReadingSession(
         adapter.mock
           ? new MockShopCapture()
-          : isIOSApp()
+          : isNativeApp()
             ? new IOSShopRecorder(shopRules.recognitionTimeoutMs)
             : new BrowserShopRecorder(shopRules.recognitionTimeoutMs),
         adapter.service,

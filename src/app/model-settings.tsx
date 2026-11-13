@@ -1,8 +1,9 @@
+import { isAndroidApp } from '../platform/android-app';
 import { useEffect, useState } from 'react';
 import iosModel from '../../content/qwen-asr.json';
 import { householdApi } from '../platform/api-client';
 import type { IOSModelStatus } from '../platform/audio/ios-recognition';
-import { isIOSApp, iosOperation } from '../platform/ios-app';
+import { isNativeApp, nativeOperation } from '../platform/ios-app';
 
 const iosSize = (
   Object.values(iosModel.files).reduce((bytes, file) => bytes + file.bytes, 0) / 1e9
@@ -11,8 +12,8 @@ const iosSize = (
 type Action = 'modelStatus' | 'modelDownload' | 'modelCancel' | 'modelRemove';
 
 function requestStatus(action: Action): Promise<IOSModelStatus> {
-  return isIOSApp()
-    ? iosOperation<IOSModelStatus>(action)
+  return isNativeApp()
+    ? nativeOperation<IOSModelStatus>(action)
     : householdApi('/local/recognition-model', {
         method: action === 'modelDownload' ? 'POST' : 'GET',
       }).then((result) => ({ state: String(result.state) }));
@@ -24,7 +25,7 @@ export function ModelSettings() {
   const [action, setAction] = useState<Action | null>(null);
   const [actionFailed, setActionFailed] = useState(false);
   const [confirmRemoval, setConfirmRemoval] = useState(false);
-  const ios = isIOSApp();
+  const ios = isNativeApp();
 
   useEffect(() => {
     if (action) return;
@@ -69,6 +70,14 @@ export function ModelSettings() {
       setAction(null);
     }
   }
+
+  if (isAndroidApp())
+    return (
+      <section className="parent-setting model-settings">
+        <strong>本地语音识别</strong>
+        <p>此 Android 版本暂不支持本地识别。可以听示范后人工确认，不会生成识别结果或发音分数。</p>
+      </section>
+    );
 
   return (
     <section className="parent-setting model-settings">

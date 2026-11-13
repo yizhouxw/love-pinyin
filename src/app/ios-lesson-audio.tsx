@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { audioPlayer } from '../platform/audio/browser-audio-player';
-import { iosOperation } from '../platform/ios-app';
+import { nativeOperation } from '../platform/ios-app';
 
 type PlaybackState = { playing: boolean; position: number; duration: number };
 let nextPlaybackId = 0;
@@ -12,13 +12,15 @@ export function IOSLessonAudio({ audioId }: { audioId: string }) {
   const [failed, setFailed] = useState(false);
   const release = useRef<(() => void) | null>(null);
   const mounted = useRef(false);
+  const operationEpoch = useRef(0);
+  const operationBusy = useRef(false);
 
   useEffect(() => {
     mounted.current = true;
     return () => {
       mounted.current = false;
       release.current?.();
-      void iosOperation('pauseLesson', { id }).catch(() => undefined);
+      void nativeOperation('pauseLesson', { id }).catch(() => undefined);
     };
   }, [id]);
 
@@ -29,13 +31,14 @@ export function IOSLessonAudio({ audioId }: { audioId: string }) {
     const timer = setInterval(() => {
       if (pending) return;
       pending = true;
-      iosOperation<PlaybackState>('lessonState', { id })
+      const epoch = operationEpoch.current;
+      nativeOperation<PlaybackState>('lessonState', { id })
         .then(
           (result) => {
-            if (active) setState(result);
+            if (active && epoch === operationEpoch.current) setState(result);
           },
           () => {
-            if (active) {
+            if (active && epoch === operationEpoch.current) {
               setFailed(true);
               setState((value) => ({ ...value, playing: false }));
             }
@@ -52,15 +55,19 @@ export function IOSLessonAudio({ audioId }: { audioId: string }) {
   }, [id, state.playing]);
 
   async function control(operation: string, fields: Record<string, unknown> = {}) {
+    if (operationBusy.current) return;
+    operationBusy.current = true;
+    const epoch = ++operationEpoch.current;
     setBusy(true);
     setFailed(false);
     try {
-      const result = await iosOperation<PlaybackState>(operation, { id, ...fields });
-      if (mounted.current) setState(result);
+      const result = await nativeOperation<PlaybackState>(operation, { id, ...fields });
+      if (mounted.current && epoch === operationEpoch.current) setState(result);
     } catch {
-      if (mounted.current) setFailed(true);
+      if (mounted.current && epoch === operationEpoch.current) setFailed(true);
     } finally {
-      if (mounted.current) setBusy(false);
+      if (epoch === operationEpoch.current) operationBusy.current = false;
+      if (mounted.current && epoch === operationEpoch.current) setBusy(false);
     }
   }
 
@@ -78,7 +85,7 @@ export function IOSLessonAudio({ audioId }: { audioId: string }) {
             release.current?.();
             release.current = audioPlayer.claimAudio(() => {
               setState((value) => ({ ...value, playing: false }));
-              void iosOperation('pauseLesson', { id }).catch(() => undefined);
+              void nativeOperation('pauseLesson', { id }).catch(() => undefined);
             });
             void control('playLesson', { audioId });
           }

@@ -3,7 +3,7 @@
 ## 从需求到交付
 
 1. 读 PRD 需求编号 → 找对应 SPEC 的依赖与验收。
-2. 在 `codex/spec-xxx-short-name` 分支选清晰切片，写出本次完成的验收编号。允许常规实现选择自主推进；改变已确认需求时先更新SPEC。
+2. 在独立 worktree 的 `codex/spec-xxx-short-name` 分支选清晰切片，写出本次完成的验收编号。允许常规实现选择自主推进；改变已确认需求时先更新SPEC。
 3. 定义/更新数据契约和失败行为，然后实现最小纵向功能。内容、界面、算法、平台API各自分层。
 4. 对真实业务边界写测试：幂等、重复提交、回退、断网、音频取消、错误声调、权限拒绝、数据迁移。
 5. 业务变更运行 `npm run verify:all`（需先准备私有声音）；纯文档改动检查格式、链接和实现一致性。语音产品变更再运行 `npm run test:e2e:product`。功能发布前还须 `validate:release` 与人工验收。旧评分PoC已暂停，不作为首版前置条件。
@@ -18,9 +18,9 @@
 ## Git
 
 - 主分支 `main`；本地已初始化，提交按 Conventional Commits，例如 `feat(SPEC-002): add lesson map`、`fix(SPEC-003): stop narration on exit`。
-- PR模板见 `.github/pull_request_template.md`。小PR宜覆盖一个SPEC切片；大任务先合并接口再实现适配器。
+- 多需求隔离、设备串行与合并交付遵守 [Agent harness](agent-harness.md)。PR模板见 `.github/pull_request_template.md`。小PR宜覆盖一个SPEC切片；大任务先合并接口再实现适配器。
 - 不提交node_modules、venv、构建物、私钥、数据库、原始声音、儿童测试集或商业SDK。
-- 开源前检查历史中是否有秘密/个人信息、许可证、README链接与发布门禁。远程为私有仓库yizhouxw/love-pinyin，默认main；不自动推送或公开发布。
+- 开源前检查历史中是否有秘密/个人信息、许可证、README链接与发布门禁。远程为私有仓库yizhouxw/love-pinyin，默认main；验收完成后合并 main 并普通推送，不自动公开发布。
 
 ## 低成本模型任务模板
 

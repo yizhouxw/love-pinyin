@@ -1,8 +1,10 @@
 # Android agent harness
 
+先遵守 [项目 Agent harness](agent-harness.md)：独立 worktree/分支开发，同一 Android 真机安装和验收串行。
+
 ## 范围与执行方式
 
-用户于 2026-11-13 授权继续实现 Android 设备版本。先读 README、实施计划、当前 Android SPEC（尚需建立）、ADR-0039 及相关最新 ADR；复用 React、content 与声音资产，先完成独立离线安装、真实声音、作答持久化和重启恢复，再覆盖完整功能。测试工程通过不等于 Android 产品已交付。不要把 iOS 的识别能力自动视为 Android 已支持。
+用户于 2026-11-13 授权继续实现 Android 设备版本。先读 README、实施计划、[Android SPEC](../specs/SPEC-024-android-app.md)、ADR-0039 及相关最新 ADR；复用 React、content 与声音资产，先完成独立离线安装、真实声音、作答持久化和重启恢复，再覆盖完整功能。测试工程通过不等于 Android 产品已交付。不要把 iOS 的识别能力自动视为 Android 已支持。
 
 agent 可直接创建工程、配置构建、执行 Gradle、安装 APK、运行 ADB 和检查日志，不必反复让用户代操作 Android Studio。手机解锁、USB 调试信任、系统安装确认仍由用户在设备上完成；不得绕过系统授权。后续先检查设备连接状态，再决定是否需要用户协助。
 
@@ -71,3 +73,22 @@ export GRADLE_USER_HOME="$PWD/.gradle-home"
 - [Eclipse Temurin](https://adoptium.net/temurin/)：JDK 为 GPLv2 with Classpath Exception。
 - Android SDK 适用独立 Android SDK 许可；用户已通过安装流程配置所需组件。
 - [Android 本地 WebView 资源说明](https://developer.android.com/develop/ui/views/layout/webapps/load-local-content)：正式离线容器可评估 WebViewAssetLoader，不把普通远程网页包装当作独立离线实现。
+
+## 正式 Android 工程首轮结果（2026-11-13）
+
+工作区 `love-pinyin-android`，分支 `codex/android-offline`。`deploy/android/prepare.sh` 复用离线打包校验；`build.sh --offline :app:assembleDebugAndroidTest` 完成 APK 与隔离回归包构建，lint 0 错误、5 警告。依赖固定且沿用上表来源/许可，无新增 Android 运行时第三方库。
+
+OnePlus 上普通安装成功、冷启动 Status ok（563ms）；实际截图确认 React 首页、当前课和各练习入口加载。原生 instrumentation 返回 `ANDROID_CONTRACT_OK`，覆盖首次作答投影、同键回执、重新打开数据库恢复、无效备份拒绝及恢复、四款游戏路线冻结、暂停授权。测试使用随机目录隔离数据库，不读写家庭档案。前端 206 项单元测试与类型检查通过，发布内容校验覆盖14课、785每日条目、38词语课。
+
+以上不证明实际听感、飞行模式冷启动、触摸完整流程、系统文件导入导出、真实进程被杀恢复或家庭试用通过。主线仍有其他任务未提交改动，尚未合并或替换本机 Mac/Web 服务。构建缓存不能在 Gradle 进程运行时复制，首次隔离缓存应联网按固定版本补齐；避免造成 metadata 损坏。
+
+## Android 产品回归补充（2026-11-13）
+
+后续结果以 [产品验收记录](android-product-acceptance.md) 为准，替代上方首轮未完成状态。真机四游戏完成、真实强杀恢复、文件导出/预览取消/确认恢复、断网冷启动与声音、课程定位及后台暂停、横竖屏已实测。用户已确认实际听感清晰。
+
+- `test-contracts.sh` 使用系统 Instrumentation，随机 SQLite 目录；成功必须核对 `ANDROID_CONTRACT_OK`，不能只依赖 adb 退出码。
+- `verify-device.mjs` 使用实际调试 WebView 的 CDP，截图用 `adb exec-out screencap -p`。四游戏必须等任务编号变化再操作下一题。
+- `verificationId` 仅 debug 生效，使用合法随机 UUID；切换验证档案或回到正式档案前必须 force-stop。WebView 数据目录每进程只设置一次，Activity 重建不重复设置。
+- Android 系统文件选择器通过实际 UI 完成。备份验证只使用自己的测试文件，不覆盖家庭备份；确认安装仍由用户操作。
+- 飞行模式、Wi-Fi、旋转先记录原值，测试后恢复；听感另向用户确认。持有设备期间告知用户暂缓手动操作，避免输入竞争。
+- 发现 MediaPlayer seek 异步完成与 React range 连续事件竞争：完成后回执，控制请求互斥，过期轮询不能覆盖新状态。

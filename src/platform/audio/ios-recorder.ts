@@ -1,4 +1,4 @@
-import { iosOperation } from '../ios-app';
+import { nativeOperation } from '../ios-app';
 import type { ShopCapture } from './browser-shop-recorder';
 
 let sequence = 0;
@@ -13,7 +13,7 @@ export class IOSShopRecorder implements ShopCapture {
     const id = `recording-${++sequence}`;
     this.id = id;
     try {
-      await iosOperation('recordStart', { id, limit: this.limit });
+      await nativeOperation('recordStart', { id, limit: this.limit });
       if (this.id !== id) throw new DOMException('Cancelled', 'AbortError');
     } catch (error) {
       if (this.id === id) this.discard();
@@ -24,7 +24,9 @@ export class IOSShopRecorder implements ShopCapture {
   async snapshot(stop = false): Promise<Blob | null> {
     const id = this.id;
     if (!id) return null;
-    const data = await iosOperation<string | null>(stop ? 'recordStop' : 'recordSnapshot', { id });
+    const data = await nativeOperation<string | null>(stop ? 'recordStop' : 'recordSnapshot', {
+      id,
+    });
     if (this.id !== id) return null;
     if (stop) this.id = null;
     if (!data) return null;
@@ -34,13 +36,13 @@ export class IOSShopRecorder implements ShopCapture {
 
   async level(): Promise<number> {
     const id = this.id;
-    return id ? iosOperation<number>('recordLevel', { id }) : 0;
+    return id ? nativeOperation<number>('recordLevel', { id }) : 0;
   }
 
   discard() {
     const id = this.id;
     this.id = null;
-    if (id) void iosOperation('recordDiscard', { id }).catch(() => undefined);
+    if (id) void nativeOperation('recordDiscard', { id }).catch(() => undefined);
   }
 }
 

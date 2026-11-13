@@ -1,4 +1,4 @@
-import { isIOSApp } from '../platform/ios-app';
+import { isNativeApp } from '../platform/ios-app';
 import practice from '../../content/pronunciation-practice.json';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { PronunciationService } from '../domain/pronunciation';
@@ -391,7 +391,7 @@ export function CoursePronunciationPractice({
         ♫ 听示范
       </button>
       {demoFailed && <p role="alert">示范声音暂不可用，请重试。</p>}
-      {!isIOSApp() && <RecordedPractice key={target.id} guidanceEnabled={guidanceEnabled} />}
+      {!isNativeApp() && <RecordedPractice key={target.id} guidanceEnabled={guidanceEnabled} />}
     </section>
   );
 }
