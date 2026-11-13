@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
+import { completeRhythm } from '../support/scene-actions';
 import catalog from '../../content/games.json' with { type: 'json' };
 
 test.use({ selectedPinyinSource: true });
@@ -45,21 +46,25 @@ for (const game of catalog.games) {
     const round = await (await created).json();
     const exercise = curriculum.exercises.find((item) => item.id === round.tasks[0].exercise.id)!;
     const option = exercise.options.find((item) => item.id === exercise.answer.optionId)!;
-    const stage = page.getByRole('group', { name: '场景动作' });
+    const stage = page.locator('.adventure-canvas');
     await expect(stage).toBeVisible();
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await expect(stage).toHaveCount(0);
+    await expect(stage).toBeVisible();
     await expect(page.locator('.scene-nav')).toContainText('任务 1 /');
-    await expect(page.locator('.scene-world')).toBeVisible();
-    await expect(page.locator('.scene-stage')).toHaveAttribute('data-still', 'true');
-    const position = await page.locator('.scene-world').innerHTML();
+    await expect(page.locator('.adventure-canvas svg')).toBeVisible();
+    await expect(page.locator('.adventure-canvas')).toHaveAttribute('data-still', 'true');
+    const position = await page.locator('.adventure-canvas svg').innerHTML();
     await page.waitForTimeout(250);
-    expect(await page.locator('.scene-world').innerHTML()).toBe(position);
+    expect(await page.locator('.adventure-canvas svg').innerHTML()).toBe(position);
     await page.screenshot({
       path: test.info().outputPath(`still-${game.scene}.png`),
       fullPage: true,
     });
-    await page.getByRole('button', { name: `选择 ${option.label}`, exact: true }).click();
+    await page.locator(`button[data-option-id="${option.id}"]`).click();
+    if (game.scene === 'drum') {
+      await expect(page.locator('.rhythm-score')).toBeVisible();
+      await completeRhythm(page);
+    }
     await expect(page.locator('.scene-nav')).toContainText('任务 2 /');
   });
 }
@@ -75,21 +80,9 @@ for (const game of catalog.games) {
     await page.getByRole('button', { name: '连接家庭' }).click();
     await page.getByRole('button', { name: '进入游戏乐园' }).click();
     await page.getByRole('button', { name: `开始${game.title}` }).click();
-    const stage = page.locator('.scene-stage');
-    const character = page.locator('.scene-character-action');
+    const stage = page.locator('.adventure-canvas');
+    const character = page.locator('button[data-option-id]').first();
     await expect(character).toBeEnabled({ timeout: 20000 });
-    if (game.scene !== 'drum') {
-      const target = stage.locator('.scene-touch-target').last();
-      await target.click();
-      await expect
-        .poll(async () => Number(await stage.getAttribute('data-world-x')))
-        .toBeGreaterThan(640);
-      expect(await stage.getAttribute('data-world-hit')).toBe('');
-    }
-    const strokes = Number(await stage.getAttribute('data-world-strokes'));
-    await character.click();
-    if (game.scene === 'boat')
-      expect(Number(await stage.getAttribute('data-world-strokes'))).toBeGreaterThan(strokes);
     await page.getByRole('button', { name: '听拼音', exact: true }).click();
     await expect(character).toBeDisabled();
     await expect(character).toBeEnabled({ timeout: 20000 });

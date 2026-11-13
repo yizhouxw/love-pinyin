@@ -1,3 +1,4 @@
+import { useReadingFollow } from './use-reading-follow';
 import { QuickSettings, CloseQuickSettings, SettingsGlyph, ContextHelp } from './quick-settings';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type {
@@ -10,7 +11,6 @@ import type {
 import {
   highlightedSyllable,
   readingGapSeconds,
-  readingCharacters,
   readingHanzi,
   sectionSummary,
 } from '../domain/daily-reading';
@@ -33,14 +33,9 @@ import { QuickGapSettings } from './quick-gap-settings';
 import recognitionContent from '../../content/reading-recognition.json';
 import navigationContent from '../../content/daily-reading-navigation.json';
 
-import {
-  isWholeSyllable,
-  pinyinSyllables,
-  spellingPlan,
-  type ReadingMode,
-} from '../domain/pinyin-spelling';
+import { pinyinSyllables, spellingPlan, type ReadingMode } from '../domain/pinyin-spelling';
 import { playSpelling } from '../platform/audio/spelling-playback';
-import { PinyinLegend, PinyinText, ReadingModeControl } from './pinyin-reading';
+import { PinyinLegend, PhoneticText, PinyinText, ReadingModeControl } from './pinyin-reading';
 
 async function readDaily(offline?: DailyReading): Promise<DailyReading> {
   if (offline) {
@@ -460,17 +455,7 @@ function ReadingSession({
     (
       navigationContent as Record<string, { family: string; compact: boolean; itemIds: string[] }[]>
     )[section.id] ?? [];
-  useEffect(() => {
-    const list = listRef.current;
-    const current = list?.querySelector<HTMLElement>('[aria-current="step"]');
-    if (!list || !current) return;
-    const bounds = list.getBoundingClientRect();
-    const target = current.getBoundingClientRect();
-    const top = bounds.top + list.clientTop + 8;
-    const bottom = bounds.top + list.clientTop + list.clientHeight - 8;
-    if (target.top < top) list.scrollTop += target.top - top;
-    else if (target.bottom > bottom) list.scrollTop += target.bottom - bottom;
-  }, [item.id]);
+  useReadingFollow(listRef, item.id, '[aria-current="step"]');
   useEffect(() => {
     audioPlayer.prioritizeReading([
       { kind: 'voice', id: section.instructionId ?? `daily-instruction-${section.id}` },
@@ -787,24 +772,25 @@ function ReadingSession({
           disabled={recording !== 'idle'}
           onClick={() => void play()}
         >
-          {item.syllables.map((syllable, position) => (
-            <ruby key={position}>
+          {readingHanzi(item.id, item.hanzi) ? (
+            <PhoneticText
+              text={readingHanzi(item.id, item.hanzi)!}
+              pinyin={item.syllables.join(' ')}
+              primary="pinyin"
+              activeIndex={highlight}
+            />
+          ) : (
+            item.syllables.map((syllable, position) => (
               <span
-                className={[
-                  isWholeSyllable(syllable) && 'pinyin-whole',
-                  highlight === position && 'daily-highlight',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
+                key={position}
+                data-phonetic-syllable
+                className={highlight === position ? 'daily-highlight' : undefined}
                 aria-current={highlight === position ? 'true' : undefined}
               >
-                {syllable}
+                <PinyinText value={syllable} />
               </span>
-              {readingCharacters(item.id, item.hanzi)[position] && (
-                <rt>{readingCharacters(item.id, item.hanzi)[position]}</rt>
-              )}
-            </ruby>
-          ))}
+            ))
+          )}
         </button>
 
         <div className="daily-status-strip">
@@ -958,10 +944,7 @@ function ReadingSession({
                 <div className="daily-example-words">
                   {item.wordExample.examples.map((example) => (
                     <div key={example.text}>
-                      <strong>{example.text}</strong>
-                      <span>
-                        <PinyinText value={example.pinyin} />
-                      </span>
+                      <PhoneticText text={example.text} pinyin={example.pinyin} />
                     </div>
                   ))}
                 </div>
@@ -1139,11 +1122,14 @@ function ReadingSession({
                   >
                     <span>{position + 1}</span>
                     <strong>
-                      {value.display}
-                      {readingHanzi(value.id, value.hanzi) && (
-                        <small className="daily-nav-hanzi">
-                          {readingHanzi(value.id, value.hanzi)}
-                        </small>
+                      {readingHanzi(value.id, value.hanzi) ? (
+                        <PhoneticText
+                          text={readingHanzi(value.id, value.hanzi)!}
+                          pinyin={value.syllables.join(' ')}
+                          primary="pinyin"
+                        />
+                      ) : (
+                        <PinyinText value={value.display} />
                       )}
                     </strong>
                     <small>

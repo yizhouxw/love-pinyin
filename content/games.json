@@ -16,10 +16,10 @@
       "title": "森林跑酷",
       "icon": "🦊",
       "mode": "listen-choice",
-      "description": "换跑道、跳过树根，穿过听到的拼音拱门。",
+      "description": "跳过树根，摘下听到的拼音果，陪狐狸穿越森林。",
       "voiceId": "ui-game_sound",
       "scene": "runner",
-      "controls": "左右换道，按跳跃越过树根，穿过听到的拼音拱门。",
+      "controls": "点画面跳起来，摘下听到的拼音果。也可以点果树按钮。",
       "modes": ["listen-choice", "tone-choice", "blend-choice"]
     },
     {
@@ -27,10 +27,10 @@
       "title": "河湾划船",
       "icon": "🛶",
       "mode": "tone-choice",
-      "description": "交替划桨，顺着水流驶进拼音浮标。",
+      "description": "带小船绕过礁石，接上小鸭，找到拼音码头。",
       "voiceId": "ui-game_tone",
       "scene": "boat",
-      "controls": "左右划桨控制方向，交替划桨向前，驶进听到的拼音浮标。",
+      "controls": "手指带着小船走，松手停船。绕过礁石，接上小鸭，驶向听到的拼音码头。",
       "modes": ["tone-choice", "listen-choice", "blend-choice"]
     },
     {
@@ -38,10 +38,10 @@
       "title": "节奏鼓岛",
       "icon": "🥁",
       "mode": "listen-choice",
-      "description": "跟着节拍，敲响听到的拼音音符。",
+      "description": "和小岛动物组乐队，选拼音鼓，接着模仿小节奏。",
       "voiceId": "ui-game_shape",
       "scene": "drum",
-      "controls": "音符走到鼓面上方时，敲鼓接住听到的拼音。不是目标就让它过去。",
+      "controls": "先敲听到的拼音鼓，再听示范，用鼓心和鼓边接出小节奏。",
       "modes": ["listen-choice", "tone-choice", "blend-choice"]
     },
     {
@@ -49,10 +49,10 @@
       "title": "星际投递",
       "icon": "🚀",
       "mode": "blend-choice",
-      "description": "瞄准移动的拼音星球，发射能量包裹。",
+      "description": "拉开弹弓，顺着轨迹把包裹送到拼音星球。",
       "voiceId": "ui-game_blend",
       "scene": "space",
-      "controls": "左右瞄准，发射包裹，送到听到的拼音星球。",
+      "controls": "在画面上向下拉，松手投递。先看轨迹，也可以轻点听到的拼音星球。",
       "modes": ["blend-choice", "listen-choice", "tone-choice"]
     }
   ],

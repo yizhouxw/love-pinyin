@@ -196,8 +196,8 @@ final class AdaptiveClassroomTests: XCTestCase {
         hub.tap()
 
         for (title, actionLabel) in [
-            ("森林跑酷", "跳跃 ↑"), ("河湾划船", "双桨前进"),
-            ("节奏鼓岛", "咚！击鼓"), ("星际投递", "发射 ↑"),
+            ("森林跑酷", "跳起来 ↑"), ("河湾划船", "停船"),
+            ("节奏鼓岛", "敲响 "), ("星际投递", "投递到 "),
         ] {
             let start = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "开始" + title)).firstMatch
             XCTAssertTrue(start.waitForExistence(timeout: 15), app.debugDescription)
@@ -210,24 +210,25 @@ final class AdaptiveClassroomTests: XCTestCase {
             reveal(listen, in: app)
             assertTouchTarget(listen, within: app)
             listen.tap()
-            let action = app.buttons[actionLabel]
+            let action = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", actionLabel)).firstMatch
             XCTAssertTrue(action.waitForExistence(timeout: 15), app.debugDescription)
             XCTAssertTrue(waitUntil(action, predicate: "enabled == true"), app.debugDescription)
             reveal(action, in: app)
             assertTouchTarget(action, within: app)
             action.tap()
-            let sceneNames = ["森林跑酷": "森林跑道", "河湾划船": "河湾：", "节奏鼓岛": "鼓岛：", "星际投递": "星空："]
+            let sceneNames = ["森林跑酷": "森林跳跃冒险", "河湾划船": "河湾救援航行", "节奏鼓岛": "鼓岛动物乐队", "星际投递": "星际包裹弹射"]
             let scene = labeled(sceneNames[title]!, in: app)
             XCTAssertTrue(scene.waitForExistence(timeout: 10), app.debugDescription)
             XCTAssertGreaterThan(scene.frame.height, 120)
-            let characterNames = ["森林跑酷": "点击角色跳跃", "河湾划船": "点击小船划桨", "节奏鼓岛": "点击鼓面击鼓", "星际投递": "点击飞船发射"]
-            let character = app.buttons[characterNames[title]!]
-            XCTAssertTrue(character.exists, app.debugDescription)
-            assertTouchTarget(character, within: app)
-            if character.isEnabled { character.tap() }
+            if title == "河湾划船" || title == "星际投递" {
+                let startPoint = scene.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+                let endPoint = scene.coordinate(withNormalizedOffset: CGVector(dx: 0.62, dy: 0.94))
+                startPoint.press(forDuration: 0.2, thenDragTo: endPoint)
+            }
             addScreenshot(title)
             device.orientation = .landscapeLeft
             waitForRotation(app, landscape: true)
+            reveal(action, in: app)
             XCTAssertTrue(waitUntil(action, predicate: "hittable == true"), app.debugDescription)
             assertTouchTarget(action, within: app)
             addScreenshot(title + "横屏")
@@ -261,6 +262,56 @@ final class AdaptiveClassroomTests: XCTestCase {
             exit.tap()
             XCTAssertTrue(start.waitForExistence(timeout: 12), app.debugDescription)
         }
+    }
+
+    @MainActor
+    func testWordReadingWorkspace() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        let device = XCUIDevice.shared
+        device.orientation = .portrait
+        defer { device.orientation = .portrait }
+        app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
+        app.launch()
+        let entry = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "进入词语天天练")).firstMatch
+        XCTAssertTrue(entry.waitForExistence(timeout: 25))
+        reveal(entry, in: app)
+        entry.tap()
+        let list = labeled("本课词语", in: app)
+        XCTAssertTrue(list.waitForExistence(timeout: 15), app.debugDescription)
+        let words = app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH %@", "听读"))
+        XCTAssertTrue(words.firstMatch.waitForExistence(timeout: 15), app.debugDescription)
+        XCTAssertGreaterThan(words.count, 2, app.debugDescription)
+        let last = words.element(boundBy: words.count - 1)
+        for _ in 0..<5 where !last.isHittable { list.swipeUp() }
+        XCTAssertTrue(last.isHittable, app.debugDescription)
+        last.tap()
+        let illustration = labeled("词语图片：", in: app)
+        XCTAssertTrue(illustration.exists, app.debugDescription)
+        XCTAssertTrue(illustration.frame.intersects(app.windows.firstMatch.frame))
+        addScreenshot("词语拼读独立滚动")
+        let read = labeled("连读本课", in: app)
+        reveal(read, in: app)
+        read.tap()
+        XCTAssertTrue(words.firstMatch.waitForExistence(timeout: 10))
+        device.orientation = .landscapeLeft
+        waitForRotation(app, landscape: true)
+        addScreenshot("词语连读横屏跟随")
+        let stop = app.buttons["停止播放"]
+        reveal(stop, in: app)
+        stop.tap()
+        device.orientation = .portrait
+        waitForRotation(app, landscape: false)
+        let nextLesson = app.buttons["下一课"]
+        reveal(nextLesson, in: app)
+        nextLesson.tap()
+        nextLesson.tap()
+        labeled("词语听写", in: app).tap()
+        let revealAnswer = app.buttons["揭晓答案"]
+        XCTAssertTrue(revealAnswer.waitForExistence(timeout: 10), app.debugDescription)
+        reveal(revealAnswer, in: app)
+        revealAnswer.tap()
+        addScreenshot("听写逐字拼音对齐")
     }
 
     @MainActor

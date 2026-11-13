@@ -50,13 +50,13 @@ test('WORD-01/02/03: real voices, hidden dictation, text highlights and device p
   await chooseLesson(page, '金木水火土');
   await expect(page.locator('.word-playback')).not.toContainText('正在播放');
   await page.getByRole('button', { name: '词语听写', exact: true }).click();
-  await expect(page.locator('.word-answer')).toHaveText('听一听，在纸上写一写');
+  await expect(page.locator('.word-answer-placeholder')).toHaveText('听一听，在纸上写一写');
   await expect(page.locator('.word-dictation img')).toBeHidden();
   await page.getByRole('button', { name: '听词语 / 重听' }).click();
   await page.getByRole('button', { name: '揭晓答案', exact: true }).click();
   await expect(page.locator('.word-answer')).toContainText('一');
   await page.getByRole('button', { name: '下一个', exact: true }).click();
-  await expect(page.locator('.word-answer')).toHaveText('听一听，在纸上写一写');
+  await expect(page.locator('.word-answer-placeholder')).toHaveText('听一听，在纸上写一写');
   await page.getByRole('button', { name: '课文背诵', exact: true }).click();
   await expect(page.locator('.word-passage')).toContainText('天地分上下');
   await expect(page.locator('.word-mark-character').first()).toBeVisible();
@@ -265,6 +265,17 @@ test('WORD-07/08/09: touch course units, selected pictures and home entry order'
   await page.getByRole('button', { name: '完成', exact: true }).click();
   const frame = page.locator('.word-selected-picture');
   const before = await frame.boundingBox();
+  // A wrapped three-character word must grow its card, never cover the next row.
+  const cardsContainText = await page.locator('.word-grid button').evaluateAll((cards) =>
+    cards.every((card) => {
+      const bounds = card.getBoundingClientRect();
+      return [...card.querySelectorAll('ruby')].every((unit) => {
+        const text = unit.getBoundingClientRect();
+        return text.top >= bounds.top && text.bottom <= bounds.bottom;
+      });
+    }),
+  );
+  expect(cardsContainText).toBe(true);
   await page.getByRole('button', { name: '听读彩云', exact: true }).click();
   await expect(frame).toHaveAttribute('aria-label', '词语图片：彩云');
   await expect(frame.getByRole('img')).toBeVisible();
@@ -553,11 +564,15 @@ test('WORD-14: dictation actions and settings stay together', async ({ page, app
       await expect(reveal).toBeFocused();
       expect(
         await answer
-          .locator('ruby')
-          .evaluate((ruby) => parseFloat(getComputedStyle(ruby).fontSize)),
+          .locator('.phonetic-character')
+          .first()
+          .evaluate((character) => parseFloat(getComputedStyle(character).fontSize)),
       ).toBeGreaterThanOrEqual(32);
       expect(
-        await answer.locator('rt').evaluate((rt) => parseFloat(getComputedStyle(rt).fontSize)),
+        await answer
+          .locator('rt')
+          .first()
+          .evaluate((rt) => parseFloat(getComputedStyle(rt).fontSize)),
       ).toBeGreaterThanOrEqual(19);
       await expect(figure.getByRole('img')).toBeVisible();
       expect((await answer.boundingBox())!.height).toBe(height);

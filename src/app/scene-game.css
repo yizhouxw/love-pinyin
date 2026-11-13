@@ -610,3 +610,81 @@
     width: min(100%, max(280px, calc((100dvh - 260px) * 800 / 440)));
   }
 }
+/* The new playgrounds use a 6:5 world; keep their controls beside it in phone landscape. */
+@media (max-height: 500px) and (min-width: 600px) {
+  .scene-playfield {
+    padding-right: 110px;
+  }
+  .adventure-canvas {
+    max-width: calc((100dvh - 115px) * 1.2);
+  }
+  .adventure-run-controls {
+    position: absolute;
+    right: 6px;
+    top: 8px;
+    width: 94px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+  .adventure-run-controls > div {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .adventure-run-controls button {
+    font-size: 0.8rem;
+    min-height: 44px;
+  }
+  .adventure-caption {
+    position: absolute;
+    right: 6px;
+    top: 8px;
+    width: 94px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
+  }
+  .adventure-drum .adventure-canvas {
+    margin-left: 0;
+  }
+  .scene-drum .scene-playfield {
+    padding-right: 180px;
+  }
+  .adventure-rhythm {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    width: 168px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0;
+    font-size: 0.75rem;
+  }
+  .rhythm-score {
+    font-size: 1.4rem;
+  }
+  .adventure-rhythm > button {
+    min-height: 44px;
+    padding: 4px;
+  }
+  .rhythm-pads {
+    width: 100%;
+    gap: 6px;
+  }
+  .rhythm-pads button {
+    font-size: 0.8rem;
+    min-height: 60px;
+    padding: 4px;
+  }
+  .adventure-motor-note {
+    margin: 0;
+    font-size: 0.7rem;
+  }
+}
+@media (min-width: 900px) and (min-height: 501px) {
+  .scene-enlarged .adventure-canvas {
+    max-width: min(860px, calc((100dvh - 190px) * 1.2));
+  }
+}

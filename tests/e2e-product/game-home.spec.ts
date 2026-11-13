@@ -92,7 +92,7 @@ test('HOME-01/02: compact home, independent settings, keyboard, saved choices an
   expect(session.tasks).toHaveLength(3);
   expect(session.gameSettings.level).toBe('challenge');
   expect(session.gameSettings.speed).toBe('fast');
-  await expect(page.locator('.scene-stage')).toBeVisible();
+  await expect(page.locator('.adventure-canvas')).toBeVisible();
   await page.getByRole('button', { name: '保存并退出游戏' }).click();
   await expect(page.getByRole('heading', { name: '拼音游戏乐园' })).toBeVisible();
   expect(errors).toEqual([]);

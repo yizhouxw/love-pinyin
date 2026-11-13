@@ -1,3 +1,5 @@
+import { alignPhonetics } from '../domain/phonetic-alignment';
+import { PhoneticText } from './pinyin-reading';
 import { useState } from 'react';
 import type { IllustrationCatalog } from '../domain/illustrations';
 import { useLearningVoice, VoiceButton, VoiceFailure } from './learning-voice';
@@ -101,8 +103,14 @@ export function WordCards({
                 }
               />
               <figcaption>
-                <span>{item.pinyin}</span>
-                <small>{item.name}</small>
+                {!item.associationNote && alignPhonetics(item.name, item.pinyin) ? (
+                  <PhoneticText text={item.name} pinyin={item.pinyin} primary="pinyin" />
+                ) : (
+                  <>
+                    <span>{item.pinyin}</span>
+                    <small>{item.name}</small>
+                  </>
+                )}
                 {item.associationNote && (
                   <small className="word-association-note">{item.associationNote}</small>
                 )}

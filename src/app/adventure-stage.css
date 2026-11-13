@@ -1,0 +1,228 @@
+.adventure {
+  min-width: 0;
+}
+.adventure-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: auto;
+  aspect-ratio: 6/5;
+  overflow: hidden;
+  border-radius: 18px;
+  touch-action: none;
+  isolation: isolate;
+  outline-offset: 3px;
+}
+.adventure-canvas:focus-visible {
+  outline: 3px solid #daae55;
+}
+.adventure-canvas > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.adventure-targets {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.adventure-targets button {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 15%;
+  height: 17%;
+  min-width: 48px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: auto;
+  padding: 0;
+}
+.adventure-targets button.highlight {
+  outline: 4px solid #ffdb78;
+  background: #fff4a330;
+}
+.adventure-targets button:focus-visible {
+  outline: 4px solid white;
+}
+.adventure-drum-picks {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  bottom: 16%;
+  left: 4%;
+  right: 4%;
+  justify-content: center;
+}
+.adventure-drum-picks button {
+  background: #fff0d4;
+  border: 3px solid #a87554;
+  color: #3c524a;
+  border-radius: 50%;
+  min-width: 54px;
+  min-height: 56px;
+  padding: 8px;
+  flex: 1;
+  max-width: 105px;
+  box-shadow: 0 6px 0 #9c7051;
+}
+.adventure-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: #1e3046bd;
+  backdrop-filter: blur(6px);
+  color: white;
+  font-size: 1.5rem;
+  z-index: 4;
+}
+.adventure-arrival {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 30px;
+  background: #fff9e6ef;
+  padding: 8px 20px;
+  white-space: nowrap;
+  color: #2c6155;
+}
+.adventure-run-controls {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  padding-top: 10px;
+}
+.adventure-run-controls > button {
+  background: #36735f;
+  color: white;
+  min-height: 52px;
+}
+.adventure-run-controls > div {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.adventure-run-controls > div button {
+  min-height: 48px;
+  padding: 4px 9px;
+}
+.adventure-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: #526f66;
+}
+.adventure-caption button {
+  padding: 4px 12px;
+  min-height: 44px;
+}
+.adventure-rhythm {
+  padding: 10px 0 0;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+.rhythm-score {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+.rhythm-score span {
+  color: #879d92;
+}
+.rhythm-score .current {
+  color: #286a5c;
+  outline: 2px solid #dfb261;
+  border-radius: 8px;
+}
+.rhythm-score .played {
+  color: #c48935;
+}
+.rhythm-pads {
+  display: flex;
+  gap: 12px;
+  grid-column: 1/-1;
+}
+.rhythm-pads button {
+  flex: 1;
+  min-height: 74px;
+  background: #f1d29b;
+  border: 3px solid #b08552;
+  color: #574332;
+  box-shadow: 0 5px 0 #a77a50;
+}
+.rhythm-pads button[aria-pressed='true'] {
+  background: #ffe8a8;
+  transform: translateY(4px);
+  box-shadow: none;
+}
+.adventure-rhythm p {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.adventure-motor-note {
+  font-size: 0.9rem;
+  margin: 8px 0;
+  color: #6c6652;
+}
+@media (max-width: 600px) {
+  .adventure-canvas {
+    border-radius: 12px;
+  }
+  .adventure-run-controls {
+    grid-template-columns: 1fr;
+  }
+  .adventure-run-controls > div {
+    justify-content: center;
+  }
+  .adventure-caption {
+    font-size: 0.78rem;
+  }
+}
+@media (max-height: 500px) and (min-width: 600px) {
+  .adventure-canvas {
+    max-width: 400px;
+  }
+  .scene-layout {
+    grid-template-columns: minmax(0, 1fr) 190px;
+  }
+  .adventure-run-controls > button {
+    min-height: 44px;
+  }
+}
+.adventure-run-controls > button {
+  border-radius: 16px;
+}
+@media (min-width: 900px) and (min-height: 501px) {
+  .adventure-canvas {
+    max-width: min(720px, calc((100dvh - 230px) * 1.2));
+  }
+}
+.scene-wait-setting {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 48px;
+  margin-top: 12px;
+}
+.scene-wait-setting input {
+  width: 22px;
+  height: 22px;
+}
+.adventure button.highlight {
+  outline: 3px solid #e6b752;
+  outline-offset: 2px;
+}

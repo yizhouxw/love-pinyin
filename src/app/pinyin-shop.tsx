@@ -1,3 +1,4 @@
+import { PhoneticText } from './pinyin-reading';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Curriculum } from '../domain/learning-api';
 import type { PronunciationService } from '../domain/pronunciation';
@@ -518,17 +519,22 @@ export function PinyinShop({
                 </div>
                 <div className="shop-reading-text">
                   <h2
+                    aria-label={target?.target.pinyin ?? (finished ? '购物清单' : '等你来挑')}
                     className={
                       !target || target.hanzi ? 'shop-target shop-sentence' : 'shop-target'
                     }
                   >
-                    {target?.target.pinyin ?? (finished ? '购物清单' : '等你来挑')}
+                    {target?.hanzi ? (
+                      <PhoneticText
+                        text={target.hanzi}
+                        pinyin={target.target.pinyin}
+                        primary="pinyin"
+                        concealHanzi={!showHanzi}
+                      />
+                    ) : (
+                      (target?.target.pinyin ?? (finished ? '购物清单' : '等你来挑'))
+                    )}
                   </h2>
-                </div>
-                <div className="shop-hanzi-space">
-                  {target?.hanzi && showHanzi && (
-                    <p className="shop-sentence-hanzi">{target.hanzi}</p>
-                  )}
                 </div>
                 <div className="shop-listening-indicator" data-signal={signal} aria-hidden="true">
                   <svg className="shop-signal" viewBox="0 0 144 36">
