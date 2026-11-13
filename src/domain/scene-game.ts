@@ -139,7 +139,7 @@ export function advanceWorld(
   } else if (scene === 'boat') {
     if (action === 'left' || action === 'right') {
       const dir = action === 'left' ? -1 : 1;
-      w.vx += dir * 100;
+      w.vx = dir * 100;
       w.forwardVelocity += w.lastStroke !== dir ? 100 : 60;
       w.lastStroke = dir;
       w.strokes++;
@@ -251,7 +251,7 @@ export function advanceWorld(
         w.collected.push(pickup.id);
         w.flash = 0.25;
       }
-    if (scene === 'runner' && c.assist) {
+    if ((scene === 'runner' || scene === 'boat') && c.assist) {
       // A beginner can choose a lane without the conveyor committing an answer.
       w.distance =
         previous >= p.choiceAt - 65 && action === 'act'

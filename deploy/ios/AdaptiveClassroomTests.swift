@@ -216,7 +216,23 @@ final class AdaptiveClassroomTests: XCTestCase {
             reveal(action, in: app)
             assertTouchTarget(action, within: app)
             action.tap()
+            let sceneNames = ["森林跑酷": "森林跑道", "河湾划船": "河湾：", "节奏鼓岛": "鼓岛：", "星际投递": "星空："]
+            let scene = labeled(sceneNames[title]!, in: app)
+            XCTAssertTrue(scene.waitForExistence(timeout: 10), app.debugDescription)
+            XCTAssertGreaterThan(scene.frame.height, 120)
+            let characterNames = ["森林跑酷": "点击角色跳跃", "河湾划船": "点击小船划桨", "节奏鼓岛": "点击鼓面击鼓", "星际投递": "点击飞船发射"]
+            let character = app.buttons[characterNames[title]!]
+            XCTAssertTrue(character.exists, app.debugDescription)
+            assertTouchTarget(character, within: app)
+            if character.isEnabled { character.tap() }
             addScreenshot(title)
+            device.orientation = .landscapeLeft
+            waitForRotation(app, landscape: true)
+            XCTAssertTrue(waitUntil(action, predicate: "hittable == true"), app.debugDescription)
+            assertTouchTarget(action, within: app)
+            addScreenshot(title + "横屏")
+            device.orientation = .portrait
+            waitForRotation(app, landscape: false)
 
             let pause = app.buttons.matching(NSPredicate(format: "label ENDSWITH %@", "暂停")).firstMatch
             for _ in 0..<3 where !pause.isHittable { app.swipeDown() }
@@ -311,6 +327,15 @@ final class AdaptiveClassroomTests: XCTestCase {
             format: "label BEGINSWITH %@", "已作答 1 题"
         )).firstMatch
         XCTAssertTrue(count.waitForExistence(timeout: 12), app.debugDescription)
+    }
+
+    @MainActor
+    private func waitForRotation(_ app: XCUIApplication, landscape: Bool) {
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            let frame = app.windows.firstMatch.frame
+            return landscape ? frame.width > frame.height : frame.height > frame.width
+        }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 12), .completed)
     }
 
     @MainActor

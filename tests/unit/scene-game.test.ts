@@ -150,3 +150,21 @@ describe('data-driven physical routes', () => {
     expect(advanceWorld(hit, 0.1, c, 'left')).toEqual(hit);
   });
 });
+
+it('assisted docking waits for a deliberate stroke, and turning cannot accumulate runaway drift', () => {
+  const c = { ...config('boat-route-01'), assist: true };
+  let w = {
+    ...initialWorld(),
+    distance: c.pattern.choiceAt - 65,
+    x: laneX(1, 4),
+    forwardVelocity: 200,
+  };
+  w = advanceWorld(w, 0.05, c);
+  expect(w.hit).toBeNull();
+  expect(w.distance).toBe(c.pattern.choiceAt - 65);
+  for (let i = 0; i < 20; i++) w = advanceWorld(w, 0, c, 'right');
+  expect(w.vx).toBe(100);
+  expect(w.hit).toBeNull();
+  w = { ...w, x: laneX(1, 4), vx: 0 };
+  expect(advanceWorld(w, 0, c, 'act').hit).toBe(1);
+});

@@ -57,6 +57,13 @@ export function SceneScenery({
           <stop offset="1" stopColor="#262d52" />
         </linearGradient>
       </defs>
+      {scene === 'runner' && (
+        <g opacity=".25" fill="#759d84">
+          {Array.from({ length: 15 }, (_, i) => (
+            <path key={i} d={`M${i * 61 - 20} 200v-95l-22 33h14l-24 36h64l-24-36h14l-22-33`} />
+          ))}
+        </g>
+      )}
       {scene !== 'space' && (
         <>
           <circle cx={scenery % 2 ? 666 : 110} cy="68" r="47" fill="#fff4c5" opacity=".35" />
@@ -116,6 +123,26 @@ export function SceneScenery({
               <circle cx="-20" cy="51" r="3" fill="#fff6df" />
             </g>
           ))}
+          <g fill="#fff4bb" opacity=".8">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <g
+                key={i}
+                transform={`translate(${i % 2 ? 775 - i * 4 : 18 + i * 6} ${270 + ((i * 31) % 150)})`}
+              >
+                <path
+                  d="M0 0v13m0-5q-9-9-12-3m12 0q9-9 12-3"
+                  stroke="#477a57"
+                  strokeWidth="2"
+                  fill="none"
+                />
+                <circle cy="-3" r="4" />
+                <circle cx="-4" r="4" />
+                <circle cx="4" r="4" />
+                <circle cy="2" r="4" />
+                <circle r="2" fill="#e9aa49" />
+              </g>
+            ))}
+          </g>
           {scenery >= 3 && (
             <g transform="translate(659 138)">
               <path d="M-14 15L-9-48H9L14 15Z" fill="#f3e9bf" />
@@ -181,6 +208,14 @@ export function SceneScenery({
             fill={theme.land}
           />
           <path d="M0 357Q400 308 800 357V440H0Z" fill="#cc9c79" />
+          <path d="M0 406Q400 361 800 406V440H0Z" fill="#ad7c64" />
+          {[80, 320, 560, 760].map((x) => (
+            <g key={x} transform={`translate(${x} 395)`}>
+              <ellipse rx="20" ry="7" fill="#705852" />
+              <path d="M-12 0V-20H12V0" fill="#745d59" />
+              <ellipse cy="-20" rx="12" ry="5" fill="#ffedb4" />
+            </g>
+          ))}
           <path d="M0 390Q400 345 800 390" stroke="#edc499" strokeWidth="4" fill="none" />
           <path d="M0 32Q400 105 800 32" fill="none" stroke="#9e6f60" strokeWidth="3" />
           {[55, 170, 285, 400, 515, 630, 745].map((x, i) => (

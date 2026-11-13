@@ -50,8 +50,53 @@ for (const game of catalog.games) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await expect(stage).toHaveCount(0);
     await expect(page.locator('.scene-nav')).toContainText('任务 1 /');
-    const choices = page.getByRole('group', { name: '直接选择拼音' });
-    await choices.getByRole('button', { name: option.label, exact: true }).click();
+    await expect(page.locator('.scene-world')).toBeVisible();
+    await expect(page.locator('.scene-stage')).toHaveAttribute('data-still', 'true');
+    const position = await page.locator('.scene-world').innerHTML();
+    await page.waitForTimeout(250);
+    expect(await page.locator('.scene-world').innerHTML()).toBe(position);
+    await page.screenshot({
+      path: test.info().outputPath(`still-${game.scene}.png`),
+      fullPage: true,
+    });
+    await page.getByRole('button', { name: `选择 ${option.label}`, exact: true }).click();
     await expect(page.locator('.scene-nav')).toContainText('任务 2 /');
+  });
+}
+
+for (const game of catalog.games) {
+  test(`${game.title}: scene touch controls preserve sound and pause protection`, async ({
+    page,
+    appUrl,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(appUrl);
+    await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
+    await page.getByRole('button', { name: '连接家庭' }).click();
+    await page.getByRole('button', { name: '进入游戏乐园' }).click();
+    await page.getByRole('button', { name: `开始${game.title}` }).click();
+    const stage = page.locator('.scene-stage');
+    const character = page.locator('.scene-character-action');
+    await expect(character).toBeEnabled({ timeout: 20000 });
+    if (game.scene !== 'drum') {
+      const target = stage.locator('.scene-touch-target').last();
+      await target.click();
+      await expect
+        .poll(async () => Number(await stage.getAttribute('data-world-x')))
+        .toBeGreaterThan(640);
+      expect(await stage.getAttribute('data-world-hit')).toBe('');
+    }
+    const strokes = Number(await stage.getAttribute('data-world-strokes'));
+    await character.click();
+    if (game.scene === 'boat')
+      expect(Number(await stage.getAttribute('data-world-strokes'))).toBeGreaterThan(strokes);
+    await page.getByRole('button', { name: '听拼音', exact: true }).click();
+    await expect(character).toBeDisabled();
+    await expect(character).toBeEnabled({ timeout: 20000 });
+    await page.getByRole('button', { name: 'Ⅱ 暂停', exact: true }).click();
+    await expect(character).toBeDisabled();
+    const position = await stage.getAttribute('data-world-x');
+    await page.keyboard.press('ArrowLeft');
+    expect(await stage.getAttribute('data-world-x')).toBe(position);
   });
 }

@@ -4,6 +4,7 @@ import {
   advanceWorld,
   initialWorld,
   laneX,
+  targetPosition,
   type Action,
   type GameSettings,
   type Scene,
@@ -14,6 +15,7 @@ import type { Answer, Exercise, Hint } from '../domain/learning-api';
 import { GamePercussion } from '../platform/audio/game-percussion';
 import { narration } from './labels';
 import { VoiceButton, VoiceFailure, type useLearningVoice } from './learning-voice';
+import { steerWorld } from '../domain/scene-steering';
 import { SceneWorld } from './scene-world';
 import { Notice } from './notice';
 import './scene-game.css';
@@ -279,7 +281,8 @@ export function SceneGame(props: Props) {
   useEffect(() => {
     if (busy || sending || voice.playingId || paused || props.error) return;
     if (done) {
-      nextRef.current();
+      const timer = window.setTimeout(() => nextRef.current(), 650);
+      return () => window.clearTimeout(timer);
     } else if (answer && hit !== null && resolvedHit) {
       const frame = requestAnimationFrame(() => {
         const { world, backdrop } = frames.read();
@@ -352,7 +355,7 @@ export function SceneGame(props: Props) {
         </button>
         <button
           className="quiet"
-          disabled={staticChoices}
+          disabled={false}
           aria-pressed={enlarged}
           onClick={() => changeDisplay({ enlarged: !enlarged })}
         >
@@ -531,6 +534,33 @@ export function SceneGame(props: Props) {
             </button>
             <progress aria-label="关卡完成进度" value={props.index} max={props.total} />
           </div>
+          <LiveScene
+            frames={frames}
+            stageRef={stageRef}
+            scene={scene}
+            physics={physics}
+            run={run}
+            question={question}
+            highlight={answer?.correctOptionId ?? hint?.answer.optionId}
+            paused={paused}
+            still={staticChoices}
+            disabled={stopped || hit !== null}
+            onAim={(x) => {
+              const { world } = frames.read();
+              if (stopped || world.hit !== null || staticChoices || scene === 'drum') return;
+              frames.write(steerWorld(world, scene, question.options.length, x));
+              focusStage();
+            }}
+            onAction={() => fire('act')}
+            onChoose={(index) => {
+              if (stopped || frames.read().world.hit !== null) return;
+              if (staticChoices) {
+                frames.write({ ...frames.read().world, hit: index });
+                setHit(index);
+              }
+            }}
+            onResume={() => setPaused(false)}
+          />
           {staticChoices ? (
             <div
               ref={staticRef}
@@ -539,46 +569,13 @@ export function SceneGame(props: Props) {
               role="group"
               aria-label="直接选择拼音"
             >
-              {question.options.map((option, index) => (
-                <button
-                  key={option.id}
-                  disabled={stopped || hit !== null}
-                  aria-describedby={
-                    option.id === (answer?.correctOptionId ?? hint?.answer.optionId)
-                      ? 'static-correct-target'
-                      : undefined
-                  }
-                  className={
-                    option.id === (answer?.correctOptionId ?? hint?.answer.optionId)
-                      ? 'scene-action'
-                      : ''
-                  }
-                  onClick={() => {
-                    const { world } = frames.read();
-                    frames.write({ ...world, hit: index });
-                    setHit(index);
-                  }}
-                >
-                  {option.label}
-                </button>
-              ))}
+              <span>轻点场景中的拼音目标</span>
               <span id="static-correct-target" className="screen-reader-only">
                 提示：正确目标
               </span>
             </div>
           ) : (
             <>
-              <LiveScene
-                frames={frames}
-                stageRef={stageRef}
-                scene={scene}
-                physics={physics}
-                run={run}
-                question={question}
-                highlight={answer?.correctOptionId ?? hint?.answer.optionId}
-                paused={paused}
-                onResume={() => setPaused(false)}
-              />
               <div className="scene-controls" role="group" aria-label="场景动作">
                 {controls.map((label, i) => (
                   <button
@@ -682,6 +679,11 @@ function LiveScene({
   highlight,
   paused,
   onResume,
+  still,
+  disabled,
+  onAim,
+  onChoose,
+  onAction,
 }: {
   frames: FrameSource;
   stageRef: React.Ref<HTMLDivElement>;
@@ -692,8 +694,25 @@ function LiveScene({
   highlight?: string;
   paused: boolean;
   onResume: () => void;
+  still: boolean;
+  disabled: boolean;
+  onAim: (x: number) => void;
+  onChoose: (index: number) => void;
+  onAction: () => void;
 }) {
-  const { world, backdrop } = useSyncExternalStore(frames.subscribe, frames.read);
+  const { world: movingWorld, backdrop } = useSyncExternalStore(frames.subscribe, frames.read);
+  const world = still
+    ? { ...movingWorld, distance: physics.pattern.choiceAt - 180, time: 0, jump: 0 }
+    : movingWorld;
+  function aim(event: React.PointerEvent<HTMLDivElement>) {
+    if (disabled || still || (event.target instanceof Element && event.target.closest('button')))
+      return;
+    const svg = event.currentTarget.querySelector('svg');
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    const scale = Math.min(rect.width / 800, rect.height / 440);
+    onAim((event.clientX - rect.left - (rect.width - 800 * scale) / 2) / scale);
+  }
   return (
     <div
       ref={stageRef}
@@ -701,6 +720,11 @@ function LiveScene({
       tabIndex={0}
       role="group"
       aria-label="游戏操作区：方向键控制，空格行动"
+      onPointerDown={aim}
+      onPointerMove={(event) => {
+        if (event.buttons === 1) aim(event);
+      }}
+      data-still={still}
       data-scene={scene}
       data-task-id={question.id}
       data-speed-factor={physics.speedFactor}
@@ -722,9 +746,68 @@ function LiveScene({
         config={physics}
         theme={run.theme}
         scenery={run.level.number}
-        routeOffset={backdrop}
+        routeOffset={still ? 0 : backdrop}
         highlight={highlight}
       />
+      <div className="scene-target-layer" aria-label="场景目标">
+        {question.options
+          .filter(() => still || scene !== 'drum')
+          .map((option, index) => {
+            const p = targetPosition(index, world, physics);
+            return (
+              <button
+                key={option.id}
+                className="scene-touch-target"
+                style={{ left: `${p.x / 8}%`, top: `${p.y / 4.4}%` }}
+                disabled={disabled}
+                aria-describedby={
+                  still && option.id === highlight ? 'static-correct-target' : undefined
+                }
+                aria-label={`${still ? '选择' : scene === 'drum' ? '击鼓' : '瞄准'} ${option.label}`}
+                onClick={() => {
+                  onAim(p.x);
+                  onChoose(index);
+                }}
+              >
+                <span className="screen-reader-only">{option.label}</span>
+              </button>
+            );
+          })}
+      </div>
+      {!still && (
+        <button
+          className="scene-character-action"
+          style={{
+            left: `${(scene === 'drum' ? 180 : world.x) / 8}%`,
+            top: `${(scene === 'drum' ? 312 : 355) / 4.4}%`,
+          }}
+          aria-label={
+            {
+              runner: '点击角色跳跃',
+              boat: '点击小船划桨',
+              drum: '点击鼓面击鼓',
+              space: '点击飞船发射',
+            }[scene]
+          }
+          disabled={disabled}
+          onClick={onAction}
+        />
+      )}
+      <div className="scene-journey" aria-hidden="true">
+        <span>{run.level.title}</span>
+        <span>
+          {still
+            ? '轻点拼音'
+            : scene === 'drum'
+              ? `♪ ${world.beatHits.length} / ${physics.pattern.beats.length}`
+              : `✦ ${world.collected.length} / ${physics.pattern.pickups.length}`}
+        </span>
+      </div>
+      {world.hit !== null && (
+        <div className="scene-arrival" role="status">
+          已选择 · {question.options[world.hit]?.label}
+        </div>
+      )}
       {world.misses > 0 && world.hit === null && (
         <p className="scene-motor-note">刚才没有碰到目标，继续试试。</p>
       )}
