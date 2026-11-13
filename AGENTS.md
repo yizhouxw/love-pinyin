@@ -32,3 +32,7 @@
 ## 本机交付
 
 - 每次修改提交后，用该提交更新本机 Web 构建并重启现有服务，重新构建并替换 `/Applications/爱拼音.app`。验证两端启动及本次功能后，删除已被替换的旧程序副本和旧安装包。保留家庭数据库、备份、模型、证书和学习记录。
+
+## Android 开发 harness
+
+- Android 工作开始前读 [Android agent harness](docs/engineering/android-agent-harness.md)，复用已实测的固定工具链、项目隔离 Gradle 配置与真机授权流程；工具链通过不替代产品真机验收。
