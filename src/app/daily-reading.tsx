@@ -1,3 +1,4 @@
+import { readDailyProgress, saveDailyProgress } from '../platform/daily-progress';
 import { useReadingFollow } from './use-reading-follow';
 import { QuickSettings, CloseQuickSettings, SettingsGlyph, ContextHelp } from './quick-settings';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
@@ -54,6 +55,7 @@ async function readDaily(offline?: DailyReading): Promise<DailyReading> {
 
 export function DailyReadingPage({
   offline,
+  contentId = 'original',
   spellingSyllables,
   onBack,
   guidanceEnabled,
@@ -62,6 +64,7 @@ export function DailyReadingPage({
   onGapChange,
 }: {
   offline?: DailyReading;
+  contentId?: string;
   spellingSyllables: readonly string[];
   onBack: () => void;
   guidanceEnabled: boolean;
@@ -84,7 +87,23 @@ export function DailyReadingPage({
   useEffect(() => {
     stopHelpVoice();
   }, [sectionId, stopHelpVoice]);
-  const [marks, setMarks] = useState<Record<string, ReadingMark>>({});
+  const [markStore, setMarkStore] = useState(() => {
+    try {
+      return { marks: readDailyProgress(contentId), failed: false };
+    } catch {
+      return { marks: {} as Record<string, ReadingMark>, failed: true };
+    }
+  });
+  const marks = markStore.marks;
+  function markItem(id: string, mark: ReadingMark) {
+    try {
+      const next = { ...readDailyProgress(contentId), ...marks, [id]: mark };
+      saveDailyProgress(contentId, next);
+      setMarkStore({ marks: next, failed: false });
+    } catch {
+      setMarkStore({ marks, failed: true });
+    }
+  }
   const materialChoices = useRef<HTMLElement | null>(null);
   const sectionTabs = useRef<HTMLDivElement | null>(null);
   const load = useCallback(() => {
@@ -348,9 +367,10 @@ export function DailyReadingPage({
               }
               onChooseMaterials={chooseMaterials}
               marks={marks}
-              onMark={(id, mark) => setMarks((previous) => ({ ...previous, [id]: mark }))}
+              onMark={markItem}
             />
           )}
+          {markStore.failed && <p role="alert">本机练习标记暂时无法保存，请重试。听读仍可继续。</p>}
           {section && (
             <div className="reading-preparation daily-preparation-detail" aria-label="声音准备">
               <p>

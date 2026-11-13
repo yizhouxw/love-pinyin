@@ -318,7 +318,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     ),
   ];
   const pictureScope = `${task?.instanceId ?? ''}/${pictureRetry}`;
-  const picturesPending = pictureIds.some((id) => pictureStatus[`${pictureScope}/${id}`] !== true);
+  // Scene games render their own targets; classroom illustrations are not mounted there.
+  const picturesPending =
+    !game && pictureIds.some((id) => pictureStatus[`${pictureScope}/${id}`] !== true);
   const picturesFailed = pictureIds.some((id) => pictureStatus[`${pictureScope}/${id}`] === false);
   function onPictureStatus(id: string, ready: boolean) {
     setPictureStatus((prior) => ({ ...prior, [`${pictureScope}/${id}`]: ready }));
@@ -1134,6 +1136,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
       <main className="home-page" id="page-daily-reading" tabIndex={-1} aria-label="天天练拼音">
         <DailyReadingPage
           key={activePracticeSource}
+          contentId={activePracticeSource}
           offline={activePractice?.daily}
           spellingSyllables={practicePacks.spellingSyllables ?? []}
           gapSeconds={gapSeconds}

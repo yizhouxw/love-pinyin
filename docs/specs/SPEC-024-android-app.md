@@ -31,3 +31,7 @@ ANDROID-ENV-01 仅证明工具链和独立测试 Activity 可构建安装，不�
 ANDROID-01～04 使用 Kotlin 原生服务与 SQLite 持久化，React 通过统一原生端口访问；课程长音频使用原生 MediaPlayer，短音频复用 Web Audio。备份先提供同 Android 内容版本的独立格式，不宣称与 iOS/Web 互导。系统文件导入后原生预览并确认，按 revision 检查后事务替换。ANDROID-05 记录实际通过范围。
 
 ANDROID-01 图标要求：沿用 public/logo.svg 的四线格 bā 标识，安装后桌面和系统应用列表显示正式图标；提供自适应前景/背景及 Android 13 单色主题图标，不使用默认机器人图标。
+
+ANDROID-02/04 补充：Android 词语练习标记和每日听读的“练过/家长标记”同样写入本机 SQLite，随 Android 学习备份导出恢复；这些是练习记录，不当作自动识别成绩。保存失败保持原标记并提示重试。现有 Web/iOS 标记存储语义不因 Android 适配改变。
+
+ANDROID-03 回归边界：场景游戏仅使用拼音目标时，不应等待课堂专用插图加载；带 pictureId 的拼读题必须能在星际投递命中、保存并进入下一题。Android 音频焦点中断必须同步暂停游戏授权。

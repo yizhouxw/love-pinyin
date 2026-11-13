@@ -25,22 +25,39 @@ class MainActivity : Activity() {
     private lateinit var audio: JSONObject
     private lateinit var webFiles: Set<String>
     private val worker = Executors.newSingleThreadExecutor()
-    private var foreground = false
+    @Volatile private var foreground = false
     private var player: MediaPlayer? = null
     private var playbackId = -1
     private var audioId = ""
     private var pendingFile: Pair<String, ByteArray?>? = null
+    private var activeFileId: String? = null
     private var audioFocus: AudioFocusRequest? = null
+    private var pauseNeedsRetry = false
     private fun data(name: String) = JSONObject(assets.open("pack/Data/$name.json").bufferedReader().use { it.readText() })
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val debug = applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0
+        val requestedVerification = if (debug) intent.getStringExtra("verificationId")?.takeIf {
+            runCatching { java.util.UUID.fromString(it).toString() == it }.getOrDefault(false)
+        } else null
+        if (!storageProfileInitialized) {
+            processVerification = requestedVerification
+            if (processVerification != null && android.os.Build.VERSION.SDK_INT >= 28)
+                WebView.setDataDirectorySuffix("verification-$processVerification")
+            storageProfileInitialized = true
+        }
+        val verification = processVerification
+        val storageContext = if (verification != null) object : android.content.ContextWrapper(this) {
+            override fun getDatabasePath(name: String) = java.io.File(filesDir,"verification/$verification/$name").apply { parentFile?.mkdirs() }
+        } else this
         try {
             audio = data("audio")
             webFiles = org.json.JSONArray(assets.open("pack/Data/web-files.json").bufferedReader().use { it.readText() }).strings().toSet()
-            classroom = Classroom(this, data("classroom"))
+            classroom = Classroom(storageContext, data("classroom"))
         } catch (_: Exception) {
             setContentView(TextView(this).apply { text = "本机学习资料暂时无法读取。请保留应用数据，重新安装完整安装包后重试。"; textSize = 22f; setPadding(32,64,32,32) }); return
         }
+        WebView.setWebContentsDebuggingEnabled(applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0)
         page = WebView(this)
         page.settings.javaScriptEnabled = true
         page.settings.domStorageEnabled = true
@@ -79,6 +96,10 @@ class MainActivity : Activity() {
         page.loadUrl(ENTRY)
     }
     inner class Bridge {
+        @JavascriptInterface fun practiceProgress(key: String, payload: String): String = try {
+            obj("result" to classroom.practiceProgress(key,payload),"error" to null).toString()
+        } catch (error: Exception) { obj("result" to null,"error" to errorCode(error)).toString() }
+
         @JavascriptInterface fun postMessage(raw: String) {
             if (raw.length > 1024*1024) return
             worker.execute {
@@ -93,6 +114,7 @@ class MainActivity : Activity() {
                     } else {
                         val result: Any = when (op) {
                             "classroom" -> {
+                                if (pauseNeedsRetry) { classroom.pause(); pauseNeedsRetry = false }
                                 val method = message.getString("method"); val path = message.getString("path")
                                 if (!foreground && (path == "/games/heartbeat" || (path == "/sessions" && JSONObject(message.getString("payload")).has("gameId")))) fail("GAME_PAUSED")
                                 when (path) { "/curriculum" -> data("curriculum"); "/learning-audio" -> data("learning-audio"); "/practice-packs" -> data("practice-packs"); else -> classroom.request(method,path,JSONObject(message.optString("payload","{}"))) }
@@ -112,12 +134,13 @@ class MainActivity : Activity() {
     private fun errorCode(error: Exception) = if (error is IllegalArgumentException && error.message?.matches(Regex("[A-Z][A-Z0-9_]+")) == true) error.message!! else "ANDROID_OPERATION_FAILED"
     private fun reply(id: String, result: Any?, error: String? = null) {
         val response = obj("requestId" to id, "result" to result, "error" to error)
-        runOnUiThread { if (::page.isInitialized && !isDestroyed) page.evaluateJavascript("window.__lovePinyinAndroidReply?.(${response});",null) }
+        runOnUiThread { if (activeFileId == id) activeFileId = null; if (::page.isInitialized && !isDestroyed) page.evaluateJavascript("window.__lovePinyinAndroidReply?.(${response});",null) }
     }
     private fun uiOperation(id: String, op: String, message: JSONObject) {
         when (op) {
             "backupExport", "backupImport" -> {
-                if (pendingFile != null) fail("ANDROID_FILE_BUSY")
+                if (activeFileId != null) fail("ANDROID_FILE_BUSY")
+                activeFileId = id
                 pauseMedia(); worker.execute {
                     try {
                         classroom.pause()
@@ -151,13 +174,13 @@ class MainActivity : Activity() {
                 player!!.start(); reply(id,mediaState())
             }
             "pauseLesson" -> { if (message.optInt("id") == playbackId) pauseMedia(); reply(id,mediaState()) }
-            "seekLesson" -> { if (message.getInt("id") != playbackId) fail("ANDROID_AUDIO_UNAVAILABLE"); val seconds = message.getDouble("seconds"); if (!seconds.isFinite() || seconds < 0 || seconds*1000 > (player?.duration ?: 0)) fail("ANDROID_AUDIO_UNAVAILABLE"); player?.seekTo((seconds*1000).toLong(),MediaPlayer.SEEK_CLOSEST); reply(id,mediaState()) }
+            "seekLesson" -> { if (message.getInt("id") != playbackId) fail("ANDROID_AUDIO_UNAVAILABLE"); val seconds = message.getDouble("seconds"); if (!seconds.isFinite() || seconds < 0 || seconds*1000 > (player?.duration ?: 0)) fail("ANDROID_AUDIO_UNAVAILABLE"); val activePlayer = player ?: fail("ANDROID_AUDIO_UNAVAILABLE"); activePlayer.setOnSeekCompleteListener { it.setOnSeekCompleteListener(null); reply(id,mediaState()) }; activePlayer.seekTo((seconds*1000).toLong(),MediaPlayer.SEEK_CLOSEST) }
             "lessonState" -> reply(id,if (message.optInt("id") == playbackId) mediaState() else obj("playing" to false,"position" to 0,"duration" to 0))
         }
     }
     private fun mediaState() = obj("playing" to (player?.isPlaying ?: false), "position" to ((player?.currentPosition ?: 0)/1000.0), "duration" to ((player?.duration ?: 0)/1000.0))
     private fun pauseMedia() { if (player?.isPlaying == true) player?.pause() }
-    private fun interrupt() { pauseMedia(); if (::page.isInitialized) page.evaluateJavascript("window.dispatchEvent(new Event('lp-native-audio-interrupted'));",null); if (::classroom.isInitialized) worker.execute { try { classroom.pause() } catch (_: Exception) { /* Next API reports the storage error; never reset the archive. */ } } }
+    private fun interrupt() { pauseMedia(); if (::page.isInitialized) page.evaluateJavascript("window.dispatchEvent(new Event('lp-native-audio-interrupted'));",null); if (::classroom.isInitialized) worker.execute { try { classroom.pause(); pauseNeedsRetry = false } catch (_: Exception) { pauseNeedsRetry = true } } }
     @Deprecated("Android activity result compatibility")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode,resultCode,data)
@@ -190,6 +213,6 @@ class MainActivity : Activity() {
     private fun failure() = WebResourceResponse("text/plain", "UTF-8", 404, "Not Found", emptyMap(), ByteArrayInputStream("Offline resource unavailable".toByteArray()))
     override fun onPause() { foreground=false; interrupt(); if (::page.isInitialized) { page.onPause(); page.pauseTimers() }; super.onPause() }
     override fun onResume() { super.onResume(); foreground=true; if (::page.isInitialized) { page.onResume(); page.resumeTimers() } }
-    override fun onDestroy() { player?.release(); audioFocus?.let { (getSystemService(AUDIO_SERVICE) as AudioManager).abandonAudioFocusRequest(it) }; if (::page.isInitialized) { page.removeJavascriptInterface("LovePinyinAndroid"); page.destroy() }; worker.shutdown(); super.onDestroy() }
-    companion object { const val HOST="app.lovepinyin.invalid"; const val ENTRY="https://app.lovepinyin.invalid/" }
+    override fun onDestroy() { player?.release(); audioFocus?.let { (getSystemService(AUDIO_SERVICE) as AudioManager).abandonAudioFocusRequest(it) }; if (::page.isInitialized) { page.removeJavascriptInterface("LovePinyinAndroid"); page.destroy() }; if (::classroom.isInitialized) worker.execute { classroom.close() }; worker.shutdown(); super.onDestroy() }
+    companion object { private var storageProfileInitialized = false; private var processVerification: String? = null; const val HOST="app.lovepinyin.invalid"; const val ENTRY="https://app.lovepinyin.invalid/" }
 }

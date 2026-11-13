@@ -1,25 +1,25 @@
-# Android 离线应用
+# Android 独立离线版
 
-独立工作区按项目 agent harness 开发。固定 AGP 9.1.1、Gradle 9.3.1、JDK17、SDK36.1，最低 Android 8/API26；不包含网络或麦克风权限，无第三方 Android 运行时依赖。来源与许可见 Android harness；随包声音和字体保留原许可。
+Android 8.0（API 26）以上。固定工具链与授权流程见 [Android harness](../../docs/engineering/android-agent-harness.md)，实测范围见 [验收记录](../../docs/engineering/android-product-acceptance.md)。
 
 ```sh
-uv sync --locked
-npm ci
 ./deploy/android/prepare.sh
-./deploy/android/build.sh
+./deploy/android/build.sh --offline
+ANDROID_SERIAL=设备序列号 ./deploy/android/test-contracts.sh
 ```
 
-资源准备复用既有离线资源校验，打包新版素材、14课、词语和每日练习、游戏及声音，不携带家庭数据库。当前构建仍需既有本机已准备声音源；资源目录和调试签名不进 Git。APK 在 `app/build/outputs/apk/debug/app-debug.apk`；构建产物不是正式发行包。
+产物：`deploy/android/app/build/outputs/apk/debug/app-debug.apk`。这是本机签名的侧载构建，不是应用商店发布包。首次构建需按固定 Wrapper/插件版本联网补齐缓存，后续可离线构建。不要删除调试签名密钥，否则后续不能直接覆盖安装；密钥不进仓库。
 
-本机 SQLite 位于 App 私有数据库目录；卸载会清除，请先在家长管理导出 Android 学习备份。备份仅支持同内容版本的 Android v1 格式，暂不支持 Web/iOS 互导。识别暂不可用，听示范后人工确认。
+安装后课程、声音、练习、游戏与 SQLite 记录均在设备本机，无需连接 Mac 或网络。无 INTERNET、麦克风权限，无遥测。语音识别不可用时使用听读和人工确认，不生成识别分数。
 
-无依赖的原生回归 runner 使用隔离数据库：
+家长管理可以通过系统文件选择器导出和恢复 Android v1 备份。恢复前预览并确认，要求内容版本一致；不支持与 Web/iOS 备份互导。**卸载 Android 应用会删除其私有学习记录，卸载前请导出备份；覆盖更新保留记录。**
+
+真机自动验收使用 debug 专属 `verificationId` UUID 隔离 SQLite 与 WebView 数据，绝不清空家庭档案：
 
 ```sh
-./deploy/android/build.sh :app:assembleDebugAndroidTest
-adb install --no-streaming -r deploy/android/app/build/outputs/apk/debug/app-debug.apk
-adb install --no-streaming -r deploy/android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-adb shell am instrument -w org.lovepinyin.android.test/org.lovepinyin.android.ContractInstrumentation
+adb -s "$ANDROID_SERIAL" shell am force-stop org.lovepinyin.android
+adb -s "$ANDROID_SERIAL" shell am start -n org.lovepinyin.android/.MainActivity --es verificationId 随机UUID
+ANDROID_SERIAL=设备序列号 node deploy/android/verify-device.mjs games
 ```
 
-安装系统确认由用户完成。自动回归不代替真实声音、触摸、文件选择、中断及家庭试用验收。
+`verify-device.mjs` 通过调试 WebView 操作实际手机，截图来自 ADB；不是桌面手机尺寸模拟。设备操作必须串行。`reading`、`games`、`audio` 分别验证声音与阅读、四种完整游戏、长录音定位与后台中断；系统文件选择器需继续在真实设备上完成。

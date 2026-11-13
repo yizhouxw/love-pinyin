@@ -98,6 +98,7 @@ export function useGameClock(enabled: boolean, stopVoice: () => void) {
     const interrupted = () => pause('GAME_PAUSED');
     document.addEventListener('visibilitychange', visible);
     window.addEventListener('lp-ios-audio-interrupted', interrupted);
+    window.addEventListener('lp-native-audio-interrupted', interrupted);
     return () => {
       epoch.current += 1;
       request.current?.abort();
@@ -105,6 +106,7 @@ export function useGameClock(enabled: boolean, stopVoice: () => void) {
       window.clearInterval(check);
       document.removeEventListener('visibilitychange', visible);
       window.removeEventListener('lp-ios-audio-interrupted', interrupted);
+      window.removeEventListener('lp-native-audio-interrupted', interrupted);
       if (isNativeApp()) void api('/games/pause', { method: 'POST' }).catch(() => undefined);
     };
   }, [enabled, pause, resume]);

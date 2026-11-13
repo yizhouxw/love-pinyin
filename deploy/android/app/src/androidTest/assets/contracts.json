@@ -1,0 +1,5232 @@
+{
+  "mastery": [
+    {
+      "records": [],
+      "required": [],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [],
+      "required": [],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [],
+      "required": [],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [],
+      "required": [],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "not-started",
+        "sampleSize": 0,
+        "correctCount": 0,
+        "accuracy": null,
+        "coveredModes": [],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 4,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 4,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 4,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 3,
+        "accuracy": 0.75,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 3,
+        "accuracy": 0.75,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 3,
+        "accuracy": 0.75,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 3,
+        "accuracy": 0.75,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 3,
+        "accuracy": 0.75,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 3,
+        "accuracy": 0.75,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 2,
+        "accuracy": 0.5,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 2,
+        "accuracy": 0.5,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000003
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 4,
+        "correctCount": 2,
+        "accuracy": 0.5,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 5,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "mastered",
+        "sampleSize": 5,
+        "correctCount": 5,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 5,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 4,
+        "accuracy": 0.8,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "mastered",
+        "sampleSize": 5,
+        "correctCount": 4,
+        "accuracy": 0.8,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 4,
+        "accuracy": 0.8,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 4,
+        "accuracy": 0.8,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 4,
+        "accuracy": 0.8,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 4,
+        "accuracy": 0.8,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 3,
+        "accuracy": 0.6,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 3,
+        "accuracy": 0.6,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000004
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 5,
+        "correctCount": 3,
+        "accuracy": 0.6,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 8,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "mastered",
+        "sampleSize": 8,
+        "correctCount": 8,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 8,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "mastered",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 6,
+        "accuracy": 0.75,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 6,
+        "accuracy": 0.75,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000007
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 6,
+        "accuracy": 0.75,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 8,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "mastered",
+        "sampleSize": 8,
+        "correctCount": 8,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 8,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 8,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "mastered",
+        "sampleSize": 8,
+        "correctCount": 8,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 8,
+        "accuracy": 1.0,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": [],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": ["tone-choice", "symbol-choice"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": ["symbol-choice", "tone-choice"]
+      }
+    },
+    {
+      "records": [
+        {
+          "id": "event-00",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000000
+        },
+        {
+          "id": "event-01",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000001
+        },
+        {
+          "id": "event-02",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000002
+        },
+        {
+          "id": "event-03",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000003
+        },
+        {
+          "id": "event-04",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000004
+        },
+        {
+          "id": "event-05",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000005
+        },
+        {
+          "id": "event-06",
+          "mode": "tone-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000006
+        },
+        {
+          "id": "event-07",
+          "mode": "symbol-choice",
+          "firstCorrect": true,
+          "credit": true,
+          "at": 1800000007
+        },
+        {
+          "id": "event-08",
+          "mode": "tone-choice",
+          "firstCorrect": false,
+          "credit": false,
+          "at": 1800000008
+        },
+        {
+          "id": "event-09",
+          "mode": "symbol-choice",
+          "firstCorrect": false,
+          "credit": true,
+          "at": 1800000009
+        }
+      ],
+      "required": ["read-aloud"],
+      "expected": {
+        "status": "practicing",
+        "sampleSize": 8,
+        "correctCount": 7,
+        "accuracy": 0.875,
+        "coveredModes": ["symbol-choice", "tone-choice"],
+        "requiredModes": []
+      }
+    }
+  ],
+  "clocks": [
+    {
+      "state": {
+        "version": 1,
+        "days": {},
+        "runSeconds": 0,
+        "accountedAt": 0,
+        "leaseUntil": 0
+      },
+      "at": 1794585596.5,
+      "session": 1,
+      "daily": 2,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {},
+        "runSeconds": 0,
+        "accountedAt": 1794585596.5,
+        "leaseUntil": 1794585608.5
+      },
+      "expected": {
+        "day": "2026-11-13",
+        "dailySeconds": 0,
+        "sessionSeconds": 0,
+        "remainingSeconds": 60,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 2
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {},
+        "runSeconds": 0,
+        "accountedAt": 1794585596.5,
+        "leaseUntil": 1794585608.5
+      },
+      "at": 1794585604.0,
+      "session": 1,
+      "daily": 2,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-13": 3.5,
+          "2026-11-14": 4.0
+        },
+        "runSeconds": 7.5,
+        "accountedAt": 1794585604.0,
+        "leaseUntil": 1794585616.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 4.0,
+        "sessionSeconds": 7.5,
+        "remainingSeconds": 52.5,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 2
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-13": 3.5,
+          "2026-11-14": 4.0
+        },
+        "runSeconds": 7.5,
+        "accountedAt": 1794585604.0,
+        "leaseUntil": 1794585616.0
+      },
+      "at": 1794585607.25,
+      "session": 1,
+      "daily": 2,
+      "action": "pause",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-13": 3.5,
+          "2026-11-14": 7.25
+        },
+        "runSeconds": 10.75,
+        "accountedAt": 1794585607.25,
+        "leaseUntil": 1794585607.25
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 7.25,
+        "sessionSeconds": 10.75,
+        "remainingSeconds": 49.25,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 2
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-13": 3.5,
+          "2026-11-14": 7.25
+        },
+        "runSeconds": 10.75,
+        "accountedAt": 1794585607.25,
+        "leaseUntil": 1794585607.25
+      },
+      "at": 1794585607.25,
+      "session": 1,
+      "daily": 2,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-13": 3.5,
+          "2026-11-14": 7.25
+        },
+        "runSeconds": 10.75,
+        "accountedAt": 1794585607.25,
+        "leaseUntil": 1794585619.25
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 7.25,
+        "sessionSeconds": 10.75,
+        "remainingSeconds": 49.25,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 2
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-13": 3.5,
+          "2026-11-14": 7.25
+        },
+        "runSeconds": 10.75,
+        "accountedAt": 1794585607.25,
+        "leaseUntil": 1794585619.25
+      },
+      "at": 1794585700.0,
+      "session": 1,
+      "daily": 2,
+      "action": "status",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-13": 3.5,
+          "2026-11-14": 19.25
+        },
+        "runSeconds": 22.75,
+        "accountedAt": 1794585700.0,
+        "leaseUntil": 1794585619.25
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 19.25,
+        "sessionSeconds": 22.75,
+        "remainingSeconds": 37.25,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 2
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-13": 3.5,
+          "2026-11-14": 19.25
+        },
+        "runSeconds": 22.75,
+        "accountedAt": 1794585700.0,
+        "leaseUntil": 1794585619.25
+      },
+      "at": 1794585680.0,
+      "session": 1,
+      "daily": 2,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-13": 3.5,
+          "2026-11-14": 19.25
+        },
+        "runSeconds": 22.75,
+        "accountedAt": 1794585700.0,
+        "leaseUntil": 1794585619.25
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 19.25,
+        "sessionSeconds": 22.75,
+        "remainingSeconds": 37.25,
+        "reason": "GAME_CLOCK_ROLLBACK",
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 2
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {},
+        "runSeconds": 0,
+        "accountedAt": 0,
+        "leaseUntil": 0
+      },
+      "at": 1794585600.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {},
+        "runSeconds": 0,
+        "accountedAt": 1794585600.0,
+        "leaseUntil": 1794585612.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 0,
+        "sessionSeconds": 0,
+        "remainingSeconds": 60,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {},
+        "runSeconds": 0,
+        "accountedAt": 1794585600.0,
+        "leaseUntil": 1794585612.0
+      },
+      "at": 1794585604.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 4.0
+        },
+        "runSeconds": 4.0,
+        "accountedAt": 1794585604.0,
+        "leaseUntil": 1794585616.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 4.0,
+        "sessionSeconds": 4.0,
+        "remainingSeconds": 56.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 4.0
+        },
+        "runSeconds": 4.0,
+        "accountedAt": 1794585604.0,
+        "leaseUntil": 1794585616.0
+      },
+      "at": 1794585608.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 8.0
+        },
+        "runSeconds": 8.0,
+        "accountedAt": 1794585608.0,
+        "leaseUntil": 1794585620.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 8.0,
+        "sessionSeconds": 8.0,
+        "remainingSeconds": 52.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 8.0
+        },
+        "runSeconds": 8.0,
+        "accountedAt": 1794585608.0,
+        "leaseUntil": 1794585620.0
+      },
+      "at": 1794585612.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 12.0
+        },
+        "runSeconds": 12.0,
+        "accountedAt": 1794585612.0,
+        "leaseUntil": 1794585624.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 12.0,
+        "sessionSeconds": 12.0,
+        "remainingSeconds": 48.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 12.0
+        },
+        "runSeconds": 12.0,
+        "accountedAt": 1794585612.0,
+        "leaseUntil": 1794585624.0
+      },
+      "at": 1794585616.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 16.0
+        },
+        "runSeconds": 16.0,
+        "accountedAt": 1794585616.0,
+        "leaseUntil": 1794585628.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 16.0,
+        "sessionSeconds": 16.0,
+        "remainingSeconds": 44.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 16.0
+        },
+        "runSeconds": 16.0,
+        "accountedAt": 1794585616.0,
+        "leaseUntil": 1794585628.0
+      },
+      "at": 1794585620.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 20.0
+        },
+        "runSeconds": 20.0,
+        "accountedAt": 1794585620.0,
+        "leaseUntil": 1794585632.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 20.0,
+        "sessionSeconds": 20.0,
+        "remainingSeconds": 40.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 20.0
+        },
+        "runSeconds": 20.0,
+        "accountedAt": 1794585620.0,
+        "leaseUntil": 1794585632.0
+      },
+      "at": 1794585624.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 24.0
+        },
+        "runSeconds": 24.0,
+        "accountedAt": 1794585624.0,
+        "leaseUntil": 1794585636.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 24.0,
+        "sessionSeconds": 24.0,
+        "remainingSeconds": 36.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 24.0
+        },
+        "runSeconds": 24.0,
+        "accountedAt": 1794585624.0,
+        "leaseUntil": 1794585636.0
+      },
+      "at": 1794585628.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 28.0
+        },
+        "runSeconds": 28.0,
+        "accountedAt": 1794585628.0,
+        "leaseUntil": 1794585640.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 28.0,
+        "sessionSeconds": 28.0,
+        "remainingSeconds": 32.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 28.0
+        },
+        "runSeconds": 28.0,
+        "accountedAt": 1794585628.0,
+        "leaseUntil": 1794585640.0
+      },
+      "at": 1794585632.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 32.0
+        },
+        "runSeconds": 32.0,
+        "accountedAt": 1794585632.0,
+        "leaseUntil": 1794585644.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 32.0,
+        "sessionSeconds": 32.0,
+        "remainingSeconds": 28.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 32.0
+        },
+        "runSeconds": 32.0,
+        "accountedAt": 1794585632.0,
+        "leaseUntil": 1794585644.0
+      },
+      "at": 1794585636.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 36.0
+        },
+        "runSeconds": 36.0,
+        "accountedAt": 1794585636.0,
+        "leaseUntil": 1794585648.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 36.0,
+        "sessionSeconds": 36.0,
+        "remainingSeconds": 24.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 36.0
+        },
+        "runSeconds": 36.0,
+        "accountedAt": 1794585636.0,
+        "leaseUntil": 1794585648.0
+      },
+      "at": 1794585640.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 40.0
+        },
+        "runSeconds": 40.0,
+        "accountedAt": 1794585640.0,
+        "leaseUntil": 1794585652.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 40.0,
+        "sessionSeconds": 40.0,
+        "remainingSeconds": 20.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 40.0
+        },
+        "runSeconds": 40.0,
+        "accountedAt": 1794585640.0,
+        "leaseUntil": 1794585652.0
+      },
+      "at": 1794585644.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 44.0
+        },
+        "runSeconds": 44.0,
+        "accountedAt": 1794585644.0,
+        "leaseUntil": 1794585656.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 44.0,
+        "sessionSeconds": 44.0,
+        "remainingSeconds": 16.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 44.0
+        },
+        "runSeconds": 44.0,
+        "accountedAt": 1794585644.0,
+        "leaseUntil": 1794585656.0
+      },
+      "at": 1794585648.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 48.0
+        },
+        "runSeconds": 48.0,
+        "accountedAt": 1794585648.0,
+        "leaseUntil": 1794585660.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 48.0,
+        "sessionSeconds": 48.0,
+        "remainingSeconds": 12.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 48.0
+        },
+        "runSeconds": 48.0,
+        "accountedAt": 1794585648.0,
+        "leaseUntil": 1794585660.0
+      },
+      "at": 1794585652.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 52.0
+        },
+        "runSeconds": 52.0,
+        "accountedAt": 1794585652.0,
+        "leaseUntil": 1794585660.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 52.0,
+        "sessionSeconds": 52.0,
+        "remainingSeconds": 8.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 8.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 52.0
+        },
+        "runSeconds": 52.0,
+        "accountedAt": 1794585652.0,
+        "leaseUntil": 1794585660.0
+      },
+      "at": 1794585656.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 56.0
+        },
+        "runSeconds": 56.0,
+        "accountedAt": 1794585656.0,
+        "leaseUntil": 1794585660.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 56.0,
+        "sessionSeconds": 56.0,
+        "remainingSeconds": 4.0,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 4.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 56.0
+        },
+        "runSeconds": 56.0,
+        "accountedAt": 1794585656.0,
+        "leaseUntil": 1794585660.0
+      },
+      "at": 1794585660.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 60.0,
+        "accountedAt": 1794585660.0,
+        "leaseUntil": 1794585660.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 60.0,
+        "sessionSeconds": 60.0,
+        "remainingSeconds": 0,
+        "reason": "GAME_DAILY_LIMIT",
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 60.0,
+        "accountedAt": 1794585660.0,
+        "leaseUntil": 1794585660.0
+      },
+      "at": 1794585664.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 60.0,
+        "accountedAt": 1794585664.0,
+        "leaseUntil": 1794585660.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 60.0,
+        "sessionSeconds": 60.0,
+        "remainingSeconds": 0,
+        "reason": "GAME_DAILY_LIMIT",
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 60.0,
+        "accountedAt": 1794585664.0,
+        "leaseUntil": 1794585660.0
+      },
+      "at": 1794586260.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 0,
+        "accountedAt": 1794586260.0,
+        "leaseUntil": 1794585660.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 60.0,
+        "sessionSeconds": 0,
+        "remainingSeconds": 0,
+        "reason": "GAME_DAILY_LIMIT",
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 0,
+        "accountedAt": 1794586260.0,
+        "leaseUntil": 1794585660.0
+      },
+      "at": 1794586264.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 0,
+        "accountedAt": 1794586264.0,
+        "leaseUntil": 1794585660.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 60.0,
+        "sessionSeconds": 0,
+        "remainingSeconds": 0,
+        "reason": "GAME_DAILY_LIMIT",
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 0,
+        "accountedAt": 1794586264.0,
+        "leaseUntil": 1794585660.0
+      },
+      "at": 1794586320.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 0,
+        "accountedAt": 1794586320.0,
+        "leaseUntil": 1794585660.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 60.0,
+        "sessionSeconds": 0,
+        "remainingSeconds": 0,
+        "reason": "GAME_DAILY_LIMIT",
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 0,
+        "accountedAt": 1794586320.0,
+        "leaseUntil": 1794585660.0
+      },
+      "at": 1794586400.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 0,
+        "accountedAt": 1794586400.0,
+        "leaseUntil": 1794585660.0
+      },
+      "expected": {
+        "day": "2026-11-14",
+        "dailySeconds": 60.0,
+        "sessionSeconds": 0,
+        "remainingSeconds": 0,
+        "reason": "GAME_DAILY_LIMIT",
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    },
+    {
+      "state": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 0,
+        "accountedAt": 1794586400.0,
+        "leaseUntil": 1794585660.0
+      },
+      "at": 1794672000.0,
+      "session": 1,
+      "daily": 1,
+      "action": "heartbeat",
+      "expectedState": {
+        "version": 1,
+        "days": {
+          "2026-11-14": 60.0
+        },
+        "runSeconds": 0,
+        "accountedAt": 1794672000.0,
+        "leaseUntil": 1794672012.0
+      },
+      "expected": {
+        "day": "2026-11-15",
+        "dailySeconds": 0,
+        "sessionSeconds": 0,
+        "remainingSeconds": 60,
+        "reason": null,
+        "breakRemainingSeconds": 0,
+        "leaseSeconds": 12.0,
+        "sessionMinutes": 1,
+        "dailyMinutes": 1
+      }
+    }
+  ],
+  "orders": [
+    {
+      "id": "legacy",
+      "options": [
+        {
+          "id": "a",
+          "label": "a"
+        },
+        {
+          "id": "b",
+          "label": "b"
+        },
+        {
+          "id": "c",
+          "label": "c"
+        },
+        {
+          "id": "d",
+          "label": "d"
+        }
+      ],
+      "expected": [
+        {
+          "id": "a",
+          "label": "a"
+        },
+        {
+          "id": "b",
+          "label": "b"
+        },
+        {
+          "id": "c",
+          "label": "c"
+        },
+        {
+          "id": "d",
+          "label": "d"
+        }
+      ]
+    },
+    {
+      "id": "op1_000000000000000000000001",
+      "options": [
+        {
+          "id": "a",
+          "label": "a"
+        },
+        {
+          "id": "b",
+          "label": "b"
+        },
+        {
+          "id": "c",
+          "label": "c"
+        },
+        {
+          "id": "d",
+          "label": "d"
+        }
+      ],
+      "expected": [
+        {
+          "id": "d",
+          "label": "d"
+        },
+        {
+          "id": "c",
+          "label": "c"
+        },
+        {
+          "id": "b",
+          "label": "b"
+        },
+        {
+          "id": "a",
+          "label": "a"
+        }
+      ]
+    },
+    {
+      "id": "op1_abcdef123456789012345678",
+      "options": [
+        {
+          "id": "a",
+          "label": "a"
+        },
+        {
+          "id": "b",
+          "label": "b"
+        },
+        {
+          "id": "c",
+          "label": "c"
+        },
+        {
+          "id": "d",
+          "label": "d"
+        }
+      ],
+      "expected": [
+        {
+          "id": "b",
+          "label": "b"
+        },
+        {
+          "id": "c",
+          "label": "c"
+        },
+        {
+          "id": "a",
+          "label": "a"
+        },
+        {
+          "id": "d",
+          "label": "d"
+        }
+      ]
+    }
+  ],
+  "policy": {
+    "sessionMinutes": 15,
+    "dailyMinutes": 60,
+    "sessionMaxMinutes": 60,
+    "dailyMaxMinutes": 180,
+    "breakSeconds": 600,
+    "leaseSeconds": 12,
+    "heartbeatSeconds": 4,
+    "requestTimeoutSeconds": 6
+  },
+  "games": [
+    {
+      "gameId": "sound",
+      "lessonId": "lesson-01",
+      "count": 7,
+      "selected": ["q-01-01", "q-01-02", "q-01-03", "q-01-50", "q-01-51", "q-01-52", "q-01-53"],
+      "settings": {
+        "version": 1,
+        "level": "gentle",
+        "speed": "slow",
+        "requestedDifficulty": "auto",
+        "requestedSpeed": "auto",
+        "recommendation": {
+          "level": "gentle",
+          "speed": "slow",
+          "sampleSize": 0,
+          "correctCount": 0,
+          "masteredCount": 0
+        }
+      },
+      "route": {
+        "version": 2,
+        "catalogVersion": 1,
+        "level": {
+          "id": "runner-01",
+          "gameId": "sound",
+          "scene": "runner",
+          "number": 1,
+          "title": "林间出发",
+          "subtitle": "草地入口 → 树根小径 → 林间驿站",
+          "voiceId": "ui-level_runner_01",
+          "recommendedDifficulty": "gentle",
+          "themeId": "runner-theme-1",
+          "chapters": [
+            {
+              "id": "chapter-1",
+              "title": "草地入口",
+              "segments": [
+                {
+                  "id": "play-1-1",
+                  "patternId": "runner-route-01"
+                },
+                {
+                  "id": "play-1-2",
+                  "patternId": "runner-route-02"
+                },
+                {
+                  "id": "play-1-3",
+                  "patternId": "runner-route-01"
+                }
+              ]
+            },
+            {
+              "id": "chapter-2",
+              "title": "树根小径",
+              "segments": [
+                {
+                  "id": "play-2-1",
+                  "patternId": "runner-route-02"
+                },
+                {
+                  "id": "play-2-2",
+                  "patternId": "runner-route-04"
+                }
+              ]
+            },
+            {
+              "id": "chapter-3",
+              "title": "林间驿站",
+              "segments": [
+                {
+                  "id": "play-3-1",
+                  "patternId": "runner-route-04"
+                },
+                {
+                  "id": "play-3-2",
+                  "patternId": "runner-route-06"
+                }
+              ]
+            }
+          ]
+        },
+        "patterns": {
+          "runner-route-01": {
+            "id": "runner-route-01",
+            "scene": "runner",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.0,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 85.0,
+                "lane": -1,
+                "kind": "root",
+                "size": 28.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 57.27272727272727,
+                "lane": 0
+              },
+              {
+                "id": "p2",
+                "at": 136.63636363636365,
+                "lane": 2
+              },
+              {
+                "id": "p3",
+                "at": 215.1818181818182,
+                "lane": 0
+              },
+              {
+                "id": "p4",
+                "at": 294.54545454545456,
+                "lane": 2
+              }
+            ],
+            "beats": []
+          },
+          "runner-route-02": {
+            "id": "runner-route-02",
+            "scene": "runner",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.08,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 80.82474226804123,
+                "lane": 1,
+                "kind": "root",
+                "size": 33.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 51.95876288659794,
+                "lane": 1
+              },
+              {
+                "id": "p2",
+                "at": 135.09278350515464,
+                "lane": 3
+              },
+              {
+                "id": "p3",
+                "at": 217.48453608247422,
+                "lane": 1
+              },
+              {
+                "id": "p4",
+                "at": 300.6185567010309,
+                "lane": 3
+              }
+            ],
+            "beats": []
+          },
+          "runner-route-04": {
+            "id": "runner-route-04",
+            "scene": "runner",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.0,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 74.43478260869566,
+                "lane": -1,
+                "kind": "root",
+                "size": 28.0
+              },
+              {
+                "id": "o2",
+                "at": 185.56521739130434,
+                "lane": 0,
+                "kind": "bush",
+                "size": 28.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 43.82608695652174,
+                "lane": 3
+              },
+              {
+                "id": "p2",
+                "at": 132.7304347826087,
+                "lane": 1
+              },
+              {
+                "id": "p3",
+                "at": 221.00869565217394,
+                "lane": 3
+              },
+              {
+                "id": "p4",
+                "at": 309.9130434782609,
+                "lane": 1
+              }
+            ],
+            "beats": []
+          },
+          "runner-route-06": {
+            "id": "runner-route-06",
+            "scene": "runner",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.16,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 69.77443609022556,
+                "lane": 1,
+                "kind": "root",
+                "size": 38.0
+              },
+              {
+                "id": "o2",
+                "at": 190.22556390977445,
+                "lane": 2,
+                "kind": "bush",
+                "size": 38.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 37.89473684210526,
+                "lane": 1
+              },
+              {
+                "id": "p2",
+                "at": 131.00751879699249,
+                "lane": 3
+              },
+              {
+                "id": "p3",
+                "at": 223.57894736842104,
+                "lane": 1
+              },
+              {
+                "id": "p4",
+                "at": 316.69172932330827,
+                "lane": 3
+              }
+            ],
+            "beats": []
+          }
+        },
+        "theme": {
+          "id": "runner-theme-1",
+          "sky": "#d7f0dd",
+          "horizon": "#fcf0cf",
+          "land": "#95bc8f",
+          "accent": "#f2bd6e"
+        },
+        "bindings": [
+          {
+            "segmentId": "play-1-1",
+            "instanceId": "task-0"
+          },
+          {
+            "segmentId": "play-1-2",
+            "instanceId": "task-1"
+          },
+          {
+            "segmentId": "play-1-3",
+            "instanceId": "task-2"
+          },
+          {
+            "segmentId": "play-2-1",
+            "instanceId": "task-3"
+          },
+          {
+            "segmentId": "play-2-2",
+            "instanceId": "task-4"
+          },
+          {
+            "segmentId": "play-3-1",
+            "instanceId": "task-5"
+          },
+          {
+            "segmentId": "play-3-2",
+            "instanceId": "task-6"
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "tone",
+      "lessonId": "lesson-01",
+      "count": 7,
+      "selected": ["q-01-50", "q-01-51", "q-01-52", "q-01-53", "q-01-01", "q-01-02", "q-01-03"],
+      "settings": {
+        "version": 1,
+        "level": "gentle",
+        "speed": "slow",
+        "requestedDifficulty": "auto",
+        "requestedSpeed": "auto",
+        "recommendation": {
+          "level": "gentle",
+          "speed": "slow",
+          "sampleSize": 0,
+          "correctCount": 0,
+          "masteredCount": 0
+        }
+      },
+      "route": {
+        "version": 2,
+        "catalogVersion": 1,
+        "level": {
+          "id": "boat-01",
+          "gameId": "tone",
+          "scene": "boat",
+          "number": 1,
+          "title": "小河启航",
+          "subtitle": "码头出发 → 浅水河湾 → 小桥驿站",
+          "voiceId": "ui-level_boat_01",
+          "recommendedDifficulty": "gentle",
+          "themeId": "boat-theme-1",
+          "chapters": [
+            {
+              "id": "chapter-1",
+              "title": "码头出发",
+              "segments": [
+                {
+                  "id": "play-1-1",
+                  "patternId": "boat-route-01"
+                },
+                {
+                  "id": "play-1-2",
+                  "patternId": "boat-route-02"
+                },
+                {
+                  "id": "play-1-3",
+                  "patternId": "boat-route-01"
+                }
+              ]
+            },
+            {
+              "id": "chapter-2",
+              "title": "浅水河湾",
+              "segments": [
+                {
+                  "id": "play-2-1",
+                  "patternId": "boat-route-02"
+                },
+                {
+                  "id": "play-2-2",
+                  "patternId": "boat-route-04"
+                }
+              ]
+            },
+            {
+              "id": "chapter-3",
+              "title": "小桥驿站",
+              "segments": [
+                {
+                  "id": "play-3-1",
+                  "patternId": "boat-route-04"
+                },
+                {
+                  "id": "play-3-2",
+                  "patternId": "boat-route-06"
+                }
+              ]
+            }
+          ]
+        },
+        "patterns": {
+          "boat-route-01": {
+            "id": "boat-route-01",
+            "scene": "boat",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.0,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 85.0,
+                "lane": 0,
+                "kind": "reef",
+                "size": 28.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 57.27272727272727,
+                "lane": 0
+              },
+              {
+                "id": "p2",
+                "at": 136.63636363636365,
+                "lane": 2
+              },
+              {
+                "id": "p3",
+                "at": 215.1818181818182,
+                "lane": 0
+              },
+              {
+                "id": "p4",
+                "at": 294.54545454545456,
+                "lane": 2
+              }
+            ],
+            "beats": []
+          },
+          "boat-route-02": {
+            "id": "boat-route-02",
+            "scene": "boat",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 8.0,
+            "travelScale": 1.08,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 80.82474226804123,
+                "lane": 1,
+                "kind": "reef",
+                "size": 33.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 51.95876288659794,
+                "lane": 1
+              },
+              {
+                "id": "p2",
+                "at": 135.09278350515464,
+                "lane": 3
+              },
+              {
+                "id": "p3",
+                "at": 217.48453608247422,
+                "lane": 1
+              },
+              {
+                "id": "p4",
+                "at": 300.6185567010309,
+                "lane": 3
+              }
+            ],
+            "beats": []
+          },
+          "boat-route-04": {
+            "id": "boat-route-04",
+            "scene": "boat",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 24.0,
+            "travelScale": 1.0,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 74.43478260869566,
+                "lane": 3,
+                "kind": "reef",
+                "size": 28.0
+              },
+              {
+                "id": "o2",
+                "at": 185.56521739130434,
+                "lane": 0,
+                "kind": "reef",
+                "size": 28.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 43.82608695652174,
+                "lane": 3
+              },
+              {
+                "id": "p2",
+                "at": 132.7304347826087,
+                "lane": 1
+              },
+              {
+                "id": "p3",
+                "at": 221.00869565217394,
+                "lane": 3
+              },
+              {
+                "id": "p4",
+                "at": 309.9130434782609,
+                "lane": 1
+              }
+            ],
+            "beats": []
+          },
+          "boat-route-06": {
+            "id": "boat-route-06",
+            "scene": "boat",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 8.0,
+            "travelScale": 1.16,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 69.77443609022556,
+                "lane": 1,
+                "kind": "reef",
+                "size": 38.0
+              },
+              {
+                "id": "o2",
+                "at": 190.22556390977445,
+                "lane": 2,
+                "kind": "reef",
+                "size": 38.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 37.89473684210526,
+                "lane": 1
+              },
+              {
+                "id": "p2",
+                "at": 131.00751879699249,
+                "lane": 3
+              },
+              {
+                "id": "p3",
+                "at": 223.57894736842104,
+                "lane": 1
+              },
+              {
+                "id": "p4",
+                "at": 316.69172932330827,
+                "lane": 3
+              }
+            ],
+            "beats": []
+          }
+        },
+        "theme": {
+          "id": "boat-theme-1",
+          "sky": "#cfebde",
+          "horizon": "#a0ddd9",
+          "land": "#76ab76",
+          "accent": "#f2bd6e"
+        },
+        "bindings": [
+          {
+            "segmentId": "play-1-1",
+            "instanceId": "task-0"
+          },
+          {
+            "segmentId": "play-1-2",
+            "instanceId": "task-1"
+          },
+          {
+            "segmentId": "play-1-3",
+            "instanceId": "task-2"
+          },
+          {
+            "segmentId": "play-2-1",
+            "instanceId": "task-3"
+          },
+          {
+            "segmentId": "play-2-2",
+            "instanceId": "task-4"
+          },
+          {
+            "segmentId": "play-3-1",
+            "instanceId": "task-5"
+          },
+          {
+            "segmentId": "play-3-2",
+            "instanceId": "task-6"
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "shape",
+      "lessonId": "lesson-01",
+      "count": 7,
+      "selected": ["q-01-01", "q-01-02", "q-01-03", "q-01-50", "q-01-51", "q-01-52", "q-01-53"],
+      "settings": {
+        "version": 1,
+        "level": "gentle",
+        "speed": "slow",
+        "requestedDifficulty": "auto",
+        "requestedSpeed": "auto",
+        "recommendation": {
+          "level": "gentle",
+          "speed": "slow",
+          "sampleSize": 0,
+          "correctCount": 0,
+          "masteredCount": 0
+        }
+      },
+      "route": {
+        "version": 2,
+        "catalogVersion": 1,
+        "level": {
+          "id": "drum-01",
+          "gameId": "shape",
+          "scene": "drum",
+          "number": 1,
+          "title": "鼓岛初演",
+          "subtitle": "热身鼓点 → 海边小舞台 → 小小谢幕",
+          "voiceId": "ui-level_drum_01",
+          "recommendedDifficulty": "gentle",
+          "themeId": "drum-theme-1",
+          "chapters": [
+            {
+              "id": "chapter-1",
+              "title": "热身鼓点",
+              "segments": [
+                {
+                  "id": "play-1-1",
+                  "patternId": "drum-route-01"
+                },
+                {
+                  "id": "play-1-2",
+                  "patternId": "drum-route-02"
+                },
+                {
+                  "id": "play-1-3",
+                  "patternId": "drum-route-01"
+                }
+              ]
+            },
+            {
+              "id": "chapter-2",
+              "title": "海边小舞台",
+              "segments": [
+                {
+                  "id": "play-2-1",
+                  "patternId": "drum-route-02"
+                },
+                {
+                  "id": "play-2-2",
+                  "patternId": "drum-route-04"
+                }
+              ]
+            },
+            {
+              "id": "chapter-3",
+              "title": "小小谢幕",
+              "segments": [
+                {
+                  "id": "play-3-1",
+                  "patternId": "drum-route-04"
+                },
+                {
+                  "id": "play-3-2",
+                  "patternId": "drum-route-06"
+                }
+              ]
+            }
+          ]
+        },
+        "patterns": {
+          "drum-route-01": {
+            "id": "drum-route-01",
+            "scene": "drum",
+            "length": 810.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.0,
+            "obstacles": [],
+            "pickups": [],
+            "beats": [
+              40.563380281690144, 81.12676056338029, 121.69014084507042, 162.25352112676057,
+              202.8169014084507
+            ]
+          },
+          "drum-route-02": {
+            "id": "drum-route-02",
+            "scene": "drum",
+            "length": 810.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.08,
+            "obstacles": [],
+            "pickups": [],
+            "beats": [
+              37.64705882352941, 75.29411764705883, 112.94117647058823, 150.58823529411765,
+              188.23529411764704
+            ]
+          },
+          "drum-route-04": {
+            "id": "drum-route-04",
+            "scene": "drum",
+            "length": 810.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.0,
+            "obstacles": [],
+            "pickups": [],
+            "beats": [
+              32.91428571428571, 65.82857142857142, 98.74285714285715, 131.65714285714284,
+              164.57142857142856
+            ]
+          },
+          "drum-route-06": {
+            "id": "drum-route-06",
+            "scene": "drum",
+            "length": 810.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.16,
+            "obstacles": [],
+            "pickups": [],
+            "beats": [
+              29.238578680203045, 58.47715736040609, 87.71573604060913, 116.95431472081218,
+              146.19289340101523
+            ]
+          }
+        },
+        "theme": {
+          "id": "drum-theme-1",
+          "sky": "#f9d3a0",
+          "horizon": "#ffe4c3",
+          "land": "#81bca9",
+          "accent": "#f2bd6e"
+        },
+        "bindings": [
+          {
+            "segmentId": "play-1-1",
+            "instanceId": "task-0"
+          },
+          {
+            "segmentId": "play-1-2",
+            "instanceId": "task-1"
+          },
+          {
+            "segmentId": "play-1-3",
+            "instanceId": "task-2"
+          },
+          {
+            "segmentId": "play-2-1",
+            "instanceId": "task-3"
+          },
+          {
+            "segmentId": "play-2-2",
+            "instanceId": "task-4"
+          },
+          {
+            "segmentId": "play-3-1",
+            "instanceId": "task-5"
+          },
+          {
+            "segmentId": "play-3-2",
+            "instanceId": "task-6"
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "blend",
+      "lessonId": "lesson-01",
+      "count": 7,
+      "selected": ["q-01-01", "q-01-02", "q-01-03", "q-01-50", "q-01-51", "q-01-52", "q-01-53"],
+      "settings": {
+        "version": 1,
+        "level": "gentle",
+        "speed": "slow",
+        "requestedDifficulty": "auto",
+        "requestedSpeed": "auto",
+        "recommendation": {
+          "level": "gentle",
+          "speed": "slow",
+          "sampleSize": 0,
+          "correctCount": 0,
+          "masteredCount": 0
+        }
+      },
+      "route": {
+        "version": 2,
+        "catalogVersion": 1,
+        "level": {
+          "id": "space-01",
+          "gameId": "blend",
+          "scene": "space",
+          "number": 1,
+          "title": "月球邮局",
+          "subtitle": "地球出港 → 月球航线 → 月面邮局",
+          "voiceId": "ui-level_space_01",
+          "recommendedDifficulty": "gentle",
+          "themeId": "space-theme-1",
+          "chapters": [
+            {
+              "id": "chapter-1",
+              "title": "地球出港",
+              "segments": [
+                {
+                  "id": "play-1-1",
+                  "patternId": "space-route-01"
+                },
+                {
+                  "id": "play-1-2",
+                  "patternId": "space-route-02"
+                },
+                {
+                  "id": "play-1-3",
+                  "patternId": "space-route-01"
+                }
+              ]
+            },
+            {
+              "id": "chapter-2",
+              "title": "月球航线",
+              "segments": [
+                {
+                  "id": "play-2-1",
+                  "patternId": "space-route-02"
+                },
+                {
+                  "id": "play-2-2",
+                  "patternId": "space-route-04"
+                }
+              ]
+            },
+            {
+              "id": "chapter-3",
+              "title": "月面邮局",
+              "segments": [
+                {
+                  "id": "play-3-1",
+                  "patternId": "space-route-04"
+                },
+                {
+                  "id": "play-3-2",
+                  "patternId": "space-route-06"
+                }
+              ]
+            }
+          ]
+        },
+        "patterns": {
+          "space-route-01": {
+            "id": "space-route-01",
+            "scene": "space",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.0,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 85.0,
+                "lane": 0,
+                "kind": "asteroid",
+                "size": 28.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 57.27272727272727,
+                "lane": 0
+              },
+              {
+                "id": "p2",
+                "at": 136.63636363636365,
+                "lane": 2
+              },
+              {
+                "id": "p3",
+                "at": 215.1818181818182,
+                "lane": 0
+              },
+              {
+                "id": "p4",
+                "at": 294.54545454545456,
+                "lane": 2
+              }
+            ],
+            "beats": []
+          },
+          "space-route-02": {
+            "id": "space-route-02",
+            "scene": "space",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.08,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 80.82474226804123,
+                "lane": 1,
+                "kind": "asteroid",
+                "size": 33.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 51.95876288659794,
+                "lane": 1
+              },
+              {
+                "id": "p2",
+                "at": 135.09278350515464,
+                "lane": 3
+              },
+              {
+                "id": "p3",
+                "at": 217.48453608247422,
+                "lane": 1
+              },
+              {
+                "id": "p4",
+                "at": 300.6185567010309,
+                "lane": 3
+              }
+            ],
+            "beats": []
+          },
+          "space-route-04": {
+            "id": "space-route-04",
+            "scene": "space",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.0,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 74.43478260869566,
+                "lane": 3,
+                "kind": "asteroid",
+                "size": 28.0
+              },
+              {
+                "id": "o2",
+                "at": 185.56521739130434,
+                "lane": 0,
+                "kind": "asteroid",
+                "size": 28.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 43.82608695652174,
+                "lane": 3
+              },
+              {
+                "id": "p2",
+                "at": 132.7304347826087,
+                "lane": 1
+              },
+              {
+                "id": "p3",
+                "at": 221.00869565217394,
+                "lane": 3
+              },
+              {
+                "id": "p4",
+                "at": 309.9130434782609,
+                "lane": 1
+              }
+            ],
+            "beats": []
+          },
+          "space-route-06": {
+            "id": "space-route-06",
+            "scene": "space",
+            "length": 400.0,
+            "choiceAt": 360.0,
+            "choiceGap": 150.0,
+            "currentStrength": 0.0,
+            "travelScale": 1.16,
+            "obstacles": [
+              {
+                "id": "o1",
+                "at": 69.77443609022556,
+                "lane": 1,
+                "kind": "asteroid",
+                "size": 38.0
+              },
+              {
+                "id": "o2",
+                "at": 190.22556390977445,
+                "lane": 2,
+                "kind": "asteroid",
+                "size": 38.0
+              }
+            ],
+            "pickups": [
+              {
+                "id": "p1",
+                "at": 37.89473684210526,
+                "lane": 1
+              },
+              {
+                "id": "p2",
+                "at": 131.00751879699249,
+                "lane": 3
+              },
+              {
+                "id": "p3",
+                "at": 223.57894736842104,
+                "lane": 1
+              },
+              {
+                "id": "p4",
+                "at": 316.69172932330827,
+                "lane": 3
+              }
+            ],
+            "beats": []
+          }
+        },
+        "theme": {
+          "id": "space-theme-1",
+          "sky": "#15264f",
+          "horizon": "#424986",
+          "land": "#777db0",
+          "accent": "#f2bd6e"
+        },
+        "bindings": [
+          {
+            "segmentId": "play-1-1",
+            "instanceId": "task-0"
+          },
+          {
+            "segmentId": "play-1-2",
+            "instanceId": "task-1"
+          },
+          {
+            "segmentId": "play-1-3",
+            "instanceId": "task-2"
+          },
+          {
+            "segmentId": "play-2-1",
+            "instanceId": "task-3"
+          },
+          {
+            "segmentId": "play-2-2",
+            "instanceId": "task-4"
+          },
+          {
+            "segmentId": "play-3-1",
+            "instanceId": "task-5"
+          },
+          {
+            "segmentId": "play-3-2",
+            "instanceId": "task-6"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -7,7 +7,6 @@ import org.json.JSONObject
 import java.time.Instant
 import java.time.ZoneId
 import java.util.UUID
-import java.security.MessageDigest
 
 internal fun obj(vararg fields: Pair<String, Any?>) = JSONObject().apply { fields.forEach { put(it.first, it.second ?: JSONObject.NULL) } }
 internal fun JSONArray.rows() = (0 until length()).map { getJSONObject(it) }
@@ -60,12 +59,9 @@ class Classroom(context: Context, private val content: JSONObject, private val n
     private fun current() = state.optJSONObject("current")
     private fun attempts() = state.getJSONArray("attempts").rows()
     private fun mastery(id: String, records: List<JSONObject> = attempts()): JSONObject {
-        val required = knowledge.first { it.getString("id") == id }.getJSONArray("requiredModes").strings().filter { it in modes }.toSet()
-        val window = records.filter { it.getString("knowledgeId") == id && it.getBoolean("credit") && it.getString("mode") in modes }.sortedWith(compareBy({ it.getDouble("at") }, { it.getString("id") })).takeLast(8)
-        val correct = window.filter { it.getBoolean("firstCorrect") }
-        val covered = correct.map { it.getString("mode") }.toSet()
-        val mastered = window.size >= 5 && correct.size * 5 >= window.size * 4 && window.takeLast(2).all { it.getBoolean("firstCorrect") } && required.isNotEmpty() && covered.containsAll(required)
-        return obj("knowledgeId" to id, "status" to if (window.isEmpty()) "not-started" else if (mastered) "mastered" else "practicing", "sampleSize" to window.size, "correctCount" to correct.size, "accuracy" to if (window.isEmpty()) null else correct.size.toDouble()/window.size, "coveredModes" to JSONArray(covered.sorted()), "requiredModes" to JSONArray(required.sorted()), "reviewDue" to false, "reviewDueDate" to null)
+        val required = knowledge.first { it.getString("id") == id }.getJSONArray("requiredModes").strings()
+        return LearningRules.mastery(required, records.filter { it.getString("knowledgeId") == id })
+            .put("knowledgeId", id).put("reviewDue", false).put("reviewDueDate", JSONObject.NULL)
     }
     private fun progress() = obj("revision" to state.getInt("revision"), "selectedLessonId" to state.getString("lessonId"), "completedSessions" to state.getInt("completed"), "attemptCount" to attempts().size, "clockSkewDetected" to skew(), "pendingClockAttempts" to attempts().count { it.getBoolean("clockPending") }, "settings" to obj("soundEnabled" to true, "reducedMotion" to false, "gameSessionMinutes" to sessionMinutes(), "gameDailyMinutes" to dailyMinutes()), "mastery" to JSONArray(knowledge.map { mastery(it.getString("id")) }))
     private fun project(round: JSONObject): JSONObject {
@@ -79,7 +75,7 @@ class Classroom(context: Context, private val content: JSONObject, private val n
         val correct = exercise.getJSONObject("answer").getString("optionId")
         exercise.remove("answer"); exercise.remove("hint"); exercise.remove("reviewStatus")
         val id = "op1_" + UUID.randomUUID().toString().replace("-", "").take(24)
-        val options = exercise.getJSONArray("options").rows().sortedBy { option -> MessageDigest.getInstance("SHA-256").digest("$id:${option.getString("id")}".toByteArray()).joinToString("") { "%02x".format(it) } }
+        val options = LearningRules.order(exercise.getJSONArray("options").rows(), id)
         exercise.put("options", JSONArray(options))
         return obj("instanceId" to id, "exerciseId" to exercise.getString("id"), "knowledgeId" to exercise.getString("primaryKnowledgeId"), "mode" to exercise.getString("type"), "correctOption" to correct, "hintUsed" to false, "explanation" to row.getString("explanation"), "publicExercise" to exercise)
     }
@@ -114,24 +110,9 @@ class Classroom(context: Context, private val content: JSONObject, private val n
         return obj("version" to 2, "catalogVersion" to routes.getInt("version"), "level" to level, "patterns" to patterns, "theme" to routes.getJSONObject("themes").get(level.getString("themeId")), "bindings" to bindings)
     }
     private fun clock(action: String, persist: Boolean = false): JSONObject {
-        val at = now(); val value = copy(state.optJSONObject("gameClock") ?: obj("days" to JSONObject(), "runSeconds" to 0.0, "accountedAt" to 0.0, "leaseUntil" to 0.0))
-        val days = value.getJSONObject("days"); var start = value.getDouble("accountedAt"); val end = minOf(at, value.getDouble("leaseUntil"))
-        var run = value.getDouble("runSeconds") + maxOf(0.0, end-start)
-        while (start < end) {
-            val next = instant(start).atZone(zone).toLocalDate().plusDays(1).atStartOfDay(zone).toEpochSecond().toDouble()
-            val stop = minOf(end, next); val day = date(start)
-            days.put(day, days.optDouble(day, 0.0) + stop-start); start = stop
-        }
-        val accounted = maxOf(at, value.getDouble("accountedAt")); var lease = value.getDouble("leaseUntil")
-        if (at >= lease + policy.getDouble("breakSeconds")) run = 0.0
-        days.keys().asSequence().toList().sorted().dropLast(32).forEach { days.remove(it) }
-        val used = days.optDouble(date(at), 0.0); val left = maxOf(0.0, minOf(sessionMinutes()*60-run, dailyMinutes()*60-used))
-        val reason = when { at < accounted -> "GAME_CLOCK_ROLLBACK"; used >= dailyMinutes()*60 -> "GAME_DAILY_LIMIT"; run >= sessionMinutes()*60 -> "GAME_SESSION_LIMIT"; else -> null }
-        if (action == "heartbeat" && reason == null) lease = at + minOf(policy.getDouble("leaseSeconds"), left)
-        if (action == "pause") lease = minOf(lease, at)
-        value.put("accountedAt", accounted); value.put("leaseUntil", lease); value.put("runSeconds", run)
-        if (persist) update { it.put("gameClock", value) }
-        return obj("day" to date(at), "dailySeconds" to used, "sessionSeconds" to run, "remainingSeconds" to left, "reason" to reason, "breakRemainingSeconds" to if (reason == "GAME_SESSION_LIMIT") maxOf(0.0, lease+policy.getDouble("breakSeconds")-at) else 0.0, "leaseSeconds" to if (reason == null) maxOf(0.0, minOf(lease-at, left)) else 0.0, "sessionMinutes" to sessionMinutes(), "dailyMinutes" to dailyMinutes())
+        val (next, status) = LearningRules.clock(state.optJSONObject("gameClock") ?: LearningRules.emptyClock(), now(), sessionMinutes(), dailyMinutes(), action, policy)
+        if (persist) update { it.put("gameClock", next) }
+        return status
     }
     @Synchronized fun pause() { if (state.optJSONObject("gameClock") != null) clock("pause", true) }
     private fun requireLease(round: JSONObject) {
@@ -252,21 +233,117 @@ class Classroom(context: Context, private val content: JSONObject, private val n
         val saved = backup.getJSONObject("state"); validate(saved); return saved
     }
     private fun validate(saved: JSONObject) {
-        if (saved.optString("contentVersion") != content.getString("version")) fail("ANDROID_STORAGE_VERSION_UNSUPPORTED")
-        if (lessons.none { it.getString("id") == saved.getString("lessonId") } || listOf("revision","completed","roundsSinceBreak").any { saved.getInt(it) < 0 }) fail("ANDROID_STORAGE_INVALID")
-        val rows = saved.getJSONArray("attempts").rows(); if (rows.map { it.getString("id") }.distinct().size != rows.size || rows.any { a -> knowledge.none { it.getString("id") == a.getString("knowledgeId") } || a.getString("mode") !in modes }) fail("ANDROID_STORAGE_INVALID")
-        val finished = saved.getJSONObject("finished")
-        val rounds = finished.keys().asSequence().map { finished.getJSONObject(it) }.toList() + listOfNotNull(saved.optJSONObject("current"))
-        rounds.forEach { round ->
-            if (round.getString("contentVersion") != content.getString("version") || lessons.none { it.getString("id") == round.getString("lessonId") }) fail("ANDROID_STORAGE_INVALID")
-            val tasks = round.getJSONArray("tasks").rows(); val ids = tasks.map { it.getString("instanceId") }
-            if (tasks.isEmpty() || ids.distinct().size != ids.size || round.getJSONObject("results").keys().asSequence().any { it !in ids }) fail("ANDROID_STORAGE_INVALID")
-            tasks.forEach { task -> val q = questions[task.getString("exerciseId")]?.getJSONObject("exercise") ?: fail("ANDROID_STORAGE_INVALID")
-                if (task.getString("correctOption") != q.getJSONObject("answer").getString("optionId") || task.getString("knowledgeId") != q.getString("primaryKnowledgeId") || task.getString("mode") != q.getString("type") || task.getJSONObject("publicExercise").getJSONArray("options").rows().map { it.getString("id") }.toSet() != q.getJSONArray("options").rows().map { it.getString("id") }.toSet()) fail("ANDROID_STORAGE_INVALID") }
+        fun invalid(): Nothing = fail("ANDROID_STORAGE_INVALID")
+        fun integer(value: Any?, min: Int = 0, max: Int = Int.MAX_VALUE): Int {
+            if (value !is Number || value.toDouble() != value.toInt().toDouble() || value.toInt() !in min..max) invalid()
+            return value.toInt()
         }
-        saved.getJSONObject("receipts"); saved.getJSONObject("exposure")
+        fun number(value: Any?, max: Double = 1e12): Double {
+            if (value !is Number || !value.toDouble().isFinite() || value.toDouble() !in 0.0..max) invalid()
+            return value.toDouble()
+        }
+        fun same(a: Any?, b: Any?): Boolean = when {
+            a is JSONObject && b is JSONObject -> a.keys().asSequence().toSet() == b.keys().asSequence().toSet() && a.keys().asSequence().all { same(a.get(it),b.get(it)) }
+            a is JSONArray && b is JSONArray -> a.length() == b.length() && (0 until a.length()).all { same(a.get(it),b.get(it)) }
+            a is Number && b is Number -> a.toDouble() == b.toDouble()
+            else -> a == b
+        }
+        if (saved.optString("contentVersion") != content.getString("version")) fail("ANDROID_STORAGE_VERSION_UNSUPPORTED")
+        if (lessons.none { it.getString("id") == saved.getString("lessonId") }) invalid()
+        listOf("revision","completed","roundsSinceBreak").forEach { integer(saved.get(it)) }
+        if (saved.getInt("roundsSinceBreak") > 2) invalid()
+        if (saved.has("lastObserved")) number(saved.get("lastObserved"))
+        if (saved.has("gameSessionMinutes")) integer(saved.get("gameSessionMinutes"),1,policy.getInt("sessionMaxMinutes"))
+        if (saved.has("gameDailyMinutes")) integer(saved.get("gameDailyMinutes"),1,policy.getInt("dailyMaxMinutes"))
+        val rows = saved.getJSONArray("attempts").rows()
+        val byAttempt = rows.associateBy { it.getString("id") }
+        if (byAttempt.size != rows.size) invalid()
+        val credits = mutableSetOf<String>()
+        rows.forEach { attempt ->
+            val q = questions[attempt.getString("exerciseId")]?.getJSONObject("exercise") ?: invalid()
+            if (attempt.getString("knowledgeId") != q.getString("primaryKnowledgeId") || attempt.getString("mode") != q.getString("type")) invalid()
+            listOf("firstCorrect","credit","clockPending").forEach { if (attempt.get(it) !is Boolean) invalid() }
+            val at = number(attempt.get("at"))
+            if (attempt.getString("day") != date(at)) invalid()
+            if (attempt.getBoolean("clockPending") && attempt.getBoolean("credit")) invalid()
+            if (attempt.getBoolean("credit") && !credits.add("${attempt.getString("exerciseId")}:${attempt.getString("day")}")) invalid()
+            if (!attempt.isNull("gameId") && rules.getJSONArray("games").rows().none { it.getString("id") == attempt.getString("gameId") }) invalid()
+        }
+        val finished = saved.getJSONObject("finished")
+        val rounds = finished.keys().asSequence().map { key -> finished.getJSONObject(key).also { if (it.getString("id") != key) invalid() } }.toList() + listOfNotNull(saved.optJSONObject("current"))
+        if (rounds.map { it.getString("id") }.distinct().size != rounds.size) invalid()
+        val allTasks = mutableMapOf<String,JSONObject>()
+        val resultReceipts = mutableMapOf<String,JSONObject>()
+        rounds.forEach { round ->
+            if (round.getString("contentVersion") != content.getString("version") || lessons.none { it.getString("id") == round.getString("lessonId") }) invalid()
+            Instant.parse(round.getString("startedAt"))
+            val tasks = round.getJSONArray("tasks").rows()
+            val ids = tasks.map { it.getString("instanceId") }
+            if (tasks.isEmpty() || tasks.size > rules.getJSONObject("play").getInt("maxTasks") || ids.distinct().size != ids.size || round.getJSONObject("results").keys().asSequence().any { it !in ids }) invalid()
+            tasks.forEach { task ->
+                val q = copy(questions[task.getString("exerciseId")]?.getJSONObject("exercise") ?: invalid())
+                val correct = q.getJSONObject("answer").getString("optionId")
+                q.remove("answer"); q.remove("hint"); q.remove("reviewStatus")
+                q.put("options",JSONArray(LearningRules.order(q.getJSONArray("options").rows(),task.getString("instanceId"))))
+                if (task.getString("correctOption") != correct || task.getString("knowledgeId") != q.getString("primaryKnowledgeId") || task.getString("mode") != q.getString("type") || !same(task.getJSONObject("publicExercise"),q) || task.get("hintUsed") !is Boolean) invalid()
+                if (allTasks.put(task.getString("instanceId"),task) != null) invalid()
+            }
+            if (round.has("gameId")) {
+                val prefs = round.getJSONObject("gameSettings")
+                if (!same(prefs,settings(prefs.getString("requestedDifficulty"),prefs.getString("requestedSpeed"),prefs.getJSONObject("recommendation")))) invalid()
+                val route = round.getJSONObject("gameRun")
+                if (!same(route,freeze(round.getString("gameId"),route.getJSONObject("level").getString("id"),prefs.getString("level"),tasks))) invalid()
+            }
+            val results = round.getJSONObject("results")
+            results.keys().forEach { id ->
+                val result = results.getJSONObject(id)
+                val task = allTasks[id] ?: invalid()
+                if (result.getString("instanceId") != id) invalid()
+                if (result.optBoolean("skipped")) Instant.parse(result.getString("skippedAt")) else {
+                    val attempt = byAttempt[result.getString("attemptId")] ?: invalid()
+                    val selected = result.getString("answerOptionId")
+                    if (task.getJSONObject("publicExercise").getJSONArray("options").rows().none { it.getString("id") == selected }) invalid()
+                    if (result.getString("correctOptionId") != task.getString("correctOption") || result.getBoolean("correct") != (selected == task.getString("correctOption")) || result.getBoolean("firstTryCorrect") != attempt.getBoolean("firstCorrect") || result.getBoolean("hintUsed") != task.getBoolean("hintUsed") || result.getBoolean("creditedForMastery") != attempt.getBoolean("credit") || result.getBoolean("clockPending") != attempt.getBoolean("clockPending") || attempt.getString("exerciseId") != task.getString("exerciseId")) invalid()
+                    if (resultReceipts.put(result.getString("requestId"),result) != null) invalid()
+                }
+            }
+        }
+        val receipts = saved.getJSONObject("receipts")
+        if (receipts.length() != rows.size || receipts.keys().asSequence().toSet() != resultReceipts.keys) invalid()
+        receipts.keys().forEach { key -> if (!same(receipts.getJSONObject(key),resultReceipts[key])) invalid() }
+        saved.optJSONObject("practiceProgress")?.let { values -> values.keys().forEach { key -> validatePracticeProgress(key, values.get(key)) } }
+        val exposure = saved.getJSONObject("exposure")
+        exposure.keys().forEach { key -> if (key !in questions) invalid(); val item=exposure.getJSONObject(key); integer(item.get("count")); number(item.get("latest")) }
+        saved.optJSONObject("gameClock")?.let { clock ->
+            val days = clock.getJSONObject("days")
+            if (days.length() > 32) invalid()
+            days.keys().forEach { key -> if (java.time.LocalDate.parse(key).toString() != key) invalid(); number(days.get(key),86400.0) }
+            listOf("runSeconds","accountedAt","leaseUntil").forEach { number(clock.get(it)) }
+            if (clock.getDouble("leaseUntil") > clock.getDouble("accountedAt") + policy.getDouble("leaseSeconds")) invalid()
+        }
     }
     @Synchronized fun preview(bytes: ByteArray): Pair<String,Int> { val s = readBackup(bytes); return "Android 学习备份\n${s.getJSONArray("attempts").length()} 条作答，${s.getInt("completed")} 轮练习。\n将替换此设备的学习记录；不会合并。" to state.getInt("revision") }
     @Synchronized fun restore(bytes: ByteArray, revision: Int) { if (state.getInt("revision") != revision) fail("REVISION_CONFLICT"); val saved = readBackup(bytes); saved.optJSONObject("gameClock")?.put("leaseUntil",0); update { next -> next.keys().asSequence().toList().forEach { next.remove(it) }; saved.keys().forEach { next.put(it,saved.get(it)) } } }
+    private fun validatePracticeProgress(key: String, value: Any) {
+        if (key !in setOf("word:original","word:household","daily:original","daily:household")) fail("ANDROID_PROGRESS_INVALID")
+        if (value.toString().length > 262144) fail("ANDROID_PROGRESS_INVALID")
+        if (key.startsWith("word:")) {
+            if (value !is JSONArray || value.length() > 1000) fail("ANDROID_PROGRESS_INVALID")
+            for (i in 0 until value.length()) if (value.get(i) !is String || value.getString(i).length !in 1..120) fail("ANDROID_PROGRESS_INVALID")
+        } else {
+            if (value !is JSONObject || value.length() > 10000) fail("ANDROID_PROGRESS_INVALID")
+            value.keys().forEach { if (it.length !in 1..120 || value.get(it) !in setOf("practiced","fluent","again")) fail("ANDROID_PROGRESS_INVALID") }
+        }
+    }
+    @Synchronized fun practiceProgress(key: String, payload: String): Any {
+        if (key !in setOf("word:original","word:household","daily:original","daily:household")) fail("ANDROID_PROGRESS_INVALID")
+        if (payload.isEmpty()) return state.optJSONObject("practiceProgress")?.opt(key) ?: JSONObject.NULL
+        if (payload.length > 262144) fail("ANDROID_PROGRESS_INVALID")
+        val value = if (key.startsWith("word:")) JSONArray(payload) else JSONObject(payload)
+        validatePracticeProgress(key,value)
+        update { next -> val values = next.optJSONObject("practiceProgress") ?: JSONObject(); values.put(key,value); next.put("practiceProgress",values) }
+        return value
+    }
+    @Synchronized fun close() { database.close() }
     companion object { const val BACKUP_LIMIT = 64*1024*1024 }
 }
