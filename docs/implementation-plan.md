@@ -95,3 +95,5 @@ SPEC-013的DOCKER-05/06补充Windows x86-64宿主的linux/amd64部署及CPU Whis
 2026-11-13按用户复核重写SPEC-017 REDESIGN-01～04：四个游戏由标题重新设计为横向摘果跑跳、二维河湾救援、鼓心/鼓边合奏、轨迹弹射投递；替换运行时物理引擎，保留冻结题单、家庭额度和进度接口。SPEC-022 WORD-16/17及SPEC-012 READ-08改为图文阅读工作区、内层连读跟随和逐字注音，覆盖词卡、听写、示意图、天天练及小卖部。架构见ADR-0042，无新增依赖；真实设备与家庭试用分别记录，不以自动测试证明游戏趣味或教学效果。
 
 本轮实际验收范围、REDESIGN-05 卡住路径与字音对齐证据见[触屏与阅读验收](engineering/touch-redesign-acceptance.md)。
+
+2026-11-14 新增 [SPEC-025](specs/SPEC-025-web-screen-debug.md)：Web 家长高级设置提供真实页面的手机/桌面尺寸调试，修复预览尺寸、焦点恢复和窄屏课堂切换定位；桌面与手机浏览器回归范围见 [验收记录](engineering/web-screen-debug-acceptance.md)，不替代原生或真机验收。

@@ -521,13 +521,16 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
     );
   if (!boot.paired)
     return <PairingPage boot={boot} busy={busy} act={act} refresh={refresh} error={error} />;
-  const advancedSettings = boot.device?.isParent && practicePacks?.household && (
-    <MaterialSettings
-      source={activePracticeSource}
-      busy={busy}
-      onChange={(source) => void act(() => changePracticeSource(source))}
-    />
-  );
+  const advancedSettings = boot.device?.isParent &&
+    (practicePacks?.household || (!isNativeApp() && !isMacApp())) && (
+      <MaterialSettings
+        showMaterials={Boolean(practicePacks?.household)}
+        onDebugClose={() => void act(refresh)}
+        source={activePracticeSource}
+        busy={busy}
+        onChange={(source) => void act(() => changePracticeSource(source))}
+      />
+    );
   if (!practicePacks)
     return (
       <main className="loading">

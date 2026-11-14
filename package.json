@@ -49,7 +49,8 @@
     "test:e2e:soak": "npm run build && playwright test --config config/playwright.soak.config.ts",
     "prepare:daily": "uv run --locked python -m scripts.prepare_daily_reading",
     "prepare:all": "./run.sh --prepare-only",
-    "prepare:reading-timing": "uv run --locked --group voice-build python -m scripts.fetch_tts_model --config content/reading-alignment-build.json --model-dir models/qwen3-aligner && uv run --locked --group voice-build python -m scripts.build_reading_timings"
+    "prepare:reading-timing": "uv run --locked --group voice-build python -m scripts.fetch_tts_model --config content/reading-alignment-build.json --model-dir models/qwen3-aligner && uv run --locked --group voice-build python -m scripts.build_reading_timings",
+    "test:e2e:screens": "npm run build && playwright test --config config/playwright.screen.config.ts"
   },
   "dependencies": {
     "react": "19.3.1",

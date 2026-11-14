@@ -323,3 +323,61 @@
   color: #52616c;
   font-size: 1rem;
 }
+
+.screen-debug {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #f5f1e8;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+.screen-debug header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.screen-debug p {
+  margin: 8px 0;
+}
+.screen-debug-scroll {
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+}
+.screen-debug iframe {
+  display: block;
+  border: 2px solid #615743;
+  background: white;
+  flex-shrink: 0;
+}
+.screen-debug {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  box-sizing: border-box;
+  border: 0;
+}
+.screen-debug iframe {
+  box-sizing: content-box;
+}
+.screen-debug {
+  font-family: inherit;
+  color: #294e3b;
+}
+.screen-debug :is(button, select) {
+  font: inherit;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #b8cbb9;
+  border-radius: 10px;
+  background: #fff;
+  color: #294e3b;
+}
+.screen-debug iframe {
+  margin-inline: auto;
+}

@@ -307,3 +307,14 @@
     min-height: 160px;
   }
 }
+
+@media (max-width: 600px) {
+  .lesson-activities {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--card);
+    padding-block: 8px;
+    scroll-margin-top: 8px;
+  }
+}

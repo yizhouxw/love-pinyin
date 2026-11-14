@@ -417,12 +417,14 @@ test('SHOP-10: manual confirmation requires an explicit action for each item', a
   await guest(page, appUrl);
   await page.getByRole('button', { name: '进入游戏乐园', exact: false }).click();
   await page.getByRole('button', { name: '进入拼音小卖部', exact: false }).click();
-  await expect(page.getByText('人工确认', { exact: true })).toBeVisible();
   expect(await page.evaluate(() => navigator.mediaDevices)).toBeUndefined();
   expect(await page.evaluate(() => typeof window.crypto.randomUUID)).toBe('undefined');
   const goods = page.locator('.shop-product');
   for (let i = 0; i < 6; i++) {
+    const catalog = page.getByRole('button', { name: '继续挑商品', exact: false });
+    if (await catalog.isVisible()) await catalog.click();
     await goods.nth(i).click();
+    await expect(page.getByText('人工确认', { exact: true })).toBeVisible();
     await expect(page.locator('.shop-basket li')).toHaveCount(i);
     await page.getByRole('button', { name: '读完了，加入购物车' }).click();
     await expect(page.locator('.shop-basket li')).toHaveCount(i + 1);

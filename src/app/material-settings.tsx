@@ -1,34 +1,44 @@
+import { isMacApp } from '../platform/mac-app';
+import { ScreenDebug } from './screen-debug';
+import { isNativeApp } from '../platform/ios-app';
 import type { PracticePacks, PracticeSource } from '../domain/practice-packs';
 
 export function MaterialSettings({
   source,
   onChange,
   busy,
+  showMaterials = true,
+  onDebugClose,
 }: {
   source: PracticeSource;
   onChange: (source: PracticeSource) => void;
   busy: boolean;
+  showMaterials?: boolean;
+  onDebugClose: () => void;
 }) {
   return (
     <details className="parent-section material-settings">
       <summary>高级设置</summary>
-      <div className="parent-setting material-setting">
-        <div>
-          <strong>学习素材</strong>
-          <p>影响课堂讲解、标准音和两类天天练。</p>
+      {showMaterials && (
+        <div className="parent-setting material-setting">
+          <div>
+            <strong>学习素材</strong>
+            <p>影响课堂讲解、标准音和两类天天练。</p>
+          </div>
+          <select
+            aria-label="学习素材"
+            value={source}
+            disabled={busy}
+            onChange={(event) =>
+              onChange(event.target.value === 'household' ? 'household' : 'original')
+            }
+          >
+            <option value="original">新版素材</option>
+            <option value="household">旧版家庭素材</option>
+          </select>
         </div>
-        <select
-          aria-label="学习素材"
-          value={source}
-          disabled={busy}
-          onChange={(event) =>
-            onChange(event.target.value === 'household' ? 'household' : 'original')
-          }
-        >
-          <option value="original">新版素材</option>
-          <option value="household">旧版家庭素材</option>
-        </select>
-      </div>
+      )}
+      {!isNativeApp() && !isMacApp() && <ScreenDebug onClose={onDebugClose} />}
     </details>
   );
 }

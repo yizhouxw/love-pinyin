@@ -1,6 +1,6 @@
 import { ContextHelp } from './quick-settings';
 import { CoursePronunciationPractice } from './pronunciation-practice';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { IllustrationCatalog } from '../domain/illustrations';
 import type { AudioRequirement, Knowledge, Lesson, Progress } from '../domain/learning-api';
 import type { WritingCatalog } from '../domain/writing';
@@ -47,6 +47,13 @@ export function LessonDetail({
   onStart: () => void;
 }) {
   const [activity, setActivity] = useState<'listen' | 'write' | 'practice'>('listen');
+  const activityAnchor = useRef<HTMLHeadingElement>(null);
+  const activityChanged = useRef(false);
+  useLayoutEffect(() => {
+    if (activityChanged.current && window.matchMedia('(max-width: 600px)').matches)
+      activityAnchor.current?.scrollIntoView({ block: 'start' });
+    activityChanged.current = false;
+  }, [activity]);
   const courseMedia = useRef<HTMLAudioElement | null>(null);
   const [coursePlaying, setCoursePlaying] = useState(false);
   const [courseError, setCourseError] = useState(false);
@@ -95,7 +102,7 @@ export function LessonDetail({
         ← 返回学习路线
       </button>
       <p className="eyebrow">第 {lesson.order} 课 · 课程知识卡</p>
-      <h2 id={`lesson-heading-${lesson.id}`} tabIndex={-1}>
+      <h2 ref={activityAnchor} id={`lesson-heading-${lesson.id}`} tabIndex={-1}>
         {lesson.title}
       </h2>
       <div className="lesson-activities" role="group" aria-label="选择本课活动">
@@ -111,6 +118,7 @@ export function LessonDetail({
             key={id}
             aria-pressed={activity === id}
             onClick={() => {
+              activityChanged.current = true;
               stopPlayback();
               courseMedia.current?.pause();
               setActivity(id);
