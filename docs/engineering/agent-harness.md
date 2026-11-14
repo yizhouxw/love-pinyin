@@ -10,3 +10,17 @@
 - 报告工作区、分支、提交、验证范围和剩余真机门禁。未完成切片继续开发，不把环境探针或骨架称为产品交付。
 
 Android 工具链与设备授权遵守 [Android harness](android-agent-harness.md)。
+
+## 本机更新后的旧应用与启动索引清理
+
+2026-11-14 用户确认：每次更新本机 App，都必须完成清理及复查。仅替换 `/Applications/爱拼音.app` 或把旧包移到废纸篓，不算清理完成。
+
+1. 更新前按上述共享资源规则确认没有其他任务在构建、安装或使用相关产物。记录本次提交、当前安装路径和待替换副本；新版本启动及本次功能验证通过后，再删除旧版。
+2. 清点安装暂存目录、仓库与各 worktree 的 `build/`、历史打包/回滚目录、项目临时研究构建目录、Xcode `DerivedData`、旧 `.xcarchive` 及废纸篓中的本项目应用副本。除 Mac App 外，也要检查 `LovePinyin.app` 和 `LovePinyinUITests-Runner.app`：iOS 开发包与 UI 测试程序也可能进入 Mac 的应用搜索，显示重复或禁止启动的图标。
+3. 不只按文件名删除。读取候选包的 `Info.plist`，核对本项目 bundle ID：`app.lovepinyin.desktop`、`app.lovepinyin.ios`、`app.lovepinyin.ios.uitests.xctrunner`；结合路径、构建用途和活跃任务确认是否已过时。保留 `/Applications/爱拼音.app` 当前安装版；其他任务仍需使用的产物不得删除。浏览器创建的 Web 快捷应用须单独识别，不能当成同 bundle ID 的旧原生版本删除。
+4. 删除已被替换的应用、失效开发/测试包及旧安装包和对应校验文件；废纸篓中已确认的本项目旧包也要清掉，避免重新索引。不得清空整个废纸篓、整个 `DerivedData` 或整个 Application Support。保留家庭数据库、学习记录、数据库备份、模型、证书、签名材料、源码及验收报告。归档仍有交付用途时保留，并单独处理其启动索引。
+5. 删除前对对应旧路径执行 LaunchServices 的 `lsregister -u`；清理已不存在路径的残留注册，再用 `lsregister -f /Applications/爱拼音.app` 注册当前安装版。工具路径为 `/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister`。只处理核对过的项目条目，不重置全系统应用索引或其他应用设置。
+6. 用 `lsregister -dump` 按 bundle ID 复查，并用 `mdfind` 检查同名应用；不能仅凭文件已删除宣称启动器已清理。若异步索引重新发现旧路径，继续定位、清理并复查。正常交付后，原生桌面应用只应注册当前安装路径；保留的开发归档不应出现在日常应用搜索中。能检查启动器界面时再确认搜索结果；未实际检查界面须如实说明。
+7. 最后启动当前安装版，确认学习档案可读、Web 服务状态正常，记录删除数量、保留项、索引检查结果和未完成项，释放共享资源。纯文档更新无需制造新的应用构建或安装副本；保持当前已验证运行版本即可。
+
+本次经验：重复图标不仅来自旧 Mac 安装包，还来自 iOS 开发/测试产物及废纸篓中的旧应用。删除应用文件与注销启动索引是两个独立步骤，必须分别验收。
