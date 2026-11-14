@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import { test } from '../support/real-server';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
-import { completeRhythm } from '../support/scene-actions';
+import { playScene } from '../support/scene-actions';
 
 test.use({
   selectedPinyinSource: true,
@@ -84,21 +84,14 @@ test('REDESIGN-05 boat: physically hit reef, drag away, hit again and route to c
   expect(result.attempts[0].first_try_correct).toBe(1);
 });
 
-test('REDESIGN-05 drum: wrong rhythm can restart without trapping the task or adding learning errors', async ({
+test('ACTION-02 drum: pinyin collision advances without a separate rhythm gate', async ({
   page,
   appUrl,
 }) => {
   const answer = await enter(page, appUrl, '节奏鼓岛');
-  await page.locator(`button[data-option-id="${answer}"]`).click();
-  const score = page.locator('.rhythm-score');
-  await expect(score).toBeVisible();
-  const first = await score.locator('span').first().innerText();
-  const wrong = first === '●' ? '◎ 哒 · 鼓边' : '● 咚 · 鼓心';
-  await page.getByRole('button', { name: wrong, exact: true }).click();
-  await expect(page.locator('.adventure-canvas')).toHaveAttribute('data-rhythm-index', '0');
-  await expect(page.locator('.scene-nav')).toContainText('任务 1 /');
-  await completeRhythm(page);
+  await playScene(page, answer);
   await expect(page.locator('.scene-nav')).toContainText('任务 2 /', { timeout: 20000 });
+  expect(await page.locator('.rhythm-pads').count()).toBe(0);
   const result = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
   expect(result.attempts).toHaveLength(1);
   expect(result.attempts[0].first_try_correct).toBe(1);

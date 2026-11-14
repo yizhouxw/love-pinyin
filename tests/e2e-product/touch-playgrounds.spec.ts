@@ -56,12 +56,14 @@ for (const game of games.games)
       });
     }
     await page.setViewportSize({ width: 390, height: 844 });
+    await stage.evaluate((el) => el.setAttribute('data-continuity-probe', 'retained'));
     for (let i = 0; i < 3; i++) {
       await expect(page.locator('.scene-nav')).toContainText(`任务 ${i + 1} / 3`);
       const q = curriculum.exercises.find((q) => q.id === session.tasks[i].exercise.id)!;
       await playScene(page, q.answer.optionId!);
       if (i === 0) {
         await expect(page.locator('.scene-nav')).toContainText('任务 2 / 3');
+        await expect(stage).toHaveAttribute('data-continuity-probe', 'retained');
         await page.reload();
         await expect(stage).toBeVisible();
       }
@@ -75,11 +77,10 @@ for (const game of games.games)
     expect(errors).toEqual([]);
   });
 
-test('REDESIGN-04: a short finger pull previews and delivers a parcel; cancel never fires', async ({
+test('ACTION-03: drag and keyboard control the aircraft, space fires a real beam', async ({
   page,
   appUrl,
 }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(appUrl);
   await page.getByRole('button', { name: '在本机生成家长配对码' }).click();
   await page.getByRole('button', { name: '连接家庭' }).click();
@@ -88,49 +89,20 @@ test('REDESIGN-04: a short finger pull previews and delivers a parcel; cancel ne
     (r) => r.url().endsWith('/sessions') && r.request().method() === 'POST',
   );
   await page.getByRole('button', { name: '开始星际投递' }).click();
-  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const session = await (await created).json();
-  const q = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;
-  const options = session.tasks[0].exercise.options as { id: string }[];
-  const index = options.findIndex((o) => o.id === q.answer.optionId);
+  await page.getByRole('button', { name: '▶ 开始游戏', exact: true }).click();
   const stage = page.locator('.adventure-canvas');
   await expect(page.locator('button[data-option-id]').first()).toBeEnabled({ timeout: 20000 });
-  const box = (await stage.boundingBox())!;
-  const start = { x: box.x + box.width * 0.5, y: box.y + box.height * 0.55 };
-  await page.mouse.move(start.x, start.y);
-  await page.mouse.down();
-  await page.mouse.move(start.x + 20, start.y + 20);
-  // A vertical trajectory has zero geometric width but a visible SVG stroke.
-  await expect(stage.locator('polyline')).toHaveAttribute('stroke', '#ffe7a3');
-  expect(
-    await stage
-      .locator('polyline')
-      .evaluate((line) => (line as SVGPolylineElement).getBBox().height),
-  ).toBeGreaterThan(100);
-  await stage.dispatchEvent('pointercancel', { pointerId: 1 });
-  await page.mouse.up();
-  await expect(stage.locator('polyline')).toHaveCount(0);
-  expect(await stage.getAttribute('data-world-hit')).toBe('');
-  const x = 60 + (index * 360) / Math.max(1, options.length - 1),
-    y = 80 + (index % 2) * 38;
-  const vx = (x - 240) / 1.5,
-    vy = (y - 350 - 120 * 1.5 * 1.5) / 1.5;
-  await page.mouse.move(start.x, start.y);
-  await page.mouse.down();
-  await page.mouse.move(
-    start.x - (vx / 3 / 480) * box.width,
-    start.y + ((-250 - vy) / 5 / 400) * box.height,
-    { steps: 8 },
-  );
-  // A vertical trajectory has zero geometric width but a visible SVG stroke.
-  await expect(stage.locator('polyline')).toHaveAttribute('stroke', '#ffe7a3');
-  expect(
-    await stage
-      .locator('polyline')
-      .evaluate((line) => (line as SVGPolylineElement).getBBox().height),
-  ).toBeGreaterThan(100);
-  await page.mouse.up();
+  await page.keyboard.down('ArrowRight');
+  await page.waitForTimeout(180);
+  await page.keyboard.up('ArrowRight');
+  expect(Number(await stage.getAttribute('data-world-x'))).toBeGreaterThan(260);
+  const q = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!;
+  await page.locator(`button[data-option-id="${q.answer.optionId}"]`).click();
+  await stage.focus();
+  await page.keyboard.press('Space');
   await expect(page.locator('.scene-nav')).toContainText('任务 2 /', { timeout: 20000 });
+  await page.screenshot({ path: test.info().outputPath('space-action.png'), fullPage: true });
   const result = await (await page.request.get(`${appUrl}/api/v1/profiles/export`)).json();
   expect(result.attempts).toHaveLength(1);
   expect(result.attempts[0].first_try_correct).toBe(1);

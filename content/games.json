@@ -16,10 +16,10 @@
       "title": "森林跑酷",
       "icon": "🦊",
       "mode": "listen-choice",
-      "description": "跳过树根，摘下听到的拼音果，陪狐狸穿越森林。",
+      "description": "穿越层叠森林，在连续跑道中跳跃收集拼音。",
       "voiceId": "ui-game_sound",
       "scene": "runner",
-      "controls": "点画面跳起来，摘下听到的拼音果。也可以点果树按钮。",
+      "controls": "空格、向上键或点画面跳跃，接住听到的拼音。",
       "modes": ["listen-choice", "tone-choice", "blend-choice"]
     },
     {
@@ -38,10 +38,10 @@
       "title": "节奏鼓岛",
       "icon": "🥁",
       "mode": "listen-choice",
-      "description": "和小岛动物组乐队，选拼音鼓，接着模仿小节奏。",
+      "description": "跟着律动辨认拼音，在节奏轨道上击中目标。",
       "voiceId": "ui-game_shape",
       "scene": "drum",
-      "controls": "先敲听到的拼音鼓，再听示范，用鼓心和鼓边接出小节奏。",
+      "controls": "听拼音，音符到达金线时敲对应轨道。可以等待下一轮。",
       "modes": ["listen-choice", "tone-choice", "blend-choice"]
     },
     {
@@ -49,10 +49,10 @@
       "title": "星际投递",
       "icon": "🚀",
       "mode": "blend-choice",
-      "description": "拉开弹弓，顺着轨迹把包裹送到拼音星球。",
+      "description": "驾驶战机穿越星空，用光束命中拼音目标。",
       "voiceId": "ui-game_blend",
       "scene": "space",
-      "controls": "在画面上向下拉，松手投递。先看轨迹，也可以轻点听到的拼音星球。",
+      "controls": "拖动或方向键驾驶飞机，按住发射或空格击中听到的拼音。",
       "modes": ["blend-choice", "listen-choice", "tone-choice"]
     }
   ],

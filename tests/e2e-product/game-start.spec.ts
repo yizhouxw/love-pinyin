@@ -59,7 +59,7 @@ for (const game of catalog.games) {
         .toBeGreaterThan(distance + 10);
       for (const key of ['Space', 'ArrowUp']) {
         await expect.poll(async () => Number(await stage.getAttribute('data-world-y'))).toBe(330);
-        await stage.focus();
+        await page.evaluate(() => (document.activeElement as HTMLElement)?.blur());
         await page.keyboard.press(key);
         await expect
           .poll(async () => Number(await stage.getAttribute('data-world-y')))

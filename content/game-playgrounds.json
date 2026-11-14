@@ -52,7 +52,8 @@
         "y": 230,
         "radius": 25
       }
-    ]
+    ],
+    "beamSpeed": 620
   },
   "rhythms": {
     "gentle": [
@@ -67,5 +68,12 @@
       [0, 1, 1, 0],
       [1, 0, 0, 1]
     ]
+  },
+  "drum": {
+    "noteSpeed": 120,
+    "spacing": 115,
+    "cycle": 460,
+    "strikeY": 310,
+    "window": 48
   }
 }

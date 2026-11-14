@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 
 final class AdaptiveClassroomTests: XCTestCase {
     @MainActor
@@ -177,6 +178,119 @@ final class AdaptiveClassroomTests: XCTestCase {
         let match = labeled("读音匹配，商品已自动加入购物车", in: app)
         XCTAssertTrue(match.waitForExistence(timeout: 45), app.debugDescription)
         addScreenshot("iPhone-on-device-Qwen-match")
+    }
+
+    @MainActor
+    func testFlightDragOnPhysicalDevice() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
+        XCUIDevice.shared.orientation = .portrait
+        app.launch()
+        let hub = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "进入游戏乐园")).firstMatch
+        XCTAssertTrue(hub.waitForExistence(timeout: 30), app.debugDescription)
+        hub.tap()
+        let start = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "开始星际投递")).firstMatch
+        XCTAssertTrue(start.waitForExistence(timeout: 20))
+        reveal(start, in: app)
+        start.tap()
+        let begin = app.buttons["▶ 开始游戏"]
+        XCTAssertTrue(begin.waitForExistence(timeout: 15))
+        begin.tap()
+        let fire = app.buttons["发射 · 空格"]
+        XCTAssertTrue(fire.waitForExistence(timeout: 15))
+        XCTAssertTrue(waitUntil(fire, predicate: "enabled == true"))
+        let scene = app.otherElements.matching(NSPredicate(format: "label == %@", "星际飞行射击")).firstMatch
+        XCTAssertTrue(scene.waitForExistence(timeout: 15), app.debugDescription)
+        addScreenshot("ACTION-flight-before-drag")
+        scene.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.82)).press(
+            forDuration: 0.1,
+            thenDragTo: scene.coordinate(withNormalizedOffset: CGVector(dx: 0.73, dy: 0.73))
+        )
+        addScreenshot("ACTION-flight-after-drag")
+        assertTouchTarget(fire, within: app)
+        fire.press(forDuration: 1.2)
+        addScreenshot("ACTION-flight-held-fire")
+        app.terminate()
+    }
+
+    @MainActor
+    func testActionGamesOnPhysicalDevice() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        let device = XCUIDevice.shared
+        app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
+        device.orientation = .portrait
+        defer { device.orientation = .portrait }
+        app.launch()
+        let hub = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "进入游戏乐园")).firstMatch
+        XCTAssertTrue(hub.waitForExistence(timeout: 30), app.debugDescription)
+        hub.tap()
+        for (title, prefix) in [("森林跑酷", "摘 "), ("节奏鼓岛", "敲响 "), ("星际投递", "投递到 ")] {
+            let start = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "开始" + title)).firstMatch
+            XCTAssertTrue(start.waitForExistence(timeout: 20), app.debugDescription)
+            reveal(start, in: app)
+            start.tap()
+            let begin = app.buttons["▶ 开始游戏"]
+            XCTAssertTrue(begin.waitForExistence(timeout: 20), app.debugDescription)
+            begin.tap()
+            let listen = app.buttons["听拼音"]
+            XCTAssertTrue(listen.waitForExistence(timeout: 15), app.debugDescription)
+            let choices = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix))
+            XCTAssertTrue(choices.firstMatch.waitForExistence(timeout: 20), app.debugDescription)
+            XCTAssertTrue(waitUntil(choices.firstMatch, predicate: "enabled == true"), app.debugDescription)
+            if title == "森林跑酷" {
+                let jump = app.buttons["跳起来 ↑"]
+                assertTouchTarget(jump, within: app)
+                jump.tap()
+                addScreenshot("ACTION-runner-touch-jump")
+            }
+            // All answers are chosen through visible controls; no answer or physics injection.
+            // The random test profile may record first errors while cycling candidates.
+            for checkpoint in 1...2 {
+                let progress = app.otherElements["关卡完成进度"]
+                for attempt in 0..<160 {
+                    if (Double(progress.value as? String ?? "0") ?? 0) >= Double(checkpoint) { break }
+                    let count = choices.count
+                    if count > 0 {
+                        let lane: Int? = title == "节奏鼓岛" ? visibleDrumLane(in: app, count: count) : attempt % count
+                        if let lane {
+                        let option = choices.element(boundBy: lane)
+                        if option.isEnabled && option.isHittable {
+                            option.tap()
+                            if title == "星际投递" {
+                                let fire = app.buttons["发射 · 空格"]
+                                if fire.isEnabled && fire.isHittable { fire.tap() }
+                            }
+                        }
+                    }
+                    }
+                    Thread.sleep(forTimeInterval: title == "节奏鼓岛" ? 0.12 : (attempt % 2 == 0 ? 0.31 : 0.47))
+                }
+                let advanced = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                    (Double(progress.value as? String ?? "0") ?? 0) >= Double(checkpoint)
+                }, object: nil)
+                XCTAssertEqual(XCTWaiter.wait(for: [advanced], timeout: 15), .completed, app.debugDescription)
+                XCTAssertFalse(begin.exists, "A checkpoint must not restart the scene")
+                addScreenshot("ACTION-" + title + "-checkpoint-\(checkpoint + 1)")
+            }
+            device.orientation = .landscapeLeft
+            waitForRotation(app, landscape: true)
+            addScreenshot("ACTION-" + title + "-landscape")
+            device.orientation = .portrait
+            waitForRotation(app, landscape: false)
+            device.press(.home)
+            app.activate()
+            let resume = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "继续游戏")).firstMatch
+            XCTAssertTrue(resume.waitForExistence(timeout: 20), app.debugDescription)
+            resume.tap()
+            XCTAssertTrue(listen.waitForExistence(timeout: 15), app.debugDescription)
+            let exit = app.buttons.matching(NSPredicate(format: "label ENDSWITH %@", "保存并退出游戏")).firstMatch
+            XCTAssertTrue(exit.waitForExistence(timeout: 15), app.debugDescription)
+            reveal(exit, in: app)
+            exit.tap()
+        }
+        app.terminate()
     }
 
     @MainActor
@@ -392,6 +506,30 @@ final class AdaptiveClassroomTests: XCTestCase {
             return landscape ? frame.width > frame.height : frame.height > frame.width
         }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 12), .completed)
+    }
+
+    // Read actual device pixels to time a visible note approaching the strike line.
+    // No WebView state, answer lookup, clock change or injected action is used.
+    @MainActor
+    private func visibleDrumLane(in app: XCUIApplication, count: Int) -> Int? {
+        let scene = app.otherElements.matching(NSPredicate(format: "label == %@", "拼音节奏轨道")).firstMatch
+        guard scene.exists, let image = XCUIScreen.main.screenshot().image.cgImage else { return nil }
+        let w = image.width, h = image.height
+        var bytes = [UInt8](repeating: 0, count: w * h * 4)
+        guard let context = CGContext(data: &bytes, width: w, height: h,
+            bitsPerComponent: 8, bytesPerRow: w * 4, space: CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+        context.draw(image, in: CGRect(x: 0, y: 0, width: w, height: h))
+        let frame = scene.frame
+        for lane in 0..<count {
+            let x = frame.minX + frame.width * (60 + CGFloat(lane) * 360 / CGFloat(max(1, count - 1)) + 22) / 480
+            let y = frame.minY + frame.height * 260 / 400
+            let px = Int(x * CGFloat(w) / app.frame.width), py = Int(y * CGFloat(h) / app.frame.height)
+            if px < 0 || px >= w || py < 0 || py >= h { continue }
+            let offset = (py * w + px) * 4
+            if bytes[offset] < 160 && bytes[offset + 1] > 170 && bytes[offset + 2] > 170 { return lane }
+        }
+        return nil
     }
 
     @MainActor

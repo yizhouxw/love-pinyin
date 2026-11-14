@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
   clamp,
-  deliveryVelocity,
+  fireBeam,
+  rhythmNote,
   dock,
   jump,
   planet,
@@ -10,8 +11,6 @@ import {
   sailToDock,
   startPlayground,
   stepPlayground,
-  throwParcel,
-  trajectory,
   tree,
   type Playground,
   type PlaygroundState,
@@ -22,6 +21,8 @@ import { GamePercussion } from '../platform/audio/game-percussion';
 import './adventure-stage.css';
 
 type Props = {
+  taskKey: string;
+  running: boolean;
   scene: Playground;
   options: Option[];
   disabled: boolean;
@@ -34,9 +35,7 @@ type Props = {
   index: number;
   highlight?: string;
   done: boolean;
-  rhythmEnabled: boolean;
   onChoose: (i: number) => void;
-  onFinished: () => void;
   onResume: () => void;
   onPause: () => void;
 };
@@ -83,17 +82,60 @@ export function AdventureStage(p: Props) {
   const sent = useRef(false);
   const stage = useRef<HTMLDivElement>(null);
   const pointer = useRef<{ id: number; start: Point; last: Point; moved: boolean } | null>(null);
-  const [aim, setAim] = useState<Point | null>(null);
-  const [rhythmIndex, setRhythmIndex] = useState(0);
-  const [demo, setDemo] = useState<number | null>(null);
-  const [rhythmMessage, setRhythmMessage] = useState('');
-  const [showDemo, setShowDemo] = useState(false);
   const drums = useRef<GamePercussion | null>(null);
-  const rhythm = playgrounds.rhythms[p.difficulty][p.index % 2]!;
+  const held = useRef(new Set<string>());
+  useEffect(() => {
+    sent.current = false;
+    const old = store.read();
+    store.write({ ...old, hit: null, shot: null, chosen: null });
+  }, [p.taskKey, store]);
+  useEffect(() => {
+    const clear = () => held.current.clear();
+    const down = (e: KeyboardEvent) => {
+      if (
+        document.querySelector('dialog[open]') ||
+        (e.target instanceof Element &&
+          e.target.closest('input,select,textarea,[contenteditable=true]'))
+      )
+        return;
+      if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'KeyP'].includes(e.code))
+        return;
+      if (
+        e.code === 'Space' &&
+        e.target instanceof Element &&
+        e.target.closest('button') &&
+        !e.target.closest('.adventure-run-controls,.flight-controls')
+      )
+        return;
+      e.preventDefault();
+      const c = config.current;
+      if (e.code === 'KeyP') {
+        if (!e.repeat) c.onPause();
+        return;
+      }
+      if (!c.running) return;
+      held.current.add(e.code);
+      if (c.scene === 'space' && e.code === 'Space' && !c.disabled && !e.repeat)
+        store.write(fireBeam(store.read()));
+      if (c.scene === 'runner' && ['ArrowUp', 'Space'].includes(e.code) && !e.repeat)
+        store.write(jump(store.read()));
+    };
+    const up = (e: KeyboardEvent) => held.current.delete(e.code);
+    window.addEventListener('keydown', down);
+    window.addEventListener('keyup', up);
+    window.addEventListener('blur', clear);
+    document.addEventListener('visibilitychange', clear);
+    return () => {
+      window.removeEventListener('keydown', down);
+      window.removeEventListener('keyup', up);
+      window.removeEventListener('blur', clear);
+      document.removeEventListener('visibilitychange', clear);
+    };
+  }, [store]);
   useEffect(() => {
     const cancel = () => {
       pointer.current = null;
-      setAim(null);
+
       store.write({ ...store.read(), destination: null, route: [] });
     };
     window.addEventListener('resize', cancel);
@@ -106,19 +148,32 @@ export function AdventureStage(p: Props) {
   }, []);
   useEffect(() => {
     if (p.disabled || p.paused) {
+      held.current.clear();
       pointer.current = null;
       store.write({ ...store.read(), destination: null, route: [] });
     }
   }, [p.disabled, p.paused, store]);
   useEffect(() => {
-    if (p.disabled || p.paused) return;
+    if (!p.running || p.paused) return;
     let raf = 0,
       last = 0;
     const tick = (time: number) => {
       const dt = last ? (time - last) / 1000 : 0;
       last = time;
       if (!document.hidden) {
-        const next = stepPlayground(store.read(), dt, {
+        let current = store.read();
+        if (p.scene === 'space') {
+          const dx = Number(held.current.has('ArrowRight')) - Number(held.current.has('ArrowLeft'));
+          const dy = Number(held.current.has('ArrowDown')) - Number(held.current.has('ArrowUp'));
+          current = {
+            ...current,
+            x: clamp(current.x + dx * dt * 280, 25, 455),
+            y: clamp(current.y + dy * dt * 280, 180, 370),
+          };
+          if (held.current.has('Space') && !p.disabled) current = fireBeam(current);
+        }
+        const next = stepPlayground(current, dt, {
+          interactive: !p.disabled,
           scene: p.scene,
           difficulty: p.difficulty,
           count: p.options.length,
@@ -126,7 +181,7 @@ export function AdventureStage(p: Props) {
           assist: p.assist,
         });
         store.write(next);
-        if (next.hit !== null && !sent.current) {
+        if (!p.disabled && next.hit !== null && !sent.current) {
           sent.current = true;
           config.current.onChoose(next.hit);
         }
@@ -135,41 +190,33 @@ export function AdventureStage(p: Props) {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [p.disabled, p.paused, p.scene, p.options.length, p.speed, p.assist, p.difficulty, store]);
-  useEffect(() => {
-    if (!showDemo || p.paused || !p.rhythmEnabled) return;
-    const beatMilliseconds = Math.max(360, 650 / p.speed);
-    const timers = rhythm.map((beat, i) =>
-      window.setTimeout(
-        () => {
-          setDemo(beat);
-          drums.current?.hit(beat === 1);
-        },
-        400 + i * beatMilliseconds,
-      ),
-    );
-    timers.push(
-      window.setTimeout(
-        () => {
-          setDemo(null);
-          setShowDemo(false);
-          setRhythmMessage('轮到你啦！');
-        },
-        500 + rhythm.length * beatMilliseconds,
-      ),
-    );
-    return () => timers.forEach(window.clearTimeout);
-  }, [showDemo, p.paused, p.rhythmEnabled, p.speed, rhythm]);
+  }, [
+    p.running,
+    p.disabled,
+    p.paused,
+    p.scene,
+    p.options.length,
+    p.speed,
+    p.assist,
+    p.difficulty,
+    store,
+  ]);
   function choose(i: number) {
-    if (p.disabled || p.paused) return;
+    if (p.disabled || p.paused || sent.current) return;
     stage.current?.focus({ preventScroll: true });
     if (p.scene === 'drum') {
+      drums.current?.hit(i % 2 === 1);
+      if (
+        Math.abs(rhythmNote(store.read().time, i) - playgrounds.drum.strikeY) >
+        playgrounds.drum.window
+      )
+        return;
       sent.current = true;
       store.write({ ...store.read(), hit: i });
       p.onChoose(i);
     } else if (p.scene === 'boat') store.write(sailToDock(store.read(), i, p.options.length));
     else if (p.scene === 'space')
-      store.write(throwParcel(store.read(), deliveryVelocity(i, p.options.length), i));
+      store.write({ ...store.read(), x: planet(i, p.options.length).x });
     else {
       const s = store.read();
       const current = tree(s, p.options.length);
@@ -183,19 +230,6 @@ export function AdventureStage(p: Props) {
       );
     }
   }
-  function beat(value: number) {
-    if (!p.done || !p.rhythmEnabled || p.paused || showDemo || rhythmIndex >= rhythm.length) return;
-    drums.current?.hit(value === 1);
-    if (rhythm[rhythmIndex] === value) {
-      const next = rhythmIndex + 1;
-      setRhythmIndex(next);
-      setRhythmMessage(next === rhythm.length ? '合奏完成！' : '继续，慢慢来。');
-      if (next === rhythm.length) p.onFinished();
-    } else {
-      setRhythmIndex(0);
-      setRhythmMessage('再听一遍，从第一下开始。');
-    }
-  }
   function point(e: React.PointerEvent<HTMLDivElement>): Point {
     const rect = e.currentTarget.getBoundingClientRect();
     return {
@@ -203,19 +237,17 @@ export function AdventureStage(p: Props) {
       y: ((e.clientY - rect.top) / rect.height) * 400,
     };
   }
-  function velocity(at: Point): Point {
-    return {
-      x: clamp(((pointer.current?.start.x ?? 240) - at.x) * 3, -400, 400),
-      y: clamp(-250 - (at.y - (pointer.current?.start.y ?? 350)) * 5, -510, -80),
-    };
-  }
   const fruit = tree(world, p.options.length);
-  const canPlay = !p.disabled && !p.paused && !(p.scene === 'space' && world.shot);
+  const firing = world.shot !== null;
+  useEffect(() => {
+    if (firing || world.hit !== null) drums.current?.hit(world.hit === null);
+  }, [firing, world.hit]);
+  const canPlay = !p.disabled && !p.paused;
   const names = {
     runner: '森林跳跃冒险',
     boat: '河湾救援航行',
-    drum: '鼓岛动物乐队',
-    space: '星际包裹弹射',
+    drum: '拼音节奏轨道',
+    space: '星际飞行射击',
   };
   return (
     <div className={`adventure adventure-${p.scene}`}>
@@ -233,34 +265,7 @@ export function AdventureStage(p: Props) {
         data-world-y={world.y}
         data-world-hit={world.hit ?? ''}
         data-motor-misses={world.misses}
-        data-rhythm-index={rhythmIndex}
-        onKeyDown={(e) => {
-          if (e.code === 'Escape' || e.code === 'KeyP') {
-            e.preventDefault();
-            p.onPause();
-            return;
-          }
-          if (e.target instanceof Element && e.target.closest('button')) return;
-          const jumpKey = p.scene === 'runner' && (e.code === 'Space' || e.code === 'ArrowUp');
-          if (jumpKey) {
-            e.preventDefault();
-            if (canPlay && !e.repeat) store.write(jump(store.read()));
-            return;
-          }
-          if (!canPlay) return;
-          if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code))
-            e.preventDefault();
-          if (p.scene === 'boat') {
-            const delta = {
-              ArrowLeft: [-65, 0],
-              ArrowRight: [65, 0],
-              ArrowUp: [0, -65],
-              ArrowDown: [0, 65],
-            }[e.code];
-            if (delta)
-              store.write(sail(store.read(), { x: world.x + delta[0]!, y: world.y + delta[1]! }));
-          }
-        }}
+        data-rhythm-index={0}
         onPointerDown={(e) => {
           if (
             pointer.current ||
@@ -274,9 +279,13 @@ export function AdventureStage(p: Props) {
           pointer.current = { id: e.pointerId, start: at, last: at, moved: false };
           e.currentTarget.setPointerCapture(e.pointerId);
           stage.current?.focus({ preventScroll: true });
-          if (p.scene === 'runner') store.write(jump(store.read()));
+          if (p.scene === 'runner') {
+            drums.current?.hit();
+            store.write(jump(store.read()));
+          }
           if (p.scene === 'boat') store.write(sail(store.read(), at));
-          if (p.scene === 'space') setAim(velocity(at));
+          if (p.scene === 'space')
+            store.write({ ...store.read(), x: clamp(at.x, 25, 455), y: clamp(at.y, 180, 370) });
         }}
         onPointerMove={(e) => {
           const active = pointer.current;
@@ -285,28 +294,27 @@ export function AdventureStage(p: Props) {
           active.last = at;
           if (Math.hypot(at.x - active.start.x, at.y - active.start.y) > 5) active.moved = true;
           if (p.scene === 'boat') store.write(sail(store.read(), at));
-          if (p.scene === 'space') setAim(velocity(at));
+          if (p.scene === 'space')
+            store.write({ ...store.read(), x: clamp(at.x, 25, 455), y: clamp(at.y, 180, 370) });
         }}
         onPointerUp={(e) => {
           const active = pointer.current;
           if (!active || active.id !== e.pointerId) return;
-          const releaseVelocity = velocity(active.last);
+
           pointer.current = null;
-          setAim(null);
-          if (canPlay && p.scene === 'space')
-            store.write(throwParcel(store.read(), releaseVelocity));
+
           if (p.scene === 'boat' && active.moved)
             store.write({ ...store.read(), destination: null, route: [] });
         }}
         onPointerCancel={() => {
           pointer.current = null;
-          setAim(null);
+
           store.write({ ...store.read(), destination: null, route: [] });
         }}
         onLostPointerCapture={() => {
           if (pointer.current) {
             pointer.current = null;
-            setAim(null);
+
             store.write({ ...store.read(), destination: null, route: [] });
           }
         }}
@@ -335,11 +343,31 @@ export function AdventureStage(p: Props) {
                 fill="none"
               />
             </pattern>
+            <linearGradient id="forest-depth" x2="0" y2="1">
+              <stop stopColor="#102e38" />
+              <stop offset=".65" stopColor="#357966" />
+              <stop offset="1" stopColor="#aec480" />
+            </linearGradient>
+            <radialGradient id="nebula">
+              <stop stopColor="#366194" stopOpacity=".6" />
+              <stop offset="1" stopColor="#101a37" stopOpacity="0" />
+            </radialGradient>
           </defs>
           <rect width="480" height="400" fill={`url(#sky-${p.scene})`} />
           {p.scene === 'runner' && (
             <>
-              <circle cx="385" cy="60" r="30" fill="#fff5be" />
+              <rect width="480" height="400" fill="url(#forest-depth)" />
+              <path d="M320 0L110 330H175L400 0Z" fill="#e8f8b4" opacity=".09" />
+              {Array.from({ length: 24 }, (_, i) => (
+                <path
+                  key={i}
+                  d={`M${i * 27 - ((world.distance * 0.12) % 27)} 0v${100 + (i % 5) * 28}`}
+                  stroke="#102f38"
+                  strokeWidth={5 + (i % 3) * 4}
+                  opacity=".45"
+                />
+              ))}
+              <circle cx="385" cy="60" r="30" fill="#fff5be" opacity=".8" />
               <path d="M0 205Q90 75 180 170T480 130V400H0" fill="#7fbea6" />
               <path d="M0 260Q100 150 210 240T480 210V400H0" fill="#47977d" />
               {[0, 1, 2, 3, 4].map((i) => {
@@ -354,19 +382,38 @@ export function AdventureStage(p: Props) {
               })}
               <path d="M0 330Q100 320 200 332T480 330V400H0" fill="#b6cc70" />
               <path d="M0 352h480" stroke="#e4d298" strokeWidth="34" />
-              <g transform={`translate(${fruit.x} 0)`}>
-                <path d="M0 330V210" stroke="#9a7951" strokeWidth="10" />
-                <ellipse cy="205" rx="55" ry="38" fill="#5c9d6b" />
-                <circle cy="251" r="30" fill="#f6c951" />
-                <path d="M0 223q-5-12 8-15" fill="none" stroke="#4d794a" strokeWidth="4" />
-                <text y="258" textAnchor="middle" fontSize="24" fill="#463b30">
-                  {p.options[fruit.index]?.label}
-                </text>
-              </g>
-              <g transform={`translate(${fruit.x - 120} 318)`}>
-                <rect x="-18" y="-8" width="36" height="20" rx="7" fill="#ae7752" />
-                <circle cx="15" cy="2" r="9" fill="#d6aa76" />
-              </g>
+              {Array.from({ length: 4 }, (_, offset) => {
+                const ordinal = Math.max(0, fruit.ordinal - 1) + offset;
+                const x =
+                  playgrounds.runner.firstTree +
+                  ordinal * playgrounds.runner.treeSpacing -
+                  world.distance;
+                return (
+                  <g key={ordinal} transform={`translate(${x} 0)`}>
+                    <path d="M0 330V210" stroke="#9a7951" strokeWidth="10" />
+                    <ellipse cy="205" rx="55" ry="38" fill="#5c9d6b" />
+                    <circle cy="251" r="30" fill="#f6c951" />
+                    <path d="M0 223q-5-12 8-15" fill="none" stroke="#4d794a" strokeWidth="4" />
+                    <text y="258" textAnchor="middle" fontSize="24" fill="#463b30">
+                      {p.options[ordinal % p.options.length]?.label}
+                    </text>
+                    <g transform="translate(-120 318)">
+                      <rect x="-18" y="-8" width="36" height="20" rx="7" fill="#ae7752" />
+                      <circle cx="15" cy="2" r="9" fill="#d6aa76" />
+                    </g>
+                  </g>
+                );
+              })}
+              {Array.from({ length: 12 }, (_, i) => {
+                const x = i * 48 - ((world.distance * 1.15) % 48);
+                return (
+                  <g key={i} transform={`translate(${x} 380)`}>
+                    <path d="M0 20V-12M0 2L-12-8M0 8L15-6" stroke="#1e574c" strokeWidth="4" />
+                    <path d="M0 0L-16-18 0-10 15-22Z" fill="#337764" />
+                  </g>
+                );
+              })}
+              <path d="M0 367H480M0 347H480" stroke="#806b49" strokeWidth="1" opacity=".4" />
               <Fox x={110} y={world.y} />
               <text x="24" y="30" fontSize="15" fill="#244e42">
                 ✦ 跳起来，摘拼音果
@@ -446,99 +493,85 @@ export function AdventureStage(p: Props) {
           )}
           {p.scene === 'space' && (
             <>
+              <ellipse cx="380" cy="180" rx="280" ry="210" fill="url(#nebula)" />
+              <path d="M120 400L220 0M360 400L260 0" stroke="#83bde6" opacity=".13" />
               {Array.from({ length: 32 }, (_, i) => (
                 <circle
                   key={i}
                   cx={(i * 137 + 31) % 480}
-                  cy={(i * 67 + 12) % 370}
+                  cy={(i * 67 + 12 + world.time * (12 + (i % 4) * 8)) % 400}
                   r={i % 3 === 0 ? 2 : 1}
                   fill="#fff4c7"
                   opacity=".7"
                 />
               ))}
-              <ellipse cx="240" cy="400" rx="200" ry="65" fill="#8d8bb9" />
-              <ellipse cx="240" cy="409" rx="155" ry="55" fill="#b3a4c9" />
               {p.options.map((o, i) => {
                 const at = planet(i, p.options.length);
                 return (
                   <g key={o.id} transform={`translate(${at.x} ${at.y})`}>
-                    <ellipse
-                      rx="43"
-                      ry="14"
-                      fill="none"
-                      stroke={['#e5b89f', '#afd1b8', '#a0c7e0', '#dfca92'][i % 4]}
-                      strokeWidth="7"
-                      transform="rotate(-20)"
+                    <path
+                      d="M-42 12L-31-15-15-24H15L31-15 42 12 24 21H-24Z"
+                      fill="#193651"
+                      stroke="#6ebeda"
+                      strokeWidth="2"
                     />
-                    <circle r="31" fill={['#e9a780', '#9cceaa', '#97bfdd', '#d7b8d6'][i % 4]} />
-                    <path d="M-20-18q20-12 33 3" stroke="#ffffff60" strokeWidth="5" fill="none" />
+                    <path
+                      d="M-38 10H-24M24 10H38M-12-24L-7-32H7L12-24"
+                      stroke="#f4ce79"
+                      strokeWidth="4"
+                    />
+                    <rect x="-22" y="-17" width="44" height="34" rx="5" fill="#cef2ef" />
                     <text textAnchor="middle" y="8" fill="#293255" fontSize="24">
                       {o.label}
                     </text>
                   </g>
                 );
               })}
-              {playgrounds.space.rocks.map((r, i) => (
-                <g key={i}>
-                  <circle cx={r.x} cy={r.y} r={r.radius} fill="#88849a" />
-                  <circle cx={r.x - 6} cy={r.y - 7} r="7" fill="#66677f" />
-                  <circle cx={r.x + 8} cy={r.y + 8} r="5" fill="#aaa2b4" />
-                </g>
-              ))}
-              {aim && (
-                <polyline
-                  points={trajectory(aim)
-                    .map((q) => `${q.x},${q.y}`)
-                    .join(' ')}
-                  stroke="#ffe7a3"
-                  strokeWidth="3"
-                  strokeDasharray="4 7"
-                  fill="none"
-                />
-              )}
-              <path
-                d="M225 377v-45m30 45v-45"
-                stroke="#d8bd8c"
-                strokeWidth="9"
-                strokeLinecap="round"
-              />
-              <path
-                d={`M225 335L${aim ? clamp(240 - aim.x / 5, 200, 280) : 240} ${aim ? 370 : 345} 255 335`}
-                stroke="#fce0a0"
-                strokeWidth="4"
-                fill="none"
-              />
-              <g transform={`translate(${world.shot?.x ?? 240} ${world.shot?.y ?? 350})`}>
-                <rect x="-10" y="-10" width="20" height="20" rx="4" fill="#ffd97c" />
-                <path d="M0-10v20m-10-10h20" stroke="#db9163" strokeWidth="3" />
+              <g transform={`translate(${world.x} ${world.y})`}>
+                <path d="M0-30L22 22 0 10-22 22Z" fill="#bdefff" stroke="#63d9ff" strokeWidth="2" />
+                <path d="M-7 18L0 40 7 18" fill="#ffb754" />
+                <path d="M0-10v16" stroke="#1a3964" strokeWidth="5" />
               </g>
+              {world.shot && (
+                <path d={`M${world.shot.x} ${world.shot.y}v20`} stroke="#7bffff" strokeWidth="5" />
+              )}
             </>
           )}
           {p.scene === 'drum' && (
             <>
-              <circle cx="380" cy="70" r="33" fill="#fff2b5" />
-              <path
-                d="M0 230Q50 150 110 225Q170 160 230 230Q340 140 480 220V400H0"
-                fill="#70b7a0"
-              />
-              <ellipse cx="240" cy="340" rx="230" ry="80" fill="#e7cb86" />
-              <ellipse cx="240" cy="338" rx="190" ry="43" fill="#cda673" />
-              {[90, 240, 390].map((x, i) => (
-                <g key={x} transform={`translate(${x} 210)`}>
-                  <ellipse cy="3" rx="34" ry="44" fill={['#d4a270', '#8db5ad', '#dc9e77'][i]} />
-                  <circle cy="-40" r="31" fill={['#dfb584', '#a0c6b3', '#e6b58b'][i]} />
-                  <circle cx="-23" cy="-65" r="12" fill={['#dfb584', '#a0c6b3', '#e6b58b'][i]} />
-                  <circle cx="23" cy="-65" r="12" fill={['#dfb584', '#a0c6b3', '#e6b58b'][i]} />
-                  <circle cx="-10" cy="-44" r="3" fill="#39484b" />
-                  <circle cx="10" cy="-44" r="3" fill="#39484b" />
-                  <path d="M-6-32q6 5 12 0" fill="none" stroke="#39484b" strokeWidth="2" />
-                  <path d="M-35 20l7 49h56l7-49" fill={['#d67b59', '#679aa7', '#b18db3'][i]} />
-                  <ellipse cy="20" rx="35" ry="14" fill="#ffebbe" />
-                </g>
+              <rect width="480" height="400" fill="#101d38" />
+              {Array.from({ length: 12 }, (_, i) => (
+                <path
+                  key={i}
+                  d={`M0 ${(i * 40 + world.time * 25) % 400}H480`}
+                  stroke="#32496c"
+                  opacity=".3"
+                />
               ))}
-              <text x="240" y="55" textAnchor="middle" fontSize="24" fill="#37605a">
-                小岛合奏时间
-              </text>
+              {p.options.map((o, i) => {
+                const x = 60 + (i * 360) / Math.max(1, p.options.length - 1);
+                const y = rhythmNote(world.time, i);
+                return (
+                  <g key={o.id}>
+                    <path d={`M${x} 0V400`} stroke="#3a537a" strokeWidth="2" />
+                    <rect
+                      x={x - 38}
+                      y="275"
+                      width="76"
+                      height="70"
+                      rx="8"
+                      fill="#233959"
+                      stroke="#6ee7ec"
+                      strokeWidth="2"
+                    />
+                    <rect x={x - 32} y={y - 23} width="64" height="46" rx="7" fill="#78e0e1" />
+                    <text x={x} y={y + 8} textAnchor="middle" fontSize="25" fill="#10263d">
+                      {o.label}
+                    </text>
+                  </g>
+                );
+              })}
+              <path d="M15 310H465" stroke="#ffe18b" strokeWidth="3" />
             </>
           )}
         </svg>
@@ -571,6 +604,10 @@ export function AdventureStage(p: Props) {
                 key={o.id}
                 data-option-id={o.id}
                 className={o.id === p.highlight ? 'highlight' : ''}
+                style={{
+                  left: `${(60 + (i * 360) / Math.max(1, p.options.length - 1)) / 4.8}%`,
+                  top: '88%',
+                }}
                 onClick={() => choose(i)}
                 aria-label={`敲响 ${o.label}`}
               >
@@ -651,50 +688,36 @@ export function AdventureStage(p: Props) {
         </div>
       )}
       {p.scene === 'space' && (
-        <p className="adventure-caption" aria-live="polite">
-          {world.shot ? '包裹飞行中…' : '按住画面向下拉，松手投递 · 也可轻点星球'}
-        </p>
-      )}
-      {p.scene === 'drum' && p.done && (
-        <div className="adventure-rhythm">
-          <div className="rhythm-score" aria-label="节奏乐谱">
-            {rhythm.map((beat, i) => (
-              <span
-                key={i}
-                className={i < rhythmIndex ? 'played' : i === rhythmIndex ? 'current' : ''}
-              >
-                {beat === 0 ? '●' : '◎'}
-              </span>
-            ))}
-          </div>
+        <div className="flight-controls">
           <button
-            className="quiet"
-            disabled={!p.rhythmEnabled || p.paused || showDemo}
-            onClick={() => {
-              setRhythmIndex(0);
-              setShowDemo(true);
-            }}
+            disabled={!canPlay}
+            onClick={() => store.write({ ...store.read(), x: clamp(world.x - 45, 25, 455) })}
           >
-            ▶ 听小乐队示范
+            ←
           </button>
-          <div className="rhythm-pads">
-            <button
-              aria-pressed={demo === 0}
-              disabled={!p.rhythmEnabled || p.paused || showDemo}
-              onClick={() => beat(0)}
-            >
-              ● 咚 · 鼓心
-            </button>
-            <button
-              aria-pressed={demo === 1}
-              disabled={!p.rhythmEnabled || p.paused || showDemo}
-              onClick={() => beat(1)}
-            >
-              ◎ 哒 · 鼓边
-            </button>
-          </div>
-          <p role="status">{rhythmMessage || '听一遍示范，再照着敲。没有时间限制。'}</p>
+          <button
+            disabled={!canPlay}
+            onPointerDown={(e) => {
+              e.currentTarget.setPointerCapture(e.pointerId);
+              held.current.add('Space');
+            }}
+            onPointerUp={() => held.current.delete('Space')}
+            onPointerCancel={() => held.current.delete('Space')}
+            onLostPointerCapture={() => held.current.delete('Space')}
+            onClick={() => store.write(fireBeam(store.read()))}
+          >
+            发射 · 空格
+          </button>
+          <button
+            disabled={!canPlay}
+            onClick={() => store.write({ ...store.read(), x: clamp(world.x + 45, 25, 455) })}
+          >
+            →
+          </button>
         </div>
+      )}
+      {p.scene === 'drum' && (
+        <p className="adventure-caption">听拼音，在音符经过金线时敲对应轨道；可等待下一轮。</p>
       )}
       {world.misses > 0 && world.hit === null && (
         <p className="adventure-motor-note" role="status">

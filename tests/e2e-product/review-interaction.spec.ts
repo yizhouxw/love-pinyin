@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import curriculum from '../../content/curriculum.json' with { type: 'json' };
-import { completeRhythm } from '../support/scene-actions';
+import { playScene } from '../support/scene-actions';
 import catalog from '../../content/games.json' with { type: 'json' };
 
 test.use({ selectedPinyinSource: true });
@@ -65,11 +65,7 @@ for (const game of catalog.games) {
       path: test.info().outputPath(`still-${game.scene}.png`),
       fullPage: true,
     });
-    await page.locator(`button[data-option-id="${option.id}"]`).click();
-    if (game.scene === 'drum') {
-      await expect(page.locator('.rhythm-score')).toBeVisible();
-      await completeRhythm(page);
-    }
+    await playScene(page, option.id);
     await expect(page.locator('.scene-nav')).toContainText('任务 2 /', { timeout: 20000 });
   });
 }

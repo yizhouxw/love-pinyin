@@ -79,7 +79,6 @@ export function SceneGame(props: Props) {
   const hit = selection.task === props.taskId ? selection.index : null;
   const [retry, setRetry] = useState('');
   const [attempt, setAttempt] = useState(0);
-  const [celebrated, setCelebrated] = useState(false);
   const nextRef = useRef(props.onNext);
   useEffect(() => {
     nextRef.current = props.onNext;
@@ -103,7 +102,6 @@ export function SceneGame(props: Props) {
     choosing.current = true;
     setSelection({ task: props.taskId, index });
     setSending(true);
-    setCelebrated(false);
     void props.onAnswer(question.options[index]!.id).finally(() => {
       choosing.current = false;
       setSending(false);
@@ -111,8 +109,8 @@ export function SceneGame(props: Props) {
   }
   useEffect(() => {
     if (!started || busy || sending || voice.playingId || paused || props.error) return;
-    if (done && (scene !== 'drum' || celebrated)) {
-      const timer = window.setTimeout(() => nextRef.current(), 850);
+    if (done) {
+      const timer = window.setTimeout(() => nextRef.current(), 100);
       return () => window.clearTimeout(timer);
     }
     if (answer && !done && hit !== null) {
@@ -133,7 +131,6 @@ export function SceneGame(props: Props) {
     props.error,
     done,
     scene,
-    celebrated,
     hit,
     props.taskId,
   ]);
@@ -383,7 +380,9 @@ export function SceneGame(props: Props) {
             <progress aria-label="关卡完成进度" value={props.index} max={props.total} />
           </div>
           <AdventureStage
-            key={`${props.taskId}:${attempt}:${level}`}
+            key={`${gameId}:${level}`}
+            taskKey={`${props.taskId}:${attempt}`}
+            running={started && !paused && !applying && !voice.failureId && !props.error}
             scene={scene}
             options={question.options}
             disabled={stopped || hit !== null}
@@ -406,9 +405,7 @@ export function SceneGame(props: Props) {
             index={props.index}
             highlight={answer?.correctOptionId ?? hint?.answer.optionId}
             done={done}
-            rhythmEnabled={!busy && !sending && !voice.playingId && !applying}
             onChoose={choose}
-            onFinished={() => setCelebrated(true)}
             onResume={() => {
               setPaused(false);
               focusStage();

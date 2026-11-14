@@ -6,6 +6,7 @@ export type PlaygroundConfig = {
   count: number;
   speed: number;
   assist: boolean;
+  interactive?: boolean;
   difficulty?: 'gentle' | 'steady' | 'challenge';
 };
 export type PlaygroundState = {
@@ -53,7 +54,7 @@ export function planet(index: number, count: number): Point {
 }
 export function tree(state: PlaygroundState, count: number) {
   const step = data.runner.treeSpacing;
-  const ordinal = Math.max(0, Math.floor((state.distance - data.runner.firstTree + 170) / step));
+  const ordinal = Math.max(0, Math.ceil((state.distance - data.runner.firstTree + 10) / step));
   return {
     index: ordinal % count,
     x: data.runner.firstTree + ordinal * step - state.distance,
@@ -124,37 +125,18 @@ export function sailToDock(state: PlaygroundState, index: number, count: number)
   const route = boatRoute(state, dock(index, count));
   return { ...state, destination: route[0] ?? null, route: route.slice(1), chosen: index };
 }
-export function throwParcel(
-  state: PlaygroundState,
-  velocity: Point,
-  chosen: number | null = null,
-): PlaygroundState {
-  if (state.shot) return state;
-  return {
-    ...state,
-    chosen,
-    shot: { x: 240, y: 350, vx: clamp(velocity.x, -400, 400), vy: clamp(velocity.y, -510, -80) },
-  };
-}
-export function deliveryVelocity(index: number, count: number): Point {
-  const goal = planet(index, count),
-    t = 1.5;
-  return { x: (goal.x - 240) / t, y: (goal.y - 350 - 0.5 * data.space.gravity * t * t) / t };
-}
-export function trajectory(velocity: Point): Point[] {
-  return Array.from({ length: 25 }, (_, i) => {
-    const t = i / 16;
-    return { x: 240 + velocity.x * t, y: 350 + velocity.y * t + 0.5 * data.space.gravity * t * t };
-  });
-}
 export function stepPlayground(
   prior: PlaygroundState,
   elapsed: number,
   c: PlaygroundConfig,
 ): PlaygroundState {
   const dt = clamp(elapsed, 0, 0.04);
-  if (prior.hit !== null) return prior;
-  const s = { ...prior, time: prior.time + dt, flash: Math.max(0, prior.flash - dt) };
+  if (prior.hit !== null && c.interactive !== false) return prior;
+  const s = {
+    ...prior,
+    time: prior.time + dt * (c.scene === 'drum' ? c.speed : 1),
+    flash: Math.max(0, prior.flash - dt),
+  };
   if (c.scene === 'runner') {
     const nextTree = tree(s, c.count);
     const approach = c.assist && s.y >= data.runner.ground && nextTree.x < 220 && nextTree.x > 60;
@@ -208,26 +190,20 @@ export function stepPlayground(
         s.hit = i;
   }
   if (c.scene === 'space' && s.shot) {
-    const dtFlight = dt * c.speed;
-    const radius = c.difficulty === 'challenge' ? 25 : c.difficulty === 'steady' ? 29 : 34;
-    const p = { ...s.shot };
-    p.x += p.vx * dtFlight;
-    p.y += p.vy * dtFlight + 0.5 * data.space.gravity * dtFlight * dtFlight;
-    p.vy += data.space.gravity * dtFlight;
-    s.shot = p;
-    for (let i = 0; i < c.count; i++)
-      if ((s.chosen === null || s.chosen === i) && separation(p, planet(i, c.count)) < radius)
-        s.hit = i;
-    if (
-      p.y > 405 ||
-      p.x < 0 ||
-      p.x > 480 ||
-      data.space.rocks.some((r) => separation(p, r) < r.radius + 7)
-    ) {
-      s.shot = null;
-      s.misses++;
-      s.flash = 0.7;
+    const beam = { ...s.shot, y: s.shot.y - data.space.beamSpeed * dt };
+    s.shot = beam.y < -20 ? null : beam;
+    for (let i = 0; i < c.count; i++) {
+      if (separation(beam, planet(i, c.count)) < 32) s.hit = i;
     }
   }
+  if (c.interactive === false) s.hit = prior.hit;
   return s;
+}
+
+/** Straight light beam originates at the controlled aircraft. */
+export function fireBeam(s: PlaygroundState): PlaygroundState {
+  return s.shot ? s : { ...s, shot: { x: s.x, y: s.y - 25, vx: 0, vy: -data.space.beamSpeed } };
+}
+export function rhythmNote(time: number, index: number) {
+  return ((time * data.drum.noteSpeed + index * data.drum.spacing) % data.drum.cycle) - 40;
 }

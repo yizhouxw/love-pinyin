@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
-  deliveryVelocity,
+  fireBeam,
+  planet,
+  tree,
   dock,
   jump,
   sail,
   sailToDock,
   startPlayground,
   stepPlayground,
-  throwParcel,
   type PlaygroundConfig,
   type PlaygroundState,
 } from '../../src/domain/playgrounds';
@@ -72,28 +73,41 @@ describe('new touch playground physics', () => {
       expect(Math.hypot(s.x - dock(i, 4).x, s.y - 78)).toBeLessThan(29);
     }
   });
-  it('direct delivery computes a real ballistic flight to each planet', () => {
+  it('straight beams hit every target from the controlled aircraft', () => {
     for (let count = 2; count <= 4; count++)
       for (let i = 0; i < count; i++) {
         const s = run(
-          throwParcel(startPlayground(), deliveryVelocity(i, count)),
+          fireBeam({ ...startPlayground(), x: planet(i, count).x }),
           { ...config, count, scene: 'space' },
-          3,
+          2,
         );
         expect(s.hit).toBe(i);
-        expect(s.misses).toBe(0);
       }
   });
-  it('missed parcel returns, cancellation stops rowing, reduced motion freezes physics', () => {
-    const miss = run(
-      throwParcel(startPlayground(), { x: 400, y: -80 }),
-      { ...config, scene: 'space' },
-      5,
-    );
-    expect(miss.shot).toBeNull();
-    expect(miss.hit).toBeNull();
-    expect(miss.misses).toBe(1);
-    const initial = startPlayground();
-    expect(run(initial, { ...config, scene: 'boat' }).x).toBe(initial.x);
+  it('empty fire clears without a learning error', () => {
+    const s = run(fireBeam({ ...startPlayground(), x: 120 }), { ...config, scene: 'space' }, 2);
+    expect(s.hit).toBeNull();
+    expect(s.shot).toBeNull();
+    expect(s.misses).toBe(0);
+  });
+  it('each runner target remains active through the player rather than popping early', () => {
+    for (let i = 0; i < 8; i++)
+      for (const x of [170, 110, 30]) {
+        const s = { ...startPlayground(), distance: 500 + i * 280 - x };
+        expect(tree(s, 4).index).toBe(i % 4);
+        expect(tree(s, 4).x).toBe(x);
+      }
+  });
+  it('sound and save locks keep scenery moving without accepting collisions', () => {
+    const s = jump({ ...startPlayground(), y: 330, distance: 330 });
+    const after = run(s, { ...config, interactive: false }, 2);
+    expect(after.distance).toBeGreaterThan(s.distance);
+    expect(after.hit).toBeNull();
+  });
+  it('drum transport follows the selected speed without changing answer indices', () => {
+    const slow = run(startPlayground(), { ...config, scene: 'drum', speed: 0.5 }, 2);
+    const fast = run(startPlayground(), { ...config, scene: 'drum', speed: 1.5 }, 2);
+    expect(fast.time).toBeCloseTo(slow.time * 3);
+    expect(fast.hit).toBeNull();
   });
 });

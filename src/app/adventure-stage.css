@@ -229,3 +229,73 @@
   outline: 3px solid #e6b752;
   outline-offset: 2px;
 }
+
+/* Crisp instrument panels and restrained colour, sized for primary-school play. */
+.adventure-canvas {
+  border-radius: 10px;
+  border: 1px solid #466478;
+  box-shadow: 0 14px 34px #10253830;
+}
+.adventure-space .adventure-canvas {
+  background: #09152c;
+}
+.adventure-drum-picks {
+  bottom: 3%;
+  gap: 8px;
+}
+.adventure-drum-picks button {
+  background: #193450;
+  color: #dcfbff;
+  border: 1px solid #65d5df;
+  border-radius: 8px;
+  box-shadow: 0 4px 0 #0b192e;
+  font-size: 1.35rem;
+}
+.adventure button:active {
+  transform: translateY(2px);
+  filter: brightness(1.2);
+}
+.flight-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.flight-controls button {
+  min-height: 52px;
+  flex: 1;
+  background: #183350;
+  color: #dffaff;
+  border: 1px solid #5aa9c1;
+  border-radius: 8px;
+}
+.flight-controls button:nth-child(2) {
+  flex: 2;
+}
+.adventure-arrival {
+  border-radius: 8px;
+  font-weight: 600;
+}
+.adventure-canvas > svg {
+  pointer-events: none;
+}
+.adventure-targets,
+.adventure-drum-picks {
+  z-index: 2;
+}
+.adventure-targets button:active {
+  transform: translate(-50%, -50%);
+}
+.adventure-drum-picks {
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+.adventure-drum-picks button {
+  position: absolute;
+  width: 15%;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+.adventure-drum-picks button:active {
+  transform: translate(-50%, -48%);
+}
