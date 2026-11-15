@@ -10,6 +10,7 @@ import type {
   ReadingMark,
 } from '../domain/daily-reading';
 import {
+  readingNavigation,
   highlightedSyllable,
   readingGapSeconds,
   readingHanzi,
@@ -32,7 +33,6 @@ import { GuidanceSwitch } from './guidance-switch';
 import { useLearningVoice, VoiceButton, VoiceFailure } from './learning-voice';
 import { QuickGapSettings } from './quick-gap-settings';
 import recognitionContent from '../../content/reading-recognition.json';
-import navigationContent from '../../content/daily-reading-navigation.json';
 
 import { pinyinSyllables, spellingPlan, type ReadingMode } from '../domain/pinyin-spelling';
 import { playSpelling } from '../platform/audio/spelling-playback';
@@ -471,10 +471,7 @@ function ReadingSession({
   const replay = useRef<HTMLAudioElement | null>(null);
   const listRef = useRef<HTMLElement | null>(null);
   const item = section.items[index]!;
-  const groups =
-    (
-      navigationContent as Record<string, { family: string; compact: boolean; itemIds: string[] }[]>
-    )[section.id] ?? [];
+  const groups = readingNavigation(section);
   useReadingFollow(listRef, item.id, '[aria-current="step"]');
   useEffect(() => {
     audioPlayer.prioritizeReading([

@@ -1,3 +1,4 @@
+import navigationContent from '../../content/daily-reading-navigation.json';
 import hanziContent from '../../content/daily-reading-hanzi.json';
 import playback from '../../content/playback.json';
 
@@ -78,4 +79,24 @@ export function readingCharacters(id: string, hanzi?: string): string[] {
 
 export function readingHanzi(id: string, hanzi?: string): string | undefined {
   return hanzi ?? (hanziContent as Record<string, string>)[id];
+}
+
+/** A material may use different IDs from the PDF navigation catalog. */
+export function readingNavigation(section: DailySection) {
+  const authored = (
+    navigationContent as Record<string, { family: string; compact: boolean; itemIds: string[] }[]>
+  )[section.id];
+  const ids = authored?.flatMap((group) => group.itemIds);
+  if (
+    ids?.length === section.items.length &&
+    ids.every((id, index) => id === section.items[index]?.id)
+  )
+    return authored!;
+  return [
+    {
+      family: section.title,
+      compact: section.kind !== 'words' && section.kind !== 'sentences',
+      itemIds: section.items.map((item) => item.id),
+    },
+  ];
 }
