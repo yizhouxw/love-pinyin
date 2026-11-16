@@ -94,3 +94,40 @@ test('WORD-17: each syllable stays centered over its character in cards, picture
   await assertAligned('.word-answer');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+
+test('WORD-18: four-character cards stay on one line without stretching short words', async ({
+  page,
+  appUrl,
+}) => {
+  await pairForHouseholdMaterial(page, appUrl);
+  await useHouseholdMaterial(page);
+  await page.getByRole('button', { name: '进入词语天天练 →' }).click();
+  await page.getByRole('button', { name: /^选择课程/ }).click();
+  await page.getByRole('dialog').getByRole('button', { name: '第6单元', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: '选择对韵歌', exact: true }).click();
+  const pane = page.getByRole('region', { name: '本课词语' });
+  for (const width of [1180, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    const long = pane.getByRole('button', { name: '听读山清水秀', exact: true });
+    await long.click();
+    await expect(long).toBeInViewport();
+    const tops = await long
+      .locator('ruby')
+      .evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().top));
+    expect(Math.max(...tops) - Math.min(...tops)).toBeLessThan(1);
+    const heights = await pane
+      .getByRole('button')
+      .evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().height));
+    expect(Math.max(...heights) - Math.min(...heights)).toBeLessThan(2);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    await page.screenshot({
+      path: test.info().outputPath(`word-wide-${width}.png`),
+      fullPage: true,
+    });
+  }
+  await page.evaluate(() => (document.documentElement.style.fontSize = '200%'));
+  await expect(pane.getByRole('button', { name: '听读山清水秀', exact: true })).toBeInViewport();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

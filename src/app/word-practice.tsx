@@ -321,6 +321,7 @@ export function WordPractice({
               {lesson.read.map((word) => (
                 <button
                   key={word.text}
+                  className={Array.from(word.text).length >= 4 ? 'word-card-wide' : undefined}
                   aria-label={`听读${word.text}`}
                   aria-pressed={selected.text === word.text}
                   aria-current={playback.playingId === word.audioId ? 'true' : undefined}

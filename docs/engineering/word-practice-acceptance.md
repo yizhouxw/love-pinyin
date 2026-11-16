@@ -39,3 +39,10 @@ Chromium/WebKit真实服务6项流程通过：真实音频响应、浏览器解�
 最终软件验收包含图片失败后的独立重试与尺寸不变。首轮全站回归67/68通过，其中一次测试服务启动恰逢并行Vite构建清空dist/assets而失败；已停止并行构建，改为串行重跑完整验收。该构建时序失败不记录为功能通过，也不修改原家庭数据行为。
 
 最终串行 `npm run verify:all` 完整通过：190项前端、555项后端、36项六项目视口、68项Chromium/WebKit真实服务测试，包含全部736张SVG解码及图片失败重试；`npm run validate:release`亦通过。日志private/word-review-acceptance.log、word-review-final-release.log。预览：[移动选课](../screenshots/word-course-picker-mobile.png)、[移动看图](../screenshots/word-practice-mobile.png)、[桌面背诵](../screenshots/word-practice-desktop.png)。源码交付并更新本地Web构建，不重新打包或自动公开发布桌面安装包。
+
+## 2026-11-16 WORD-18 长词卡片
+
+- 四字及以上词语使用双列宽卡，手机独占一行；普通词卡保持紧凑等高，选中态改为柔和底色与内描边。保留原词序、字音标注和内层跟随。
+- 新增真实服务回归：对韵歌「山清水秀」，1180、768、390、320px 下检查四个字音单元同一行、全列表卡高一致、选中可见且页面不横溢；200% 字号检查可见性和横溢。Chromium / WebKit 两项通过，桌面与320px截图人工复查。
+- 224 项单元测试、构建、发布内容门禁通过。使用现有已安装的固定 Python 运行时增量重建 Mac 包（重新编译 Swift 启动器并替换 Web 构建）；随包 Python、HTTP 健康与首页烟测通过。
+- 以上为本机和浏览器视口验证，不代表移动真机或家庭试用验收。

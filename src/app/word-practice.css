@@ -228,7 +228,7 @@
 .word-grid {
   display: grid;
   grid-auto-rows: max-content;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 8rem), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 10rem), 1fr));
   gap: 10px;
   margin: 0;
 }
@@ -572,7 +572,7 @@
     font-size: 1.5rem;
   }
   .word-grid {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 5.2rem), 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
   .word-practice .word-grid button {
@@ -815,4 +815,57 @@
   inset: 0;
   display: grid;
   place-content: center;
+}
+
+/* Long words receive space rather than forcing a tall row of short-word cards. */
+.word-reading-main {
+  container-type: inline-size;
+}
+.word-practice .word-grid button {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  min-height: 100px;
+  padding: 16px 10px;
+  border-radius: 16px;
+  background: #fffefa;
+  border-color: #d6e2cd;
+  box-shadow: 0 2px 0 #315d4910;
+}
+.word-practice .word-grid button[aria-pressed='true'] {
+  background: #e8f3dc;
+  border-color: #568368;
+  box-shadow: inset 0 0 0 1px #568368;
+}
+.word-practice .word-grid button[aria-current='true'] {
+  outline: 2px solid #498363;
+  outline-offset: -3px;
+}
+.word-grid .hanzi-pinyin {
+  gap: 0.16em;
+  row-gap: 0.4em;
+}
+.word-reading-main .word-grid {
+  gap: 12px;
+  padding: 8px;
+  background: #edf2e74d;
+}
+@container (min-width: 22rem) {
+  .word-grid .word-card-wide {
+    grid-column: span 2;
+  }
+}
+@container (max-width: 22rem) {
+  .word-reading-main .word-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .word-grid .word-card-wide {
+    grid-column: 1 / -1;
+  }
+}
+@container (max-width: 15rem) {
+  .word-reading-main .word-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
