@@ -538,3 +538,84 @@ for (const mode of ['syllable', 'sentence'] as const) {
     if (mode === 'sentence') expect(result.match.targetId).toBe('shop-sentence-tea');
   });
 }
+
+test('SHOP-24/26: shelves, full basket and both simulated payments fit every screen', async ({
+  page,
+  appUrl,
+}) => {
+  await page.addInitScript(() =>
+    Object.defineProperty(navigator, 'mediaDevices', { value: undefined }),
+  );
+  await guest(page, appUrl);
+  await page.getByRole('button', { name: '进入游戏乐园', exact: true }).click();
+  await page.getByRole('button', { name: '进入拼音小卖部', exact: true }).click();
+  await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
+  for (let i = 0; i < 6; i++) {
+    await page.locator('.shop-product').nth(i).click();
+    await page.getByRole('button', { name: '读完了，加入购物车' }).click();
+  }
+  for (const [width, height] of [
+    [1280, 720],
+    [768, 1024],
+    [390, 844],
+    [320, 568],
+    [844, 390],
+    [667, 375],
+  ]) {
+    await page.setViewportSize({ width: width!, height: height! });
+    const back = page.getByRole('button', { name: '继续挑商品' });
+    if (await back.isVisible()) await back.click();
+    expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight)).toBe(
+      true,
+    );
+    await page.screenshot({ path: test.info().outputPath(`store-${width}.png`) });
+    await page.getByRole('button', { name: '结算购物车', exact: false }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeInViewport({ ratio: 1 });
+    await page.getByRole('button', { name: '支付宝 · 模拟付款', exact: true }).click();
+    await expect(page.locator('.shop-phone')).toBeInViewport({ ratio: 1 });
+    expect(await dialog.evaluate((el) => el.scrollHeight <= el.clientHeight)).toBe(true);
+    await page.locator('.shop-phone').evaluate(async (el) => {
+      await Promise.all(el.getAnimations().map((a) => a.finished));
+    });
+    await page.screenshot({ path: test.info().outputPath(`checkout-${width}.png`) });
+    await page.getByRole('button', { name: '关闭购物车', exact: true }).click();
+  }
+  await page.getByRole('button', { name: '结算购物车', exact: false }).click();
+  await page.getByRole('button', { name: '微信支付 · 模拟付款', exact: true }).click();
+  const receipt = page.waitForResponse(
+    (r) => r.url().endsWith('/shop/wechat-receipt.wav') && r.ok(),
+  );
+  await page.locator('.shop-phone').click();
+  await receipt;
+  await expect(page.getByText('✓ 模拟支付成功，已到账 ¥30.00')).toBeVisible();
+  await expect(page.locator('.shop-phone')).toHaveCount(0);
+  await page.getByRole('button', { name: '休息，回游戏乐园', exact: false }).click();
+});
+
+test('SHOP-25: Alipay keyboard confirmation, reduced motion and cancelled payment', async ({
+  page,
+  appUrl,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.addInitScript(() =>
+    Object.defineProperty(navigator, 'mediaDevices', { value: undefined }),
+  );
+  await guest(page, appUrl);
+  await page.getByRole('button', { name: '进入游戏乐园', exact: true }).click();
+  await page.getByRole('button', { name: '进入拼音小卖部', exact: true }).click();
+  await page.locator('.shop-product').first().click();
+  await page.getByRole('button', { name: '读完了，加入购物车' }).click();
+  await page.getByRole('button', { name: '结算购物车', exact: false }).click();
+  await page.getByRole('button', { name: '支付宝 · 模拟付款', exact: true }).click();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+  await page.getByRole('button', { name: '结算购物车', exact: false }).click();
+  await page.getByRole('button', { name: '支付宝 · 模拟付款', exact: true }).click();
+  await page.locator('.shop-phone').focus();
+  const sound = page.waitForResponse((r) => r.url().endsWith('/shop/alipay-receipt.wav') && r.ok());
+  await page.keyboard.press('Enter');
+  await sound;
+  await expect(page.getByText('✓ 模拟支付成功，已到账 ¥3.50')).toBeVisible();
+  await expect(page.locator('.shop-phone')).toHaveCount(0);
+});

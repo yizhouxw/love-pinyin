@@ -15,7 +15,7 @@
     { "id": "milk", "pinyin": "mèi mei xǐ huan hē niú nǎi.", "hanzi": "妹妹喜欢喝牛奶。" }
   ],
   "image": {
-    "src": "/shop/products-photo-atlas.png",
+    "src": "/shop/products-cutout-atlas.png",
     "columns": 12,
     "rows": 8,
     "license": "generated-project-asset"

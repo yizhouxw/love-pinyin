@@ -28,6 +28,8 @@ import { ShopProductImage } from './shop-product-image';
 import { useGameClock } from './use-game-clock';
 import { errorMessage } from './notice';
 import './pinyin-shop.css';
+import { ShopBasketVisual } from './shop-basket-visual';
+import { ShopCheckoutAudio, type ShopCheckoutCue } from '../platform/audio/shop-checkout-audio';
 
 type Feedback = 'welcome' | 'ready' | 'manual_added' | ShopReadingOutcome | 'complete';
 type ReadingMode = 'syllable' | 'sentence';
@@ -117,12 +119,55 @@ export function PinyinShop({
   const [phase, setPhase] = useState<'ready' | 'starting' | 'listening'>('ready');
   const [feedback, setFeedback] = useState<Feedback>('welcome');
   const [finished, setFinished] = useState(false);
+  const [payment, setPayment] = useState<'cart' | 'counter' | '支付宝' | '微信' | 'paid'>('cart');
+  const [checkoutAudio] = useState(() => new ShopCheckoutAudio());
+  const paid = useRef(false);
+  const [paymentAudioFailed, setPaymentAudioFailed] = useState(false);
+  useEffect(() => {
+    const hidden = () => {
+      if (document.hidden) checkoutAudio.stop();
+    };
+    document.addEventListener('visibilitychange', hidden);
+    return () => {
+      checkoutAudio.stop();
+      document.removeEventListener('visibilitychange', hidden);
+    };
+  }, [checkoutAudio]);
+  function playCheckoutGuide(name: ShopCheckoutCue) {
+    checkoutAudio.stop();
+    if (!guidanceEnabled) return;
+    void checkoutAudio.play(name).catch(() => {});
+  }
+  function pay(method: '支付宝' | '微信') {
+    if (payment !== 'counter' || !basket.length) return;
+    setPayment(method);
+    playCheckoutGuide('confirm-guide');
+  }
+  function completePayment() {
+    if (paid.current || (payment !== '支付宝' && payment !== '微信')) return;
+    paid.current = true;
+    checkoutAudio.stop();
+    void checkoutAudio
+      .play(payment === '支付宝' ? 'alipay-receipt' : 'wechat-receipt')
+      .catch(() => setPaymentAudioFailed(true));
+    setPayment('paid');
+    setFinished(true);
+    setFeedback('complete');
+  }
   const [cabinet, setCabinet] = useState(0);
   const nextTarget = useRef({ syllable: 0, sentence: 0 });
   const [readingOpen, setReadingOpen] = useState(false);
   const [shelfPage, setShelfPage] = useState(0);
   const cart = useRef<HTMLDialogElement>(null);
   const cartButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (payment === '支付宝' || payment === '微信')
+      cart.current?.querySelector<HTMLButtonElement>('.shop-phone')?.focus({ preventScroll: true });
+    if (payment === 'paid')
+      cart.current
+        ?.querySelector<HTMLButtonElement>('.shop-checkout')
+        ?.focus({ preventScroll: true });
+  }, [payment]);
   const lastProduct = useRef<HTMLButtonElement | null>(null);
   const practiceBack = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -137,7 +182,8 @@ export function PinyinShop({
     epoch.current += 1;
     reading.cancel();
     stopVoice();
-  }, [reading, stopVoice]);
+    checkoutAudio.stop();
+  }, [reading, stopVoice, checkoutAudio]);
   const clock = useGameClock(!finished, cancel);
   useEffect(() => {
     if (clock.paused) cancel();
@@ -166,6 +212,38 @@ export function PinyinShop({
   const goods = products.filter((p) => p.shelfId === shelf.id);
   function addProduct(product: ShopProduct, confirmation: 'matched' | 'manual_added') {
     cancel();
+    const source = document.querySelector('.shop-choice .shop-product-art');
+    const origin = source?.getClientRects().length
+      ? source.getBoundingClientRect()
+      : lastProduct.current?.getBoundingClientRect();
+    const destination = cartButton.current?.getBoundingClientRect();
+    if (origin && destination && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const art = lastProduct.current?.querySelector('.shop-product-art')?.cloneNode(true) as
+        HTMLElement | undefined;
+      if (art) {
+        Object.assign(art.style, {
+          position: 'fixed',
+          left: `${origin.left}px`,
+          top: `${origin.top}px`,
+          width: '64px',
+          height: '64px',
+          zIndex: '10000',
+          pointerEvents: 'none',
+        });
+        document.body.append(art);
+        const animation = art.animate(
+          [
+            { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+            {
+              transform: `translate(${destination.left - origin.left}px, ${destination.top - origin.top}px) scale(.35)`,
+              opacity: 0.8,
+            },
+          ],
+          { duration: 650, easing: 'ease-in-out' },
+        );
+        void animation.finished.finally(() => art.remove());
+      }
+    }
     const next = addShopProduct(basketRef.current, product.id);
     basketRef.current = next;
     setBasket(next);
@@ -291,8 +369,13 @@ export function PinyinShop({
     setPhase('ready');
     setSelected(null);
     setTarget(null);
-    setFinished(true);
-    tell('complete');
+    if (!basket.length) {
+      setFinished(true);
+      tell('complete');
+      return;
+    }
+    setPayment('counter');
+    playCheckoutGuide('checkout-guide');
   };
   const total = shopPrice(shopTotalCents(basket));
   const canAct = phase === 'ready' && Boolean(target && selected && !finished);
@@ -611,7 +694,10 @@ export function PinyinShop({
           </div>
           <div className="shop-cart-bar">
             <button ref={cartButton} className="quiet" onClick={openCart}>
-              🧺 购物车 {basket.length} / {shopRules.basketLimit}
+              <ShopBasketVisual products={products.filter((p) => basket.includes(p.id))} />
+              <span>
+                购物车 {basket.length} / {shopRules.basketLimit}
+              </span>
             </button>
             <button className="shop-checkout" onClick={checkout}>
               结算购物车 →
@@ -620,7 +706,9 @@ export function PinyinShop({
           <dialog
             ref={cart}
             className="shop-basket"
+            data-payment={payment}
             aria-label="我的购物车"
+            onClose={() => checkoutAudio.stop()}
             onCancel={(event) => {
               if (finished) {
                 event.preventDefault();
@@ -628,6 +716,14 @@ export function PinyinShop({
               }
             }}
           >
+            <div className="shop-register" aria-hidden="true">
+              <ShopBasketVisual products={products.filter((p) => basket.includes(p.id))} />
+              <div className="shop-terminal">
+                <span>爱拼音 · 收银台</span>
+                <strong>{total}</strong>
+                <small>{payment === 'paid' ? '✓ 已收款' : '欢迎光临'}</small>
+              </div>
+            </div>
             <h2>
               我的购物车{' '}
               <span>
@@ -665,14 +761,56 @@ export function PinyinShop({
               )}
             </div>
             <div className="shop-total">
-              <span>{finished ? '结算总金额' : '合计'}</span>
+              <span>{payment !== 'cart' || finished ? '结算总金额' : '合计'}</span>
               <strong>{total}</strong>
             </div>
-            <button className="shop-checkout" onClick={finished ? exit : checkout}>
-              {finished ? '休息，回游戏乐园 →' : '确认结算 →'}
+            {payment === 'counter' && basket.length > 0 && (
+              <div className="shop-payments" aria-label="选择模拟支付方式">
+                <button onClick={() => pay('支付宝')}>支付宝 · 模拟付款</button>
+                <button onClick={() => pay('微信')}>微信支付 · 模拟付款</button>
+              </div>
+            )}
+            {(payment === '支付宝' || payment === '微信') && (
+              <button className="shop-phone" onClick={completePayment}>
+                <span>{payment} · 模拟收银</span>
+                <strong>{total}</strong>
+                <span>点击确认模拟付款 ✓</span>
+              </button>
+            )}
+            {payment === 'paid' && <p role="status">✓ 模拟支付成功，已到账 {total}</p>}
+            {paymentAudioFailed && (
+              <button
+                className="quiet"
+                onClick={() => {
+                  void checkoutAudio
+                    .replay()
+                    .then(() => setPaymentAudioFailed(false))
+                    .catch(() => setPaymentAudioFailed(true));
+                }}
+              >
+                🔊 重听到账提示
+              </button>
+            )}
+            <button
+              className="shop-checkout"
+              hidden={!finished && payment !== 'cart'}
+              onClick={finished ? exit : checkout}
+            >
+              {finished
+                ? '休息，回游戏乐园 →'
+                : payment === 'cart'
+                  ? '确认结算 →'
+                  : '请选择上方支付方式'}
             </button>
             {!finished && (
-              <button className="quiet" onClick={() => cart.current?.close()}>
+              <button
+                className="quiet"
+                onClick={() => {
+                  checkoutAudio.stop();
+                  setPayment('cart');
+                  cart.current?.close();
+                }}
+              >
                 关闭购物车
               </button>
             )}

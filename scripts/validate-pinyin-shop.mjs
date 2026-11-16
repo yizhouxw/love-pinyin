@@ -103,7 +103,7 @@ export function validatePinyinShop(shop, illustrations, readImage) {
     }
   }
   if (
-    shop.image?.src !== '/shop/products-photo-atlas.png' ||
+    shop.image?.src !== '/shop/products-cutout-atlas.png' ||
     shop.image.columns !== 12 ||
     shop.image.rows !== 8
   )

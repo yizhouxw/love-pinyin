@@ -1,3 +1,5 @@
+from datetime import UTC, datetime
+
 from fastapi.testclient import TestClient
 
 from server import api_dependencies
@@ -87,11 +89,13 @@ def test_device_model_used_code_and_server_connection_time(paired_client, monkey
     from server import storage
 
     parent = paired_client
+    # Keep the observation clock inside the real 30-day session validity window.
+    test_day = datetime.now(UTC).date().isoformat()
     code = parent.post("/api/v1/local/pairing-code").json()["code"]
     with TestClient(
         parent.app, base_url="http://127.0.0.1", client=("192.168.1.30", 50003)
     ) as child:
-        moment = "2026-10-16T04:05:06.000+00:00"
+        moment = f"{test_day}T04:05:06.000+00:00"
         monkeypatch.setattr(pairing, "now_iso", lambda: moment)
         monkeypatch.setattr(api_dependencies, "now_iso", lambda: moment)
         response = child.post("/api/v1/pair", json={"code": code, "model": "iPad Air 5"})
@@ -103,7 +107,7 @@ def test_device_model_used_code_and_server_connection_time(paired_client, monkey
         assert row["pairingCode"] == code
         assert row["lastConnectedAt"] == moment
         assert child.post("/api/v1/pair", json={"code": code}).status_code == 401
-        moment = "2026-10-16T04:06:07.000+00:00"
+        moment = f"{test_day}T04:06:07.000+00:00"
         assert (
             child.get(
                 "/api/v1/bootstrap", headers={"X-LP-Device-Model": quote("iPad（浏览器推测）")}
@@ -156,11 +160,11 @@ def test_device_model_used_code_and_server_connection_time(paired_client, monkey
             == 404
         )
         assert parent.delete(f"/api/v1/devices/{child_id}", headers=csrf).status_code == 200
-        moment = "2026-10-16T05:00:00.000+00:00"
+        moment = f"{test_day}T05:00:00.000+00:00"
         assert child.get("/api/v1/bootstrap").json()["paired"] is False
         with storage.connect() as db:
             saved = db.execute("SELECT * FROM devices WHERE id=?", (child_id,)).fetchone()
-        assert saved["last_connected_at"] == "2026-10-16T04:06:07.000+00:00"
+        assert saved["last_connected_at"] == f"{test_day}T04:06:07.000+00:00"
         assert (
             parent.put(
                 f"/api/v1/devices/{child_id}", json={"model": "iPad"}, headers=csrf
