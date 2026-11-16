@@ -240,8 +240,9 @@ export function AdventureStage(p: Props) {
   const fruit = tree(world, p.options.length);
   const firing = world.shot !== null;
   useEffect(() => {
-    if (firing || world.hit !== null) drums.current?.hit(world.hit === null);
-  }, [firing, world.hit]);
+    if (p.started && !p.paused && (firing || world.hit !== null))
+      drums.current?.hit(world.hit === null);
+  }, [firing, world.hit, p.started, p.paused]);
   const canPlay = !p.disabled && !p.paused;
   const names = {
     runner: '森林跳跃冒险',

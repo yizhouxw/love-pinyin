@@ -384,6 +384,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   const autoStandardId =
     question && !answer && !hint && !gameClock.paused ? question.audioRef : undefined;
   useEffect(() => {
+    if (active?.gameId && question && !answer && !hint) return stopVoice;
     if (autoVoiceId && voiceStarted.current && autoStandardId) {
       playSequence([
         ...(guidanceEnabled && !active?.gameId
@@ -397,6 +398,9 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   }, [
     autoVoiceId,
     autoStandardId,
+    question,
+    answer,
+    hint,
     task?.instanceId,
     active?.gameId,
     playSequence,

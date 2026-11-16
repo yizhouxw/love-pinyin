@@ -96,6 +96,53 @@ export function SceneGame(props: Props) {
     !!voice.playingId ||
     done ||
     Boolean(answer && retry !== props.taskId);
+  const { playStandard, play, playingId, failureId, completedIds } = voice;
+  const audioId = question.audioRef ?? `prompt-${question.id}`;
+  const heard = completedIds.has(audioId);
+  useEffect(() => {
+    if (
+      !started ||
+      paused ||
+      applying ||
+      busy ||
+      sending ||
+      done ||
+      hit !== null ||
+      props.error ||
+      failureId ||
+      playingId ||
+      document.hidden
+    )
+      return;
+    if (heard && (scene !== 'runner' || locked)) return;
+    const timer = window.setTimeout(
+      () => {
+        if (question.audioRef) playStandard(question.audioRef);
+        else play(audioId);
+      },
+      heard ? 2000 : 0,
+    );
+    return () => window.clearTimeout(timer);
+  }, [
+    started,
+    paused,
+    applying,
+    busy,
+    sending,
+    done,
+    hit,
+    props.error,
+    failureId,
+    playingId,
+    heard,
+    scene,
+    locked,
+    question.audioRef,
+    audioId,
+    playStandard,
+    play,
+    props.taskId,
+  ]);
   const choosing = useRef(false);
   function choose(index: number) {
     if (stopped || choosing.current || hit !== null) return;

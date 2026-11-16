@@ -40,8 +40,20 @@ for (const game of catalog.games) {
     await page.waitForTimeout(350);
     expect(await stage.locator('svg').innerHTML()).toBe(before);
     if (game.scene === 'runner') expect(await page.evaluate(() => scrollY)).toBe(initialScroll);
+    await expect(
+      page.getByRole('button', { name: '听拼音', exact: true, pressed: true }),
+    ).toHaveCount(0);
     await start.click();
     await expect(start).toBeHidden();
+    if (game.scene === 'runner') {
+      const playing = page.getByRole('button', { name: '听拼音', exact: true, pressed: true });
+      await expect(playing).toBeVisible();
+      await expect(playing).toHaveCount(0, { timeout: 20000 });
+      const ended = Date.now();
+      await expect(playing).toBeVisible({ timeout: 5000 });
+      expect(Date.now() - ended).toBeGreaterThan(1500);
+      await expect(playing).toHaveCount(0, { timeout: 20000 });
+    }
     const answer = curriculum.exercises.find((q) => q.id === session.tasks[0].exercise.id)!.answer
       .optionId!;
     await playScene(page, answer);
