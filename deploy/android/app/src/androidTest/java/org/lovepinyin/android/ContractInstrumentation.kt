@@ -8,10 +8,22 @@ import org.json.JSONObject
 
 /** Runs against a disposable database; never uses the family's learning archive. */
 class ContractInstrumentation : Instrumentation() {
-    override fun onCreate(arguments: Bundle?) { super.onCreate(arguments); start() }
+    private var modelSmoke = false
+    override fun onCreate(arguments: Bundle?) { modelSmoke = arguments?.getString("asrSmoke") == "true"; super.onCreate(arguments); start() }
     override fun onStart() {
         val results = Bundle()
         try {
+            RecognitionChecks.run(targetContext)
+            if (modelSmoke) {
+                val engine = LocalRecognition(targetContext)
+                try {
+                    val bytes = context.assets.open("asr-tea.wav").use { it.readBytes() }
+                    val started = android.os.SystemClock.elapsedRealtime()
+                    val result = engine.inferenceWorker.submit<JSONObject> { engine.recognize(android.util.Base64.encodeToString(bytes,android.util.Base64.NO_WRAP),engine.generation()) }.get()
+                    check(result.getString("status") == "recognized" && result.getString("transcript").contains("茶")) { "ASR smoke failed: $result" }
+                    results.putString("asr", "ANDROID_ASR_MODEL_OK: licensed tea, ${android.os.SystemClock.elapsedRealtime()-started} ms, $result")
+                } finally { engine.close() }
+            }
             val fixture = JSONObject(context.assets.open("contracts.json").bufferedReader().use { it.readText() })
             fun same(actual: Any?, expected: Any?, path: String = "result") {
                 when {
@@ -103,7 +115,7 @@ class ContractInstrumentation : Instrumentation() {
                 try { call("POST","/instances/${item.getString("instanceId")}/skip"); error("paused game allowed write") } catch (_: IllegalArgumentException) {}
                 call("POST","/sessions/${game.getString("id")}/finish")
             }
-            results.putString("stream","ANDROID_CONTRACT_OK: Python shared mastery/clock/ordering cases; first-answer, idempotency, restart, backup corruption/lease rejection, failed SQLite write rollback, restore, four game routes, pause lease\n")
+            results.putString("stream",results.getString("asr", "")+"\nANDROID_CONTRACT_OK: Python shared mastery/clock/ordering cases; first-answer, idempotency, restart, backup corruption/lease rejection, failed SQLite write rollback, restore, four game routes, pause lease\n")
             finish(RESULT_OK,results)
         } catch (error: Throwable) { results.putString("stream",error.stackTraceToString()); finish(0,results) }
     }

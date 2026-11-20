@@ -157,3 +157,9 @@ DOCKER-05的Windows x86-64宿主运行Linux amd64容器，不新增Windows原生
 Xcode 原生目标使用 [MLX Audio Swift 0.1.8](https://github.com/Blaizzy/mlx-audio-swift/tree/v0.1.8)（MIT）、[MLX Swift 0.33.0](https://github.com/ml-explore/mlx-swift/tree/0.33.0)（MIT）和系统 AVFoundation。SwiftPM 锁定直接和传递依赖的来源、版本和提交，见 iOS 工程的 `Package.resolved`。许可证与 NOTICE 汇总在 `resources/licenses/IOS-Swift-Packages.txt`，随 iOS 构建分发。构建机实装了 Xcode Metal Toolchain 27B47 及锁定的 SwiftPM 依赖。无新增 npm 或 uv 依赖。
 
 iOS 与 Mac 使用同一份 [Qwen3-ASR 0.6B MLX 8-bit 模型](https://huggingface.co/mlx-community/Qwen3-ASR-0.6B-8bit/tree/89e96d92ba34aca20b3e29fb10cc284097d1219f)（Apache-2.0）。[魔搭镜像](https://modelscope.cn/models/mlx-community/Qwen3-ASR-0.6B-8bit)的固定修订经逐文件尺寸和 SHA-256 核对，与 Hugging Face 发布字节一致。统一清单在 `content/qwen-asr.json`。iOS 构建只带清单，家长主动安装后，权重才进入该设备沙盒。
+
+### SPEC-024 ANDROID-ASR-01～04（Android 本地识别）
+
+固定 [sherpa-onnx 2.0.1 官方 AAR](https://github.com/k2-fsa/sherpa-onnx/releases/tag/v2.0.1)（Apache-2.0）；AAR SHA-256 为 `a8d09d1d32f3eb8520482c6d3d43fae674681c5b050385967c70a3c2c9bf0ee7`，内含 ONNX Runtime（MIT；arm64 库版本字符串 1.28.2）。Gradle 使用本机经过校验的固定文件，不使用动态 Maven 依赖；`deploy/android/runtime.py` 仅准备运行库。新运行库的首次 Kotlin 构建、APK 与 lint 已通过，无新增 npm/uv 包。许可文本随 APK 的 `Android-ASR-LICENSE.txt` 分发，源码见 `resources/licenses/Android-ASR.txt`。
+
+[Qwen3-ASR 0.6B ONNX int8](https://k2-fsa.github.io/sherpa/onnx/qwen3-asr/pretrained.html) 的六个文件共987015347字节（Apache-2.0），固定 Hugging Face 修订 `68818b2313fe77bd06f6a7c5068ff3ef59d02b8a`；实际下载使用原导出者[魔搭仓库](https://modelscope.cn/models/zengshuishui/Qwen3-ASR-onnx/tree/de9e449eb376dcb472c1ce8141fbae8d524fabbd)的固定修订。已逐文件核对两源大小和摘要完全一致；路径、长度、SHA-256 在 `content/android-asr.json`。模型只由家长显式下载，不入 Git 或 APK。设备采音使用系统 AudioRecord，真实转写使用系统 ICU Han-Latin 投影拼音。

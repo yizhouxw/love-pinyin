@@ -34,10 +34,13 @@ export function androidOperation<T>(
   return new Promise<T>((resolve, reject) => {
     const timer = operation.startsWith('backup')
       ? undefined
-      : setTimeout(() => {
-          pending.delete(requestId);
-          reject(new Error('ANDROID_BRIDGE_TIMEOUT'));
-        }, 30000);
+      : setTimeout(
+          () => {
+            pending.delete(requestId);
+            reject(new Error('ANDROID_BRIDGE_TIMEOUT'));
+          },
+          operation === 'recognizeAudio' ? 120000 : 30000,
+        );
     pending.set(requestId, {
       resolve: (value) => {
         clearTimeout(timer);

@@ -23,3 +23,8 @@ models/
 build/
 
 xcuserdata/
+
+# Fixed native runtime is fetched and verified by deploy/android/runtime.py
+deploy/android/app/libs/*.aar
+
+deploy/android/.kotlin/

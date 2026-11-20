@@ -1,7 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { androidOperation, isAndroidApp } from '../../src/platform/android-app';
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.useRealTimers();
+});
 describe('Android platform bridge', () => {
   it('requires native injection and an actual bridge', async () => {
     vi.stubGlobal('window', { __lovePinyinAndroid: true });
@@ -32,4 +35,27 @@ describe('Android platform bridge', () => {
     });
     await expect(first).rejects.toThrow('ANDROID_STORAGE_FAILED');
   });
+});
+
+it('keeps a slow native decode alive beyond the ordinary bridge timeout', async () => {
+  vi.useFakeTimers();
+  let requestId = '';
+  const host = {
+    __lovePinyinAndroid: true,
+    LovePinyinAndroid: {
+      postMessage: (value: string) => {
+        requestId = JSON.parse(value).requestId;
+      },
+    },
+    __lovePinyinAndroidReply: undefined as undefined | ((value: object) => void),
+  };
+  vi.stubGlobal('window', host);
+  const request = androidOperation('recognizeAudio');
+  await vi.advanceTimersByTimeAsync(31_000);
+  host.__lovePinyinAndroidReply!({
+    requestId,
+    result: { status: 'recognized', pinyin: 'chá' },
+    error: null,
+  });
+  await expect(request).resolves.toEqual({ status: 'recognized', pinyin: 'chá' });
 });

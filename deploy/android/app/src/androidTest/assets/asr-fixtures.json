@@ -1,0 +1,10 @@
+{
+  "asr-tea.wav": {
+    "source": "resources/audio/narration/29aca547ad62e9b045c64efa7b2ce44940ee747dd6cda3c65ae37cd28153773f.wav",
+    "sourceId": "ui-shop-sentence-tea",
+    "license": "Apache-2.0",
+    "origin": "Qwen3-TTS/Serena generated adult speech, no child recordings",
+    "conversion": "ffmpeg PCM s16le, mono 16000 Hz, metadata removed",
+    "expectedTranscript": "爸爸喝茶。"
+  }
+}

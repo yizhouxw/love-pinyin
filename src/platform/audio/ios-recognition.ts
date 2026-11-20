@@ -2,6 +2,7 @@ import reading from '../../../content/reading-recognition.json';
 import { shopRules } from '../../domain/pinyin-shop';
 import type { PronunciationService } from '../../domain/pronunciation';
 import { nativeOperation } from '../ios-app';
+import { isAndroidApp } from '../android-app';
 
 type NativeText =
   | { status: 'recognized'; transcript: string; pinyin: string }
@@ -70,12 +71,20 @@ export async function recognizeIOSAudio(audio: Blob, forShop: boolean, signal?: 
     binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
   }
   signal?.throwIfAborted();
-  const result = await nativeOperation<NativeText>('recognizeAudio', {
-    audio: btoa(binary),
-    forShop,
-  });
-  signal?.throwIfAborted();
-  return result;
+  const cancel = () => {
+    if (isAndroidApp()) void nativeOperation('recognitionCancel').catch(() => undefined);
+  };
+  signal?.addEventListener('abort', cancel, { once: true });
+  try {
+    const result = await nativeOperation<NativeText>('recognizeAudio', {
+      audio: btoa(binary),
+      forShop,
+    });
+    signal?.throwIfAborted();
+    return result;
+  } finally {
+    signal?.removeEventListener('abort', cancel);
+  }
 }
 
 export function createIOSShopPronunciation(

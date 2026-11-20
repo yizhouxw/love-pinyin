@@ -28,3 +28,6 @@ public/word-illustrations
 deploy/android/**/build
 deploy/android/.gradle*
 deploy/android/app/src/main/assets
+
+deploy/android/.kotlin
+deploy/android/app/libs

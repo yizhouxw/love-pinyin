@@ -18,7 +18,7 @@ import org.json.JSONObject
 import java.io.ByteArrayInputStream
 import java.util.concurrent.Executors
 
-/** Only installed, allowlisted resources are served. No INTERNET or microphone permission. */
+/** WebView serves only installed resources. Model networking and microphone stay native. */
 class MainActivity : Activity() {
     private lateinit var page: WebView
     private lateinit var classroom: Classroom
@@ -33,6 +33,12 @@ class MainActivity : Activity() {
     private var activeFileId: String? = null
     private var audioFocus: AudioFocusRequest? = null
     private var pauseNeedsRetry = false
+    private lateinit var recognition: LocalRecognition
+    private var recordingId: String? = null
+    private val recorder = NativeRecorder { id -> runOnUiThread {
+        if (recordingId == id) { recordingId = null; audioFocus?.let { (getSystemService(AUDIO_SERVICE) as AudioManager).abandonAudioFocusRequest(it) }; audioFocus = null }
+    } }
+    private var pendingRecord: Pair<String, JSONObject>? = null
     private fun data(name: String) = JSONObject(assets.open("pack/Data/$name.json").bufferedReader().use { it.readText() })
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +57,7 @@ class MainActivity : Activity() {
             override fun getDatabasePath(name: String) = java.io.File(filesDir,"verification/$verification/$name").apply { parentFile?.mkdirs() }
         } else this
         try {
+            recognition = LocalRecognition(this)
             audio = data("audio")
             webFiles = org.json.JSONArray(assets.open("pack/Data/web-files.json").bufferedReader().use { it.readText() }).strings().toSet()
             classroom = Classroom(storageContext, data("classroom"))
@@ -101,14 +108,14 @@ class MainActivity : Activity() {
         } catch (error: Exception) { obj("result" to null,"error" to errorCode(error)).toString() }
 
         @JavascriptInterface fun postMessage(raw: String) {
-            if (raw.length > 1024*1024) return
+            if (raw.length > 2*1024*1024) return
             worker.execute {
                 var id = ""
                 try {
                     val message = JSONObject(raw); id = message.getString("requestId")
                     if (id.length !in 1..80 || message.getInt("version") != 1) fail("ANDROID_BRIDGE_INVALID")
                     val op = message.getString("operation")
-                    if (op in setOf("backupExport","backupImport","playLesson","pauseLesson","seekLesson","lessonState")) {
+                    if (op in setOf("recordStart","recordStop","recordSnapshot","recordLevel","recordDiscard","backupExport","backupImport","playLesson","pauseLesson","seekLesson","lessonState")) {
                         val requestId = id
                         runOnUiThread { try { uiOperation(requestId,op,message) } catch (error: Exception) { reply(requestId,null,errorCode(error)) } }
                     } else {
@@ -121,8 +128,20 @@ class MainActivity : Activity() {
                             }
                             "practicePacks" -> data("practice-packs")
                             "classroomReady" -> obj("ready" to true)
-                            "modelStatus", "modelCancel", "modelRemove" -> obj("state" to "unsupported")
-                            "recognizeAudio" -> obj("status" to "unavailable")
+                            "modelStatus" -> recognition.status()
+                            "modelDownload" -> recognition.download()
+                            "modelCancel" -> recognition.cancel()
+                            "modelRemove" -> recognition.remove()
+                            "recognitionCancel" -> { recognition.invalidate(); obj("cancelled" to true) }
+                            "recognizeAudio" -> {
+                                if (!foreground) { reply(id,obj("status" to "unavailable")); return@execute }
+                                val requestId = id
+                                val generation = recognition.generation()
+                                recognition.inferenceWorker.execute {
+                                    reply(requestId,recognition.recognize(message.optString("audio"),generation))
+                                }
+                                return@execute
+                            }
                             else -> fail("ANDROID_OPERATION_UNAVAILABLE")
                         }
                         reply(id,result)
@@ -138,6 +157,21 @@ class MainActivity : Activity() {
     }
     private fun uiOperation(id: String, op: String, message: JSONObject) {
         when (op) {
+            "recordStart" -> {
+                if (!foreground) fail("ANDROID_AUDIO_UNAVAILABLE")
+                if (pendingRecord != null) fail("ANDROID_RECORD_BUSY")
+                if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    pendingRecord = id to message
+                    requestPermissions(arrayOf(android.Manifest.permission.RECORD_AUDIO),103)
+                } else startRecording(id,message)
+            }
+            "recordStop", "recordSnapshot" -> reply(id,recorder.snapshot(message.getString("id"),op == "recordStop"))
+            "recordLevel" -> reply(id,recorder.level(message.getString("id")))
+            "recordDiscard" -> {
+                recorder.discard(message.getString("id"))
+                pendingRecord?.takeIf { it.second.optString("id") == message.optString("id") }?.let { reply(it.first,null,"ANDROID_RECORD_CANCELLED"); pendingRecord=null }
+                recognition.invalidate(); reply(id,obj("discarded" to true))
+            }
             "backupExport", "backupImport" -> {
                 if (activeFileId != null) fail("ANDROID_FILE_BUSY")
                 activeFileId = id
@@ -158,6 +192,7 @@ class MainActivity : Activity() {
             }
             "playLesson" -> {
                 if (!foreground) fail("GAME_PAUSED")
+                recordingId = null; recorder.discard()
                 val wanted = message.getString("audioId"); val token = message.getInt("id")
                 if (!wanted.startsWith("lesson-")) fail("ANDROID_RESOURCE_UNAVAILABLE")
                 val file = audio.optJSONObject("voice/$wanted")?.getString("file") ?: fail("ANDROID_RESOURCE_UNAVAILABLE")
@@ -178,9 +213,32 @@ class MainActivity : Activity() {
             "lessonState" -> reply(id,if (message.optInt("id") == playbackId) mediaState() else obj("playing" to false,"position" to 0,"duration" to 0))
         }
     }
+    private fun startRecording(id: String, message: JSONObject) {
+        if (!foreground) fail("ANDROID_AUDIO_UNAVAILABLE")
+        pauseMedia()
+        val manager = getSystemService(AUDIO_SERVICE) as AudioManager
+        audioFocus?.let { manager.abandonAudioFocusRequest(it) }
+        audioFocus = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE)
+            .setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ASSISTANT).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build())
+            .setOnAudioFocusChangeListener { change -> if (change != AudioManager.AUDIOFOCUS_GAIN) interrupt() }.build()
+        if (manager.requestAudioFocus(audioFocus!!) != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) fail("ANDROID_AUDIO_UNAVAILABLE")
+        recordingId = message.getString("id")
+        recorder.start(recordingId!!,message.getInt("limit"))
+        reply(id,obj("recording" to true))
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults)
+        if (requestCode != 103) return
+        val pending = pendingRecord ?: return
+        pendingRecord = null
+        page.post {
+            if (grantResults.firstOrNull() != android.content.pm.PackageManager.PERMISSION_GRANTED) reply(pending.first,null,"ANDROID_MICROPHONE_DENIED")
+            else try { startRecording(pending.first,pending.second) } catch (error: Exception) { reply(pending.first,null,errorCode(error)) }
+        }
+    }
     private fun mediaState() = obj("playing" to (player?.isPlaying ?: false), "position" to ((player?.currentPosition ?: 0)/1000.0), "duration" to ((player?.duration ?: 0)/1000.0))
     private fun pauseMedia() { if (player?.isPlaying == true) player?.pause() }
-    private fun interrupt() { pauseMedia(); if (::page.isInitialized) page.evaluateJavascript("window.dispatchEvent(new Event('lp-native-audio-interrupted'));",null); if (::classroom.isInitialized) worker.execute { try { classroom.pause(); pauseNeedsRetry = false } catch (_: Exception) { pauseNeedsRetry = true } } }
+    private fun interrupt() { recorder.discard(); if (::recognition.isInitialized) recognition.invalidate(); pauseMedia(); if (::page.isInitialized) page.evaluateJavascript("window.dispatchEvent(new Event('lp-native-audio-interrupted'));",null); if (::classroom.isInitialized) worker.execute { try { classroom.pause(); pauseNeedsRetry = false } catch (_: Exception) { pauseNeedsRetry = true } } }
     @Deprecated("Android activity result compatibility")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode,resultCode,data)
@@ -213,6 +271,6 @@ class MainActivity : Activity() {
     private fun failure() = WebResourceResponse("text/plain", "UTF-8", 404, "Not Found", emptyMap(), ByteArrayInputStream("Offline resource unavailable".toByteArray()))
     override fun onPause() { foreground=false; interrupt(); if (::page.isInitialized) { page.onPause(); page.pauseTimers() }; super.onPause() }
     override fun onResume() { super.onResume(); foreground=true; if (::page.isInitialized) { page.onResume(); page.resumeTimers() } }
-    override fun onDestroy() { player?.release(); audioFocus?.let { (getSystemService(AUDIO_SERVICE) as AudioManager).abandonAudioFocusRequest(it) }; if (::page.isInitialized) { page.removeJavascriptInterface("LovePinyinAndroid"); page.destroy() }; if (::classroom.isInitialized) worker.execute { classroom.close() }; worker.shutdown(); super.onDestroy() }
+    override fun onDestroy() { recorder.discard(); if (::recognition.isInitialized) recognition.close(); player?.release(); audioFocus?.let { (getSystemService(AUDIO_SERVICE) as AudioManager).abandonAudioFocusRequest(it) }; if (::page.isInitialized) { page.removeJavascriptInterface("LovePinyinAndroid"); page.destroy() }; if (::classroom.isInitialized) worker.execute { classroom.close() }; worker.shutdown(); super.onDestroy() }
     companion object { private var storageProfileInitialized = false; private var processVerification: String? = null; const val HOST="app.lovepinyin.invalid"; const val ENTRY="https://app.lovepinyin.invalid/" }
 }

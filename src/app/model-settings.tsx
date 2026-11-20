@@ -1,5 +1,6 @@
 import { isAndroidApp } from '../platform/android-app';
 import { useEffect, useState } from 'react';
+import androidModel from '../../content/android-asr.json';
 import iosModel from '../../content/qwen-asr.json';
 import { householdApi } from '../platform/api-client';
 import type { IOSModelStatus } from '../platform/audio/ios-recognition';
@@ -41,7 +42,8 @@ export function ModelSettings() {
         if (!active) return;
         setStatus(result);
         setQueryFailed(false);
-        if (result.state === 'downloading') timer = window.setTimeout(refresh, 3000);
+        if (['downloading', 'removing'].includes(result.state))
+          timer = window.setTimeout(refresh, 3000);
       } catch {
         if (active) setQueryFailed(true);
       } finally {
@@ -71,21 +73,13 @@ export function ModelSettings() {
     }
   }
 
-  if (isAndroidApp())
-    return (
-      <section className="parent-setting model-settings">
-        <strong>本地语音识别</strong>
-        <p>此 Android 版本暂不支持本地识别。可以听示范后人工确认，不会生成识别结果或发音分数。</p>
-      </section>
-    );
-
   return (
     <section className="parent-setting model-settings">
       <div>
         <strong>本地语音识别模型</strong>
         <p>
           {ios
-            ? `可选 Qwen3-ASR 0.6B，约 ${iosSize} GB。下载后在这台设备上离线识别。`
+            ? `可选 Qwen3-ASR 0.6B，约 ${isAndroidApp() ? (Object.values(androidModel.files).reduce((sum, file) => sum + file.bytes, 0) / 1e9).toFixed(2) : iosSize} GB。下载后在这台设备上离线识别。`
             : '可选 Qwen3-ASR 0.6B，约 1.01 GB。下载后在这台电脑上为天天练和拼音小卖部识别读音。'}
           不下载时使用人工确认。
         </p>
@@ -100,11 +94,13 @@ export function ModelSettings() {
                   ? '模型已安装'
                   : state === 'downloading'
                     ? `正在下载并校验${bytes && received ? ` · ${Math.floor((received / bytes) * 100)}%` : ''}，请保持应用运行…`
-                    : state === 'failed'
-                      ? '下载或校验失败，请检查网络和设备空间后重试。'
-                      : state === 'unsupported'
-                        ? '此设备使用人工确认。'
-                        : '模型尚未安装'}
+                    : state === 'removing'
+                      ? '正在移除模型…'
+                      : state === 'failed'
+                        ? '下载或校验失败，请检查网络和设备空间后重试。'
+                        : state === 'unsupported'
+                          ? '此设备使用人工确认。'
+                          : '模型尚未安装'}
         </p>
       </div>
       {queryFailed ? (

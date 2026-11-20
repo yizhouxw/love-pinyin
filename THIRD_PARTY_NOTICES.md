@@ -90,3 +90,7 @@ EdUHK 香港教育大学普通话语音学习语料（SPEC-018 MATCH-14）：来
 Qwen3-ASR 0.6B（SPEC-019 SHOP-09）：[Qwen 原始权重](https://huggingface.co/Qwen/Qwen3-ASR-0.6B)与[本项目固定的 MLX 8-bit 转换](https://huggingface.co/mlx-community/Qwen3-ASR-0.6B-8bit/tree/89e96d92ba34aca20b3e29fb10cc284097d1219f)为 Apache-2.0。权重由家长显式下载，摘要在 `content/qwen-asr.json`，不会随安装包、仓库或容器分发。Apple Silicon 运行时复用已有 MLX-Audio 和 MLX 锁。小卖部新增三条人工确认语音沿用 SPEC-011 生成流程及许可。
 
 iOS 使用 [MLX Audio Swift 0.1.8](https://github.com/Blaizzy/mlx-audio-swift/tree/v0.1.8) 和 [MLX Swift 0.33.0](https://github.com/ml-explore/mlx-swift/tree/0.33.0)，其运行时代码及第三方许可证随 iOS 构建分发。iOS 与 Mac 使用同一份 Apache-2.0 权重及 `content/qwen-asr.json` 摘要；家长在当前设备主动下载。
+
+## Android 本地识别
+
+Android 使用固定 sherpa-onnx 2.0.1（Apache-2.0）及其内含 ONNX Runtime（MIT）。Qwen3-ASR 0.6B ONNX int8（Apache-2.0）由家长主动下载，不随安装包分发。固定来源、修订和摘要见 `content/android-asr.json`，许可证见 `resources/licenses/Android-ASR.txt`，同一许可文本随 Android APK 分发。ONNX 文件是从 Qwen 权重转换和量化的派生版本，应用未重新训练。
