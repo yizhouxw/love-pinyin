@@ -9,3 +9,5 @@
 不新增 Android 运行时第三方依赖。AGP 9.1.1、Gradle 9.3.1、JDK17 与 SDK 来源和许可沿用 Android harness；实装结果随切片记录。
 
 桥接复用前端原生能力入口并显式识别 Android，不伪装 iOS。Kotlin 使用系统 org.json 和 SQLite，无第三方运行时库；业务数据由构建时既有 classroom_contract 生成。完整快照事务存储作为首版单窗口实现，写入失败保持原内存状态。原生文件选择与确认通过异步请求 ID 回传。备份使用 love-pinyin-android v1，严格限定当前内容版本；跨平台互导另行实现。
+
+2026-11-20：家庭侧载构建默认复用 iOS 家庭素材清单，`--public` 显式生成仅新版的资源包。Android 系统字号使用共享原生页面的排版规则。耳机断开与 WebView 渲染进程退出复用原生音频和游戏中断路径。渲染恢复仅替换 WebView，沿用原学习服务、SQLite 和模型，放弃尚未确认的文件恢复与权限请求。

@@ -230,7 +230,7 @@ class Classroom(context: Context, private val content: JSONObject, private val n
         val backup = try { JSONObject(bytes.toString(Charsets.UTF_8)) } catch (_: Exception) { fail("ANDROID_BACKUP_INVALID") }
         if (backup.optString("format") != "love-pinyin-android") fail("ANDROID_BACKUP_INVALID")
         if (backup.optInt("version") != 1 || backup.optString("contentVersion") != content.getString("version")) fail("ANDROID_BACKUP_VERSION_UNSUPPORTED")
-        val saved = backup.getJSONObject("state"); validate(saved); return saved
+        val saved = backup.getJSONObject("state"); validate(saved); return backup
     }
     private fun validate(saved: JSONObject) {
         fun invalid(): Nothing = fail("ANDROID_STORAGE_INVALID")
@@ -322,8 +322,16 @@ class Classroom(context: Context, private val content: JSONObject, private val n
             if (clock.getDouble("leaseUntil") > clock.getDouble("accountedAt") + policy.getDouble("leaseSeconds")) invalid()
         }
     }
-    @Synchronized fun preview(bytes: ByteArray): Pair<String,Int> { val s = readBackup(bytes); return "Android 学习备份\n${s.getJSONArray("attempts").length()} 条作答，${s.getInt("completed")} 轮练习。\n将替换此设备的学习记录；不会合并。" to state.getInt("revision") }
-    @Synchronized fun restore(bytes: ByteArray, revision: Int) { if (state.getInt("revision") != revision) fail("REVISION_CONFLICT"); val saved = readBackup(bytes); saved.optJSONObject("gameClock")?.put("leaseUntil",0); update { next -> next.keys().asSequence().toList().forEach { next.remove(it) }; saved.keys().forEach { next.put(it,saved.get(it)) } } }
+    @Synchronized fun preview(bytes: ByteArray): Pair<String, Int> {
+        val backup = readBackup(bytes)
+        val saved = backup.getJSONObject("state")
+        val date = runCatching { Instant.parse(backup.getString("createdAt")) }.getOrNull()
+            ?.atZone(zone)?.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+            ?: "时间未知"
+        return ("来源：爱拼音 Android · $date\n课程版本：${backup.getString("contentVersion")}\n" +
+            "${saved.getJSONArray("attempts").length()} 条作答，${saved.getInt("completed")} 轮练习。\n将替换此设备的学习记录。") to state.getInt("revision")
+    }
+    @Synchronized fun restore(bytes: ByteArray, revision: Int) { if (state.getInt("revision") != revision) fail("REVISION_CONFLICT"); val saved = readBackup(bytes).getJSONObject("state"); saved.optJSONObject("gameClock")?.put("leaseUntil",0); update { next -> next.keys().asSequence().toList().forEach { next.remove(it) }; saved.keys().forEach { next.put(it,saved.get(it)) } } }
     private fun validatePracticeProgress(key: String, value: Any) {
         if (key !in setOf("word:original","word:household","daily:original","daily:household")) fail("ANDROID_PROGRESS_INVALID")
         if (value.toString().length > 262144) fail("ANDROID_PROGRESS_INVALID")

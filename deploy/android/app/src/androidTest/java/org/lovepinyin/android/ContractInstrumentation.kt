@@ -80,7 +80,8 @@ class ContractInstrumentation : Instrumentation() {
             check(recovered.getJSONObject("results").has(id))
             service.practiceProgress("word:original","[\"word-02:read\"]")
             service.practiceProgress("daily:original","{\"daily-test-item\":\"practiced\"}")
-            val backup=service.exportBackup(); val (_,revision)=service.preview(backup)
+            val backup=service.exportBackup(); val (preview,revision)=service.preview(backup)
+            check(preview.contains("来源：爱拼音 Android") && preview.contains("课程版本：${content.getString("version")}") && preview.contains("1 条作答"))
             try { service.restore("{}".toByteArray(),revision); error("invalid backup accepted") } catch (_: IllegalArgumentException) {}
             val corrupt = JSONObject(backup.toString(Charsets.UTF_8))
             corrupt.getJSONObject("state").getJSONObject("current").getJSONArray("tasks").getJSONObject(0).getJSONObject("publicExercise").put("prompt","篡改题目")

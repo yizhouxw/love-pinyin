@@ -215,6 +215,49 @@ try {
     checks.push(
       'real landscape/portrait rotation preserves progress and has no horizontal overflow',
     );
+  } else if (mode === 'parity') {
+    const pack = await bridge('practicePacks');
+    expect(pack.household).toBeDefined();
+    expect(pack.original).toBeDefined();
+    await home();
+    await page.getByRole('button', { name: '家长管理', exact: true }).click();
+    const gate = page.getByRole('button', { name: '我是家长，继续', exact: true });
+    if (await gate.isVisible()) await gate.click();
+    await page.getByText('高级设置', { exact: true }).click();
+    const source = page.getByRole('combobox', { name: '学习素材' });
+    await expect(source).toHaveValue('original');
+    await Promise.all([page.waitForEvent('load'), source.selectOption('household')]);
+    await home();
+    await page.getByText('查看全部课程', { exact: true }).click();
+    await page.locator('button[data-lesson-id]').first().click();
+    await page.getByRole('button', { name: /播放课程录音/ }).click();
+    const slider = page.getByRole('slider', { name: '课程录音播放进度' });
+    await expect.poll(() => slider.inputValue()).not.toBe('0');
+    const scale = run('shell', 'settings', 'get', 'system', 'font_scale');
+    try {
+      await expect(page.locator('html')).not.toHaveAttribute('data-ios-large-text', '');
+      await page.evaluate(() => {
+        window.__qaTypography = true;
+      });
+      run('shell', 'settings', 'put', 'system', 'font_scale', '1.5');
+      await expect(page.locator('html')).toHaveAttribute('data-ios-large-text', '');
+      await expect(slider).toBeVisible();
+      expect(await page.evaluate(() => window.__qaTypography)).toBe(true);
+      shot('parity-large-text');
+    } finally {
+      if (scale === 'null') run('shell', 'settings', 'delete', 'system', 'font_scale');
+      else run('shell', 'settings', 'put', 'system', 'font_scale', scale);
+    }
+    await expect(page.locator('html')).not.toHaveAttribute('data-ios-large-text', '');
+    await page.getByRole('button', { name: /暂停课程录音/ }).click();
+    await home();
+    await page.getByRole('button', { name: '家长管理', exact: true }).click();
+    if (await gate.isVisible()) await gate.click();
+    await page.getByText('高级设置', { exact: true }).click();
+    await expect(source).toHaveValue('household');
+    checks.push(
+      'both material packs, persistent switch, old lesson playback and live system font size',
+    );
   } else if (mode === 'audio') {
     await home();
     await page.getByText('查看全部课程', { exact: true }).click();

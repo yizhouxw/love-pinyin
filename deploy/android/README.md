@@ -10,6 +10,8 @@ ANDROID_SERIAL=设备序列号 ./deploy/android/test-contracts.sh
 
 产物：`deploy/android/app/build/outputs/apk/debug/app-debug.apk`。这是本机签名的侧载构建，不是应用商店发布包。首次构建需按固定 Wrapper/插件版本联网补齐缓存，后续可离线构建。不要删除调试签名密钥，否则后续不能直接覆盖安装；密钥不进仓库。
 
+默认准备家庭侧载包，随附两套学习素材。家长可在「高级设置 → 学习素材」切换。仅需新版时，使用 `./deploy/android/prepare.sh --public`。家庭包仅用于家庭设备。
+
 安装后课程、声音、练习、游戏与 SQLite 记录均在设备本机，无需连接 Mac 或网络。无遥测。INTERNET 只用于家长主动下载固定模型，RECORD_AUDIO 仅在录音时由系统授权；WebView 拒绝远端资源。语音识别不可用时使用听读和人工确认，不生成发音分数。
 
 家长管理可以通过系统文件选择器导出和恢复 Android v1 备份。恢复前预览并确认，要求内容版本一致；不支持与 Web/iOS 备份互导。**卸载 Android 应用会删除其私有学习记录，卸载前请导出备份；覆盖更新保留记录。**

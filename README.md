@@ -39,7 +39,7 @@
 
 ## Android 独立版
 
-Android App 随包提供课程、声音、词语与每日练习、四款游戏和本机学习记录，可离线使用，并带有自适应应用图标。安装构建与备份说明见 [Android 说明](deploy/android/README.md)，实际测试范围见 [Android 验收记录](docs/engineering/android-product-acceptance.md)。Android 10 以上受支持的 arm64 设备可在家长设置主动下载约0.99 GB的 Qwen3-ASR 本地模型，下载后离线识别；未安装或设备不支持时使用听读与人工确认。覆盖安装保留数据，卸载前请导出 Android 备份。
+Android App 随包提供课程、声音、词语与每日练习、四款游戏和本机学习记录，可离线使用。家庭侧载包可在家长高级设置切换新版与旧版家庭素材，并带有自适应应用图标。安装构建与备份说明见 [Android 说明](deploy/android/README.md)，实际测试范围见 [Android 验收记录](docs/engineering/android-product-acceptance.md)。Android 10 以上受支持的 arm64 设备可在家长设置主动下载约0.99 GB的 Qwen3-ASR 本地模型，下载后离线识别；未安装或设备不支持时使用听读与人工确认。覆盖安装保留数据，卸载前请导出 Android 备份。
 
 ## 可选的跟读识别
 
