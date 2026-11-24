@@ -726,6 +726,7 @@
   .word-reading-layout > .word-selected-picture {
     position: static;
     align-self: stretch;
+    overflow-y: auto;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
   .word-reading-layout .word-image-frame {
