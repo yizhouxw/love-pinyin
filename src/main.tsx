@@ -7,6 +7,12 @@ import './app/styles.css';
 
 if (isNativeApp()) {
   document.documentElement.dataset.iosApp = '';
+  document.addEventListener('contextmenu', (event) => {
+    const target = event.target;
+    if (target instanceof HTMLElement && target.isContentEditable) return;
+    if (target instanceof Element && target.closest('input, textarea, select')) return;
+    event.preventDefault();
+  });
   window.addEventListener('lp-ios-audio-interrupted', () => audioPlayer.stop());
   window.addEventListener('lp-native-audio-interrupted', () => audioPlayer.stop());
 }

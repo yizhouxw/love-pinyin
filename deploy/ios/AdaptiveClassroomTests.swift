@@ -3,6 +3,21 @@ import UIKit
 
 final class AdaptiveClassroomTests: XCTestCase {
     @MainActor
+    func testLongPressOnHomeTextKeepsLearningControlsAvailable() {
+        let app = XCUIApplication()
+        app.launchEnvironment["LP_UI_TEST_PROFILE"] = UUID().uuidString
+        app.launch()
+        let title = app.staticTexts.firstMatch
+        XCTAssertTrue(title.waitForExistence(timeout: 25))
+        title.press(forDuration: 1.3)
+        XCTAssertFalse(app.menuItems.firstMatch.exists)
+        XCTAssertFalse(app.buttons.matching(NSPredicate(format: "label IN %@", ["复制", "Copy", "查询", "Look Up"])).firstMatch.exists)
+        let parent = app.buttons["家长管理"]
+        parent.tap()
+        XCTAssertTrue(app.buttons["我是家长，继续"].waitForExistence(timeout: 10))
+    }
+
+    @MainActor
     func testQuickSettingsDismissAndRotate() {
         continueAfterFailure = false
         let app = XCUIApplication()

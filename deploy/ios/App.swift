@@ -93,6 +93,7 @@ final class LearningViewController: UIViewController, WKNavigationDelegate, WKSc
                 LearningBridge(controller: self), contentWorld: .page, name: "learning"
             )
             let webView = WKWebView(frame: .zero, configuration: config)
+            webView.allowsLinkPreview = false
             webView.navigationDelegate = self
             self.webView = webView
             install(webView)
