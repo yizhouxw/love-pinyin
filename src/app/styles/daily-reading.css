@@ -376,7 +376,7 @@
   margin-block: 0;
   min-height: 48px;
 }
-.daily-reader > p:first-of-type {
+.daily-reading-content > p {
   margin: 0.5rem 0;
   color: #52665d;
 }
@@ -451,5 +451,139 @@
 @media (max-width: 760px) {
   .daily-workspace > .daily-list {
     max-height: min(240px, 32dvh);
+  }
+}
+
+@media (max-width: 600px), (max-width: 900px) and (max-height: 500px) {
+  .home-page:has(> .daily-page) {
+    padding-block: 4px 12px;
+  }
+  .daily-page .daily-heading {
+    margin-block: 4px;
+  }
+  .daily-page .daily-heading h1 {
+    font-size: 1.5rem;
+  }
+  .daily-page .daily-heading p {
+    margin: 0;
+  }
+  .daily-page .daily-heading .eyebrow {
+    display: none;
+  }
+  .daily-page .daily-days {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(3.25rem, 1fr));
+    gap: 4px;
+    margin-block: 8px;
+  }
+  .daily-page .daily-days button {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 4px;
+    font-size: 0.85rem;
+  }
+  .daily-section-heading h2 {
+    font-size: 1.12rem;
+    margin: 0;
+  }
+  .daily-page .daily-sections {
+    gap: 4px;
+    margin-block: 4px;
+  }
+  .daily-page .daily-sections button {
+    gap: 0;
+    padding: 4px 8px;
+    min-height: 44px;
+  }
+  .daily-page .daily-preview {
+    padding: 4px 8px;
+  }
+  .daily-preview > p {
+    display: none;
+  }
+  .daily-page .daily-session-heading {
+    margin-block: 2px;
+  }
+  .daily-page .daily-section-navigation {
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .daily-page .daily-section-tabs {
+    padding: 2px;
+  }
+  .daily-page .daily-section-navigation button {
+    min-height: 44px;
+  }
+  .daily-page .daily-section-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 44px;
+  }
+  .daily-section-arrow > span:nth-child(2) {
+    display: none;
+  }
+  .daily-page .daily-reader {
+    padding: 8px;
+  }
+  .daily-reading-content .daily-reader-top {
+    gap: 2px 8px;
+  }
+  .daily-reading-content > p {
+    margin-block: 2px 4px;
+    font-size: 0.9rem;
+  }
+  .daily-reading-content .daily-target {
+    padding-block: 4px;
+    line-height: 1.45;
+  }
+  .daily-reading-content .daily-status-strip {
+    min-height: max(2.5rem, calc(2lh + 7px));
+    row-gap: 2px;
+    padding: 3px 6px;
+    margin-block: 4px;
+  }
+  .daily-reading-content .daily-status-strip::before {
+    content: none;
+  }
+  .daily-reader-controls :is(.daily-actions, .daily-next) {
+    margin-block: 4px;
+    gap: 4px;
+  }
+  .daily-reader-controls :is(.daily-actions, .daily-next) > button {
+    min-height: 44px;
+    padding: 4px 6px;
+    font-size: 0.87rem;
+  }
+  .daily-reader-controls .daily-next > button:nth-child(2) {
+    order: 0;
+    width: auto;
+    flex: 1;
+  }
+}
+
+@media (min-width: 540px) and (max-width: 900px) and (max-height: 500px) {
+  :root:not([data-ios-large-text]) .daily-page .daily-reader {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 4px 10px;
+  }
+  .daily-reader > :not(.daily-reading-content, .daily-reader-controls) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 540px) and (max-width: 900px) and (max-height: 500px) {
+  :root:not([data-ios-large-text]) .daily-page:has(.daily-workspace) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 4px 8px;
+  }
+  .daily-page:has(.daily-workspace) > :not(.context-title-row, .daily-session-heading) {
+    grid-column: 1 / -1;
+  }
+  .daily-reader-controls .practice-settings .quick-settings-label {
+    display: none;
   }
 }

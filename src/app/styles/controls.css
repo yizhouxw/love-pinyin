@@ -87,7 +87,7 @@ button:not(:disabled):active {
 .inline-control {
   gap: var(--control-gap);
 }
-.feedback .voice-button > span {
+.feedback .voice-button > span[aria-hidden] {
   font-size: 24px;
 }
 .answer-explanation {

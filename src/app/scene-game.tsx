@@ -424,6 +424,20 @@ export function SceneGame(props: Props) {
             >
               玩法与故事
             </button>
+            <div className="scene-help">
+              <button
+                className="quiet"
+                disabled={busy || sending || hit !== null}
+                onClick={props.onHint}
+              >
+                听提示
+              </button>
+              {voice.failureId && locked && (
+                <button className="quiet" disabled={busy || sending} onClick={props.onSkip}>
+                  先跳过这题
+                </button>
+              )}
+            </div>
             <progress aria-label="关卡完成进度" value={props.index} max={props.total} />
           </div>
           <AdventureStage
@@ -463,20 +477,6 @@ export function SceneGame(props: Props) {
         <aside className="scene-mission" aria-label="本关任务">
           <h1>{game.controls}</h1>
           {cue?.visualCue && <div className="scene-cue">{cue.visualCue}</div>}
-          <div className="scene-help">
-            <button
-              className="quiet"
-              disabled={busy || sending || hit !== null}
-              onClick={props.onHint}
-            >
-              听提示
-            </button>
-            {voice.failureId && locked && (
-              <button className="quiet" disabled={busy || sending} onClick={props.onSkip}>
-                先跳过这题
-              </button>
-            )}
-          </div>
           <div className="scene-response" aria-label="本关反馈">
             <VoiceFailure voice={voice} />
             {hit !== null && !answer && !busy && !sending && props.error && (

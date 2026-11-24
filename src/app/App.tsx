@@ -706,7 +706,7 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
   if (active && question)
     return (
       <main
-        className={`play-page ${game ? `game-play game-${game.id}` : ''}`}
+        className={`play-page exercise-page ${game ? `game-play game-${game.id}` : ''}`}
         onClickCapture={() => {
           voiceStarted.current = true;
         }}
@@ -773,299 +773,303 @@ export function LearningApp({ onBootstrap }: { onBootstrap: (value: Bootstrap) =
           </p>
         )}
         <section className="question-card">
-          <p className="eyebrow">
-            {question.pictureId || question.options.some((o) => o.pictureId)
-              ? '生活拼音站'
-              : question.type === 'listen-choice'
-                ? '听音发现站'
-                : question.type === 'tone-choice'
-                  ? question.audioRef
-                    ? '声调听辨站'
-                    : '声调观察站'
-                  : question.type === 'blend-choice'
-                    ? '拼读组合站'
-                    : '字形发现站'}
-          </p>
-          {question.pictureId && (
-            <div className="word-question-picture">
-              <Picture
-                key={pictureScope}
-                id={question.pictureId}
-                catalog={curriculum?.illustrations}
-                retry={pictureRetry}
-                onStatus={(ready) => onPictureStatus(question.pictureId!, ready)}
-              />
-            </div>
-          )}
-          {questionVoice?.visualCue && (
-            <div className="question-cue" aria-label="观察目标">
-              {questionVoice.visualCue}
-            </div>
-          )}
-          <h1>{questionVoice?.text ?? question.prompt}</h1>
-          <div className="question-audio-actions" role="group" aria-label="听题与示范音">
-            {question.audioRef ? (
-              <>
+          <div className="question-intro">
+            <p className="eyebrow">
+              {question.pictureId || question.options.some((o) => o.pictureId)
+                ? '生活拼音站'
+                : question.type === 'listen-choice'
+                  ? '听音发现站'
+                  : question.type === 'tone-choice'
+                    ? question.audioRef
+                      ? '声调听辨站'
+                      : '声调观察站'
+                    : question.type === 'blend-choice'
+                      ? '拼读组合站'
+                      : '字形发现站'}
+            </p>
+            {question.pictureId && (
+              <div className="word-question-picture">
+                <Picture
+                  key={pictureScope}
+                  id={question.pictureId}
+                  catalog={curriculum?.illustrations}
+                  retry={pictureRetry}
+                  onStatus={(ready) => onPictureStatus(question.pictureId!, ready)}
+                />
+              </div>
+            )}
+            {questionVoice?.visualCue && (
+              <div className="question-cue" aria-label="观察目标">
+                {questionVoice.visualCue}
+              </div>
+            )}
+            <h1>{questionVoice?.text ?? question.prompt}</h1>
+            <div className="question-audio-actions" role="group" aria-label="听题与示范音">
+              {question.audioRef ? (
+                <>
+                  <VoiceButton
+                    id={question.audioRef}
+                    kind="standard"
+                    voice={voice}
+                    label="听拼音"
+                    className="listen-question"
+                  />
+                  <details className="question-help">
+                    <summary>听题目说明</summary>
+                    <VoiceButton id={`prompt-${question.id}`} voice={voice} label="听题目" />
+                  </details>
+                </>
+              ) : (
                 <VoiceButton
-                  id={question.audioRef}
-                  kind="standard"
+                  id={`prompt-${question.id}`}
                   voice={voice}
-                  label="听拼音"
+                  label="听题目"
                   className="listen-question"
                 />
-                <details className="question-help">
-                  <summary>听题目说明</summary>
-                  <VoiceButton id={`prompt-${question.id}`} voice={voice} label="听题目" />
-                </details>
-              </>
-            ) : (
-              <VoiceButton
-                id={`prompt-${question.id}`}
-                voice={voice}
-                label="听题目"
-                className="listen-question"
-              />
-            )}
-          </div>
-          <div className="question-audio-state">
-            <p
-              id="answer-availability"
-              className="listen-before-answer"
-              role="status"
-              data-empty={Boolean(voice.failureId) || undefined}
-            >
-              {answerUnavailableReason ?? '可以选择答案了。'}
-            </p>
-            <p
-              className="question-audio-error"
-              role={voice.failureId ? 'alert' : undefined}
-              data-empty={!voice.failureId || undefined}
-            >
-              声音暂时没有响起，请重试。
-            </p>
-            <button
-              className="quiet"
-              data-empty={!voice.failureId || undefined}
-              disabled={!voice.failureId}
-              onClick={voice.retry}
-            >
-              ↻ 重试声音
-            </button>
-          </div>
-          {pictureIds.length > 0 && (
-            <div className="question-picture-recovery" data-empty={!picturesPending || undefined}>
+              )}
+            </div>
+            <div className="question-audio-state">
+              <p
+                id="answer-availability"
+                className="listen-before-answer"
+                role="status"
+                data-empty={Boolean(voice.failureId) || undefined}
+              >
+                {answerUnavailableReason ?? '可以选择答案了。'}
+              </p>
+              <p
+                className="question-audio-error"
+                role={voice.failureId ? 'alert' : undefined}
+                data-empty={!voice.failureId || undefined}
+              >
+                声音暂时没有响起，请重试。
+              </p>
               <button
                 className="quiet"
-                disabled={!picturesPending}
-                onClick={() => setPictureRetry((n) => n + 1)}
+                data-empty={!voice.failureId || undefined}
+                disabled={!voice.failureId}
+                onClick={voice.retry}
               >
-                ↻ 重试图片
+                ↻ 重试声音
               </button>
-              <VoiceButton
-                id="picture-error"
-                voice={voice}
-                label="听图片提示"
-                className="option-voice"
-              />
             </div>
-          )}
-          <div
-            className={`options ${question.type === 'blend-choice' ? 'blend-options' : ''}`}
-            role="group"
-            aria-label={question.type === 'blend-choice' ? '完整拼读候选' : '选择答案'}
-          >
-            {question.options.map((option: Json, index: number) => (
-              <div className="option-with-voice" key={option.id}>
-                <button
-                  data-option-id={option.id}
-                  aria-label={
-                    isNativeApp() && !option.pictureId && !option.writing
-                      ? `选项 ${String.fromCharCode(65 + index)}，${option.label}`
-                      : undefined
-                  }
-                  aria-describedby="answer-availability"
-                  className={`option game-option ${question.type} ${hint?.answer.optionId === option.id && !answer ? 'hinted' : ''} ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
-                  disabled={
-                    Boolean(answer && (answer.correct || corrected)) ||
-                    busy ||
-                    answerNeedsAudio ||
-                    picturesPending
-                  }
-                  ref={
-                    question.type === 'blend-choice'
-                      ? (element) => {
-                          if (element) blendOptions.current.set(option.id, element);
-                          else blendOptions.current.delete(option.id);
-                        }
-                      : undefined
-                  }
-                  aria-pressed={
-                    question.type === 'blend-choice' ? blendPreview?.id === option.id : undefined
-                  }
-                  onClick={() => {
-                    if (question.type === 'blend-choice') {
-                      setBlendDraft({ instanceId: task.instanceId, optionId: option.id });
-                      if (guidanceEnabled) playVoice('ui-blend_ready');
-                    } else void submitOption(option.id);
-                  }}
-                >
-                  <span className="option-index">{String.fromCharCode(65 + index)}</span>
-                  <GameOptionContent
-                    pictureId={option.pictureId}
-                    pictureKey={pictureScope}
-                    pictureRetry={pictureRetry}
-                    onPictureStatus={onPictureStatus}
-                    illustrations={curriculum?.illustrations}
-                    writing={option.writing}
-                    writingCatalog={curriculum?.writing}
-                    type={question.type}
-                    label={option.label}
-                    initials={curriculum?.inventory?.initials ?? []}
-                  />
-                </button>
-                {questionVoice?.options[option.id] && (
-                  <VoiceButton
-                    id={`option-${question.id}-${option.id}`}
-                    voice={voice}
-                    label={`听选项 ${String.fromCharCode(65 + index)}`}
-                    className="option-voice"
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-          {question.type === 'blend-choice' && (
-            <section className="blend-workbench" aria-label="拼读试选台">
-              <VoiceButton id="ui-blend_how" voice={voice} label="听拼读怎么玩" />
-              <div className="blend-preview-space">
-                {blendPreview ? (
-                  <div className="blend-preview" aria-label="当前拼读预览">
-                    <span aria-hidden="true">🧩</span>
-                    <strong>{blendPreview.label}</strong>
-                  </div>
-                ) : (
-                  <p className="blend-empty">🧩 选一张卡片，看看拼在一起的样子</p>
-                )}
-              </div>
-              <div className="blend-controls">
-                <button
-                  ref={blendConfirm}
-                  className="blend-confirm"
-                  aria-label="确认拼读"
-                  aria-describedby="answer-availability"
-                  disabled={
-                    !blendPreview ||
-                    busy ||
-                    answerNeedsAudio ||
-                    picturesPending ||
-                    Boolean(answer && (answer.correct || corrected))
-                  }
-                  onClick={() => {
-                    if (blendPreview) void submitOption(blendPreview.id);
-                  }}
-                >
-                  ✓ 确认拼读
-                </button>
+            {pictureIds.length > 0 && (
+              <div className="question-picture-recovery" data-empty={!picturesPending || undefined}>
                 <button
                   className="quiet"
-                  aria-label="撤销拼读选择"
-                  disabled={busy || !blendPreview}
-                  onClick={() => {
-                    if (!blendPreview) return;
-                    setBlendDraft(null);
-                    stopVoice();
-                    blendOptions.current.get(blendPreview.id)?.focus();
-                  }}
+                  disabled={!picturesPending}
+                  onClick={() => setPictureRetry((n) => n + 1)}
                 >
-                  ↶ 重新选择
+                  ↻ 重试图片
                 </button>
-              </div>
-            </section>
-          )}
-          <div className="exercise-response">
-            {answer && (
-              <div className={`feedback ${answer.correct ? 'good' : 'try-again'}`} role="status">
-                <strong>
-                  {answer.correct
-                    ? '答对啦！'
-                    : corrected
-                      ? '找到正确答案啦！'
-                      : '没关系，看看亮起来的卡片，再选一次。'}
-                </strong>
-                <span>
-                  {answer.clockPending
-                    ? '此练习已保存为待校时记录，不计入掌握度。'
-                    : answer.mastery.status === 'mastered'
-                      ? '这个知识点已掌握 ✨'
-                      : '完成后继续下一关吧。'}
-                </span>
-                {answer.explanation && answer.explanationAudioId && (
-                  <details className="answer-explanation">
-                    <summary>听讲解</summary>
-                    <p>{answer.explanation}</p>
-                    <VoiceButton id={answer.explanationAudioId} voice={voice} label="重听讲解" />
-                  </details>
-                )}
+                <VoiceButton
+                  id="picture-error"
+                  voice={voice}
+                  label="听图片提示"
+                  className="option-voice"
+                />
               </div>
             )}
-            {!answer && (
-              <div className="exercise-actions">
+          </div>
+          <div className="question-workspace">
+            <div
+              className={`options ${question.type === 'blend-choice' ? 'blend-options' : ''}`}
+              role="group"
+              aria-label={question.type === 'blend-choice' ? '完整拼读候选' : '选择答案'}
+            >
+              {question.options.map((option: Json, index: number) => (
+                <div className="option-with-voice" key={option.id}>
+                  <button
+                    data-option-id={option.id}
+                    aria-label={
+                      isNativeApp() && !option.pictureId && !option.writing
+                        ? `选项 ${String.fromCharCode(65 + index)}，${option.label}`
+                        : undefined
+                    }
+                    aria-describedby="answer-availability"
+                    className={`option game-option ${question.type} ${hint?.answer.optionId === option.id && !answer ? 'hinted' : ''} ${answer ? (option.id === answer.correctOptionId ? 'correct' : option.id === answer.selectedOptionId ? 'wrong' : '') : ''}`}
+                    disabled={
+                      Boolean(answer && (answer.correct || corrected)) ||
+                      busy ||
+                      answerNeedsAudio ||
+                      picturesPending
+                    }
+                    ref={
+                      question.type === 'blend-choice'
+                        ? (element) => {
+                            if (element) blendOptions.current.set(option.id, element);
+                            else blendOptions.current.delete(option.id);
+                          }
+                        : undefined
+                    }
+                    aria-pressed={
+                      question.type === 'blend-choice' ? blendPreview?.id === option.id : undefined
+                    }
+                    onClick={() => {
+                      if (question.type === 'blend-choice') {
+                        setBlendDraft({ instanceId: task.instanceId, optionId: option.id });
+                        if (guidanceEnabled) playVoice('ui-blend_ready');
+                      } else void submitOption(option.id);
+                    }}
+                  >
+                    <span className="option-index">{String.fromCharCode(65 + index)}</span>
+                    <GameOptionContent
+                      pictureId={option.pictureId}
+                      pictureKey={pictureScope}
+                      pictureRetry={pictureRetry}
+                      onPictureStatus={onPictureStatus}
+                      illustrations={curriculum?.illustrations}
+                      writing={option.writing}
+                      writingCatalog={curriculum?.writing}
+                      type={question.type}
+                      label={option.label}
+                      initials={curriculum?.inventory?.initials ?? []}
+                    />
+                  </button>
+                  {questionVoice?.options[option.id] && (
+                    <VoiceButton
+                      id={`option-${question.id}-${option.id}`}
+                      voice={voice}
+                      label={`听选项 ${String.fromCharCode(65 + index)}`}
+                      className="option-voice"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+            {question.type === 'blend-choice' && (
+              <section className="blend-workbench" aria-label="拼读试选台">
+                <VoiceButton id="ui-blend_how" voice={voice} label="听拼读怎么玩" />
+                <div className="blend-preview-space">
+                  {blendPreview ? (
+                    <div className="blend-preview" aria-label="当前拼读预览">
+                      <span aria-hidden="true">🧩</span>
+                      <strong>{blendPreview.label}</strong>
+                    </div>
+                  ) : (
+                    <p className="blend-empty">🧩 选一张卡片，看看拼在一起的样子</p>
+                  )}
+                </div>
+                <div className="blend-controls">
+                  <button
+                    ref={blendConfirm}
+                    className="blend-confirm"
+                    aria-label="确认拼读"
+                    aria-describedby="answer-availability"
+                    disabled={
+                      !blendPreview ||
+                      busy ||
+                      answerNeedsAudio ||
+                      picturesPending ||
+                      Boolean(answer && (answer.correct || corrected))
+                    }
+                    onClick={() => {
+                      if (blendPreview) void submitOption(blendPreview.id);
+                    }}
+                  >
+                    ✓ 确认拼读
+                  </button>
+                  <button
+                    className="quiet"
+                    aria-label="撤销拼读选择"
+                    disabled={busy || !blendPreview}
+                    onClick={() => {
+                      if (!blendPreview) return;
+                      setBlendDraft(null);
+                      stopVoice();
+                      blendOptions.current.get(blendPreview.id)?.focus();
+                    }}
+                  >
+                    ↶ 重新选择
+                  </button>
+                </div>
+              </section>
+            )}
+            <div className="exercise-response">
+              {answer && (
+                <div className={`feedback ${answer.correct ? 'good' : 'try-again'}`} role="status">
+                  <strong>
+                    {answer.correct
+                      ? '答对啦！'
+                      : corrected
+                        ? '找到正确答案啦！'
+                        : '没关系，看看亮起来的卡片，再选一次。'}
+                  </strong>
+                  <span>
+                    {answer.clockPending
+                      ? '此练习已保存为待校时记录，不计入掌握度。'
+                      : answer.mastery.status === 'mastered'
+                        ? '这个知识点已掌握 ✨'
+                        : '完成后继续下一关吧。'}
+                  </span>
+                  {answer.explanation && answer.explanationAudioId && (
+                    <details className="answer-explanation">
+                      <summary>听讲解</summary>
+                      <p>{answer.explanation}</p>
+                      <VoiceButton id={answer.explanationAudioId} voice={voice} label="重听讲解" />
+                    </details>
+                  )}
+                </div>
+              )}
+              {!answer && (
+                <div className="exercise-actions">
+                  <button
+                    className="quiet hint-button"
+                    disabled={busy}
+                    onClick={() =>
+                      void act(async () =>
+                        setHint(
+                          (await api(`/instances/${task.instanceId}/hint`, {
+                            method: 'POST',
+                          })) as Hint,
+                        ),
+                      )
+                    }
+                  >
+                    💡 给我一点提示
+                  </button>
+                  <button
+                    className="quiet skip-button"
+                    disabled={busy}
+                    onClick={() =>
+                      void act(async () => {
+                        stopVoice();
+                        await api(`/instances/${task.instanceId}/skip`, { method: 'POST' });
+                        const nextSession = (await api('/sessions/current')) as Session;
+                        setHint(null);
+                        setBlendDraft(null);
+                        setSession(nextSession);
+                      })
+                    }
+                  >
+                    ↷ 先跳过这题
+                  </button>
+                </div>
+              )}
+              {hint && !answer && (
+                <div className="hint-box">
+                  <span>{hint.explanation}</span>
+                  <VoiceButton id={`hint-${question.id}`} voice={voice} label="听提示" />
+                </div>
+              )}
+              {answer && (
                 <button
-                  className="quiet hint-button"
-                  disabled={busy}
-                  onClick={() =>
-                    void act(async () =>
-                      setHint(
-                        (await api(`/instances/${task.instanceId}/hint`, {
-                          method: 'POST',
-                        })) as Hint,
-                      ),
-                    )
-                  }
-                >
-                  💡 给我一点提示
-                </button>
-                <button
-                  className="quiet skip-button"
+                  className="next-button"
                   disabled={busy}
                   onClick={() =>
                     void act(async () => {
                       stopVoice();
-                      await api(`/instances/${task.instanceId}/skip`, { method: 'POST' });
                       const nextSession = (await api('/sessions/current')) as Session;
+                      setAnswer(null);
                       setHint(null);
-                      setBlendDraft(null);
                       setSession(nextSession);
                     })
                   }
                 >
-                  ↷ 先跳过这题
+                  继续 →
                 </button>
-              </div>
-            )}
-            {hint && !answer && (
-              <div className="hint-box">
-                <span>{hint.explanation}</span>
-                <VoiceButton id={`hint-${question.id}`} voice={voice} label="听提示" />
-              </div>
-            )}
-            {answer && (
-              <button
-                className="next-button"
-                disabled={busy}
-                onClick={() =>
-                  void act(async () => {
-                    stopVoice();
-                    const nextSession = (await api('/sessions/current')) as Session;
-                    setAnswer(null);
-                    setHint(null);
-                    setSession(nextSession);
-                  })
-                }
-              >
-                继续 →
-              </button>
-            )}
+              )}
+            </div>
           </div>
         </section>
         <Notice error={error} onReconnect={() => void act(refresh)} />

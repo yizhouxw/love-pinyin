@@ -443,7 +443,7 @@
   min-height: 48px;
   gap: 0.4rem;
 }
-.game-zone .voice-button > span {
+.game-zone .voice-button > span[aria-hidden] {
   font-size: 1.15rem;
   line-height: 1;
 }

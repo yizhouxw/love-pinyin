@@ -776,151 +776,155 @@ function ReadingSession({
   return (
     <div className="daily-workspace">
       <section className="daily-reader" aria-label="当前跟读内容">
-        <div className="daily-reader-top">
-          <span>{section.title}</span>
-          <strong>
-            第 {index + 1} / {section.items.length} 条
-          </strong>
-        </div>
-        <p>{section.instruction}</p>
-        <button
-          className={`quiet daily-target${item.syllables.length > 6 ? ' daily-target-sentence' : ''}`}
-          aria-label={item.display}
-          disabled={recording !== 'idle'}
-          onClick={() => void play()}
-        >
-          {readingHanzi(item.id, item.hanzi) ? (
-            <PhoneticText
-              text={readingHanzi(item.id, item.hanzi)!}
-              pinyin={item.syllables.join(' ')}
-              primary="pinyin"
-              activeIndex={highlight}
-            />
-          ) : (
-            item.syllables.map((syllable, position) => (
-              <span
-                key={position}
-                data-phonetic-syllable
-                className={highlight === position ? 'daily-highlight' : undefined}
-                aria-current={highlight === position ? 'true' : undefined}
-              >
-                <PinyinText value={syllable} />
-              </span>
-            ))
-          )}
-        </button>
-
-        <div className="daily-status-strip">
-          {failure ? (
-            <>
-              <p role="alert">{failure}</p>
-              <div className="daily-static-track" aria-hidden="true" />
-            </>
-          ) : waiting ? (
-            <FollowWait key={waiting.id} seconds={waiting.seconds} />
-          ) : (
-            <>
-              <p role="status" aria-live="polite">
-                {recording === 'requesting'
-                  ? '正在准备录音，请允许麦克风…'
-                  : recording === 'recording'
-                    ? '正在录音，读完点停止。'
-                    : recording === 'stopping'
-                      ? '正在结束录音…'
-                      : phase === 'playing'
-                        ? waiting
-                          ? '轮到你读啦，可以随时停止。'
-                          : audioStage === 'loading'
-                            ? '正在准备这段声音，请稍等…'
-                            : instructionPlaying
-                              ? '正在听本节说明…'
-                              : '仔细听一听…'
-                        : phase === 'follow'
-                          ? '轮到你读啦，读完点下一条。'
-                          : phase === 'finished'
-                            ? '这一节结束啦，可以休息，也可以再读一遍。'
-                            : '点开始跟读，先听示范。'}
-              </p>
-              <div className="daily-static-track" aria-hidden="true" />
-            </>
-          )}
-        </div>
-        <div className="daily-actions">
-          {phase === 'playing' ? (
-            <button onClick={stop}>■ 停止示范</button>
-          ) : (
-            <button disabled={recording !== 'idle'} onClick={() => void play()}>
-              {failure ? '重试示范' : phase === 'ready' ? '🔊 开始跟读' : '🔊 再听示范'}
-            </button>
-          )}
+        <div className="daily-reading-content">
+          <div className="daily-reader-top">
+            <span>{section.title}</span>
+            <strong>
+              第 {index + 1} / {section.items.length} 条
+            </strong>
+          </div>
+          <p>{section.instruction}</p>
           <button
-            className="quiet"
-            disabled={recording !== 'idle' || phase === 'playing'}
-            onClick={() => void play(true)}
+            className={`quiet daily-target${item.syllables.length > 6 ? ' daily-target-sentence' : ''}`}
+            aria-label={item.display}
+            disabled={recording !== 'idle'}
+            onClick={() => void play()}
           >
-            ▶ 连播本节
+            {readingHanzi(item.id, item.hanzi) ? (
+              <PhoneticText
+                text={readingHanzi(item.id, item.hanzi)!}
+                pinyin={item.syllables.join(' ')}
+                primary="pinyin"
+                activeIndex={highlight}
+              />
+            ) : (
+              item.syllables.map((syllable, position) => (
+                <span
+                  key={position}
+                  data-phonetic-syllable
+                  className={highlight === position ? 'daily-highlight' : undefined}
+                  aria-current={highlight === position ? 'true' : undefined}
+                >
+                  <PinyinText value={syllable} />
+                </span>
+              ))
+            )}
           </button>
-          <QuickSettings className="practice-settings">
-            <summary aria-label="播放设置">
-              <SettingsGlyph />
-              <span className="quick-settings-label">播放设置</span>
-            </summary>
-            <div className="quick-settings-panel">
-              <CloseQuickSettings />
-              <div className="daily-quick-settings">
-                <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
-                <QuickGapSettings
-                  seconds={gapSeconds}
-                  item={item}
-                  disabled={recording !== 'idle' || recognizing}
-                  onSave={(seconds) => {
-                    stop();
-                    onGapChange(seconds);
-                  }}
-                />
-                {section.kind !== 'sentences' && (
-                  <ReadingModeControl
-                    mode={readingMode}
+
+          <div className="daily-status-strip">
+            {failure ? (
+              <>
+                <p role="alert">{failure}</p>
+                <div className="daily-static-track" aria-hidden="true" />
+              </>
+            ) : waiting ? (
+              <FollowWait key={waiting.id} seconds={waiting.seconds} />
+            ) : (
+              <>
+                <p role="status" aria-live="polite">
+                  {recording === 'requesting'
+                    ? '正在准备录音，请允许麦克风…'
+                    : recording === 'recording'
+                      ? '正在录音，读完点停止。'
+                      : recording === 'stopping'
+                        ? '正在结束录音…'
+                        : phase === 'playing'
+                          ? waiting
+                            ? '轮到你读啦，可以随时停止。'
+                            : audioStage === 'loading'
+                              ? '正在准备这段声音，请稍等…'
+                              : instructionPlaying
+                                ? '正在听本节说明…'
+                                : '仔细听一听…'
+                          : phase === 'follow'
+                            ? '轮到你读啦，读完点下一条。'
+                            : phase === 'finished'
+                              ? '这一节结束啦，可以休息，也可以再读一遍。'
+                              : '点开始跟读，先听示范。'}
+                </p>
+                <div className="daily-static-track" aria-hidden="true" />
+              </>
+            )}
+          </div>
+        </div>
+        <div className="daily-reader-controls">
+          <div className="daily-actions">
+            {phase === 'playing' ? (
+              <button onClick={stop}>■ 停止示范</button>
+            ) : (
+              <button disabled={recording !== 'idle'} onClick={() => void play()}>
+                {failure ? '重试示范' : phase === 'ready' ? '🔊 开始跟读' : '🔊 再听示范'}
+              </button>
+            )}
+            <button
+              className="quiet"
+              disabled={recording !== 'idle' || phase === 'playing'}
+              onClick={() => void play(true)}
+            >
+              ▶ 连播本节
+            </button>
+            <QuickSettings className="practice-settings">
+              <summary aria-label="播放设置">
+                <SettingsGlyph />
+                <span className="quick-settings-label">播放设置</span>
+              </summary>
+              <div className="quick-settings-panel">
+                <CloseQuickSettings />
+                <div className="daily-quick-settings">
+                  <GuidanceSwitch enabled={guidanceEnabled} onChange={onGuidanceChange} />
+                  <QuickGapSettings
+                    seconds={gapSeconds}
+                    item={item}
                     disabled={recording !== 'idle' || recognizing}
-                    onChange={(mode) => {
-                      if (mode === readingMode) return;
+                    onSave={(seconds) => {
                       stop();
-                      setFailure('');
-                      setExampleFailure(false);
-                      onReadingModeChange(mode);
+                      onGapChange(seconds);
                     }}
                   />
-                )}
-                {section.kind === 'sentences' && (
-                  <label className="guidance-switch">
-                    <input
-                      type="checkbox"
-                      checked={characterReading}
+                  {section.kind !== 'sentences' && (
+                    <ReadingModeControl
+                      mode={readingMode}
                       disabled={recording !== 'idle' || recognizing}
-                      onChange={(event) => {
+                      onChange={(mode) => {
+                        if (mode === readingMode) return;
                         stop();
                         setFailure('');
-                        onCharacterReadingChange(event.currentTarget.checked);
+                        setExampleFailure(false);
+                        onReadingModeChange(mode);
                       }}
                     />
-                    <span>逐字读</span>
-                  </label>
-                )}
+                  )}
+                  {section.kind === 'sentences' && (
+                    <label className="guidance-switch">
+                      <input
+                        type="checkbox"
+                        checked={characterReading}
+                        disabled={recording !== 'idle' || recognizing}
+                        onChange={(event) => {
+                          stop();
+                          setFailure('');
+                          onCharacterReadingChange(event.currentTarget.checked);
+                        }}
+                      />
+                      <span>逐字读</span>
+                    </label>
+                  )}
+                </div>
+                <PinyinLegend />
               </div>
-              <PinyinLegend />
-            </div>
-          </QuickSettings>
-        </div>
-        <div className="daily-next">
-          <button className="quiet" disabled={index === 0} onClick={() => select(index - 1)}>
-            ← 上一条
-          </button>
-          <button onClick={() => next(true)}>
-            读过了，{index + 1 === section.items.length ? '完成本节' : '下一条 →'}
-          </button>
-          <button className="quiet" onClick={() => next(false)}>
-            先跳过
-          </button>
+            </QuickSettings>
+          </div>
+          <div className="daily-next">
+            <button className="quiet" disabled={index === 0} onClick={() => select(index - 1)}>
+              ← 上一条
+            </button>
+            <button onClick={() => next(true)}>
+              读过了，{index + 1 === section.items.length ? '完成本节' : '下一条 →'}
+            </button>
+            <button className="quiet" onClick={() => next(false)}>
+              先跳过
+            </button>
+          </div>
         </div>
         <p className="daily-source-kind">
           {section.kind === 'sentences'

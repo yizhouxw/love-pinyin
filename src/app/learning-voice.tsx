@@ -155,7 +155,7 @@ export function VoiceButton({
       <span aria-hidden="true">
         {canStop ? '■' : playing ? '♪' : voice.failedIds.has(id) ? '↻' : '🔊'}
       </span>
-      {canStop ? '停止' : text}
+      <span className="voice-label">{canStop ? '停止' : text}</span>
     </button>
   );
 }

@@ -318,3 +318,37 @@
     scroll-margin-top: 8px;
   }
 }
+
+@media (max-width: 600px), (max-width: 900px) and (max-height: 500px) {
+  .lesson-workspace .lesson-detail {
+    padding: 8px 10px;
+  }
+  .lesson-detail .lesson-back {
+    margin-bottom: 0;
+  }
+  .lesson-detail > .eyebrow {
+    margin-block: 4px 0;
+  }
+  .lesson-detail > h2 {
+    margin-block: 0 4px;
+    font-size: 1.35rem;
+  }
+  .lesson-detail .lesson-activities {
+    gap: 4px;
+    margin-block: 0 4px;
+    padding-block: 2px;
+  }
+  .lesson-detail .writing-workshop {
+    padding: 8px;
+  }
+  .lesson-detail .writing-workshop > :is(.writing-heading, .writing-targets, .writing-controls, p) {
+    margin-block: 2px;
+  }
+  .lesson-detail .writing-workshop .writing-targets {
+    padding-block: 2px;
+  }
+  .lesson-detail .writing-workshop .writing-diagram:not(.writing-option) {
+    height: clamp(115px, 26dvh, 165px);
+    min-height: 0;
+  }
+}
