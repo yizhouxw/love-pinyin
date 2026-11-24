@@ -2941,6 +2941,342 @@
         }
       ],
       "spokenText": "爷爷。"
+    },
+    "bān": {
+      "id": "daily-example-ban1",
+      "examples": [
+        {
+          "text": "班级",
+          "pinyin": "bān jí"
+        },
+        {
+          "text": "搬家",
+          "pinyin": "bān jiā"
+        }
+      ],
+      "spokenText": "班级。搬家。"
+    },
+    "bēn": {
+      "id": "daily-example-ben1",
+      "examples": [
+        {
+          "text": "奔跑",
+          "pinyin": "bēn pǎo"
+        },
+        {
+          "text": "奔走",
+          "pinyin": "bēn zǒu"
+        }
+      ],
+      "spokenText": "奔跑。奔走。"
+    },
+    "bīn": {
+      "id": "daily-example-bin1",
+      "examples": [
+        {
+          "text": "宾客",
+          "pinyin": "bīn kè"
+        },
+        {
+          "text": "海滨",
+          "pinyin": "hǎi bīn"
+        }
+      ],
+      "spokenText": "宾客。海滨。"
+    },
+    "dūn": {
+      "id": "daily-example-dun1",
+      "examples": [
+        {
+          "text": "蹲下",
+          "pinyin": "dūn xià"
+        },
+        {
+          "text": "蹲坐",
+          "pinyin": "dūn zuò"
+        }
+      ],
+      "spokenText": "蹲下。蹲坐。"
+    },
+    "jūn": {
+      "id": "daily-example-jun1",
+      "examples": [
+        {
+          "text": "军人",
+          "pinyin": "jūn rén"
+        },
+        {
+          "text": "军队",
+          "pinyin": "jūn duì"
+        }
+      ],
+      "spokenText": "军人。军队。"
+    },
+    "shān": {
+      "id": "daily-example-shan1",
+      "examples": [
+        {
+          "text": "山羊",
+          "pinyin": "shān yáng"
+        },
+        {
+          "text": "高山",
+          "pinyin": "gāo shān"
+        }
+      ],
+      "spokenText": "山羊。高山。"
+    },
+    "yún": {
+      "id": "daily-example-yun2",
+      "examples": [
+        {
+          "text": "白云",
+          "pinyin": "bái yún"
+        },
+        {
+          "text": "云朵",
+          "pinyin": "yún duǒ"
+        }
+      ],
+      "spokenText": "白云。云朵。"
+    },
+    "gāng": {
+      "id": "daily-example-gang1",
+      "examples": [
+        {
+          "text": "钢笔",
+          "pinyin": "gāng bǐ"
+        },
+        {
+          "text": "水缸",
+          "pinyin": "shuǐ gāng"
+        }
+      ],
+      "spokenText": "钢笔。水缸。"
+    },
+    "gēng": {
+      "id": "daily-example-geng1",
+      "examples": [
+        {
+          "text": "耕地",
+          "pinyin": "gēng dì"
+        },
+        {
+          "text": "耕种",
+          "pinyin": "gēng zhòng"
+        }
+      ],
+      "spokenText": "耕地。耕种。"
+    },
+    "jīng": {
+      "id": "daily-example-jing1",
+      "examples": [
+        {
+          "text": "水晶",
+          "pinyin": "shuǐ jīng"
+        },
+        {
+          "text": "京城",
+          "pinyin": "jīng chéng"
+        }
+      ],
+      "spokenText": "水晶。京城。"
+    },
+    "gōng": {
+      "id": "daily-example-gong1",
+      "examples": [
+        {
+          "text": "公园",
+          "pinyin": "gōng yuán"
+        },
+        {
+          "text": "工人",
+          "pinyin": "gōng rén"
+        }
+      ],
+      "spokenText": "公园。工人。"
+    },
+    "fēng": {
+      "id": "daily-example-feng1",
+      "examples": [
+        {
+          "text": "大风",
+          "pinyin": "dà fēng"
+        },
+        {
+          "text": "蜜蜂",
+          "pinyin": "mì fēng"
+        }
+      ],
+      "spokenText": "大风。蜜蜂。"
+    },
+    "xīng": {
+      "id": "daily-example-xing1",
+      "examples": [
+        {
+          "text": "星空",
+          "pinyin": "xīng kōng"
+        },
+        {
+          "text": "星期",
+          "pinyin": "xīng qī"
+        }
+      ],
+      "spokenText": "星空。星期。"
+    },
+    "lín": {
+      "id": "daily-example-lin2",
+      "examples": [
+        {
+          "text": "森林",
+          "pinyin": "sēn lín"
+        },
+        {
+          "text": "树林",
+          "pinyin": "shù lín"
+        }
+      ],
+      "spokenText": "森林。树林。"
+    },
+    "líng": {
+      "id": "daily-example-ling2",
+      "examples": [
+        {
+          "text": "铃声",
+          "pinyin": "líng shēng"
+        },
+        {
+          "text": "铃铛",
+          "pinyin": "líng dāng"
+        }
+      ],
+      "spokenText": "铃声。铃铛。"
+    },
+    "yuǎn": {
+      "id": "daily-example-yuan3",
+      "examples": [
+        {
+          "text": "远方",
+          "pinyin": "yuǎn fāng"
+        },
+        {
+          "text": "远处",
+          "pinyin": "yuǎn chù"
+        }
+      ],
+      "spokenText": "远方。远处。"
+    },
+    "yuán": {
+      "id": "daily-example-yuan2",
+      "examples": [
+        {
+          "text": "圆形",
+          "pinyin": "yuán xíng"
+        },
+        {
+          "text": "花园",
+          "pinyin": "huā yuán"
+        }
+      ],
+      "spokenText": "圆形。花园。"
+    },
+    "yùn": {
+      "id": "daily-example-yun4",
+      "examples": [
+        {
+          "text": "运动",
+          "pinyin": "yùn dòng"
+        },
+        {
+          "text": "运球",
+          "pinyin": "yùn qiú"
+        }
+      ],
+      "spokenText": "运动。运球。"
+    },
+    "yuàn": {
+      "id": "daily-example-yuan4",
+      "examples": [
+        {
+          "text": "院子",
+          "pinyin": "yuàn zi"
+        },
+        {
+          "text": "愿望",
+          "pinyin": "yuàn wàng"
+        }
+      ],
+      "spokenText": "院子。愿望。"
+    },
+    "yín": {
+      "id": "daily-example-yin2",
+      "examples": [
+        {
+          "text": "银色",
+          "pinyin": "yín sè"
+        },
+        {
+          "text": "银行",
+          "pinyin": "yín háng"
+        }
+      ],
+      "spokenText": "银色。银行。"
+    },
+    "yǔn": {
+      "id": "daily-example-yun3",
+      "examples": [
+        {
+          "text": "允许",
+          "pinyin": "yǔn xǔ"
+        },
+        {
+          "text": "允诺",
+          "pinyin": "yǔn nuò"
+        }
+      ],
+      "spokenText": "允许。允诺。"
+    },
+    "yīng": {
+      "id": "daily-example-ying1",
+      "examples": [
+        {
+          "text": "老鹰",
+          "pinyin": "lǎo yīng"
+        },
+        {
+          "text": "英雄",
+          "pinyin": "yīng xióng"
+        }
+      ],
+      "spokenText": "老鹰。英雄。"
+    },
+    "yǐng": {
+      "id": "daily-example-ying3",
+      "examples": [
+        {
+          "text": "电影",
+          "pinyin": "diàn yǐng"
+        },
+        {
+          "text": "影子",
+          "pinyin": "yǐng zi"
+        }
+      ],
+      "spokenText": "电影。影子。"
+    },
+    "yìng": {
+      "id": "daily-example-ying4",
+      "examples": [
+        {
+          "text": "硬币",
+          "pinyin": "yìng bì"
+        },
+        {
+          "text": "坚硬",
+          "pinyin": "jiān yìng"
+        }
+      ],
+      "spokenText": "硬币。坚硬。"
     }
   }
 }

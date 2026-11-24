@@ -6,7 +6,7 @@ from pathlib import Path
 
 from fastapi import HTTPException
 
-from server import learning_audio, word_practice
+from server import daily_reading, learning_audio, word_practice
 from server.content import load_curriculum
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,12 +32,26 @@ def original_packs(standard_ids: set[str]) -> tuple[dict, dict, dict[str, str]]:
             by_text.setdefault(item["transcript"], item["id"])
     days = []
     daily_aliases = {}
-    instruction_id = speak(data["dailyInstruction"])
+    word_building = data["dailyWordBuilding"]
+    word_examples = daily_reading.word_examples()
     for lesson, groups in zip(curriculum["lessons"], data["daily"], strict=True):
         number = lesson["order"]
         day_id = f"day-{number:02}"
         sections = []
-        for index, group in enumerate(groups, 1):
+        sections_to_build = [
+            (title, data["dailyInstruction"], group, False)
+            for title, group in zip(("听音跟读", "对比与拼读", "两音连读"), groups, strict=True)
+        ]
+        if day_id in word_building["targets"]:
+            sections_to_build.append(
+                (
+                    word_building["title"],
+                    word_building["instruction"],
+                    word_building["targets"][day_id],
+                    True,
+                )
+            )
+        for index, (title, instruction, group, group_words) in enumerate(sections_to_build, 1):
             section_id = f"original-{day_id}-{index}"
             items = []
             for position, text in enumerate(group, 1):
@@ -63,13 +77,16 @@ def original_packs(standard_ids: set[str]) -> tuple[dict, dict, dict[str, str]]:
                         "available": True,
                     }
                 )
+                if group_words:
+                    example = word_examples[text]
+                    items[-1]["wordExample"] = {**example, "id": speak(example["spokenText"])}
             sections.append(
                 {
                     "id": section_id,
                     "kind": "phonics",
-                    "title": ("听音跟读", "对比与拼读", "两音连读")[index - 1],
-                    "instruction": data["dailyInstruction"],
-                    "instructionId": instruction_id,
+                    "title": title,
+                    "instruction": instruction,
+                    "instructionId": speak(instruction),
                     "items": items,
                 }
             )
@@ -201,8 +218,6 @@ def original_lessons() -> dict:
 
 
 def household_content(*, offline: bool = False) -> dict:
-    from server import daily_reading
-
     daily = daily_reading.status()
     if offline:
         daily["assessment"]["available"] = False

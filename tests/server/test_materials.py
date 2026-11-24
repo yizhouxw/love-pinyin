@@ -75,3 +75,31 @@ def test_new_word_practice_reuses_the_complete_textbook_sequence(test_client):
         )
         assert response.status_code == 206
         assert response.content.startswith(b"RIFF")
+
+
+def test_lessons_13_and_14_offer_spoken_word_building_in_both_materials(paired_client, monkeypatch):
+    monkeypatch.setattr(source_audio, "installed", lambda: True)
+    packs = paired_client.get("/api/v1/practice-packs").json()
+    for source, title, expected in (
+        ("original", "读拼音组词", (7, 8)),
+        ("household", "读整体认读并组词", (10, 3)),
+    ):
+        days = packs[source]["daily"]["days"]
+        assert [day["number"] for day in days if any(s["title"] == title for s in day["sections"])][
+            -2:
+        ] == [13, 14]
+        for day, count in zip(days[-2:], expected, strict=True):
+            (section,) = [s for s in day["sections"] if s["title"] == title]
+            assert len(section["items"]) == count
+            audio_ids = [section.get("instructionId") or f"daily-instruction-{section['id']}"]
+            for item in section["items"]:
+                assert item["syllables"] == [item["display"]]
+                sample = item["wordExample"]
+                assert all(item["display"] in word["pinyin"].split() for word in sample["examples"])
+                audio_ids.append(sample["id"])
+            for asset_id in audio_ids:
+                response = paired_client.get(
+                    f"/api/v1/voice/{asset_id}", headers={"Range": "bytes=0-15"}
+                )
+                assert response.status_code == 206, asset_id
+                assert response.content.startswith(b"RIFF"), asset_id

@@ -128,6 +128,9 @@ def validate_practice_audio(packs: dict, catalog: dict) -> None:
                 for item in section["items"]:
                     if any(f"daily-audio/{asset}" not in catalog for asset in item["audioIds"]):
                         raise ValueError(f"Missing standard audio for {name}/{item['id']}")
+                    example = item.get("wordExample")
+                    if example and f"voice/{example['id']}" not in catalog:
+                        raise ValueError(f"Missing word-building audio for {name}/{item['id']}")
         word_ids = word_vocabulary_audio_ids(pack)
         word_ids.update(
             paragraph["audioId"]

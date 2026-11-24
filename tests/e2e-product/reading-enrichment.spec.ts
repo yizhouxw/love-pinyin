@@ -695,3 +695,39 @@ test('READ-03/04: folded examples speak on opening, and Chinese sentences highli
   await reader.getByRole('button', { name: '停止示范', exact: false }).click();
   await expect(reader.locator('.daily-highlight')).toHaveCount(0);
 });
+
+for (const source of ['original', 'household'] as const) {
+  test(`DAILY-17: lessons 13 and 14 play word-building examples in ${source}`, async ({
+    page,
+    appUrl,
+  }) => {
+    await observeReadingMedia(page);
+    if (source === 'household') {
+      await pairForHouseholdMaterial(page, appUrl);
+      await useHouseholdMaterial(page);
+      await page.getByRole('checkbox', { name: '语音引导', exact: true }).uncheck();
+    } else {
+      await guest(page, appUrl);
+    }
+    await page.getByRole('button', { name: '进入天天练拼音' }).click();
+    const examples = source === 'original' ? ['班级', '钢笔'] : ['白云', '老鹰'];
+    for (const [index, word] of examples.entries()) {
+      const switchDay = page.getByRole('button', { name: '换练习', exact: true });
+      if (await switchDay.isVisible()) await switchDay.click();
+      await page.getByRole('button', { name: `第 ${13 + index} 份`, exact: true }).click();
+      const title = source === 'original' ? '读拼音组词' : '读整体认读并组词';
+      await page.getByRole('button', { name: new RegExp(`^${title}`) }).click();
+      const reader = page.getByLabel('当前跟读内容');
+      const example = reader.locator(`.daily-example-words [data-hanzi="${word}"]`);
+      await expect(example).toHaveCount(0);
+      await clearReadingMedia(page);
+      await reader.getByRole('button', { name: '展开组词样例', exact: true }).click();
+      await expect(example).toBeVisible();
+      await expect
+        .poll(() => playedReading(page, 'voice'))
+        .toEqual([expect.stringMatching(source === 'original' ? /^original-/ : /^daily-example-/)]);
+      await reader.getByRole('button', { name: '收起组词样例', exact: true }).click();
+      await expect(example).toHaveCount(0);
+    }
+  });
+}

@@ -227,5 +227,13 @@
       "title": "动物一起玩",
       "text": "两只小羊在坡上吃草。听见伙伴叫，它们一起抬起了头。"
     }
+  },
+  "dailyWordBuilding": {
+    "title": "读拼音组词",
+    "instruction": "先听示范，再读一读，也可以口头组一个词。",
+    "targets": {
+      "day-13": ["bān", "bēn", "bīn", "dūn", "jūn", "shān", "yún"],
+      "day-14": ["gāng", "gēng", "jīng", "gōng", "fēng", "xīng", "lín", "líng"]
+    }
   }
 }
