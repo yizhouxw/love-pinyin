@@ -1,3 +1,4 @@
+import { selectDailyMaterial } from '../support/daily-material';
 import { expect, type Page } from '@playwright/test';
 import { pairForHouseholdMaterial, useHouseholdMaterial } from '../support/household-material';
 import { test } from '../support/real-server';
@@ -36,7 +37,7 @@ test('DAILY-15 / WORD-13: both practices request the final with the target tone'
   await page.getByRole('button', { name: '返回首页' }).click();
   await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
-  await page.getByRole('button', { name: '第 3 份', exact: true }).click();
+  await selectDailyMaterial(page, 3);
   await page.getByRole('button', { name: /读词语/ }).click();
   await chooseSpelling(page);
   // Check the real spelling demonstration in isolation from the optional follow-up narration.

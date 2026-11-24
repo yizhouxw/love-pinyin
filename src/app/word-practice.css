@@ -6,6 +6,7 @@
   margin: auto;
 }
 .word-practice button,
+.daily-course-bar > button,
 .word-course-dialog button {
   border: 1px solid #cadac2;
   border-radius: 12px;
@@ -44,7 +45,7 @@
   padding: 4px;
   font-size: 1.4rem;
 }
-.word-practice .word-course-trigger {
+.word-course-bar .word-course-trigger {
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -527,7 +528,7 @@
   .word-course-bar {
     grid-template-columns: 44px minmax(0, 1fr) 44px;
   }
-  .word-course-bar > button:last-child {
+  .word-practice .word-course-bar > button:last-child {
     display: none;
   }
   .word-course-trigger > span {
@@ -782,7 +783,7 @@
     grid-column: 2;
     grid-row: 1;
   }
-  .word-course-trigger > span {
+  .word-practice .word-course-trigger > span {
     display: none;
   }
   .word-modes {
@@ -851,7 +852,7 @@
   background: #edf2e74d;
 }
 @container (min-width: 22rem) {
-  .word-grid .word-card-wide {
+  .word-grid [data-word-width='long'] {
     grid-column: span 2;
   }
 }
@@ -860,7 +861,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
-  .word-grid .word-card-wide {
+  .word-grid [data-word-width='long'] {
     grid-column: 1 / -1;
   }
 }
@@ -920,4 +921,69 @@
   .word-dictation .word-selected-picture .word-image-frame {
     max-height: min(150px, 40dvh);
   }
+}
+
+.daily-page .daily-course-bar {
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  margin-block: 6px;
+}
+
+.word-course-dialog .daily-course-option {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.word-course-dialog .daily-course-option button {
+  gap: 4px 10px;
+  flex-wrap: wrap;
+  min-height: 52px;
+}
+
+.word-course-dialog .daily-course-option strong {
+  min-width: 0;
+  color: var(--ink);
+}
+
+@media (max-width: 600px), (max-width: 900px) and (max-height: 500px) {
+  .word-practice .word-grid button {
+    min-height: 82px;
+    padding: 6px;
+    font-size: clamp(1.8rem, 6vw, 2.15rem);
+  }
+  .word-grid .hanzi-pinyin {
+    --annotation-size: 1.1rem;
+    column-gap: 0.1em;
+  }
+  .word-reading-main .word-grid {
+    gap: 6px;
+    padding: 5px;
+  }
+  .word-reading-layout .word-selected-picture .hanzi-pinyin {
+    --annotation-size: 1.08rem;
+  }
+  .daily-page .daily-course-bar {
+    margin-block: 2px 4px;
+  }
+  .daily-course-bar .word-course-trigger {
+    padding-block: 4px;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 600px) {
+  .word-reading-main .word-grid [data-word-width='medium'] {
+    grid-column: 1 / -1;
+  }
+  .word-course-dialog:has(.daily-course-option) .word-course-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .word-course-dialog .daily-course-option button {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 6px 10px;
+  }
+}
+
+[data-ios-large-text] .word-course-dialog:has(.daily-course-option) .word-course-options {
+  grid-template-columns: minmax(0, 1fr);
 }

@@ -94,3 +94,66 @@ for (const game of games.games) {
     await checkFirstScreen(page, [...controls, action]);
   });
 }
+
+test('DAILY-18: phone practice picker shares the word course sheet and preserves a cancelled choice', async ({
+  page,
+  appUrl,
+}) => {
+  await pairForHouseholdMaterial(page, appUrl);
+  await page.getByRole('button', { name: '进入天天练拼音' }).click();
+  const next = page.getByRole('button', { name: '下一份', exact: true });
+  await next.click();
+  await page.getByRole('button', { name: '开始第 2 份跟读' }).click();
+  const activeTab = page.locator('.daily-section-tabs [aria-current="step"]');
+  const currentSection = await activeTab.textContent();
+  await page.getByRole('button', { name: '连播本节' }).click();
+  const stop = page.getByRole('button', { name: '停止示范' });
+  await expect(stop).toBeVisible();
+  const trigger = page.getByRole('button', { name: '换练习', exact: true });
+  const dialog = page.getByRole('dialog', { name: '选择练习', exact: true });
+  await trigger.click();
+  await expect(dialog).toBeInViewport({ ratio: 0.99 });
+  await expect(dialog.getByRole('button', { name: '第 2 份', exact: true })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(trigger).toBeFocused();
+  await expect(activeTab).toHaveText(currentSection!);
+  await expect(stop).toBeHidden();
+  await trigger.click();
+  await dialog.getByRole('button', { name: '第 14 份', exact: true }).click();
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole('button', { name: '选择练习，当前第 14 份' })).toBeFocused();
+  await expect(next).toBeDisabled();
+  await expect(page.getByRole('button', { name: '开始第 14 份跟读' })).toBeInViewport();
+});
+
+test('WORD-19: large phone word cards keep tone marks with their characters', async ({
+  page,
+  appUrl,
+}) => {
+  await pairForHouseholdMaterial(page, appUrl);
+  await page.getByRole('button', { name: '进入词语天天练' }).click();
+  const cards = page.getByRole('region', { name: '本课词语' });
+  for (const [width, height] of [
+    [320, 568],
+    [390, 844],
+    [667, 375],
+  ] as const) {
+    await page.setViewportSize({ width, height });
+    await expect(cards.getByRole('button').first()).toBeInViewport();
+    const card = await cards
+      .getByRole('button')
+      .filter({ has: page.locator('ruby') })
+      .first()
+      .evaluate((button) => ({
+        height: button.getBoundingClientRect().height,
+        hanzi: parseFloat(getComputedStyle(button.querySelector('.phonetic-character')!).fontSize),
+        pinyin: parseFloat(getComputedStyle(button.querySelector('rt')!).fontSize),
+      }));
+    expect(card.height).toBeGreaterThanOrEqual(74);
+    expect(card.hanzi).toBeGreaterThanOrEqual(28);
+    expect(card.pinyin).toBeGreaterThanOrEqual(17);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+  }
+});

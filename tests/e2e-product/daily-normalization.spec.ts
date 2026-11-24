@@ -1,3 +1,4 @@
+import { selectDailyMaterial } from '../support/daily-material';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { clearReadingMedia, observeReadingMedia, playedReading } from '../support/media-log';
@@ -17,7 +18,7 @@ test('DAILY-12: section-only deduplication and unmarked first tones reach actual
   await expect(page.getByLabel('第1份本节内容').getByRole('button')).toHaveCount(12);
   const current = page.getByLabel('当前跟读内容', { exact: true });
   await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 4 份', exact: true }).click();
+  await selectDailyMaterial(page, 4);
   await page.getByRole('button', { name: /^读一读/ }).click();
   const list = page.getByLabel('第4份本节内容');
   for (const [index, display, audio] of [
@@ -42,7 +43,7 @@ test('DAILY-12: section-only deduplication and unmarked first tones reach actual
     }
   }
   await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 8 份', exact: true }).click();
+  await selectDailyMaterial(page, 8);
   await page.getByRole('button', { name: '开始第 8 份跟读', exact: true }).click();
   const navigation = page.getByRole('navigation', { name: '本份小节', exact: true });
   for (const index of [0, 2]) {

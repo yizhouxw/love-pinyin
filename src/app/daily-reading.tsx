@@ -1,5 +1,6 @@
 import { readDailyProgress, saveDailyProgress } from '../platform/daily-progress';
 import { useReadingFollow } from './use-reading-follow';
+import { PracticeCoursePicker } from './practice-course-picker';
 import { QuickSettings, CloseQuickSettings, SettingsGlyph, ContextHelp } from './quick-settings';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type {
@@ -80,6 +81,7 @@ export function DailyReadingPage({
   const [error, setError] = useState(false);
   const [dayId, setDayId] = useState('day-01');
   const [sectionId, setSectionId] = useState<string | null>(null);
+  const [choosingDay, setChoosingDay] = useState(false);
   const [characterReading, setCharacterReading] = useState(false);
   const [readingMode, setReadingMode] = useState<ReadingMode>('direct');
   const helpVoice = useLearningVoice(sectionId ?? 'daily-materials');
@@ -104,7 +106,7 @@ export function DailyReadingPage({
       setMarkStore({ marks, failed: true });
     }
   }
-  const materialChoices = useRef<HTMLElement | null>(null);
+  const courseBar = useRef<HTMLElement>(null);
   const sectionTabs = useRef<HTMLDivElement | null>(null);
   const load = useCallback(() => {
     setError(false);
@@ -127,6 +129,7 @@ export function DailyReadingPage({
     };
   }, [offline]);
   const day = data?.days.find((value) => value.id === dayId);
+  const dayIndex = day && data ? data.days.indexOf(day) : -1;
   const section = day?.sections.find((value) => value.id === sectionId);
   const sectionIndex = day?.sections.findIndex((value) => value.id === sectionId) ?? -1;
   function chooseSection(id: string) {
@@ -134,11 +137,15 @@ export function DailyReadingPage({
     audioPlayer.stop();
     setSectionId(id);
   }
-  function chooseMaterials() {
+  function selectDay(id: string) {
     audioPlayer.stop();
+    setDayId(id);
     setSectionId(null);
+  }
+  function chooseMaterials() {
+    selectDay(dayId);
     requestAnimationFrame(() =>
-      materialChoices.current?.querySelector<HTMLButtonElement>('[aria-pressed="true"]')?.focus(),
+      courseBar.current?.querySelector<HTMLButtonElement>('.word-course-trigger')?.focus(),
     );
   }
   useEffect(() => {
@@ -223,29 +230,58 @@ export function DailyReadingPage({
       {!data && !error && <p role="status">正在读取每日练习…</p>}
       {data && day && (
         <>
+          <nav
+            className="word-course-bar daily-course-bar"
+            aria-label="选择每日练习"
+            ref={courseBar}
+          >
+            <button
+              aria-label="上一份"
+              disabled={dayIndex <= 0}
+              onClick={() => selectDay(data.days[dayIndex - 1]!.id)}
+            >
+              ‹
+            </button>
+            <PracticeCoursePicker
+              label={section ? '换练习' : `选择练习，当前第 ${day.number} 份`}
+              title="选择练习"
+              instruction="选一份，再选要读的小节。"
+              subtitle={`第 ${day.number} 份`}
+              selected={day.title}
+              onOpenChange={setChoosingDay}
+            >
+              {(close) => (
+                <div className="word-course-list">
+                  <div className="word-course-options">
+                    {data.days.map((value) => (
+                      <div className="word-course-option daily-course-option" key={value.id}>
+                        <button
+                          aria-label={`第 ${value.number} 份`}
+                          aria-current={value.id === dayId ? 'true' : undefined}
+                          onClick={() => {
+                            selectDay(value.id);
+                            close();
+                          }}
+                        >
+                          <span>第 {value.number} 份</span>
+                          <strong>{value.title}</strong>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </PracticeCoursePicker>
+            <button
+              aria-label="下一份"
+              disabled={dayIndex === data.days.length - 1}
+              onClick={() => selectDay(data.days[dayIndex + 1]!.id)}
+            >
+              ›
+            </button>
+          </nav>
           {!section && (
             <>
-              <nav ref={materialChoices} className="daily-days" aria-label="选择每日练习">
-                {data.days.map((value) => (
-                  <button
-                    key={value.id}
-                    className="quiet"
-                    aria-pressed={dayId === value.id}
-                    onClick={() => {
-                      audioPlayer.stop();
-                      setDayId(value.id);
-                      setSectionId(null);
-                    }}
-                  >
-                    第 {value.number} 份
-                  </button>
-                ))}
-              </nav>
-              <div className="daily-section-heading">
-                <h2>
-                  第 {day.number} 份 · {day.title}
-                </h2>
-              </div>
               <nav className="daily-sections" aria-label="选择练习小节">
                 {day.sections.map((value) => {
                   const summary = sectionSummary(value, marks);
@@ -294,14 +330,6 @@ export function DailyReadingPage({
           )}
           {section && (
             <>
-              <div className="daily-session-heading">
-                <span>
-                  第 {day.number} 份 · 本份小节 {sectionIndex + 1} / {day.sections.length}
-                </span>
-                <button className="quiet" onClick={chooseMaterials}>
-                  换练习
-                </button>
-              </div>
               <nav className="daily-section-navigation" aria-label="本份小节">
                 <button
                   className="quiet daily-section-arrow"
@@ -349,6 +377,7 @@ export function DailyReadingPage({
             <ReadingSession
               key={section.id}
               canRecognize={data.assessment.available}
+              choosingDay={choosingDay}
               day={day}
               gapSeconds={gapSeconds}
               guidanceEnabled={guidanceEnabled}
@@ -428,6 +457,7 @@ function ReadingSession({
   onChooseMaterials,
   marks,
   canRecognize,
+  choosingDay,
   onMark,
 }: {
   day: DailyDay;
@@ -445,6 +475,7 @@ function ReadingSession({
   onChooseMaterials: () => void;
   marks: Record<string, ReadingMark>;
   canRecognize: boolean;
+  choosingDay: boolean;
   onMark: (id: string, mark: ReadingMark) => void;
 }) {
   const [index, setIndex] = useState(0);
@@ -492,6 +523,9 @@ function ReadingSession({
     setWaiting(null);
     setRecognizing(false);
   }, []);
+  useEffect(() => {
+    if (choosingDay && controller.current) stop();
+  }, [choosingDay, stop]);
   useEffect(() => {
     if (previousGuidance.current !== guidanceEnabled && !guidanceEnabled) {
       if (phase === 'playing' || (phase === 'finished' && controller.current)) stop();

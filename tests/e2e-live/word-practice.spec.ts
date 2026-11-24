@@ -1,3 +1,4 @@
+import { selectDailyMaterial } from '../support/daily-material';
 import { expect, type Page } from '@playwright/test';
 
 async function chooseLesson(page: Page, title: string) {
@@ -503,7 +504,7 @@ test('DIST-07/08/WORD-10/DAILY-13: integrated settings and real direct and spell
   await page.getByRole('button', { name: '返回首页' }).click();
   await useHouseholdMaterial(page);
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
-  await page.getByRole('button', { name: '第 3 份', exact: true }).click();
+  await selectDailyMaterial(page, 3);
   await page.getByRole('button', { name: /读词语/ }).click();
   await page.getByLabel('播放设置', { exact: true }).click();
   await page.getByRole('checkbox', { name: '语音引导' }).uncheck();

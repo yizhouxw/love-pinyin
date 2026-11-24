@@ -77,15 +77,6 @@
   accent-color: var(--green);
 }
 
-[data-ios-app] .daily-days {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 3.9rem), 1fr));
-}
-
-[data-ios-app] .daily-days button {
-  min-width: 44px;
-}
-
 @media (max-width: 759px), (max-height: 559px) {
   [data-ios-app] .home-page .learning-welcome {
     margin-block: 0.5rem 0.9rem;

@@ -1,3 +1,4 @@
+import { selectDailyMaterial } from '../support/daily-material';
 import { openSection } from '../support/interaction';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
@@ -49,7 +50,7 @@ test('DAILY-07: multi-column navigation follows autoplay without moving page or 
     list.getByRole('button').nth((await list.getByRole('button').count()) - 2),
   ).toHaveAttribute('aria-current', 'step');
   await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 4 份', exact: true }).click();
+  await selectDailyMaterial(page, 4);
   await page.getByRole('button', { name: '开始第 4 份跟读' }).click();
   const nextList = page.getByLabel('第4份本节内容');
   await expect(nextList.getByRole('button').first()).toHaveAttribute('aria-current', 'step');

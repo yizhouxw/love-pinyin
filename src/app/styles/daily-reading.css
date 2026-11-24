@@ -28,20 +28,11 @@
   color: #52665d;
   line-height: 1.7;
 }
-.daily-days,
 .daily-sections {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
   margin: 1.2rem 0;
-}
-.daily-days button {
-  min-width: 80px;
-}
-.daily-days button[aria-pressed='true'],
-.daily-sections button[aria-pressed='true'] {
-  background: #326c59;
-  color: #fff;
 }
 .daily-sections button {
   display: grid;
@@ -51,7 +42,6 @@
 .daily-sections small {
   font-weight: normal;
 }
-.daily-section-heading,
 .daily-reader-top {
   display: flex;
   align-items: center;
@@ -297,15 +287,6 @@
   background: #23878a;
 }
 
-.daily-session-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.8rem 0;
-  color: #52665d;
-}
 .daily-section-navigation {
   display: flex;
   align-items: stretch;
@@ -357,7 +338,6 @@
   font-size: 1.25rem;
   line-height: 1;
 }
-.daily-session-heading button,
 .daily-optional-recording summary,
 .daily-preparation-detail summary,
 .daily-parent summary {
@@ -470,22 +450,6 @@
   .daily-page .daily-heading .eyebrow {
     display: none;
   }
-  .daily-page .daily-days {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(3.25rem, 1fr));
-    gap: 4px;
-    margin-block: 8px;
-  }
-  .daily-page .daily-days button {
-    min-width: 44px;
-    min-height: 44px;
-    padding: 4px;
-    font-size: 0.85rem;
-  }
-  .daily-section-heading h2 {
-    font-size: 1.12rem;
-    margin: 0;
-  }
   .daily-page .daily-sections {
     gap: 4px;
     margin-block: 4px;
@@ -500,9 +464,6 @@
   }
   .daily-preview > p {
     display: none;
-  }
-  .daily-page .daily-session-heading {
-    margin-block: 2px;
   }
   .daily-page .daily-section-navigation {
     gap: 4px;
@@ -580,7 +541,7 @@
     grid-template-columns: auto minmax(0, 1fr);
     gap: 4px 8px;
   }
-  .daily-page:has(.daily-workspace) > :not(.context-title-row, .daily-session-heading) {
+  .daily-page:has(.daily-workspace) > :not(.context-title-row, .daily-course-bar) {
     grid-column: 1 / -1;
   }
   .daily-reader-controls .practice-settings .quick-settings-label {

@@ -1,3 +1,4 @@
+import { selectDailyMaterial } from '../support/daily-material';
 import { pairForHouseholdMaterial, useHouseholdMaterial } from '../support/household-material';
 import { openSection } from '../support/interaction';
 import { expect, type Locator } from '@playwright/test';
@@ -170,7 +171,7 @@ test('READ-05: real word syllables share one compact clip and word waits include
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 4 份', exact: true }).click();
+  await selectDailyMaterial(page, 4);
   await page.getByRole('button', { name: /^拼读词语/ }).click();
   const reader = page.getByLabel('当前跟读内容');
   await expect(page.getByText(/本份声音已就绪/)).toBeVisible();
@@ -280,14 +281,14 @@ test('READ-05: short and long real Chinese sentences wait for their spoken sylla
 
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 5 份', exact: true }).click();
+  await selectDailyMaterial(page, 5);
   await page.getByRole('button', { name: /^拼读句子/ }).click();
   await expect(page.getByText(/本份声音已就绪/)).toBeVisible();
   // dì di kū le: four displayed syllables, despite only three standard-audio IDs.
   await sentenceWait('daily-word-day-05-s5-i1', 1600);
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 10 份', exact: true }).click();
+  await selectDailyMaterial(page, 10);
   await page.getByRole('button', { name: /^读句子/ }).click();
   await expect(page.getByText(/本份声音已就绪/)).toBeVisible();
   await page.getByLabel('第10份本节内容').getByRole('button').nth(2).click();
@@ -353,7 +354,7 @@ test('READ-06: guest quick settings work by keyboard on narrow screens and cance
   );
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 4 份', exact: true }).click();
+  await selectDailyMaterial(page, 4);
   await openSection(page, '播放设置');
   await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName('间隔设置，基础间隔0.2秒');
   await page.getByRole('button', { name: /^拼读词语/ }).click();
@@ -469,7 +470,7 @@ test('READ-06: a real learning device remembers its own gap without parent write
     ).toHaveAccessibleName('间隔设置，基础间隔0.4秒');
     if (await learning.getByRole('button', { name: '换练习', exact: true }).isVisible())
       await learning.getByRole('button', { name: '换练习', exact: true }).click();
-    await learning.getByRole('button', { name: '第 4 份', exact: true }).click();
+    await selectDailyMaterial(learning, 4);
     await openSection(learning, '播放设置');
     await expect(daily.locator('.daily-gap-trigger')).toHaveAccessibleName(
       '间隔设置，基础间隔0.4秒',
@@ -606,7 +607,7 @@ test('READ-07: compact controls preview drafts, dismiss safely and fit narrow vi
   }
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 4 份', exact: true }).click();
+  await selectDailyMaterial(page, 4);
   await page.getByRole('button', { name: /^拼读词语/ }).click();
   const reader = page.getByLabel('当前跟读内容');
   settings = await quickGap(reader);
@@ -650,7 +651,7 @@ test('READ-03/04: folded examples speak on opening, and Chinese sentences highli
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 3 份', exact: true }).click();
+  await selectDailyMaterial(page, 3);
   await page.getByRole('button', { name: /^读音节并组词/ }).click();
   const reader = page.getByLabel('当前跟读内容');
   await expect(reader.locator('.daily-example-words [data-hanzi="八个"]')).toHaveCount(0);
@@ -668,7 +669,7 @@ test('READ-03/04: folded examples speak on opening, and Chinese sentences highli
   await expect(reader.locator('.daily-example-words [data-hanzi="八个"]')).toHaveCount(0);
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 5 份', exact: true }).click();
+  await selectDailyMaterial(page, 5);
   await page.getByRole('button', { name: /^拼读句子/ }).click();
   await page.evaluate(() => {
     const target = document.querySelector('.daily-target')!;
@@ -714,7 +715,7 @@ for (const source of ['original', 'household'] as const) {
     for (const [index, word] of examples.entries()) {
       const switchDay = page.getByRole('button', { name: '换练习', exact: true });
       if (await switchDay.isVisible()) await switchDay.click();
-      await page.getByRole('button', { name: `第 ${13 + index} 份`, exact: true }).click();
+      await selectDailyMaterial(page, 13 + index);
       const title = source === 'original' ? '读拼音组词' : '读整体认读并组词';
       await page.getByRole('button', { name: new RegExp(`^${title}`) }).click();
       const reader = page.getByLabel('当前跟读内容');

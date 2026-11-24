@@ -1,3 +1,4 @@
+import { selectDailyMaterial } from '../support/daily-material';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import daily from '../../content/daily-reading.json' with { type: 'json' };
@@ -19,7 +20,7 @@ test('DAILY-10: all fourteen materials show accurate categories; comparisons and
     ),
   ).toHaveLength(785);
   for (const day of daily.days) {
-    await page.getByRole('button', { name: `第 ${day.number} 份`, exact: true }).click();
+    await selectDailyMaterial(page, day.number);
     await page.getByRole('button', { name: `开始第 ${day.number} 份跟读`, exact: true }).click();
     const nav = page.getByRole('navigation', { name: '本份小节', exact: true });
     for (const [index, section] of day.sections.entries()) {
@@ -57,7 +58,7 @@ test('DAILY-10: reviewed word tails lead to real sentences with character pairs,
     [13, 18, '草原', '我每天都去爬山。'],
     [14, 24, '自行车', '我们上学去。'],
   ] as const) {
-    await page.getByRole('button', { name: `第 ${number} 份`, exact: true }).click();
+    await selectDailyMaterial(page, number);
     await page.getByRole('button', { name: /^读词语/ }).click();
     const list = page.getByLabel(`第${number}份本节内容`);
     await expect(list.getByRole('button')).toHaveCount(wordCount);

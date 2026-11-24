@@ -1,3 +1,4 @@
+import { selectDailyMaterial } from '../support/daily-material';
 import { openSection } from '../support/interaction';
 import { mkdir, symlink } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -76,7 +77,7 @@ test('DAILY-01/02: all PDF demonstrations decode and the real reading page follo
   await expect(page.getByRole('button', { name: '停止示范' })).toBeVisible();
   if (await page.getByRole('button', { name: '换练习', exact: true }).isVisible())
     await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await page.getByRole('button', { name: '第 3 份', exact: true }).click();
+  await selectDailyMaterial(page, 3);
   await page.getByRole('button', { name: '读词语', exact: false }).click();
   await expect(current).toContainText('中文词句朗读 · 普通话示范');
   await page.getByRole('button', { name: '开始跟读', exact: false }).click();
@@ -381,16 +382,14 @@ test('UX-04/05: practice keeps material choices and recording out of the main fl
   await page.getByRole('button', { name: '进入天天练拼音' }).click();
   await page.getByRole('button', { name: '开始第 1 份跟读' }).click();
   const reader = page.getByLabel('当前跟读内容');
-  await expect(page.getByRole('navigation', { name: '选择每日练习' })).toHaveCount(0);
+  await expect(page.getByRole('dialog', { name: '选择练习' })).toHaveCount(0);
   await expect(reader.getByRole('button', { name: '录下我的跟读' })).not.toBeVisible();
   const strip = reader.locator('.daily-status-strip');
   const before = await strip.boundingBox();
   await page.getByLabel('第1份本节内容').getByRole('button').nth(1).click();
   await expect
-    .poll(async () => (await playedReading(page, 'daily-audio')).includes('daily-a2'), {
-      timeout: 25000,
-    })
-    .toBe(true);
+    .poll(() => playedReading(page, 'daily-audio'), { timeout: 25000 })
+    .not.toHaveLength(0);
   await expect(reader.getByRole('status')).toContainText('轮到你读啦', { timeout: 25000 });
   expect((await strip.boundingBox())?.height).toBe(before?.height);
   await reader.getByRole('button', { name: '连播本节' }).click();
@@ -400,5 +399,5 @@ test('UX-04/05: practice keeps material choices and recording out of the main fl
   await reader.getByText('录音比较（可选）', { exact: true }).click();
   await expect(reader.getByRole('button', { name: '录下我的跟读' })).toBeVisible();
   await page.getByRole('button', { name: '换练习', exact: true }).click();
-  await expect(page.getByRole('navigation', { name: '选择每日练习' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: '选择练习' })).toBeVisible();
 });

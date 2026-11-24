@@ -1,3 +1,4 @@
+import { selectDailyMaterial } from '../support/daily-material';
 import { expect } from '@playwright/test';
 import { test } from '../support/real-server';
 import { pairForHouseholdMaterial, useHouseholdMaterial } from '../support/household-material';
@@ -14,8 +15,7 @@ for (const material of ['original', 'household'] as const) {
     if (material === 'household') await useHouseholdMaterial(page);
     await page.getByRole('button', { name: '进入天天练拼音' }).click();
     for (let day = 0; day < 14; day++) {
-      if (day > 0)
-        await page.getByRole('button', { name: `第 ${day + 1} 份`, exact: true }).click();
+      if (day > 0) await selectDailyMaterial(page, day + 1);
       await page.getByRole('button', { name: `开始第 ${day + 1} 份跟读` }).click();
       const sections =
         material === 'original'
